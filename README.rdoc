@@ -1,0 +1,11 @@
+== Devise
+
+Flexible authentication solution for Rails with Warden.
+
+== Dependencies
+
+http://github.com/hassox/warden
+
+== License
+
+MIT License. Copyright 2009 Plataforma Tecnologia.

@@ -46,10 +46,10 @@ module Devise
       # Hook default authenticate to provide test whether the account is confirmed
       # Returns the authenticated_user if it's confirmed, otherwise returns nil
       # TODO
-      #def authenticate(email, password)
-      #  confirmable = super
-      #  confirmable if confirmable.confirmed? unless confirmable.nil?
-      #end
+      def authenticate(email, password)
+        confirmable = super
+        confirmable if confirmable.confirmed? unless confirmable.nil?
+      end
 
       # Find a user by it's confirmation token and try to confirm it.
       # If no user is found, returns a new user

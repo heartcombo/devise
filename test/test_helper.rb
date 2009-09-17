@@ -16,14 +16,13 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :email,              :null => false
     t.string :encrypted_password, :null => false
     t.string :password_salt,      :null => false
-    t.string :confirmation_token, :null => false
+    t.string :confirmation_token
     t.datetime :confirmed_at
   end
 end
 
 class User < ::ActiveRecord::Base
   include ::Devise::Authenticable
-  include ::Devise::Confirmable
 end
 
 ActionMailer::Base.delivery_method = :test

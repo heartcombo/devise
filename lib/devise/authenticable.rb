@@ -7,12 +7,11 @@ module Devise
 
     def self.included(base)
       base.class_eval do
-        #attr_accessor :password, :password_confirmation
+        extend ClassMethods
+
         attr_reader     :password
         attr_accessor   :password_confirmation
         attr_accessible :email, :password, :password_confirmation
-
-        extend ClassMethods
       end
     end
 
@@ -39,7 +38,7 @@ module Devise
       # Generate password salt using SHA1 based on password and Time.now
       #
       def generate_salt
-        self.password_salt = secure_digest(Time.now.utc, password) if password_salt.blank?
+        self.password_salt = secure_digest(Time.now.utc, random_string, password) if password_salt.blank?
       end
 
       # Encrypt password using SHA1
@@ -61,6 +60,12 @@ module Devise
       #
       def secure_digest(*tokens)
         ::Digest::SHA1.hexdigest('--' << tokens.flatten.join('--') << '--')
+      end
+
+      # Generate a string randomically based on rand method
+      #
+      def random_string
+        (1..10).map{ rand.to_s }
       end
 
     module ClassMethods

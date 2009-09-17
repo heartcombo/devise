@@ -3,24 +3,6 @@ require 'digest/sha1'
 
 class AuthenticableTest < ActiveSupport::TestCase
 
-  def valid_attributes(attributes={})
-    { :email => 'test@email.com',
-      :password => '12345',
-      :password_confirmation => '12345' }.update(attributes)
-  end
-
-  def new_user(attributes={})
-    User.new(valid_attributes(attributes))
-  end
-
-  def create_user(attributes={})
-    User.create!(valid_attributes(attributes))
-  end
-
-  def field_accessible?(field)
-    new_user(field => 'test').send(field) == 'test'
-  end
-
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)
@@ -68,9 +50,19 @@ class AuthenticableTest < ActiveSupport::TestCase
   test 'should generate a sha1 hash for password salt' do
     now = Time.now
     Time.stubs(:now).returns(now)
-    expected_salt = ::Digest::SHA1.hexdigest("--#{now.utc}--#{12345}--")
+    User.any_instance.stubs(:random_string).returns('random_string')
+    expected_salt = ::Digest::SHA1.hexdigest("--#{now.utc}--random_string--12345--")
     user = create_user
     assert_equal expected_salt, user.password_salt
+  end
+
+  test 'should never generate the same salt for different users' do
+    password_salts = []
+    10.times do
+      salt = new_user.password_salt
+      assert !password_salts.include?(salt)
+      password_salts << salt
+    end
   end
 
   test 'should generate encrypted password after setting a password' do
@@ -103,6 +95,12 @@ class AuthenticableTest < ActiveSupport::TestCase
     user = create_user
     expected_password = ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{digest_key}--#{12345}--")
     assert_equal expected_password, user.encrypted_password
+  end
+
+  test 'should test for a valid password' do
+    user = create_user
+    assert user.valid_password?('12345')
+    assert_not user.valid_password?('54321')
   end
 
   test 'should authenticate a valid user and return it' do

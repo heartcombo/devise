@@ -6,6 +6,7 @@ module Devise
         extend ClassMethods
 
         before_create :generate_confirmation_token
+        after_create  :send_confirmation_instructions
       end
     end
 
@@ -35,7 +36,20 @@ module Devise
         self.confirmation_token = secure_digest(Time.now.utc, random_string, password)
       end
 
+      # Send confirmation instructions by email
+      def send_confirmation_instructions
+        # ::Devise::Notifier.deliver_confirmation_instructions(self)
+      end
+
     module ClassMethods
+
+      # Hook default authenticate to provide test whether the account is confirmed
+      # Returns the authenticated_user if it's confirmed, otherwise returns nil
+      # TODO
+      #def authenticate(email, password)
+      #  confirmable = super
+      #  confirmable if confirmable.confirmed? unless confirmable.nil?
+      #end
 
       # Find a user by it's confirmation token and try to confirm it.
       # If no user is found, returns a new user

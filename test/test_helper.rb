@@ -1,9 +1,11 @@
+RAILS_ENV = ENV["RAILS_ENV"] = "test"
+
 require 'test/unit'
 require 'rubygems'
 require 'active_support'
 require 'active_support/test_case'
+require 'action_mailer'
 require 'active_record'
-require 'mocha'
 
 require File.join(File.dirname(__FILE__), '..', 'lib', 'devise')
 
@@ -24,6 +26,11 @@ class User < ::ActiveRecord::Base
   include ::Devise::Confirmable
 end
 
+ActionMailer::Base.delivery_method = :test
+#ActionMailer::Base.delivery_method = :test
+#ActionMailer::Base.perform_deliveries = true
+#ActionMailer::Base.deliveries = []
+
 class ActiveSupport::TestCase
   def assert_not(assertion)
     assert !assertion
@@ -40,8 +47,14 @@ class ActiveSupport::TestCase
 
   # Helpers for creating new users
   #
+  def generate_unique_email
+    @@email_count ||= 0
+    @@email_count += 1
+    "test#{@@email_count}@email.com"
+  end
+
   def valid_attributes(attributes={})
-    { :email => 'test@email.com',
+    { :email => generate_unique_email,
       :password => '12345',
       :password_confirmation => '12345' }.update(attributes)
   end

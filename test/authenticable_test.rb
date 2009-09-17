@@ -105,12 +105,19 @@ class AuthenticableTest < ActiveSupport::TestCase
 
   test 'should authenticate a valid user with email and password and return it' do
     user = create_user
-    authenticated_user = User.authenticate('test@email.com', '12345')
+    authenticated_user = User.authenticate(user.email, user.password)
     assert_equal authenticated_user, user
   end
 
-  test 'should return nil when authenticating an invalid user' do
-    authenticated_user = User.authenticate('another.email@email.com', '12345')
+  test 'should return nil when authenticating an invalid user by email' do
+    user = create_user
+    authenticated_user = User.authenticate('another.email@email.com', user.password)
+    assert_nil authenticated_user
+  end
+
+  test 'should return nil when authenticating an invalid user by password' do
+    user = create_user
+    authenticated_user = User.authenticate(user.email, 'another_password')
     assert_nil authenticated_user
   end
 end

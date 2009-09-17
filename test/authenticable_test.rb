@@ -104,5 +104,16 @@ class AuthenticableTest < ActiveSupport::TestCase
     expected_password = ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{digest_key}--#{12345}--")
     assert_equal expected_password, user.encrypted_password
   end
+
+  test 'should authenticate a valid user and return it' do
+    user = create_user
+    authenticated_user = User.authenticate('test@email.com', '12345')
+    assert_equal authenticated_user, user
+  end
+
+  test 'should return nil when authenticating an invalid user' do
+    authenticated_user = User.authenticate('another.email@email.com', '12345')
+    assert_nil authenticated_user
+  end
 end
 

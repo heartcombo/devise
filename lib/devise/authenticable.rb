@@ -2,11 +2,8 @@ module Devise
   module Authenticable
     require 'digest/sha1'
 
-    # Password digest config
     # Auth key for encrypting password
-    SECURE_AUTH_SITE_KEY         = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
-    # Times digest will be applied to crypted password
-    SECURE_AUTH_DIGEST_STRETCHES = 10
+    SECURE_AUTH_SITE_KEY = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
 
     def self.included(base)
       base.class_eval do
@@ -14,6 +11,8 @@ module Devise
         attr_reader     :password
         attr_accessor   :password_confirmation
         attr_accessible :email, :password, :password_confirmation
+
+        extend ClassMethods
       end
     end
 
@@ -29,6 +28,12 @@ module Devise
       end
     end
 
+    # Verifies whether an incoming_password (ie from login) is the user password
+    #
+    def valid_password?(incoming_password)
+      password_digest(incoming_password) == encrypted_password
+    end
+
     private
 
       # Generate password salt using SHA1 based on password and Time.now
@@ -37,10 +42,17 @@ module Devise
         self.password_salt = secure_digest(Time.now.utc, password) if password_salt.blank?
       end
 
-      # Encrypt password using SHA1 based on salt, password and SECURE_AUTH_SITE_KEY
+      # Encrypt password using SHA1
       #
       def encrypt_password
-        self.encrypted_password = secure_digest(password_salt, SECURE_AUTH_SITE_KEY, password)
+        self.encrypted_password = password_digest(password)
+      end
+
+      # Gererates a default password digest based on salt, SECURE_AUTH_SITE_KEY
+      # and the incoming password
+      #
+      def password_digest(password_to_digest)
+        secure_digest(password_salt, SECURE_AUTH_SITE_KEY, password_to_digest)
       end
 
       # Generate a SHA1 digest joining args. Generated token is something like
@@ -50,6 +62,17 @@ module Devise
       def secure_digest(*tokens)
         ::Digest::SHA1.hexdigest('--' << tokens.flatten.join('--') << '--')
       end
+
+    module ClassMethods
+
+      # Authenticate a user based on email and password. Returns the
+      # authenticated user if it's valid or nil
+      #
+      def authenticate(email, password)
+        user = self.find_by_email(email)
+        user if user.valid_password?(password) unless user.nil?
+      end
+    end
   end
 end
 

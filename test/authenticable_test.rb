@@ -91,7 +91,7 @@ class AuthenticableTest < ActiveSupport::TestCase
   end
 
   test 'should encrypt password using a sha1 hash' do
-    digest_key = Devise::Authenticable::SECURE_AUTH_SITE_KEY = 'digest_key'
+    digest_key = Devise::Authenticable::SECURE_AUTH_SITE_KEY
     user = create_user
     expected_password = ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{digest_key}--#{12345}--")
     assert_equal expected_password, user.encrypted_password
@@ -103,7 +103,7 @@ class AuthenticableTest < ActiveSupport::TestCase
     assert_not user.valid_password?('54321')
   end
 
-  test 'should authenticate a valid user and return it' do
+  test 'should authenticate a valid user with email and password and return it' do
     user = create_user
     authenticated_user = User.authenticate('test@email.com', '12345')
     assert_equal authenticated_user, user

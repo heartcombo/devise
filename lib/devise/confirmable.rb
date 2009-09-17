@@ -41,13 +41,13 @@ module Devise
       # If no user is found, returns a new user
       # If the user is already confirmed, create an error for the user
       def find_and_confirm(confirmation_token)
-        user = find_or_initialize_by_confirmation_token(confirmation_token)
-        unless user.new_record?
-          user.confirm!
+        confirmable = find_or_initialize_by_confirmation_token(confirmation_token)
+        unless confirmable.new_record?
+          confirmable.confirm!
         else
-          user.errors.add(:confirmation_token, :invalid, :default => "invalid confirmation")
+          confirmable.errors.add(:confirmation_token, :invalid, :default => "invalid confirmation")
         end
-        user
+        confirmable
       end
     end
   end

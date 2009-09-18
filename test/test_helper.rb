@@ -1,5 +1,4 @@
 RAILS_ENV = ENV["RAILS_ENV"] = "test"
-
 require 'test/unit'
 require 'rubygems'
 require 'active_support'
@@ -9,6 +8,10 @@ require 'active_record'
 
 require File.join(File.dirname(__FILE__), '..', 'lib', 'devise')
 
+ActionMailer::Base.delivery_method = :test
+ActionMailer::Base.perform_deliveries = true
+
+ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 ActiveRecord::Schema.define(:version => 1) do
@@ -25,11 +28,6 @@ class User < ::ActiveRecord::Base
   include ::Devise::Authenticable
 end
 
-ActionMailer::Base.delivery_method = :test
-#ActionMailer::Base.delivery_method = :test
-#ActionMailer::Base.perform_deliveries = true
-#ActionMailer::Base.deliveries = []
-
 class ActiveSupport::TestCase
   def assert_not(assertion)
     assert !assertion
@@ -43,6 +41,10 @@ class ActiveSupport::TestCase
     assert !assertion.blank?
   end
   alias :assert_present :assert_not_blank
+
+  def setup_mailer
+    ActionMailer::Base.deliveries = []
+  end
 
   # Helpers for creating new users
   #

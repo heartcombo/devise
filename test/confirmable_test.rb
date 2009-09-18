@@ -3,7 +3,9 @@ require 'test_helper'
 class ConfirmableTest < ActiveSupport::TestCase
 
   def setup
-    User.send :include, ::Devise::Confirmable
+    # Todo: refactor this!
+    User.send :include, ::Devise::Confirmable unless User.included_modules.include?(::Devise::Confirmable)
+    setup_mailer
   end
 
   test 'should not have confirmation code accessible' do
@@ -106,10 +108,18 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal authenticated_user, user
   end
 
-#  test 'should send confirmation instructions by email' do
-#    assert_difference 'ActionMailer::Base.deliveries.size' do
-#      create_user
-#    end
-#  end
+  test 'should send confirmation instructions by email' do
+    assert_difference 'ActionMailer::Base.deliveries.size' do
+      create_user
+    end
+  end
+
+  test 'should not send confirmation when trying to save an invalid user' do
+    assert_no_difference 'ActionMailer::Base.deliveries.size' do
+      user = new_user
+      user.stubs(:valid?).returns(false)
+      user.save
+    end
+  end
 end
 

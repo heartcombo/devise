@@ -37,15 +37,16 @@ module Devise
       end
 
       # Send confirmation instructions by email
+      #
       def send_confirmation_instructions
-        # ::Devise::Notifier.deliver_confirmation_instructions(self)
+        ::Devise::Notifier.deliver_confirmation_instructions(self)
       end
 
     module ClassMethods
 
-      # Hook default authenticate to provide test whether the account is confirmed
+      # Hook default authenticate to test whether the account is confirmed or not
       # Returns the authenticated_user if it's confirmed, otherwise returns nil
-      # TODO
+      #
       def authenticate(email, password)
         confirmable = super
         confirmable if confirmable.confirmed? unless confirmable.nil?
@@ -54,6 +55,7 @@ module Devise
       # Find a user by it's confirmation token and try to confirm it.
       # If no user is found, returns a new user
       # If the user is already confirmed, create an error for the user
+      #
       def find_and_confirm(confirmation_token)
         confirmable = find_or_initialize_by_confirmation_token(confirmation_token)
         unless confirmable.new_record?

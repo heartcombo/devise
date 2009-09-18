@@ -4,6 +4,7 @@ module Devise
     def self.included(base)
       base.class_eval do
         extend ClassMethods
+        include ::Devise::PerishableToken
       end
     end
 
@@ -43,6 +44,11 @@ module Devise
         recoverable
       end
 
+      # Attempt to find a user by it's perishable_token to reset it's password.
+      # If a user is found, reset it's password and automatically try saving the
+      # record. If not user is found, returns a new user containing an error
+      # in perishable_token attribute
+      #
       def find_and_reset_password(perishable_token, password=nil, password_confirmation=nil)
         recoverable = find_or_initialize_by_perishable_token(perishable_token)
         unless recoverable.new_record?

@@ -51,8 +51,8 @@ class AuthenticableTest < ActiveSupport::TestCase
     now = Time.now
     Time.stubs(:now).returns(now)
     User.any_instance.stubs(:random_string).returns('random_string')
-    expected_salt = ::Digest::SHA1.hexdigest("--#{now.utc}--random_string--12345--")
     user = create_user
+    expected_salt = ::Digest::SHA1.hexdigest("--#{now.utc}--random_string--123456--")
     assert_equal expected_salt, user.password_salt
   end
 
@@ -79,7 +79,7 @@ class AuthenticableTest < ActiveSupport::TestCase
     user = create_user
     encrypted_password = user.encrypted_password
     user.expects(:encrypted_password=).never
-    user.password = '12345'
+    user.password = '123456'
     assert_equal encrypted_password, user.encrypted_password
   end
 
@@ -93,14 +93,14 @@ class AuthenticableTest < ActiveSupport::TestCase
   test 'should encrypt password using a sha1 hash' do
     digest_key = Devise::Authenticable::SECURE_AUTH_SITE_KEY
     user = create_user
-    expected_password = ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{digest_key}--#{12345}--")
+    expected_password = ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{digest_key}--123456--")
     assert_equal expected_password, user.encrypted_password
   end
 
   test 'should test for a valid password' do
     user = create_user
-    assert user.valid_password?('12345')
-    assert_not user.valid_password?('54321')
+    assert user.valid_password?('123456')
+    assert_not user.valid_password?('654321')
   end
 
   test 'should authenticate a valid user with email and password and return it' do

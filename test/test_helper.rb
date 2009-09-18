@@ -64,8 +64,8 @@ class ActiveSupport::TestCase
 
   def valid_attributes(attributes={})
     { :email => generate_unique_email,
-      :password => '12345',
-      :password_confirmation => '12345' }.update(attributes)
+      :password => '123456',
+      :password_confirmation => '123456' }.update(attributes)
   end
 
   def new_user(attributes={})

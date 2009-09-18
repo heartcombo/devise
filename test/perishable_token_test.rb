@@ -57,7 +57,7 @@ class PerishableTokenTest < ActiveSupport::TestCase
     now = Time.now
     Time.stubs(:now).returns(now)
     User.any_instance.stubs(:random_string).returns('random_string')
-    expected_token = ::Digest::SHA1.hexdigest("--#{now.utc}--random_string--12345--")
+    expected_token = ::Digest::SHA1.hexdigest("--#{now.utc}--random_string--123456--")
     user = create_user
     assert_equal expected_token, user.perishable_token
   end

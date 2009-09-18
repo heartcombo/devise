@@ -4,8 +4,8 @@ module Devise
     def self.included(base)
       base.class_eval do
         extend ClassMethods
+        include ::Devise::PerishableToken
 
-        before_create :generate_confirmation_token
         after_create  :send_confirmation_instructions
       end
     end
@@ -30,12 +30,6 @@ module Devise
 
     private
 
-      # Generates a new random token for confirmation, based on actual Time and salt
-      #
-      def generate_confirmation_token
-        self.confirmation_token = secure_digest(Time.now.utc, random_string, password)
-      end
-
       # Send confirmation instructions by email
       #
       def send_confirmation_instructions
@@ -57,11 +51,11 @@ module Devise
       # If the user is already confirmed, create an error for the user
       #
       def find_and_confirm(confirmation_token)
-        confirmable = find_or_initialize_by_confirmation_token(confirmation_token)
+        confirmable = find_or_initialize_by_perishable_token(confirmation_token)
         unless confirmable.new_record?
           confirmable.confirm!
         else
-          confirmable.errors.add(:confirmation_token, :invalid, :default => "invalid confirmation")
+          confirmable.errors.add(:perishable_token, :invalid, :default => "invalid confirmation")
         end
         confirmable
       end

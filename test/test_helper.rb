@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :email,              :null => false
     t.string :encrypted_password, :null => false
     t.string :password_salt,      :null => false
-    t.string :confirmation_token
+    t.string :perishable_token
     t.datetime :confirmed_at
   end
 end

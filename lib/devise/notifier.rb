@@ -4,6 +4,10 @@ module Devise
     def confirmation_instructions(record)
       # TODO: configure email
     end
+
+    def reset_password_instructions(record)
+      # TODO
+    end
   end
 end
 

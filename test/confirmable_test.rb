@@ -47,6 +47,10 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should return a new user with errors if no user exists while trying to confirm' do
     confirmed_user = User.find_and_confirm('invalid_perishable_token')
     assert confirmed_user.new_record?
+  end
+
+  test 'should return errors for a new user when trying to confirm' do
+    confirmed_user = User.find_and_confirm('invalid_perishable_token')
     assert_not_nil confirmed_user.errors[:perishable_token]
     assert_equal "invalid confirmation", confirmed_user.errors[:perishable_token]
   end
@@ -74,13 +78,13 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should send confirmation instructions by email' do
-    assert_difference 'ActionMailer::Base.deliveries.size' do
+    assert_email_sent do
       create_user
     end
   end
 
   test 'should not send confirmation when trying to save an invalid user' do
-    assert_no_difference 'ActionMailer::Base.deliveries.size' do
+    assert_email_not_sent do
       user = new_user
       user.stubs(:valid?).returns(false)
       user.save

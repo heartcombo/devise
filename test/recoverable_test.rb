@@ -23,6 +23,14 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_not @user.reset_password!('56789', '98765')
   end
 
+  test 'should reset perishable token and send instructions by email' do
+    assert_email_sent do
+      token = @user.perishable_token
+      @user.send_reset_password_instructions
+      assert_not_equal token, @user.perishable_token
+    end
+  end
+
   test 'should find a user to send instructions by email' do
     reset_password_user = User.find_and_send_reset_password_instructions(@user.email)
     assert_not_nil reset_password_user
@@ -41,16 +49,42 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_equal 'not found', reset_password_user.errors[:email]
   end
 
-  test 'should reset perishable token before send the reset instrunctions email' do
+  test 'should reset perishable token before send the reset instructions email' do
     token = @user.perishable_token
     reset_password_user = User.find_and_send_reset_password_instructions(@user.email)
     assert_not_equal token, @user.reload.perishable_token
   end
 
-  test 'should send email instructions to the user' do
+  test 'should send email instructions to the user reset it\'s password' do
     assert_email_sent do
       User.find_and_send_reset_password_instructions(@user.email)
     end
+  end
+
+  test 'should find a user to reset it\'s password based on perishable_token' do
+    reset_password_user = User.find_and_reset_password(@user.perishable_token)
+    assert_not_nil reset_password_user
+    assert_equal reset_password_user, @user
+  end
+
+  test 'should return a new user when trying to reset it\'s password if no perishable_token is found' do
+    reset_password_user = User.find_and_reset_password('invalid_token')
+    assert_not_nil reset_password_user
+    assert reset_password_user.new_record?
+  end
+
+  test 'should add error to new user email if no perishable token was found' do
+    reset_password_user = User.find_and_reset_password("invalid_token")
+    assert reset_password_user.errors[:perishable_token]
+    assert_equal 'invalid confirmation', reset_password_user.errors[:perishable_token]
+  end
+
+  test 'should reset successfully user password given the new password and confirmation' do
+    old_password = @user.password
+    reset_password_user = User.find_and_reset_password(@user.perishable_token, 'new_password', 'new_password')
+    @user.reload
+    assert_not @user.valid_password?(old_password)
+    assert @user.valid_password?('new_password')
   end
 end
 

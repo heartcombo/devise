@@ -42,6 +42,16 @@ module Devise
         end
         recoverable
       end
+
+      def find_and_reset_password(perishable_token, password=nil, password_confirmation=nil)
+        recoverable = find_or_initialize_by_perishable_token(perishable_token)
+        unless recoverable.new_record?
+          recoverable.reset_password!(password, password_confirmation)
+        else
+          recoverable.errors.add(:perishable_token, :invalid, :default => "invalid confirmation")
+        end
+        recoverable
+      end
     end
   end
 end

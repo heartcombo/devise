@@ -1,9 +1,9 @@
 require 'test_helper'
 
-class PerishableTokenTest < ActiveSupport::TestCase
+class PerishableTest < ActiveSupport::TestCase
 
   def setup
-    User.send :include, ::Devise::PerishableToken unless User.included_modules.include?(::Devise::PerishableToken)
+    User.send :include, ::Devise::Perishable unless User.included_modules.include?(::Devise::Perishable)
   end
 
   test 'should not have perishable token accessible' do
@@ -62,4 +62,3 @@ class PerishableTokenTest < ActiveSupport::TestCase
     assert_equal expected_token, user.perishable_token
   end
 end
-

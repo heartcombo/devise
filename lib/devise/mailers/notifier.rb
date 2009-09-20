@@ -12,4 +12,3 @@ module Devise
 end
 
 Devise::Notifier.template_root = File.join(File.dirname(__FILE__), '..', 'views')
-

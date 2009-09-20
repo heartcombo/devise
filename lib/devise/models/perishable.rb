@@ -1,5 +1,5 @@
 module Devise
-  module PerishableToken
+  module Perishable
 
     def self.included(base)
       base.class_eval do
@@ -22,4 +22,3 @@ module Devise
     end
   end
 end
-

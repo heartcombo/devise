@@ -4,7 +4,7 @@ module Devise
     def self.included(base)
       base.class_eval do
         extend ClassMethods
-        include ::Devise::PerishableToken
+        include ::Devise::Perishable
       end
     end
 
@@ -61,4 +61,3 @@ module Devise
     end
   end
 end
-

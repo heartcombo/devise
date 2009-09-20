@@ -4,7 +4,7 @@ module Devise
     def self.included(base)
       base.class_eval do
         extend ClassMethods
-        include ::Devise::PerishableToken
+        include ::Devise::Perishable
 
         after_create  :send_confirmation_instructions
       end
@@ -62,4 +62,3 @@ module Devise
     end
   end
 end
-

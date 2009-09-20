@@ -1,8 +1,7 @@
-require 'devise/authenticable'
-require 'devise/perishable_token'
-require 'devise/confirmable'
-require 'devise/recoverable'
-require 'devise/validatable'
+require 'devise/models/authenticable'
+require 'devise/models/perishable'
+require 'devise/models/confirmable'
+require 'devise/models/recoverable'
+require 'devise/models/validatable'
 
-require 'devise/notifier'
-
+require 'devise/mailers/notifier'

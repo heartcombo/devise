@@ -18,7 +18,7 @@ class AuthenticableTest < ActiveSupport::TestCase
   end
 
   test 'should have password confirmation accessible' do
-    assert field_accessible?(:password)
+    assert field_accessible?(:password_confirmation)
   end
 
   test 'should not have password salt accessible' do
@@ -121,4 +121,3 @@ class AuthenticableTest < ActiveSupport::TestCase
     assert_nil authenticated_user
   end
 end
-

@@ -1,0 +1,26 @@
+* SessionsController
+* PasswordsController
+* ConfirmationsController
+
+* Customizable layout in engine controllers
+
+  Devise.layout do |controller|
+    # define layout to be called
+  end
+
+* Create an example app
+
+* Add remember me (with customizable time frame)
+
+* Devise::BruteForceProtection
+* Show generic messages on login in case of failures (optionable)
+* Devise::MagicColumns
+* Devise::Invitable
+
+== Done
+
+* Devise::Authenticable
+* Devise::Confirmable
+* Devise::Recoverable
+* Devise::Validatable
+

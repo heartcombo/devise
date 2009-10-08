@@ -2,8 +2,9 @@ module Devise
   module Authenticable
     require 'digest/sha1'
 
-    # Auth key for encrypting password
-    SECURE_AUTH_SITE_KEY = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
+    # Pepper for encrypting password
+    mattr_accessor :pepper
+    self.pepper = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
 
     def self.included(base)
       base.class_eval do
@@ -47,11 +48,11 @@ module Devise
         self.encrypted_password = password_digest(password)
       end
 
-      # Gererates a default password digest based on salt, SECURE_AUTH_SITE_KEY
-      # and the incoming password
+      # Gererates a default password digest based on salt, pepper and the
+      # incoming password
       #
       def password_digest(password_to_digest)
-        secure_digest(password_salt, SECURE_AUTH_SITE_KEY, password_to_digest)
+        secure_digest(password_salt, @@pepper, password_to_digest)
       end
 
       # Generate a SHA1 digest joining args. Generated token is something like
@@ -80,4 +81,3 @@ module Devise
     end
   end
 end
-

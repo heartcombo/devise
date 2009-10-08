@@ -8,4 +8,7 @@ en:
     confirmation:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirm: 'Your account was successfully confirmed!'
+    notifier:
+      confirmation_instructions: 'Confirmation instructions'
+      reset_password_instructions: 'Reset password instructions'
 

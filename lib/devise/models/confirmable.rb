@@ -8,6 +8,8 @@ module Devise
         extend ClassMethods
 
         after_create  :send_confirmation_instructions
+        before_update :reset_confirmation, :if => :email_changed?
+        after_update  :send_confirmation_instructions, :if => :email_changed?
       end
     end
 
@@ -32,9 +34,27 @@ module Devise
     # Send confirmation instructions by email
     #
     def send_confirmation_instructions
-      reset_perishable_token!
       ::Notifier.deliver_confirmation_instructions(self)
     end
+
+    # Remove confirmation date and send confirmation instructions, to ensure
+    # after sending these instructions the user won't be able to sign in without
+    # confirming it's account
+    #
+    def reset_confirmation!
+      reset_confirmation
+      reset_perishable_token!
+      send_confirmation_instructions
+    end
+
+    private
+
+      # Remove confirmation date from the user, ensuring after a user update it's
+      # email, it won't be able to sign in without confirming it.
+      #
+      def reset_confirmation
+        self.confirmed_at = nil
+      end
 
     module ClassMethods
 
@@ -53,7 +73,11 @@ module Devise
       #
       def send_confirmation_instructions(options={})
         confirmable = find_or_initialize_with_error_by_email(options[:email])
-        confirmable.send_confirmation_instructions unless confirmable.new_record?
+        confirmable.reset_confirmation! unless confirmable.new_record?
+#        unless confirmable.new_record?
+#          confirmable.reset_confirmation!
+#          confirmable.send_confirmation_instructions
+#        end
         confirmable
       end
 

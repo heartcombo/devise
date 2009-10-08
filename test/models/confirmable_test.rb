@@ -115,10 +115,45 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_equal token, user.reload.perishable_token
   end
 
+  test 'should reset confirmation status when sending the confirmation instructions' do
+    user = create_user
+    assert_not user.confirmed?
+    user.confirm!
+    assert user.confirmed?
+    confirmation_user = User.send_confirmation_instructions(:email => user.email)
+    assert_not user.reload.confirmed?
+  end
+
   test 'should send email instructions for the user confirm it\'s email' do
     user = create_user
     assert_email_sent do
       User.send_confirmation_instructions(:email => user.email)
     end
+  end
+
+  test 'should resend email instructions for the user reconfirming the email if it has changed' do
+    user = create_user
+    user.email = 'new_test@example.com'
+    assert_email_sent do
+      user.save!
+    end
+  end
+
+  test 'should not resend email instructions if the user is updated but the email is not' do
+    user = create_user
+    user.confirmed_at = Time.now
+    assert_email_not_sent do
+      user.save!
+    end
+  end
+
+  test 'should reset confirmation status when updating email' do
+    user = create_user
+    assert_not user.confirmed?
+    user.confirm!
+    assert user.confirmed?
+    user.email = 'new_test@example.com'
+    user.save!
+    assert_not user.reload.confirmed?
   end
 end

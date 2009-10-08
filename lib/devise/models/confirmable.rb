@@ -29,13 +29,12 @@ module Devise
       !new_record? && confirmed_at?
     end
 
-    private
-
-      # Send confirmation instructions by email
-      #
-      def send_confirmation_instructions
-        ::Notifier.deliver_confirmation_instructions(self)
-      end
+    # Send confirmation instructions by email
+    #
+    def send_confirmation_instructions
+      reset_perishable_token!
+      ::Notifier.deliver_confirmation_instructions(self)
+    end
 
     module ClassMethods
 
@@ -45,6 +44,21 @@ module Devise
       def authenticate(email, password)
         confirmable = super
         confirmable if confirmable.confirmed? unless confirmable.nil?
+      end
+
+      # Attempt to find a user by it's email. If a record is found, send new
+      # confirmation instructions to it. If not user is found, returns a new user
+      # with an email not found error.
+      # Options must contain the user email
+      #
+      def send_confirmation_instructions(options={})
+        confirmable = find_or_initialize_by_email(options[:email])
+        unless confirmable.new_record?
+          confirmable.send_confirmation_instructions
+        else
+          confirmable.errors.add(:email, :not_found, :default => 'not found')
+        end
+        confirmable
       end
 
       # Find a user by it's confirmation token and try to confirm it.

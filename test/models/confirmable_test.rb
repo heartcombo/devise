@@ -88,4 +88,37 @@ class ConfirmableTest < ActiveSupport::TestCase
       user.save
     end
   end
+
+  test 'should find a user to send confirmation instructions' do
+    user = create_user
+    confirmation_user = User.send_confirmation_instructions(:email => user.email)
+    assert_not_nil confirmation_user
+    assert_equal confirmation_user, user
+  end
+
+  test 'should return a new user if no email was found' do
+    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
+    assert_not_nil confirmation_user
+    assert confirmation_user.new_record?
+  end
+
+  test 'should add error to new user email if no email was found' do
+    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
+    assert confirmation_user.errors[:email]
+    assert_equal 'not found', confirmation_user.errors[:email]
+  end
+
+  test 'should reset perishable token before send the confirmation instructions email' do
+    user = create_user
+    token = user.perishable_token
+    confirmation_user = User.send_confirmation_instructions(:email => user.email)
+    assert_not_equal token, user.reload.perishable_token
+  end
+
+  test 'should send email instructions for the user confirm it\'s email' do
+    user = create_user
+    assert_email_sent do
+      User.send_confirmation_instructions(:email => user.email)
+    end
+  end
 end

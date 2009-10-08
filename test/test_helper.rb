@@ -2,15 +2,9 @@ RAILS_ENV = ENV["RAILS_ENV"] = "test"
 require File.join(File.dirname(__FILE__), 'rails_app', 'config', 'environment')
 
 require 'test_help'
-
 require 'webrat'
 
-require 'assertions_helper'
-require 'models_helper'
-require 'integration_tests_helper'
-
-#ActiveSupport::Dependencies.load_paths << File.expand_path(File.dirname(__FILE__) + '/..')
-#require_dependency 'devise'
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.perform_deliveries = true

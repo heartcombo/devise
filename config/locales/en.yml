@@ -24,6 +24,10 @@ en:
       sign_in: 'Sign in'
       new_password: 'Forgot password?'
       new_confirmation: "Didn't receive confirmation instructions?"
+    routes:
+      session: 'session'
+      password: 'password'
+      confirmation: 'confirmation'
     notifier:
       confirmation_instructions: 'Confirmation instructions'
       reset_password_instructions: 'Reset password instructions'

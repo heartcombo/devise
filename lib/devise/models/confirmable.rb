@@ -1,5 +1,6 @@
 module Devise
   module Confirmable
+    require 'devise/models/perishable'
 
     def self.included(base)
       base.class_eval do

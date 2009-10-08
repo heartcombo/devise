@@ -4,8 +4,8 @@ module Devise
 
     def self.included(base)
       base.class_eval do
-        extend ClassMethods
         include ::Devise::Perishable
+        extend ClassMethods
 
         after_create  :send_confirmation_instructions
       end
@@ -52,12 +52,8 @@ module Devise
       # If the user is already confirmed, create an error for the user
       #
       def find_and_confirm(perishable_token)
-        confirmable = find_or_initialize_by_perishable_token(perishable_token)
-        unless confirmable.new_record?
-          confirmable.confirm!
-        else
-          confirmable.errors.add(:perishable_token, :invalid, :default => "invalid confirmation")
-        end
+        confirmable = find_or_initialize_with_error_by_perishable_token(perishable_token)
+        confirmable.confirm! unless confirmable.new_record?
         confirmable
       end
     end

@@ -53,12 +53,8 @@ module Devise
       # Options must contain perishable_token, password and confirmation
       #
       def reset_password(options={})
-        recoverable = find_or_initialize_by_perishable_token(options[:perishable_token])
-        unless recoverable.new_record?
-          recoverable.reset_password!(options[:password], options[:password_confirmation])
-        else
-          recoverable.errors.add(:perishable_token, :invalid, :default => "invalid confirmation")
-        end
+        recoverable = find_or_initialize_with_error_by_perishable_token(options[:perishable_token])
+        recoverable.reset_password!(options[:password], options[:password_confirmation]) unless recoverable.new_record?
         recoverable
       end
     end

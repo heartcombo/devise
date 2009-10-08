@@ -3,8 +3,6 @@ require 'test_helper'
 class ConfirmableTest < ActiveSupport::TestCase
 
   def setup
-    # Todo: refactor this!
-    User.send :include, ::Devise::Confirmable unless User.included_modules.include?(::Devise::Confirmable)
     setup_mailer
   end
 
@@ -91,4 +89,3 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 end
-

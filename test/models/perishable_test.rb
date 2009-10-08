@@ -2,10 +2,6 @@ require 'test_helper'
 
 class PerishableTest < ActiveSupport::TestCase
 
-  def setup
-    User.send :include, ::Devise::Perishable unless User.included_modules.include?(::Devise::Perishable)
-  end
-
   test 'should not have perishable token accessible' do
     assert_not field_accessible?(:perishable_token)
   end

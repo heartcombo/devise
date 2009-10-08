@@ -2,10 +2,6 @@ require 'test_helper'
 
 class ValidatableTest < ActiveSupport::TestCase
 
-  def setup
-    User.send :include, ::Devise::Validatable unless User.included_modules.include?(::Devise::Validatable)
-  end
-
   test 'should require email to be set' do
     user = new_user(:email => nil)
     assert user.invalid?
@@ -101,4 +97,3 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_not user.errors[:password].to_a.include?('is too short (minimum is 6 characters)')
   end
 end
-

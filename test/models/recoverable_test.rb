@@ -3,7 +3,6 @@ require 'test_helper'
 class RecoverableTest < ActiveSupport::TestCase
 
   def setup
-    User.send :include, ::Devise::Recoverable unless User.included_modules.include?(::Devise::Recoverable)
     @user = create_user
     setup_mailer
   end

@@ -1,0 +1,11 @@
+<h2>Forgot password</h2>
+
+<%= error_messages_for :password %>
+
+<% form_for :password, :url => password_path do |f| %>
+  <p><%= f.label :email %></p>
+  <p><%= f.text_field :email %></p>
+  <p class="submit"><%= f.submit "Send me reset password instructions" %></p>
+<% end %>
+
+<%= link_to 'Sign in', new_session_path %>

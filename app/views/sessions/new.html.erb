@@ -1,0 +1,13 @@
+<h2>Sign in</h2>
+
+<%= warden.message if warden.message.present? %>
+
+<% form_for :session, :url => session_path do |f| -%>
+  <p><%= f.label :email %></p>
+  <p><%= f.text_field :email %></p>
+  <p><%= f.label :password %></p>
+  <p><%= f.password_field :password %></p>
+  <p class='submit'><%= f.submit 'Sign In' %></p>
+<% end -%>
+
+<%= link_to "Forgot password?", new_password_path %>

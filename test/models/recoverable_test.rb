@@ -9,18 +9,18 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should reset password and password confirmation from params' do
-    @user.reset_password('56789', '98765')
-    assert_equal '56789', @user.password
-    assert_equal '98765', @user.password_confirmation
+    @user.reset_password('123456789', '987654321')
+    assert_equal '123456789', @user.password
+    assert_equal '987654321', @user.password_confirmation
   end
 
   test 'should reset password and save the record' do
-    assert @user.reset_password!('56789', '56789')
+    assert @user.reset_password!('123456789', '123456789')
   end
 
   test 'should not reset password with invalid data' do
     @user.stubs(:valid?).returns(false)
-    assert_not @user.reset_password!('56789', '98765')
+    assert_not @user.reset_password!('123456789', '987654321')
   end
 
   test 'should reset perishable token and send instructions by email' do
@@ -87,4 +87,3 @@ class RecoverableTest < ActiveSupport::TestCase
     assert @user.valid_password?('new_password')
   end
 end
-

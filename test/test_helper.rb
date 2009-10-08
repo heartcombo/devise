@@ -1,12 +1,17 @@
 RAILS_ENV = ENV["RAILS_ENV"] = "test"
-require 'test/unit'
-require 'rubygems'
-require 'active_support'
-require 'active_support/test_case'
-require 'action_mailer'
-require 'active_record'
+require File.join(File.dirname(__FILE__), 'rails_app', 'config', 'environment')
 
-require File.join(File.dirname(__FILE__), '..', 'lib', 'devise')
+require 'test_help'
+
+require 'webrat'
+
+require 'assertions_helper'
+require 'models_helper'
+require 'integration_tests_helper'
+require 'model_builder'
+
+ActiveSupport::Dependencies.load_paths << File.expand_path(File.dirname(__FILE__) + '/../lib')
+require_dependency 'devise'
 
 ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.perform_deliveries = true
@@ -24,60 +29,11 @@ ActiveRecord::Schema.define(:version => 1) do
   end
 end
 
-class User < ::ActiveRecord::Base
-  include ::Devise::Authenticable
+Webrat.configure do |config|
+  config.mode = :rails
 end
 
 class ActiveSupport::TestCase
-  def assert_not(assertion)
-    assert !assertion
-  end
-
-  def assert_blank(assertion)
-    assert assertion.blank?
-  end
-
-  def assert_not_blank(assertion)
-    assert !assertion.blank?
-  end
-  alias :assert_present :assert_not_blank
-
-  def assert_email_sent(&block)
-    assert_difference('ActionMailer::Base.deliveries.size') { yield }
-  end
-
-  def assert_email_not_sent(&block)
-    assert_no_difference('ActionMailer::Base.deliveries.size') { yield }
-  end
-
-  def setup_mailer
-    ActionMailer::Base.deliveries = []
-  end
-
-  # Helpers for creating new users
-  #
-  def generate_unique_email
-    @@email_count ||= 0
-    @@email_count += 1
-    "test#{@@email_count}@email.com"
-  end
-
-  def valid_attributes(attributes={})
-    { :email => generate_unique_email,
-      :password => '123456',
-      :password_confirmation => '123456' }.update(attributes)
-  end
-
-  def new_user(attributes={})
-    User.new(valid_attributes(attributes))
-  end
-
-  def create_user(attributes={})
-    User.create!(valid_attributes(attributes))
-  end
-
-  def field_accessible?(field)
-    new_user(field => 'test').send(field) == 'test'
-  end
+  self.use_transactional_fixtures = true
+  self.use_instantiated_fixtures  = false
 end
-

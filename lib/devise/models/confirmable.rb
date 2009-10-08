@@ -50,8 +50,8 @@ module Devise
       # If no user is found, returns a new user
       # If the user is already confirmed, create an error for the user
       #
-      def find_and_confirm(confirmation_token)
-        confirmable = find_or_initialize_by_perishable_token(confirmation_token)
+      def find_and_confirm(perishable_token)
+        confirmable = find_or_initialize_by_perishable_token(perishable_token)
         unless confirmable.new_record?
           confirmable.confirm!
         else

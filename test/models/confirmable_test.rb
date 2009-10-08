@@ -36,19 +36,19 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should find and confirm an user automatically' do
     user = create_user
-    confirmed_user = User.find_and_confirm(user.perishable_token)
+    confirmed_user = User.confirm!(:perishable_token => user.perishable_token)
     assert_not_nil confirmed_user
     assert_equal confirmed_user, user
     assert user.reload.confirmed?
   end
 
   test 'should return a new user with errors if no user exists while trying to confirm' do
-    confirmed_user = User.find_and_confirm('invalid_perishable_token')
+    confirmed_user = User.confirm!(:perishable_token => 'invalid_perishable_token')
     assert confirmed_user.new_record?
   end
 
   test 'should return errors for a new user when trying to confirm' do
-    confirmed_user = User.find_and_confirm('invalid_perishable_token')
+    confirmed_user = User.confirm!(:perishable_token => 'invalid_perishable_token')
     assert_not_nil confirmed_user.errors[:perishable_token]
     assert_equal "invalid confirmation", confirmed_user.errors[:perishable_token]
   end
@@ -56,7 +56,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should generate errors for a user email if user is already confirmed' do
     user = create_user
     user.confirm!
-    confirmed_user = User.find_and_confirm(user.perishable_token)
+    confirmed_user = User.confirm!(:perishable_token => user.perishable_token)
     assert confirmed_user.confirmed?
     assert confirmed_user.errors[:email]
   end

@@ -33,7 +33,7 @@ module Devise
       # Send confirmation instructions by email
       #
       def send_confirmation_instructions
-        ::Devise::Notifier.deliver_confirmation_instructions(self)
+        ::Notifier.deliver_confirmation_instructions(self)
       end
 
     module ClassMethods

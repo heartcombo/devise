@@ -20,8 +20,6 @@ require 'devise/models/confirmable'
 require 'devise/models/recoverable'
 require 'devise/models/validatable'
 
-require 'devise/mailers/notifier'
-
 class ActionController::Base
   include Devise::Controllers::Authenticable
 end

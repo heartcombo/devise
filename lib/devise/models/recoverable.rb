@@ -25,7 +25,7 @@ module Devise
     #
     def send_reset_password_instructions
       reset_perishable_token!
-      ::Devise::Notifier.deliver_reset_password_instructions(self)
+      ::Notifier.deliver_reset_password_instructions(self)
     end
 
     module ClassMethods

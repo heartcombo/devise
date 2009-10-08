@@ -4,8 +4,8 @@ module Devise
 
     def self.included(base)
       base.class_eval do
-        extend ClassMethods
         include ::Devise::Perishable
+        extend ClassMethods
       end
     end
 

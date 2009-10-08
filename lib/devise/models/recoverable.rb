@@ -52,7 +52,7 @@ module Devise
       # in perishable_token attribute.
       # Options must contain perishable_token, password and confirmation
       #
-      def reset_password(options={})
+      def reset_password!(options={})
         recoverable = find_or_initialize_with_error_by_perishable_token(options[:perishable_token])
         recoverable.reset_password!(options[:password], options[:password_confirmation]) unless recoverable.new_record?
         recoverable

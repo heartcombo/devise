@@ -61,26 +61,26 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should find a user to reset it\'s password based on perishable_token' do
-    reset_password_user = User.reset_password(:perishable_token => @user.perishable_token)
+    reset_password_user = User.reset_password!(:perishable_token => @user.perishable_token)
     assert_not_nil reset_password_user
     assert_equal reset_password_user, @user
   end
 
   test 'should return a new user when trying to reset it\'s password if no perishable_token is found' do
-    reset_password_user = User.reset_password(:perishable_token => 'invalid_token')
+    reset_password_user = User.reset_password!(:perishable_token => 'invalid_token')
     assert_not_nil reset_password_user
     assert reset_password_user.new_record?
   end
 
   test 'should add error to new user email if no perishable token was found' do
-    reset_password_user = User.reset_password(:perishable_token => "invalid_token")
+    reset_password_user = User.reset_password!(:perishable_token => "invalid_token")
     assert reset_password_user.errors[:perishable_token]
     assert_equal 'invalid confirmation', reset_password_user.errors[:perishable_token]
   end
 
   test 'should reset successfully user password given the new password and confirmation' do
     old_password = @user.password
-    reset_password_user = User.reset_password(
+    reset_password_user = User.reset_password!(
       :perishable_token => @user.perishable_token,
       :password => 'new_password',
       :password_confirmation => 'new_password'

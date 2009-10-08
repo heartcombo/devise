@@ -20,7 +20,7 @@ class PasswordsController < ApplicationController
   end
 
   def update
-    @password = User.reset_password(params[:password])
+    @password = User.reset_password!(params[:password])
     if @password.errors.empty?
       flash[:notice] = 'Your password was changed successfully.'
       redirect_to new_session_path

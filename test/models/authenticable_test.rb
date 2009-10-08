@@ -29,14 +29,14 @@ class AuthenticableTest < ActiveSupport::TestCase
     assert_not field_accessible?(:encrypted_password)
   end
 
-  test 'should generate password salt after set the password' do
-    assert_present new_user.password_salt
-    assert_present create_user.password_salt
-  end
-
-  test 'should not generate salt while setting password to nil or blank string' do
+  test 'should not generate salt while setting password' do
+    assert_nil new_user.password_salt
     assert_nil new_user(:password => nil).password_salt
     assert_nil new_user(:password => '').password_salt
+  end
+
+  test 'should generate password salt while saving' do
+    assert_present create_user.password_salt
   end
 
   test 'should not change password salt when updating' do
@@ -59,34 +59,27 @@ class AuthenticableTest < ActiveSupport::TestCase
   test 'should never generate the same salt for different users' do
     password_salts = []
     10.times do
-      salt = new_user.password_salt
-      assert !password_salts.include?(salt)
+      salt = create_user.password_salt
+      assert_not password_salts.include?(salt)
       password_salts << salt
     end
   end
 
-  test 'should generate encrypted password after setting a password' do
-    assert_present new_user.encrypted_password
-    assert_present create_user.encrypted_password
-  end
-
-  test 'should not generate encrypted password while setting password to nil or blank string' do
+  test 'should not generate encrypted password while setting password' do
+    assert_nil new_user.encrypted_password
     assert_nil new_user(:password => nil).encrypted_password
     assert_nil new_user(:password => '').encrypted_password
   end
 
-  test 'should not encrypt password if it didn\'t change' do
-    user = create_user
-    encrypted_password = user.encrypted_password
-    user.expects(:encrypted_password=).never
-    user.password = '123456'
-    assert_equal encrypted_password, user.encrypted_password
+  test 'should generate encrypted password while saving' do
+    assert_present create_user.encrypted_password
   end
 
   test 'should encrypt password again if password has changed' do
     user = create_user
     encrypted_password = user.encrypted_password
-    user.password = 'new_password'
+    user.password = user.password_confirmation = 'new_password'
+    user.save!
     assert_not_equal encrypted_password, user.encrypted_password
   end
 

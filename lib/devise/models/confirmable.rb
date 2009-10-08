@@ -74,10 +74,6 @@ module Devise
       def send_confirmation_instructions(options={})
         confirmable = find_or_initialize_with_error_by_email(options[:email])
         confirmable.reset_confirmation! unless confirmable.new_record?
-#        unless confirmable.new_record?
-#          confirmable.reset_confirmation!
-#          confirmable.send_confirmation_instructions
-#        end
         confirmable
       end
 

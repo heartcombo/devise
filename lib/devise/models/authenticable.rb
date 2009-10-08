@@ -12,21 +12,11 @@ module Devise
       base.class_eval do
         extend ClassMethods
 
-        attr_reader     :password
-        attr_accessor   :password_confirmation
-        attr_accessible :email, :password, :password_confirmation
-      end
-    end
+        before_save :generate_salt
+        before_save :encrypt_password
 
-    # Defines the new password, generating a salt and encrypting it.
-    #
-    def password=(new_password)
-      if new_password != @password
-        @password = new_password
-        if @password.present?
-          generate_salt
-          encrypt_password
-        end
+        attr_accessor   :password, :password_confirmation
+        attr_accessible :email, :password, :password_confirmation
       end
     end
 
@@ -47,7 +37,7 @@ module Devise
       # Encrypt password using SHA1
       #
       def encrypt_password
-        self.encrypted_password = password_digest(password)
+        self.encrypted_password = password_digest(password) unless password.blank?
       end
 
       # Gererates a default password digest based on salt, pepper and the

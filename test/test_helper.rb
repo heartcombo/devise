@@ -8,10 +8,9 @@ require 'webrat'
 require 'assertions_helper'
 require 'models_helper'
 require 'integration_tests_helper'
-require 'model_builder'
 
-ActiveSupport::Dependencies.load_paths << File.expand_path(File.dirname(__FILE__) + '/../lib')
-require_dependency 'devise'
+#ActiveSupport::Dependencies.load_paths << File.expand_path(File.dirname(__FILE__) + '/..')
+#require_dependency 'devise'
 
 ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.perform_deliveries = true

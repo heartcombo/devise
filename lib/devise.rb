@@ -19,6 +19,5 @@ require 'devise/models/confirmable'
 require 'devise/models/recoverable'
 require 'devise/models/validatable'
 
-class ActionController::Base
-  include Devise::Controllers::Authenticable
-end
+ActionController::Base.send :include, Devise::Controllers::Authenticable
+ActionView::Base.send :include, DeviseHelper

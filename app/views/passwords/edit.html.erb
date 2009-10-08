@@ -1,4 +1,4 @@
-<h2>Change your password</h2>
+<h2><%= t '.title', :default => 'Change your password', :scope => :devise %></h2>
 
 <%= error_messages_for :password %>
 
@@ -8,7 +8,7 @@
   <p><%= f.password_field :password %></p>
   <p><%= f.label :password_confirmation %></p>
   <p><%= f.password_field :password_confirmation %></p>
-  <p class="submit"><%= f.submit "Change my password" %></p>
+  <p class="submit"><%= f.submit t('.submit', :default => 'Change my password', :scope => :devise) %></p>
 <% end %>
 
 <%= link_to_sign_in %> | <%= link_to_new_confirmation %>

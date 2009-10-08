@@ -1,4 +1,4 @@
-<h2>Sign in</h2>
+<h2><%= t '.title', :default => 'Sign in', :scope => :devise %></h2>
 
 <%= warden.message if warden.message.present? %>
 
@@ -7,7 +7,7 @@
   <p><%= f.text_field :email %></p>
   <p><%= f.label :password %></p>
   <p><%= f.password_field :password %></p>
-  <p class='submit'><%= f.submit 'Sign In' %></p>
+  <p class='submit'><%= f.submit t('.submit', :default => 'Sign in', :scope => :devise) %></p>
 <% end -%>
 
 <%= link_to_new_password %> | <%= link_to_new_confirmation %>

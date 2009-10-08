@@ -2,9 +2,11 @@ module Devise
   module Authenticable
     require 'digest/sha1'
 
+    mattr_accessor :pepper, :stretches
     # Pepper for encrypting password
-    mattr_accessor :pepper
     self.pepper = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
+    # Encrypt password as many times as possible
+    self.stretches = 10
 
     def self.included(base)
       base.class_eval do
@@ -52,7 +54,9 @@ module Devise
       # incoming password
       #
       def password_digest(password_to_digest)
-        secure_digest(password_salt, @@pepper, password_to_digest)
+        digest = pepper
+        stretches.times { digest = secure_digest(password_salt, digest, password_to_digest, pepper)}
+        digest
       end
 
       # Generate a SHA1 digest joining args. Generated token is something like

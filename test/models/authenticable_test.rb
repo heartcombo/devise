@@ -104,7 +104,7 @@ class AuthenticableTest < ActiveSupport::TestCase
   end
 
   test 'should authenticate a valid user with email and password and return it' do
-    user = User.create!(valid_attributes)
+    user = create_user
     User.any_instance.stubs(:confirmed?).returns(true)
     authenticated_user = User.authenticate(user.email, user.password)
     assert_equal authenticated_user, user

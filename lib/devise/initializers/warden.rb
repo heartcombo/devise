@@ -32,7 +32,7 @@ Warden::Strategies.add(:devise) do
     if user = User.authenticate(params[:session][:email], params[:session][:password])
       success!(user)
     else
-      fail!(I18n.t(:failed_login, :scope => :devise, :default => 'Invalid email or password'))
+      fail!(I18n.t(:authentication_failed, :scope => [:devise, :session], :default => 'Invalid email or password'))
     end
   end
 end

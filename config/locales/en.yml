@@ -1,0 +1,11 @@
+en:
+  devise:
+    session:
+      authentication_failed: 'Invalid email or password.'
+    password:
+      send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
+      update: 'Your password was changed successfully.'
+    confirmation:
+      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
+      confirm: 'Your account was successfully confirmed!'
+

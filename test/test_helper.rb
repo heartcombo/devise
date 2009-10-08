@@ -14,6 +14,7 @@ require 'integration_tests_helper'
 
 ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.perform_deliveries = true
+ActionMailer::Base.default_url_options[:host] = 'test.com'
 
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = Logger.new(nil)

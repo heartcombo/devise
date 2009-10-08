@@ -29,7 +29,18 @@ module Devise
       def find_or_initialize_with_error_by_perishable_token(perishable_token)
         perishable = find_or_initialize_by_perishable_token(perishable_token)
         if perishable.new_record?
-          perishable.errors.add(:perishable_token, :invalid, :default => "invalid confirmation")
+          perishable.errors.add(:perishable_token, :invalid, :default => 'invalid confirmation')
+        end
+        perishable
+      end
+
+      # Attempt to find a user by it's email. If not user is found, returns a
+      # new user with an email not found error.
+      #
+      def find_or_initialize_with_error_by_email(email)
+        perishable = find_or_initialize_by_email(email)
+        if perishable.new_record?
+          perishable.errors.add(:email, :not_found, :default => 'not found')
         end
         perishable
       end

@@ -1,9 +1,13 @@
 class ConfirmationsController < ApplicationController
   before_filter :require_no_authentication
 
+  # GET /confirmation/new
+  #
   def new
   end
 
+  # POST /confirmation
+  #
   def create
     @confirmation = User.send_confirmation_instructions(params[:confirmation])
     if @confirmation.errors.empty?
@@ -14,6 +18,8 @@ class ConfirmationsController < ApplicationController
     end
   end
 
+  # GET /confirmation?perishable_token=abcdef
+  #
   def show
     @confirmation = User.confirm!(:perishable_token => params[:perishable_token])
     if @confirmation.errors.empty?

@@ -52,12 +52,8 @@ module Devise
       # Options must contain the user email
       #
       def send_confirmation_instructions(options={})
-        confirmable = find_or_initialize_by_email(options[:email])
-        unless confirmable.new_record?
-          confirmable.send_confirmation_instructions
-        else
-          confirmable.errors.add(:email, :not_found, :default => 'not found')
-        end
+        confirmable = find_or_initialize_with_error_by_email(options[:email])
+        confirmable.send_confirmation_instructions unless confirmable.new_record?
         confirmable
       end
 

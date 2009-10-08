@@ -5,14 +5,14 @@ class Notifier < ::ActionMailer::Base
   # is manually requested
   #
   def confirmation_instructions(record)
-    subject I18n.t(:confirmation_instructions, :scope => [:devise, :notifier], :default => 'Confirmation instructions')
+    subject translate(:confirmation_instructions, :default => 'Confirmation instructions')
     setup_mail(record)
   end
 
   # Deliver reset password instructions when manually requested
   #
   def reset_password_instructions(record)
-    subject I18n.t(:reset_password_instructions, :scope => [:devise, :notifier], :default => 'Reset password instructions')
+    subject translate(:reset_password_instructions, :default => 'Reset password instructions')
     setup_mail(record)
   end
 
@@ -24,5 +24,9 @@ class Notifier < ::ActionMailer::Base
       sent_on      Time.now
       content_type 'text/html'
       body         record.class.name.downcase.to_sym => record
+    end
+
+    def translate(key, options={})
+      I18n.t(key, {:scope => [:devise, :notifier]}.merge(options))
     end
 end

@@ -1,9 +1,13 @@
 class PasswordsController < ApplicationController
   before_filter :require_no_authentication
 
+  # GET /password/new
+  #
   def new
   end
 
+  # POST /password
+  #
   def create
     @password = User.send_reset_password_instructions(params[:password])
     if @password.errors.empty?
@@ -14,11 +18,15 @@ class PasswordsController < ApplicationController
     end
   end
 
+  # GET /password/edit?perishable_token=abcdef
+  #
   def edit
     @password = User.new
     @password.perishable_token = params[:perishable_token]
   end
 
+  # PUT /password
+  #
   def update
     @password = User.reset_password!(params[:password])
     if @password.errors.empty?

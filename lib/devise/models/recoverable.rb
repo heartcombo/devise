@@ -37,12 +37,8 @@ module Devise
       # Options must contain the user email
       #
       def send_reset_password_instructions(options={})
-        recoverable = find_or_initialize_by_email(options[:email])
-        unless recoverable.new_record?
-          recoverable.send_reset_password_instructions
-        else
-          recoverable.errors.add(:email, :not_found, :default => 'not found')
-        end
+        recoverable = find_or_initialize_with_error_by_email(options[:email])
+        recoverable.send_reset_password_instructions unless recoverable.new_record?
         recoverable
       end
 

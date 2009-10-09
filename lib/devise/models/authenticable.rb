@@ -1,5 +1,20 @@
 module Devise
   module Models
+
+    # Authenticable Module, responsible for encrypting password and validating
+    # authenticity of a user while signing in.
+    #
+    # Configuration:
+    #   pepper: encryption key used for creating encrypted password. Each time
+    #           password changes, it's gonna be encrypted again, and this key
+    #           is added to the password and salt to create a secure hash.
+    #   stretches: defines how many times the password will be encrypted.
+    #
+    # Examples:
+    #
+    #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
+    #    User.find(1).valid_password?('password123')         # returns true/false
+    #
     module Authenticable
       require 'digest/sha1'
 

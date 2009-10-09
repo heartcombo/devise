@@ -1,5 +1,24 @@
 module Devise
   module Models
+
+    # Confirmable is responsible to verify if an account is already confirmed to
+    # sign in, and to send emails with confirmation instructions
+    # Confirmation instructions are sent to the user email after creating a
+    # record, after updating it's email and also when manually requested by
+    # a new confirmation instruction request.
+    # Whenever the user update it's email, his account is automatically unconfirmed,
+    # it means it won't be able to sign in again without confirming the account
+    # again through the email that was sent.
+    # Confirmable also hooks into authenticate, to verify if the account is
+    # confirmed or not before authenticating the user.
+    # Examples:
+    #
+    #   User.authenticate('email@test.com', 'password123') # true if it's confirmed, otherwise false
+    #   User.find(1).confirm!      # returns true unless it's already confirmed
+    #   User.find(1).confirmed?    # true/false
+    #   User.find(1).send_confirmation_instructions # manually send instructions
+    #   User.find(1).reset_confirmation! # reset confirmation status and send instructions
+    #
     module Confirmable
       require 'devise/models/perishable'
 

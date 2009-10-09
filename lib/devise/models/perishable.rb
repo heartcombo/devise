@@ -1,5 +1,18 @@
 module Devise
   module Models
+
+    # Perishable is mainly responsible for recreating tokens used inside
+    # Recoverable and Confirmable modules.
+    # It also has some utility class methods to find or initialize records based
+    # on perishable_token or email, and adding an error to specific fields if no
+    # record is found.
+    # Examples:
+    #   # create a new token and save the record, without validating
+    #   User.find(1).reset_perishable_token!
+    #   # only create a new token, without saving the record
+    #   user = User.find(1)
+    #   user.reset_perishable_token
+    #
     module Perishable
 
       def self.included(base)

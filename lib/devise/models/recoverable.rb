@@ -1,5 +1,17 @@
 module Devise
   module Models
+
+    # Recoverable takes care of reseting the user password and send reset instructions
+    # Examples:
+    #
+    #   # resets the user password and save the record, true if valid passwords are given, otherwise false
+    #   User.find(1).reset_password!('password123', 'password123')
+    #   # only resets the user password, without saving the record
+    #   user = User.find(1)
+    #   user.reset_password('password123', 'password123')
+    #   # creates a new token and send it with instructions about how to reset the password
+    #   User.find(1).send_reset_password_instructions
+    #
     module Recoverable
       require 'devise/models/perishable'
 
@@ -17,7 +29,8 @@ module Devise
         self.password_confirmation = new_password_confirmation
       end
 
-      # Update password saving the record
+      # Update password saving the record. Returns true if the passwords are
+      # valid, otherwise false.
       #
       def reset_password!(new_password, new_password_confirmation)
         reset_password(new_password, new_password_confirmation) and save

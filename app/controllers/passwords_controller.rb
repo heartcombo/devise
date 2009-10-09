@@ -1,4 +1,5 @@
 class PasswordsController < ApplicationController
+  skip_before_filter :authenticate!
   before_filter :require_no_authentication
 
   # GET /password/new

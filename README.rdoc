@@ -5,6 +5,7 @@ Flexible authentication solution for Rails with Warden.
 == Dependencies
 
 http://github.com/hassox/warden
+http://github.com/hassox/rails_warden
 
 == License
 

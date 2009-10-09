@@ -1,7 +1,3 @@
-* SessionsController
-* PasswordsController
-* ConfirmationsController
-
 * Add mappings
 
   Devise.map :users, :to => User, :for => [:authenticable, :recoverable, :confirmable], :as => :usuario
@@ -35,3 +31,6 @@
 * Devise::Recoverable
 * Devise::Validatable
 
+* SessionsController
+* PasswordsController
+* ConfirmationsController

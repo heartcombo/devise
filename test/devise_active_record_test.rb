@@ -1,26 +1,26 @@
 require 'test_helper'
 
 class Authenticable < ActiveRecord::Base
-  acts_as_devisable
+  devise
 end
 
 class Confirmable < ActiveRecord::Base
-  acts_as_devisable :confirmable
+  devise :confirmable
 end
 
 class Recoverable < ActiveRecord::Base
-  acts_as_devisable :recoverable
+  devise :recoverable
 end
 
 class Validatable < ActiveRecord::Base
-  acts_as_devisable :validatable
+  devise :validatable
 end
 
 class Devisable < ActiveRecord::Base
-  acts_as_devisable :all
+  devise :all
 end
 
-class DeviseTest < ActiveSupport::TestCase
+class DeviseActiveRecordTest < ActiveSupport::TestCase
 
   def include_authenticable_module?(mod)
     mod.included_modules.include?(Devise::Models::Authenticable)

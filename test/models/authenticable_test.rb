@@ -84,8 +84,8 @@ class AuthenticableTest < ActiveSupport::TestCase
   end
 
   test 'should encrypt password using a sha1 hash' do
-    Devise::Authenticable.pepper = 'pepper'
-    Devise::Authenticable.stretches = 1
+    Devise::Models::Authenticable.pepper = 'pepper'
+    Devise::Models::Authenticable.stretches = 1
     user = create_user
     expected_password = ::Digest::SHA1.hexdigest("--#{user.password_salt}--pepper--123456--pepper--")
     assert_equal expected_password, user.encrypted_password

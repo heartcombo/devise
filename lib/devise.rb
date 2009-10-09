@@ -14,10 +14,9 @@ end
 
 require 'devise/initializers/warden'
 
-require 'devise/models/authenticable'
-require 'devise/models/confirmable'
-require 'devise/models/recoverable'
-require 'devise/models/validatable'
+module Devise
+end
 
-ActionController::Base.send :include, Devise::Controllers::Authenticable
 ActionView::Base.send :include, DeviseHelper
+ActionController::Base.send :include, Devise::Controllers::Authenticable
+#ActiveRecord::Base.send :include, Devise

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  include Devise::Authenticable
-  include Devise::Confirmable
-  include Devise::Recoverable
-  include Devise::Validatable
+  include Devise::Models::Authenticable
+  include Devise::Models::Confirmable
+  include Devise::Models::Recoverable
+  include Devise::Models::Validatable
 end

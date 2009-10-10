@@ -16,59 +16,57 @@ module Devise
         end
       end
 
-      protected
+      # The main accessor for the warden proxy instance
+      #
+      def warden
+        request.env['warden']
+      end
 
-        # The main accessor for the warden proxy instance
-        #
-        def warden
-          request.env['warden']
-        end
+      # Proxy to the authenticated? method on warden
+      #
+      def authenticated?(*args)
+        warden.authenticated?(*args)
+      end
+      alias_method :logged_in?, :authenticated?
 
-        # Proxy to the authenticated? method on warden
-        #
-        def authenticated?(*args)
-          warden.authenticated?(*args)
-        end
-        alias_method :logged_in?, :authenticated?
+      # Access the currently logged in user
+      #
+      def user(*args)
+        warden.user(*args)
+      end
+      alias_method :current_user, :user
 
-        # Access the currently logged in user
-        #
-        def user(*args)
-          warden.user(*args)
-        end
-        alias_method :current_user, :user
+      def user=(user)
+        warden.set_user user
+      end
+      alias_method :current_user=, :user=
 
-        def user=(user)
-          warden.set_user user
-        end
-        alias_method :current_user=, :user=
+      # Logout the current user
+      #
+      def logout(*args)
+        warden.raw_session.inspect  # Without this inspect here.  The session does not clear :|
+        warden.logout(*args)
+      end
 
-        # Logout the current user
-        #
-        def logout(*args)
-          warden.raw_session.inspect  # Without this inspect here.  The session does not clear :|
-          warden.logout(*args)
-        end
+      # Proxy to the authenticate method on warden
+      #
+      def authenticate(*args)
+        warden.authenticate(*args)
+      end
 
-        # Proxy to the authenticate method on warden
-        #
-        def authenticate(*args)
-          warden.authenticate(*args)
-        end
+      # Proxy to the authenticate method on warden
+      #
+      def authenticate!(*args)
+        warden.authenticate!(*args)
+      end
 
-        # Proxy to the authenticate method on warden
-        #
-        def authenticate!(*args)
-          warden.authenticate!(*args)
-        end
-
-        # Helper for use in before_filters where no authentication is required:
-        # Example:
-        #   before_filter :require_no_authentication, :only => :new
-        #
-        def require_no_authentication
-          redirect_to root_path if authenticated?
-        end
+      # Helper for use in before_filters where no authentication is required:
+      # Example:
+      #   before_filter :require_no_authentication, :only => :new
+      #
+      def require_no_authentication
+        redirect_to root_path if authenticated?
+      end
     end
   end
 end

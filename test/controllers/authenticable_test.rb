@@ -6,6 +6,10 @@ class MockController < ApplicationController
   def request
     self
   end
+
+  def path
+    ''
+  end
 end
 
 class ControllerAuthenticableTest < ActionController::TestCase
@@ -27,6 +31,11 @@ class ControllerAuthenticableTest < ActionController::TestCase
   test 'run authenticate? on warden' do
     @mock_warden.expects(:authenticated?).returns(true)
     @controller.authenticated?
+  end
+
+  test 'run authenticate? with scope on warden' do
+    @mock_warden.expects(:authenticated?).with(:my_scope).returns(true)
+    @controller.authenticated?(:my_scope)
   end
 
   test 'proxy logged_in? to authenticated' do

@@ -22,7 +22,7 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
 
     assert_response :redirect
     assert_redirected_to root_path
-    assert warden.authenticated?
+    assert warden.authenticated?(:user)
   end
 
   test 'not authenticated user should be able to visit forgot password page' do
@@ -30,7 +30,7 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
 
     assert_response :success
     assert_template 'passwords/new'
-    assert !warden.authenticated?
+    assert !warden.authenticated?(:user)
   end
 
   test 'not authenticated user should be able to request a forgot password' do
@@ -62,7 +62,7 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
 
     assert_response :redirect
     assert_redirected_to root_path
-    assert warden.authenticated?
+    assert warden.authenticated?(:user)
   end
 
   test 'not authenticated with invalid perishable token should not be able to change his password' do

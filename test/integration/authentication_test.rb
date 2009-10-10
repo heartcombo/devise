@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test/test_helper'
 
 class AuthenticationTest < ActionController::IntegrationTest
 
@@ -47,7 +47,7 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'not authenticated user should not be able to sign out' do
-    delete '/session'
+    delete 'users/session'
 
     assert_response :success
     assert_template 'sessions/new'
@@ -58,9 +58,9 @@ class AuthenticationTest < ActionController::IntegrationTest
     sign_in
     assert warden.authenticated?
 
-    delete '/session'
+    delete 'users/session'
     assert_response :redirect
-    assert_redirected_to new_session_path
+    assert_redirected_to new_users_session_path
     assert !warden.authenticated?
   end
 end

@@ -2,14 +2,6 @@
 
   Devise.map :users, :to => User, :for => [:authenticable, :recoverable, :confirmable], :as => :usuario
 
-* Customizable layout in engine controllers
-
-  Devise.layout do |resource|
-    # define layout to be called
-  end
-
-* Create an example app
-
 * Add remember me (with customizable time frame)
 
 * Vendor RailsWarden
@@ -34,3 +26,5 @@
 * SessionsController
 * PasswordsController
 * ConfirmationsController
+
+* Create an example app

@@ -16,7 +16,7 @@ class ActionController::IntegrationTest
 
   def sign_in(options={}, &block)
     create_user(options)
-    visit '/session/new'
+    visit 'users/session/new'
     fill_in 'email', :with => 'test@test.com'
     fill_in 'password', :with => '123456'
     yield if block_given?

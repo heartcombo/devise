@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test/test_helper'
 
 class Authenticable < ActiveRecord::Base
   devise
@@ -20,7 +20,7 @@ class Devisable < ActiveRecord::Base
   devise :all
 end
 
-class DeviseActiveRecordTest < ActiveSupport::TestCase
+class ActiveRecordTest < ActiveSupport::TestCase
 
   def include_authenticable_module?(mod)
     mod.included_modules.include?(Devise::Models::Authenticable)

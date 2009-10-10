@@ -1,4 +1,4 @@
-RAILS_ENV = ENV["RAILS_ENV"] = "test"
+ENV["RAILS_ENV"] = "test"
 require File.join(File.dirname(__FILE__), 'rails_app', 'config', 'environment')
 
 require 'test_help'

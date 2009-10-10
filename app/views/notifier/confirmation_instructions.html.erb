@@ -2,4 +2,4 @@ Welcome <%= @user.email %>!
 
 You can confirm your account through the link below:
 
-<%= link_to 'Confirm my account', confirmation_url(:perishable_token => @user.perishable_token) %>
+<%= link_to 'Confirm my account', confirmation_url(@user, :perishable_token => @user.perishable_token) %>

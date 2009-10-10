@@ -16,6 +16,6 @@ class SessionsController < ApplicationController
   # DELETE /session
   #
   def destroy
-    redirect_to :action => :new if logout
+    redirect_to new_session_path if logout
   end
 end

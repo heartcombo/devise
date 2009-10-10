@@ -36,7 +36,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
 
   test 'body should have link to confirm the account' do
     host = ActionMailer::Base.default_url_options[:host]
-    confirmation_url_regexp = %r{<a href=\"http://#{host}/password/edit\?perishable_token=#{@user.perishable_token}">}
+    confirmation_url_regexp = %r{<a href=\"http://#{host}/users/password/edit\?perishable_token=#{@user.perishable_token}">}
     assert_match confirmation_url_regexp, @mail.body
   end
 end

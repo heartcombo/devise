@@ -1,9 +1,9 @@
-require 'test_helper'
+require 'test/test_helper'
 
 class PasswordRecoveryTest < ActionController::IntegrationTest
 
   def visit_new_password_path
-    visit '/session/new'
+    visit 'users/session/new'
     click_link 'Forgot password?'
   end
 
@@ -18,7 +18,7 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
   test 'authenticated user should not be able to visit forgot password page' do
     sign_in
 
-    get new_password_path
+    get new_users_password_path
 
     assert_response :redirect
     assert_redirected_to root_path
@@ -55,16 +55,10 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
     assert_contain 'Email not found'
   end
 
-#  test 'request forgot password should send an email to the user' do
-#    ActionMailer::Base.deliveries = []
-#    request_forgot_password
-#    assert_equal 1, ActionMailer::Base.deliveries.size
-#  end
-
   test 'authenticated user should not be able to visit edit password page' do
     sign_in
 
-    get edit_password_path
+    get edit_users_password_path
 
     assert_response :redirect
     assert_redirected_to root_path
@@ -73,7 +67,7 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
 
   test 'not authenticated with invalid perishable token should not be able to change his password' do
     create_user
-    visit edit_password_path(:perishable_token => 'invalid_perishable')
+    visit edit_users_password_path(:perishable_token => 'invalid_perishable')
     assert_response :success
     assert_template 'passwords/edit'
 
@@ -90,7 +84,7 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
 
   test 'not authenticated with valid perisable token but invalid password should not be able to change his password' do
     create_user
-    visit edit_password_path(:perishable_token => @user.perishable_token)
+    visit edit_users_password_path(:perishable_token => @user.perishable_token)
 
     fill_in 'Password', :with => '987654321'
     fill_in 'Password confirmation', :with => 'other_password'
@@ -105,7 +99,7 @@ class PasswordRecoveryTest < ActionController::IntegrationTest
 
   test 'not authenticated with valid data should be able to change his password' do
     create_user
-    visit edit_password_path(:perishable_token => @user.perishable_token)
+    visit edit_users_password_path(:perishable_token => @user.perishable_token)
 
     fill_in 'Password', :with => '987654321'
     fill_in 'Password confirmation', :with => '987654321'

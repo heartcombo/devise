@@ -60,7 +60,7 @@ class AuthenticationTest < ActionController::IntegrationTest
 
     delete 'users/session'
     assert_response :redirect
-    assert_redirected_to new_users_session_path
+    assert_redirected_to new_user_session_path
     assert !warden.authenticated?
   end
 end

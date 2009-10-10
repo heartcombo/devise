@@ -2,17 +2,16 @@ module Devise
   module Controllers
     module Authenticable
 
-      def self.included(base)
-        base.class_eval do
-
+#      def self.included(base)
+#        base.class_eval do
 #          helper_method :session_path, :session_url,
 #                        :new_session_path, :new_session_url,
 #                        :password_path, :password_url,
 #                        :new_password_path, :new_password_url,
 #                        :confirmation_path, :confirmation_url,
 #                        :new_confirmation_path, :new_confirmation_url
-        end
-      end
+#        end
+#      end
 
       protected
 

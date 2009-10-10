@@ -2,13 +2,17 @@ module Devise
   module Controllers
     module UrlHelpers
 
-      def resource_name(resource=nil)
-        @resource_name ||= Devise.find_mapping(resource ? resource.class.name : request.path.split('/').second)
-      end
-
-      def resource_class
-        @resource_class ||= resource_name.singularize.camelize.constantize
-      end
+#      def self.included(base)
+#        base.class_eval do
+#          helper_method :session_path, :session_url,
+#                        :new_session_path, :new_session_url,
+#                        :password_path, :password_url,
+#                        :new_password_path, :new_password_url,
+#                        :edit_password_path, :edit_password_url,
+#                        :confirmation_path, :confirmation_url,
+#                        :new_confirmation_path, :new_confirmation_url
+#        end
+#      end
 
       # TODO: refactor url helpers generation
       [:session, :password, :confirmation].each do |module_name|

@@ -7,20 +7,20 @@ class RoutesTest < ActionController::TestCase
     @request.path = '/users/session'
     prepend_path = "#{prepend_path}_" if prepend_path
     assert_equal @controller.send(:"#{prepend_path}#{name}_path"),
-                 send(:"#{prepend_path}users_#{name}_path")
+                 send(:"#{prepend_path}user_#{name}_path")
     assert_equal @controller.send(:"#{prepend_path}#{name}_url"),
-                 send(:"#{prepend_path}users_#{name}_url")
+                 send(:"#{prepend_path}user_#{name}_url")
 
     assert_equal @controller.send(:"#{prepend_path}#{name}_path", :param => 123),
-                 send(:"#{prepend_path}users_#{name}_path", :param => 123)
+                 send(:"#{prepend_path}user_#{name}_path", :param => 123)
     assert_equal @controller.send(:"#{prepend_path}#{name}_url", :param => 123),
-                 send(:"#{prepend_path}users_#{name}_url", :param => 123)
+                 send(:"#{prepend_path}user_#{name}_url", :param => 123)
 
-#    @request.path = nil
-#    assert_equal @controller.send(:"#{prepend_path}#{name}_path", User.new),
-#                 send(:"#{prepend_path}users_#{name}_path")
-#    assert_equal @controller.send(:"#{prepend_path}#{name}_url", User.new),
-#                 send(:"#{prepend_path}users_#{name}_url")
+    @request.path = nil
+    assert_equal @controller.send(:"#{prepend_path}#{name}_path", User.new),
+                 send(:"#{prepend_path}user_#{name}_path")
+    assert_equal @controller.send(:"#{prepend_path}#{name}_url", User.new),
+                 send(:"#{prepend_path}user_#{name}_url")
   end
 
 

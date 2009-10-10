@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
-  before_filter :authenticate!, :except => :new
-  before_filter :require_no_authentication, :only => :new
+  before_filter :authenticate!, :only => :destroy
+  before_filter :require_no_authentication, :except => :destroy
 
   # GET /session/new
   #
@@ -10,12 +10,19 @@ class SessionsController < ApplicationController
   # POST /session
   #
   def create
-    redirect_to root_path if authenticated?
+    if authenticate
+      flash[:notice] = I18n.t(:signed_in, :scope => [:devise, :sessions], :default => 'Signed in successfully.')
+      redirect_to root_path
+    else
+      render :new
+    end
   end
 
   # DELETE /session
   #
   def destroy
-    redirect_to new_session_path if logout
+    logout
+    flash[:notice] = I18n.t(:signed_out, :scope => [:devise, :sessions], :default => 'Signed out successfully.')
+    redirect_to new_session_path
   end
 end

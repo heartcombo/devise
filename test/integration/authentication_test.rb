@@ -42,6 +42,7 @@ class AuthenticationTest < ActionController::IntegrationTest
 
     assert_response :success
     assert_template 'home/index'
+    assert_contain 'Signed in successfully'
     assert_not_contain 'Sign In'
     assert warden.authenticated?
   end

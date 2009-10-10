@@ -2,6 +2,8 @@ en:
   devise:
     sessions:
       authentication_failed: 'Invalid email or password.'
+      signed_in: 'Signed in successfully.'
+      signed_out: 'Signed out successfully.'
       new:
         title: 'Sign in'
         submit: 'Sign in'

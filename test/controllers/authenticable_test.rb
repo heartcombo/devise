@@ -8,7 +8,7 @@ class MockController < ApplicationController
   end
 end
 
-class AuthenticableTest < ActionController::TestCase
+class ControllerAuthenticableTest < ActionController::TestCase
 
   def setup
     @controller = MockController.new

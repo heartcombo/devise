@@ -21,6 +21,12 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :perishable_token
     t.datetime :confirmed_at
   end
+
+  create_table :accounts do |t|
+    t.string :email,              :null => false
+    t.string :encrypted_password, :null => false
+    t.string :password_salt,      :null => false
+  end
 end
 
 Webrat.configure do |config|

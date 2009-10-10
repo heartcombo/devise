@@ -1,8 +1,7 @@
 <h2><%= t '.title', :default => 'Forgot password', :scope => :devise %></h2>
 
-<%= error_messages_for :password %>
-
-<% form_for :password, :url => password_path do |f| %>
+<% form_for resource_name, :url => password_path do |f| %>
+  <%= f.error_messages %>
   <p><%= f.label :email %></p>
   <p><%= f.text_field :email %></p>
   <p class="submit"><%= f.submit t('.submit', :default => 'Send me reset password instructions', :scope => :devise) %></p>

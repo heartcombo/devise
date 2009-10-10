@@ -1,8 +1,7 @@
 <h2><%= t '.title', :default => 'Change your password', :scope => :devise %></h2>
 
-<%= error_messages_for :password %>
-
-<% form_for :password, :url => password_path, :html => { :method => :put } do |f| %>
+<% form_for resource_name, :url => password_path, :html => { :method => :put } do |f| %>
+  <%= f.error_messages %>
   <%= f.hidden_field :perishable_token %>
   <p><%= f.label :password %></p>
   <p><%= f.password_field :password %></p>

@@ -81,7 +81,7 @@ module Devise
         # Hook default authenticate to test whether the account is confirmed or not
         # Returns the authenticated_user if it's confirmed, otherwise returns nil
         #
-        def authenticate(email, password)
+        def authenticate(attributes={})
           confirmable = super
           confirmable if confirmable.confirmed? unless confirmable.nil?
         end
@@ -91,8 +91,8 @@ module Devise
         # with an email not found error.
         # Options must contain the user email
         #
-        def send_confirmation_instructions(options={})
-          confirmable = find_or_initialize_with_error_by_email(options[:email])
+        def send_confirmation_instructions(attributes={})
+          confirmable = find_or_initialize_with_error_by_email(attributes[:email])
           confirmable.reset_confirmation! unless confirmable.new_record?
           confirmable
         end
@@ -102,8 +102,8 @@ module Devise
         # If the user is already confirmed, create an error for the user
         # Options must have the perishable_token
         #
-        def confirm!(options={})
-          confirmable = find_or_initialize_with_error_by_perishable_token(options[:perishable_token])
+        def confirm!(attributes={})
+          confirmable = find_or_initialize_with_error_by_perishable_token(attributes[:perishable_token])
           confirmable.confirm! unless confirmable.new_record?
           confirmable
         end

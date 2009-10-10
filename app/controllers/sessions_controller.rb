@@ -10,8 +10,9 @@ class SessionsController < ApplicationController
   # POST /session
   #
   def create
-    if user = resource_class.authenticate(params[:session][:email], params[:session][:password]) #authenticate
-      self.current_user = user
+    self.resource = resource_class.authenticate(params[resource_name])
+    if resource #authenticate
+      self.current_user = resource
       flash[:success] = I18n.t(:signed_in, :scope => [:devise, :sessions], :default => 'Signed in successfully.')
       redirect_to root_path
     else

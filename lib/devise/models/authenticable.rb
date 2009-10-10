@@ -82,11 +82,12 @@ module Devise
       module ClassMethods
 
         # Authenticate a user based on email and password. Returns the
-        # authenticated user if it's valid or nil
+        # authenticated user if it's valid or nil.
+        # Attributes are :email and :password
         #
-        def authenticate(email, password)
-          authenticable = self.find_by_email(email)
-          authenticable if authenticable.valid_password?(password) unless authenticable.nil?
+        def authenticate(attributes={})
+          authenticable = self.find_by_email(attributes[:email])
+          authenticable if authenticable.valid_password?(attributes[:password]) unless authenticable.nil?
         end
       end
     end

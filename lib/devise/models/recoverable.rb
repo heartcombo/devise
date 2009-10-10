@@ -48,10 +48,10 @@ module Devise
         # Attempt to find a user by it's email. If a record is found, send new
         # password instructions to it. If not user is found, returns a new user
         # with an email not found error.
-        # Options must contain the user email
+        # Attributes must contain the user email
         #
-        def send_reset_password_instructions(options={})
-          recoverable = find_or_initialize_with_error_by_email(options[:email])
+        def send_reset_password_instructions(attributes={})
+          recoverable = find_or_initialize_with_error_by_email(attributes[:email])
           recoverable.send_reset_password_instructions unless recoverable.new_record?
           recoverable
         end
@@ -60,11 +60,11 @@ module Devise
         # If a user is found, reset it's password and automatically try saving the
         # record. If not user is found, returns a new user containing an error
         # in perishable_token attribute.
-        # Options must contain perishable_token, password and confirmation
+        # Attributes must contain perishable_token, password and confirmation
         #
-        def reset_password!(options={})
-          recoverable = find_or_initialize_with_error_by_perishable_token(options[:perishable_token])
-          recoverable.reset_password!(options[:password], options[:password_confirmation]) unless recoverable.new_record?
+        def reset_password!(attributes={})
+          recoverable = find_or_initialize_with_error_by_perishable_token(attributes[:perishable_token])
+          recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) unless recoverable.new_record?
           recoverable
         end
       end

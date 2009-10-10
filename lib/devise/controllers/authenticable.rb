@@ -48,16 +48,10 @@ module Devise
         warden.logout(*args)
       end
 
-      # Proxy to the authenticate method on warden
-      #
-      def authenticate(*args)
-        warden.authenticate(*args)
-      end
-
-      # Proxy to the authenticate method on warden
+      # Verify authenticated user and redirect to sign in if no authentication is found
       #
       def authenticate!(*args)
-        warden.authenticate!(*args)
+        redirect_to new_session_path unless authenticated?
       end
 
       # Helper for use in before_filters where no authentication is required:

@@ -50,8 +50,8 @@ class AuthenticationTest < ActionController::IntegrationTest
   test 'not authenticated user should not be able to sign out' do
     delete 'users/session'
 
-    assert_response :success
-    assert_template 'sessions/new'
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
     assert !warden.authenticated?
   end
 

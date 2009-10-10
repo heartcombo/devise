@@ -10,10 +10,12 @@ class SessionsController < ApplicationController
   # POST /session
   #
   def create
-    if authenticate
-      flash[:notice] = I18n.t(:signed_in, :scope => [:devise, :sessions], :default => 'Signed in successfully.')
+    if user = resource_class.authenticate(params[:session][:email], params[:session][:password]) #authenticate
+      self.current_user = user
+      flash[:success] = I18n.t(:signed_in, :scope => [:devise, :sessions], :default => 'Signed in successfully.')
       redirect_to root_path
     else
+      flash.now[:failure] = I18n.t(:authentication_failed, :scope => [:devise, :sessions], :default => 'Invalid email or password.')
       render :new
     end
   end
@@ -22,7 +24,7 @@ class SessionsController < ApplicationController
   #
   def destroy
     logout
-    flash[:notice] = I18n.t(:signed_out, :scope => [:devise, :sessions], :default => 'Signed out successfully.')
+    flash[:success] = I18n.t(:signed_out, :scope => [:devise, :sessions], :default => 'Signed out successfully.')
     redirect_to new_session_path
   end
 end

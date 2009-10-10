@@ -24,16 +24,6 @@ class ControllerAuthenticableTest < ActionController::TestCase
     assert_equal @controller.warden, @controller.env['warden']
   end
 
-  test 'run authenticate on warden' do
-    @mock_warden.expects(:authenticate).returns(true)
-    @controller.authenticate
-  end
-
-  test 'run authenticate! on warden' do
-    @mock_warden.expects(:authenticate!).returns(true)
-    @controller.authenticate!
-  end
-
   test 'run authenticate? on warden' do
     @mock_warden.expects(:authenticated?).returns(true)
     @controller.authenticated?

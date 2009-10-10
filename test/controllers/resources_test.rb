@@ -9,8 +9,8 @@ class ResourcesTest < ActionController::TestCase
   end
 
   test 'get translated resource name from request path' do
-    @request.path = '/conta/session'
-    assert_equal 'account', @controller.resource_name
+    @request.path = '/admin_area/session'
+    assert_equal 'admin', @controller.resource_name
   end
 
   test 'get resource class from request path' do
@@ -19,16 +19,16 @@ class ResourcesTest < ActionController::TestCase
   end
 
   test 'get resource ivar from request path' do
-    @request.path = '/conta/session'
-    @controller.instance_variable_set(:@account, account = Account.new)
-    assert_equal account, @controller.resource
-    assert_equal account, @controller.instance_variable_get(:@resource)
+    @request.path = '/admin_area/session'
+    @controller.instance_variable_set(:@admin, admin = Admin.new)
+    assert_equal admin, @controller.resource
+    assert_equal admin, @controller.instance_variable_get(:@resource)
   end
 
   test 'set resource ivar from request path' do
-    @request.path = '/conta/session'
-    @controller.resource = account = @controller.resource_class.new
-    assert_equal account, @controller.resource
-    assert_equal account, @controller.instance_variable_get(:@resource)
+    @request.path = '/admin_area/session'
+    @controller.resource = admin = @controller.resource_class.new
+    assert_equal admin, @controller.resource
+    assert_equal admin, @controller.instance_variable_get(:@resource)
   end
 end

@@ -42,7 +42,6 @@ module Devise
     options.assert_valid_keys(:to, :for, :as)
     mapping = mapping.to_s.singularize.to_sym
     mappings[mapping] = Mapping.new(options.merge(:resource => mapping))
-    mappings.default = mapping if mappings.default.nil?
   end
 
   def self.find_mapping(map)
@@ -52,8 +51,6 @@ module Devise
       mappings[map_sym]
     elsif mapping = mappings.detect{|m, options| options[:as] == map}.try(:first)
       mappings[mapping]
-    else
-      mappings[mappings.default]
     end
   end
 

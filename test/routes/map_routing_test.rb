@@ -14,15 +14,15 @@ class MapRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'passwords', :action => 'new'}, 'users/password/new')
   end
 
-  test 'map devise account session with :as option' do
-    assert_recognizes({:controller => 'sessions', :action => 'new'}, 'conta/session/new')
+  test 'map devise admin session with :as option' do
+    assert_recognizes({:controller => 'sessions', :action => 'new'}, 'admin_area/session/new')
   end
 
-  test 'map devise account confirmation with :as option' do
-    assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'conta/confirmation/new')
+  test 'map devise admin confirmation with :as option' do
+    assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'admin_area/confirmation/new')
   end
 
-  test 'map devise account password with :as option' do
-    assert_recognizes({:controller => 'passwords', :action => 'new'}, 'conta/password/new')
+  test 'map devise admin password with :as option' do
+    assert_recognizes({:controller => 'passwords', :action => 'new'}, 'admin_area/password/new')
   end
 end

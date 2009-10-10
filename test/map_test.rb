@@ -35,15 +35,6 @@ class MapTest < ActiveSupport::TestCase
     end
   end
 
-  test 'set the first mapping as default' do
-    Devise.mappings.default = nil
-    assert_nil Devise.mappings.default
-    Devise.map :participants, :for => [:authenticable]
-    assert_equal :participant, Devise.mappings.default
-    Devise.map :organizers, :for => [:authenticable]
-    assert_equal :participant, Devise.mappings.default
-  end
-
   test 'singularize map' do
     Devise.map :participants, :for => [:authenticable]
     assert_not_nil Devise.mappings[:participant]
@@ -67,12 +58,6 @@ class MapTest < ActiveSupport::TestCase
   test 'find right mapping to Participant for routing with :as option' do
     Devise.map :participants, :for => [:authenticable], :as => 'usuarios'
     assert_equal :participant, Devise.find_mapping('usuarios').resource
-  end
-
-  test 'find mapping should return default map in no one is found or empty is given' do
-    Devise.map :participants, :for => [:authenticable]
-    assert_equal :participant, Devise.find_mapping('test_drive').resource
-    assert_equal :participant, Devise.find_mapping(nil).resource
   end
 
   test 'find mapping receiving a path should split it' do

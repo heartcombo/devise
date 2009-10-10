@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test/test_helper'
 
 class ConfirmationRoutingTest < ActionController::TestCase
 
@@ -20,15 +20,15 @@ class ConfirmationRoutingTest < ActionController::TestCase
     end
   end
 
-  test 'new account session route' do
-    assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'conta/confirmation/new')
+  test 'new admin session route' do
+    assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'admin_area/confirmation/new')
   end
 
-  test 'create account confirmation route' do
-    assert_recognizes({:controller => 'confirmations', :action => 'create'}, {:path => 'conta/confirmation', :method => :post})
+  test 'create admin confirmation route' do
+    assert_recognizes({:controller => 'confirmations', :action => 'create'}, {:path => 'admin_area/confirmation', :method => :post})
   end
 
-  test 'show account confirmation route' do
-    assert_recognizes({:controller => 'confirmations', :action => 'show'}, 'conta/confirmation')
+  test 'show admin confirmation route' do
+    assert_recognizes({:controller => 'confirmations', :action => 'show'}, 'admin_area/confirmation')
   end
 end

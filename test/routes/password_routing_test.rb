@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test/test_helper'
 
 class PasswordRoutingTest < ActionController::TestCase
 
@@ -24,19 +24,19 @@ class PasswordRoutingTest < ActionController::TestCase
     end
   end
 
-  test 'new account password route' do
-    assert_recognizes({:controller => 'passwords', :action => 'new'}, 'conta/password/new')
+  test 'new admin password route' do
+    assert_recognizes({:controller => 'passwords', :action => 'new'}, 'admin_area/password/new')
   end
 
-  test 'create account password route' do
-    assert_recognizes({:controller => 'passwords', :action => 'create'}, {:path => 'conta/password', :method => :post})
+  test 'create admin password route' do
+    assert_recognizes({:controller => 'passwords', :action => 'create'}, {:path => 'admin_area/password', :method => :post})
   end
 
-  test 'edit account password route' do
-    assert_recognizes({:controller => 'passwords', :action => 'edit'}, 'conta/password/edit')
+  test 'edit admin password route' do
+    assert_recognizes({:controller => 'passwords', :action => 'edit'}, 'admin_area/password/edit')
   end
 
-  test 'update account password route' do
-    assert_recognizes({:controller => 'passwords', :action => 'update'}, {:path => 'conta/password', :method => :put})
+  test 'update admin password route' do
+    assert_recognizes({:controller => 'passwords', :action => 'update'}, {:path => 'admin_area/password', :method => :put})
   end
 end

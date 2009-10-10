@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime :confirmed_at
   end
 
-  create_table :accounts do |t|
+  create_table :admins do |t|
     t.string :email,              :null => false
     t.string :encrypted_password, :null => false
     t.string :password_salt,      :null => false

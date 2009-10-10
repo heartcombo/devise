@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test/test_helper'
 require 'digest/sha1'
 
 class AuthenticableTest < ActiveSupport::TestCase

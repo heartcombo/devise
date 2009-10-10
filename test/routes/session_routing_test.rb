@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test/test_helper'
 
 class SessionRoutingTest < ActionController::TestCase
 
@@ -20,15 +20,15 @@ class SessionRoutingTest < ActionController::TestCase
     end
   end
 
-  test 'new account session route' do
-    assert_recognizes({:controller => 'sessions', :action => 'new'}, 'conta/session/new')
+  test 'new admin session route' do
+    assert_recognizes({:controller => 'sessions', :action => 'new'}, 'admin_area/session/new')
   end
 
-  test 'create account session route' do
-    assert_recognizes({:controller => 'sessions', :action => 'create'}, {:path => 'conta/session', :method => :post})
+  test 'create admin session route' do
+    assert_recognizes({:controller => 'sessions', :action => 'create'}, {:path => 'admin_area/session', :method => :post})
   end
 
-  test 'destroy account session route' do
-    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => 'conta/session', :method => :delete})
+  test 'destroy admin session route' do
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => 'admin_area/session', :method => :delete})
   end
 end

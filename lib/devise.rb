@@ -5,13 +5,6 @@ rescue
   require 'warden'
 end
 
-begin
-  require 'rails_warden'
-rescue
-  gem 'hassox-rails_warden'
-  require 'rails_warden'
-end
-
 require 'devise/initializers/warden'
 
 module Devise
@@ -25,6 +18,8 @@ module Devise
       @as = options[:as] || resource.to_s.pluralize
     end
 
+    # Reload mapped class each time when cache_classes is false
+    #
     def to
       return @to if @to
       to = resource.to_s.classify.constantize
@@ -32,6 +27,8 @@ module Devise
       to
     end
 
+    # Acts as hash
+    #
     def [](key)
       send(key)
     end

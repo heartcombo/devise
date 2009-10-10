@@ -18,7 +18,9 @@ class MapTest < ActiveSupport::TestCase
     Devise.map :participants, :to => Participant, :for => [:authenticable]
     mappings = Devise.mappings
     assert_not mappings.empty?
-    assert_equal({:to => Participant, :for => [:authenticable], :as => 'participants'}, mappings[:participant])
+    assert_equal Participant, mappings[:participant].to
+    assert_equal [:authenticable], mappings[:participant].for
+    assert_equal 'participants', mappings[:participant].as
   end
 
   test 'require :for option' do
@@ -59,18 +61,25 @@ class MapTest < ActiveSupport::TestCase
 
   test 'find right mapping to use for routing' do
     Devise.map :participants, :for => [:authenticable]
-    assert_equal 'participant', Devise.find_mapping('participants')
+    assert_equal :participant, Devise.find_mapping('participants').resource
   end
 
   test 'find right mapping to Participant for routing with :as option' do
     Devise.map :participants, :for => [:authenticable], :as => 'usuarios'
-    assert_equal 'participant', Devise.find_mapping('usuarios')
+    assert_equal :participant, Devise.find_mapping('usuarios').resource
   end
 
   test 'find mapping should return default map in no one is found or empty is given' do
     Devise.map :participants, :for => [:authenticable]
-    assert_equal 'participant', Devise.find_mapping('test_drive')
-    assert_equal 'participant', Devise.find_mapping(nil)
+    assert_equal :participant, Devise.find_mapping('test_drive').resource
+    assert_equal :participant, Devise.find_mapping(nil).resource
+  end
+
+  test 'find mapping receiving a path should split it' do
+    Devise.map :participants, :for => [:authenticable]
+    Devise.map :organizer, :for => [:authenticable]
+    assert_equal :organizer, Devise.find_mapping('organizer').resource
+    assert_equal :organizer, Devise.find_mapping('/organizers/new').resource
   end
 
   test 'find resource name based on mapping' do

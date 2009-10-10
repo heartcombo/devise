@@ -29,7 +29,7 @@ Warden::Strategies.add(:devise) do
   # warden the authentication was failed.
   #
   def authenticate!
-    if user = User.authenticate(params[:session][:email], params[:session][:password])
+    if user = Devise.resource_class(request.path).authenticate(params[:session][:email], params[:session][:password])
       success!(user)
     else
       fail!(I18n.t(:authentication_failed, :scope => [:devise, :sessions], :default => 'Invalid email or password'))

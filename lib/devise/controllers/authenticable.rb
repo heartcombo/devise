@@ -6,13 +6,7 @@ module Devise
 
       def self.included(base)
         base.class_eval do
-          helper_method :warden, :user, :logged_in?
-#          helper_method :session_path, :session_url,
-#                        :new_session_path, :new_session_url,
-#                        :password_path, :password_url,
-#                        :new_password_path, :new_password_url,
-#                        :confirmation_path, :confirmation_url,
-#                        :new_confirmation_path, :new_confirmation_url
+          helper_method :warden, :current_user, :signed_in?
         end
       end
 
@@ -27,21 +21,19 @@ module Devise
       def authenticated?(scope=:default)
         warden.authenticated?(scope.to_sym)
       end
-      alias_method :logged_in?, :authenticated?
+      alias_method :signed_in?, :authenticated?
 
-      # Access the currently logged in user
+      # Access the currently logged in user based on the scope
       #
-      def user
-        warden.user(resource_name)
+      def current_user(scope=resource_name)
+        warden.user(scope)
       end
-      alias_method :current_user, :user
 
-      def user=(user)
+      def current_user=(user)
         warden.set_user(user, :scope => resource_name)
       end
-      alias_method :current_user=, :user=
 
-      # Logout the current user
+      # Logout the current user based on scope
       #
       def logout
         warden.raw_session.inspect  # Without this inspect here.  The session does not clear :|

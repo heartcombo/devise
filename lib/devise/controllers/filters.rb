@@ -32,7 +32,9 @@ module Devise
         redirect_to new_session_path(scope) unless authenticated?(scope)
       end
 
-      # Helper for use in before_filters where no authentication is required:
+      # Helper for use in before_filters where no authentication is required.
+      # Please note that all scopes will be tested within this filter, and if
+      # one of then is authenticated the filter will redirect.
       # Example:
       #   before_filter :require_no_authentication, :only => :new
       #

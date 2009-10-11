@@ -2,12 +2,6 @@ require 'test/test_helper'
 
 class UsersAuthenticationTest < ActionController::IntegrationTest
 
-  test 'home should be accessible without signed in users' do
-    visit '/'
-    assert_response :success
-    assert_template 'home/index'
-  end
-
   test 'not signed in as user should not be able to access users actions' do
     get users_path
 

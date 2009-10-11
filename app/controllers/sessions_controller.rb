@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   before_filter :authenticate!, :only => :destroy
-  before_filter :require_no_authentication, :except => :destroy
+  #before_filter :require_no_authentication, :except => :destroy
 
   # GET /session/new
   #

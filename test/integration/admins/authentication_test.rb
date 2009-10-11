@@ -2,12 +2,6 @@ require 'test/test_helper'
 
 class AdminsAuthenticationTest < ActionController::IntegrationTest
 
-  test 'home should be accessible without signed in admins' do
-    visit '/'
-    assert_response :success
-    assert_template 'home/index'
-  end
-
   test 'not signed in as admin should not be able to access admins actions' do
     get admins_path
 

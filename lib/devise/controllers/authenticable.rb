@@ -24,7 +24,7 @@ module Devise
 
       # Proxy to the authenticated? method on warden
       #
-      def authenticated?(scope=resource_name)
+      def authenticated?(scope=:default)
         warden.authenticated?(scope.to_sym)
       end
       alias_method :logged_in?, :authenticated?

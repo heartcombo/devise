@@ -14,18 +14,14 @@ ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 ActiveRecord::Schema.define(:version => 1) do
-  create_table :users do |t|
-    t.string :email,              :null => false
-    t.string :encrypted_password, :null => false
-    t.string :password_salt,      :null => false
-    t.string :perishable_token
-    t.datetime :confirmed_at
-  end
-
-  create_table :admins do |t|
-    t.string :email,              :null => false
-    t.string :encrypted_password, :null => false
-    t.string :password_salt,      :null => false
+  [:users, :admins].each do |table|
+    create_table table do |t|
+      t.string :email,              :null => false
+      t.string :encrypted_password, :null => false
+      t.string :password_salt,      :null => false
+      t.string :perishable_token
+      t.datetime :confirmed_at
+    end
   end
 end
 

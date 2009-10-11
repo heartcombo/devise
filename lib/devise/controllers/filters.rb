@@ -25,9 +25,10 @@ module Devise
       end
 
       # Verify authenticated user and redirect to sign in if no authentication
-      # is found
+      # is found. By default resource_name is verified, but you can pass in any
+      # scope to verify whether there is a user authenticated within that scope.
       #
-      def authenticate!(scope)
+      def authenticate!(scope=resource_name)
         redirect_to new_session_path(scope) unless authenticated?(scope)
       end
 

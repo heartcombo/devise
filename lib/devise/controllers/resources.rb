@@ -2,12 +2,6 @@ module Devise
   module Controllers
     module Resources
 
-#      def self.included(base)
-#        base.class_eval do
-#          helper_method :resource, :resource_name, :resource_class
-#        end
-#      end
-
       def resource
         @resource ||= instance_variable_get(:"@#{resource_name}")
       end
@@ -27,7 +21,7 @@ module Devise
       private
 
         def resource_name_or_request_path(object=nil)
-          object ? (object.is_a?(::ActiveRecord::Base) ? object.class.name : object) : request.path
+          object ? (object.is_a?(::ActiveRecord::Base) ? object.class.name.downcase : object) : request.path
         end
     end
   end

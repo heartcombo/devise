@@ -13,6 +13,16 @@ class ResourcesTest < ActionController::TestCase
     assert_equal 'admin', @controller.resource_name
   end
 
+  test 'get resource name from an active_record object' do
+    user = Admin.new
+    assert_equal 'admin', @controller.resource_name(user)
+  end
+
+  test 'get resource name from a symbol or string' do
+    assert_equal 'admin', @controller.resource_name(:admin)
+    assert_equal 'admin', @controller.resource_name('admin')
+  end
+
   test 'get resource class from request path' do
     @request.path = '/users/session'
     assert_equal User, @controller.resource_class

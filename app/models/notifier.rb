@@ -23,7 +23,7 @@ class Notifier < ::ActionMailer::Base
       recipients   record.email
       sent_on      Time.now
       content_type 'text/html'
-      body         record.class.name.downcase.to_sym => record
+      body         record.class.name.downcase.to_sym => record, :resource => record
     end
 
     def translate(key, options={})

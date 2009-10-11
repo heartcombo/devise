@@ -34,13 +34,13 @@ class ControllerAuthenticableTest < ActionController::TestCase
   end
 
   test 'run authenticate? with scope on warden' do
-    @mock_warden.expects(:authenticated?).with(:my_scope).returns(true)
+    @mock_warden.expects(:authenticated?).with(:my_scope)
     @controller.authenticated?(:my_scope)
   end
 
   test 'proxy logged_in? to authenticated' do
-    @mock_warden.expects(:authenticated?).returns(true)
-    @controller.logged_in?
+    @mock_warden.expects(:authenticated?).with(:my_scope)
+    @controller.logged_in?(:my_scope)
   end
 
   test 'run user on warden' do

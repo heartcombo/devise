@@ -27,7 +27,7 @@ module Devise
       private
 
         def resource_name_or_request_path(object=nil)
-          object ? object.class.name : request.path
+          object ? (object.is_a?(::ActiveRecord::Base) ? object.class.name : object) : request.path
         end
     end
   end

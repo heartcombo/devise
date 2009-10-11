@@ -6,6 +6,7 @@ module Devise
         include Devise::Controllers::Authenticable
         include Devise::Controllers::Resources
         include Devise::Controllers::UrlHelpers
+        include Devise::Controllers::Filters
       end
     end
   end

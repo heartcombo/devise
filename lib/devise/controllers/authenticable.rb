@@ -25,7 +25,7 @@ module Devise
       # Proxy to the authenticated? method on warden
       #
       def authenticated?(scope=resource_name)
-        warden.authenticated?(scope)
+        warden.authenticated?(scope.to_sym)
       end
       alias_method :logged_in?, :authenticated?
 
@@ -46,20 +46,6 @@ module Devise
       def logout
         warden.raw_session.inspect  # Without this inspect here.  The session does not clear :|
         warden.logout(resource_name)
-      end
-
-      # Verify authenticated user and redirect to sign in if no authentication is found
-      #
-      def authenticate!
-        redirect_to new_session_path unless authenticated?
-      end
-
-      # Helper for use in before_filters where no authentication is required:
-      # Example:
-      #   before_filter :require_no_authentication, :only => :new
-      #
-      def require_no_authentication
-        redirect_to root_path if authenticated?
       end
     end
   end

@@ -63,6 +63,12 @@ module Devise
   end
 end
 
-ActiveRecord::Base.send :extend, Devise::ActiveRecord
-ActionController::Base.send :include, Devise::ActionController
-ActionView::Base.send :include, Devise::ActionView
+# Ensure to include Devise modules only after Rails initialization.
+# This way application should have already defined Devise mappings and we are
+# able to create default filters.
+#
+Rails.configuration.after_initialize do
+  ActiveRecord::Base.send :extend, Devise::ActiveRecord
+  ActionController::Base.send :include, Devise::ActionController
+  ActionView::Base.send :include, Devise::ActionView
+end

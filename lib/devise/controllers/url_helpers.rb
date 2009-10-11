@@ -22,7 +22,9 @@ module Devise
           actions.each do |action|
             class_eval <<-URL_HELPERS
               def #{action}#{module_name}_#{path_or_url}(*args)
-                resource = args.first.is_a?(::ActiveRecord::Base) ? args.shift : nil
+                resource = case args.first
+                  when ::ActiveRecord::Base, Symbol, String then args.shift
+                end
                 send("#{action}\#{resource_name(resource)}_#{module_name}_#{path_or_url}", *args)
               end
             URL_HELPERS

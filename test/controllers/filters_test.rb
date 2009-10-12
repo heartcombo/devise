@@ -1,111 +1,81 @@
 require 'test/test_helper'
+require 'ostruct'
 
-class FiltersController < ApplicationController
-  before_filter :user_authenticate!, :only => :user_action
-  before_filter :admin_authenticate!, :only => :admin_action
-  before_filter :require_no_authentication, :only => :not_authenticated_action
+class MockController < ApplicationController
+  attr_accessor :env
 
-  def public_action
-    render :text => 'public'
+  def request
+    self
   end
 
-  def not_authenticated_action
-    render :text => 'not_authenticated'
-  end
-
-  def user_action
-    render :text => 'user'
-  end
-
-  def admin_action
-    render :text => 'admin'
+  def path
+    ''
   end
 end
 
-class FiltersTest < ActionController::TestCase
-  tests FiltersController
+class ControllerAuthenticableTest < ActionController::TestCase
 
-#  test 'generate user_authenticate! filter' do
-#    assert @controller.respond_to?(:user_authenticate!)
-#  end
+  def setup
+    @controller = MockController.new
+    @mock_warden = OpenStruct.new
+    @controller.env = { 'warden' => @mock_warden }
+  end
 
-#  test 'proxy user_authenticate! to authenticate with user scope' do
-#    @controller.expects(:authenticate!).with('user')
-#    @controller.user_authenticate!
-#  end
+  test 'setup warden' do
+    assert_not_nil @controller.warden
+  end
 
-#  test 'generate admin_authenticate! filter' do
-#    assert @controller.respond_to?(:admin_authenticate!)
-#  end
+  test 'provide access to warden instance' do
+    assert_equal @controller.warden, @controller.env['warden']
+  end
 
-#  test 'proxy admin_authenticate! to authenticate with user scope' do
-#    @controller.expects(:authenticate!).with('admin')
-#    @controller.admin_authenticate!
-#  end
+  test 'run authenticate? with scope on warden' do
+    @mock_warden.expects(:authenticated?).with(:my_scope)
+    @controller.authenticated?(:my_scope)
+  end
 
-#  test 'not authenticated user should be able to access public action' do
-#    get :public_action
+  test 'proxy signed_in? to authenticated' do
+    @mock_warden.expects(:authenticated?).with(:my_scope)
+    @controller.signed_in?(:my_scope)
+  end
 
-#    assert_response :success
-#    assert_equal 'public', @response.body
-#  end
+  test 'run user with scope on warden' do
+    @mock_warden.expects(:user).with(:admin).returns(true)
+    @controller.current_admin
 
-#  test 'not authenticated as user should not be able to access user action' do
-#    @controller.expects(:authenticated?).with('user').returns(false)
+    @mock_warden.expects(:user).with(:user).returns(true)
+    @controller.current_user
+  end
 
-#    get :user_action
-#    assert_response :redirect
-#    assert_redirected_to new_user_session_path
-#  end
+  test 'proxy logout to warden' do
+    @mock_warden.expects(:logout).with(:user).returns(true)
+    @controller.logout(:user)
+  end
 
-#  test 'authenticated as user should be able to access user action' do
-#    @controller.expects(:authenticated?).with('user').returns(true)
+  test 'proxy user_authenticate! to authenticate with user scope' do
+    @mock_warden.expects(:authenticate!).with(:scope => :user)
+    @controller.user_authenticate!
+  end
 
-#    get :user_action
-#    assert_response :success
-#    assert_equal 'user', @response.body
-#  end
+  test 'proxy admin_authenticate! to authenticate with admin scope' do
+    @mock_warden.expects(:authenticate!).with(:scope => :admin)
+    @controller.admin_authenticate!
+  end
 
-#  test 'not authenticated as admin should not be able to access admin action' do
-#    @controller.expects(:authenticated?).with('admin').returns(false)
+  test 'proxy user_authenticated? to authenticate with user scope' do
+    @mock_warden.expects(:authenticated?).with(:user)
+    @controller.user_authenticated?
+  end
 
-#    get :admin_action
-#    assert_response :redirect
-#    assert_redirected_to new_admin_session_path
-#  end
+  test 'proxy admin_authenticated? to authenticate with admin scope' do
+    @mock_warden.expects(:authenticated?).with(:admin)
+    @controller.admin_authenticated?
+  end
 
-#  test 'authenticated as admin should be able to access admin action' do
-#    @controller.expects(:authenticated?).with('admin').returns(true)
-
-#    get :admin_action
-#    assert_response :success
-#    assert_equal 'admin', @response.body
-#  end
-
-#  test 'authenticated as user should not be able to access not authenticated action' do
-#    @controller.expects(:authenticated?).with('user').returns(true)
-#    @controller.expects(:authenticated?).with('admin').returns(false)
-
-#    get :not_authenticated_action
-#    assert_response :redirect
-#    assert_redirected_to root_path
-#  end
-
-#  test 'authenticated as admin should not be able to access not authenticated action' do
-#    @controller.expects(:authenticated?).with('user').returns(false)
-#    @controller.expects(:authenticated?).with('admin').returns(true)
-
-#    get :not_authenticated_action
-#    assert_response :redirect
-#    assert_redirected_to root_path
-#  end
-
-#  test 'not authenticated should access not_authenticated_action' do
-#    @controller.expects(:authenticated?).with('user').returns(false)
-#    @controller.expects(:authenticated?).with('admin').returns(false)
-
-#    get :not_authenticated_action
-#    assert_response :success
-#    assert_equal 'not_authenticated', @response.body
-#  end
+  test 'require no authentication tests current mapping' do
+    @controller.expects(:resource_name).returns(:user)
+    @mock_warden.expects(:authenticated?).with(:user).returns(true)
+    @controller.expects(:redirect_to).with(root_path)
+    @controller.require_no_authentication
+  end
 end

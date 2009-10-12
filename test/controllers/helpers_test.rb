@@ -1,6 +1,6 @@
 require 'test/test_helper'
 
-class ResourcesTest < ActionController::TestCase
+class HelpersTest < ActionController::TestCase
   tests ApplicationController
 
   test 'get resource name from request path' do

@@ -9,8 +9,6 @@ module Devise
         end
       end
 
-    protected
-
       # The main accessor for the warden proxy instance
       #
       def warden

@@ -27,4 +27,5 @@ class MapRoutingTest < ActionController::TestCase
       assert_recognizes({:controller => 'passwords', :action => 'new'}, 'admin_area/password/new')
     end
   end
+
 end

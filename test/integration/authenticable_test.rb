@@ -138,7 +138,12 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_redirected_to warden_path
 
     get warden_path
-    assert_contain "Invalid email or password."
+    assert_contain 'Invalid email or password.'
   end
 
+  test 'render 404 on roles without permission' do
+    get "users/password/new"
+    assert_response :not_found
+    assert_not_contain 'Send me reset password instructions'
+  end
 end

@@ -41,4 +41,12 @@ class MapTest < ActiveSupport::TestCase
     Devise.map :participant, :for => [:authenticable]
     assert_equal :participants, Devise.mappings[:participant].as
   end
+
+  test 'allows a controller depending on the mapping' do
+    Devise.map :participant, :for => [:authenticable, :confirmable]
+
+    assert Devise.mappings[:participant].allows?(:sessions)
+    assert Devise.mappings[:participant].allows?(:confirmations)
+    assert_not Devise.mappings[:participant].allows?(:passwords)
+  end
 end

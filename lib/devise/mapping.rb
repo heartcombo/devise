@@ -38,7 +38,6 @@ module Devise
     self.mappings[mapping] = Mapping.new(mapping, options)
   end
 
-  # TODO Test me
   def self.find_mapping_by_path(path)
     route = path.split("/")[1]
     return nil unless route

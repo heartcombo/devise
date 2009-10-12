@@ -74,9 +74,8 @@ module Devise
         redirect_to root_path if warden.authenticated?(resource_name)
       end
 
-      # TODO Test me
       def is_devise_resource?
-        render :status => :not_found unless devise_mapping && devise_mapping.allows?(controller_name)
+        raise ActionController::UnknownAction unless devise_mapping && devise_mapping.allows?(controller_name)
       end
 
     end

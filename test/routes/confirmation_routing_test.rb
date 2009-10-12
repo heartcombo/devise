@@ -14,12 +14,6 @@ class ConfirmationRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'confirmations', :action => 'show'}, 'users/confirmation')
   end
 
-  test 'translated confirmation route' do
-    translated_route(:confirmation => 'confirmacao') do
-      assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'users/confirmacao/new')
-    end
-  end
-
   test 'new admin session route' do
     assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'admin_area/confirmation/new')
   end

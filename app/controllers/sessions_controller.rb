@@ -22,7 +22,8 @@ class SessionsController < ApplicationController
   # DELETE /session/sign_out
   def destroy
     logout(resource_name)
+    # TODO Do not show me unless logged in
     set_flash_message :success, :signed_out
-    redirect_to new_session_path
+    redirect_to root_path
   end
 end

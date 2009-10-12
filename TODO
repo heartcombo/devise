@@ -4,14 +4,14 @@
 
 * Add remember me (with customizable time frame)
 
-* Vendor RailsWarden
+* Store session[:return_to] in session
+
 * Create generators
 * Allow stretches and pepper per model
 * Allow multiple models per controller
 * devise :authenticable, :confirmable, :recoverable
 
 * Devise::BruteForceProtection
-* Show generic messages on login in case of failures (option)
 * Devise::MagicColumns
 * Devise::Invitable
 * Devise::Migratable

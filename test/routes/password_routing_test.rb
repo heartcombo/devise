@@ -18,12 +18,6 @@ class PasswordRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'passwords', :action => 'update'}, {:path => 'users/password', :method => :put})
   end
 
-  test 'translated password route' do
-    translated_route(:password => 'senha') do
-      assert_recognizes({:controller => 'passwords', :action => 'new'}, 'users/senha/new')
-    end
-  end
-
   test 'new admin password route' do
     assert_recognizes({:controller => 'passwords', :action => 'new'}, 'admin_area/password/new')
   end

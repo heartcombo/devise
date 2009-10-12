@@ -26,12 +26,6 @@ module Devise
       @to = klass if Rails.configuration.cache_classes
       klass
     end
-
-    # Acts as a hash.
-    #
-    def [](key)
-      send(key)
-    end
   end
 
   mattr_accessor :mappings

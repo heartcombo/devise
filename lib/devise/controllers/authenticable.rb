@@ -4,8 +4,6 @@ module Devise
     # Some helpers taken from RailsWarden.
     module Authenticable
 
-    protected
-
       def self.included(base)
         base.class_eval do
           helper_method :warden, :current_user, :signed_in?
@@ -36,10 +34,11 @@ module Devise
       end
 
       # Logout the current user based on scope
+      # TODO Test me
       #
-      def logout
+      def logout(*args)
         warden.raw_session.inspect  # Without this inspect here.  The session does not clear :|
-        warden.logout(resource_name)
+        warden.logout(*args)
       end
 
       # TODO Test me

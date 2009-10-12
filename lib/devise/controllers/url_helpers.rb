@@ -2,8 +2,6 @@ module Devise
   module Controllers
     module UrlHelpers
 
-    protected
-
       [:session, :password, :confirmation].each do |module_name|
         [:path, :url].each do |path_or_url|
           actions = [ nil, :new_ ]

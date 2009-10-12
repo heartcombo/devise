@@ -5,8 +5,7 @@ class AdminsAuthenticationTest < ActionController::IntegrationTest
   test 'not signed in as admin should not be able to access admins actions' do
     get admins_path
 
-    assert_response :redirect
-    assert_redirected_to new_admin_session_path
+    assert_redirected_to new_admin_session_path(:message => :unauthenticated)
     assert_not warden.authenticated?(:admin)
   end
 
@@ -16,11 +15,9 @@ class AdminsAuthenticationTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
 
     get admins_path
-
-    assert_response :redirect
-    assert_redirected_to new_admin_session_path
-
+    assert_redirected_to new_admin_session_path(:message => :unauthenticated)
   end
+
   test 'signed in as admin should be able to access admin actions successfully' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
@@ -55,6 +52,7 @@ class AdminsAuthenticationTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
+  # TODO This test should not pass
   test 'not confirmed admin should not be able to login' do
     sign_in_as_admin(:confirm => false)
 
@@ -73,21 +71,13 @@ class AdminsAuthenticationTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:user)
   end
 
-  test 'not authenticated admin should not be able to sign out' do
-    delete admin_session_path
-
-    assert_response :redirect
-    assert_redirected_to new_admin_session_path
-    assert_not warden.authenticated?(:admin)
-  end
-
   test 'authenticated admin should be able to sign out' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
 
     delete admin_session_path
     assert_response :redirect
-    assert_redirected_to new_admin_session_path
+    assert_redirected_to root_path
     assert_not warden.authenticated?(:admin)
   end
 end

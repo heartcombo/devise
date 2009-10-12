@@ -2,8 +2,6 @@ module Devise
   module Controllers
     module Resources
 
-    protected
-
       def resource
         instance_variable_get(:"@#{resource_name}")
       end

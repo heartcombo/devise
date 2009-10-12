@@ -12,7 +12,7 @@ class PasswordsController < ApplicationController
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
     if resource.errors.empty?
       flash[:success] = I18n.t(:send_instructions, :scope => [:devise, :passwords], :default => 'You will receive an email with instructions about how to reset your password in a few minutes.')
-      redirect_to new_session_path
+      redirect_to new_session_path(resource_name)
     else
       render :new
     end
@@ -31,7 +31,7 @@ class PasswordsController < ApplicationController
     self.resource = resource_class.reset_password!(params[resource_name])
     if resource.errors.empty?
       flash[:success] = I18n.t(:update, :scope => [:devise, :passwords], :default => 'Your password was changed successfully.')
-      redirect_to new_session_path
+      redirect_to new_session_path(resource_name)
     else
       render :edit
     end

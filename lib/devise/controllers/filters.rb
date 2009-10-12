@@ -5,7 +5,7 @@ module Devise
       def self.included(base)
         base.class_eval do
           helper_method :warden, :signed_in?, :authenticated?,
-                        *Devise.mappings.keys.map { |m| :"current_#{m}" }
+                        *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?"] }.flatten
         end
       end
 
@@ -15,22 +15,27 @@ module Devise
         request.env['warden']
       end
 
+      # Sign in a user through warden
+      #
+      def sign_in(scope)
+        warden.authenticate(:scope => scope)
+      end
+
       # Check if a user is authenticated or not performing the proper action.
       #
-      def authenticate!(scope)
+      def sign_in!(scope)
         warden.authenticate!(:scope => scope)
       end
 
       # Proxy to the authenticated? method on warden
       #
-      def authenticated?(scope)
+      def signed_in?(scope)
         warden.authenticated?(scope)
       end
-      alias :signed_in? :authenticated?
 
-      # Logout based on scope
+      # Sign out based on scope
       #
-      def logout(scope, *args)
+      def sign_out(scope, *args)
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope, *args)
       end
@@ -43,24 +48,24 @@ module Devise
       # Example:
       #
       #   Maps:
-      #     Devise.map :users, :for => [:authenticable]
+      #     Devise.map :user, :for => [:authenticable]
       #     Devise.map :admin, :for => [:authenticable]
       #
       #   Generated Filters:
-      #     user_authenticate!
-      #     admin_authenticate!
+      #     sign_in_user!
+      #     sign_in_admin!
       #
       #   Use:
-      #     before_filter :user_authenticate! # Tell devise to use :user map
-      #     before_filter :admin_authenticate! # Tell devise to use :admin map
+      #     before_filter :sign_in_user! # Tell devise to use :user map
+      #     before_filter :sign_in_admin! # Tell devise to use :admin map
       #
       Devise.mappings.each_key do |mapping|
         class_eval <<-METHODS, __FILE__, __LINE__
-          def #{mapping}_authenticate!
+          def sign_in_#{mapping}!
             warden.authenticate!(:scope => :#{mapping})
           end
 
-          def #{mapping}_authenticated?
+          def #{mapping}_signed_in?
             warden.authenticated?(:#{mapping})
           end
 

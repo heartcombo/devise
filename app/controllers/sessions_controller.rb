@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
   # POST /session/sign_in
   def create
-    if warden.authenticate(:scope => resource_name)
+    if sign_in(resource_name)
       set_flash_message :success, :signed_in
       redirect_to root_path
     else
@@ -21,8 +21,8 @@ class SessionsController < ApplicationController
   # GET /session/sign_out
   # DELETE /session/sign_out
   def destroy
-    set_flash_message :success, :signed_out if authenticated?(resource_name)
-    logout(resource_name)
+    set_flash_message :success, :signed_out if signed_in?(resource_name)
+    sign_out(resource_name)
     redirect_to root_path
   end
 

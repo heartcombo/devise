@@ -31,7 +31,7 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
   test 'run authenticate? with scope on warden' do
     @mock_warden.expects(:authenticated?).with(:my_scope)
-    @controller.authenticated?(:my_scope)
+    @controller.signed_in?(:my_scope)
   end
 
   test 'proxy signed_in? to authenticated' do
@@ -49,27 +49,27 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
   test 'proxy logout to warden' do
     @mock_warden.expects(:logout).with(:user).returns(true)
-    @controller.logout(:user)
+    @controller.sign_out(:user)
   end
 
   test 'proxy user_authenticate! to authenticate with user scope' do
     @mock_warden.expects(:authenticate!).with(:scope => :user)
-    @controller.user_authenticate!
+    @controller.sign_in_user!
   end
 
   test 'proxy admin_authenticate! to authenticate with admin scope' do
     @mock_warden.expects(:authenticate!).with(:scope => :admin)
-    @controller.admin_authenticate!
+    @controller.sign_in_admin!
   end
 
   test 'proxy user_authenticated? to authenticate with user scope' do
     @mock_warden.expects(:authenticated?).with(:user)
-    @controller.user_authenticated?
+    @controller.user_signed_in?
   end
 
   test 'proxy admin_authenticated? to authenticate with admin scope' do
     @mock_warden.expects(:authenticated?).with(:admin)
-    @controller.admin_authenticated?
+    @controller.admin_signed_in?
   end
 
   test 'require no authentication tests current mapping' do

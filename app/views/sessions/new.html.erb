@@ -10,5 +10,10 @@
   <p><%= f.submit "Sign in" %></p>
 <% end -%>
 
-<%= link_to "Forgot password?", new_password_path(resource_name) %> |
-<%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %>
+<%- if devise_mapping.allows?(:passwords) %>
+  <%= link_to "Forgot password?", new_password_path(resource_name) %><br />
+<% end -%>
+
+<%- if devise_mapping.allows?(:confirmations) %>
+  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
+<% end -%>

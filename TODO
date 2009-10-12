@@ -1,15 +1,14 @@
-* Add mappings
-
-  Devise.map :users, :to => User, :for => [:authenticable, :recoverable, :confirmable], :as => :usuario
-
 * Add remember me (with customizable time frame)
 
 * Store session[:return_to] in session
 
+* Add confirmable filters
+
+* Use path_names in routes
+
 * Create generators
 * Allow stretches and pepper per model
-* Allow multiple models per controller
-* devise :authenticable, :confirmable, :recoverable
+* Mailer subjects namespaced by model
 
 * Devise::BruteForceProtection
 * Devise::MagicColumns
@@ -28,3 +27,7 @@
 * ConfirmationsController
 
 * Create an example app
+* devise :authenticable, :confirmable, :recoverable
+* Allow multiple models per controller
+* Add mappings
+

@@ -1,15 +1,15 @@
 require 'test/test_helper'
 
-class AdminsConfirmationTest < ActionController::IntegrationTest
+class UsersConfirmationTest < ActionController::IntegrationTest
 
-  test 'admin should be able to request a new confirmation' do
-    admin = create_admin
+  test 'user should be able to request a new confirmation' do
+    user = create_user
     ActionMailer::Base.deliveries.clear
 
-    visit new_admin_session_path
+    visit new_user_session_path
     click_link 'Didn\'t receive confirmation instructions?'
 
-    fill_in 'email', :with => admin.email
+    fill_in 'email', :with => user.email
     click_button 'Resend confirmation instructions'
 
     assert_template 'sessions/new'
@@ -17,7 +17,7 @@ class AdminsConfirmationTest < ActionController::IntegrationTest
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
-  test 'admin with invalid perishable token should not be able to confirm an account' do
+  test 'user with invalid perishable token should not be able to confirm an account' do
     visit user_confirmation_path(:perishable_token => 'invalid_perishable')
 
     assert_response :success
@@ -26,21 +26,21 @@ class AdminsConfirmationTest < ActionController::IntegrationTest
     assert_contain 'invalid confirmation'
   end
 
-  test 'admin with valid perishable token should be able to confirm an account' do
-    admin = create_admin(:confirm => false)
-    assert_not admin.confirmed?
+  test 'user with valid perishable token should be able to confirm an account' do
+    user = create_user(:confirm => false)
+    assert_not user.confirmed?
 
-    visit admin_confirmation_path(:perishable_token => admin.perishable_token)
+    visit user_confirmation_path(:perishable_token => user.perishable_token)
 
     assert_template 'sessions/new'
     assert_contain 'Your account was successfully confirmed!'
 
-    assert admin.reload.confirmed?
+    assert user.reload.confirmed?
   end
 
-  test 'admin already confirmed user should not be able to confirm the account again' do
-    admin = create_admin
-    visit admin_confirmation_path(:perishable_token => admin.perishable_token)
+  test 'user already confirmed user should not be able to confirm the account again' do
+    user = create_user
+    visit user_confirmation_path(:perishable_token => user.perishable_token)
 
     assert_template 'confirmations/new'
     assert_have_selector '#errorExplanation'

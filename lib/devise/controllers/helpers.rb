@@ -4,7 +4,7 @@ module Devise
 
       def self.included(base)
         base.class_eval do
-          helper_method :resource, :resource_name, :resource_class
+          helper_method :resource, :resource_name, :resource_class, :devise_mapping
         end
       end
 
@@ -20,20 +20,20 @@ module Devise
         devise_mapping.to
       end
 
-      protected
+    protected
 
-        def devise_mapping
-          @devise_mapping ||= Devise.find_mapping_by_path(request.path)
-        end
+      def devise_mapping
+        @devise_mapping ||= Devise.find_mapping_by_path(request.path)
+      end
 
-        def resource=(new_resource)
-          instance_variable_set(:"@#{resource_name}", new_resource)
-        end
+      def resource=(new_resource)
+        instance_variable_set(:"@#{resource_name}", new_resource)
+      end
 
-        def set_flash_message(key, kind)
-          flash[key] = I18n.t(:"#{resource_name}.#{kind}",
-                              :scope => [:devise, controller_name.to_sym], :default => kind)
-        end
+      def set_flash_message(key, kind)
+        flash[key] = I18n.t(:"#{resource_name}.#{kind}",
+                            :scope => [:devise, controller_name.to_sym], :default => kind)
+      end
 
     end
   end

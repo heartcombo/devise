@@ -49,4 +49,15 @@ class MapTest < ActiveSupport::TestCase
     assert Devise.mappings[:participant].allows?(:confirmations)
     assert_not Devise.mappings[:participant].allows?(:passwords)
   end
+
+  test 'return mapping by path' do
+    Devise.map :participant, :for => [:authenticable, :confirmable]
+    assert_equal Devise.mappings[:participant], Devise.find_mapping_by_path("/participants/session")
+    assert_nil Devise.find_mapping_by_path("/foo/bar")
+  end
+
+  test 'return mapping by customized path' do
+    Devise.map :participant, :for => [:authenticable, :confirmable], :as => "participantes"
+    assert_equal Devise.mappings[:participant], Devise.find_mapping_by_path("/participantes/session")
+  end
 end

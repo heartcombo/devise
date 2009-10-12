@@ -98,15 +98,13 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
-  test 'already confirmed admin should be able to sign in successfully' do
+  test 'authenticated admin should not be able to sign as admin again' do
     sign_in_as_admin
+    get new_admin_session_path
 
-    assert_response :success
-    assert_template 'home/index'
-    assert_contain 'Signed in successfully'
-    assert_not_contain 'Sign In'
+    assert_response :redirect
+    assert_redirected_to root_path
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
   end
 
   test 'authenticated admin should be able to sign out' do
@@ -131,7 +129,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_not_contain 'Signed out successfully'
   end
 
-  test 'redirect from warden show error message' do
+  test 'redirect with warden show error message' do
     get admins_path
 
     warden_path = new_admin_session_path(:unauthenticated => true)
@@ -142,7 +140,7 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'render 404 on roles without permission' do
-    get "users/password/new"
+    get "admin_area/password/new"
     assert_response :not_found
     assert_not_contain 'Send me reset password instructions'
   end

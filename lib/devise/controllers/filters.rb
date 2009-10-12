@@ -2,6 +2,13 @@ module Devise
   module Controllers
     module Filters
 
+      def self.included(base)
+        base.class_eval do
+          helper_method :warden, :signed_in?, :authenticated?,
+                        *Devise.mappings.keys.map { |m| :"current_#{m}" }
+        end
+      end
+
     protected
 
       # The main accessor for the warden proxy instance

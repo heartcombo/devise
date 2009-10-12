@@ -6,7 +6,7 @@ en:
       unauthenticated: 'Invalid email or password.'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
-      update: 'Your password was changed successfully.'
+      updated: 'Your password was changed successfully.'
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed!'

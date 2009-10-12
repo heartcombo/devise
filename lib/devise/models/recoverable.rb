@@ -1,3 +1,5 @@
+require 'devise/models/perishable'
+
 module Devise
   module Models
 
@@ -13,8 +15,6 @@ module Devise
     #   User.find(1).send_reset_password_instructions
     #
     module Recoverable
-      require 'devise/models/perishable'
-
       def self.included(base)
         base.class_eval do
           include ::Devise::Models::Perishable

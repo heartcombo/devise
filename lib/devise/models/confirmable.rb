@@ -1,3 +1,5 @@
+require 'devise/models/perishable'
+
 module Devise
   module Models
 
@@ -20,7 +22,6 @@ module Devise
     #   User.find(1).reset_confirmation! # reset confirmation status and send instructions
     #
     module Confirmable
-      require 'devise/models/perishable'
 
       def self.included(base)
         base.class_eval do
@@ -77,15 +78,6 @@ module Devise
         end
 
       module ClassMethods
-
-        # Hook default authenticate to test whether the account is confirmed or not
-        # Returns the authenticated_user if it's confirmed, otherwise returns nil
-        #
-        def authenticate(attributes={})
-          confirmable = super
-          confirmable if confirmable.confirmed? unless confirmable.nil?
-        end
-
         # Attempt to find a user by it's email. If a record is found, send new
         # confirmation instructions to it. If not user is found, returns a new user
         # with an email not found error.

@@ -1,10 +1,10 @@
 class SessionsController < ApplicationController
-  before_filter :find_resource_class
+  before_filter :is_devise_resource?
+  before_filter :require_no_authentication, :only => [ :new, :create ]
 
   # GET /session/sign_in
-  # TODO Test me
   def new
-    set_flash_message :failure, params[:message].to_sym, true if params[:message]
+    unauthenticated! if params[:unauthenticated]
   end
 
   # POST /session/sign_in
@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       set_flash_message :success, :signed_in
       redirect_to root_path
     else
-      set_flash_message :failure, :unauthenticated, true
+      unauthenticated!
       render :new
     end
   end
@@ -21,9 +21,15 @@ class SessionsController < ApplicationController
   # GET /session/sign_out
   # DELETE /session/sign_out
   def destroy
+    set_flash_message :success, :signed_out if authenticated?(resource_name)
     logout(resource_name)
-    # TODO Do not show me unless logged in
-    set_flash_message :success, :signed_out
     redirect_to root_path
   end
+
+  protected
+
+    def unauthenticated!
+      flash.now[:failure] = I18n.t(:"#{resource_name}.unauthenticated",
+                                   :scope => [:devise, :sessions], :default => :unauthenticated)
+    end
 end

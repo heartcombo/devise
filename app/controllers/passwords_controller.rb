@@ -1,5 +1,5 @@
 class PasswordsController < ApplicationController
-  before_filter :find_resource_class, :require_no_authentication
+  before_filter :is_devise_resource?, :require_no_authentication
 
   # GET /password/new
   #
@@ -10,8 +10,9 @@ class PasswordsController < ApplicationController
   #
   def create
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
+
     if resource.errors.empty?
-      flash[:success] = I18n.t(:send_instructions, :scope => [:devise, :passwords], :default => 'You will receive an email with instructions about how to reset your password in a few minutes.')
+      set_flash_message :success, :send_instructions
       redirect_to new_session_path(resource_name)
     else
       render :new
@@ -30,7 +31,7 @@ class PasswordsController < ApplicationController
   def update
     self.resource = resource_class.reset_password!(params[resource_name])
     if resource.errors.empty?
-      flash[:success] = I18n.t(:update, :scope => [:devise, :passwords], :default => 'Your password was changed successfully.')
+      set_flash_message :success, :updated
       redirect_to new_session_path(resource_name)
     else
       render :edit

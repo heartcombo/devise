@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 module Devise
   module Models
 
@@ -16,8 +18,6 @@ module Devise
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
     module Authenticable
-      require 'digest/sha1'
-
       mattr_accessor :pepper, :stretches
 
       # Pepper for encrypting password

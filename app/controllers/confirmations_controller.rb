@@ -1,5 +1,5 @@
 class ConfirmationsController < ApplicationController
-  before_filter :find_resource_class
+  before_filter :is_devise_resource?
 
   # GET /confirmation/new
   #
@@ -10,8 +10,9 @@ class ConfirmationsController < ApplicationController
   #
   def create
     self.resource = resource_class.send_confirmation_instructions(params[resource_name])
+
     if resource.errors.empty?
-      flash[:success] = I18n.t(:send_instructions, :scope => [:devise, :confirmations], :default => 'You will receive an email with instructions about how to confirm your account in a few minutes.')
+      set_flash_message :success, :send_instructions
       redirect_to new_session_path(resource_name)
     else
       render :new
@@ -22,8 +23,9 @@ class ConfirmationsController < ApplicationController
   #
   def show
     self.resource = resource_class.confirm!(:perishable_token => params[:perishable_token])
+
     if resource.errors.empty?
-      flash[:success] = I18n.t(:confirm, :scope => [:devise, :confirmations], :default => 'Your account was successfully confirmed!')
+      set_flash_message :success, :confirmed
       redirect_to new_session_path(resource_name)
     else
       render :new

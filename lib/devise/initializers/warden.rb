@@ -38,7 +38,7 @@ end
 # Default strategy for signing in a user, based on his email and password.
 # If no email and no password are present, no authentication is tryed.
 #
-Warden::Strategies.add(:devise) do
+Warden::Strategies.add(:authenticable) do
 
   def valid?
     raise "You need to give a scope for Devise authentication" unless scope
@@ -54,14 +54,14 @@ Warden::Strategies.add(:devise) do
     if valid_session? && resource = @mapping.to.authenticate(session)
       success!(resource)
     else
-      redirect!("/#{@mapping.as}/session/new", :message => :unauthenticated)
+      redirect!("/#{@mapping.as}/session/new", :unauthenticated => true)
     end
   end
 
   # Find the session for the current mapping.
   #
   def session
-    @session ||= request.params[:session]
+    @session ||= request.params[scope]
   end
 
   # Check for the right keys.
@@ -76,6 +76,6 @@ end
 # strategy and also the controller who will manage not authenticated users.
 #
 Rails.configuration.middleware.use Warden::Manager do |manager|
-  manager.default_strategies :devise
+  manager.default_strategies :authenticable
   manager.failure_app = SessionsController
 end

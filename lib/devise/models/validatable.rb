@@ -8,7 +8,7 @@ module Devise
     #
     module Validatable
 
-      # Email regex used to validate email formats
+      # Email regex used to validate email formats. Retrieved from authlogic.
       #
       EMAIL_REGEX = /\A[\w\.%\+\-]+@(?:[A-Z0-9\-]+\.)+(?:[A-Z]{2,4}|museum|travel)\z/i
 

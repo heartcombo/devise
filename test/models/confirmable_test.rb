@@ -61,12 +61,6 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert confirmed_user.errors[:email]
   end
 
-  test 'should not authenticate a user not confirmed' do
-    user = create_user
-    authenticated_user = User.authenticate(:email => user.email, :password => user.password)
-    assert_nil authenticated_user
-  end
-
   test 'should authenticate a confirmed user' do
     user = create_user
     user.confirm!

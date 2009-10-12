@@ -1,35 +1,15 @@
 en:
   devise:
     sessions:
-      authentication_failed: 'Invalid email or password.'
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
-      new:
-        title: 'Sign in'
-        submit: 'Sign in'
+      unauthenticated: 'Invalid email or password.'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       update: 'Your password was changed successfully.'
-      new:
-        title: 'Forgot password'
-        submit: 'Send me reset password instructions'
-      edit:
-        title: 'Change your password'
-        submit: 'Change my password'
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
-      confirm: 'Your account was successfully confirmed!'
-      new:
-        title: 'Resend confirmation instructions'
-        submit: 'Resend confirmation instructions'
-    links:
-      sign_in: 'Sign in'
-      new_password: 'Forgot password?'
-      new_confirmation: "Didn't receive confirmation instructions?"
-    routes:
-      session: 'session'
-      password: 'password'
-      confirmation: 'confirmation'
+      confirmed: 'Your account was successfully confirmed!'
     notifier:
       confirmation_instructions: 'Confirmation instructions'
       reset_password_instructions: 'Reset password instructions'

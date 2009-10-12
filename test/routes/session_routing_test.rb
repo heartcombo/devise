@@ -14,12 +14,6 @@ class SessionRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => 'users/session', :method => :delete})
   end
 
-  test 'translate session route' do
-    translated_route(:session => 'sessao') do
-      assert_recognizes({:controller => 'sessions', :action => 'new'}, 'users/sessao/new')
-    end
-  end
-
   test 'new admin session route' do
     assert_recognizes({:controller => 'sessions', :action => 'new'}, 'admin_area/session/new')
   end

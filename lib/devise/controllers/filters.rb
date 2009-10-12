@@ -2,6 +2,8 @@ module Devise
   module Controllers
     module Filters
 
+    protected
+
       # Define authentication filters based on mappings. These filters should be
       # used inside the controllers as before_filters, so you can control the
       # scope of the user who should be signed in to access that specific
@@ -19,22 +21,17 @@ module Devise
       #     before_filter :admin_authenticate! # Tell devise to use :admin map
       #
       Devise.mappings.each_key do |mapping|
-        define_method(:"#{mapping}_authenticate!") do
-          authenticate!(mapping)
-        end
-      end
-
-      # Verify authenticated user and redirect to sign in if no authentication
-      # is found. By default resource_name is verified, but you can pass in any
-      # scope to verify whether there is a user authenticated within that scope.
-      #
-      def authenticate!(scope=resource_name)
-        redirect_to new_session_path(scope) unless authenticated?(scope)
+        class_eval <<-METHOD
+          def #{mapping}_authenticate!
+            warden.authenticate!(:devise, :scope => :#{mapping})
+          end
+        METHOD
       end
 
       # Helper for use in before_filters where no authentication is required.
       # Please note that all scopes will be tested within this filter, and if
       # one of then is authenticated the filter will redirect.
+      #
       # Example:
       #   before_filter :require_no_authentication, :only => :new
       #
@@ -43,6 +40,7 @@ module Devise
           redirect_to root_path if authenticated?(map)
         end
       end
+
     end
   end
 end

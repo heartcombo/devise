@@ -1,11 +1,13 @@
-<h2><%= t '.title', :default => 'Resend confirmation instructions', :scope => :devise %></h2>
+<h2>Resend confirmation instructions</h2>
 
-<%= error_messages_for :confirmation %>
+<% form_for resource_name, :url => confirmation_path(resource_name) do |f| %>
+  <%= f.error_messages %>
 
-<% form_for :confirmation, :url => confirmation_path do |f| %>
   <p><%= f.label :email %></p>
   <p><%= f.text_field :email %></p>
-  <p class="submit"><%= f.submit t('.submit', :default => 'Resend confirmation instructions', :scope => :devise) %></p>
+
+  <p><%= f.submit "Resend confirmation instructions" %></p>
 <% end %>
 
-<%= link_to_sign_in %> | <%= link_to_new_password %>
+<%= link_to "Sign in", new_session_path(resource_name) %> |
+<%= link_to "Forgot password?", new_password_path(resource_name) %>

@@ -4,6 +4,8 @@ module Devise
     # Some helpers taken from RailsWarden.
     module Authenticable
 
+    protected
+
       def self.included(base)
         base.class_eval do
           helper_method :warden, :current_user, :signed_in?
@@ -38,6 +40,12 @@ module Devise
       def logout
         warden.raw_session.inspect  # Without this inspect here.  The session does not clear :|
         warden.logout(resource_name)
+      end
+
+      # TODO Test me
+      def set_flash_message(key, kind, now=false)
+        hash = now ? flash.now : flash
+        hash[key] = I18n.t(:"#{resource_name}.#{kind}", :scope => [:devise, controller_name.to_sym], :default => kind)
       end
     end
   end

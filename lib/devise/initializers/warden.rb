@@ -1,4 +1,5 @@
-# Taken from RailsWarden, thanks to Hassox. http://github.com/hassox/rails_warden
+# Taken from RailsWarden, thanks to Hassox.
+# http://github.com/hassox/rails_warden
 #
 module Warden::Mixins::Common
   # Gets the rails request object by default if it's available
@@ -21,29 +22,16 @@ module Warden::Mixins::Common
   end
 end
 
-# Rails needs the action to be passed in with the params
-Warden::Manager.before_failure do |env, opts|
-  env['warden'].request.params['action'] = 'new'
-  if request = env["action_controller.rescue.request"]
-    request.params["action"] = 'new'
-  end
-end
-
-# Session Serialization in.  This block determines how the user will
-# be stored in the session.  If you're using a complex object like an
-# ActiveRecord model, it is not a good idea to store the complete object.
-# An ID is sufficient
+# Session Serialization in. This block determines how the user will be stored
+# in the session. If you're using a complex object like an ActiveRecord model,
+# it is not a good idea to store the complete object. An ID is sufficient.
+#
 Warden::Manager.serialize_into_session{ |user| [user.class, user.id] }
 
-# Session Serialization out.  This block gets the user out of the session.
+# Session Serialization out. This block gets the user out of the session.
 # It should be the reverse of serializing the object into the session
+#
 Warden::Manager.serialize_from_session do |klass, id|
-  klass = case klass
-  when Class
-    klass
-  when String, Symbol
-    klass.to_s.classify.constantize
-  end
   klass.find(id)
 end
 
@@ -52,29 +40,36 @@ end
 #
 Warden::Strategies.add(:devise) do
 
-  # Validate params before authenticating a user. If both email and password are
-  # not present, no authentication is attempted.
-  #
-#  def valid?
-#    params[:session] ||= {}
-#    params[:session][:email].present? && params[:session][:password].present?
-#  end
+  def valid?
+    raise "You need to give a scope for Devise authentication" unless scope
+    raise "You need to give a valid Devise mapping"            unless @mapping = Devise.mappings[scope]
+    true
+  end
 
   # Authenticate a user based on email and password params, returning to warden
-  # success and the authenticated user if everything is okay. Otherwise tell
-  # warden the authentication was failed.
+  # success and the authenticated user if everything is okay. Otherwise redirect
+  # to login page.
   #
   def authenticate!
-    pass
-#    if params[:session] && user = Devise.resource_class(request.path).authenticate(params[:session][:email], params[:session][:password])
-#      success!(user)
-#    else
-#      pass
-#      redirect!('/users/session/new')
-#      throw :warden
-#      fail!(I18n.t(:authentication_failed, :scope => [:devise, :sessions], :default => 'Invalid email or password'))
-#    end
+    if valid_session? && resource = @mapping.to.authenticate(session)
+      success!(resource)
+    else
+      redirect!("/#{@mapping.as}/session/new?message=unauthenticated")
+    end
   end
+
+  # Find the session for the current mapping.
+  #
+  def session
+    @session ||= request.params[:session]
+  end
+
+  # Check for the right keys.
+  #
+  def valid_session?
+    session && session[:email].present? && session[:password].present?
+  end
+
 end
 
 # Adds Warden Manager to Rails middleware stack, configuring default devise

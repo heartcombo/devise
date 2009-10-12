@@ -19,6 +19,7 @@ module Devise
       require 'digest/sha1'
 
       mattr_accessor :pepper, :stretches
+
       # Pepper for encrypting password
       self.pepper = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
       # Encrypt password as many times as possible
@@ -87,7 +88,7 @@ module Devise
         #
         def authenticate(attributes={})
           authenticable = self.find_by_email(attributes[:email])
-          authenticable if authenticable.valid_password?(attributes[:password]) unless authenticable.nil?
+          authenticable if authenticable.try(:valid_password?, attributes[:password])
         end
       end
     end

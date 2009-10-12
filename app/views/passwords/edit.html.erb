@@ -1,13 +1,17 @@
-<h2><%= t '.title', :default => 'Change your password', :scope => :devise %></h2>
+<h2>Change your password</h2>
 
-<% form_for resource_name, :url => password_path, :html => { :method => :put } do |f| %>
+<% form_for resource_name, :url => password_path(resource_name), :html => { :method => :put } do |f| %>
   <%= f.error_messages %>
   <%= f.hidden_field :perishable_token %>
+
   <p><%= f.label :password %></p>
   <p><%= f.password_field :password %></p>
+
   <p><%= f.label :password_confirmation %></p>
   <p><%= f.password_field :password_confirmation %></p>
-  <p class="submit"><%= f.submit t('.submit', :default => 'Change my password', :scope => :devise) %></p>
+
+  <p><%= f.submit "Change my password" %></p>
 <% end %>
 
-<%= link_to_sign_in %> | <%= link_to_new_confirmation %>
+<%= link_to "Sign in", new_session_path(resource_name) %> |
+<%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %>

@@ -23,22 +23,26 @@ end
 class ActiveRecordTest < ActiveSupport::TestCase
 
   def include_authenticable_module?(mod)
+    mod.devise_modules.include?(:authenticable) &&
     mod.included_modules.include?(Devise::Models::Authenticable)
   end
 
   def include_confirmable_module?(mod)
+    mod.devise_modules.include?(:confirmable) &&
     mod.included_modules.include?(Devise::Models::Confirmable)
   end
 
   def include_recoverable_module?(mod)
+    mod.devise_modules.include?(:recoverable) &&
     mod.included_modules.include?(Devise::Models::Recoverable)
   end
 
   def include_validatable_module?(mod)
+    mod.devise_modules.include?(:validatable) &&
     mod.included_modules.include?(Devise::Models::Validatable)
   end
 
-  test 'acts as devisable should include by defaul authenticable only' do
+  test 'acts as devisable should include by default authenticable only' do
     assert include_authenticable_module?(Authenticable)
     assert_not include_confirmable_module?(Authenticable)
     assert_not include_recoverable_module?(Authenticable)

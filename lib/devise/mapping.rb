@@ -24,6 +24,14 @@ module Devise
       klass
     end
 
+    CONTROLLERS.values.each do |m|
+      class_eval <<-METHOD, __FILE__, __LINE__
+        def #{m}?
+          @for.include?(:#{m})
+        end
+      METHOD
+    end
+
     def allows?(controller)
       @for.include?(CONTROLLERS[controller.to_sym])
     end

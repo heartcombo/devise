@@ -6,6 +6,8 @@
 
 * Use path_names in routes
 
+* Use sign_in and sign_out in SessionsController
+
 * Create generators
 * Allow stretches and pepper per model
 * Mailer subjects namespaced by model

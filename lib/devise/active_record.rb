@@ -23,10 +23,17 @@ module Devise
     #   devise :all
     #
     def devise(*options)
-      include Devise::Models::Authenticable
-      include Devise::Models::Confirmable unless ([:all, :confirmable] & options).empty?
-      include Devise::Models::Recoverable unless ([:all, :recoverable] & options).empty?
-      include Devise::Models::Validatable unless ([:all, :validatable] & options).empty?
+      options  = [:confirmable, :recoverable, :validatable] if options.include?(:all)
+      options |= [:authenticable]
+
+      options.each do |m|
+        devise_modules << m.to_sym
+        include Devise::Models.const_get(m.to_s.classify)
+      end
+    end
+
+    def devise_modules
+      @devise_modules ||= []
     end
   end
 end

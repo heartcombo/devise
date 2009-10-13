@@ -11,6 +11,6 @@
 
 <%= link_to "Sign in", new_session_path(resource_name) %><br />
 
-<%- if devise_mapping.allows?(:passwords) %>
+<%- if devise_mapping.recoverable? %>
   <%= link_to "Forgot password?", new_password_path(resource_name) %><br />
 <% end -%>

@@ -15,6 +15,6 @@
 
 <%= link_to "Sign in", new_session_path(resource_name) %><br />
 
-<%- if devise_mapping.allows?(:confirmations) %>
+<%- if devise_mapping.confirmable? %>
   <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
 <% end -%>

@@ -60,4 +60,12 @@ class MapTest < ActiveSupport::TestCase
     Devise.map :participant, :for => [:authenticable, :confirmable], :as => "participantes"
     assert_equal Devise.mappings[:participant], Devise.find_mapping_by_path("/participantes/session")
   end
+
+  test 'magic predicates' do
+    Devise.map :participant, :for => [:authenticable, :confirmable]
+    mapping = Devise.mappings[:participant]
+    assert mapping.authenticable?
+    assert mapping.confirmable?
+    assert !mapping.recoverable?
+  end
 end

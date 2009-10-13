@@ -18,13 +18,9 @@ class MapRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'sessions', :action => 'new'}, 'admin_area/session/new')
   end
 
-  test 'map devise admin confirmation with :as option' do
-    assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'admin_area/confirmation/new')
-  end
-
-  test 'map devise admin password with :as option' do
+  test 'does not map devise admin confirmation' do
     assert_raise ActionController::RoutingError do
-      assert_recognizes({:controller => 'passwords', :action => 'new'}, 'admin_area/password/new')
+      assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'admin_area/confirmation/new')
     end
   end
 

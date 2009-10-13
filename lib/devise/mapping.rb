@@ -6,17 +6,20 @@ module Devise
   }.freeze
 
   class Mapping
-    attr_reader :name, :as, :for
+    attr_reader :name, :as
 
     def initialize(name, options)
-      @name  = name
-      @for   = Array(options[:for])
-      @klass = (options[:to] || name.to_s.classify).to_s
-      @as    = (options[:as] || name.to_s.pluralize).to_sym
+      @as    = (options[:as] || name).to_sym
+      @klass = (options[:class_name] || name.to_s.classify).to_s
+      @name  = (options[:singular] || name.to_s.singularize).to_sym
+    end
+
+    # Return modules for the mapping.
+    def for
+      @for ||= to.devise_modules
     end
 
     # Reload mapped class each time when cache_classes is false.
-    #
     def to
       return @to if @to
       klass = @klass.constantize
@@ -24,27 +27,22 @@ module Devise
       klass
     end
 
+    # Check if the respective controller has a module in the mapping class.
+    def allows?(controller)
+      self.for.include?(CONTROLLERS[controller.to_sym])
+    end
+
     CONTROLLERS.values.each do |m|
       class_eval <<-METHOD, __FILE__, __LINE__
         def #{m}?
-          @for.include?(:#{m})
+          self.for.include?(:#{m})
         end
       METHOD
-    end
-
-    def allows?(controller)
-      @for.include?(CONTROLLERS[controller.to_sym])
     end
   end
 
   mattr_accessor :mappings
   self.mappings = {}
-
-  def self.map(mapping, options={})
-    raise ArgumentError, "Need to provide :for option for Devise.map" unless options.key?(:for)
-    options.assert_valid_keys(:to, :for, :as)
-    self.mappings[mapping] = Mapping.new(mapping, options)
-  end
 
   def self.find_mapping_by_path(path)
     route = path.split("/")[1]

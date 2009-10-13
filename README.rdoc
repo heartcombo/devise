@@ -12,11 +12,11 @@ Right now it's composed of four mainly modules:
 * Authenticable: responsible for encrypting password and validating authenticity of a user while signing in.
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
 * Recoverable: takes care of reseting the user password and send reset instructions.
-* Validatable: creates all needed validations for a user email and password. It's totally optional, so you're able to to create the validations by yourself.
+* Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.
 
 == Dependencies
 
-Devise is based on "Warden":http://github.com/hassox/warden, a Rack Authentication Framework from "hassox":http://github.com/hassox, so you're gonna need to install this gem. Current warden version is 0.4.0. Please ensure you have it installed in order to user devise (see instalation below).
+Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework from hassox (http://github.com/hassox), so you're gonna need to install this gem. Current warden version is 0.4.0. Please ensure you have it installed in order to user devise (see instalation below).
 
 == Installation
 
@@ -28,11 +28,11 @@ Install devise as an engine (plugin) inside your app:
 
   script/plugin install git://github.com/plataformatec/devise.git
 
-And you're ready.
+And you're ready to use devise.
 
 == Basic Usage
 
-Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file. Let's start by the model, assuming you already have a User model, just do this to have your authentication working:
+Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file. Let's start by the model, assuming you already have a User model, just add the devise line to have your authentication working:
 
   class User < ActiveRecord::Base
     devise
@@ -61,21 +61,21 @@ The next step after setting up your model is to configure your routes for devise
 
 This is going to look inside you User model and create the needed routes:
 
-# Session routes for Authenticable (default)
-     new_user_session GET    /users/session/new(.:format)      {:controller=>"sessions", :action=>"new"}
-         user_session DELETE /users/session(.:format)          {:controller=>"sessions", :action=>"destroy"}
-                      POST   /users/session(.:format)          {:controller=>"sessions", :action=>"create"}
+  # Session routes for Authenticable (default)
+       new_user_session GET    /users/session/new(.:format)      {:controller=>"sessions", :action=>"new"}
+           user_session DELETE /users/session(.:format)          {:controller=>"sessions", :action=>"destroy"}
+                        POST   /users/session(.:format)          {:controller=>"sessions", :action=>"create"}
 
-# Password routes for Recoverable, if User model has :recoverable configured
-    new_user_password GET    /user/password/new(.:format)     {:controller=>"passwords", :action=>"new"}
-   edit_user_password GET    /user/password/edit(.:format)    {:controller=>"passwords", :action=>"edit"}
-        user_password PUT    /user/password(.:format)         {:controller=>"passwords", :action=>"update"}
-                      POST   /user/password(.:format)         {:controller=>"passwords", :action=>"create"}
+  # Password routes for Recoverable, if User model has :recoverable configured
+      new_user_password GET    /user/password/new(.:format)     {:controller=>"passwords", :action=>"new"}
+     edit_user_password GET    /user/password/edit(.:format)    {:controller=>"passwords", :action=>"edit"}
+          user_password PUT    /user/password(.:format)         {:controller=>"passwords", :action=>"update"}
+                        POST   /user/password(.:format)         {:controller=>"passwords", :action=>"create"}
 
-# Confirmation routes for Confirmable, if User model has :confirmable configured
-new_user_confirmation GET    /user/confirmation/new(.:format) {:controller=>"confirmations", :action=>"new"}
-    user_confirmation GET    /user/confirmation(.:format)     {:controller=>"confirmations", :action=>"show"}
-                      POST   /user/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
+  # Confirmation routes for Confirmable, if User model has :confirmable configured
+  new_user_confirmation GET    /user/confirmation/new(.:format) {:controller=>"confirmations", :action=>"new"}
+      user_confirmation GET    /user/confirmation(.:format)     {:controller=>"confirmations", :action=>"show"}
+                        POST   /user/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
 
 You can run the routes rake task to verify what routes are being created by devise.
 There are also some options available for configuring your routes:

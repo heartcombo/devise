@@ -32,7 +32,20 @@ And you're ready to use devise.
 
 == Basic Usage
 
-Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file. Let's start by the model, assuming you already have a User model, just add the devise line to have your authentication working:
+Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
+
+We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
+
+  # required
+  t.string :email,              :null => false
+  t.string :encrypted_password, :null => false
+  t.string :password_salt,      :null => false
+  # required for recoverable and/or confirmable
+  t.string :perishable_token,   :null => false
+  # required for confirmable
+  t.datetime :confirmed_at
+
+Now let's setup a User model adding the devise line to have your authentication working:
 
   class User < ActiveRecord::Base
     devise
@@ -102,6 +115,10 @@ And to get the current signed in user this helper is available:
 
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 
+  # Create a migration with the required fields
+  t.string :email,              :null => false
+  t.string :encrypted_password, :null => false
+  t.string :password_salt,      :null => false
   # Inside your Admin model
   devise :validatable
   # Inside your routes

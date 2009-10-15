@@ -22,7 +22,9 @@ class PerishableTest < ActiveSupport::TestCase
 
   test 'should reset perishable token and save the record' do
     user = new_user
+    assert_nil user.perishable_token
     user.reset_perishable_token!
+    assert_not_nil user.perishable_token
     assert !user.new_record?
   end
 
@@ -50,11 +52,7 @@ class PerishableTest < ActiveSupport::TestCase
   end
 
   test 'should generate a sha1 hash for perishable token' do
-    now = Time.now
-    Time.stubs(:now).returns(now)
-    User.any_instance.stubs(:random_string).returns('random_string')
-    expected_token = ::Digest::SHA1.hexdigest("--#{now.utc}--random_string--123456--")
-    user = create_user
-    assert_equal expected_token, user.perishable_token
+    ActiveSupport::SecureRandom.expects(:base64).with(15).times(3).returns('perishable token')
+    assert_equal 'perishable token', create_user.perishable_token
   end
 end

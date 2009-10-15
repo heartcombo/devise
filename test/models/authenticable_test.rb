@@ -29,13 +29,10 @@ class AuthenticableTest < ActiveSupport::TestCase
     assert_not field_accessible?(:encrypted_password)
   end
 
-  test 'should not generate salt while setting password' do
-    assert_nil new_user.password_salt
-    assert_nil new_user(:password => nil).password_salt
-    assert_nil new_user(:password => '').password_salt
-  end
-
-  test 'should generate password salt while saving' do
+  test 'should generate salt while setting password' do
+    assert_present new_user.password_salt
+    assert_present new_user(:password => nil).password_salt
+    assert_present new_user(:password => '').password_salt
     assert_present create_user.password_salt
   end
 
@@ -47,13 +44,9 @@ class AuthenticableTest < ActiveSupport::TestCase
     assert_equal salt, user.password_salt
   end
 
-  test 'should generate a sha1 hash for password salt' do
-    now = Time.now
-    Time.stubs(:now).returns(now)
-    User.any_instance.stubs(:random_string).returns('random_string')
-    user = create_user
-    expected_salt = ::Digest::SHA1.hexdigest("--#{now.utc}--random_string--123456--")
-    assert_equal expected_salt, user.password_salt
+  test 'should generate a base64 hash using SecureRandom for password salt' do
+    ActiveSupport::SecureRandom.expects(:base64).with(15).returns('friendly_token')
+    assert_equal 'friendly_token', new_user.password_salt
   end
 
   test 'should never generate the same salt for different users' do
@@ -65,13 +58,10 @@ class AuthenticableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should not generate encrypted password while setting password' do
-    assert_nil new_user.encrypted_password
-    assert_nil new_user(:password => nil).encrypted_password
-    assert_nil new_user(:password => '').encrypted_password
-  end
-
-  test 'should generate encrypted password while saving' do
+  test 'should generate encrypted password while setting password' do
+    assert_present new_user.encrypted_password
+    assert_present new_user(:password => nil).encrypted_password
+    assert_present new_user(:password => '').encrypted_password
     assert_present create_user.encrypted_password
   end
 

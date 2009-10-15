@@ -36,6 +36,10 @@ module Devise
         reset_perishable_token && save(false)
       end
 
+      def clear_perishable_token
+        self.perishable_token = nil
+      end
+
       module ClassMethods
 
         # Attempt to find a user by and incoming perishable_token. If no user is

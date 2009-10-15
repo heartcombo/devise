@@ -17,6 +17,13 @@ class RecoverableTest < ActiveSupport::TestCase
     assert create_user.reset_password!('123456789', '123456789')
   end
 
+  test 'should clear perishable token while reseting the password' do
+    user = create_user
+    assert_present user.perishable_token
+    user.reset_password!('123456789', '123456789')
+    assert_nil user.perishable_token
+  end
+
   test 'should not reset password with invalid data' do
     user = create_user
     user.stubs(:valid?).returns(false)

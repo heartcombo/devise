@@ -82,7 +82,8 @@ class UsersPasswordRecoveryTest < ActionController::IntegrationTest
 
   test 'not authenticated user with valid perisable token but invalid password should not be able to change his password' do
     user = create_user
-    reset_password :perishable_token => user.perishable_token do
+    request_forgot_password
+    reset_password :perishable_token => user.reload.perishable_token do
       fill_in 'Password confirmation', :with => 'other_password'
     end
 
@@ -95,7 +96,8 @@ class UsersPasswordRecoveryTest < ActionController::IntegrationTest
 
   test 'not authenticated user with valid data should be able to change his password' do
     user = create_user
-    reset_password :perishable_token => user.perishable_token
+    request_forgot_password
+    reset_password :perishable_token => user.reload.perishable_token
 
     assert_template 'sessions/new'
     assert_contain 'Your password was changed successfully.'

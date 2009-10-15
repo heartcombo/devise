@@ -35,6 +35,7 @@ module Devise
       #
       def confirm!
         unless_confirmed do
+          clear_perishable_token
           update_attribute(:confirmed_at, Time.now)
         end
       end

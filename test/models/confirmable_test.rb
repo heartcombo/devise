@@ -17,6 +17,13 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_nil user.confirmed_at
   end
 
+  test 'should clear perishable token while confirming a user' do
+    user = create_user
+    assert_present user.perishable_token
+    user.confirm!
+    assert_nil user.perishable_token
+  end
+
   test 'should verify whether a user is confirmed or not' do
     assert_not new_user.confirmed?
     user = create_user

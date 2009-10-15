@@ -59,9 +59,11 @@ module Devise
       # confirming it's account
       #
       def reset_confirmation!
-        reset_confirmation
-        reset_perishable_token!
-        send_confirmation_instructions
+        unless_confirmed do
+          reset_confirmation
+          reset_perishable_token!
+          send_confirmation_instructions
+        end
       end
 
       private

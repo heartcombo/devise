@@ -112,8 +112,6 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should reset confirmation status when sending the confirmation instructions' do
     user = create_user
     assert_not user.confirmed?
-    user.confirm!
-    assert user.confirmed?
     confirmation_user = User.send_confirmation_instructions(:email => user.email)
     assert_not user.reload.confirmed?
   end
@@ -149,5 +147,14 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.email = 'new_test@example.com'
     user.save!
     assert_not user.reload.confirmed?
+  end
+
+  test 'should not be able to send instructions if the user is already confirmed' do
+    user = create_user
+    user.confirm!
+    assert_not user.reset_confirmation!
+    assert user.confirmed?
+    assert user.errors[:email].present?
+    assert_equal 'already confirmed', user.errors[:email]
   end
 end

@@ -3,7 +3,7 @@ require 'test/test_helper'
 class UsersConfirmationTest < ActionController::IntegrationTest
 
   test 'user should be able to request a new confirmation' do
-    user = create_user
+    user = create_user(:confirm => false)
     ActionMailer::Base.deliveries.clear
 
     visit new_user_session_path

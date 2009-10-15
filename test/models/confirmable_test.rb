@@ -149,6 +149,14 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not user.reload.confirmed?
   end
 
+  test 'should reset perishable token when updating email' do
+    user = create_user
+    token = user.perishable_token
+    user.email = 'new_test@example.com'
+    user.save!
+    assert_not_equal token, user.reload.perishable_token
+  end
+
   test 'should not be able to send instructions if the user is already confirmed' do
     user = create_user
     user.confirm!

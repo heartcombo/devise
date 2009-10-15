@@ -25,11 +25,8 @@ module Devise
         base.class_eval do
           extend ClassMethods
 
-          after_create  :send_confirmation_instructions
-          before_update :reset_confirmation, :if => :email_changed?
-          after_update  :send_confirmation_instructions, :if => :email_changed?
-
-          before_create :reset_perishable_token
+          before_save :reset_confirmation, :if => :email_changed?
+          after_save  :send_confirmation_instructions, :if => :email_changed?
         end
       end
 
@@ -61,7 +58,7 @@ module Devise
       def reset_confirmation!
         unless_confirmed do
           reset_confirmation
-          reset_perishable_token!
+          save(false)
           send_confirmation_instructions
         end
       end
@@ -72,6 +69,7 @@ module Devise
         # email, it won't be able to sign in without confirming it.
         #
         def reset_confirmation
+          reset_perishable_token
           self.confirmed_at = nil
         end
 

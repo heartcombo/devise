@@ -12,6 +12,9 @@
 * Allow stretches and pepper per model
 * Mailer subjects namespaced by model
 
+* Clear perishable_token in :confirmable and :recoverable
+* Use request_ip in session cookies
+
 * Devise::BruteForceProtection
 * Devise::MagicColumns
 * Devise::Invitable

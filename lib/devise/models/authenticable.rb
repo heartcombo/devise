@@ -10,6 +10,7 @@ module Devise
     #   pepper: encryption key used for creating encrypted password. Each time
     #           password changes, it's gonna be encrypted again, and this key
     #           is added to the password and salt to create a secure hash.
+    #
     #   stretches: defines how many times the password will be encrypted.
     #
     # Examples:
@@ -22,6 +23,7 @@ module Devise
 
       # Pepper for encrypting password
       self.pepper = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
+
       # Encrypt password as many times as possible
       self.stretches = 10
 
@@ -29,12 +31,16 @@ module Devise
         base.class_eval do
           extend ClassMethods
 
-          before_save :generate_salt
-          before_save :encrypt_password
-
-          attr_accessor   :password, :password_confirmation
+          attr_reader :password
+          attr_accessor :password_confirmation
           attr_accessible :email, :password, :password_confirmation
         end
+      end
+
+      def password=(new_password)
+        @password = new_password
+        self.password_salt = friendly_token
+        self.encrypted_password = password_digest(@password)
       end
 
       # Verifies whether an incoming_password (ie from login) is the user password
@@ -45,24 +51,12 @@ module Devise
 
       private
 
-        # Generate password salt using SHA1 based on password and Time.now
-        #
-        def generate_salt
-          self.password_salt = secure_digest(Time.now.utc, random_string, password) if password_salt.blank?
-        end
-
-        # Encrypt password using SHA1
-        #
-        def encrypt_password
-          self.encrypted_password = password_digest(password) unless password.blank?
-        end
-
         # Gererates a default password digest based on salt, pepper and the
         # incoming password
         #
         def password_digest(password_to_digest)
           digest = pepper
-          stretches.times { digest = secure_digest(password_salt, digest, password_to_digest, pepper)}
+          stretches.times { digest = secure_digest(password_salt, digest, password_to_digest, pepper) }
           digest
         end
 
@@ -74,10 +68,10 @@ module Devise
           ::Digest::SHA1.hexdigest('--' << tokens.flatten.join('--') << '--')
         end
 
-        # Generate a string randomically based on rand method
+        # Generate a friendly string randomically to be used as token
         #
-        def random_string
-          (1..10).map{ rand.to_s }
+        def friendly_token
+          ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
         end
 
       module ClassMethods

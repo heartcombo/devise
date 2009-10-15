@@ -6,9 +6,12 @@ module Devise
     # It also has some utility class methods to find or initialize records based
     # on perishable_token or email, and adding an error to specific fields if no
     # record is found.
+    #
     # Examples:
+    #
     #   # create a new token and save the record, without validating
     #   User.find(1).reset_perishable_token!
+    #
     #   # only create a new token, without saving the record
     #   user = User.find(1)
     #   user.reset_perishable_token
@@ -25,13 +28,13 @@ module Devise
       # Generates a new random token for confirmation, based on actual Time and salt
       #
       def reset_perishable_token
-        self.perishable_token = secure_digest(Time.now.utc, random_string, password)
+        self.perishable_token = friendly_token
       end
 
       # Resets the perishable token with and save the record without validating
       #
       def reset_perishable_token!
-        reset_perishable_token and save(false)
+        reset_perishable_token && save(false)
       end
 
       module ClassMethods

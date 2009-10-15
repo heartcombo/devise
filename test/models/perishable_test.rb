@@ -52,7 +52,7 @@ class PerishableTest < ActiveSupport::TestCase
   end
 
   test 'should generate a sha1 hash for perishable token' do
-    ActiveSupport::SecureRandom.expects(:base64).with(15).times(3).returns('perishable token')
+    ActiveSupport::SecureRandom.expects(:base64).with(15).twice.returns('perishable token')
     assert_equal 'perishable token', create_user.perishable_token
   end
 end

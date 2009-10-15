@@ -21,7 +21,6 @@ module Devise
       def self.included(base)
         base.class_eval do
           extend ClassMethods
-          before_create :reset_perishable_token
         end
       end
 

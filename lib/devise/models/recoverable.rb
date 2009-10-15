@@ -1,5 +1,3 @@
-require 'devise/models/perishable'
-
 module Devise
   module Models
 
@@ -17,7 +15,6 @@ module Devise
     module Recoverable
       def self.included(base)
         base.class_eval do
-          include ::Devise::Models::Perishable
           extend ClassMethods
         end
       end

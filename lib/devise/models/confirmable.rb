@@ -1,5 +1,3 @@
-require 'devise/models/perishable'
-
 module Devise
   module Models
 
@@ -25,12 +23,13 @@ module Devise
 
       def self.included(base)
         base.class_eval do
-          include ::Devise::Models::Perishable
           extend ClassMethods
 
           after_create  :send_confirmation_instructions
           before_update :reset_confirmation, :if => :email_changed?
           after_update  :send_confirmation_instructions, :if => :email_changed?
+
+          before_create :reset_perishable_token
         end
       end
 
@@ -38,11 +37,8 @@ module Devise
       # is already confirmed, add en error to email field
       #
       def confirm!
-        unless confirmed?
+        unless_confirmed do
           update_attribute(:confirmed_at, Time.now)
-        else
-          errors.add(:email, :already_confirmed, :default => 'already confirmed')
-          false
         end
       end
 
@@ -75,6 +71,18 @@ module Devise
         #
         def reset_confirmation
           self.confirmed_at = nil
+        end
+
+        # Checks whether the record is confirmed or not, yielding to the block if
+        # it's already confirmed, otherwise adds an error to email.
+        #
+        def unless_confirmed
+          unless confirmed?
+            yield
+          else
+            errors.add(:email, :already_confirmed, :default => 'already confirmed')
+            false
+          end
         end
 
       module ClassMethods

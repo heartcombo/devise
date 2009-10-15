@@ -4,7 +4,7 @@ module Devise
   module Models
 
     # Confirmable is responsible to verify if an account is already confirmed to
-    # sign in, and to send emails with confirmation instructions
+    # sign in, and to send emails with confirmation instructions.
     # Confirmation instructions are sent to the user email after creating a
     # record, after updating it's email and also when manually requested by
     # a new confirmation instruction request.

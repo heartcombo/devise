@@ -75,20 +75,20 @@ The next step after setting up your model is to configure your routes for devise
 This is going to look inside you User model and create the needed routes:
 
   # Session routes for Authenticable (default)
-       new_user_session GET  /users/sign_in                   {:controller=>"sessions", :action=>"new"}
-           user_session POST /users/sign_in                   {:controller=>"sessions", :action=>"create"}
-   destroy_user_session GET  /users/sign_out                  {:controller=>"sessions", :action=>"destroy"}
+       new_user_session GET  /users/sign_in                    {:controller=>"sessions", :action=>"new"}
+           user_session POST /users/sign_in                    {:controller=>"sessions", :action=>"create"}
+   destroy_user_session GET  /users/sign_out                   {:controller=>"sessions", :action=>"destroy"}
 
   # Password routes for Recoverable, if User model has :recoverable configured
-      new_user_password GET  /user/password/new(.:format)     {:controller=>"passwords", :action=>"new"}
-     edit_user_password GET  /user/password/edit(.:format)    {:controller=>"passwords", :action=>"edit"}
-          user_password PUT  /user/password(.:format)         {:controller=>"passwords", :action=>"update"}
-                        POST /user/password(.:format)         {:controller=>"passwords", :action=>"create"}
+      new_user_password GET  /users/password/new(.:format)     {:controller=>"passwords", :action=>"new"}
+     edit_user_password GET  /users/password/edit(.:format)    {:controller=>"passwords", :action=>"edit"}
+          user_password PUT  /users/password(.:format)         {:controller=>"passwords", :action=>"update"}
+                        POST /users/password(.:format)         {:controller=>"passwords", :action=>"create"}
 
   # Confirmation routes for Confirmable, if User model has :confirmable configured
-  new_user_confirmation GET  /user/confirmation/new(.:format) {:controller=>"confirmations", :action=>"new"}
-      user_confirmation GET  /user/confirmation(.:format)     {:controller=>"confirmations", :action=>"show"}
-                        POST /user/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
+  new_user_confirmation GET  /users/confirmation/new(.:format) {:controller=>"confirmations", :action=>"new"}
+      user_confirmation GET  /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"show"}
+                        POST /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
 
 You can run the routes rake task to verify what routes are being created by devise.
 There are also some options available for configuring your routes:

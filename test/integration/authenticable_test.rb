@@ -34,7 +34,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     sign_in_as_user
     sign_in_as_admin
 
-    delete user_session_path
+    get destroy_user_session_path
     assert_not warden.authenticated?(:user)
     assert warden.authenticated?(:admin)
   end
@@ -43,7 +43,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     sign_in_as_user
     sign_in_as_admin
 
-    delete admin_session_path
+    get destroy_admin_session_path
     assert_not warden.authenticated?(:admin)
     assert warden.authenticated?(:user)
   end
@@ -126,7 +126,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     sign_in_as_admin
     assert warden.authenticated?(:admin)
 
-    delete admin_session_path
+    get destroy_admin_session_path
     assert_response :redirect
     assert_redirected_to root_path
 
@@ -136,7 +136,7 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'not authenticated admin does not set error message on sign out' do
-    delete admin_session_path
+    get destroy_admin_session_path
     assert_response :redirect
     assert_redirected_to root_path
 

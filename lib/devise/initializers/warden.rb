@@ -54,7 +54,7 @@ Warden::Strategies.add(:authenticable) do
     if valid_session? && resource = @mapping.to.authenticate(session)
       success!(resource)
     else
-      redirect!("/#{@mapping.as}/session/new", :unauthenticated => true)
+      redirect!("/#{@mapping.as}/sign_in", :unauthenticated => true)
     end
   end
 

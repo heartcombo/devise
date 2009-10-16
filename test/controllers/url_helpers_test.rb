@@ -7,7 +7,7 @@ class RoutesTest < ActionController::TestCase
     @request.path = '/users/session'
     prepend_path = "#{prepend_path}_" if prepend_path
 
-    # No params
+    # Resource param
     assert_equal @controller.send(:"#{prepend_path}#{name}_path", :user),
                  send(:"#{prepend_path}user_#{name}_path")
     assert_equal @controller.send(:"#{prepend_path}#{name}_url", :user),
@@ -31,6 +31,7 @@ class RoutesTest < ActionController::TestCase
   test 'should alias session to mapped user session' do
     test_path_and_url :session
     test_path_and_url :session, :new
+    test_path_and_url :session, :destroy
   end
 
   test 'should alias password to mapped user password' do

@@ -1,6 +1,9 @@
 module ActionController::Routing
   class RouteSet #:nodoc:
 
+    # Alias to include Devise modules after only loading routes, because we need
+    # devise_for mappings already done to create magic filters and helpers.
+    #
     def load_routes_with_devise!
       load_routes_without_devise!
 
@@ -13,6 +16,8 @@ module ActionController::Routing
     alias_method_chain :load_routes!, :devise
 
     class Mapper #:doc:
+      # Includes devise_for map for routes.
+      #
       def devise_for(*resources)
         options = resources.extract_options!
 
@@ -23,11 +28,15 @@ module ActionController::Routing
           mapping = Devise::Mapping.new(resource, options)
           Devise.mappings[mapping.name] = mapping
 
-          namespace mapping.name, :namespace => nil, :path_prefix => mapping.as do |m|
-            if mapping.authenticable?
-              m.resource :session, :only => [:new, :create, :destroy]
+          if mapping.authenticable?
+            with_options(:controller => 'sessions', :path_prefix => mapping.as) do |session|
+              session.send(:"new_#{mapping.name}_session",     'sign_in',  :action => 'new',     :conditions => { :method => :get })
+              session.send(:"#{mapping.name}_session",         'sign_in',  :action => 'create',  :conditions => { :method => :post })
+              session.send(:"destroy_#{mapping.name}_session", 'sign_out', :action => 'destroy', :conditions => { :method => :get })
             end
+          end
 
+          namespace mapping.name, :namespace => nil, :path_prefix => mapping.as do |m|
             if mapping.recoverable?
               m.resource :password, :only => [:new, :create, :edit, :update]
             end

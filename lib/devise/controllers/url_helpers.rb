@@ -6,6 +6,7 @@ module Devise
         [:path, :url].each do |path_or_url|
           actions = [ nil, :new_ ]
           actions << :edit_ if module_name == :password
+          actions << :destroy_ if module_name == :session
 
           actions.each do |action|
             class_eval <<-URL_HELPERS

@@ -16,7 +16,7 @@ Right now it's composed of four mainly modules:
 
 == Dependencies
 
-Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework from hassox (http://github.com/hassox), so you're gonna need to install this gem. Current warden version is 0.4.0. Please ensure you have it installed in order to user devise (see instalation below).
+Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework from hassox (http://github.com/hassox), so you're gonna need to install this gem. Current warden version is 0.4.0. Please ensure you have it installed in order to use devise (see instalation below).
 
 == Installation
 
@@ -41,7 +41,7 @@ We're assuming here you want a User model. First of all you have to setup a migr
   t.string :encrypted_password, :null => false
   t.string :password_salt,      :null => false
   # required for recoverable and/or confirmable
-  t.string :perishable_token,   :null => false
+  t.string :perishable_token
   # required for confirmable
   t.datetime :confirmed_at
 

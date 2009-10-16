@@ -22,7 +22,7 @@ module ActionController::Routing
         options = resources.extract_options!
 
         resources.map!(&:to_sym)
-        options.assert_valid_keys(:class_name, :as)
+        options.assert_valid_keys(:class_name, :as, :path_names)
 
         resources.each do |resource|
           mapping = Devise::Mapping.new(resource, options)
@@ -30,19 +30,19 @@ module ActionController::Routing
 
           if mapping.authenticable?
             with_options(:controller => 'sessions', :path_prefix => mapping.as) do |session|
-              session.send(:"new_#{mapping.name}_session",     'sign_in',  :action => 'new',     :conditions => { :method => :get })
-              session.send(:"#{mapping.name}_session",         'sign_in',  :action => 'create',  :conditions => { :method => :post })
-              session.send(:"destroy_#{mapping.name}_session", 'sign_out', :action => 'destroy', :conditions => { :method => :get })
+              session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
+              session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })
+              session.send(:"destroy_#{mapping.name}_session", mapping.path_names[:sign_out], :action => 'destroy', :conditions => { :method => :get })
             end
           end
 
           namespace mapping.name, :namespace => nil, :path_prefix => mapping.as do |m|
             if mapping.recoverable?
-              m.resource :password, :only => [:new, :create, :edit, :update]
+              m.resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password]
             end
 
             if mapping.confirmable?
-              m.resource :confirmation, :only => [:new, :create, :show]
+              m.resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
             end
           end
         end

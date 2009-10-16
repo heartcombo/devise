@@ -6,12 +6,16 @@ module Devise
   }.freeze
 
   class Mapping
-    attr_reader :name, :as
+    attr_reader :name, :as, :path_names
 
     def initialize(name, options)
       @as    = (options[:as] || name).to_sym
       @klass = (options[:class_name] || name.to_s.classify).to_s
       @name  = (options[:singular] || name.to_s.singularize).to_sym
+      @path_names = options[:path_names] || {}
+      [:sign_in, :sign_out, :password, :confirmation].each do |path_name|
+        @path_names[path_name] ||= path_name.to_s
+      end
     end
 
     # Return modules for the mapping.

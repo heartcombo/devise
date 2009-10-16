@@ -35,6 +35,22 @@ class MapTest < ActiveSupport::TestCase
     assert_equal Devise.mappings[:admin], Devise.find_mapping_by_path("/admin_area/session")
   end
 
+  test 'return default path names' do
+    mapping = Devise.mappings[:user]
+    assert_equal 'sign_in', mapping.path_names[:sign_in]
+    assert_equal 'sign_out', mapping.path_names[:sign_out]
+    assert_equal 'password', mapping.path_names[:password]
+    assert_equal 'confirmation', mapping.path_names[:confirmation]
+  end
+
+  test 'allow custom path names to be given' do
+    mapping = Devise.mappings[:account]
+    assert_equal 'login', mapping.path_names[:sign_in]
+    assert_equal 'logout', mapping.path_names[:sign_out]
+    assert_equal 'secret', mapping.path_names[:password]
+    assert_equal 'verification', mapping.path_names[:confirmation]
+  end
+
   test 'magic predicates' do
     mapping = Devise.mappings[:user]
     assert mapping.authenticable?

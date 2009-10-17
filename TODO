@@ -1,10 +1,7 @@
 * Clear perishable_token in :confirmable and :recoverable
 * Remove perishable token and create attributes for confirmation_token and reset_password_token
 * Add confirmation_sent_at for confirmable
-* Store session[:return_to] in session
-* Use sign_in and sign_out in SessionsController
 
-* Use path_names in routes
 * Add remember me (with customizable time frame)
 * Add confirmable filters
 
@@ -33,3 +30,6 @@
 * devise :authenticable, :confirmable, :recoverable
 * Allow multiple models per controller
 * Add mappings
+* Use sign_in and sign_out in SessionsController
+* Use path_names in routes
+* Store session[:return_to] in session

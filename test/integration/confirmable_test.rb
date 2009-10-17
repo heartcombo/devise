@@ -1,6 +1,6 @@
 require 'test/test_helper'
 
-class UsersConfirmationTest < ActionController::IntegrationTest
+class ConfirmationTest < ActionController::IntegrationTest
 
   test 'user should be able to request a new confirmation' do
     user = create_user(:confirm => false)

@@ -10,31 +10,26 @@ module Devise
       end
 
       # The main accessor for the warden proxy instance
-      #
       def warden
         request.env['warden']
       end
 
       # Sign in a user through warden
-      #
       def sign_in(scope)
         warden.authenticate(:scope => scope)
       end
 
       # Check if a user is authenticated or not performing the proper action.
-      #
       def sign_in!(scope)
         warden.authenticate!(:scope => scope)
       end
 
       # Proxy to the authenticated? method on warden
-      #
       def signed_in?(scope)
         warden.authenticated?(scope)
       end
 
       # Sign out based on scope
-      #
       def sign_out(scope, *args)
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope, *args)
@@ -58,7 +53,6 @@ module Devise
       #   Use:
       #     before_filter :sign_in_user! # Tell devise to use :user map
       #     before_filter :sign_in_admin! # Tell devise to use :admin map
-      #
       Devise.mappings.each_key do |mapping|
         class_eval <<-METHODS, __FILE__, __LINE__
           def sign_in_#{mapping}!
@@ -79,15 +73,31 @@ module Devise
       #
       # Example:
       #   before_filter :require_no_authentication, :only => :new
-      #
       def require_no_authentication
         redirect_to root_path if warden.authenticated?(resource_name)
       end
 
+      # Checks whether it's a devise mapped resource or not.
       def is_devise_resource?
         raise ActionController::UnknownAction unless devise_mapping && devise_mapping.allows?(controller_name)
       end
 
+      # Redirects to stored uri before signing in or the default path and clear
+      # return to.
+      def redirect_back_or_to(default)
+        redirect_to(return_to || default)
+        clear_return_to
+      end
+
+      # Access to scoped stored uri
+      def return_to
+        session[:"#{resource_name}.return_to"]
+      end
+
+      # Clear scoped stored uri
+      def clear_return_to
+        session[:"#{resource_name}.return_to"] = nil
+      end
     end
   end
 end

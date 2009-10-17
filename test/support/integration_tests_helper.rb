@@ -25,7 +25,7 @@ class ActionController::IntegrationTest
 
   def sign_in_as_user(options={}, &block)
     create_user(options)
-    visit new_user_session_path
+    visit new_user_session_path unless options[:visit] == false
     fill_in 'email', :with => 'user@test.com'
     fill_in 'password', :with => '123456'
     yield if block_given?
@@ -34,7 +34,7 @@ class ActionController::IntegrationTest
 
   def sign_in_as_admin(options={}, &block)
     create_admin(options)
-    visit new_admin_session_path
+    visit new_admin_session_path unless options[:visit] == false
     fill_in 'email', :with => 'admin@test.com'
     fill_in 'password', :with => '123456'
     yield if block_given?

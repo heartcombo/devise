@@ -155,8 +155,26 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'render 404 on roles without permission' do
-    get "admin_area/password/new"
+    get 'admin_area/password/new'
     assert_response :not_found
     assert_not_contain 'Send me reset password instructions'
+  end
+
+  test 'return to default url if no one was requested' do
+    sign_in_as_user
+
+    assert_template 'home/index'
+    assert_nil session[:return_to]
+  end
+
+  test 'return to given url after sign in' do
+    get users_path
+    assert_redirected_to new_user_session_path(:unauthenticated => true)
+    assert_equal users_path, session[:"user.return_to"]
+    follow_redirect!
+
+    sign_in_as_user :visit => false
+    assert_template 'users/index'
+    assert_nil session[:"user.return_to"]
   end
 end

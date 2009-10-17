@@ -1,6 +1,6 @@
 require 'test/test_helper'
 
-class UsersPasswordRecoveryTest < ActionController::IntegrationTest
+class PasswordTest < ActionController::IntegrationTest
 
   def visit_new_password_path
     visit new_user_session_path

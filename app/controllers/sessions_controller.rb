@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
   def create
     if sign_in(resource_name)
       set_flash_message :success, :signed_in
-      redirect_to root_path
+      redirect_back_or_to root_path
     else
       unauthenticated!
       render :new

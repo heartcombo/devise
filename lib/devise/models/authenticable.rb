@@ -17,7 +17,6 @@ module Devise
     #
     #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
     #    User.find(1).valid_password?('password123')         # returns true/false
-    #
     module Authenticable
       mattr_accessor :pepper, :stretches
 
@@ -44,7 +43,6 @@ module Devise
       end
 
       # Verifies whether an incoming_password (ie from login) is the user password
-      #
       def valid_password?(incoming_password)
         password_digest(incoming_password) == encrypted_password
       end
@@ -53,7 +51,6 @@ module Devise
 
         # Gererates a default password digest based on salt, pepper and the
         # incoming password
-        #
         def password_digest(password_to_digest)
           digest = pepper
           stretches.times { digest = secure_digest(password_salt, digest, password_to_digest, pepper) }
@@ -63,13 +60,11 @@ module Devise
         # Generate a SHA1 digest joining args. Generated token is something like
         #
         #   --arg1--arg2--arg3--argN--
-        #
         def secure_digest(*tokens)
           ::Digest::SHA1.hexdigest('--' << tokens.flatten.join('--') << '--')
         end
 
         # Generate a friendly string randomically to be used as token
-        #
         def friendly_token
           ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
         end
@@ -79,7 +74,6 @@ module Devise
         # Authenticate a user based on email and password. Returns the
         # authenticated user if it's valid or nil.
         # Attributes are :email and :password
-        #
         def authenticate(attributes={})
           authenticable = self.find_by_email(attributes[:email])
           authenticable if authenticable.try(:valid_password?, attributes[:password])

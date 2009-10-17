@@ -1,10 +1,14 @@
 module Devise
+  # Maps controller names to devise modules
   CONTROLLERS = {
     :sessions => :authenticable,
     :passwords => :recoverable,
     :confirmations => :confirmable
   }.freeze
 
+  # Responsible for handling devise mappings and routes configuration. Each
+  # resource configured by devise_for in routes is actually creating a mapping
+  # object. Please refer to devise_for in routes for more info.
   class Mapping
     attr_reader :name, :as, :path_names
 
@@ -13,9 +17,7 @@ module Devise
       @klass = (options[:class_name] || name.to_s.classify).to_s
       @name  = (options[:singular] || name.to_s.singularize).to_sym
       @path_names = options[:path_names] || {}
-      [:sign_in, :sign_out, :password, :confirmation].each do |path_name|
-        @path_names[path_name] ||= path_name.to_s
-      end
+
     end
 
     # Return modules for the mapping.
@@ -36,6 +38,12 @@ module Devise
       self.for.include?(CONTROLLERS[controller.to_sym])
     end
 
+    # Create magic predicates for verifying what module is activated by this map.
+    # Example:
+    #
+    #   def confirmable?
+    #     self.for.include?(:confirmable)
+    #   end
     CONTROLLERS.values.each do |m|
       class_eval <<-METHOD, __FILE__, __LINE__
         def #{m}?
@@ -43,11 +51,24 @@ module Devise
         end
       METHOD
     end
+
+    private
+
+      # Configure default path names, allowing the user overwrite defaults by
+      # passing a hash in :path_names.
+      def setup_path_names
+        [:sign_in, :sign_out, :password, :confirmation].each do |path_name|
+          @path_names[path_name] ||= path_name.to_s
+        end
+      end
   end
 
   mattr_accessor :mappings
   self.mappings = {}
 
+  # Loop through all mappings looking for a map that matches with the requested
+  # path (ie /users/sign_in). The important part here is the key :users. If no
+  # map is found just returns nil.
   def self.find_mapping_by_path(path)
     route = path.split("/")[1]
     return nil unless route

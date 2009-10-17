@@ -1,6 +1,6 @@
 module Devise
   module ActiveRecord
-    # Shortcut method for including all devise modules inside your User class
+    # Shortcut method for including all devise modules inside your model
     #
     # Examples:
     #
@@ -21,7 +21,6 @@ module Devise
     #
     #   # shortcut to include all modules (same as above)
     #   devise :all
-    #
     def devise(*options)
       options  = [:confirmable, :recoverable, :validatable] if options.include?(:all)
       options |= [:authenticable]
@@ -33,6 +32,8 @@ module Devise
       end
     end
 
+    # Stores all modules included inside the model, so we are able to verify
+    # which routes are needed.
     def devise_modules
       @devise_modules ||= []
     end

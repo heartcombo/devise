@@ -35,24 +35,28 @@ module Devise
         warden.logout(scope, *args)
       end
 
-      # Define authentication filters based on mappings. These filters should be
-      # used inside the controllers as before_filters, so you can control the
-      # scope of the user who should be signed in to access that specific
-      # controller/action.
-      #
+      # Define authentication filters and accessor helpers based on mappings.
+      # These filters should be used inside the controllers as before_filters,
+      # so you can control the scope of the user who should be signed in to
+      # access that specific controller/action.
       # Example:
       #
       #   Maps:
-      #     Devise.map :user, :for => [:authenticable]
-      #     Devise.map :admin, :for => [:authenticable]
+      #     User => :authenticable
+      #     Admin => :authenticable
       #
       #   Generated Filters:
       #     sign_in_user!
       #     sign_in_admin!
-      #
       #   Use:
       #     before_filter :sign_in_user! # Tell devise to use :user map
       #     before_filter :sign_in_admin! # Tell devise to use :admin map
+      #
+      #   Generated helpers:
+      #     user_signed_in?   # Checks whether there is an user signed in or not
+      #     admin_signed_in?  # Checks whether there is an admin signed in or not
+      #     current_user      # Current signed in user
+      #     current_admin     # Currend signed in admin
       Devise.mappings.each_key do |mapping|
         class_eval <<-METHODS, __FILE__, __LINE__
           def sign_in_#{mapping}!

@@ -1,9 +1,9 @@
 module ActionController::Routing
   class RouteSet #:nodoc:
 
-    # Alias to include Devise modules after only loading routes, because we need
-    # devise_for mappings already done to create magic filters and helpers.
-    #
+    # Ensure Devise modules are included only after loading routes, because we
+    # need devise_for mappings already declared to create magic filters and
+    # helpers.
     def load_routes_with_devise!
       load_routes_without_devise!
 
@@ -16,8 +16,50 @@ module ActionController::Routing
     alias_method_chain :load_routes!, :devise
 
     class Mapper #:doc:
-      # Includes devise_for map for routes.
+      # Includes devise_for method for routes. This method is responsible to
+      # generate all needed routes for devise, based on what modules you have
+      # defined in your model.
+      # Examples: Let's say you have an User model configured to use
+      # authenticable, confirmable and recoverable modules. After creating this
+      # inside your routes:
       #
+      #   map.devise_for :users
+      #
+      # this method is going to look inside your User model and create the
+      # needed routes:
+      #
+      #  # Session routes for Authenticable (default)
+      #       new_user_session GET  /users/sign_in                    {:controller=>"sessions", :action=>"new"}
+      #           user_session POST /users/sign_in                    {:controller=>"sessions", :action=>"create"}
+      #   destroy_user_session GET  /users/sign_out                   {:controller=>"sessions", :action=>"destroy"}
+      #
+      #  # Password routes for Recoverable, if User model has :recoverable configured
+      #      new_user_password GET  /users/password/new(.:format)     {:controller=>"passwords", :action=>"new"}
+      #     edit_user_password GET  /users/password/edit(.:format)    {:controller=>"passwords", :action=>"edit"}
+      #          user_password PUT  /users/password(.:format)         {:controller=>"passwords", :action=>"update"}
+      #                        POST /users/password(.:format)         {:controller=>"passwords", :action=>"create"}
+      #
+      #  # Confirmation routes for Confirmable, if User model has :confirmable configured
+      #  new_user_confirmation GET  /users/confirmation/new(.:format) {:controller=>"confirmations", :action=>"new"}
+      #      user_confirmation GET  /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"show"}
+      #                        POST /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
+      #
+      # You can configure your routes with some options:
+      #  * :class_name => setup a different class to be looked up by devise, if it cannot be correctly find by the route name.
+      #
+      #    map.devise_for :users, :class_name => 'Account'
+      #
+      #  * :as => allows you to setup path name that will be used, as rails routes does. The following route configuration would setup your route as /accounts instead of /users:
+      #
+      #    map.devise_for :users, :as => 'accounts'
+      #
+      #  * :singular => setup the name used to create named routes. By default, for a :users key, it is going to be the singularized version, :user. To configure a named route like account_session_path instead of user_session_path just do:
+      #
+      #    map.devise_for :users, :singular => :user
+      #
+      #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :password and :confirmation.
+      #
+      #    map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
       def devise_for(*resources)
         options = resources.extract_options!
 

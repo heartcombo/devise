@@ -1,16 +1,14 @@
 class Notifier < ::ActionMailer::Base
   cattr_accessor :sender
 
-  # Deliver confirmation instructions when the user is created or confirmation
-  # is manually requested
-  #
+  # Deliver confirmation instructions when the user is created or its email is
+  # updated, and also when confirmation is manually requested
   def confirmation_instructions(record)
     subject translate(:confirmation_instructions, :default => 'Confirmation instructions')
     setup_mail(record)
   end
 
   # Deliver reset password instructions when manually requested
-  #
   def reset_password_instructions(record)
     subject translate(:reset_password_instructions, :default => 'Reset password instructions')
     setup_mail(record)
@@ -18,6 +16,7 @@ class Notifier < ::ActionMailer::Base
 
   private
 
+    # Configure default email options
     def setup_mail(record)
       from         self.class.sender
       recipients   record.email

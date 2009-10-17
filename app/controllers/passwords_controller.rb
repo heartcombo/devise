@@ -1,13 +1,11 @@
 class PasswordsController < ApplicationController
   before_filter :is_devise_resource?, :require_no_authentication
 
-  # GET /password/new
-  #
+  # GET /resource/password/new
   def new
   end
 
-  # POST /password
-  #
+  # POST /resource/password
   def create
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
 
@@ -19,17 +17,16 @@ class PasswordsController < ApplicationController
     end
   end
 
-  # GET /password/edit?perishable_token=abcdef
-  #
+  # GET /resource/password/edit?perishable_token=abcdef
   def edit
     self.resource = resource_class.new
     resource.perishable_token = params[:perishable_token]
   end
 
-  # PUT /password
-  #
+  # PUT /resource/password
   def update
     self.resource = resource_class.reset_password!(params[resource_name])
+
     if resource.errors.empty?
       set_flash_message :success, :updated
       redirect_to new_session_path(resource_name)

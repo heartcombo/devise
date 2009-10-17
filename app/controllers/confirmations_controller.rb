@@ -1,13 +1,11 @@
 class ConfirmationsController < ApplicationController
   before_filter :is_devise_resource?
 
-  # GET /confirmation/new
-  #
+  # GET /resource/confirmation/new
   def new
   end
 
-  # POST /confirmation
-  #
+  # POST /resource/confirmation
   def create
     self.resource = resource_class.send_confirmation_instructions(params[resource_name])
 
@@ -19,8 +17,7 @@ class ConfirmationsController < ApplicationController
     end
   end
 
-  # GET /confirmation?perishable_token=abcdef
-  #
+  # GET /resource/confirmation?perishable_token=abcdef
   def show
     self.resource = resource_class.confirm!(:perishable_token => params[:perishable_token])
 

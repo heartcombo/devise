@@ -15,7 +15,6 @@ module Devise
     #   # only create a new token, without saving the record
     #   user = User.find(1)
     #   user.reset_perishable_token
-    #
     module Perishable
 
       def self.included(base)
@@ -25,17 +24,16 @@ module Devise
       end
 
       # Generates a new random token for confirmation, based on actual Time and salt
-      #
       def reset_perishable_token
         self.perishable_token = friendly_token
       end
 
       # Resets the perishable token with and save the record without validating
-      #
       def reset_perishable_token!
         reset_perishable_token && save(false)
       end
 
+      # Removes perishable token
       def clear_perishable_token
         self.perishable_token = nil
       end
@@ -44,7 +42,6 @@ module Devise
 
         # Attempt to find a user by and incoming perishable_token. If no user is
         # found, initialize a new one and adds an :invalid error to perishable_token
-        #
         def find_or_initialize_with_error_by_perishable_token(perishable_token)
           perishable = find_or_initialize_by_perishable_token(perishable_token)
           if perishable.new_record?
@@ -55,7 +52,6 @@ module Devise
 
         # Attempt to find a user by it's email. If not user is found, returns a
         # new user with an email not found error.
-        #
         def find_or_initialize_with_error_by_email(email)
           perishable = find_or_initialize_by_email(email)
           if perishable.new_record?

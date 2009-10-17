@@ -97,9 +97,13 @@ There are also some options available for configuring your routes:
 
   map.devise_for :users, :class_name => 'Account'
 
-* :as => Let's you setup the path name that will be used, as rails routes does. The following route configuration would setup your route as /accounts/session and so on:
+* :as => allows you to setup path name that will be used, as rails routes does. The following route configuration would setup your route as /accounts instead of /users:
 
   map.devise_for :users, :as => 'accounts'
+
+* :singular => setup the name used to create named routes. By default, for a :users key, it is going to be the singularized version, :user. To configure a named route like account_session_path instead of user_session_path just do:
+
+  map.devise_for :users, :singular => :user
 
 * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :password and :confirmation.
 

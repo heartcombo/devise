@@ -17,7 +17,7 @@ module Devise
       @klass = (options[:class_name] || name.to_s.classify).to_s
       @name  = (options[:singular] || name.to_s.singularize).to_sym
       @path_names = options[:path_names] || {}
-
+      setup_path_names
     end
 
     # Return modules for the mapping.

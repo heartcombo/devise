@@ -50,7 +50,7 @@ Warden::Strategies.add(:authenticable) do
       success!(resource)
     else
       store_location
-      redirect!("/#{@mapping.as}/sign_in", :unauthenticated => true)
+      redirect!("/#{@mapping.as}/#{@mapping.path_names[:sign_in]}", :unauthenticated => true)
     end
   end
 

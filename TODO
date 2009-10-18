@@ -4,6 +4,7 @@
 * Allow stretches and pepper per model
 * Mailer subjects namespaced by model
 * Use request_ip in session cookies
+* Session timeout
 
 * Devise::BruteForceProtection
 * Devise::MagicColumns

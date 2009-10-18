@@ -21,11 +21,18 @@ module Devise
     #
     #   # shortcut to include all modules (same as above)
     #   devise :all
-    def devise(*options)
-      options  = [:confirmable, :recoverable, :validatable] if options.include?(:all)
-      options |= [:authenticable]
+    #
+    #   # include all except :recoverable
+    #   devise :all, :except => :recoverable
+    #
+    def devise(*modules)
+      options  = modules.extract_options!
 
-      options.each do |m|
+      modules  = Devise::ALL             if modules.include?(:all)
+      modules -= Array(options[:except]) if options.key?(:except)
+      modules |= [:authenticable]
+
+      modules.each do |m|
         devise_modules << m.to_sym
         include Devise::Models.const_get(m.to_s.classify)
       end

@@ -1,11 +1,4 @@
 module Devise
-  # Maps controller names to devise modules
-  CONTROLLERS = {
-    :sessions => :authenticable,
-    :passwords => :recoverable,
-    :confirmations => :confirmable
-  }.freeze
-
   # Responsible for handling devise mappings and routes configuration. Each
   # resource configured by devise_for in routes is actually creating a mapping
   # object. You can refer to devise_for in routes for usage options.

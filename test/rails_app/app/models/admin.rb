@@ -1,3 +1,3 @@
 class Admin < ActiveRecord::Base
-  devise :validatable
+  devise :all, :except => [:recoverable, :confirmable]
 end

@@ -37,7 +37,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     visit_user_confirmation_with_token(user.confirmation_token)
 
     assert_template 'home/index'
-    assert_contain 'Your account was successfully confirmed!'
+    assert_contain 'Your account was successfully confirmed.'
 
     assert user.reload.confirmed?
   end

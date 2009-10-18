@@ -66,7 +66,7 @@ This line adds devise authenticable automatically for you inside your User class
   # Include authenticable + recoverable
   devise :recoverable
 
-  # Include authenticable + conformable + recoverable + validatable
+  # Include authenticable + confirmable + recoverable + validatable
   devise :confirmable, :recoverable, :validatable
 
   # Same as above, include all of them
@@ -130,6 +130,10 @@ And to get the current signed in user this helper is available:
 
   current_user
 
+You have also access to the session for this scope:
+
+  user_session
+
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 
   # Create a migration with the required fields
@@ -144,11 +148,12 @@ Devise let's you setup as many roles as you want, so let's say you already have 
   map.devise_for :admin
 
   # Inside your protected controller
-  before_filter :sign_in_admin!
+  before_filter :authenticate_admin!
 
   # Inside your controllers and views
   admin_signed_in?
   current_admin
+  admin_session
 
 == TODO
 

@@ -7,8 +7,7 @@ module Devise
       # Validate strategy. By default will raise an error if no scope or an
       # invalid mapping is found.
       def valid?
-        mapping
-        true
+        mapping.for.include?(self.class.name.split("::").last.underscore.to_sym)
       end
 
       # Checks if a valid scope was given for devise and find mapping based on

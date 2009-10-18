@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
   # POST /resource/sign_in
   def create
-    if sign_in(resource_name)
+    if authenticate(resource_name)
       set_flash_message :success, :signed_in
       redirect_back_or_to root_path
     else

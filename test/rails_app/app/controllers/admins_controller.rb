@@ -1,5 +1,5 @@
 class AdminsController < ApplicationController
-  before_filter :sign_in_admin!
+  before_filter :authenticate_admin!
 
   def index
   end

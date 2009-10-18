@@ -54,12 +54,12 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
   test 'proxy user_authenticate! to authenticate with user scope' do
     @mock_warden.expects(:authenticate!).with(:scope => :user)
-    @controller.sign_in_user!
+    @controller.authenticate_user!
   end
 
   test 'proxy admin_authenticate! to authenticate with admin scope' do
     @mock_warden.expects(:authenticate!).with(:scope => :admin)
-    @controller.sign_in_admin!
+    @controller.authenticate_admin!
   end
 
   test 'proxy user_authenticated? to authenticate with user scope' do
@@ -90,8 +90,7 @@ class ControllerAuthenticableTest < ActionController::TestCase
   end
 
   test 'sign in automatically proxy to set user on warden' do
-    user = OpenStruct.new
-    @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
-    @controller.sign_in_automatically(user, :user)
+    @mock_warden.expects(:set_user).with(user = mock, :scope => :user).returns(true)
+    @controller.sign_in(:user, user)
   end
 end

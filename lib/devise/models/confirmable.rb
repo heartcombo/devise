@@ -85,9 +85,9 @@ module Devise
 
         # Resets the confirmation token with and save the record without
         # validating.
-#        def generate_confirmation_token!
-#          generate_confirmation_token && save(false)
-#        end
+        def generate_confirmation_token!
+          generate_confirmation_token && save(false)
+        end
 
         # Removes confirmation token
         def clear_confirmation_token

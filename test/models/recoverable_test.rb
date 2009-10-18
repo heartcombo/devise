@@ -51,8 +51,16 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_nil user.reset_password_token
     user.send_reset_password_instructions
     assert_present user.reset_password_token
-    user.reset_password!('123456789', '123456789')
+    assert user.reset_password!('123456789', '123456789')
     assert_nil user.reset_password_token
+  end
+
+  test 'should not clear reset password token if record is invalid' do
+    user = create_user
+    user.send_reset_password_instructions
+    assert_present user.reset_password_token
+    assert_not user.reset_password!('123456789', '987654321')
+    assert_present user.reset_password_token
   end
 
   test 'should not reset password with invalid data' do

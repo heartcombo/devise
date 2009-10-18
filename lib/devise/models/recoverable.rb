@@ -28,7 +28,7 @@ module Devise
       # the passwords are valid and the record was saved, false otherwise.
       def reset_password!(new_password, new_password_confirmation)
         reset_password(new_password, new_password_confirmation)
-        clear_reset_password_token
+        clear_reset_password_token if valid?
         save
       end
 

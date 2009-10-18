@@ -20,7 +20,9 @@ class PasswordTest < ActionController::IntegrationTest
   end
 
   def reset_password(options={}, &block)
-    visit edit_user_password_path(:reset_password_token => options[:reset_password_token])
+    unless options[:visit] == false
+      visit edit_user_password_path(:reset_password_token => options[:reset_password_token])
+    end
     assert_response :success
     assert_template 'passwords/edit'
 
@@ -100,6 +102,21 @@ class PasswordTest < ActionController::IntegrationTest
     reset_password :reset_password_token => user.reload.reset_password_token
 
     assert_template 'sessions/new'
+    assert_contain 'Your password was changed successfully.'
+    assert user.reload.valid_password?('987654321')
+  end
+
+  test 'after entering invalid data user should still be able to change his password' do
+    user = create_user
+    request_forgot_password
+    reset_password :reset_password_token => user.reload.reset_password_token do
+      fill_in 'Password confirmation', :with => 'other_password'
+    end
+    assert_response :success
+    assert_have_selector '#errorExplanation'
+    assert_not user.reload.valid_password?('987654321')
+
+    reset_password :reset_password_token => user.reload.reset_password_token, :visit => false
     assert_contain 'Your password was changed successfully.'
     assert user.reload.valid_password?('987654321')
   end

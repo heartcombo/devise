@@ -75,7 +75,7 @@ module Devise
         # authenticated user if it's valid or nil.
         # Attributes are :email and :password
         def authenticate(attributes={})
-          authenticable = self.find_by_email(attributes[:email])
+          authenticable = find_by_email(attributes[:email])
           authenticable if authenticable.try(:valid_password?, attributes[:password])
         end
 

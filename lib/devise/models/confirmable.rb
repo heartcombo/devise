@@ -107,22 +107,15 @@ module Devise
         end
 
         # Find a user by it's confirmation token and try to confirm it.
-        # If no user is found, returns a new user
+        # If no user is found, returns a new user with an error.
         # If the user is already confirmed, create an error for the user
-        # Options must have the perishable_token
+        # Options must have the confirmation_token
         def confirm!(attributes={})
-          confirmable = find_or_initialize_with_error_by_confirmation_token(attributes[:confirmation_token])
-          confirmable.confirm! unless confirmable.new_record?
-          confirmable
-        end
-
-        # Attempt to find a user by and incoming confirmation_token. If no user
-        # is found, initialize a new one and adds an :invalid error to
-        # confirmation_token.
-        def find_or_initialize_with_error_by_confirmation_token(confirmation_token)
-          confirmable = find_or_initialize_by_confirmation_token(confirmation_token)
+          confirmable = find_or_initialize_by_confirmation_token(attributes[:confirmation_token])
           if confirmable.new_record?
             confirmable.errors.add(:confirmation_token, :invalid)
+          else
+            confirmable.confirm!
           end
           confirmable
         end

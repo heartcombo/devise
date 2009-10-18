@@ -32,7 +32,7 @@ module Devise
         save
       end
 
-      # Resets perishable token and send reset password instructions by email
+      # Resets reset password token and send reset password instructions by email
       def send_reset_password_instructions
         generate_reset_password_token!
         ::Notifier.deliver_reset_password_instructions(self)
@@ -58,17 +58,6 @@ module Devise
 
       module ClassMethods
 
-        # Attempt to find a user by and incoming reset_password_token. If no
-        # user is found, initialize a new one and adds an :invalid error to
-        # reset_password_token
-        def find_or_initialize_with_error_by_reset_password_token(reset_password_token)
-          recoverable = find_or_initialize_by_reset_password_token(reset_password_token)
-          if recoverable.new_record?
-            recoverable.errors.add(:reset_password_token, :invalid)
-          end
-          recoverable
-        end
-
         # Attempt to find a user by it's email. If a record is found, send new
         # password instructions to it. If not user is found, returns a new user
         # with an email not found error.
@@ -82,11 +71,15 @@ module Devise
         # Attempt to find a user by it's reset_password_token to reset it's
         # password. If a user is found, reset it's password and automatically
         # try saving the record. If not user is found, returns a new user
-        # containing an error in perishable_token attribute.
+        # containing an error in reset_password_token attribute.
         # Attributes must contain reset_password_token, password and confirmation
         def reset_password!(attributes={})
-          recoverable = find_or_initialize_with_error_by_reset_password_token(attributes[:reset_password_token])
-          recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) unless recoverable.new_record?
+          recoverable = find_or_initialize_by_reset_password_token(attributes[:reset_password_token])
+          if recoverable.new_record?
+            recoverable.errors.add(:reset_password_token, :invalid)
+          else
+            recoverable.reset_password!(attributes[:password], attributes[:password_confirmation])
+          end
           recoverable
         end
       end

@@ -22,8 +22,9 @@ class ConfirmationsController < ApplicationController
     self.resource = resource_class.confirm!(:confirmation_token => params[:confirmation_token])
 
     if resource.errors.empty?
+      sign_in_automatically(resource, resource_name)
       set_flash_message :success, :confirmed
-      redirect_to new_session_path(resource_name)
+      redirect_to root_path
     else
       render :new
     end

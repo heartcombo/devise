@@ -29,6 +29,12 @@ module Devise
         warden.authenticated?(scope)
       end
 
+      # Set the warden user with the scope, sign in the resource automatically
+      # (without credentials)
+      def sign_in_automatically(resource, scope)
+        warden.set_user(resource, :scope => scope)
+      end
+
       # Sign out based on scope
       def sign_out(scope, *args)
         warden.raw_session.inspect # Without this inspect here. The session does not clear.

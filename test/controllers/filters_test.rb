@@ -78,4 +78,10 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.expects(:redirect_to).with(root_path)
     @controller.require_no_authentication
   end
+
+  test 'sign in automatically proxy to set user on warden' do
+    user = OpenStruct.new
+    @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
+    @controller.sign_in_automatically(user, :user)
+  end
 end

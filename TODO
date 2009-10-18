@@ -30,3 +30,4 @@
 * Remove perishable token and create attributes for confirmation_token and reset_password_token
 * Add confirmation_sent_at for confirmable
 * Add confirmable filters
+* Sign user in automatically after confirming or changing it's password

@@ -101,7 +101,7 @@ class PasswordTest < ActionController::IntegrationTest
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token
 
-    assert_template 'sessions/new'
+    assert_template 'home/index'
     assert_contain 'Your password was changed successfully.'
     assert user.reload.valid_password?('987654321')
   end
@@ -119,5 +119,13 @@ class PasswordTest < ActionController::IntegrationTest
     reset_password :reset_password_token => user.reload.reset_password_token, :visit => false
     assert_contain 'Your password was changed successfully.'
     assert user.reload.valid_password?('987654321')
+  end
+
+  test 'sign in user automatically after changing it\'s password' do
+    user = create_user
+    request_forgot_password
+    reset_password :reset_password_token => user.reload.reset_password_token
+
+    assert warden.authenticated?(:user)
   end
 end

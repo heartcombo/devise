@@ -28,8 +28,9 @@ class PasswordsController < ApplicationController
     self.resource = resource_class.reset_password!(params[resource_name])
 
     if resource.errors.empty?
+      sign_in_automatically(resource, resource_name)
       set_flash_message :success, :updated
-      redirect_to new_session_path(resource_name)
+      redirect_to root_path
     else
       render :edit
     end

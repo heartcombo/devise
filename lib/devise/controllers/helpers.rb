@@ -25,6 +25,23 @@ module Devise
 
     protected
 
+      # Redirects to stored uri before signing in or the default path and clear
+      # return to.
+      def redirect_back_or_to(default)
+        redirect_to(return_to || default)
+        clear_return_to
+      end
+
+      # Access to scoped stored uri
+      def return_to
+        session[:"#{resource_name}.return_to"]
+      end
+
+      # Clear scoped stored uri
+      def clear_return_to
+        session[:"#{resource_name}.return_to"] = nil
+      end
+
       # Attempt to find the mapped route for devise based on request path
       def devise_mapping
         @devise_mapping ||= Devise.find_mapping_by_path(request.path)

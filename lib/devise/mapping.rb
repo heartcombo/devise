@@ -8,8 +8,27 @@ module Devise
 
   # Responsible for handling devise mappings and routes configuration. Each
   # resource configured by devise_for in routes is actually creating a mapping
-  # object. Please refer to devise_for in routes for more info.
-  class Mapping
+  # object. You can refer to devise_for in routes for usage options.
+  #
+  # The required value in devise_for is actually not used internally, but it's
+  # inflected to find all other values.
+  #
+  #   map.devise_for :users
+  #   mapping = Devise.mappings[:user]
+  #
+  #   mapping.name #=> :user 
+  #   # is the scope used in controllers and warden, given in the route as :singular.
+  #
+  #   mapping.as   #=> "users"
+  #   # how the mapping should be search in the path, given in the route as :as.
+  #
+  #   mapping.to   #=> User
+  #   # is the class to be loaded from routes, given in the route as :class_name.
+  #
+  #   mapping.for  #=> [:authenticable]
+  #   # is the modules included in the class
+  #
+  class Mapping #:nodoc:
     attr_reader :name, :as, :path_names
 
     def initialize(name, options)
@@ -44,6 +63,7 @@ module Devise
     #   def confirmable?
     #     self.for.include?(:confirmable)
     #   end
+    #
     CONTROLLERS.values.each do |m|
       class_eval <<-METHOD, __FILE__, __LINE__
         def #{m}?

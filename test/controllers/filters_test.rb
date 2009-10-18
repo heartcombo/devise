@@ -72,11 +72,21 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.admin_signed_in?
   end
 
+  test 'proxy user_session to session scope in warden' do
+    @mock_warden.expects(:session).with(:user).returns({})
+    @controller.user_session
+  end
+
+  test 'proxy admin_session to session scope in warden' do
+    @mock_warden.expects(:session).with(:admin).returns({})
+    @controller.admin_session
+  end
+
   test 'require no authentication tests current mapping' do
     @controller.expects(:resource_name).returns(:user)
     @mock_warden.expects(:authenticated?).with(:user).returns(true)
     @controller.expects(:redirect_to).with(root_path)
-    @controller.require_no_authentication
+    @controller.send :require_no_authentication
   end
 
   test 'sign in automatically proxy to set user on warden' do

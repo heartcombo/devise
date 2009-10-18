@@ -8,7 +8,7 @@ class HelpersTest < ActionController::TestCase
     assert_equal :user, @controller.resource_name
   end
 
-  test 'get translated resource name from request path' do
+  test 'get resource name from specific request path' do
     @request.path = '/admin_area/session'
     assert_equal :admin, @controller.resource_name
   end
@@ -18,13 +18,13 @@ class HelpersTest < ActionController::TestCase
     assert_equal User, @controller.resource_class
   end
 
-  test 'get resource ivar from request path' do
+  test 'get resource instance variable from request path' do
     @request.path = '/admin_area/session'
     @controller.instance_variable_set(:@admin, admin = Admin.new)
     assert_equal admin, @controller.resource
   end
 
-  test 'set resource ivar from request path' do
+  test 'set resource instance variable from request path' do
     @request.path = '/admin_area/session'
 
     admin = @controller.send(:resource_class).new

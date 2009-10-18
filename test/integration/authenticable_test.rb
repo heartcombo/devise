@@ -177,4 +177,10 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_template 'users/index'
     assert_nil session[:"user.return_to"]
   end
+
+  test 'allows session to be set by a given scope' do
+    sign_in_as_user
+    visit 'users/index'
+    assert_equal "Cart", @controller.user_session[:cart]
+  end
 end

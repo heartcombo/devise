@@ -5,7 +5,7 @@ rescue
   require 'warden'
 end
 
-require 'devise/initializers/warden'
+require 'devise/warden'
 require 'devise/mapping'
 require 'devise/routes'
 

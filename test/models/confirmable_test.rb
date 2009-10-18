@@ -10,6 +10,37 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not field_accessible?(:confirmed_at)
   end
 
+  test 'should not have confirmation token accessible' do
+    assert_not field_accessible?(:confirmation_token)
+  end
+
+  test 'should not have confirmation sent at accessible' do
+    assert_not field_accessible?(:confirmation_sent_at)
+  end
+
+  test 'should generate confirmation token after creating a record' do
+    assert_nil new_user.confirmation_token
+    assert_not_nil create_user.confirmation_token
+  end
+
+  test 'should regenerate confirmation token each time' do
+    user = create_user
+    3.times do
+      token = user.confirmation_token
+      user.reset_confirmation!
+      assert_not_equal token, user.confirmation_token
+    end
+  end
+
+  test 'should never generate the same confirmation token for different users' do
+    confirmation_tokens = []
+    10.times do
+      token = create_user.confirmation_token
+      assert !confirmation_tokens.include?(token)
+      confirmation_tokens << token
+    end
+  end
+
   test 'should confirm a user updating confirmed at' do
     user = create_user
     assert_nil user.confirmed_at
@@ -17,11 +48,11 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_nil user.confirmed_at
   end
 
-  test 'should clear perishable token while confirming a user' do
+  test 'should clear confirmation token while confirming a user' do
     user = create_user
-    assert_present user.perishable_token
+    assert_present user.confirmation_token
     user.confirm!
-    assert_nil user.perishable_token
+    assert_nil user.confirmation_token
   end
 
   test 'should verify whether a user is confirmed or not' do
@@ -43,27 +74,27 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should find and confirm an user automatically' do
     user = create_user
-    confirmed_user = User.confirm!(:perishable_token => user.perishable_token)
+    confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
     assert_not_nil confirmed_user
     assert_equal confirmed_user, user
     assert user.reload.confirmed?
   end
 
   test 'should return a new user with errors if no user exists while trying to confirm' do
-    confirmed_user = User.confirm!(:perishable_token => 'invalid_perishable_token')
+    confirmed_user = User.confirm!(:confirmation_token => 'invalid_confirmation_token')
     assert confirmed_user.new_record?
   end
 
   test 'should return errors for a new user when trying to confirm' do
-    confirmed_user = User.confirm!(:perishable_token => 'invalid_perishable_token')
-    assert_not_nil confirmed_user.errors[:perishable_token]
-    assert_equal "invalid confirmation", confirmed_user.errors[:perishable_token]
+    confirmed_user = User.confirm!(:confirmation_token => 'invalid_confirmation_token')
+    assert_not_nil confirmed_user.errors[:confirmation_token]
+    assert_equal 'is invalid', confirmed_user.errors[:confirmation_token]
   end
 
   test 'should generate errors for a user email if user is already confirmed' do
     user = create_user
     user.confirm!
-    confirmed_user = User.confirm!(:perishable_token => user.perishable_token)
+    confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
     assert confirmed_user.confirmed?
     assert confirmed_user.errors[:email]
   end
@@ -109,11 +140,11 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal 'not found', confirmation_user.errors[:email]
   end
 
-  test 'should reset perishable token before send the confirmation instructions email' do
+  test 'should reset confirmation token before send the confirmation instructions email' do
     user = create_user
-    token = user.perishable_token
+    token = user.confirmation_token
     confirmation_user = User.send_confirmation_instructions(:email => user.email)
-    assert_not_equal token, user.reload.perishable_token
+    assert_not_equal token, user.reload.confirmation_token
   end
 
   test 'should reset confirmation status when sending the confirmation instructions' do
@@ -156,12 +187,12 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not user.reload.confirmed?
   end
 
-  test 'should reset perishable token when updating email' do
+  test 'should reset confirmation token when updating email' do
     user = create_user
-    token = user.perishable_token
+    token = user.confirmation_token
     user.email = 'new_test@example.com'
     user.save!
-    assert_not_equal token, user.reload.perishable_token
+    assert_not_equal token, user.reload.confirmation_token
   end
 
   test 'should not be able to send instructions if the user is already confirmed' do

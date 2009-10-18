@@ -40,10 +40,12 @@ We're assuming here you want a User model. First of all you have to setup a migr
   t.string :email,              :null => false
   t.string :encrypted_password, :null => false
   t.string :password_salt,      :null => false
-  # required for recoverable and/or confirmable
-  t.string :perishable_token
   # required for confirmable
+  t.string   :confirmation_token
+  t.datetime :confirmation_sent_at
   t.datetime :confirmed_at
+  # required for recoverable
+  t.string   :reset_password_token
 
 Now let's setup a User model adding the devise line to have your authentication working:
 

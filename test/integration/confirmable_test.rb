@@ -17,20 +17,20 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
-  test 'user with invalid perishable token should not be able to confirm an account' do
-    visit user_confirmation_path(:perishable_token => 'invalid_perishable')
+  test 'user with invalid confirmation token should not be able to confirm an account' do
+    visit user_confirmation_path(:confirmation_token => 'invalid_confirmation')
 
     assert_response :success
     assert_template 'confirmations/new'
     assert_have_selector '#errorExplanation'
-    assert_contain 'invalid confirmation'
+    assert_contain 'Confirmation token is invalid'
   end
 
-  test 'user with valid perishable token should be able to confirm an account' do
+  test 'user with valid confirmation token should be able to confirm an account' do
     user = create_user(:confirm => false)
     assert_not user.confirmed?
 
-    visit user_confirmation_path(:perishable_token => user.perishable_token)
+    visit user_confirmation_path(:confirmation_token => user.confirmation_token)
 
     assert_template 'sessions/new'
     assert_contain 'Your account was successfully confirmed!'
@@ -40,7 +40,7 @@ class ConfirmationTest < ActionController::IntegrationTest
 
   test 'user already confirmed user should not be able to confirm the account again' do
     user = create_user
-    visit user_confirmation_path(:perishable_token => user.perishable_token)
+    visit user_confirmation_path(:confirmation_token => user.confirmation_token)
 
     assert_template 'confirmations/new'
     assert_have_selector '#errorExplanation'

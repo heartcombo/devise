@@ -24,7 +24,6 @@ module Devise
     def devise(*options)
       options  = [:confirmable, :recoverable, :validatable] if options.include?(:all)
       options |= [:authenticable]
-      options |= [:perishable] if options.include?(:confirmable) || options.include?(:recoverable)
 
       options.each do |m|
         devise_modules << m.to_sym

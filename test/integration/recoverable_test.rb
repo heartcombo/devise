@@ -20,7 +20,7 @@ class PasswordTest < ActionController::IntegrationTest
   end
 
   def reset_password(options={}, &block)
-    visit edit_user_password_path(:perishable_token => options[:perishable_token])
+    visit edit_user_password_path(:reset_password_token => options[:reset_password_token])
     assert_response :success
     assert_template 'passwords/edit'
 
@@ -69,21 +69,21 @@ class PasswordTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
-  test 'not authenticated user with invalid perishable token should not be able to change his password' do
+  test 'not authenticated user with invalid reset password token should not be able to change his password' do
     user = create_user
-    reset_password :perishable_token => 'invalid_perishable'
+    reset_password :reset_password_token => 'invalid_reset_password'
 
     assert_response :success
     assert_template 'passwords/edit'
     assert_have_selector '#errorExplanation'
-    assert_contain 'invalid confirmation'
+    assert_contain 'Reset password token is invalid'
     assert_not user.reload.valid_password?('987654321')
   end
 
-  test 'not authenticated user with valid perisable token but invalid password should not be able to change his password' do
+  test 'not authenticated user with valid reset password token but invalid password should not be able to change his password' do
     user = create_user
     request_forgot_password
-    reset_password :perishable_token => user.reload.perishable_token do
+    reset_password :reset_password_token => user.reload.reset_password_token do
       fill_in 'Password confirmation', :with => 'other_password'
     end
 
@@ -97,7 +97,7 @@ class PasswordTest < ActionController::IntegrationTest
   test 'not authenticated user with valid data should be able to change his password' do
     user = create_user
     request_forgot_password
-    reset_password :perishable_token => user.reload.perishable_token
+    reset_password :reset_password_token => user.reload.reset_password_token
 
     assert_template 'sessions/new'
     assert_contain 'Your password was changed successfully.'

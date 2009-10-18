@@ -78,6 +78,16 @@ module Devise
           authenticable = self.find_by_email(attributes[:email])
           authenticable if authenticable.try(:valid_password?, attributes[:password])
         end
+
+        # Attempt to find a user by it's email. If not user is found, returns a
+        # new user with an email not found error.
+        def find_or_initialize_with_error_by_email(email)
+          perishable = find_or_initialize_by_email(email)
+          if perishable.new_record?
+            perishable.errors.add(:email, :not_found, :default => 'not found')
+          end
+          perishable
+        end
       end
     end
   end

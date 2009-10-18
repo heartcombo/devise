@@ -7,7 +7,8 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
     I18n.backend.store_translations :en, {:devise => { :notifier => { :reset_password_instructions => 'Reset instructions' } }}
     Notifier.sender = 'test@example.com'
     @user = create_user
-    @mail = Notifier.deliver_reset_password_instructions(@user)
+    @user.send_reset_password_instructions
+    @mail = ActionMailer::Base.deliveries.last
   end
 
   test 'email sent after reseting the user password' do
@@ -36,7 +37,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
 
   test 'body should have link to confirm the account' do
     host = ActionMailer::Base.default_url_options[:host]
-    confirmation_url_regexp = %r{<a href=\"http://#{host}/users/password/edit\?perishable_token=#{@user.perishable_token}">}
+    confirmation_url_regexp = %r{<a href=\"http://#{host}/users/password/edit\?reset_password_token=#{@user.reset_password_token}">}
     assert_match confirmation_url_regexp, @mail.body
   end
 end

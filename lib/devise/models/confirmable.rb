@@ -30,7 +30,7 @@ module Devise
       # is already confirmed, add en error to email field
       def confirm!
         unless_confirmed do
-          clear_perishable_token
+          clear_confirmation_token
           update_attribute(:confirmed_at, Time.now)
         end
       end
@@ -58,15 +58,15 @@ module Devise
 
       private
 
-        # Remove confirmation date from the user, ensuring after a user update it's
-        # email, it won't be able to sign in without confirming it.
+        # Remove confirmation date from the user, ensuring after a user update
+        # it's email, it won't be able to sign in without confirming it.
         def reset_confirmation
-          reset_perishable_token
+          generate_confirmation_token
           self.confirmed_at = nil
         end
 
-        # Checks whether the record is confirmed or not, yielding to the block if
-        # it's already confirmed, otherwise adds an error to email.
+        # Checks whether the record is confirmed or not, yielding to the block
+        # if it's already confirmed, otherwise adds an error to email.
         def unless_confirmed
           unless confirmed?
             yield
@@ -74,6 +74,24 @@ module Devise
             errors.add(:email, :already_confirmed, :default => 'already confirmed')
             false
           end
+        end
+
+        # Generates a new random token for confirmation, and stores the time
+        # this token is being generated
+        def generate_confirmation_token
+          self.confirmation_token = friendly_token
+          self.confirmation_sent_at = Time.now.utc
+        end
+
+        # Resets the confirmation token with and save the record without
+        # validating.
+#        def generate_confirmation_token!
+#          generate_confirmation_token && save(false)
+#        end
+
+        # Removes confirmation token
+        def clear_confirmation_token
+          self.confirmation_token = nil
         end
 
       module ClassMethods
@@ -93,8 +111,19 @@ module Devise
         # If the user is already confirmed, create an error for the user
         # Options must have the perishable_token
         def confirm!(attributes={})
-          confirmable = find_or_initialize_with_error_by_perishable_token(attributes[:perishable_token])
+          confirmable = find_or_initialize_with_error_by_confirmation_token(attributes[:confirmation_token])
           confirmable.confirm! unless confirmable.new_record?
+          confirmable
+        end
+
+        # Attempt to find a user by and incoming confirmation_token. If no user
+        # is found, initialize a new one and adds an :invalid error to
+        # confirmation_token.
+        def find_or_initialize_with_error_by_confirmation_token(confirmation_token)
+          confirmable = find_or_initialize_by_confirmation_token(confirmation_token)
+          if confirmable.new_record?
+            confirmable.errors.add(:confirmation_token, :invalid)
+          end
           confirmable
         end
       end

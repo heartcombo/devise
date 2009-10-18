@@ -2,7 +2,7 @@
 
 <% form_for resource_name, :url => password_path(resource_name), :html => { :method => :put } do |f| %>
   <%= f.error_messages %>
-  <%= f.hidden_field :perishable_token %>
+  <%= f.hidden_field :reset_password_token %>
 
   <p><%= f.label :password %></p>
   <p><%= f.password_field :password %></p>

@@ -14,6 +14,10 @@ class MapTest < ActiveSupport::TestCase
     assert_equal :admin_area, Devise.mappings[:admin].as
   end
 
+  test 'allow custom singular to be given' do
+    assert_equal :organizers, Devise.mappings[:manager].as
+  end
+
   test 'allows a controller depending on the mapping' do
     mapping = Devise.mappings[:user]
     assert mapping.allows?(:sessions)

@@ -68,4 +68,8 @@ class MapRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'account/verification/new')
   end
 
+  test 'map organizer with custom singular name' do
+    assert_recognizes({:controller => 'passwords', :action => 'new'}, 'organizers/password/new')
+  end
+
 end

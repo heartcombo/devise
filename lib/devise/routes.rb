@@ -55,7 +55,7 @@ module ActionController::Routing
       #
       #  * :singular => setup the name used to create named routes. By default, for a :users key, it is going to be the singularized version, :user. To configure a named route like account_session_path instead of user_session_path just do:
       #
-      #    map.devise_for :users, :singular => :user
+      #    map.devise_for :users, :singular => :account
       #
       #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :password and :confirmation.
       #
@@ -64,7 +64,7 @@ module ActionController::Routing
         options = resources.extract_options!
 
         resources.map!(&:to_sym)
-        options.assert_valid_keys(:class_name, :as, :path_names)
+        options.assert_valid_keys(:class_name, :as, :path_names, :singular)
 
         resources.each do |resource|
           mapping = Devise::Mapping.new(resource, options)

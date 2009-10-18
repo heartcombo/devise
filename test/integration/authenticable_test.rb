@@ -2,7 +2,7 @@ require 'test/test_helper'
 
 class AuthenticationTest < ActionController::IntegrationTest
 
-  test 'home should be accessible without signed in admins' do
+  test 'home should be accessible without signed in' do
     visit '/'
     assert_response :success
     assert_template 'home/index'
@@ -64,7 +64,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_redirected_to new_admin_session_path(:unauthenticated => true)
   end
 
-  test 'signed in as admin should be able to access admin actions successfully' do
+  test 'signed in as admin should be able to access admin actions' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
     assert_not warden.authenticated?(:user)
@@ -135,7 +135,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
-  test 'not authenticated admin does not set error message on sign out' do
+  test 'unauthenticated admin does not set message on sign out' do
     get destroy_admin_session_path
     assert_response :redirect
     assert_redirected_to root_path
@@ -144,7 +144,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_not_contain 'Signed out successfully'
   end
 
-  test 'redirect with warden show error message' do
+  test 'redirect from warden shows error message' do
     get admins_path
 
     warden_path = new_admin_session_path(:unauthenticated => true)
@@ -160,7 +160,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_not_contain 'Send me reset password instructions'
   end
 
-  test 'return to default url if no one was requested' do
+  test 'return to default url if no other was requested' do
     sign_in_as_user
 
     assert_template 'home/index'
@@ -176,6 +176,11 @@ class AuthenticationTest < ActionController::IntegrationTest
     sign_in_as_user :visit => false
     assert_template 'users/index'
     assert_nil session[:"user.return_to"]
+  end
+
+  test 'return to configured home path after sign in' do
+    sign_in_as_admin
+    assert_equal "/admin_area/home", @request.path
   end
 
   test 'allows session to be set by a given scope' do

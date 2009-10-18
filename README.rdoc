@@ -16,7 +16,7 @@ Right now it's composed of four mainly modules:
 
 == Dependencies
 
-Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework from hassox (http://github.com/hassox), so you're gonna need to install this gem. Current warden version is 0.4.0. Please ensure you have it installed in order to use devise (see instalation below).
+Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework so you need to install it as a gem. Current warden version is 0.4.0. Please ensure you have it installed in order to use devise (see instalation below).
 
 == Installation
 
@@ -28,7 +28,7 @@ Install devise as an engine (plugin) inside your app:
 
   script/plugin install git://github.com/plataformatec/devise.git
 
-And you're ready to use devise.
+And you're ready to go.
 
 == Basic Usage
 
@@ -40,10 +40,12 @@ We're assuming here you want a User model. First of all you have to setup a migr
   t.string :email,              :null => false
   t.string :encrypted_password, :null => false
   t.string :password_salt,      :null => false
+
   # required for confirmable
   t.string   :confirmation_token
   t.datetime :confirmation_sent_at
   t.datetime :confirmed_at
+
   # required for recoverable
   t.string   :reset_password_token
 
@@ -57,16 +59,21 @@ This line adds devise authenticable automatically for you inside your User class
 
   # Same as using only devise, authenticable is activated by default
   devise :authenticable
-  # Include confirmable
+
+  # Include authenticable + confirmable
   devise :confirmable
-  # Include recoverable
+
+  # Include authenticable + recoverable
   devise :recoverable
-  # Include validatable
-  devise :validatable
-  # Include all of them
+
+  # Include authenticable + conformable + recoverable + validatable
   devise :confirmable, :recoverable, :validatable
+
   # Same as above, include all of them
   devise :all
+
+  # Include all except recoverable
+  devise :all, :except => :recoverable
 
 Note that validations aren't added by default, so you're able to customize it. In order to have automatic validations working just include :validatable.
 
@@ -113,7 +120,7 @@ There are also some options available for configuring your routes:
 
 And that is it! Devise is gonna create some helpers to use inside your controllers and views. To setup a controller that needs user authentication, just add this before_filter:
 
-  before_filter :sign_in_user!
+  before_filter :authenticate_user!
 
 To verify if a user is signed in, you have the following helper:
 
@@ -129,12 +136,16 @@ Devise let's you setup as many roles as you want, so let's say you already have 
   t.string :email,              :null => false
   t.string :encrypted_password, :null => false
   t.string :password_salt,      :null => false
+
   # Inside your Admin model
   devise :validatable
+
   # Inside your routes
   map.devise_for :admin
+
   # Inside your protected controller
   before_filter :sign_in_admin!
+
   # Inside your controllers and views
   admin_signed_in?
   current_admin

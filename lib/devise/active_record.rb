@@ -16,13 +16,13 @@ module Devise
     #   # include authenticable + validatable modules
     #   devise :validatable
     #
-    #   # include all modules
+    #   # include authenticable + confirmable + recoverable + validatable
     #   devise :confirmable, :recoverable, :validatable
     #
     #   # shortcut to include all modules (same as above)
     #   devise :all
     #
-    #   # include all except :recoverable
+    #   # include all except recoverable
     #   devise :all, :except => :recoverable
     #
     def devise(*modules)

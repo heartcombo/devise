@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
   def create
     if authenticate(resource_name)
       set_flash_message :success, :signed_in
-      redirect_back_or_to root_path
+      redirect_back_or_to home_or_root_path
     else
       unauthenticated!
       render :new
@@ -30,5 +30,10 @@ class SessionsController < ApplicationController
     def unauthenticated!
       flash.now[:failure] = I18n.t(:"#{resource_name}.unauthenticated",
                                    :scope => [:devise, :sessions], :default => :unauthenticated)
+    end
+
+    def home_or_root_path
+      home_path = :"#{resource_name}_home_path"
+      respond_to?(home_path, true) ? send(home_path) : root_path
     end
 end

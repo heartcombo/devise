@@ -32,6 +32,12 @@ Warden::Manager.serialize_from_session do |klass, id|
   klass.find(id)
 end
 
+# Be a good citizen and always set the controller action, even if Devise is
+# never calling the failure app through warden.
+Warden::Manager.before_failure do |env, opts|
+  env['warden'].request.params['action'] = 'new'
+end
+
 # Adds Warden Manager to Rails middleware stack, configuring default devise
 # strategy and also the controller who will manage not authenticated users.
 Rails.configuration.middleware.use Warden::Manager do |manager|

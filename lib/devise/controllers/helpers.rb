@@ -42,6 +42,21 @@ module Devise
         session[:"#{resource_name}.return_to"] = nil
       end
 
+      # Checks for the existence of the resource root path. If it exists,
+      # returns it, otherwise returns the default root_path.
+      # Used after authenticating a user, confirming it's account or updating
+      # it's password, so we are able to redirect to scoped root paths.
+      # Examples (for a user scope):
+      #   map.user_root '/users', :controller => 'users' # creates user_root_path
+      #
+      #   map.namespace :users do |users|
+      #     users.root # creates user_root_path
+      #   end
+      def home_or_root_path
+        home_path = :"#{resource_name}_root_path"
+        respond_to?(home_path, true) ? send(home_path) : root_path
+      end
+
       # Attempt to find the mapped route for devise based on request path
       def devise_mapping
         @devise_mapping ||= Devise.find_mapping_by_path(request.path)

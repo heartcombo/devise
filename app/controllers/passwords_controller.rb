@@ -30,7 +30,7 @@ class PasswordsController < ApplicationController
     if resource.errors.empty?
       sign_in(resource_name, resource)
       set_flash_message :success, :updated
-      redirect_to root_path
+      redirect_to home_or_root_path
     else
       render :edit
     end

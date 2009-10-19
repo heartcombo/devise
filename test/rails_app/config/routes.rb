@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => :home
 
   map.connect '/admin_area/password/new', :controller => "passwords", :action => "new"
-  map.admin_home '/admin_area/home', :controller => "admins", :action => "index"
+  map.admin_root '/admin_area/home', :controller => "admins", :action => "index"
 
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'

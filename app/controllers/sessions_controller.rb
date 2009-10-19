@@ -32,8 +32,4 @@ class SessionsController < ApplicationController
                                    :scope => [:devise, :sessions], :default => :unauthenticated)
     end
 
-    def home_or_root_path
-      home_path = :"#{resource_name}_home_path"
-      respond_to?(home_path, true) ? send(home_path) : root_path
-    end
 end

@@ -24,7 +24,7 @@ class ConfirmationsController < ApplicationController
     if resource.errors.empty?
       sign_in(resource_name, resource)
       set_flash_message :success, :confirmed
-      redirect_to root_path
+      redirect_to home_or_root_path
     else
       render :new
     end

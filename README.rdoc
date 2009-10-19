@@ -134,6 +134,8 @@ You have also access to the session for this scope:
 
   user_session
 
+After signing in a user, confirming it's account or updating it's password, devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used.
+
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 
   # Create a migration with the required fields

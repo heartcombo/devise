@@ -21,7 +21,7 @@ class Notifier < ::ActionMailer::Base
       recipients   record.email
       sent_on      Time.now
       content_type 'text/html'
-      body         record.class.name.downcase.to_sym => record, :resource => record
+      body         underscore_name(record) => record, :resource => record
     end
 
     # Setup subject namespaced by model. It means you're able to setup your
@@ -36,8 +36,12 @@ class Notifier < ::ActionMailer::Base
     #           notifier:
     #             confirmation_instructions: '...'
     def translate(record, key)
-      I18n.t(:"#{record.class.name.downcase}.#{key}",
+      I18n.t(:"#{underscore_name(record)}.#{key}",
              :scope => [:devise, :notifier],
              :default => key)
+    end
+
+    def underscore_name(record)
+      @underscore_name ||= record.class.name.underscore.to_sym
     end
 end

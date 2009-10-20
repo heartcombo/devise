@@ -1,7 +1,7 @@
 begin
   require 'warden'
 rescue
-  gem 'hassox-warden'
+  gem 'warden'
   require 'warden'
 end
 
@@ -14,6 +14,8 @@ module Devise
     :passwords => :recoverable,
     :confirmations => :confirmable
   }.freeze
+
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 end
 
 require 'devise/warden'

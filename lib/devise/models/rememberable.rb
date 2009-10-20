@@ -13,8 +13,10 @@ module Devise
     #
     #   User.find(1).remember_me!  # regenerating the token
     #   User.find(1).forget_me!    # clearing the token
+    #
     #   # generating info to put into cookies
     #   User.serialize_into_cookie(user)
+    #
     #   # lookup the user based on the incoming cookie information
     #   User.serialize_from_cookie(cookie_string)
     module Rememberable
@@ -51,14 +53,6 @@ module Devise
 
       module ClassMethods
 
-        # Attempts to remember the user through it's id and remember_token.
-        # Returns the user if one is found and the token is valid, otherwise nil.
-        # Attributes must contain :id and :remember_token
-        def remember_me!(attributes={})
-          rememberable = find_by_id(attributes[:id])
-          rememberable if rememberable.try(:valid_remember_token?, attributes[:remember_token])
-        end
-
         # Create the cookie key using the record id and remember_token
         def serialize_into_cookie(record)
           "#{record.id}::#{record.remember_token}"
@@ -67,8 +61,10 @@ module Devise
         # Recreate the user based on the stored cookie
         def serialize_from_cookie(cookie)
           record_id, remember_token = cookie.split('::')
-          remember_me!(:id => record_id, :remember_token => remember_token)
+          record = find_by_id(attributes[:id])
+          record if record.try(:valid_remember_token?, remember_token)
         end
+
       end
     end
   end

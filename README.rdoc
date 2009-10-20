@@ -15,6 +15,9 @@ Right now it's composed of five mainly modules:
 * Rememberable: manages generating and clearing token for remember the user from a saved cookie.
 * Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.
 
+There's an example application using Devise at http://github.com/plataformatec/devise_example .
+
+
 == Dependencies
 
 Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework so you need to install it as a gem. Current warden version is 0.4.0. Please ensure you have it installed in order to use devise (see instalation below).

@@ -24,13 +24,12 @@ module Devise
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
     module Authenticable
+      Devise.model_config(self, :pepper)
+      Devise.model_config(self, :stretches, 10)
+
       def self.included(base)
         base.class_eval do
           extend ClassMethods
-
-          cattr_accessor :pepper, :stretches, :instance_writer => false
-          protected :pepper, :stretches
-          self.pepper, self.stretches = nil, 10
 
           attr_reader :password
           attr_accessor :password_confirmation

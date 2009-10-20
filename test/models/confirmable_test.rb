@@ -203,4 +203,62 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert user.errors[:email].present?
     assert_equal 'already confirmed', user.errors[:email]
   end
+
+  test 'confirm time should fallback to devise confirm in default configuration' do
+    begin
+      confirm_in = Devise.confirm_in
+      Devise.confirm_in = 1.day
+      user = new_user
+      user.confirmation_sent_at = 2.day.ago
+      assert_not user.active?
+      Devise.confirm_in = 3.days
+      assert user.active?
+    ensure
+      Devise.confirm_in = confirm_in
+    end
+  end
+
+  test 'should be active when confirmation sent at is not overpast' do
+    Devise.confirm_in = 5.days
+    user = create_user
+    user.confirmation_sent_at = 4.days.ago
+    assert user.active?
+  end
+
+  test 'should be active when already confirmed' do
+    user = create_user
+    assert_not user.confirmed?
+    assert_not user.active?
+    user.confirm!
+    assert user.confirmed?
+    assert user.active?
+  end
+
+  test 'should not be active when confirmation was sent within the limit' do
+    Devise.confirm_in = 5.days
+    user = create_user
+    user.confirmation_sent_at = 5.days.ago
+    assert_not user.active?
+  end
+
+  test 'should be active when confirm in is zero' do
+    Devise.confirm_in = 0.days
+    user = create_user
+    user.confirmation_sent_at = Date.today
+    assert_not user.active?
+  end
+
+  test 'should not be active when confirmation was sent before confirm in time' do
+    Devise.confirm_in = 4.days
+    user = create_user
+    user.confirmation_sent_at = 5.days.ago
+    assert_not user.active?
+  end
+
+  test 'should not be active without confirmation' do
+    user = create_user
+    user.update_attribute(:confirmation_sent_at, nil)
+    assert_not user.reload.active?
+  end
+
 end

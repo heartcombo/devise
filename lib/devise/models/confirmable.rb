@@ -16,6 +16,7 @@ module Devise
     #   User.find(1).send_confirmation_instructions # manually send instructions
     #   User.find(1).reset_confirmation! # reset confirmation status and send instructions
     module Confirmable
+      Devise.model_config(self, :confirm_in, 0)
 
       def self.included(base)
         base.class_eval do
@@ -56,13 +57,32 @@ module Devise
         end
       end
 
+      # Verify whether a user is active to sign in or not. If the user is
+      # already confirmed, it should never be blocked. Otherwise we need to
+      # calculate if the confirm time has not expired for this user, in other
+      # words, if the confirmation is still valid.
+      def active?
+        confirmed? || confirmation_period_valid?
+      end
+
       protected
 
-        # Remove confirmation date from the user, ensuring after a user update
-        # it's email, it won't be able to sign in without confirming it.
-        def reset_confirmation
-          generate_confirmation_token
-          self.confirmed_at = nil
+        # Checks if the confirmation for the user is within the limit time.
+        # We do this by calculating if the difference between today and the
+        # confirmation sent date does not exceed the confirm in time configured.
+        # Confirm_in is a model configuration, must always be an integer value.
+        # Example:
+        #   # confirm_in = 1 and confirmation_sent_at = today
+        #   confirmation_period_valid?   # returns true
+        #   # confirm_in = 5 and confirmation_sent_at = 4.days.ago
+        #   confirmation_period_valid?   # returns true
+        #   # confirm_in = 5 and confirmation_sent_at = 5.days.ago
+        #   confirmation_period_valid?   # returns false
+        #   # confirm_in = 0
+        #   confirmation_period_valid?   # will always return false
+        def confirmation_period_valid?
+          confirmation_sent_at? &&
+            (Date.today - confirmation_sent_at.to_date).days.to_i < confirm_in
         end
 
         # Checks whether the record is confirmed or not, yielding to the block
@@ -74,6 +94,13 @@ module Devise
             errors.add(:email, :already_confirmed, :default => 'already confirmed')
             false
           end
+        end
+
+        # Remove confirmation date from the user, ensuring after a user update
+        # it's email, it won't be able to sign in without confirming it.
+        def reset_confirmation
+          generate_confirmation_token
+          self.confirmed_at = nil
         end
 
         # Generates a new random token for confirmation, and stores the time

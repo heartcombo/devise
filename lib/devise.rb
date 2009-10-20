@@ -1,11 +1,9 @@
-#begin
-#  require 'warden'
-#rescue
-#  gem 'hassox-warden'
-#  require 'warden'
-#end
-
-require File.join(File.dirname(__FILE__), '..', 'warden', 'lib', 'warden')
+begin
+  require 'warden'
+rescue
+  gem 'hassox-warden'
+  require 'warden'
+end
 
 module Devise
   ALL = [:authenticable, :confirmable, :recoverable, :rememberable, :validatable].freeze

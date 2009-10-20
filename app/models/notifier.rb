@@ -32,9 +32,9 @@ class Notifier < ::ActionMailer::Base
     #     devise:
     #       notifier:
     #         confirmation_instructions: '...'
-    #       user:
-    #         notifier:
-    #           confirmation_instructions: '...'
+    #         user:
+    #           notifier:
+    #             confirmation_instructions: '...'
     def translate(record, key)
       I18n.t(:"#{record.class.name.downcase}.#{key}",
              :scope => [:devise, :notifier],

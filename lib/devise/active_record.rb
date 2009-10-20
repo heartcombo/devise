@@ -47,7 +47,6 @@ module Devise
     #
     def devise(*modules)
       options  = modules.extract_options!
-      options.assert_valid_keys(:except, *Devise::MODEL_CONFIG)
 
       modules  = Devise::ALL                    if modules.include?(:all)
       modules -= Array(options.delete(:except)) if options.key?(:except)
@@ -58,17 +57,8 @@ module Devise
         include Devise::Models.const_get(m.to_s.classify)
       end
 
-      # Convert new keys to methods which overwrites Devise defaults
       options.each do |key, value|
-        if value.is_a?(Proc)
-          define_method key, &value
-        else
-          class_eval <<-END_EVAL, __FILE__, __LINE__
-            def #{key}
-              #{value.inspect}
-            end
-          END_EVAL
-        end
+        self.send(:"#{key}=", value)
       end
     end
 

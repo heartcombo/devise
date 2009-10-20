@@ -16,26 +16,6 @@ module Devise
   }.freeze
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
-
-  MODEL_CONFIG = []
-
-  def self.model_config(klass, accessor, default=nil)
-    # Create Devise accessor
-    mattr_accessor accessor
-
-    # Set default value
-    send(:"#{accessor}=", default)
-
-    # Store configuration method
-    MODEL_CONFIG << accessor
-
-    # Set default value
-    klass.class_eval <<-METHOD
-      def #{accessor}
-        Devise.#{accessor}
-      end
-    METHOD
-  end
 end
 
 require 'devise/warden'

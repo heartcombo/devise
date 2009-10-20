@@ -40,6 +40,7 @@ module Devise
 
       # Sign out based on scope.
       def sign_out(scope, *args)
+        warden.user(scope) # Without loading user here, before_logout hook is not called
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope, *args)
       end

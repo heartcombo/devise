@@ -1,12 +1,14 @@
-begin
-  require 'warden'
-rescue
-  gem 'hassox-warden'
-  require 'warden'
-end
+#begin
+#  require 'warden'
+#rescue
+#  gem 'hassox-warden'
+#  require 'warden'
+#end
+
+require File.join(File.dirname(__FILE__), '..', 'warden', 'lib', 'warden')
 
 module Devise
-  ALL = [:authenticable, :confirmable, :recoverable, :validatable].freeze
+  ALL = [:authenticable, :confirmable, :recoverable, :rememberable, :validatable].freeze
 
   # Maps controller names to devise modules
   CONTROLLERS = {
@@ -17,7 +19,6 @@ module Devise
 end
 
 require 'devise/warden'
-require 'devise/mapping'
 require 'devise/routes'
 
 # Ensure to include Devise modules only after Rails initialization.

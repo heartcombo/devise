@@ -9,7 +9,7 @@ module Devise
   #   map.devise_for :users
   #   mapping = Devise.mappings[:user]
   #
-  #   mapping.name #=> :user 
+  #   mapping.name #=> :user
   #   # is the scope used in controllers and warden, given in the route as :singular.
   #
   #   mapping.as   #=> "users"
@@ -57,7 +57,7 @@ module Devise
     #     self.for.include?(:confirmable)
     #   end
     #
-    CONTROLLERS.values.each do |m|
+    ALL.each do |m|
       class_eval <<-METHOD, __FILE__, __LINE__
         def #{m}?
           self.for.include?(:#{m})

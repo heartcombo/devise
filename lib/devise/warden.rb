@@ -19,6 +19,11 @@ module Warden::Mixins::Common
     raw_session.inspect # why do I have to inspect it to get it to clear?
     raw_session.clear
   end
+
+  # Proxy to request cookies
+  def cookies
+    request.cookies
+  end
 end
 
 # Session Serialization in. This block determines how the user will be stored
@@ -41,9 +46,13 @@ end
 # Adds Warden Manager to Rails middleware stack, configuring default devise
 # strategy and also the controller who will manage not authenticated users.
 Rails.configuration.middleware.use Warden::Manager do |manager|
-  manager.default_strategies :authenticable
+  manager.default_strategies :rememberable, :authenticable
   manager.failure_app = SessionsController
 end
 
 # Setup devise strategies for Warden
+Warden::Strategies.add(:rememberable, Devise::Strategies::Rememberable)
 Warden::Strategies.add(:authenticable, Devise::Strategies::Authenticable)
+
+# Require rememberable hooks
+require 'devise/hooks/rememberable'

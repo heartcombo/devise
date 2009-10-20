@@ -16,28 +16,30 @@ module Devise
         end
       end
 
-      # Find the attributes for the current mapping.
-      def attributes
-        @attributes ||= request.params[scope]
-      end
+      private
 
-      # Check for the right keys.
-      def valid_attributes?
-        attributes && attributes[:email].present? && attributes[:password].present?
-      end
+        # Find the attributes for the current mapping.
+        def attributes
+          @attributes ||= params[scope]
+        end
 
-      # Stores requested uri to redirect the user after signing in. We cannot use
-      # scoped session provided by warden here, since the user is not authenticated
-      # yet, but we still need to store the uri based on scope, so different scopes
-      # would never use the same uri to redirect.
-      def store_location
-        session[:"#{mapping.name}.return_to"] = request.request_uri if request.get?
-      end
+        # Check for the right keys.
+        def valid_attributes?
+          attributes && attributes[:email].present? && attributes[:password].present?
+        end
 
-      # Create path to sign in the resource
-      def sign_in_path
-        "/#{mapping.as}/#{mapping.path_names[:sign_in]}"
-      end
+        # Stores requested uri to redirect the user after signing in. We cannot use
+        # scoped session provided by warden here, since the user is not authenticated
+        # yet, but we still need to store the uri based on scope, so different scopes
+        # would never use the same uri to redirect.
+        def store_location
+          session[:"#{mapping.name}.return_to"] = request.request_uri if request.get?
+        end
+
+        # Create path to sign in the resource
+        def sign_in_path
+          "/#{mapping.as}/#{mapping.path_names[:sign_in]}"
+        end
     end
   end
 end

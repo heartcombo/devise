@@ -19,10 +19,15 @@ ActiveRecord::Schema.define(:version => 1) do
       t.string   :email,              :null => false
       t.string   :encrypted_password, :null => false
       t.string   :password_salt,      :null => false
-      t.string   :confirmation_token
-      t.datetime :confirmation_sent_at
-      t.datetime :confirmed_at
-      t.string   :reset_password_token
+      if table == :users
+        t.string   :confirmation_token
+        t.datetime :confirmation_sent_at
+        t.datetime :confirmed_at
+        t.string   :reset_password_token
+        t.string   :remember_token
+      end
+
+      t.timestamps
     end
   end
 end

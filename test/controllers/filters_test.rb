@@ -48,6 +48,7 @@ class ControllerAuthenticableTest < ActionController::TestCase
   end
 
   test 'proxy logout to warden' do
+    @mock_warden.expects(:user).with(:user).returns(true)
     @mock_warden.expects(:logout).with(:user).returns(true)
     @controller.sign_out(:user)
   end

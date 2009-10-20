@@ -24,21 +24,24 @@ class ActionController::IntegrationTest
   end
 
   def sign_in_as_user(options={}, &block)
-    create_user(options)
+    user = create_user(options)
     visit new_user_session_path unless options[:visit] == false
     fill_in 'email', :with => 'user@test.com'
     fill_in 'password', :with => '123456'
+    check 'remember me' if options[:remember_me] == true
     yield if block_given?
     click_button 'Sign In'
+    user
   end
 
   def sign_in_as_admin(options={}, &block)
-    create_admin(options)
+    admin = create_admin(options)
     visit new_admin_session_path unless options[:visit] == false
     fill_in 'email', :with => 'admin@test.com'
     fill_in 'password', :with => '123456'
     yield if block_given?
     click_button 'Sign In'
+    admin
   end
 
   # Fix assert_redirect_to in integration sessions because they don't take into

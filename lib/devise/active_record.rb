@@ -60,15 +60,19 @@ module Devise
 
       # Convert new keys to methods which overwrites Devise defaults
       options.each do |key, value|
-        if value.is_a?(Proc)
-          define_method key, &value
-        else
-          class_eval <<-END_EVAL, __FILE__, __LINE__
-            def #{key}
-              #{value.inspect}
-            end
-          END_EVAL
+        case value
+          when Proc
+            define_method key, &value
+            next
+          when ActiveSupport::Duration
+            value = value.to_i
         end
+
+        class_eval <<-END_EVAL, __FILE__, __LINE__
+          def #{key}
+            #{value.inspect}
+          end
+        END_EVAL
       end
     end
 

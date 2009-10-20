@@ -1,4 +1,4 @@
-* Add remember me (with customizable time frame)
+* Add customizable time frame for remember me
 
 * Create generators
 * Allow stretches and pepper per model
@@ -32,3 +32,5 @@
 * Add confirmation_sent_at for confirmable
 * Add confirmable filters
 * Sign user in automatically after confirming or changing it's password
+
+* Add remember me

@@ -13,11 +13,14 @@ module Devise
     #   # include authenticable + recoverable modules
     #   devise :recoverable
     #
+    #   # include authenticable + rememberable modules
+    #   devise :rememberable
+    #
     #   # include authenticable + validatable modules
     #   devise :validatable
     #
-    #   # include authenticable + confirmable + recoverable + validatable
-    #   devise :confirmable, :recoverable, :validatable
+    #   # include authenticable + confirmable + recoverable + rememberable + validatable
+    #   devise :confirmable, :recoverable, :rememberable, :validatable
     #
     #   # shortcut to include all modules (same as above)
     #   devise :all

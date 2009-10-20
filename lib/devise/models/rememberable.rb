@@ -3,7 +3,20 @@ require 'digest/sha1'
 module Devise
   module Models
 
-    # Rememberable Module
+    # Rememberable manages generating and clearing token for remember the user
+    # from a saved cookie. Rememberable also has utility methods for dealing
+    # with serializing the user into the cookie and back from the cookie, trying
+    # to lookup the record based on the saved information.
+    # You probably wouldn't use rememberable methods directly, they are used
+    # mostly internally for handling the remember token.
+    # Examples:
+    #
+    #   User.find(1).remember_me!  # regenerating the token
+    #   User.find(1).forget_me!    # clearing the token
+    #   # generating info to put into cookies
+    #   User.serialize_into_cookie(user)
+    #   # lookup the user based on the incoming cookie information
+    #   User.serialize_from_cookie(cookie_string)
     module Rememberable
 
       def self.included(base)

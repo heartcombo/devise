@@ -3,7 +3,8 @@ module Devise
     # Shortcut method for including all devise modules inside your model.
     # You can give some extra options while declaring devise in your model:
     #
-    # * except: let's you add all devise modules, except the ones you setup here:
+    # * except: convenient option that allows you to add all devise modules,
+    #   removing only the modules you setup here:
     #
     #    devise :all, :except => :rememberable
     #
@@ -17,7 +18,7 @@ module Devise
     #    devise :all, :stretches => 20
     #
     # You can refer to Authenticable for more information about writing your own
-    # method to setup pepper and stretches
+    # method to setup pepper and stretches.
     #
     # Examples:
     #

@@ -3,6 +3,12 @@ require 'digest/sha1'
 
 class AuthenticableTest < ActiveSupport::TestCase
 
+  def encrypt_password(user, pepper=nil, stretches=1)
+    user.class_eval { define_method(:stretches) { stretches } } if stretches
+    user.password = '123456'
+    ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{pepper}--123456--#{pepper}--")
+  end
+
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)
@@ -76,12 +82,6 @@ class AuthenticableTest < ActiveSupport::TestCase
   test 'should encrypt password using a sha1 hash' do
     user = new_user
     assert_equal encrypt_password(user), user.encrypted_password
-  end
-
-  def encrypt_password(user, pepper=nil, stretches=1)
-    user.instance_variable_set(:@stretches, stretches) if stretches
-    user.password = '123456'
-    ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{pepper}--123456--#{pepper}--")
   end
 
   test 'should fallback to devise pepper default configuring' do

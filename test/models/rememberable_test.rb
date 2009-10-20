@@ -45,23 +45,6 @@ class RememberableTest < ActiveSupport::TestCase
     assert_not user.valid_remember_token?(user.remember_token)
   end
 
-  test 'find a user by its id and remember it if the token is valid' do
-    user = create_user
-    user.remember_me!
-    remembered_user = User.remember_me!(:id => user.id, :remember_token => user.remember_token)
-    assert_not_nil remembered_user
-    assert_equal remembered_user, user
-  end
-
-  test 'remember me should return nil if no user is found' do
-    assert_nil User.remember_me!(:id => 0)
-  end
-
-  test 'remember me return nil if is a valid user with invalid token' do
-    user = create_user
-    assert_nil User.remember_me!(:id => user.id, :remember_token => 'invalid_token')
-  end
-
   test 'serialize into cookie' do
     user = create_user
     user.remember_me!
@@ -72,5 +55,14 @@ class RememberableTest < ActiveSupport::TestCase
     user = create_user
     user.remember_me!
     assert_equal user, User.serialize_from_cookie("#{user.id}::#{user.remember_token}")
+  end
+
+  test 'serialize should return nil if no user is found' do
+    assert_nil User.serialize_from_cookie('0::123')
+  end
+
+  test 'remember me return nil if is a valid user with invalid token' do
+    user = create_user
+    assert_nil User.serialize_from_cookie("#{user.id}::#{user.remember_token}123")
   end
 end

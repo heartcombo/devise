@@ -4,20 +4,19 @@ class Notifier < ::ActionMailer::Base
   # Deliver confirmation instructions when the user is created or its email is
   # updated, and also when confirmation is manually requested
   def confirmation_instructions(record)
-    subject translate(:confirmation_instructions, :default => 'Confirmation instructions')
-    setup_mail(record)
+    setup_mail(record, :confirmation_instructions)
   end
 
   # Deliver reset password instructions when manually requested
   def reset_password_instructions(record)
-    subject translate(:reset_password_instructions, :default => 'Reset password instructions')
-    setup_mail(record)
+    setup_mail(record, :reset_password_instructions)
   end
 
   private
 
     # Configure default email options
-    def setup_mail(record)
+    def setup_mail(record, key)
+      subject      translate(record, key)
       from         self.class.sender
       recipients   record.email
       sent_on      Time.now
@@ -25,7 +24,20 @@ class Notifier < ::ActionMailer::Base
       body         record.class.name.downcase.to_sym => record, :resource => record
     end
 
-    def translate(key, options={})
-      I18n.t(key, {:scope => [:devise, :notifier]}.merge(options))
+    # Setup subject namespaced by model. It means you're able to setup your
+    # messages using specific resource scope, or provide a default one.
+    # Example (i18n locale file):
+    #
+    #   en:
+    #     devise:
+    #       notifier:
+    #         confirmation_instructions: '...'
+    #       user:
+    #         notifier:
+    #           confirmation_instructions: '...'
+    def translate(record, key)
+      I18n.t(:"#{record.class.name.downcase}.#{key}",
+             :scope => [:devise, :notifier],
+             :default => key)
     end
 end

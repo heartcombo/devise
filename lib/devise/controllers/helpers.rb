@@ -76,8 +76,7 @@ module Devise
       #     devise:
       #       passwords:
       #         #default_scope_messages - only if resource_scope is not found
-      #       user:
-      #         passwords:
+      #         user:
       #           #resource_scope_messages
       #
       # Please refer to README or en.yml locale file to check what messages are

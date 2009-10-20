@@ -2,7 +2,6 @@
 
 * Create generators
 * Allow stretches and pepper per model
-* Mailer subjects namespaced by model
 * Use request_ip in session cookies
 * Session timeout
 
@@ -34,3 +33,4 @@
 * Sign user in automatically after confirming or changing it's password
 
 * Add remember me
+* Mailer subjects namespaced by model

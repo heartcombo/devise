@@ -7,20 +7,25 @@ module Devise
     # authenticity of a user while signing in.
     #
     # Configuration:
+    #
+    # You can overwrite configuration values by setting in globally in Devise,
+    # using devise method or overwriting the respective instance method.
+    #
     #   pepper: encryption key used for creating encrypted password. Each time
     #           password changes, it's gonna be encrypted again, and this key
     #           is added to the password and salt to create a secure hash.
-    #     def pepper; '1234567890987654321'; end
+    #           Always use `rake secret' to generate a new key.
     #
     #   stretches: defines how many times the password will be encrypted.
-    #     def stretches; 20; end
     #
     # Examples:
     #
     #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
     #    User.find(1).valid_password?('password123')         # returns true/false
+    #
     module Authenticable
-      mattr_accessor :pepper, :stretches
+      Devise.model_config(self, :pepper)
+      Devise.model_config(self, :stretches, 10)
 
       def self.included(base)
         base.class_eval do
@@ -47,23 +52,6 @@ module Devise
       end
 
       protected
-
-        # Pepper for encrypting password. Fallback to default configuration if
-        # no one exists for this specific model. Overwrite inside your model
-        # to provide specific pepper configuration:
-        #
-        #   def pepper; 'my_pepper_123'; end
-        def pepper
-          @pepper ||= Devise.pepper
-        end
-
-        # Encrypt password as many times as possible. Fallback to default
-        # configuration if no one exists for this specific model.
-        #
-        #   def stretches; 20; end
-        def stretches
-          @stretches ||= Devise.stretches
-        end
 
         # Gererates a default password digest based on salt, pepper and the
         # incoming password.

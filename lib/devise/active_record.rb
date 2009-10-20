@@ -47,10 +47,10 @@ module Devise
     #
     def devise(*modules)
       options  = modules.extract_options!
-      options.assert_valid_keys(:except, :stretches, :pepper)
+      options.assert_valid_keys(:except, *Devise::MODEL_CONFIG)
 
-      modules  = Devise::ALL             if modules.include?(:all)
-      modules -= Array(options[:except]) if options.key?(:except)
+      modules  = Devise::ALL                    if modules.include?(:all)
+      modules -= Array(options.delete(:except)) if options.key?(:except)
       modules |= [:authenticable]
 
       modules.each do |m|
@@ -58,11 +58,17 @@ module Devise
         include Devise::Models.const_get(m.to_s.classify)
       end
 
-      if options.key?(:stretches) || options.key?(:pepper)
-        class_eval <<-END_EVAL, __FILE__, __LINE__
-          def stretches; #{options[:stretches]}; end if options.key?(:stretches)
-          def pepper;   '#{options[:pepper]}';   end if options.key?(:pepper)
-        END_EVAL
+      # Convert new keys to methods which overwrites Devise defaults
+      options.each do |key, value|
+        if value.is_a?(Proc)
+          define_method key, &value
+        else
+          class_eval <<-END_EVAL, __FILE__, __LINE__
+            def #{key}
+              #{value.inspect}
+            end
+          END_EVAL
+        end
       end
     end
 

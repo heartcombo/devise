@@ -17,15 +17,25 @@ module Devise
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
-  # Default pepper and stretches used in authenticable to create password hash.
-  # You can setup it inside each model or globaly using this attributes.
-  # Example:
-  #   Devise.pepper = 'my_pepper_123'
-  #   Devise.stretches = 20
-  mattr_accessor :pepper, :stretches
+  MODEL_CONFIG = []
 
-  # Default stretches configuration
-  self.stretches = 10
+  def self.model_config(klass, accessor, default=nil)
+    # Create Devise accessor
+    mattr_accessor accessor
+
+    # Set default value
+    send(:"#{accessor}=", default)
+
+    # Store configuration method
+    MODEL_CONFIG << accessor
+
+    # Set default value
+    klass.class_eval <<-METHOD
+      def #{accessor}
+        Devise.#{accessor}
+      end
+    METHOD
+  end
 end
 
 require 'devise/warden'

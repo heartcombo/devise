@@ -2,7 +2,6 @@
 * Add customizable time frame for confirmation and filters
 
 * Create generators
-* Allow stretches and pepper per model
 * Use request_ip in session cookies
 * Session timeout
 
@@ -35,3 +34,4 @@
 
 * Add remember me
 * Mailer subjects namespaced by model
+* Allow stretches and pepper per model

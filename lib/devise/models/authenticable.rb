@@ -10,8 +10,10 @@ module Devise
     #   pepper: encryption key used for creating encrypted password. Each time
     #           password changes, it's gonna be encrypted again, and this key
     #           is added to the password and salt to create a secure hash.
+    #     def pepper; '1234567890987654321'; end
     #
     #   stretches: defines how many times the password will be encrypted.
+    #     def stretches; 20; end
     #
     # Examples:
     #
@@ -19,12 +21,6 @@ module Devise
     #    User.find(1).valid_password?('password123')         # returns true/false
     module Authenticable
       mattr_accessor :pepper, :stretches
-
-      # Pepper for encrypting password
-      self.pepper = '23c64df433d9b08e464db5c05d1e6202dd2823f0'
-
-      # Encrypt password as many times as possible
-      self.stretches = 10
 
       def self.included(base)
         base.class_eval do
@@ -36,21 +32,41 @@ module Devise
         end
       end
 
+      # Regenerates password salt and encrypted password each time password is
+      # setted.
       def password=(new_password)
         @password = new_password
         self.password_salt = friendly_token
         self.encrypted_password = password_digest(@password)
       end
 
-      # Verifies whether an incoming_password (ie from login) is the user password
+      # Verifies whether an incoming_password (ie from login) is the user
+      # password.
       def valid_password?(incoming_password)
         password_digest(incoming_password) == encrypted_password
       end
 
-      private
+      protected
+
+        # Pepper for encrypting password. Fallback to default configuration if
+        # no one exists for this specific model. Overwrite inside your model
+        # to provide specific pepper configuration:
+        #
+        #   def pepper; 'my_pepper_123'; end
+        def pepper
+          @pepper ||= Devise.pepper
+        end
+
+        # Encrypt password as many times as possible. Fallback to default
+        # configuration if no one exists for this specific model.
+        #
+        #   def stretches; 20; end
+        def stretches
+          @stretches ||= Devise.stretches
+        end
 
         # Gererates a default password digest based on salt, pepper and the
-        # incoming password
+        # incoming password.
         def password_digest(password_to_digest)
           digest = pepper
           stretches.times { digest = secure_digest(password_salt, digest, password_to_digest, pepper) }
@@ -64,7 +80,7 @@ module Devise
           ::Digest::SHA1.hexdigest('--' << tokens.flatten.join('--') << '--')
         end
 
-        # Generate a friendly string randomically to be used as token
+        # Generate a friendly string randomically to be used as token.
         def friendly_token
           ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
         end

@@ -90,6 +90,16 @@ This line adds devise authenticable automatically for you inside your User class
 
 Note that validations aren't added by default, so you're able to customize it. In order to have automatic validations working just include :validatable.
 
+In addition to :except, you can provide some options to devise call:
+
+* pepper: setup a pepper to generate de encrypted password. By default no pepper is used:
+
+  devise :all, :pepper => 'my_pepper'
+
+* stretches: configure how many times you want the password is reencrypted.
+
+  devise :all, :stretches => 20
+
 The next step after setting up your model is to configure your routes for devise. You do this by opening up your config/routes.rb and adding:
 
   map.devise_for :users

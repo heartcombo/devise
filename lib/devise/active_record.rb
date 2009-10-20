@@ -1,6 +1,23 @@
 module Devise
   module ActiveRecord
-    # Shortcut method for including all devise modules inside your model
+    # Shortcut method for including all devise modules inside your model.
+    # You can give some extra options while declaring devise in your model:
+    #
+    # * except: let's you add all devise modules, except the ones you setup here:
+    #
+    #    devise :all, :except => :rememberable
+    #
+    # * pepper: setup a pepper to generate de encrypted password. By default no
+    #   pepper is used:
+    #
+    #    devise :all, :pepper => 'my_pepper'
+    #
+    # * stretches: configure how many times you want the password is reencrypted.
+    #
+    #    devise :all, :stretches => 20
+    #
+    # You can refer to Authenticable for more information about writing your own
+    # method to setup pepper and stretches
     #
     # Examples:
     #
@@ -30,6 +47,7 @@ module Devise
     #
     def devise(*modules)
       options  = modules.extract_options!
+      options.assert_valid_keys(:except, :stretches, :pepper)
 
       modules  = Devise::ALL             if modules.include?(:all)
       modules -= Array(options[:except]) if options.key?(:except)
@@ -38,6 +56,13 @@ module Devise
       modules.each do |m|
         devise_modules << m.to_sym
         include Devise::Models.const_get(m.to_s.classify)
+      end
+
+      if options.key?(:stretches) || options.key?(:pepper)
+        class_eval <<-END_EVAL, __FILE__, __LINE__
+          def stretches; #{options[:stretches]}; end if options.key?(:stretches)
+          def pepper;   '#{options[:pepper]}';   end if options.key?(:pepper)
+        END_EVAL
       end
     end
 

@@ -56,7 +56,7 @@ module Devise
         end
       end
 
-      private
+      protected
 
         # Remove confirmation date from the user, ensuring after a user update
         # it's email, it won't be able to sign in without confirming it.

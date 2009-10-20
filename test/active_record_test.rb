@@ -1,79 +1,96 @@
 require 'test/test_helper'
 
-class Authenticable < ActiveRecord::Base
+class Authenticable < User
   devise
 end
 
-class Confirmable < ActiveRecord::Base
+class Confirmable < User
   devise :confirmable
 end
 
-class Recoverable < ActiveRecord::Base
+class Recoverable < User
   devise :recoverable
 end
 
-class Validatable < ActiveRecord::Base
+class Rememberable < User
+  devise :rememberable
+end
+
+class Validatable < User
   devise :validatable
 end
 
-class Devisable < ActiveRecord::Base
+class Devisable < User
   devise :all
+end
+
+class Exceptable < User
+  devise :all, :except => [:recoverable, :rememberable, :validatable]
+end
+
+class Configurable < User
+  devise :all, :stretches => 15, :pepper => 'abcdef'
 end
 
 class ActiveRecordTest < ActiveSupport::TestCase
 
-  def include_authenticable_module?(mod)
-    mod.devise_modules.include?(:authenticable) &&
-    mod.included_modules.include?(Devise::Models::Authenticable)
+  def include_module?(klass, mod)
+    klass.devise_modules.include?(mod) &&
+    klass.included_modules.include?(Devise::Models::const_get(mod.to_s.classify))
   end
 
-  def include_confirmable_module?(mod)
-    mod.devise_modules.include?(:confirmable) &&
-    mod.included_modules.include?(Devise::Models::Confirmable)
+  def assert_include_modules(klass, *modules)
+    modules.each do |mod|
+      assert include_module?(klass, mod)
+    end
   end
 
-  def include_recoverable_module?(mod)
-    mod.devise_modules.include?(:recoverable) &&
-    mod.included_modules.include?(Devise::Models::Recoverable)
+  def assert_not_include_modules(klass, *modules)
+    modules.each do |mod|
+      assert_not include_module?(klass, mod)
+    end
   end
 
-  def include_validatable_module?(mod)
-    mod.devise_modules.include?(:validatable) &&
-    mod.included_modules.include?(Devise::Models::Validatable)
+  test 'include by default authenticable only' do
+    assert_include_modules Authenticable, :authenticable
+    assert_not_include_modules Authenticable, :confirmable, :recoverable, :rememberable, :validatable
   end
 
-  test 'acts as devisable should include by default authenticable only' do
-    assert include_authenticable_module?(Authenticable)
-    assert_not include_confirmable_module?(Authenticable)
-    assert_not include_recoverable_module?(Authenticable)
-    assert_not include_validatable_module?(Authenticable)
+  test 'add confirmable module only' do
+    assert_include_modules Confirmable, :authenticable, :confirmable
+    assert_not_include_modules Confirmable, :recoverable, :rememberable, :validatable
   end
 
-  test 'acts as devisable should be able to add confirmable module only' do
-    assert include_authenticable_module?(Confirmable)
-    assert include_confirmable_module?(Confirmable)
-    assert_not include_recoverable_module?(Confirmable)
-    assert_not include_validatable_module?(Confirmable)
+  test 'add recoverable module only' do
+    assert_include_modules Recoverable, :authenticable, :recoverable
+    assert_not_include_modules Recoverable, :confirmable, :rememberable, :validatable
   end
 
-  test 'acts as devisable should be able to add recoverable module only' do
-    assert include_authenticable_module?(Recoverable)
-    assert_not include_confirmable_module?(Recoverable)
-    assert include_recoverable_module?(Recoverable)
-    assert_not include_validatable_module?(Recoverable)
+  test 'add rememberable module only' do
+    assert_include_modules Rememberable, :authenticable, :rememberable
+    assert_not_include_modules Rememberable, :confirmable, :recoverable, :validatable
   end
 
-  test 'acts as devisable should be able to add validatable module only' do
-    assert include_authenticable_module?(Validatable)
-    assert_not include_confirmable_module?(Validatable)
-    assert_not include_recoverable_module?(Validatable)
-    assert include_validatable_module?(Validatable)
+  test 'add validatable module only' do
+    assert_include_modules Validatable, :authenticable, :validatable
+    assert_not_include_modules Validatable, :confirmable, :recoverable, :rememberable
   end
 
-  test 'acts as devisable should be able to add all modules' do
-    assert include_authenticable_module?(Devisable)
-    assert include_confirmable_module?(Devisable)
-    assert include_recoverable_module?(Devisable)
-    assert include_validatable_module?(Devisable)
+  test 'add all modules' do
+    assert_include_modules Devisable,
+      :authenticable, :confirmable, :recoverable, :rememberable, :validatable
+  end
+
+  test 'configure modules with except option' do
+    assert_include_modules Exceptable, :authenticable, :confirmable
+    assert_not_include_modules Exceptable, :recoverable, :rememberable, :validatable
+  end
+
+  test 'set a default value for stretches' do
+    assert_equal 15, Configurable.new.send(:stretches)
+  end
+
+  test 'set a default value for pepper' do
+    assert_equal 'abcdef', Configurable.new.send(:pepper)
   end
 end

@@ -74,11 +74,41 @@ class AuthenticableTest < ActiveSupport::TestCase
   end
 
   test 'should encrypt password using a sha1 hash' do
-    Devise::Models::Authenticable.pepper = 'pepper'
-    Devise::Models::Authenticable.stretches = 1
-    user = create_user
-    expected_password = ::Digest::SHA1.hexdigest("--#{user.password_salt}--pepper--123456--pepper--")
-    assert_equal expected_password, user.encrypted_password
+    user = new_user
+    assert_equal encrypt_password(user), user.encrypted_password
+  end
+
+  def encrypt_password(user, pepper=nil, stretches=1)
+    user.instance_variable_set(:@stretches, stretches) if stretches
+    user.password = '123456'
+    ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{pepper}--123456--#{pepper}--")
+  end
+
+  test 'should fallback to devise pepper default configuring' do
+    begin
+      Devise.pepper = ''
+      user = new_user
+      assert_equal encrypt_password(user), user.encrypted_password
+      Devise.pepper = 'new_pepper'
+      user = new_user
+      assert_equal encrypt_password(user, 'new_pepper'), user.encrypted_password
+      Devise.pepper = '123456'
+      user = new_user
+      assert_equal encrypt_password(user, '123456'), user.encrypted_password
+    ensure
+      Devise.pepper = nil
+    end
+  end
+
+  test 'should fallback to devise stretches default configuring' do
+    begin
+      default_stretches = Devise.stretches
+      Devise.stretches = 1
+      user = new_user
+      assert_equal encrypt_password(user, nil, nil), user.encrypted_password
+    ensure
+      Devise.stretches = default_stretches
+    end
   end
 
   test 'should test for a valid password' do

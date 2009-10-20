@@ -23,7 +23,7 @@ module Devise
         end
       end
 
-      private
+      protected
 
         # Checks whether a password is needed or not. For validations only.
         # Passwords are always required if it's a new record, or if the password

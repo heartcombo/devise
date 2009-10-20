@@ -17,14 +17,13 @@ Right now it's composed of five mainly modules:
 
 There's an example application using Devise at http://github.com/plataformatec/devise_example .
 
-
 == Dependencies
 
-Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework so you need to install it as a gem. Current warden version is 0.4.0. Please ensure you have it installed in order to use devise (see instalation below).
+Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework so you need to install it as a gem. Please ensure you have it installed in order to use devise (see instalation below).
 
 == Installation
 
-Install warden gem if you don't have it installed:
+Install warden gem if you don't have it installed (requires 0.4.1 or higher):
 
   sudo gem install warden
 

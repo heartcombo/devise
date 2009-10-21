@@ -28,7 +28,7 @@ module Devise
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.
     #
     def confirmable
-      string   :confirmation_token, :limit =>  40, :null => true
+      string   :confirmation_token, :limit => 20
       datetime :confirmed_at
       datetime :confirmation_sent_at
     end
@@ -36,13 +36,13 @@ module Devise
     # Creates reset_password_token.
     #
     def recoverable
-      string :reset_password_token, :limit =>  40, :null => true
+      string :reset_password_token, :limit => 20
     end
 
     # Creates remember_token and remember_expires_at.
     #
     def rememberable
-      string   :remember_token, :limit =>  40, :null => true
+      string   :remember_token, :limit => 20
       datetime :remember_expires_at
     end
 

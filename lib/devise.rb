@@ -46,4 +46,5 @@ require 'devise/routes'
 # able to create default filters.
 Rails.configuration.after_initialize do
   ActiveRecord::Base.extend Devise::ActiveRecord
+  ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Migrations
 end

@@ -8,7 +8,6 @@
 * Devise::BruteForceProtection
 * Devise::MagicColumns
 * Devise::Invitable
-* Devise::Migratable
 
 == Done
 
@@ -16,6 +15,7 @@
 * Devise::Confirmable
 * Devise::Recoverable
 * Devise::Validatable
+* Devise::Migratable
 * SessionsController
 * PasswordsController
 * ConfirmationsController

@@ -16,15 +16,12 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 ActiveRecord::Schema.define(:version => 1) do
   [:users, :admins].each do |table|
     create_table table do |t|
-      t.string   :email,              :null => false
-      t.string   :encrypted_password, :null => false
-      t.string   :password_salt,      :null => false
+      t.authenticable
+
       if table == :users
-        t.string   :confirmation_token
-        t.datetime :confirmation_sent_at
-        t.datetime :confirmed_at
-        t.string   :reset_password_token
-        t.string   :remember_token
+        t.confirmable
+        t.recoverable
+        t.rememberable
       end
 
       t.timestamps

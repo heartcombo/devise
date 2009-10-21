@@ -45,4 +45,5 @@ Rails.configuration.after_initialize do
 end
 
 require 'devise/warden'
+require 'devise/mapping'
 require 'devise/routes'

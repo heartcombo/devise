@@ -1,5 +1,11 @@
-# Taken from RailsWarden, thanks to Hassox.
-# http://github.com/hassox/rails_warden
+begin
+  require 'warden'
+rescue
+  gem 'warden'
+  require 'warden'
+end
+
+# Taken from RailsWarden, thanks to Hassox. http://github.com/hassox/rails_warden
 module Warden::Mixins::Common
   # Gets the rails request object by default if it's available
   def request

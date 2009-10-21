@@ -12,7 +12,6 @@ module Devise
   # However this method does not add indexes. If you need them, here is the declaration:
   #
   #   add_index "accounts", ["email"],                :name => "email",                :unique => true
-  #   add_index "accounts", ["remember_token"],       :name => "remember_token",       :unique => true
   #   add_index "accounts", ["confirmation_token"],   :name => "confirmation_token",   :unique => true
   #   add_index "accounts", ["reset_password_token"], :name => "reset_password_token", :unique => true
   #

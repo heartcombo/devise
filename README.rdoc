@@ -56,7 +56,6 @@ You may also want to add some indexes to improve performance:
   add_index :your_table, :email
   add_index :your_table, :confirmation_token    # for confirmable
   add_index :your_table, :reset_password_token  # for recoverable
-  add_index :your_table, :remember_token        # for rememberable
 
 Now let's setup a User model adding the devise line to have your authentication working:
 

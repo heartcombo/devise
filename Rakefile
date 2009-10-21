@@ -29,7 +29,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "devise"
-    s.version = "0.1.0"
+    s.version = Devise::VERSION
     s.summary = "Flexible authentication solution for Rails with Warden"
     s.email = "contact@plataformatec.com.br"
     s.homepage = "http://github.com/plataformatec/devise"

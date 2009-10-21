@@ -23,13 +23,17 @@ Devise is based on Warden (http://github.com/hassox/warden), a Rack Authenticati
 
 == Installation
 
-Install warden gem if you don't have it installed (requires 0.4.1 or higher):
+All gems are on gemcutter, so you need to add gemcutter to your sources if you haven't yet:
+
+  sudo gem sources -a http://gemcutter.org/
+
+Install warden gem if you don't have it installed (requires 0.5.0 or higher):
 
   sudo gem install warden
 
-Install devise as an engine (plugin) inside your app:
+Install devise inside your app:
 
-  script/plugin install git://github.com/plataformatec/devise.git
+  sudo gem install devise
 
 And you're ready to go.
 

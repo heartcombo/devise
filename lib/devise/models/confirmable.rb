@@ -82,7 +82,7 @@ module Devise
         #   confirmation_period_valid?   # will always return false
         def confirmation_period_valid?
           confirmation_sent_at? &&
-            (Date.today - confirmation_sent_at.to_date).days.to_i < confirm_in
+            (Date.today - confirmation_sent_at.to_date).days.to_i < confirm_in.to_i
         end
 
         # Checks whether the record is confirmed or not, yielding to the block

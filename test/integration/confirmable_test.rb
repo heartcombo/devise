@@ -57,4 +57,33 @@ class ConfirmationTest < ActionController::IntegrationTest
 
     assert warden.authenticated?(:user)
   end
+
+  test 'not confirmed user and setup to block without confirmation should not be able to sign in' do
+    Devise.confirm_in = 0
+    user = sign_in_as_user(:confirm => false)
+
+    assert_redirected_to new_user_session_path(:unconfirmed => true)
+    assert_not warden.authenticated?(:user)
+  end
+
+  test 'not confirmed user but configured with some days to confirm should be able to sign in' do
+    Devise.confirm_in = 1
+    user = sign_in_as_user(:confirm => false)
+
+    assert_response :success
+    assert warden.authenticated?(:user)
+  end
+
+  test 'error message is configurable by resource name' do
+    begin
+      I18n.backend.store_translations(:en, :devise => { :sessions =>
+        { :admin => { :unconfirmed => "Not confirmed user" } } })
+
+      get new_admin_session_path(:unconfirmed => true)
+
+      assert_contain 'Not confirmed user'
+    ensure
+      I18n.reload!
+    end
+  end
 end

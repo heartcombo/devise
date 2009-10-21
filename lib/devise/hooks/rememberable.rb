@@ -19,6 +19,6 @@ end
 Warden::Manager.before_logout do |record, auth, scope|
   if record.respond_to?(:forget_me!)
     record.forget_me!
-    auth.cookies['remember_token'] = nil
+    auth.cookies.delete('remember_token')
   end
 end

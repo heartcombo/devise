@@ -58,6 +58,9 @@ module Devise
         include Devise::Models.const_get(m.to_s.classify)
       end
 
+      # Assert valid keys after including modules to ensure MODEL_CONFIG is fully loaded
+      options.assert_valid_keys(:except, *Devise::MODEL_CONFIG)
+
       # Convert new keys to methods which overwrites Devise defaults
       options.each { |key, value| send(:"#{key}=", value) }
     end

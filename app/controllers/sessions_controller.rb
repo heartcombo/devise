@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
   # GET /resource/sign_in
   def new
     unauthenticated! if params[:unauthenticated]
+    unconfirmed!     if params[:unconfirmed]
   end
 
   # POST /resource/sign_in
@@ -28,8 +29,11 @@ class SessionsController < ApplicationController
   protected
 
     def unauthenticated!
-      flash.now[:failure] = I18n.t(:"#{resource_name}.unauthenticated",
-                                   :scope => [:devise, :sessions], :default => :unauthenticated)
+      set_now_flash_message :failure, :unauthenticated
+    end
+
+    def unconfirmed!
+      set_now_flash_message :failure, :unconfirmed
     end
 
 end

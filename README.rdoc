@@ -31,9 +31,14 @@ Install warden gem if you don't have it installed (requires 0.5.0 or higher):
 
   sudo gem install warden
 
-Install devise inside your app:
+Install devise gem:
 
   sudo gem install devise
+
+Configure warden and devise gems inside your app:
+
+  config.gem 'warden'
+  config.gem 'devise'
 
 And you're ready to go.
 
@@ -155,7 +160,13 @@ You have also access to the session for this scope:
 
   user_session
 
-After signing in a user, confirming it's account or updating it's password, devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used.
+After signing in a user, confirming it's account or updating it's password, devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. To do it so, you need to create e default root inside your routes for your application:
+
+  map.root :controller => 'home'
+
+You also need to setup default url options for the mailer, if you are using confirmable or recoverable. It's a Rails required configuration, and you can do this inside your specific environments. Here is an example of development environment:
+
+  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
 
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 

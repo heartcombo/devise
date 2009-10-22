@@ -27,7 +27,7 @@ All gems are on gemcutter, so you need to add gemcutter to your sources if you h
 
   sudo gem sources -a http://gemcutter.org/
 
-Install warden gem if you don't have it installed (requires 0.5.0 or higher):
+Install warden gem if you don't have it installed (requires 0.5.1 or higher):
 
   sudo gem install warden
 

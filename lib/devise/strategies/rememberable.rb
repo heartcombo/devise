@@ -31,3 +31,5 @@ module Devise
     end
   end
 end
+
+Warden::Strategies.add(:rememberable, Devise::Strategies::Rememberable)

@@ -1,4 +1,5 @@
 require 'digest/sha1'
+require 'devise/strategies/authenticable'
 
 module Devise
   module Models

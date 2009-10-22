@@ -49,14 +49,13 @@ Warden::Manager.before_failure do |env, opts|
   env['warden'].request.params['action'] = 'new'
 end
 
+# Setup devise strategies for Warden
+require 'devise/strategies/base'
+
 # Adds Warden Manager to Rails middleware stack, configuring default devise
 # strategy and also the controller who will manage not authenticated users.
 Rails.configuration.middleware.use Warden::Manager do |manager|
   manager.default_strategies :rememberable, :authenticable
   manager.failure_app = SessionsController
+  manager.silence_missing_strategies!
 end
-
-# Setup devise strategies for Warden
-require 'devise/strategies/base'
-Warden::Strategies.add(:rememberable, Devise::Strategies::Rememberable)
-Warden::Strategies.add(:authenticable, Devise::Strategies::Authenticable)

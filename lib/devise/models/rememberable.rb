@@ -1,5 +1,6 @@
-require 'devise/hooks/rememberable'
 require 'digest/sha1'
+require 'devise/hooks/rememberable'
+require 'devise/strategies/rememberable'
 
 module Devise
   module Models

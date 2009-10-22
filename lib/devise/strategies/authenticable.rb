@@ -43,3 +43,5 @@ module Devise
     end
   end
 end
+
+Warden::Strategies.add(:authenticable, Devise::Strategies::Authenticable)

@@ -19,10 +19,11 @@ module Devise
 
     # Creates email, encrypted_password and password_salt.
     #
-    def authenticable
-      string :email,              :limit => 100, :null => false
-      string :encrypted_password, :limit =>  40, :null => false
-      string :password_salt,      :limit =>  20, :null => false
+    def authenticable(options={})
+      null = options[:null] || false
+      string :email,              :limit => 100, :null => null
+      string :encrypted_password, :limit =>  40, :null => null
+      string :password_salt,      :limit =>  20, :null => null
     end
 
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.

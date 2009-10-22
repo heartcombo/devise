@@ -93,4 +93,8 @@ class ActiveRecordTest < ActiveSupport::TestCase
   test 'set a default value for pepper' do
     assert_equal 'abcdef', Configurable.new.send(:pepper)
   end
+
+  test 'set null fields on migrations' do
+    Admin.create!
+  end
 end

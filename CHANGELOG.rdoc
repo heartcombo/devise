@@ -1,10 +1,14 @@
-== 0.1.2
+== 0.1.2 (development)
 
 * bug fixes
   * Fixed requiring devise strategies
 
 * optimize
   * Do not load hooks or strategies if they are not used
+
+* enhancements
+  * Customizable time frame for rememberable with :remember_for config
+  * Customizable time frame for confirmable with :confirm_in config
 
 == 0.1.1
 

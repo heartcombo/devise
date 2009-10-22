@@ -1,6 +1,3 @@
-* Add customizable time frame for remember me
-* Add customizable time frame for confirmation and filters
-
 * Create generators
 * Use request_ip in session cookies
 * Session timeout
@@ -8,5 +5,3 @@
 * Devise::BruteForceProtection
 * Devise::MagicColumns
 * Devise::Invitable
-
-

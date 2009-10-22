@@ -12,7 +12,7 @@ module Devise
           success!(resource)
         else
           store_location
-          redirect!(sign_in_path, :unauthenticated => true)
+          throw :warden, :scope => scope, :params => {:unauthenticated => true}
         end
       end
 
@@ -34,11 +34,6 @@ module Devise
         # would never use the same uri to redirect.
         def store_location
           session[:"#{mapping.name}.return_to"] = request.request_uri if request.get?
-        end
-
-        # Create path to sign in the resource
-        def sign_in_path
-          "/#{mapping.as}/#{mapping.path_names[:sign_in]}"
         end
     end
   end

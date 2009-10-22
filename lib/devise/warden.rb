@@ -56,6 +56,6 @@ require 'devise/strategies/base'
 # strategy and also the controller who will manage not authenticated users.
 Rails.configuration.middleware.use Warden::Manager do |manager|
   manager.default_strategies :rememberable, :authenticable
-  manager.failure_app = SessionsController
+  manager.failure_app = Devise::Failure
   manager.silence_missing_strategies!
 end

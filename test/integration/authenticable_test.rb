@@ -81,8 +81,8 @@ class AuthenticationTest < ActionController::IntegrationTest
       fill_in 'email', :with => 'wrongemail@test.com'
     end
 
-    assert_response :success
-    assert_template 'sessions/new'
+    assert_redirected_to new_admin_session_path(:unauthenticated => true)
+    follow_redirect!
     assert_contain 'Invalid email or password'
     assert_not warden.authenticated?(:admin)
   end
@@ -92,8 +92,8 @@ class AuthenticationTest < ActionController::IntegrationTest
       fill_in 'password', :with => 'abcdef'
     end
 
-    assert_response :success
-    assert_template 'sessions/new'
+    assert_redirected_to new_admin_session_path(:unauthenticated => true)
+    follow_redirect!
     assert_contain 'Invalid email or password'
     assert_not warden.authenticated?(:admin)
   end
@@ -107,6 +107,7 @@ class AuthenticationTest < ActionController::IntegrationTest
         fill_in 'password', :with => 'abcdef'
       end
 
+      follow_redirect!
       assert_contain 'Invalid credentials'
     ensure
       I18n.reload!

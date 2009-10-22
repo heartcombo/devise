@@ -39,7 +39,6 @@ module Devise
 
           # Remember me option available in after_authentication hook.
           attr_accessor :remember_me
-          attr_accessible :remember_me
         end
       end
 

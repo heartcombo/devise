@@ -6,10 +6,6 @@ class RecoverableTest < ActiveSupport::TestCase
     setup_mailer
   end
 
-  test 'should not have reset password token accessible' do
-    assert_not field_accessible?(:reset_password_token)
-  end
-
   test 'should not generate reset password token after creating a record' do
     assert_nil new_user.reset_password_token
     assert_nil create_user.reset_password_token

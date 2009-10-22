@@ -11,10 +11,6 @@ class RememberableTest < ActiveSupport::TestCase
     assert user.respond_to?(:remember_me)
   end
 
-  test 'should have remember_me accessible' do
-    assert field_accessible?(:remember_me)
-  end
-
   test 'remember_me should generate a new token and save the record without validating' do
     user = create_user
     user.expects(:valid?).never

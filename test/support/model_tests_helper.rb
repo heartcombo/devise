@@ -33,8 +33,4 @@ class ActiveSupport::TestCase
   def create_user(attributes={})
     User.create!(valid_attributes(attributes))
   end
-
-  def field_accessible?(field)
-    new_user(field => 'test').send(field) == 'test'
-  end
 end

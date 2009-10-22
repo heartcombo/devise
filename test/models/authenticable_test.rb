@@ -15,26 +15,6 @@ class AuthenticableTest < ActiveSupport::TestCase
     assert user.respond_to?(:password_confirmation)
   end
 
-  test 'should have email acessible' do
-    assert field_accessible?(:email)
-  end
-
-  test 'should have password acessible' do
-    assert field_accessible?(:password)
-  end
-
-  test 'should have password confirmation accessible' do
-    assert field_accessible?(:password_confirmation)
-  end
-
-  test 'should not have password salt accessible' do
-    assert_not field_accessible?(:password_salt)
-  end
-
-  test 'should not have encrypted password accessible' do
-    assert_not field_accessible?(:encrypted_password)
-  end
-
   test 'should generate salt while setting password' do
     assert_present new_user.password_salt
     assert_present new_user(:password => nil).password_salt

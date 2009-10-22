@@ -6,18 +6,6 @@ class ConfirmableTest < ActiveSupport::TestCase
     setup_mailer
   end
 
-  test 'should not have confirmed at accessible' do
-    assert_not field_accessible?(:confirmed_at)
-  end
-
-  test 'should not have confirmation token accessible' do
-    assert_not field_accessible?(:confirmation_token)
-  end
-
-  test 'should not have confirmation sent at accessible' do
-    assert_not field_accessible?(:confirmation_sent_at)
-  end
-
   test 'should generate confirmation token after creating a record' do
     assert_nil new_user.confirmation_token
     assert_not_nil create_user.confirmation_token

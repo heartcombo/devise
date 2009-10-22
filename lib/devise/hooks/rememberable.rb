@@ -9,7 +9,10 @@ Warden::Manager.after_authentication do |record, auth, options|
 
   if Devise::TRUE_VALUES.include?(remember_me) && record.respond_to?(:remember_me!)
     record.remember_me!
-    auth.cookies['remember_token'] = record.class.serialize_into_cookie(record)
+    auth.cookies['remember_token'] = {
+      :value => record.class.serialize_into_cookie(record),
+      :expires => record.remember_expires_at
+    }
   end
 end
 

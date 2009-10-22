@@ -3,6 +3,9 @@
 * bug fixes
   * Fixed requiring devise strategies
 
+* optimize
+  * Do not load hooks or strategies if they are not used
+
 == 0.1.1
 
 * bug fixes
@@ -10,9 +13,23 @@
 
 == 0.1.0
 
-* Authenticable
-* Confirmable
-* Migratable
-* Recoverable
-* Rememberable
-* Validatable
+* Devise::Authenticable
+* Devise::Confirmable
+* Devise::Recoverable
+* Devise::Validatable
+* Devise::Migratable
+* Devise::Rememberable
+
+* SessionsController
+* PasswordsController
+* ConfirmationsController
+
+* Create an example app
+* devise :all, :except => :rememberable
+* Use sign_in and sign_out in SessionsController
+
+* Mailer subjects namespaced by model
+* Allow stretches and pepper per model
+
+* Store session[:return_to] in session
+* Sign user in automatically after confirming or changing it's password

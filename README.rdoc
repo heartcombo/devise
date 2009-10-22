@@ -68,7 +68,9 @@ Now let's setup a User model adding the devise line to have your authentication 
     devise
   end
 
-This line adds devise authenticable automatically for you inside your User class. You could also include the other modules as below:
+This line adds devise authenticable automatically for you inside your User class. It uses @attr_accessible@, so be sure to use attr_accessible in your next attributes as well.
+
+You could also include the other devise modules as below:
 
   # Same as using only devise, authenticable is activated by default
   devise :authenticable

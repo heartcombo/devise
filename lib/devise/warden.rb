@@ -57,6 +57,7 @@ Rails.configuration.middleware.use Warden::Manager do |manager|
 end
 
 # Setup devise strategies for Warden
+require 'devise/strategies/base'
 Warden::Strategies.add(:rememberable, Devise::Strategies::Rememberable)
 Warden::Strategies.add(:authenticable, Devise::Strategies::Authenticable)
 

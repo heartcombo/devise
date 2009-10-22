@@ -1,0 +1,18 @@
+== 0.1.2
+
+* bug fixes
+  * Fixed requiring devise strategies
+
+== 0.1.1
+
+* bug fixes
+  * Fixed requiring devise mapping
+
+== 0.1.0
+
+* Authenticable
+* Confirmable
+* Migratable
+* Recoverable
+* Rememberable
+* Validatable

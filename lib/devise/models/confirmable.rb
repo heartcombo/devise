@@ -17,7 +17,8 @@ module Devise
     #               user won't be able to sign in without confirming. You can
     #               use this to let your user access some features of your
     #               application without confirming the account, but blocking it
-    #               after a certain period (ie 7 days).
+    #               after a certain period (ie 7 days). By default confirm_in is
+    #               zero, it means users always have to confirm to sign in.
     #
     # Examples:
     #
@@ -26,7 +27,7 @@ module Devise
     #   User.find(1).send_confirmation_instructions # manually send instructions
     #   User.find(1).reset_confirmation! # reset confirmation status and send instructions
     module Confirmable
-      Devise.model_config(self, :confirm_in, 0)
+      Devise.model_config(self, :confirm_in, 0.days)
 
       def self.included(base)
         base.class_eval do
@@ -82,17 +83,17 @@ module Devise
         # confirmation sent date does not exceed the confirm in time configured.
         # Confirm_in is a model configuration, must always be an integer value.
         # Example:
-        #   # confirm_in = 1 and confirmation_sent_at = today
+        #   # confirm_in = 1.day and confirmation_sent_at = today
         #   confirmation_period_valid?   # returns true
-        #   # confirm_in = 5 and confirmation_sent_at = 4.days.ago
+        #   # confirm_in = 5.days and confirmation_sent_at = 4.days.ago
         #   confirmation_period_valid?   # returns true
-        #   # confirm_in = 5 and confirmation_sent_at = 5.days.ago
+        #   # confirm_in = 5.days and confirmation_sent_at = 5.days.ago
         #   confirmation_period_valid?   # returns false
-        #   # confirm_in = 0
+        #   # confirm_in = 0.days
         #   confirmation_period_valid?   # will always return false
         def confirmation_period_valid?
           confirmation_sent_at? &&
-            (Date.today - confirmation_sent_at.to_date).days.to_i < confirm_in.to_i
+            (Date.today - confirmation_sent_at.to_date).days < confirm_in
         end
 
         # Checks whether the record is confirmed or not, yielding to the block

@@ -19,6 +19,7 @@ module Devise
     #                 blocked and will have to enter his credentials again.
     #                 This configuration is also used to calculate the expires
     #                 time for the cookie created to remember the user.
+    #                 By default remember_for is 2.weeks.
     #
     # Examples:
     #
@@ -31,7 +32,7 @@ module Devise
     #   # lookup the user based on the incoming cookie information
     #   User.serialize_from_cookie(cookie_string)
     module Rememberable
-      Devise.model_config(self, :remember_for, 0)
+      Devise.model_config(self, :remember_for, 2.weeks)
 
       def self.included(base)
         base.class_eval do

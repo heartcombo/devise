@@ -108,11 +108,6 @@ class RememberableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'remember should be expired without remember token' do
-    user = create_user
-    assert user.remember_expired?
-  end
-
   test 'remember expires at should sum date of creation with remember for configuration' do
     Devise.remember_for = 3.days
     user = create_user

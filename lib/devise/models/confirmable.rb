@@ -1,3 +1,5 @@
+require 'devise/hooks/confirmable'
+
 module Devise
   module Models
 
@@ -27,7 +29,6 @@ module Devise
     #   User.find(1).send_confirmation_instructions # manually send instructions
     #   User.find(1).reset_confirmation! # reset confirmation status and send instructions
     module Confirmable
-      Devise.model_config(self, :confirm_in, 0.days)
 
       def self.included(base)
         base.class_eval do
@@ -158,6 +159,8 @@ module Devise
           confirmable
         end
       end
+
+      Devise.model_config(self, :confirm_in, 0.days)
     end
   end
 end

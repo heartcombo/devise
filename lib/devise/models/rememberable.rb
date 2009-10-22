@@ -32,7 +32,6 @@ module Devise
     #   # lookup the user based on the incoming cookie information
     #   User.serialize_from_cookie(cookie_string)
     module Rememberable
-      Devise.model_config(self, :remember_for, 2.weeks)
 
       def self.included(base)
         base.class_eval do
@@ -63,12 +62,12 @@ module Devise
 
       # Checks whether the incoming token matches or not with the record token.
       def valid_remember_token?(token)
-        !remember_expired? && remember_token == token
+        remember_token? && !remember_expired? && remember_token == token
       end
 
       # Remember token should be expired if expiration time not overpass now.
       def remember_expired?
-        !remember_token? || remember_expires_at <= Time.now.utc
+        remember_expires_at <= Time.now
       end
 
       # Remember token expires at created time + remember_for configuration
@@ -89,8 +88,9 @@ module Devise
           rememberable = find_by_id(rememberable_id) if rememberable_id
           rememberable if rememberable.try(:valid_remember_token?, remember_token)
         end
-
       end
+
+      Devise.model_config(self, :remember_for, 2.weeks)
     end
   end
 end

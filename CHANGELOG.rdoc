@@ -7,6 +7,7 @@
   * Do not load hooks or strategies if they are not used
 
 * enhancements
+  * Allow option :null => true in authenticable migration
   * Customizable time frame for rememberable with :remember_for config
   * Customizable time frame for confirmable with :confirm_in config
 

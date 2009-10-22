@@ -24,9 +24,6 @@ module Devise
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
     module Authenticable
-      Devise.model_config(self, :pepper)
-      Devise.model_config(self, :stretches, 10)
-
       def self.included(base)
         base.class_eval do
           extend ClassMethods
@@ -74,7 +71,6 @@ module Devise
         end
 
       module ClassMethods
-
         # Authenticate a user based on email and password. Returns the
         # authenticated user if it's valid or nil.
         # Attributes are :email and :password
@@ -93,6 +89,9 @@ module Devise
           perishable
         end
       end
+
+      Devise.model_config(self, :pepper)
+      Devise.model_config(self, :stretches, 10)
     end
   end
 end

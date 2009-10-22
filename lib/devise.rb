@@ -10,22 +10,43 @@ module Devise
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
-  MODEL_CONFIG = []
-
-  def self.model_config(klass, accessor, default=nil)
-    # Create Devise accessor
+  # Creates configuration values for Devise and for the given module.
+  #
+  #   Devise.model_config(Devise::Authenticable, :stretches, 10)
+  #
+  # The line above creates:
+  #
+  #   1) An accessor called Devise.stretches, which value is used by default;
+  #
+  #   2) Some class methods for your model Model.stretches and Model.stretches=
+  #      which have higher priority than Devise.stretches;
+  #
+  #   3) And an instance method stretches.
+  #
+  # To add the class methods you need to have a module ClassMethods defined
+  # inside the given class.
+  #
+  def self.model_config(mod, accessor, default=nil) #:nodoc:
     mattr_accessor accessor
-
-    # Set default value
     send(:"#{accessor}=", default)
 
-    # Store configuration method
-    MODEL_CONFIG << accessor
-
-    # Set default value
-    klass.class_eval <<-METHOD
+    mod.class_eval <<-METHOD, __FILE__, __LINE__
       def #{accessor}
-        Devise.#{accessor}
+        self.class.#{accessor}
+      end
+    METHOD
+
+    mod.const_get(:ClassMethods).class_eval <<-METHOD, __FILE__, __LINE__
+      def #{accessor}
+        @#{accessor} || if superclass.respond_to?(:#{accessor})
+          superclass.#{accessor}
+        else
+          Devise.#{accessor}
+        end
+      end
+
+      def #{accessor}=(value)
+        @#{accessor} = value
       end
     METHOD
   end

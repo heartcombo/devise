@@ -48,10 +48,9 @@ module Devise
     #
     def devise(*modules)
       options  = modules.extract_options!
-      options.assert_valid_keys(:except, *Devise::MODEL_CONFIG)
 
-      modules  = Devise::ALL                    if modules.include?(:all)
-      modules -= Array(options.delete(:except)) if options.key?(:except)
+      modules  = Devise::ALL if modules.include?(:all)
+      modules -= Array(options.delete(:except))
       modules |= [:authenticable]
 
       modules.each do |m|
@@ -60,21 +59,7 @@ module Devise
       end
 
       # Convert new keys to methods which overwrites Devise defaults
-      options.each do |key, value|
-        case value
-          when Proc
-            define_method key, &value
-            next
-          when ActiveSupport::Duration
-            value = value.to_i
-        end
-
-        class_eval <<-END_EVAL, __FILE__, __LINE__
-          def #{key}
-            #{value.inspect}
-          end
-        END_EVAL
-      end
+      options.each { |key, value| send(:"#{key}=", value) }
     end
 
     # Stores all modules included inside the model, so we are able to verify

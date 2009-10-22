@@ -3,6 +3,7 @@ require 'test/test_helper'
 class RememberMeTest < ActionController::IntegrationTest
 
   def create_user_and_remember(add_to_token='')
+    Devise.remember_for = 1
     user = create_user
     user.remember_me!
     cookies['remember_token'] = User.serialize_into_cookie(user) + add_to_token
@@ -31,6 +32,14 @@ class RememberMeTest < ActionController::IntegrationTest
 
   test 'do not remember with invalid token' do
     user = create_user_and_remember('add')
+    get users_path
+    assert_response :success
+    assert_not warden.authenticated?(:user)
+  end
+
+  test 'do not remember with token expired' do
+    user = create_user_and_remember
+    Devise.remember_for = 0
     get users_path
     assert_response :success
     assert_not warden.authenticated?(:user)

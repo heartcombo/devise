@@ -40,11 +40,11 @@ module Devise
       string :reset_password_token, :limit => 20
     end
 
-    # Creates remember_token and remember_expires_at.
+    # Creates remember_token and remember_created_at.
     #
     def rememberable
       string   :remember_token, :limit => 20
-      datetime :remember_expires_at
+      datetime :remember_created_at
     end
 
   end

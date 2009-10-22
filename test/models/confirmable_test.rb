@@ -209,7 +209,7 @@ class ConfirmableTest < ActiveSupport::TestCase
       confirm_in = Devise.confirm_in
       Devise.confirm_in = 1.day
       user = new_user
-      user.confirmation_sent_at = 2.day.ago
+      user.confirmation_sent_at = 2.days.ago
       assert_not user.active?
       Devise.confirm_in = 3.days
       assert user.active?

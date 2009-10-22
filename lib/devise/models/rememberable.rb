@@ -11,6 +11,15 @@ module Devise
     # to lookup the record based on the saved information.
     # You probably wouldn't use rememberable methods directly, they are used
     # mostly internally for handling the remember token.
+    #
+    # Configuration:
+    #
+    #   remember_for: the time you want the user will be remembered without
+    #                 asking for credentials. After this time the user will be
+    #                 blocked and will have to enter his credentials again.
+    #                 This configuration is also used to calculate the expires
+    #                 time for the cookie created to remember the user.
+    #
     # Examples:
     #
     #   User.find(1).remember_me!  # regenerating the token

@@ -9,6 +9,16 @@ module Devise
     # Whenever the user update it's email, his account is automatically unconfirmed,
     # it means it won't be able to sign in again without confirming the account
     # again through the email that was sent.
+    #
+    # Configuration:
+    #
+    #   confirm_in: the time you want the user will have to confirm it's account
+    #               without blocking his access. When confirm_in is zero, the
+    #               user won't be able to sign in without confirming. You can
+    #               use this to let your user access some features of your
+    #               application without confirming the account, but blocking it
+    #               after a certain period (ie 7 days).
+    #
     # Examples:
     #
     #   User.find(1).confirm!      # returns true unless it's already confirmed

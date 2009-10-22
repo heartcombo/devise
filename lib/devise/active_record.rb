@@ -17,8 +17,18 @@ module Devise
     #
     #    devise :all, :stretches => 20
     #
-    # You can refer to Authenticable for more information about writing your own
-    # method to setup pepper and stretches.
+    # * confirm_in: the time you want your user to confirm it's account. During
+    #   this time he will be able to access your application without confirming.
+    #
+    #    devise :all, :confirm_in => 7.days
+    #
+    # * remember_for: the time the user will be remembered without asking for
+    #   credentials again.
+    #
+    #    devise :all, :remember_for => 2.weeks
+    #
+    # You can refer to Authenticable, Confirmable and Rememberable for more
+    # information about writing your own method to setup each model apart.
     #
     # Examples:
     #

@@ -29,7 +29,10 @@ class Exceptable < User
 end
 
 class Configurable < User
-  devise :all, :stretches => 15, :pepper => 'abcdef'
+  devise :all, :stretches => 15,
+               :pepper => 'abcdef',
+               :confirm_in => 5.days,
+               :remember_for => 7.days
 end
 
 class ActiveRecordTest < ActiveSupport::TestCase
@@ -87,11 +90,19 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'set a default value for stretches' do
-    assert_equal 15, Configurable.new.send(:stretches)
+    assert_equal 15, Configurable.new.stretches
   end
 
   test 'set a default value for pepper' do
-    assert_equal 'abcdef', Configurable.new.send(:pepper)
+    assert_equal 'abcdef', Configurable.new.pepper
+  end
+
+  test 'set a default value for confirm_in' do
+    assert_equal 5.days, Configurable.new.confirm_in
+  end
+
+  test 'set a default value for remember_for' do
+    assert_equal 7.days, Configurable.new.remember_for
   end
 
   test 'set null fields on migrations' do

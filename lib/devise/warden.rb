@@ -60,6 +60,3 @@ end
 require 'devise/strategies/base'
 Warden::Strategies.add(:rememberable, Devise::Strategies::Rememberable)
 Warden::Strategies.add(:authenticable, Devise::Strategies::Authenticable)
-
-# Require rememberable hooks
-require 'devise/hooks/rememberable'

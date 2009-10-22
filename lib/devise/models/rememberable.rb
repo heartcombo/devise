@@ -1,3 +1,4 @@
+require 'devise/hooks/rememberable'
 require 'digest/sha1'
 
 module Devise

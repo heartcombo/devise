@@ -43,8 +43,9 @@ module Devise
       # is already confirmed, add en error to email field
       def confirm!
         unless_confirmed do
-          clear_confirmation_token
-          update_attribute(:confirmed_at, Time.now)
+          self.confirmation_token = nil
+          self.confirmed_at = Time.now
+          save(false)
         end
       end
 
@@ -83,15 +84,21 @@ module Devise
         # We do this by calculating if the difference between today and the
         # confirmation sent date does not exceed the confirm in time configured.
         # Confirm_in is a model configuration, must always be an integer value.
+        #
         # Example:
+        #
         #   # confirm_in = 1.day and confirmation_sent_at = today
         #   confirmation_period_valid?   # returns true
+        #
         #   # confirm_in = 5.days and confirmation_sent_at = 4.days.ago
         #   confirmation_period_valid?   # returns true
+        #
         #   # confirm_in = 5.days and confirmation_sent_at = 5.days.ago
         #   confirmation_period_valid?   # returns false
+        #
         #   # confirm_in = 0.days
         #   confirmation_period_valid?   # will always return false
+        #
         def confirmation_period_valid?
           confirmation_sent_at? &&
             (Date.today - confirmation_sent_at.to_date).days < confirm_in
@@ -126,11 +133,6 @@ module Devise
         # validating.
         def generate_confirmation_token!
           generate_confirmation_token && save(false)
-        end
-
-        # Removes confirmation token
-        def clear_confirmation_token
-          self.confirmation_token = nil
         end
 
       module ClassMethods

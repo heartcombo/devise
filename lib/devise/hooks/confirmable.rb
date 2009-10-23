@@ -3,9 +3,9 @@
 # confirming it's account. If the user has not confirmed it's account during
 # this time frame, he/she will not able to sign in anymore.
 Warden::Manager.after_set_user do |record, auth, options|
-  if record.present? && record.respond_to?(:active?) && !record.active?
+  if record && record.respond_to?(:active?) && !record.active?
     scope = options[:scope]
     auth.logout(scope)
-    throw :warden, :scope => scope, :params => {:unconfirmed => true}
+    throw :warden, :scope => scope, :params => { :unconfirmed => true }
   end
 end

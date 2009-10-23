@@ -12,7 +12,7 @@ module Devise
           success!(resource)
         else
           store_location
-          throw :warden, :scope => scope, :params => {:unauthenticated => true}
+          throw :warden, :scope => scope, :params => { :unauthenticated => true }
         end
       end
 

@@ -46,6 +46,8 @@ And you're ready to go.
 
 Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
 
+This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You can also check out the *Generatos* section below to help you start.
+
 We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
 
   create_table :users do
@@ -190,6 +192,20 @@ Devise let's you setup as many roles as you want, so let's say you already have 
   admin_signed_in?
   current_admin
   admin_session
+
+== Generators
+
+Devise comes with some generators to help you start:
+
+  script/generate devise Model
+
+Will generate a model, configured with all devise modules, and add attr_accessible for default fields, so you can setup more accessible attributes later. The generator will also create the migration and configure your route for devise.
+
+You can also copy devise views to your application, being able to modify them based on your needs. To do it so, run the following command:
+
+  script/generate devise_views
+
+This is gonna copy all session, password, confirmation and notifier views to your app/views folder.
 
 == I18n
 

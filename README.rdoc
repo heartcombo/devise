@@ -44,9 +44,9 @@ And you're ready to go.
 
 == Basic Usage
 
-Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
+This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You can also check out the *Generators* section below to help you start.
 
-This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You can also check out the *Generatos* section below to help you start.
+Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
 
 We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
 

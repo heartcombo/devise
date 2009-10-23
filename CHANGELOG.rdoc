@@ -1,10 +1,11 @@
-== 0.1.2 (development)
+== (development)
 
 * enhancements
   * [#4] Allow option :null => true in authenticable migration
   * [#3] Remove attr_accessible calls from devise modules
   * Customizable time frame for rememberable with :remember_for config
   * Customizable time frame for confirmable with :confirm_in config
+  * Generators for creating a resource and copy views
 
 * optimize
   * Do not load hooks or strategies if they are not used

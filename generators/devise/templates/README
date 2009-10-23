@@ -1,0 +1,21 @@
+
+================================================================================
+
+Some setup you must do manually if you haven't yet:
+
+1. Setup defaut url options for your specific environment. Here is an example of development environment:
+
+    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+It's a Rails required configuration.
+In production it must be the actual host your application is deployed to.
+
+2. Setup default sender for mails.In config/environment.rb:
+
+    Notifier.sender = "test@example.com"
+
+3. Ensure you have defined root_url to *something* in your config/routes.rb:
+
+    map.root :controller => 'home'
+
+================================================================================

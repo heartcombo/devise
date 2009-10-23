@@ -1,20 +1,21 @@
 == 0.1.2 (development)
 
-* bug fixes
-  * Fixed requiring devise strategies
+* enhancements
+  * [#4] Allow option :null => true in authenticable migration
+  * [#3] Remove attr_accessible calls from devise modules
+  * Customizable time frame for rememberable with :remember_for config
+  * Customizable time frame for confirmable with :confirm_in config
 
 * optimize
   * Do not load hooks or strategies if they are not used
 
-* enhancements
-  * Allow option :null => true in authenticable migration
-  * Customizable time frame for rememberable with :remember_for config
-  * Customizable time frame for confirmable with :confirm_in config
+* bug fixes
+  * [#2] Fixed requiring devise strategies
 
 == 0.1.1
 
 * bug fixes
-  * Fixed requiring devise mapping
+  * [#1] Fixed requiring devise mapping
 
 == 0.1.0
 

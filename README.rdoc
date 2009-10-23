@@ -168,7 +168,7 @@ After signing in a user, confirming it's account or updating it's password, devi
 
 You also need to setup default url options for the mailer, if you are using confirmable or recoverable. It's a Rails required configuration, and you can do this inside your specific environments. Here is an example of development environment:
 
-  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 

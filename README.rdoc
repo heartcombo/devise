@@ -228,6 +228,10 @@ Please refer to TODO file.
 
 == Bugs and Feedback
 
-If you discover any bugs or want to drop a line, feel free to create an issue.
+If you discover any bugs or want to drop a line, feel free to create an issue on
+GitHub or send an e-mail to the mailing list.
+
+http://github.com/plataformatec/devise/issues
+http://groups.google.com/group/plataformatec-devise
 
 MIT License. Copyright 2009 Plataforma Tecnologia. http://blog.plataformatec.com.br

@@ -1,4 +1,4 @@
-== (development)
+== 0.2.0
 
 * enhancements
   * [#4] Allow option :null => true in authenticable migration

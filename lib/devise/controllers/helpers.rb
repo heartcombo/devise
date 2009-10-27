@@ -78,6 +78,11 @@ module Devise
         instance_variable_set(:"@#{resource_name}", new_resource)
       end
 
+      # Build a devise resource
+      def build_resource
+        self.resource = resource_class.new(params[resource_name])
+      end
+
       # Helper for use in before_filters where no authentication is required.
       #
       # Example:

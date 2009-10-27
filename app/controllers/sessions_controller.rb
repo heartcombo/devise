@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
   def new
     unauthenticated! if params[:unauthenticated]
     unconfirmed!     if params[:unconfirmed]
+    build_resource
   end
 
   # POST /resource/sign_in
@@ -16,6 +17,7 @@ class SessionsController < ApplicationController
       redirect_back_or_to home_or_root_path
     else
       unauthenticated!
+      build_resource
       render :new
     end
   end

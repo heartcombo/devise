@@ -5,6 +5,7 @@ class PasswordsController < ApplicationController
 
   # GET /resource/password/new
   def new
+    build_resource
   end
 
   # POST /resource/password

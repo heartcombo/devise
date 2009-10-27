@@ -3,6 +3,7 @@ class ConfirmationsController < ApplicationController
 
   # GET /resource/confirmation/new
   def new
+    build_resource
   end
 
   # POST /resource/confirmation

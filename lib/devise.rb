@@ -56,9 +56,10 @@ end
 #
 #   1) Include Devise::ActiveRecord and Devise::Migrations
 #   2) Load and config warden
-#   3) Add routes extensions
-#   4) Load routes definitions
-#   5) Include filters and helpers in controllers and views
+#   3) Load devise mapping structure
+#   4) Add routes extensions
+#   5) Load routes definitions
+#   6) Include filters and helpers in controllers and views
 #
 Rails.configuration.after_initialize do
   ActiveRecord::Base.extend Devise::ActiveRecord

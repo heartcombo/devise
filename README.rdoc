@@ -44,6 +44,8 @@ And you're ready to go.
 
 == Basic Usage
 
+This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You can also check out the *Generators* section below to help you start.
+
 Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
 
 We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
@@ -168,7 +170,7 @@ After signing in a user, confirming it's account or updating it's password, devi
 
 You also need to setup default url options for the mailer, if you are using confirmable or recoverable. It's a Rails required configuration, and you can do this inside your specific environments. Here is an example of development environment:
 
-  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 
@@ -190,6 +192,20 @@ Devise let's you setup as many roles as you want, so let's say you already have 
   admin_signed_in?
   current_admin
   admin_session
+
+== Generators
+
+Devise comes with some generators to help you start:
+
+  script/generate devise Model
+
+Will generate a model, configured with all devise modules, and add attr_accessible for default fields, so you can setup more accessible attributes later. The generator will also create the migration and configure your route for devise.
+
+You can also copy devise views to your application, being able to modify them based on your needs. To do it so, run the following command:
+
+  script/generate devise_views
+
+This is gonna copy all session, password, confirmation and notifier views to your app/views folder.
 
 == I18n
 

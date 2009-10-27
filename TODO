@@ -1,8 +1,8 @@
-* Create generators
 * Devise::Timeoutable
 * Devise::TestHelper
 * Use request_ip in session cookies
 * Devise::BruteForceProtection
 * Devise::MagicColumns
+* Improve Generators to pass modules as arguments
 * Different cryptography providers
 * Devise::Invitable

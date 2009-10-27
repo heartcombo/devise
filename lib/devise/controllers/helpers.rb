@@ -1,10 +1,16 @@
 module Devise
   module Controllers
+    # Those helpers are used only inside Devise controllers and should not be
+    # included in ApplicationController since they all depend on the url being
+    # accessed.
     module Helpers
 
       def self.included(base)
         base.class_eval do
           helper_method :resource, :resource_name, :resource_class, :devise_mapping
+          hide_action   :resource, :resource_name, :resource_class, :devise_mapping
+
+          before_filter :is_devise_resource?
         end
       end
 
@@ -21,6 +27,11 @@ module Devise
       # Proxy to devise map class
       def resource_class
         devise_mapping.to
+      end
+
+      # Attempt to find the mapped route for devise based on request path
+      def devise_mapping
+        @devise_mapping ||= Devise.find_mapping_by_path(request.path)
       end
 
     protected
@@ -57,14 +68,22 @@ module Devise
         respond_to?(home_path, true) ? send(home_path) : root_path
       end
 
-      # Attempt to find the mapped route for devise based on request path
-      def devise_mapping
-        @devise_mapping ||= Devise.find_mapping_by_path(request.path)
+      # Checks whether it's a devise mapped resource or not.
+      def is_devise_resource? #:nodoc:
+        raise ActionController::UnknownAction unless devise_mapping && devise_mapping.allows?(controller_name)
       end
 
       # Sets the resource creating an instance variable
       def resource=(new_resource)
         instance_variable_set(:"@#{resource_name}", new_resource)
+      end
+
+      # Helper for use in before_filters where no authentication is required.
+      #
+      # Example:
+      #   before_filter :require_no_authentication, :only => :new
+      def require_no_authentication
+        redirect_to root_path if warden.authenticated?(resource_name)
       end
 
       # Sets the flash message with :key, using I18n. By default you are able

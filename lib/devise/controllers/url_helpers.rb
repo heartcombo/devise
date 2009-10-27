@@ -15,12 +15,14 @@ module Devise
     #
     #   new_confirmation_path(:user) => new_user_confirmation_path
     #   confirmation_path(:user)     => user_confirmation_path
+    #
+    # Those helpers are added to your ApplicationController.
     module UrlHelpers
 
       [:session, :password, :confirmation].each do |module_name|
         [:path, :url].each do |path_or_url|
           actions = [ nil, :new_ ]
-          actions << :edit_ if module_name == :password
+          actions << :edit_    if module_name == :password
           actions << :destroy_ if module_name == :session
 
           actions.each do |action|

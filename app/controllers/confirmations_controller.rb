@@ -1,5 +1,5 @@
 class ConfirmationsController < ApplicationController
-  before_filter :is_devise_resource?
+  include Devise::Controllers::Helpers
 
   # GET /resource/confirmation/new
   def new

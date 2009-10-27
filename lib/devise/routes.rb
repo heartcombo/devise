@@ -8,7 +8,6 @@ module ActionController::Routing
       load_routes_without_devise!
 
       ActionController::Base.send :include, Devise::Controllers::Filters
-      ActionController::Base.send :include, Devise::Controllers::Helpers
       ActionController::Base.send :include, Devise::Controllers::UrlHelpers
 
       ActionView::Base.send :include, Devise::Controllers::UrlHelpers

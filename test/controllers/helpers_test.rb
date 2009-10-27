@@ -1,7 +1,11 @@
 require 'test/test_helper'
 
+class MyController < ApplicationController
+  include Devise::Controllers::Helpers
+end
+
 class HelpersTest < ActionController::TestCase
-  tests ApplicationController
+  tests MyController
 
   test 'get resource name from request path' do
     @request.path = '/users/session'
@@ -36,5 +40,12 @@ class HelpersTest < ActionController::TestCase
 
   test 'resources methods are not controller actions' do
     assert @controller.class.action_methods.empty?
+  end
+
+  test 'require no authentication tests current mapping' do
+    @controller.expects(:resource_name).returns(:user)
+    @mock_warden.expects(:authenticated?).with(:user).returns(true)
+    @controller.expects(:redirect_to).with(root_path)
+    @controller.send :require_no_authentication
   end
 end

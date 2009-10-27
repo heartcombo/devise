@@ -25,10 +25,10 @@ class FailureTest < ActiveSupport::TestCase
   end
 
   test 'setup a default message' do
-    assert_equal 'You are being redirected to /users/sign_in', call_failure.last
+    assert_equal ['You are being redirected to /users/sign_in'], call_failure.last
   end
 
   test 'pass in a different message' do
-    assert_equal 'Hello world', call_failure(:message => 'Hello world').last
+    assert_equal ['Hello world'], call_failure(:message => 'Hello world').last
   end
 end

@@ -1,5 +1,7 @@
 class PasswordsController < ApplicationController
-  before_filter :is_devise_resource?, :require_no_authentication
+  include Devise::Controllers::Helpers
+
+  before_filter :require_no_authentication
 
   # GET /resource/password/new
   def new

@@ -83,13 +83,6 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.admin_session
   end
 
-  test 'require no authentication tests current mapping' do
-    @controller.expects(:resource_name).returns(:user)
-    @mock_warden.expects(:authenticated?).with(:user).returns(true)
-    @controller.expects(:redirect_to).with(root_path)
-    @controller.send :require_no_authentication
-  end
-
   test 'sign in automatically proxy to set user on warden' do
     @mock_warden.expects(:set_user).with(user = mock, :scope => :user).returns(true)
     @controller.sign_in(:user, user)

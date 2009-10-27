@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-  before_filter :is_devise_resource?
+  include Devise::Controllers::Helpers
+
   before_filter :require_no_authentication, :only => [ :new, :create ]
 
   # GET /resource/sign_in

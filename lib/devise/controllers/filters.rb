@@ -1,5 +1,7 @@
 module Devise
   module Controllers
+    # Those filters are convenience methods added to ApplicationController to
+    # deal with Warden.
     module Filters
 
       def self.included(base)
@@ -87,21 +89,6 @@ module Devise
             warden.session(:#{mapping})
           end
         METHODS
-      end
-
-    protected
-
-      # Helper for use in before_filters where no authentication is required.
-      #
-      # Example:
-      #   before_filter :require_no_authentication, :only => :new
-      def require_no_authentication
-        redirect_to root_path if warden.authenticated?(resource_name)
-      end
-
-      # Checks whether it's a devise mapped resource or not.
-      def is_devise_resource? #:nodoc:
-        raise ActionController::UnknownAction unless devise_mapping && devise_mapping.allows?(controller_name)
       end
 
     end

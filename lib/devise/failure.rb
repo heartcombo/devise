@@ -23,7 +23,7 @@ module Devise
       headers["Content-Type"] = 'text/plain'
 
       message = options[:message] || "You are being redirected to #{redirect_path}"
-      [302, headers, message]
+      [302, headers, [message]]
     end
   end
 end

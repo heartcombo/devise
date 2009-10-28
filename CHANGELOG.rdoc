@@ -1,3 +1,15 @@
+== 0.2.1
+
+* refactor
+  * Clean devise_views generator to use devise existing views
+
+* enhancements
+  * [#7] Create instance variables (like @user) for each devise controller
+  * Use Devise::Controller::Helpers only internally
+
+* bug fix
+  * [#6] Fix a bug with Mongrel and Ruby 1.8.6
+
 == 0.2.0
 
 * enhancements

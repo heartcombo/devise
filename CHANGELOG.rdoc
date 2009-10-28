@@ -1,3 +1,8 @@
+== 0.2.2
+
+* bug fix
+  * [#9] Fix a bug when using customized resources
+
 == 0.2.1
 
 * refactor

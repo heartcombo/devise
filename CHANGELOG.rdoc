@@ -1,7 +1,8 @@
+== 0.2.3
+
 * enhancements
   * Ensure fail! works inside strategies
-  * Make unauthenticated message (when you haven't logged in) different from
-    invalid message (when your credentials are invalid)
+  * [#12] Make unauthenticated message (when you haven't signed in) different from invalid message
 
 * bug fix
   * Do not redirect on invalid authenticate

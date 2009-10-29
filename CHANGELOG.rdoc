@@ -5,6 +5,7 @@
 
 * bug fix
   * Do not redirect on invalid authenticate
+  * Allow model configuration to be set to nil
 
 == 0.2.2
 

@@ -38,7 +38,9 @@ module Devise
 
     mod.const_get(:ClassMethods).class_eval <<-METHOD, __FILE__, __LINE__
       def #{accessor}
-        @#{accessor} || if superclass.respond_to?(:#{accessor})
+        if defined?(@#{accessor})
+          @#{accessor}
+        elsif superclass.respond_to?(:#{accessor})
           superclass.#{accessor}
         else
           Devise.#{accessor}

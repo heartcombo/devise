@@ -70,7 +70,7 @@ Now let's setup a User model adding the devise line to have your authentication 
     devise
   end
 
-This line adds devise authenticable automatically for you inside your User class. Devise don't rely on _attr_accessible_ or _attr_protected_ inside it's modules, so be sure to setup what attributes are accessible or protected in your model.
+This line adds devise authenticable automatically for you inside your User class. Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
 
 You could also include the other devise modules as below:
 
@@ -106,6 +106,14 @@ In addition to :except, you can provide some options to devise call:
 * stretches: configure how many times you want the password is reencrypted.
 
   devise :all, :stretches => 20
+
+* confirm_in: the time the user can access the site before being blocked because his account was not confirmed
+
+  devise :all, :confirm_in => 1.week
+
+* remember_for: the time to store the remember me cookie in the user
+
+  devise :all, :remember_for => 2.weeks
 
 The next step after setting up your model is to configure your routes for devise. You do this by opening up your config/routes.rb and adding:
 
@@ -168,9 +176,10 @@ After signing in a user, confirming it's account or updating it's password, devi
 
   map.root :controller => 'home'
 
-You also need to setup default url options for the mailer, if you are using confirmable or recoverable. It's a Rails required configuration, and you can do this inside your specific environments. Here is an example of development environment:
+You also need to setup default url options for the mailer, if you are using confirmable or recoverable. Here's is the configuration for development:
 
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  Notifier.sender = "no-reply@yourapp.com"
+  ActionMailer::Base.default_url_options = { :host => 'localhost:3000' }
 
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 
@@ -209,14 +218,14 @@ This is gonna copy all session, password, confirmation and notifier views to you
 
 == I18n
 
-Devise check for flash messages using i18n, so you're able to customize them easily. For example, to change the sign in message you should setup your locale file this way:
+Devise uses flash messages with I18n with the flash keys :success and :failure. To customize your app, you can setup your locale file this way:
 
   en:
     devise:
       sessions:
         signed_in: 'Signed in successfully.'
 
-You can also create distinct messages based on the resource you've configured:
+You can also create distinct messages based on the resource you've configured using the singular name given in routes:
 
   en:
     devise:
@@ -226,7 +235,7 @@ You can also create distinct messages based on the resource you've configured:
         admin:
           signed_in: 'Hello admin!'
 
-Devise notifier uses the same pattern to create subject messages, but it is not able to know what scope you are, he just know the record (ie user instance) that was sent to it. So you need to customize messages based on the model class name (usually the same as the resource name, if you follow basic conventions):
+Devise notifier uses the same pattern to create subject messages:
 
   en:
     devise:

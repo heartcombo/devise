@@ -16,12 +16,15 @@ class Notifier < ::ActionMailer::Base
 
     # Configure default email options
     def setup_mail(record, key)
-      subject      translate(record, key)
+      mapping = Devise.mappings.values.find { |m| m.to == record.class }
+      raise "Invalid devise resource #{record}" unless mapping
+
+      subject      translate(mapping, key)
       from         self.class.sender
       recipients   record.email
       sent_on      Time.now
       content_type 'text/html'
-      body         underscore_name(record) => record, :resource => record
+      body         mapping.name => record, :resource => record
     end
 
     # Setup subject namespaced by model. It means you're able to setup your
@@ -35,13 +38,7 @@ class Notifier < ::ActionMailer::Base
     #         user:
     #           notifier:
     #             confirmation_instructions: '...'
-    def translate(record, key)
-      I18n.t(:"#{underscore_name(record)}.#{key}",
-             :scope => [:devise, :notifier],
-             :default => key)
-    end
-
-    def underscore_name(record)
-      @underscore_name ||= record.class.name.underscore.to_sym
+    def translate(mapping, key)
+      I18n.t(:"#{mapping.name}.#{key}", :scope => [:devise, :notifier], :default => key)
     end
 end

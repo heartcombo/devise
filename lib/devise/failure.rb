@@ -8,8 +8,12 @@ module Devise
     # to the default_url.
     def self.call(env)
       options = env['warden.options']
-      params  = options[:params] || {}
       scope   = options[:scope]
+      params  = if env['warden'].try(:message)
+        { env['warden'].message => true }
+      else
+        options[:params]
+      end
 
       redirect_path = if mapping = Devise.mappings[scope]
         "/#{mapping.as}/#{mapping.path_names[:sign_in]}"
@@ -19,7 +23,7 @@ module Devise
 
       headers = {}
       headers["Location"] = redirect_path
-      headers["Location"] << "?" << Rack::Utils.build_query(params) unless params.empty?
+      headers["Location"] << "?" << Rack::Utils.build_query(params) if params
       headers["Content-Type"] = 'text/plain'
 
       message = options[:message] || "You are being redirected to #{redirect_path}"

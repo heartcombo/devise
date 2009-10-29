@@ -1,12 +1,19 @@
 class SessionsController < ApplicationController
   include Devise::Controllers::Helpers
 
+  # Maps the messages types that comes from warden to a flash type.
+  WARDEN_MESSAGES = {
+    :unauthenticated => :success,
+    :unconfirmed => :failure
+  }
+
   before_filter :require_no_authentication, :only => [ :new, :create ]
 
   # GET /resource/sign_in
   def new
-    unauthenticated! if params[:unauthenticated]
-    unconfirmed!     if params[:unconfirmed]
+    WARDEN_MESSAGES.each do |message, type|
+      set_now_flash_message type, message if params.key?(message)
+    end
     build_resource
   end
 
@@ -16,7 +23,7 @@ class SessionsController < ApplicationController
       set_flash_message :success, :signed_in
       redirect_back_or_to home_or_root_path
     else
-      unauthenticated!
+      set_now_flash_message :failure, :invalid
       build_resource
       render :new
     end
@@ -28,15 +35,5 @@ class SessionsController < ApplicationController
     sign_out(resource_name)
     redirect_to root_path
   end
-
-  protected
-
-    def unauthenticated!
-      set_now_flash_message :failure, :unauthenticated
-    end
-
-    def unconfirmed!
-      set_now_flash_message :failure, :unconfirmed
-    end
 
 end

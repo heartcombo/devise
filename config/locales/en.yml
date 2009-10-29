@@ -3,8 +3,9 @@ en:
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
-      unauthenticated: 'Invalid email or password.'
+      unauthenticated: 'You need to sign in or sign up before continuing.'
       unconfirmed: 'Your account was not confirmed and your confirmation period has expired.'
+      invalid: 'Invalid email or password.'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'

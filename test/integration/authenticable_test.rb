@@ -81,8 +81,6 @@ class AuthenticationTest < ActionController::IntegrationTest
       fill_in 'email', :with => 'wrongemail@test.com'
     end
 
-    assert_redirected_to new_admin_session_path(:unauthenticated => true)
-    follow_redirect!
     assert_contain 'Invalid email or password'
     assert_not warden.authenticated?(:admin)
   end
@@ -92,8 +90,6 @@ class AuthenticationTest < ActionController::IntegrationTest
       fill_in 'password', :with => 'abcdef'
     end
 
-    assert_redirected_to new_admin_session_path(:unauthenticated => true)
-    follow_redirect!
     assert_contain 'Invalid email or password'
     assert_not warden.authenticated?(:admin)
   end
@@ -101,13 +97,12 @@ class AuthenticationTest < ActionController::IntegrationTest
   test 'error message is configurable by resource name' do
     begin
       I18n.backend.store_translations(:en, :devise => { :sessions =>
-        { :admin => { :unauthenticated => "Invalid credentials" } } })
+        { :admin => { :invalid => "Invalid credentials" } } })
 
       sign_in_as_admin do
         fill_in 'password', :with => 'abcdef'
       end
 
-      follow_redirect!
       assert_contain 'Invalid credentials'
     ensure
       I18n.reload!
@@ -145,14 +140,14 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_not_contain 'Signed out successfully'
   end
 
-  test 'redirect from warden shows error message' do
+  test 'redirect from warden shows sign in or sign up message' do
     get admins_path
 
     warden_path = new_admin_session_path(:unauthenticated => true)
     assert_redirected_to warden_path
 
     get warden_path
-    assert_contain 'Invalid email or password.'
+    assert_contain 'You need to sign in or sign up before continuing.'
   end
 
   test 'render 404 on roles without permission' do

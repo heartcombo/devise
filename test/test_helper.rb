@@ -13,6 +13,7 @@ ActionMailer::Base.default_url_options[:host] = 'test.com'
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+
 ActiveRecord::Schema.define(:version => 1) do
   [:users, :admins].each do |table|
     create_table table do |t|

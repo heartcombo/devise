@@ -7,12 +7,16 @@ module Devise
       # Authenticate a user based on email and password params, returning to warden
       # success and the authenticated user if everything is okay. Otherwise redirect
       # to sign in page.
+      #
+      # Please notice the semantic difference between calling fail! and throw :warden.
+      # The first does not perform any action when calling authenticate, just
+      # when authenticate! is invoked. The second always perform the action.
       def authenticate!
         if valid_attributes? && resource = mapping.to.authenticate(attributes)
           success!(resource)
         else
           store_location
-          throw :warden, :scope => scope, :params => { :unauthenticated => true }
+          fail!(:unauthenticated)
         end
       end
 

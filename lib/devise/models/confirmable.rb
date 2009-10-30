@@ -34,8 +34,8 @@ module Devise
         base.class_eval do
           extend ClassMethods
 
-          before_save :reset_confirmation, :if => :email_changed?
-          after_save  :send_confirmation_instructions, :if => :email_changed?
+          before_create :generate_confirmation_token
+          after_create  :send_confirmation_instructions
         end
       end
 
@@ -64,7 +64,7 @@ module Devise
       # confirming it's account
       def reset_confirmation!
         unless_confirmed do
-          reset_confirmation
+          generate_confirmation_token
           save(false)
           send_confirmation_instructions
         end
@@ -115,24 +115,12 @@ module Devise
           end
         end
 
-        # Remove confirmation date from the user, ensuring after a user update
-        # it's email, it won't be able to sign in without confirming it.
-        def reset_confirmation
-          generate_confirmation_token
-          self.confirmed_at = nil
-        end
-
         # Generates a new random token for confirmation, and stores the time
         # this token is being generated
         def generate_confirmation_token
+          self.confirmed_at = nil
           self.confirmation_token = friendly_token
           self.confirmation_sent_at = Time.now.utc
-        end
-
-        # Resets the confirmation token with and save the record without
-        # validating.
-        def generate_confirmation_token!
-          generate_confirmation_token && save(false)
         end
 
       module ClassMethods

@@ -149,38 +149,23 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should resend email instructions for the user reconfirming the email if it has changed' do
+  test 'should not resend email instructions if the user change his email' do
     user = create_user
     user.email = 'new_test@example.com'
-    assert_email_sent do
-      user.save!
-    end
-  end
-
-  test 'should not resend email instructions if the user is updated but the email is not' do
-    user = create_user
-    user.confirmed_at = Time.now
     assert_email_not_sent do
       user.save!
     end
   end
 
-  test 'should reset confirmation status when updating email' do
+  test 'should not reset confirmation status or token when updating email' do
     user = create_user
-    assert_not user.confirmed?
     user.confirm!
-    assert user.confirmed?
     user.email = 'new_test@example.com'
     user.save!
-    assert_not user.reload.confirmed?
-  end
 
-  test 'should reset confirmation token when updating email' do
-    user = create_user
-    token = user.confirmation_token
-    user.email = 'new_test@example.com'
-    user.save!
-    assert_not_equal token, user.reload.confirmation_token
+    user.reload
+    assert user.confirmed?
+    assert_nil user.confirmation_token
   end
 
   test 'should not be able to send instructions if the user is already confirmed' do

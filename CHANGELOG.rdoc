@@ -3,6 +3,7 @@
 
 * deprecations
   * Renamed confirm_in to confirm_within
+  * [#14] Do not send confirmation messages when user changes his e-mail
 
 == 0.2.3
 

@@ -66,6 +66,7 @@ end
 Rails.configuration.after_initialize do
   ActiveRecord::Base.extend Devise::ActiveRecord
   ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Migrations
+  I18n.load_path.unshift File.expand_path(File.join(File.dirname(__FILE__), 'devise', 'locales', 'en.yml'))
 end
 
 require 'devise/warden'

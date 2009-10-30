@@ -4,7 +4,7 @@ en:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
       unauthenticated: 'You need to sign in or sign up before continuing.'
-      unconfirmed: 'Your account was not confirmed and your confirmation period has expired.'
+      unconfirmed: 'You have to confirm your account before continuing.'
       invalid: 'Invalid email or password.'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'

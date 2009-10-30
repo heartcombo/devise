@@ -2,20 +2,22 @@ class DeviseViewsGenerator < Rails::Generator::Base
 
   def initialize(*args)
     super
-    @source_root = options[:source] || File.join(spec.path, '..', '..', 'app', 'views')
+    @source_root = options[:source] || File.join(spec.path, '..', '..')
   end
 
   def manifest
     record do |m|
-      views_directory = File.join('app', 'views')
-      m.directory views_directory
+      m.directory "app/views"
 
-      Dir[File.join(@source_root, "**/*.erb")].each do |file|
+      Dir[File.join(@source_root, "app", "views", "**/*.erb")].each do |file|
         file = file.gsub(@source_root, "")[1..-1]
 
-        m.directory  File.join(views_directory, File.dirname(file))
-        m.file       file, File.join(views_directory, file)
+        m.directory  File.dirname(file)
+        m.file       file, file
       end
+
+      m.directory "config/locales"
+      m.file "lib/devise/locales/en.yml", "config/locales/devise.en.yml"
     end
   end
 

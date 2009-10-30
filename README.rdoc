@@ -111,9 +111,9 @@ In addition to :except, you can provide some options to devise call:
 
   devise :all, :remember_for => 2.weeks
 
-All those values can also be set in a global way by setting them in Devise:
+All those values can also be set in a global way by setting them in Devise::Models:
 
-  Devise.confirm_within = 1.week
+  Devise::Models.confirm_within = 1.week
 
 == Routes
 

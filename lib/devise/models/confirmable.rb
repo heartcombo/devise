@@ -150,7 +150,7 @@ module Devise
         end
       end
 
-      Devise.model_config(self, :confirm_within, 0.days)
+      Devise::Models.config(self, :confirm_within, 0.days)
     end
   end
 end

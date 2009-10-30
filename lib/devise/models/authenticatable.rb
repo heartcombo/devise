@@ -90,8 +90,8 @@ module Devise
         end
       end
 
-      Devise.model_config(self, :pepper)
-      Devise.model_config(self, :stretches, 10)
+      Devise::Models.config(self, :pepper)
+      Devise::Models.config(self, :stretches, 10)
     end
   end
 end

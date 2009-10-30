@@ -1,3 +1,11 @@
+* enhancement
+  * [#16] Allow devise to be more agnostic. Do not require ActiveRecord to be loaded.
+
+* deprecations
+  * Model configuration is on Devise::Models.config and not on Devise.config anymore.
+
+== 0.3.0
+
 * bug fix
   * [#15] Allow yml messages to be configured by not using engine locales
 

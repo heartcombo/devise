@@ -89,7 +89,7 @@ module Devise
         end
       end
 
-      Devise.model_config(self, :remember_for, 2.weeks)
+      Devise::Models.config(self, :remember_for, 2.weeks)
     end
   end
 end

@@ -66,28 +66,28 @@ class AuthenticatableTest < ActiveSupport::TestCase
 
   test 'should fallback to devise pepper default configuring' do
     begin
-      Devise.pepper = ''
+      Devise::Models.pepper = ''
       user = new_user
       assert_equal encrypt_password(user), user.encrypted_password
-      Devise.pepper = 'new_pepper'
+      Devise::Models.pepper = 'new_pepper'
       user = new_user
       assert_equal encrypt_password(user, 'new_pepper'), user.encrypted_password
-      Devise.pepper = '123456'
+      Devise::Models.pepper = '123456'
       user = new_user
       assert_equal encrypt_password(user, '123456'), user.encrypted_password
     ensure
-      Devise.pepper = nil
+      Devise::Models.pepper = nil
     end
   end
 
   test 'should fallback to devise stretches default configuring' do
     begin
-      default_stretches = Devise.stretches
-      Devise.stretches = 1
+      default_stretches = Devise::Models.stretches
+      Devise::Models.stretches = 1
       user = new_user
       assert_equal encrypt_password(user, nil, nil), user.encrypted_password
     ensure
-      Devise.stretches = default_stretches
+      Devise::Models.stretches = default_stretches
     end
   end
 

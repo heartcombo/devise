@@ -4,6 +4,7 @@
 * deprecations
   * Renamed confirm_in to confirm_within
   * [#14] Do not send confirmation messages when user changes his e-mail
+  * [#13] Renamed authenticable to authenticatable and added deprecation warnings
 
 == 0.2.3
 

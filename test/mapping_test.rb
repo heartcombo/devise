@@ -57,13 +57,13 @@ class MapTest < ActiveSupport::TestCase
 
   test 'magic predicates' do
     mapping = Devise.mappings[:user]
-    assert mapping.authenticable?
+    assert mapping.authenticatable?
     assert mapping.confirmable?
     assert mapping.recoverable?
     assert mapping.rememberable?
 
     mapping = Devise.mappings[:admin]
-    assert mapping.authenticable?
+    assert mapping.authenticatable?
     assert_not mapping.confirmable?
     assert_not mapping.recoverable?
     assert_not mapping.rememberable?

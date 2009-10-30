@@ -1,5 +1,5 @@
 require 'digest/sha1'
-require 'devise/strategies/authenticable'
+require 'devise/strategies/authenticatable'
 
 module Devise
   module Models
@@ -24,7 +24,7 @@ module Devise
     #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
-    module Authenticable
+    module Authenticatable
       def self.included(base)
         base.class_eval do
           extend ClassMethods
@@ -75,8 +75,8 @@ module Devise
         # authenticated user if it's valid or nil.
         # Attributes are :email and :password
         def authenticate(attributes={})
-          authenticable = find_by_email(attributes[:email])
-          authenticable if authenticable.try(:valid_password?, attributes[:password])
+          authenticatable = find_by_email(attributes[:email])
+          authenticatable if authenticatable.try(:valid_password?, attributes[:password])
         end
 
         # Attempt to find a user by it's email. If not user is found, returns a

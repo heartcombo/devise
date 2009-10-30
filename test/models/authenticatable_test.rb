@@ -1,7 +1,7 @@
 require 'test/test_helper'
 require 'digest/sha1'
 
-class AuthenticableTest < ActiveSupport::TestCase
+class AuthenticatableTest < ActiveSupport::TestCase
 
   def encrypt_password(user, pepper=nil, stretches=1)
     user.class_eval { define_method(:stretches) { stretches } } if stretches

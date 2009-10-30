@@ -18,7 +18,7 @@ module Devise
   #   mapping.to   #=> User
   #   # is the class to be loaded from routes, given in the route as :class_name.
   #
-  #   mapping.for  #=> [:authenticable]
+  #   mapping.for  #=> [:authenticatable]
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:

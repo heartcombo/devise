@@ -9,7 +9,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 Right now it's composed of five mainly modules:
 
-* Authenticable: responsible for encrypting password and validating authenticity of a user while signing in.
+* Authenticatable: responsible for encrypting password and validating authenticity of a user while signing in.
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
 * Recoverable: takes care of reseting the user password and send reset instructions.
 * Rememberable: manages generating and clearing token for remember the user from a saved cookie.
@@ -51,7 +51,7 @@ Devise must be setted up within the model (or models) you want to use, and devis
 We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
 
   create_table :users do
-    t.authenticable
+    t.authenticatable
     t.confirmable
     t.recoverable
     t.rememberable
@@ -70,17 +70,17 @@ Now let's setup a User model adding the devise line to have your authentication 
     devise
   end
 
-This line adds devise authenticable automatically for you inside your User class. Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
+This line adds devise authenticatable automatically for you inside your User class. Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
 
 You could also include the other devise modules as below:
 
-  # Same as using only devise, authenticable is activated by default
-  devise :authenticable
+  # Same as using only devise, authenticatable is activated by default
+  devise :authenticatable
 
-  # Include authenticable + confirmable
+  # Include authenticatable + confirmable
   devise :confirmable
 
-  # Include authenticable + recoverable + rememberable
+  # Include authenticatable + recoverable + rememberable
   devise :recoverable, :rememberable
 
   # Include all of them
@@ -123,7 +123,7 @@ The next step after setting up your model is to configure your routes for devise
 
 This is going to look inside you User model and create the needed routes:
 
-  # Session routes for Authenticable (default)
+  # Session routes for Authenticatable (default)
        new_user_session GET  /users/sign_in                    {:controller=>"sessions", :action=>"new"}
            user_session POST /users/sign_in                    {:controller=>"sessions", :action=>"create"}
    destroy_user_session GET  /users/sign_out                   {:controller=>"sessions", :action=>"destroy"}
@@ -191,7 +191,7 @@ Devise let's you setup as many roles as you want, so let's say you already have 
 
   # Create a migration with the required fields
   create_table :admins do |t|
-    t.authenticable
+    t.authenticatable
   end
 
   # Inside your Admin model

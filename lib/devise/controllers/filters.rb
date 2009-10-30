@@ -54,8 +54,8 @@ module Devise
       # Example:
       #
       #   Maps:
-      #     User => :authenticable
-      #     Admin => :authenticable
+      #     User => :authenticatable
+      #     Admin => :authenticatable
       #
       #   Generated methods:
       #     authenticate_user!  # Signs user in or redirect

@@ -17,7 +17,7 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 ActiveRecord::Schema.define(:version => 1) do
   [:users, :admins].each do |table|
     create_table table do |t|
-      t.authenticable :null => table == :admins
+      t.authenticatable :null => table == :admins
 
       if table == :users
         t.confirmable

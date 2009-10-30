@@ -54,38 +54,38 @@ class ActiveRecordTest < ActiveSupport::TestCase
     end
   end
 
-  test 'include by default authenticable only' do
-    assert_include_modules Authenticable, :authenticable
+  test 'include by default authenticatable only' do
+    assert_include_modules Authenticable, :authenticatable
     assert_not_include_modules Authenticable, :confirmable, :recoverable, :rememberable, :validatable
   end
 
   test 'add confirmable module only' do
-    assert_include_modules Confirmable, :authenticable, :confirmable
+    assert_include_modules Confirmable, :authenticatable, :confirmable
     assert_not_include_modules Confirmable, :recoverable, :rememberable, :validatable
   end
 
   test 'add recoverable module only' do
-    assert_include_modules Recoverable, :authenticable, :recoverable
+    assert_include_modules Recoverable, :authenticatable, :recoverable
     assert_not_include_modules Recoverable, :confirmable, :rememberable, :validatable
   end
 
   test 'add rememberable module only' do
-    assert_include_modules Rememberable, :authenticable, :rememberable
+    assert_include_modules Rememberable, :authenticatable, :rememberable
     assert_not_include_modules Rememberable, :confirmable, :recoverable, :validatable
   end
 
   test 'add validatable module only' do
-    assert_include_modules Validatable, :authenticable, :validatable
+    assert_include_modules Validatable, :authenticatable, :validatable
     assert_not_include_modules Validatable, :confirmable, :recoverable, :rememberable
   end
 
   test 'add all modules' do
     assert_include_modules Devisable,
-      :authenticable, :confirmable, :recoverable, :rememberable, :validatable
+      :authenticatable, :confirmable, :recoverable, :rememberable, :validatable
   end
 
   test 'configure modules with except option' do
-    assert_include_modules Exceptable, :authenticable, :confirmable
+    assert_include_modules Exceptable, :authenticatable, :confirmable
     assert_not_include_modules Exceptable, :recoverable, :rememberable, :validatable
   end
 

@@ -32,22 +32,22 @@ module Devise
     #
     # Examples:
     #
-    #   # include only authenticable module (default)
+    #   # include only authenticatable module (default)
     #   devise
     #
-    #   # include authenticable + confirmable modules
+    #   # include authenticatable + confirmable modules
     #   devise :confirmable
     #
-    #   # include authenticable + recoverable modules
+    #   # include authenticatable + recoverable modules
     #   devise :recoverable
     #
-    #   # include authenticable + rememberable modules
+    #   # include authenticatable + rememberable modules
     #   devise :rememberable
     #
-    #   # include authenticable + validatable modules
+    #   # include authenticatable + validatable modules
     #   devise :validatable
     #
-    #   # include authenticable + confirmable + recoverable + rememberable + validatable
+    #   # include authenticatable + confirmable + recoverable + rememberable + validatable
     #   devise :confirmable, :recoverable, :rememberable, :validatable
     #
     #   # shortcut to include all modules (same as above)
@@ -59,9 +59,16 @@ module Devise
     def devise(*modules)
       options  = modules.extract_options!
 
+      # TODO Remove me in a next release
+      if modules.include?(:authenticable)
+        modules.delete(:authenticable)
+        modules.unshift(:authenticatable)
+        ActiveSupport::Deprecation.warn "devise :authenticate is deprecated, use authenticatable instead"
+      end
+
       modules  = Devise::ALL if modules.include?(:all)
       modules -= Array(options.delete(:except))
-      modules |= [:authenticable]
+      modules  = [:authenticatable] | modules
 
       modules.each do |m|
         devise_modules << m.to_sym

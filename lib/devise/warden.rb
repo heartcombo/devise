@@ -55,7 +55,7 @@ require 'devise/strategies/base'
 # Adds Warden Manager to Rails middleware stack, configuring default devise
 # strategy and also the controller who will manage not authenticated users.
 Rails.configuration.middleware.use Warden::Manager do |manager|
-  manager.default_strategies :rememberable, :authenticable
+  manager.default_strategies :rememberable, :authenticatable
   manager.failure_app = Devise::Failure
   manager.silence_missing_strategies!
 end

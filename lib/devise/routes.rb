@@ -19,7 +19,7 @@ module ActionController::Routing
       # generate all needed routes for devise, based on what modules you have
       # defined in your model.
       # Examples: Let's say you have an User model configured to use
-      # authenticable, confirmable and recoverable modules. After creating this
+      # authenticatable, confirmable and recoverable modules. After creating this
       # inside your routes:
       #
       #   map.devise_for :users
@@ -27,7 +27,7 @@ module ActionController::Routing
       # this method is going to look inside your User model and create the
       # needed routes:
       #
-      #  # Session routes for Authenticable (default)
+      #  # Session routes for Authenticatable (default)
       #       new_user_session GET  /users/sign_in                    {:controller=>"sessions", :action=>"new"}
       #           user_session POST /users/sign_in                    {:controller=>"sessions", :action=>"create"}
       #   destroy_user_session GET  /users/sign_out                   {:controller=>"sessions", :action=>"destroy"}
@@ -69,7 +69,7 @@ module ActionController::Routing
           mapping = Devise::Mapping.new(resource, options)
           Devise.mappings[mapping.name] = mapping
 
-          if mapping.authenticable?
+          if mapping.authenticatable?
             with_options(:controller => 'sessions', :path_prefix => mapping.as) do |session|
               session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
               session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })

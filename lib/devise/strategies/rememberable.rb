@@ -3,7 +3,7 @@ module Devise
     # Remember the user through the remember token. This strategy is responsible
     # to verify whether there is a cookie with the remember token, and to
     # recreate the user from this cookie if it exists.  Must be called *before*
-    # authenticable.
+    # authenticatable.
     class Rememberable < Devise::Strategies::Base
 
       # A valid strategy for rememberable needs a remember token in the cookies.

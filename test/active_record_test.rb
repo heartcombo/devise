@@ -31,7 +31,7 @@ end
 class Configurable < User
   devise :all, :stretches => 15,
                :pepper => 'abcdef',
-               :confirm_in => 5.days,
+               :confirm_within => 5.days,
                :remember_for => 7.days
 end
 
@@ -97,8 +97,8 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal 'abcdef', Configurable.new.pepper
   end
 
-  test 'set a default value for confirm_in' do
-    assert_equal 5.days, Configurable.new.confirm_in
+  test 'set a default value for confirm_within' do
+    assert_equal 5.days, Configurable.new.confirm_within
   end
 
   test 'set a default value for remember_for' do

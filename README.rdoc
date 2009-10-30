@@ -80,22 +80,18 @@ You could also include the other devise modules as below:
   # Include authenticable + confirmable
   devise :confirmable
 
-  # Include authenticable + recoverable
-  devise :recoverable
+  # Include authenticable + recoverable + rememberable
+  devise :recoverable, :rememberable
 
-  # Include authenticable + rememberable modules
-  devise :rememberable
-
-  # Include authenticable + confirmable + recoverable + rememberable + validatable
-  devise :confirmable, :recoverable, :rememberable, :validatable
-
-  # Same as above, include all of them
+  # Include all of them
   devise :all
 
   # Include all except recoverable
   devise :all, :except => :recoverable
 
 Note that validations aren't added by default, so you're able to customize it. In order to have automatic validations working just include :validatable.
+
+== Configuration values
 
 In addition to :except, you can provide some options to devise call:
 
@@ -107,13 +103,19 @@ In addition to :except, you can provide some options to devise call:
 
   devise :all, :stretches => 20
 
-* confirm_in: the time the user can access the site before being blocked because his account was not confirmed
+* confirm_within: the time the user can access the site before being blocked because his account was not confirmed
 
-  devise :all, :confirm_in => 1.week
+  devise :all, :confirm_within => 1.week
 
 * remember_for: the time to store the remember me cookie in the user
 
   devise :all, :remember_for => 2.weeks
+
+All those values can also be set in a global way by setting them in Devise:
+
+  Devise.confirm_within = 1.week
+
+== Routes
 
 The next step after setting up your model is to configure your routes for devise. You do this by opening up your config/routes.rb and adding:
 
@@ -156,7 +158,9 @@ There are also some options available for configuring your routes:
 
   map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
 
-And that is it! Devise is gonna create some helpers to use inside your controllers and views. To setup a controller that needs user authentication, just add this before_filter:
+== Controller filters
+
+Devise is gonna create some helpers to use inside your controllers and views. To setup a controller that needs user authentication, just add this before_filter:
 
   before_filter :authenticate_user!
 
@@ -180,6 +184,8 @@ You also need to setup default url options for the mailer, if you are using conf
 
   Notifier.sender = "no-reply@yourapp.com"
   ActionMailer::Base.default_url_options = { :host => 'localhost:3000' }
+
+== Tidying up
 
 Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
 

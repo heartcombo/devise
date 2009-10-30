@@ -194,20 +194,20 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'confirm time should fallback to devise confirm in default configuration' do
     begin
-      confirm_in = Devise.confirm_in
-      Devise.confirm_in = 1.day
+      confirm_within = Devise.confirm_within
+      Devise.confirm_within = 1.day
       user = new_user
       user.confirmation_sent_at = 2.days.ago
       assert_not user.active?
-      Devise.confirm_in = 3.days
+      Devise.confirm_within = 3.days
       assert user.active?
     ensure
-      Devise.confirm_in = confirm_in
+      Devise.confirm_within = confirm_within
     end
   end
 
   test 'should be active when confirmation sent at is not overpast' do
-    Devise.confirm_in = 5.days
+    Devise.confirm_within = 5.days
     user = create_user
     user.confirmation_sent_at = 4.days.ago
     assert user.active?
@@ -223,21 +223,21 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should not be active when confirmation was sent within the limit' do
-    Devise.confirm_in = 5.days
+    Devise.confirm_within = 5.days
     user = create_user
     user.confirmation_sent_at = 5.days.ago
     assert_not user.active?
   end
 
   test 'should be active when confirm in is zero' do
-    Devise.confirm_in = 0.days
+    Devise.confirm_within = 0.days
     user = create_user
     user.confirmation_sent_at = Date.today
     assert_not user.active?
   end
 
   test 'should not be active when confirmation was sent before confirm in time' do
-    Devise.confirm_in = 4.days
+    Devise.confirm_within = 4.days
     user = create_user
     user.confirmation_sent_at = 5.days.ago
     assert_not user.active?

@@ -17,10 +17,10 @@ module Devise
     #
     #    devise :all, :stretches => 20
     #
-    # * confirm_in: the time you want your user to confirm it's account. During
+    # * confirm_within: the time you want your user to confirm it's account. During
     #   this time he will be able to access your application without confirming.
     #
-    #    devise :all, :confirm_in => 7.days
+    #    devise :all, :confirm_within => 7.days
     #
     # * remember_for: the time the user will be remembered without asking for
     #   credentials again.

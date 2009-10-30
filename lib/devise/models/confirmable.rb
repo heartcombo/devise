@@ -14,13 +14,13 @@ module Devise
     #
     # Configuration:
     #
-    #   confirm_in: the time you want the user will have to confirm it's account
-    #               without blocking his access. When confirm_in is zero, the
-    #               user won't be able to sign in without confirming. You can
-    #               use this to let your user access some features of your
-    #               application without confirming the account, but blocking it
-    #               after a certain period (ie 7 days). By default confirm_in is
-    #               zero, it means users always have to confirm to sign in.
+    #   confirm_within: the time you want the user will have to confirm it's account
+    #                   without blocking his access. When confirm_within is zero, the
+    #                   user won't be able to sign in without confirming. You can
+    #                   use this to let your user access some features of your
+    #                   application without confirming the account, but blocking it
+    #                   after a certain period (ie 7 days). By default confirm_within is
+    #                   zero, it means users always have to confirm to sign in.
     #
     # Examples:
     #
@@ -87,21 +87,21 @@ module Devise
         #
         # Example:
         #
-        #   # confirm_in = 1.day and confirmation_sent_at = today
+        #   # confirm_within = 1.day and confirmation_sent_at = today
         #   confirmation_period_valid?   # returns true
         #
-        #   # confirm_in = 5.days and confirmation_sent_at = 4.days.ago
+        #   # confirm_within = 5.days and confirmation_sent_at = 4.days.ago
         #   confirmation_period_valid?   # returns true
         #
-        #   # confirm_in = 5.days and confirmation_sent_at = 5.days.ago
+        #   # confirm_within = 5.days and confirmation_sent_at = 5.days.ago
         #   confirmation_period_valid?   # returns false
         #
-        #   # confirm_in = 0.days
+        #   # confirm_within = 0.days
         #   confirmation_period_valid?   # will always return false
         #
         def confirmation_period_valid?
           confirmation_sent_at? &&
-            (Date.today - confirmation_sent_at.to_date).days < confirm_in
+            (Date.today - confirmation_sent_at.to_date).days < confirm_within
         end
 
         # Checks whether the record is confirmed or not, yielding to the block
@@ -162,7 +162,7 @@ module Devise
         end
       end
 
-      Devise.model_config(self, :confirm_in, 0.days)
+      Devise.model_config(self, :confirm_within, 0.days)
     end
   end
 end

@@ -59,7 +59,7 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 
   test 'not confirmed user and setup to block without confirmation should not be able to sign in' do
-    Devise::Models.confirm_within = 0
+    Devise.confirm_within = 0
     user = sign_in_as_user(:confirm => false)
 
     assert_redirected_to new_user_session_path(:unconfirmed => true)
@@ -67,7 +67,7 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 
   test 'not confirmed user but configured with some days to confirm should be able to sign in' do
-    Devise::Models.confirm_within = 1
+    Devise.confirm_within = 1
     user = sign_in_as_user(:confirm => false)
 
     assert_response :success

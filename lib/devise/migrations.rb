@@ -26,13 +26,6 @@ module Devise
       string :password_salt,      :limit =>  20, :null => null
     end
 
-    # TODO Remove me in a next release.
-    #
-    def authenticable(*args)
-      ActiveSupport::Deprecation.warn "authenticable in migrations is deprecated, use authenticatable instead"
-      authenticatable(*args)
-    end
-
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.
     #
     def confirmable

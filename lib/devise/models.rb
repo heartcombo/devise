@@ -6,7 +6,7 @@ module Devise
     #
     # The line above creates:
     #
-    #   1) An accessor called Devise::Models.stretches, which value is used by default;
+    #   1) An accessor called Devise.stretches, which value is used by default;
     #
     #   2) Some class methods for your model Model.stretches and Model.stretches=
     #      which have higher priority than Devise.stretches;
@@ -17,17 +17,8 @@ module Devise
     # inside the given class.
     #
     def self.config(mod, accessor, default=nil) #:nodoc:
-      mattr_accessor accessor
-      send(:"#{accessor}=", default)
-
-      # TODO Remove me in a next release
-      Devise.class_eval <<-METHOD, __FILE__, __LINE__
-        def self.#{accessor}=(value)
-          ActiveSupport::Deprecation.warn "Devise.#{accessor}= is deprecated, " <<
-                                          "use Devise::Models.#{accessor}= instead."
-          Devise::Models.#{accessor} = value
-        end
-      METHOD
+      Devise.send :mattr_accessor, accessor
+      Devise.send :"#{accessor}=", default
 
       mod.class_eval <<-METHOD, __FILE__, __LINE__
         def #{accessor}
@@ -42,7 +33,7 @@ module Devise
           elsif superclass.respond_to?(:#{accessor})
             superclass.#{accessor}
           else
-            Devise::Models.#{accessor}
+            Devise.#{accessor}
           end
         end
 
@@ -110,13 +101,6 @@ module Devise
     #
     def devise(*modules)
       options  = modules.extract_options!
-
-      # TODO Remove me in a next release
-      if modules.include?(:authenticable)
-        modules.delete(:authenticable)
-        modules.unshift(:authenticatable)
-        ActiveSupport::Deprecation.warn "devise :authenticate is deprecated, use authenticatable instead"
-      end
 
       modules  = Devise::ALL if modules.include?(:all)
       modules -= Array(options.delete(:except))

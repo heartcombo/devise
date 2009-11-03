@@ -2,7 +2,6 @@
   * Notifier is deprecated, use DeviseMailer instead. Remember to rename
     app/views/notifier to app/views/devise_mailer and I18n key from
     devise.notifier to devise.mailer
-  * Model configuration is on Devise::Models.config and not on Devise.config anymore.
 
 * enhancement
   * [#16] Allow devise to be more agnostic. Do not require ActiveRecord to be loaded.

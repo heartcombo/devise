@@ -1,6 +1,6 @@
 require 'test/test_helper'
 
-class MapTest < ActiveSupport::TestCase
+class MappingTest < ActiveSupport::TestCase
 
   test 'store options' do
     mapping = Devise.mappings[:user]

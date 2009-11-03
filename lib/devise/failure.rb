@@ -9,10 +9,13 @@ module Devise
     def self.call(env)
       options = env['warden.options']
       scope   = options[:scope]
-      params  = if env['warden'].try(:message)
-        { env['warden'].message => true }
-      else
-        options[:params]
+      params  = case env['warden'].try(:message)
+        when Symbol
+          { env['warden'].message => true }
+        when String
+          { :message => env['warden'].message }
+        else
+          options[:params]
       end
 
       redirect_path = if mapping = Devise.mappings[scope]

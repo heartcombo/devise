@@ -35,7 +35,7 @@ module Devise
       # Resets reset password token and send reset password instructions by email
       def send_reset_password_instructions
         generate_reset_password_token!
-        ::Notifier.deliver_reset_password_instructions(self)
+        ::DeviseMailer.deliver_reset_password_instructions(self)
       end
 
       protected

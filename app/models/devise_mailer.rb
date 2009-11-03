@@ -1,5 +1,15 @@
-class Notifier < ::ActionMailer::Base
-  cattr_accessor :sender
+class DeviseMailer < ::ActionMailer::Base
+
+  # Sets who is sending the e-mail
+  def self.sender=(value)
+    @@sender = value
+  end
+
+  # Reads who is sending the e-mail
+  def self.sender
+    @@sender
+  end
+  self.sender = nil
 
   # Deliver confirmation instructions when the user is created or its email is
   # updated, and also when confirmation is manually requested
@@ -33,12 +43,11 @@ class Notifier < ::ActionMailer::Base
     #
     #   en:
     #     devise:
-    #       notifier:
+    #       mailer:
     #         confirmation_instructions: '...'
     #         user:
-    #           notifier:
-    #             confirmation_instructions: '...'
+    #           confirmation_instructions: '...'
     def translate(mapping, key)
-      I18n.t(:"#{mapping.name}.#{key}", :scope => [:devise, :notifier], :default => key)
+      I18n.t(:"#{mapping.name}.#{key}", :scope => [:devise, :mailer], :default => key)
     end
 end

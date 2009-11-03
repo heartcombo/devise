@@ -56,7 +56,7 @@ module Devise
 
       # Send confirmation instructions by email
       def send_confirmation_instructions
-        ::Notifier.deliver_confirmation_instructions(self)
+        ::DeviseMailer.deliver_confirmation_instructions(self)
       end
 
       # Remove confirmation date and send confirmation instructions, to ensure
@@ -101,7 +101,7 @@ module Devise
         #
         def confirmation_period_valid?
           confirmation_sent_at? &&
-            (Date.today - confirmation_sent_at.to_date).days < confirm_within
+            (Time.now.utc - confirmation_sent_at.utc) < confirm_within
         end
 
         # Checks whether the record is confirmed or not, yielding to the block

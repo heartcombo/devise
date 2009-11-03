@@ -4,7 +4,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
 
   def setup
     setup_mailer
-    Notifier.sender = 'test@example.com'
+    DeviseMailer.sender = 'test@example.com'
   end
 
   def user
@@ -39,13 +39,13 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   end
 
   test 'setup subject from I18n' do
-    store_translations :en, :devise => { :notifier => { :reset_password_instructions => 'Reset instructions' } } do
+    store_translations :en, :devise => { :mailer => { :reset_password_instructions => 'Reset instructions' } } do
       assert_equal 'Reset instructions', mail.subject
     end
   end
 
   test 'subject namespaced by model' do
-    store_translations :en, :devise => { :notifier => { :user => { :reset_password_instructions => 'User Reset Instructions' } } } do
+    store_translations :en, :devise => { :mailer => { :user => { :reset_password_instructions => 'User Reset Instructions' } } } do
       assert_equal 'User Reset Instructions', mail.subject
     end
   end

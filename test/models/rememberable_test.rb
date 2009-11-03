@@ -20,14 +20,6 @@ class RememberableTest < ActiveSupport::TestCase
     assert_not user.changed?
   end
 
-  test 'remember_me should calculate expires_at based on remember_for setup' do
-    user = create_user
-    assert_not user.remember_created_at?
-    user.remember_me!
-    assert user.remember_created_at?
-    assert_equal Date.today, user.remember_created_at.to_date
-  end
-
   test 'forget_me should clear remember token and save the record without validating' do
     user = create_user
     user.remember_me!
@@ -38,7 +30,7 @@ class RememberableTest < ActiveSupport::TestCase
     assert_not user.changed?
   end
 
-  test 'forget_me should clear remember_expires_at' do
+  test 'forget_me should clear remember_created_at' do
     user = create_user
     user.remember_me!
     assert user.remember_created_at?

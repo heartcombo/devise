@@ -4,7 +4,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
 
   def setup
     setup_mailer
-    Notifier.sender = 'test@example.com'
+    DeviseMailer.sender = 'test@example.com'
   end
 
   def user
@@ -36,13 +36,13 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'setup subject from I18n' do
-    store_translations :en, :devise => { :notifier => { :confirmation_instructions => 'Account Confirmation' } } do
+    store_translations :en, :devise => { :mailer => { :confirmation_instructions => 'Account Confirmation' } } do
       assert_equal 'Account Confirmation', mail.subject
     end
   end
 
   test 'subject namespaced by model' do
-    store_translations :en, :devise => { :notifier => { :user => { :confirmation_instructions => 'User Account Confirmation' } } } do
+    store_translations :en, :devise => { :mailer => { :user => { :confirmation_instructions => 'User Account Confirmation' } } } do
       assert_equal 'User Account Confirmation', mail.subject
     end
   end

@@ -45,7 +45,7 @@ module Devise
       # Generate a new remember token and save the record without validations.
       def remember_me!
         self.remember_token = friendly_token
-        self.remember_created_at = Time.now
+        self.remember_created_at = Time.now.utc
         save(false)
       end
 
@@ -66,7 +66,7 @@ module Devise
 
       # Remember token should be expired if expiration time not overpass now.
       def remember_expired?
-        remember_expires_at <= Time.now
+        remember_expires_at <= Time.now.utc
       end
 
       # Remember token expires at created time + remember_for configuration

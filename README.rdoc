@@ -182,7 +182,7 @@ After signing in a user, confirming it's account or updating it's password, devi
 
 You also need to setup default url options for the mailer, if you are using confirmable or recoverable. Here's is the configuration for development:
 
-  Notifier.sender = "no-reply@yourapp.com"
+  DeviseMailer.sender = "no-reply@yourapp.com"
   ActionMailer::Base.default_url_options = { :host => 'localhost:3000' }
 
 == Tidying up
@@ -220,7 +220,7 @@ You can also copy devise views to your application, being able to modify them ba
 
   script/generate devise_views
 
-This is gonna copy all session, password, confirmation and notifier views to your app/views folder.
+This is gonna copy all session, password, confirmation and mailer views to your app/views folder.
 
 == I18n
 
@@ -241,11 +241,11 @@ You can also create distinct messages based on the resource you've configured us
         admin:
           signed_in: 'Hello admin!'
 
-Devise notifier uses the same pattern to create subject messages:
+Devise mailer uses the same pattern to create subject messages:
 
   en:
     devise:
-      notifier:
+      mailer:
         confirmation_instructions: 'Hello everybody!'
         user:
           confirmation_instructions: 'Hello User! Please confirm your email'

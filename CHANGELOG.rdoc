@@ -5,6 +5,8 @@
 
 * enhancement
   * [#16] Allow devise to be more agnostic. Do not require ActiveRecord to be loaded.
+  * Allow Warden::Manager to be configured through Devise
+  * Created a generator which creates an initializer
 
 == 0.3.0
 

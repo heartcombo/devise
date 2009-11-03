@@ -51,27 +51,9 @@ module Devise
     #
     #    devise :all, :except => :rememberable
     #
-    # * pepper: setup a pepper to generate de encrypted password. By default no
-    #   pepper is used:
-    #
-    #    devise :all, :pepper => 'my_pepper'
-    #
-    # * stretches: configure how many times you want the password is reencrypted.
-    #
-    #    devise :all, :stretches => 20
-    #
-    # * confirm_within: the time you want your user to confirm it's account. During
-    #   this time he will be able to access your application without confirming.
-    #
-    #    devise :all, :confirm_within => 7.days
-    #
-    # * remember_for: the time the user will be remembered without asking for
-    #   credentials again.
-    #
-    #    devise :all, :remember_for => 2.weeks
-    #
-    # You can refer to Authenticable, Confirmable and Rememberable for more
-    # information about writing your own method to setup each model apart.
+    # You can also give the following configuration values in a hash: :pepper,
+    # :stretches, :confirm_within and :remember_for. Please check your Devise
+    # initialiazer for a complete description on those values.
     #
     # Examples:
     #

@@ -91,29 +91,11 @@ You could also include the other devise modules as below:
 
 Note that validations aren't added by default, so you're able to customize it. In order to have automatic validations working just include :validatable.
 
-== Configuration values
+== Model configuration
 
-In addition to :except, you can provide some options to devise call:
+In addition to :except, you can provide :pepper, :stretches, :confirm_within and :remember_for as options to devise method.
 
-* pepper: setup a pepper to generate de encrypted password. By default no pepper is used:
-
-  devise :all, :pepper => 'my_pepper'
-
-* stretches: configure how many times you want the password is reencrypted.
-
-  devise :all, :stretches => 20
-
-* confirm_within: the time the user can access the site before being blocked because his account was not confirmed
-
-  devise :all, :confirm_within => 1.week
-
-* remember_for: the time to store the remember me cookie in the user
-
-  devise :all, :remember_for => 2.weeks
-
-All those values can also be set in a global way by setting them in Devise::Models:
-
-  Devise::Models.confirm_within = 1.week
+All those options are described in "config/initializers/devise.rb", which is generated when you invoke `ruby script/generate devise_install` in your application root.
 
 == Routes
 
@@ -140,23 +122,12 @@ This is going to look inside you User model and create the needed routes:
                         POST /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
 
 You can run the routes rake task to verify what routes are being created by devise.
-There are also some options available for configuring your routes:
 
-* :class_name => setup a different class to be looked up by devise, if it cannot be correctly find by the route name.
+There are also some options available for configuring your routes, as :class_name (to set the class for that route), :as and :path_names, where the last two have the same meaning as in routes. The available :path_names are:
 
-  map.devise_for :users, :class_name => 'Account'
+  map.devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
 
-* :as => allows you to setup path name that will be used, as rails routes does. The following route configuration would setup your route as /accounts instead of /users:
-
-  map.devise_for :users, :as => 'accounts'
-
-* :singular => setup the name used to create named routes. By default, for a :users key, it is going to be the singularized version, :user. To configure a named route like account_session_path instead of user_session_path just do:
-
-  map.devise_for :users, :singular => :account
-
-* :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :password and :confirmation.
-
-  map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
+Be sure to check devise_for documentation for detailed description.
 
 == Controller filters
 
@@ -212,13 +183,17 @@ Devise let's you setup as many roles as you want, so let's say you already have 
 
 Devise comes with some generators to help you start:
 
-  script/generate devise Model
+  ruby script/generate devise_install
 
-Will generate a model, configured with all devise modules, and add attr_accessible for default fields, so you can setup more accessible attributes later. The generator will also create the migration and configure your route for devise.
+This will generate an initializer, with a description of all configuration values. You can also generate models through:
+
+  ruby script/generate devise Model
+
+A model configured with all devise modules and attr_accessible for default fields will be created. The generator will also create the migration and configure your routes for devise.
 
 You can also copy devise views to your application, being able to modify them based on your needs. To do it so, run the following command:
 
-  script/generate devise_views
+  ruby script/generate devise_views
 
 This is gonna copy all session, password, confirmation and mailer views to your app/views folder.
 

@@ -22,7 +22,7 @@ Devise.setup do |config|
   # you can configure them inside the config.warden block. The example below
   # allows you to setup OAuth, using http://github.com/roman/warden_oauth
   #
-  # config.manager do |manager|
+  # config.warden do |manager|
   #   manager.oauth(:twitter) do |twitter|
   #     twitter.consumer_secret = <YOUR CONSUMER SECRET>
   #     twitter.consumer_key  = <YOUR CONSUMER KEY>

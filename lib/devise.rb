@@ -11,6 +11,9 @@ module Devise
   STRATEGIES  = [:rememberable, :authenticatable].freeze
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
+  # Models configuration
+  mattr_accessor :pepper, :stretches, :remember_for, :confirm_within
+
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
     # a fresh initializer with all configuration values.

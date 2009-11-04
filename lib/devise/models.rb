@@ -17,7 +17,6 @@ module Devise
     # inside the given class.
     #
     def self.config(mod, accessor, default=nil) #:nodoc:
-      Devise.send :mattr_accessor, accessor
       Devise.send :"#{accessor}=", default
 
       mod.class_eval <<-METHOD, __FILE__, __LINE__

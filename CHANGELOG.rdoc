@@ -1,3 +1,10 @@
+== 0.4.1
+
+* bug fix
+  * [#21] Ensure options can be set even if models were not loaded
+
+== 0.4.0
+
 * deprecations
   * Notifier is deprecated, use DeviseMailer instead. Remember to rename
     app/views/notifier to app/views/devise_mailer and I18n key from
@@ -5,7 +12,7 @@
   * :authenticable calls are deprecated, use :authenticatable instead
 
 * enhancements
-  * [#16] Allow devise to be more agnostic. Do not require ActiveRecord to be loaded.
+  * [#16] Allow devise to be more agnostic and do not require ActiveRecord to be loaded
   * Allow Warden::Manager to be configured through Devise
   * Created a generator which creates an initializer
 

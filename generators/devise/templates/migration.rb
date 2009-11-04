@@ -1,7 +1,7 @@
 class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
   def self.up
     create_table(:<%= table_name %>) do |t|
-      t.authenticable
+      t.authenticatable
       t.confirmable
       t.recoverable
       t.rememberable

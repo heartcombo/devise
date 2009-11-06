@@ -27,7 +27,7 @@ class DeviseTest < ActiveSupport::TestCase
   test 'DeviseMailer.sender can be configured through Devise' do
     swap DeviseMailer, :sender => "foo@bar" do
       assert_equal "foo@bar", DeviseMailer.sender
-      Devise.mail_sender = "bar@foo"
+      Devise.mailer_sender = "bar@foo"
       assert_equal "bar@foo", DeviseMailer.sender
     end
   end

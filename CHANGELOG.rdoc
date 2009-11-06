@@ -1,3 +1,6 @@
+* deprecations
+  * Renamed mail_sender to mailer_sender
+
 * enhancements
   * skip_before_filter added in Devise controllers
   * Use home_or_root_path on require_no_authentication as well

@@ -21,11 +21,16 @@ module Devise
       yield self
     end
 
-    # Sets the sender in DeviseMailer.
-    def mail_sender=(value)
+    def mail_sender=(value) #:nodoc:
+      ActiveSupport::Deprecation.warn "Devise.mail_sender= is deprecated, use Devise.mailer_sender instead"
       DeviseMailer.sender = value
     end
-    alias :sender= :mail_sender= 
+
+    # Sets the sender in DeviseMailer.
+    def mailer_sender=(value)
+      DeviseMailer.sender = value
+    end
+    alias :sender= :mailer_sender=
 
     # Sets warden configuration using a block that will be invoked on warden
     # initialization.

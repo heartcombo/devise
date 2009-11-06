@@ -60,40 +60,42 @@ module ActionController::Routing
       #
       #    map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
       #
+      #  * :path_prefix => the path prefix to be used in all routes. Only :locale is supported as dynamic prefix:
+      #
+      #    map.devise_for :users, :path_prefix => "/:locale"
+      #
       def devise_for(*resources)
         options = resources.extract_options!
 
         resources.map!(&:to_sym)
-        options.assert_valid_keys(:class_name, :as, :path_names, :singular)
-
         resources.each do |resource|
           mapping = Devise::Mapping.new(resource, options)
           Devise.mappings[mapping.name] = mapping
 
-          mapping.for.each do |strategy|
-            send(strategy, mapping) if self.respond_to?(strategy, true)
+          with_options(:path_prefix => mapping.raw_path, :name_prefix => "#{mapping.name}_") do |routes|
+            mapping.for.each do |strategy|
+              send(strategy, routes, mapping) if self.respond_to?(strategy, true)
+            end
           end
         end
       end
 
       protected
 
-        def authenticatable(mapping)
-          with_options(:controller => 'sessions', :path_prefix => mapping.as) do |session|
+        def authenticatable(routes, mapping)
+          routes.with_options(:controller => 'sessions', :name_prefix => nil) do |session|
             session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
             session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })
             session.send(:"destroy_#{mapping.name}_session", mapping.path_names[:sign_out], :action => 'destroy', :conditions => { :method => :get })
           end
         end
 
-        def recoverable(mapping)
-          resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password],
-                              :path_prefix => mapping.as, :name_prefix => "#{mapping.name}_"
+        def recoverable(routes, mapping)
+          routes.resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password]
         end
 
-        def confirmable(mapping)
-          resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation],
-                                  :path_prefix => mapping.as, :name_prefix => "#{mapping.name}_"
+        def confirmable(routes, mapping)
+          routes.resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
         end
     end
 

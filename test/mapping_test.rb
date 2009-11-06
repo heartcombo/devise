@@ -31,12 +31,12 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'return mapping by path' do
-    assert_nil   Devise.find_mapping_by_path("/foo/bar")
-    assert_equal Devise.mappings[:user], Devise.find_mapping_by_path("/users/session")
+    assert_nil   Devise::Mapping.find_by_path("/foo/bar")
+    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path("/users/session")
   end
 
   test 'return mapping by customized path' do
-    assert_equal Devise.mappings[:admin], Devise.find_mapping_by_path("/admin_area/session")
+    assert_equal Devise.mappings[:admin], Devise::Mapping.find_by_path("/admin_area/session")
   end
 
   test 'return default path names' do
@@ -53,6 +53,31 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal 'logout', mapping.path_names[:sign_out]
     assert_equal 'secret', mapping.path_names[:password]
     assert_equal 'verification', mapping.path_names[:confirmation]
+  end
+
+  test 'has an empty path as default path prefix' do
+    mapping = Devise.mappings[:account]
+    assert_equal '/', mapping.path_prefix
+  end
+
+  test 'allow path prefix to be configured' do
+    mapping = Devise.mappings[:manager]
+    assert_equal '/:locale/', mapping.path_prefix
+  end
+
+  test 'retrieve as from the proper position' do
+    assert_equal 1, Devise.mappings[:account].as_position
+    assert_equal 2, Devise.mappings[:manager].as_position
+  end
+
+  test 'raw path is returned' do
+    assert_equal '/account', Devise.mappings[:account].raw_path
+    assert_equal '/:locale/organizers', Devise.mappings[:manager].raw_path
+  end
+
+  test 'parsed path is returned' do
+    assert_equal '/account', Devise.mappings[:account].parsed_path
+    assert_equal '/en/organizers', Devise.mappings[:manager].parsed_path
   end
 
   test 'magic predicates' do

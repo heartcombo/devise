@@ -31,7 +31,7 @@ module Devise
 
       # Attempt to find the mapped route for devise based on request path
       def devise_mapping
-        @devise_mapping ||= Devise.find_mapping_by_path(request.path)
+        @devise_mapping ||= Devise::Mapping.find_by_path(request.path)
       end
 
     protected

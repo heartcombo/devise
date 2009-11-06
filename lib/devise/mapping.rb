@@ -22,13 +22,28 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :name, :as, :path_names
+    attr_reader :name, :as, :path_names, :path_prefix
+
+    # Loop through all mappings looking for a map that matches with the requested
+    # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
+    def self.find_by_path(path)
+      Devise.mappings.each_value do |mapping|
+        route = path.split("/")[mapping.as_position]
+        return mapping if mapping.as == route.to_sym
+      end
+      nil
+    end
 
     def initialize(name, options)
+      options.assert_valid_keys(:class_name, :as, :path_names, :singular, :path_prefix)
+
       @as    = (options[:as] || name).to_sym
       @klass = (options[:class_name] || name.to_s.classify).to_s
       @name  = (options[:singular] || name.to_s.singularize).to_sym
-      @path_names = options[:path_names] || {}
+      @path_names  = options[:path_names] || {}
+      @path_prefix = options[:path_prefix] || ""
+      @path_prefix << "/" unless @path_prefix[-1] == ?/
+
       setup_path_names
     end
 
@@ -48,6 +63,23 @@ module Devise
     # Check if the respective controller has a module in the mapping class.
     def allows?(controller)
       self.for.include?(CONTROLLERS[controller.to_sym])
+    end
+
+    # Return in which position in the path prefix devise should find the as mapping.
+    def as_position
+      self.path_prefix.count("/")
+    end
+
+    # Returns the raw path using path_prefix and as.
+    def raw_path
+      path_prefix + as.to_s
+    end
+
+    # Returns the parsed path. If you need meta information in your path_prefix,
+    # you should overwrite this method to use it. The only information supported
+    # by default is I18n.locale.
+    def parsed_path
+      raw_path.gsub(":locale", I18n.locale.to_s)
     end
 
     # Create magic predicates for verifying what module is activated by this map.
@@ -74,22 +106,5 @@ module Devise
           @path_names[path_name] ||= path_name.to_s
         end
       end
-  end
-
-  mattr_accessor :mappings
-  self.mappings = {}
-
-  # Loop through all mappings looking for a map that matches with the requested
-  # path (ie /users/sign_in). The important part here is the key :users. If no
-  # map is found just returns nil.
-  def self.find_mapping_by_path(path)
-    route = path.split("/")[1]
-    return nil unless route
-
-    route = route.to_sym
-    mappings.each do |key, map|
-      return map if map.as == route.to_sym
-    end
-    nil
   end
 end

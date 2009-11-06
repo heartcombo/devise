@@ -1,17 +1,11 @@
 class SessionsController < ApplicationController
   include Devise::Controllers::Helpers
 
-  # Maps the messages types that comes from warden to a flash type.
-  WARDEN_MESSAGES = {
-    :unauthenticated => :success,
-    :unconfirmed => :failure
-  }
-
   before_filter :require_no_authentication, :only => [ :new, :create ]
 
   # GET /resource/sign_in
   def new
-    WARDEN_MESSAGES.each do |message, type|
+    Devise::FLASH_MESSAGES.each do |message, type|
       set_now_flash_message type, message if params.key?(message)
     end
     build_resource

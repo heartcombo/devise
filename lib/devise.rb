@@ -11,8 +11,18 @@ module Devise
   STRATEGIES  = [:rememberable, :authenticatable].freeze
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
+  # Maps the messages types that comes from warden to a flash type.
+  FLASH_MESSAGES = {
+    :unauthenticated => :success,
+    :unconfirmed => :failure
+  }
+
   # Models configuration
   mattr_accessor :pepper, :stretches, :remember_for, :confirm_within
+
+  # Mappings
+  mattr_accessor :mappings
+  self.mappings = {}
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
@@ -56,5 +66,4 @@ module Devise
 end
 
 require 'devise/warden'
-require 'devise/mapping'
 require 'devise/rails'

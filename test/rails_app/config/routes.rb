@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   map.devise_for :account, :path_names => {
     :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification'
   }
-  map.devise_for :organizers, :singular => 'manager'
+  map.devise_for :organizers, :singular => 'manager', :path_prefix => '/:locale'
 
   map.resources :users, :only => :index
   map.resources :admins, :only => :index

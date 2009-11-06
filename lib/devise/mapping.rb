@@ -34,7 +34,12 @@ module Devise
       nil
     end
 
-    def initialize(name, options)
+    # Default url options which can be used as prefix.
+    def self.default_url_options
+      {}
+    end
+
+    def initialize(name, options) #:nodoc:
       options.assert_valid_keys(:class_name, :as, :path_names, :singular, :path_prefix)
 
       @as    = (options[:as] || name).to_sym
@@ -79,10 +84,12 @@ module Devise
     # you should overwrite this method to use it. The only information supported
     # by default is I18n.locale.
     #
-    # TODO This is a hack. Setting default_url_options that are shared by
-    # controllers and devise seems to be the best solution.
     def parsed_path
-      raw_path.gsub(":locale", I18n.locale.to_s)
+      returning raw_path do |path|
+        self.class.default_url_options.each do |key, value|
+          path.gsub!(key.inspect, value.to_s)
+        end
+      end
     end
 
     # Create magic predicates for verifying what module is activated by this map.

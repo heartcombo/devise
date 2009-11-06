@@ -60,11 +60,16 @@ module ActionController::Routing
       #
       #    map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
       #
-      #  * :path_prefix => the path prefix to be used in all routes. Only :locale is supported as dynamic prefix:
+      #  * :path_prefix => the path prefix to be used in all routes.
       #
       #    map.devise_for :users, :path_prefix => "/:locale"
       #
-      #  When setting a dynamic path prefix, be sure to set default_url_options with the locale on your ApplicationController as well.
+      #  If you are using a dynamic prefix, like :locale above, you need to configure default_url_options through Devise. You can do that in config/initializers/devise.rb or setting a Devise.default_url_options:
+      #
+      #    Devise.default_url_options do
+      #      { :locale => I18n.locale }
+      #    end
+      #
       def devise_for(*resources)
         options = resources.extract_options!
 
@@ -98,7 +103,7 @@ module ActionController::Routing
         def confirmable(routes, mapping)
           routes.resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
         end
-    end
 
+    end
   end
 end

@@ -57,6 +57,11 @@ module Devise
       @warden_config = block
     end
 
+    # Configure default url options to be used within Devise and ActionController.
+    def default_url_options(&block)
+      Devise::Mapping.metaclass.send :define_method, :default_url_options, &block
+    end
+
     # A method used internally to setup warden manager from the Rails initialize
     # block.
     def configure_warden_manager(manager) #:nodoc:

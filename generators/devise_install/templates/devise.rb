@@ -30,4 +30,11 @@ Devise.setup do |config|
   #   end
   #   manager.default_strategies.unshift :twitter_oauth
   # end
+
+  # Configure default_url_options if you are using dynamic segments in :path_prefix
+  # for devise_for.
+  #
+  # config.default_url_options do
+  #   { :locale => I18n.locale }
+  # end
 end

@@ -7,7 +7,8 @@
   * skip_before_filter added in Devise controllers
   * Use home_or_root_path on require_no_authentication as well
   * Added devise_controller?, useful to select or reject filters in ApplicationController
-  * Allow :path_prefix to be given to devise_for (:path_prefix => "/:locale" is supported)
+  * Allow :path_prefix to be given to devise_for 
+  * Allow default_url_options to be configured through devise (:path_prefix => "/:locale" is now supported)
 
 == 0.4.1
 

@@ -76,8 +76,13 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'parsed path is returned' do
-    assert_equal '/account', Devise.mappings[:account].parsed_path
-    assert_equal '/en/organizers', Devise.mappings[:manager].parsed_path
+    begin
+      Devise.default_url_options {{ :locale => I18n.locale }}
+      assert_equal '/account', Devise.mappings[:account].parsed_path
+      assert_equal '/en/organizers', Devise.mappings[:manager].parsed_path
+    ensure
+      Devise.default_url_options {{ }}
+    end
   end
 
   test 'magic predicates' do

@@ -114,7 +114,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     get new_admin_session_path
 
     assert_response :redirect
-    assert_redirected_to root_path
+    assert_redirected_to admin_root_path
     assert warden.authenticated?(:admin)
   end
 

@@ -7,9 +7,10 @@ module Devise
 
       def self.included(base)
         base.class_eval do
-          helper_method :resource, :resource_name, :resource_class, :devise_mapping
-          hide_action   :resource, :resource_name, :resource_class, :devise_mapping
+          helper_method :resource, :resource_name, :resource_class, :devise_mapping, :devise_controller?
+          hide_action   :resource, :resource_name, :resource_class, :devise_mapping, :devise_controller?
 
+          skip_before_filter *Devise.mappings.keys.map { |m| :"authenticate_#{m}!" }
           before_filter :is_devise_resource?
         end
       end
@@ -32,6 +33,11 @@ module Devise
       # Attempt to find the mapped route for devise based on request path
       def devise_mapping
         @devise_mapping ||= Devise::Mapping.find_by_path(request.path)
+      end
+
+      # Overwrites devise_controller? to return true
+      def devise_controller?
+        true
       end
 
     protected
@@ -91,7 +97,7 @@ module Devise
       # Example:
       #   before_filter :require_no_authentication, :only => :new
       def require_no_authentication
-        redirect_to root_path if warden.authenticated?(resource_name)
+        redirect_to home_or_root_path if warden.authenticated?(resource_name)
       end
 
       # Sets the flash message with :key, using I18n. By default you are able

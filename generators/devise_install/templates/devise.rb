@@ -16,13 +16,13 @@ Devise.setup do |config|
   # config.remember_for = 2.weeks
 
   # Configure the e-mail address which will be shown in DeviseMailer.
-  # config.mail_sender = "foo.bar@yourapp.com"
+  # config.mailer_sender = "foo.bar@yourapp.com"
 
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below
   # allows you to setup OAuth, using http://github.com/roman/warden_oauth
   #
-  # config.manager do |manager|
+  # config.warden do |manager|
   #   manager.oauth(:twitter) do |twitter|
   #     twitter.consumer_secret = <YOUR CONSUMER SECRET>
   #     twitter.consumer_key  = <YOUR CONSUMER KEY>

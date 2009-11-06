@@ -43,9 +43,13 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'require no authentication tests current mapping' do
-    @controller.expects(:resource_name).returns(:user)
+    @controller.expects(:resource_name).returns(:user).twice
     @mock_warden.expects(:authenticated?).with(:user).returns(true)
     @controller.expects(:redirect_to).with(root_path)
     @controller.send :require_no_authentication
+  end
+  
+  test 'is a devise controller' do
+    assert @controller.devise_controller?
   end
 end

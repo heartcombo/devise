@@ -78,6 +78,9 @@ module Devise
     # Returns the parsed path. If you need meta information in your path_prefix,
     # you should overwrite this method to use it. The only information supported
     # by default is I18n.locale.
+    #
+    # TODO This is a hack. Setting default_url_options that are shared by
+    # controllers and devise seems to be the best solution.
     def parsed_path
       raw_path.gsub(":locale", I18n.locale.to_s)
     end

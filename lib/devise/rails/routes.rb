@@ -64,6 +64,7 @@ module ActionController::Routing
       #
       #    map.devise_for :users, :path_prefix => "/:locale"
       #
+      #  When setting a dynamic path prefix, be sure to set default_url_options with the locale on your ApplicationController as well.
       def devise_for(*resources)
         options = resources.extract_options!
 

@@ -1,3 +1,8 @@
+* enhancements
+  * skip_before_filter added in Devise controllers
+  * Use home_or_root_path on require_no_authentication as well
+  * Added devise_controller?, useful to select or reject filters in ApplicationController
+
 == 0.4.1
 
 * bug fix

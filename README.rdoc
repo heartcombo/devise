@@ -154,7 +154,7 @@ After signing in a user, confirming it's account or updating it's password, devi
 You also need to setup default url options for the mailer, if you are using confirmable or recoverable. Here's is the configuration for development:
 
   DeviseMailer.sender = "no-reply@yourapp.com"
-  ActionMailer::Base.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
 == Tidying up
 

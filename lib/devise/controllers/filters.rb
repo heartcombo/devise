@@ -6,7 +6,7 @@ module Devise
 
       def self.included(base)
         base.class_eval do
-          helper_method :warden, :signed_in?,
+          helper_method :warden, :signed_in?, :devise_controller?,
                         *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?"] }.flatten
         end
       end
@@ -14,6 +14,15 @@ module Devise
       # The main accessor for the warden proxy instance
       def warden
         request.env['warden']
+      end
+
+      # Return true if it's a devise_controller. false to all controllers unless
+      # the controllers defined inside devise. Useful if you want to apply a before
+      # filter to all controller, except the ones in devise:
+      #
+      #   before_filter :my_filter, :unless => { |c| c.devise_controller? }
+      def devise_controller?
+        false
       end
 
       # Attempts to authenticate the given scope by running authentication hooks,

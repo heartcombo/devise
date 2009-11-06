@@ -87,4 +87,8 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @mock_warden.expects(:set_user).with(user = mock, :scope => :user).returns(true)
     @controller.sign_in(:user, user)
   end
+
+  test 'is not a devise controller' do
+    assert_not @controller.devise_controller?
+  end
 end

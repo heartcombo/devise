@@ -59,6 +59,7 @@ module ActionController::Routing
       #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :password and :confirmation.
       #
       #    map.devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
+      #
       def devise_for(*resources)
         options = resources.extract_options!
 
@@ -69,25 +70,31 @@ module ActionController::Routing
           mapping = Devise::Mapping.new(resource, options)
           Devise.mappings[mapping.name] = mapping
 
-          if mapping.authenticatable?
-            with_options(:controller => 'sessions', :path_prefix => mapping.as) do |session|
-              session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
-              session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })
-              session.send(:"destroy_#{mapping.name}_session", mapping.path_names[:sign_out], :action => 'destroy', :conditions => { :method => :get })
-            end
-          end
-
-          namespace mapping.name, :namespace => nil, :path_prefix => mapping.as do |m|
-            if mapping.recoverable?
-              m.resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password]
-            end
-
-            if mapping.confirmable?
-              m.resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
-            end
+          mapping.for.each do |strategy|
+            send(strategy, mapping) if self.respond_to?(strategy, true)
           end
         end
       end
+
+      protected
+
+        def authenticatable(mapping)
+          with_options(:controller => 'sessions', :path_prefix => mapping.as) do |session|
+            session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
+            session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })
+            session.send(:"destroy_#{mapping.name}_session", mapping.path_names[:sign_out], :action => 'destroy', :conditions => { :method => :get })
+          end
+        end
+
+        def recoverable(mapping)
+          resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password],
+                              :path_prefix => mapping.as, :name_prefix => "#{mapping.name}_"
+        end
+
+        def confirmable(mapping)
+          resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation],
+                                  :path_prefix => mapping.as, :name_prefix => "#{mapping.name}_"
+        end
     end
 
   end

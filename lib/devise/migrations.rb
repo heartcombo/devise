@@ -22,7 +22,7 @@ module Devise
     def authenticatable(options={})
       null = options[:null] || false
       string :email,              :limit => 100, :null => null
-      string :encrypted_password, :limit =>  40, :null => null
+      string :encrypted_password, :limit => 128, :null => null
       string :password_salt,      :limit =>  20, :null => null
     end
 

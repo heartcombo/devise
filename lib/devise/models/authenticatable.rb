@@ -1,4 +1,3 @@
-require 'digest/sha1'
 require 'devise/strategies/authenticatable'
 
 module Devise
@@ -39,30 +38,20 @@ module Devise
       def password=(new_password)
         @password = new_password
         self.password_salt = friendly_token
-        self.encrypted_password = password_digest(@password)
+        self.encrypted_password = encryptor.digest(@password, encryptor_params)
       end
 
       # Verifies whether an incoming_password (ie from login) is the user
       # password.
       def valid_password?(incoming_password)
-        password_digest(incoming_password) == encrypted_password
+        encryptor.digest(incoming_password, encryptor_params) == encrypted_password
       end
 
       protected
-
-        # Gererates a default password digest based on salt, pepper and the
-        # incoming password.
-        def password_digest(password_to_digest)
-          digest = pepper
-          stretches.times { digest = secure_digest(password_salt, digest, password_to_digest, pepper) }
-          digest
-        end
-
-        # Generate a SHA1 digest joining args. Generated token is something like
-        #
-        #   --arg1--arg2--arg3--argN--
-        def secure_digest(*tokens)
-          ::Digest::SHA1.hexdigest('--' << tokens.flatten.join('--') << '--')
+      
+        # Puts the encryptor default params together
+        def encryptor_params
+          { :salt => password_salt, :pepper => pepper }
         end
 
         # Generate a friendly string randomically to be used as token.
@@ -92,6 +81,7 @@ module Devise
 
       Devise::Models.config(self, :pepper)
       Devise::Models.config(self, :stretches, 10)
+      Devise::Models.config(self, :encryptor, ::Devise::Models::Encryptors::Sha1)
     end
   end
 end

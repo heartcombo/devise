@@ -8,6 +8,12 @@ Devise.setup do |config|
   # Configure how many times you want the password is reencrypted. Default is 10.
   # config.stretches = 10
 
+  # Define what will be the encryption algorithm. Sha1 is the default.
+  # Supported encryptions:
+  # => ::Devise::Models::Encryptors::Sha1
+  # => ::Devise::Models::Encryptors::Sha512
+  # config.encryptor = ::Devise::Models::Encryptors::Sha1
+
   # The time you want give to your user to confirm his account. During this time
   # he will be able to access your application without confirming. Default is nil.
   # config.confirm_within = 2.days

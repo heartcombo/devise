@@ -18,7 +18,7 @@ module Devise
   }
 
   # Models configuration
-  mattr_accessor :pepper, :stretches, :remember_for, :confirm_within
+  mattr_accessor :pepper, :encryptor, :stretches, :remember_for, :confirm_within
 
   # Mappings
   mattr_accessor :mappings

@@ -6,7 +6,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
   def encrypt_password(user, pepper=nil, stretches=1)
     user.class_eval { define_method(:stretches) { stretches } } if stretches
     user.password = '123456'
-    ::Digest::SHA1.hexdigest("--#{user.password_salt}--#{pepper}--123456--#{pepper}--")
+    user.encryptor.digest('123456', { :salt => user.password_salt, :pepper => pepper })
   end
 
   test 'should respond to password and password confirmation' do
@@ -89,6 +89,19 @@ class AuthenticatableTest < ActiveSupport::TestCase
     ensure
       Devise.stretches = default_stretches
     end
+  end
+  
+  test 'should fallback to Sha1 as default encryption' do
+    user = create_user
+    puts user.encrypted_password
+    assert_equal user.encrypted_password, ::Devise::Models::Encryptors::Sha1.digest('123456', { :pepper => Devise.pepper, :salt => user.password_salt })
+  end
+  
+  test 'should act according to encryptor configuration' do
+    Devise.encryptor = ::Devise::Models::Encryptors::Sha512
+    user = create_user
+    puts user.encrypted_password
+    assert_equal user.encrypted_password, ::Devise::Models::Encryptors::Sha512.digest('123456', { :pepper => Devise.pepper, :salt => user.password_salt })
   end
 
   test 'should test for a valid password' do

@@ -184,4 +184,12 @@ class AuthenticationTest < ActionController::IntegrationTest
     visit 'users/index'
     assert_equal "Cart", @controller.user_session[:cart]
   end
+  
+  test 'destroyed account is logged out' do
+    sign_in_as_user
+    visit 'users/index'
+    User.destroy_all
+    visit 'users/index'
+    assert_redirected_to '/users/sign_in?unauthenticated=true'
+  end
 end

@@ -80,8 +80,8 @@ module Devise
       end
 
       Devise::Models.config(self, :pepper)
-      Devise::Models.config(self, :stretches, 10)
-      Devise::Models.config(self, :encryptor, ::Devise::Encryptors::Sha1)
+      Devise::Models.config(self, :stretches)
+      Devise::Models.config(self, :encryptor)
     end
   end
 end

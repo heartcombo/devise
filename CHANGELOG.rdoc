@@ -1,3 +1,13 @@
+* enhancements
+  * Moved encryption strategy into the Encryptors module to allow several algorithms
+  * Implemented encryptors for Clearance, Authlogic and Restful-Authentication
+
+== 0.4.3
+
+* bug fix
+  * [#29] Authentication fail if user cannot be serialized from session;
+  * Default configuration values should not overwrite user values;
+
 == 0.4.2
 
 * deprecations

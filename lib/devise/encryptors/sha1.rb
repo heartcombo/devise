@@ -1,4 +1,4 @@
-require 'digest/sha1'
+require "digest/sha1"
 
 module Devise
   # Implements a way of adding different encryptions.

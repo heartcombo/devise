@@ -18,4 +18,11 @@ class Encryptors < ActiveSupport::TestCase
     assert_equal clearance, encryptor
   end
 
+  Devise::ENCRYPTORS_LENGTH.each do |key, value|
+    test "should have length #{value} for #{key.inspect}" do
+      swap Devise, :encryptor => key do
+        assert_equal value, Devise.encryptor.digest('a', 2, 'b', 'c').size
+      end
+    end
+  end
 end

@@ -8,15 +8,12 @@ Devise.setup do |config|
   # Configure how many times you want the password is reencrypted. Default is 10.
   # config.stretches = 10
 
-  # Define what will be the encryption algorithm. Sha1 is the default.
-  # Supported encryptions:
-  #  ::Devise::Encryptors::Sha1
-  #  ::Devise::Encryptors::Sha512
-  #  ::Devise::Encryptors::ClearanceSha1
-  #  ::Devise::Encryptors::AuthlogicSha512 (Should set stretches to 20 for default behavior)
-  #  ::Devise::Encryptors::RestfulAuthenticationSha1 (Should set stretches to 10 and copy REST_AUTH_SITE_KEY to pepper 
-  #    for default behavior)
-  # config.encryptor = ::Devise::Encryptors::Sha1
+  # Define which will be the encryption algorithm. Supported algorithms are :sha1
+  # (default) and :sha512. Devise also supports encryptors from others authentication
+  # frameworks as :clearance_sha1, :authlogic_sha512 (then you should set stretches
+  # above to 20 for default behavior) and :restful_authentication_sha1 (then you
+  # should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
+  # config.encryptor = :sha1
 
   # The time you want give to your user to confirm his account. During this time
   # he will be able to access your application without confirming. Default is nil.

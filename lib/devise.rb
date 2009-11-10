@@ -18,13 +18,18 @@ module Devise
     :unconfirmed => :failure
   }
 
+  # Declare encryptors length which are used in migrations.
+  ENCRYPTORS_LENGTH = {
+    :sha1   => 40,
+    :sha512 => 128,
+    :clearance_sha1 => 40,
+    :restful_authentication_sha1 => 40,
+    :authlogic_sha512 => 128
+  }
+
   # Used to encrypt password. Please generate one with rake secret
   mattr_accessor :pepper
   @@pepper = nil
-  
-  # Used to define the password encryption algorithm
-  mattr_accessor :encryptor
-  @@encryptor = ::Devise::Encryptors::Sha1
   
   # The number of times to encrypt password.
   mattr_accessor :stretches
@@ -37,6 +42,17 @@ module Devise
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days
+
+  # Used to define the password encryption algorithm.
+  def self.encryptor=(value)
+    @@encryptor = if value.is_a?(Symbol)
+      ::Devise::Encryptors.const_get(value.to_s.classify)
+    else
+      value
+    end
+  end
+  mattr_reader :encryptor
+  @@encryptor = ::Devise::Encryptors::Sha1
 
   # Store scopes mappings.
   mattr_accessor :mappings

@@ -27,7 +27,7 @@ All gems are on gemcutter, so you need to add gemcutter to your sources if you h
 
   sudo gem sources -a http://gemcutter.org/
 
-Install warden gem if you don't have it installed (requires 0.5.1 or higher):
+Install warden gem if you don't have it installed (requires 0.5.2 or higher):
 
   sudo gem install warden
 
@@ -235,6 +235,12 @@ Devise implements encryption strategies for Clearance, Authlogic and Restful-Aut
 == TODO
 
 Please refer to TODO file.
+
+== Contributors
+
+* José Valim (http://github.com/josevalim)
+* Carlos Antônio da Silva (http://github.com/carlosantoniodasilva)
+* Marcelo Silveira (http://github.com/mhfs)
 
 == Bugs and Feedback
 

@@ -1,6 +1,6 @@
 * enhancements
-  * Moved encryption strategy into the Encryptors module to allow several algorithms
-  * Implemented encryptors for Clearance, Authlogic and Restful-Authentication
+  * Moved encryption strategy into the Encryptors module to allow several algorithms (by github.com/mhfs)
+  * Implemented encryptors for Clearance, Authlogic and Restful-Authentication (by github.com/mhfs)
 
 == 0.4.3
 

@@ -20,7 +20,7 @@ class PasswordsController < ApplicationController
     end
   end
 
-  # GET /resource/password/edit?perishable_token=abcdef
+  # GET /resource/password/edit?reset_password_token=abcdef
   def edit
     self.resource = resource_class.new
     resource.reset_password_token = params[:reset_password_token]

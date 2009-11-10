@@ -19,11 +19,17 @@ module Devise
 
     # Creates email, encrypted_password and password_salt.
     #
+    # == Options
+    # * :null when true, allow columns to be null
+    # * :encryptor The encryptor going to be used, necessary for setting the proper encrypter password length
+    #
     def authenticatable(options={})
       null = options[:null] || false
-      string :email,              :limit => 100, :null => null
-      string :encrypted_password, :limit => 128, :null => null
-      string :password_salt,      :limit =>  20, :null => null
+      encryptor = options[:encryptor] || :sha1
+
+      string :email,              :null => null, :limit => 100
+      string :encrypted_password, :null => null, :limit => Devise::ENCRYPTORS_LENGTH[encryptor]
+      string :password_salt,      :null => null, :limit => 20
     end
 
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.

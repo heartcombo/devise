@@ -228,6 +228,10 @@ Devise mailer uses the same pattern to create subject messages:
 
 Take a look at our locale file to check all available messages.
 
+== Migrating from other solutions
+
+Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of it set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devises's one (encrypted_password and password_salt).
+
 == TODO
 
 Please refer to TODO file.

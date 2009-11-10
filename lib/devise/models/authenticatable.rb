@@ -38,22 +38,22 @@ module Devise
       def password=(new_password)
         @password = new_password
         self.password_salt = friendly_token
-        self.encrypted_password = encryptor.digest(@password, encryptor_params)
+        self.encrypted_password = password_digest(@password)
       end
 
       # Verifies whether an incoming_password (ie from login) is the user
       # password.
       def valid_password?(incoming_password)
-        encryptor.digest(incoming_password, encryptor_params) == encrypted_password
+        password_digest(incoming_password) == encrypted_password
       end
 
       protected
       
-        # Puts the encryptor default params together
-        def encryptor_params
-          { :salt => password_salt, :pepper => pepper }
+        # Digests the password using the configured encryptor
+        def password_digest(password)
+          encryptor.digest(password, stretches, password_salt, pepper)
         end
-
+      
         # Generate a friendly string randomically to be used as token.
         def friendly_token
           ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
@@ -81,7 +81,7 @@ module Devise
 
       Devise::Models.config(self, :pepper)
       Devise::Models.config(self, :stretches, 10)
-      Devise::Models.config(self, :encryptor, ::Devise::Models::Encryptors::Sha1)
+      Devise::Models.config(self, :encryptor, ::Devise::Encryptors::Sha1)
     end
   end
 end

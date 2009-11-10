@@ -3,10 +3,8 @@ require 'digest/sha1'
 
 class AuthenticatableTest < ActiveSupport::TestCase
 
-  def encrypt_password(user, pepper=nil, stretches=1)
-    user.class_eval { define_method(:stretches) { stretches } } if stretches
-    user.password = '123456'
-    user.encryptor.digest('123456', { :salt => user.password_salt, :pepper => pepper })
+  def encrypt_password(user, pepper=User.pepper, stretches=User.stretches, encryptor = ::Devise::Encryptors::Sha1)
+    encryptor.digest('123456', stretches, user.password_salt, pepper)
   end
 
   test 'should respond to password and password confirmation' do
@@ -59,7 +57,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_not_equal encrypted_password, user.encrypted_password
   end
 
-  test 'should encrypt password using a sha1 hash' do
+  test 'should fallback to Sha1 as default encryption' do
     user = new_user
     assert_equal encrypt_password(user), user.encrypted_password
   end
@@ -69,12 +67,15 @@ class AuthenticatableTest < ActiveSupport::TestCase
       Devise.pepper = ''
       user = new_user
       assert_equal encrypt_password(user), user.encrypted_password
+      assert_not_equal encrypt_password(user, 'another_pepper'), user.encrypted_password
       Devise.pepper = 'new_pepper'
       user = new_user
       assert_equal encrypt_password(user, 'new_pepper'), user.encrypted_password
+      assert_not_equal encrypt_password(user, 'another_pepper'), user.encrypted_password
       Devise.pepper = '123456'
       user = new_user
       assert_equal encrypt_password(user, '123456'), user.encrypted_password
+      assert_not_equal encrypt_password(user, 'another_pepper'), user.encrypted_password
     ensure
       Devise.pepper = nil
     end
@@ -85,23 +86,21 @@ class AuthenticatableTest < ActiveSupport::TestCase
       default_stretches = Devise.stretches
       Devise.stretches = 1
       user = new_user
-      assert_equal encrypt_password(user, nil, nil), user.encrypted_password
+      assert_equal encrypt_password(user, nil, 1), user.encrypted_password
+      assert_not_equal encrypt_password(user, nil, 2), user.encrypted_password
     ensure
       Devise.stretches = default_stretches
     end
   end
   
-  test 'should fallback to Sha1 as default encryption' do
-    user = create_user
-    puts user.encrypted_password
-    assert_equal user.encrypted_password, ::Devise::Models::Encryptors::Sha1.digest('123456', { :pepper => Devise.pepper, :salt => user.password_salt })
-  end
-  
-  test 'should act according to encryptor configuration' do
-    Devise.encryptor = ::Devise::Models::Encryptors::Sha512
-    user = create_user
-    puts user.encrypted_password
-    assert_equal user.encrypted_password, ::Devise::Models::Encryptors::Sha512.digest('123456', { :pepper => Devise.pepper, :salt => user.password_salt })
+  test 'should respect encryptor configuration' do
+    begin 
+      Devise.encryptor = ::Devise::Encryptors::Sha512
+      user = create_user
+      assert_equal user.encrypted_password, encrypt_password(user, User.pepper, User.stretches, ::Devise::Encryptors::Sha512)
+    ensure
+      Devise.encryptor = ::Devise::Encryptors::Sha1
+    end
   end
 
   test 'should test for a valid password' do

@@ -10,9 +10,13 @@ Devise.setup do |config|
 
   # Define what will be the encryption algorithm. Sha1 is the default.
   # Supported encryptions:
-  # => ::Devise::Models::Encryptors::Sha1
-  # => ::Devise::Models::Encryptors::Sha512
-  # config.encryptor = ::Devise::Models::Encryptors::Sha1
+  #  ::Devise::Encryptors::Sha1
+  #  ::Devise::Encryptors::Sha512
+  #  ::Devise::Encryptors::ClearanceSha1
+  #  ::Devise::Encryptors::AuthlogicSha512 (Should set stretches to 20 for default behavior)
+  #  ::Devise::Encryptors::RestfulAuthenticationSha1 (Should set stretches to 10 and copy REST_AUTH_SITE_KEY to pepper 
+  #    for default behavior)
+  # config.encryptor = ::Devise::Encryptors::Sha1
 
   # The time you want give to your user to confirm his account. During this time
   # he will be able to access your application without confirming. Default is nil.

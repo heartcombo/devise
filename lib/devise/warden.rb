@@ -13,7 +13,7 @@ Warden::Manager.serialize_into_session{ |user| [user.class, user.id] }
 # Session Serialization out. This block gets the user out of the session.
 # It should be the reverse of serializing the object into the session
 Warden::Manager.serialize_from_session do |klass, id|
-  klass.find(id)
+  klass.find_by_id(id)
 end
 
 # Setup devise strategies for Warden

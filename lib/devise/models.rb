@@ -16,9 +16,7 @@ module Devise
     # To add the class methods you need to have a module ClassMethods defined
     # inside the given class.
     #
-    def self.config(mod, accessor, default=nil) #:nodoc:
-      Devise.send :"#{accessor}=", default
-
+    def self.config(mod, accessor) #:nodoc:
       mod.class_eval <<-METHOD, __FILE__, __LINE__
         def #{accessor}
           self.class.#{accessor}

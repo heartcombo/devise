@@ -12,17 +12,31 @@ module Devise
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
   # Maps the messages types that comes from warden to a flash type.
+  # This hash is not frozen, so you can add your messages as well.
   FLASH_MESSAGES = {
     :unauthenticated => :success,
     :unconfirmed => :failure
   }
 
-  # Models configuration
-  mattr_accessor :pepper, :stretches, :remember_for, :confirm_within
+  # Used to encrypt password. Please generate one with rake secret
+  mattr_accessor :pepper
+  @@pepper = nil
+  
+  # The number of times to encrypt password.
+  mattr_accessor :stretches
+  @@stretches = 10
+  
+  # Time interval where the remember me token is valid.
+  mattr_accessor :remember_for
+  @@remember_for = 2.weeks
+  
+  # Time interval you can access your account before confirming your account.
+  mattr_accessor :confirm_within
+  @@confirm_within = 0.days
 
-  # Mappings
+  # Store scopes mappings.
   mattr_accessor :mappings
-  self.mappings = {}
+  @@mappings = {}
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create

@@ -91,7 +91,7 @@ module Devise
       end
 
       Devise::Models.config(self, :pepper)
-      Devise::Models.config(self, :stretches, 10)
+      Devise::Models.config(self, :stretches)
     end
   end
 end

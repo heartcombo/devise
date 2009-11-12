@@ -40,8 +40,6 @@ module Devise
     end
 
     def initialize(name, options) #:nodoc:
-      options.assert_valid_keys(:class_name, :as, :path_names, :singular, :path_prefix)
-
       @as    = (options[:as] || name).to_sym
       @klass = (options[:class_name] || name.to_s.classify).to_s
       @name  = (options[:singular] || name.to_s.singularize).to_sym

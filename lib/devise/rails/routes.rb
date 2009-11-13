@@ -64,6 +64,10 @@ module ActionController::Routing
       #
       #    map.devise_for :users, :path_prefix => "/:locale"
       #
+      #  Any other options will be passed to route definition. If you need conditions for your routes, just map:
+      #
+      #    map.devise_for :users, :conditions => { :subdomain => /.+/ }
+      #
       #  If you are using a dynamic prefix, like :locale above, you need to configure default_url_options through Devise. You can do that in config/initializers/devise.rb or setting a Devise.default_url_options:
       #
       #    Devise.default_url_options do
@@ -78,7 +82,7 @@ module ActionController::Routing
           mapping = Devise::Mapping.new(resource, options)
           Devise.mappings[mapping.name] = mapping
 
-          with_options(:path_prefix => mapping.raw_path, :name_prefix => "#{mapping.name}_") do |routes|
+          with_options(mapping.route_options.dup.update(:path_prefix => mapping.raw_path, :name_prefix => "#{mapping.name}_")) do |routes|
             mapping.for.each do |strategy|
               send(strategy, routes, mapping) if self.respond_to?(strategy, true)
             end

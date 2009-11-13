@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :name, :as, :path_names, :path_prefix
+    attr_reader :name, :as, :path_names, :path_prefix, :route_options
 
     # Loop through all mappings looking for a map that matches with the requested
     # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
@@ -40,12 +40,13 @@ module Devise
     end
 
     def initialize(name, options) #:nodoc:
-      @as    = (options[:as] || name).to_sym
-      @klass = (options[:class_name] || name.to_s.classify).to_s
-      @name  = (options[:singular] || name.to_s.singularize).to_sym
-      @path_names  = options[:path_names] || {}
-      @path_prefix = options[:path_prefix] || ""
+      @as    = (options.delete(:as) || name).to_sym
+      @klass = (options.delete(:class_name) || name.to_s.classify).to_s
+      @name  = (options.delete(:singular) || name.to_s.singularize).to_sym
+      @path_names  = options.delete(:path_names) || {}
+      @path_prefix = options.delete(:path_prefix) || ""
       @path_prefix << "/" unless @path_prefix[-1] == ?/
+      @route_options = options || {}
 
       setup_path_names
     end

@@ -1,3 +1,4 @@
+* Allow authentication keys to be configured, so things like username and subdomain can be used
 * Devise::Timeoutable
 * Devise::TestHelper
 * Use request_ip in session cookies

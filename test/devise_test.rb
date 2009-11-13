@@ -50,7 +50,7 @@ class DeviseTest < ActiveSupport::TestCase
     Devise.configure_warden_manager(manager)
 
     assert_equal Devise::Failure, manager.failure_app
-    assert_equal [:rememberable, :authenticatable], manager.default_strategies
+    assert_equal [:authenticatable], manager.default_strategies
     assert manager.silence_missing_strategies
   end
 

@@ -13,5 +13,8 @@ Rails.configuration.after_initialize do
     Devise.configure_warden_manager(manager)
   end
 
+  # If using a rememberable module, include the middleware that log users.
+  Rails.configuration.middleware.use Devise::Middlewares::Rememberable
+
   I18n.load_path.unshift File.expand_path(File.join(File.dirname(__FILE__), 'locales', 'en.yml'))
 end

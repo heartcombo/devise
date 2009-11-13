@@ -8,7 +8,7 @@ module Devise
     :confirmations => :confirmable
   }.freeze
 
-  STRATEGIES  = [:rememberable, :authenticatable].freeze
+  STRATEGIES  = [:authenticatable].freeze
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
   # Maps the messages types that comes from warden to a flash type.

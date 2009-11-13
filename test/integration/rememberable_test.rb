@@ -12,13 +12,11 @@ class RememberMeTest < ActionController::IntegrationTest
 
   test 'do not remember the user if he has not checked remember me option' do
     user = sign_in_as_user
-
     assert_nil user.reload.remember_token
   end
 
   test 'generate remember token after sign in' do
     user = sign_in_as_user :remember_me => true
-
     assert_not_nil user.reload.remember_token
   end
 

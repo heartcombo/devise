@@ -79,10 +79,12 @@ module ActionController::Routing
 
         resources.map!(&:to_sym)
         resources.each do |resource|
-          mapping = Devise::Mapping.new(resource, options)
+          mapping = Devise::Mapping.new(resource, options.dup)
           Devise.mappings[mapping.name] = mapping
 
-          with_options(mapping.route_options.dup.update(:path_prefix => mapping.raw_path, :name_prefix => "#{mapping.name}_")) do |routes|
+          route_options = mapping.route_options.merge(:path_prefix => mapping.raw_path, :name_prefix => "#{mapping.name}_")
+
+          with_options(route_options) do |routes|
             mapping.for.each do |strategy|
               send(strategy, routes, mapping) if self.respond_to?(strategy, true)
             end

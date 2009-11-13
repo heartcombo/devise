@@ -26,7 +26,7 @@ module Devise
 
         # Accessor for remember cookie
         def remember_me_cookie
-          cookies['remember_token']
+          request.cookies["remember_#{mapping.name}_token"]
         end
     end
   end

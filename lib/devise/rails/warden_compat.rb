@@ -1,6 +1,5 @@
 # Taken from RailsWarden, thanks to Hassox. http://github.com/hassox/rails_warden
 module Warden::Mixins::Common
-  # Gets the rails request object by default if it's available
   def request
     return @request if @request
     if env['action_controller.rescue.request']
@@ -19,8 +18,12 @@ module Warden::Mixins::Common
     raw_session.clear
   end
 
-  # Proxy to request cookies
-  def cookies
-    request.cookies
+  def response
+    return @response if @response
+    if env['action_controller.rescue.response']
+      @response = env['action_controller.rescue.response']
+    else
+      Rack::Response.new(env)
+    end
   end
 end

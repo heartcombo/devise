@@ -10,7 +10,7 @@ module Devise
         scopes = select_cookies(auth.request)
         scopes.each do |scope, token|
           mapping = Devise.mappings[scope]
-          next unless mapping
+          next unless mapping && mapping.for.include?(:rememberable)
           user = mapping.to.serialize_from_cookie(token)
           auth.set_user(user, :scope => scope) if user
         end

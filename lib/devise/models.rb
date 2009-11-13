@@ -92,6 +92,8 @@ module Devise
 
       # Convert new keys to methods which overwrites Devise defaults
       options.each { |key, value| send(:"#{key}=", value) }
+      send :include, Devise.model_orm
+      add_fields(modules)
     end
 
     # Stores all modules included inside the model, so we are able to verify

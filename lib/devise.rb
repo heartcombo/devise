@@ -30,15 +30,15 @@ module Devise
   # Used to encrypt password. Please generate one with rake secret
   mattr_accessor :pepper
   @@pepper = nil
-  
+
   # The number of times to encrypt password.
   mattr_accessor :stretches
   @@stretches = 10
-  
+
   # Time interval where the remember me token is valid.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks
-  
+
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days
@@ -57,6 +57,9 @@ module Devise
   # Store scopes mappings.
   mattr_accessor :mappings
   @@mappings = {}
+
+  mattr_accessor :orm
+  @@orm = 'active_record'
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
@@ -105,6 +108,12 @@ module Devise
 
       # If the user provided a warden hook, call it now.
       @warden_config.try :call, manager
+    end
+
+    ##
+    # The class to call with orm define
+    def model_orm
+      @@model_orm ||= "Devise::Orm::#{@@orm.camelize}".constantize
     end
   end
 end

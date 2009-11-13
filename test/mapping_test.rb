@@ -85,6 +85,14 @@ class MappingTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should have default route options' do
+    assert_equal({}, Devise.mappings[:user].route_options)
+  end
+
+  test 'should allow passing route options to devise routes' do
+    assert_equal({ :requirements => { :extra => 'value' } }, Devise.mappings[:manager].route_options)
+  end
+
   test 'magic predicates' do
     mapping = Devise.mappings[:user]
     assert mapping.authenticatable?

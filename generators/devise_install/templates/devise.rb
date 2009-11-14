@@ -25,6 +25,9 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
   # config.mailer_sender = "foo.bar@yourapp.com"
 
+  # Configure the ORM. Supports :active_record and :mongo_mapper
+  # config.orm = :active_record
+
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below
   # allows you to setup OAuth, using http://github.com/roman/warden_oauth

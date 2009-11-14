@@ -58,8 +58,9 @@ module Devise
   mattr_accessor :mappings
   @@mappings = {}
 
+  # Stores the chosen ORM.
   mattr_accessor :orm
-  @@orm = 'active_record'
+  @@orm = :active_record
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
@@ -110,10 +111,9 @@ module Devise
       @warden_config.try :call, manager
     end
 
-    ##
-    # The class to call with orm define
-    def model_orm
-      @@model_orm ||= "Devise::Orm::#{@@orm.camelize}".constantize
+    # The class of the configured ORM
+    def orm_class
+      Devise::Orm.const_get(@@orm.to_s.camelize.to_sym)
     end
   end
 end

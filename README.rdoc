@@ -232,6 +232,11 @@ Take a look at our locale file to check all available messages.
 
 Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of it set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devises's one (encrypted_password and password_salt).
 
+== Other ORMs
+
+Devise was made to work from scratch with ActiveRecord. However it currently supports MongoMapper as well.
+To use it, just set Devise.orm or configure it in the initialization file (which is created with devise_install).
+
 == TODO
 
 Please refer to TODO file.
@@ -241,6 +246,7 @@ Please refer to TODO file.
 * José Valim (http://github.com/josevalim)
 * Carlos Antônio da Silva (http://github.com/carlosantoniodasilva)
 * Marcelo Silveira (http://github.com/mhfs)
+* Cyril Mougel (http://github.com/shingara)
 
 == Bugs and Feedback
 

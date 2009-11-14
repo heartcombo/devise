@@ -1,6 +1,10 @@
+* bug fix
+  * Fixed a bug where remember me module was not working properly
+
 * enhancements
   * Moved encryption strategy into the Encryptors module to allow several algorithms (by github.com/mhfs)
   * Implemented encryptors for Clearance, Authlogic and Restful-Authentication (by github.com/mhfs)
+  * Added support for MongoMapper
 
 == 0.4.3
 

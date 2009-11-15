@@ -145,4 +145,17 @@ class AuthenticatableTest < ActiveSupport::TestCase
     user = create_user
     assert_equal user.id, User.serialize_from_session([User, user.id]).id
   end
+
+  test 'should not serialize another klass from session' do
+    user = create_user
+    assert_raise RuntimeError, /ancestors/ do
+      User.serialize_from_session([Admin, user.id])
+    end
+  end
+
+  test 'should serialize another klass from session' do
+    user = create_user
+    klass = Class.new(User)
+    assert_equal user.id, User.serialize_from_session([klass, user.id]).id
+  end
 end

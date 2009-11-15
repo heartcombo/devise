@@ -93,6 +93,7 @@ module Devise
         # Hook to serialize user from session. Overwrite if you want.
         def serialize_from_session(keys)
           klass, id = keys
+          raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self 
           klass.find_by_id(id)
         end
       end

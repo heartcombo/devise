@@ -1,3 +1,5 @@
+== 0.5.1
+
 * enhancements
 	* Added serializers based on Warden ones
 	* Allow authentication keys to be set
@@ -15,7 +17,7 @@
 == 0.4.3
 
 * bug fix
-  * [#29] Authentication fail if user cannot be serialized from session;
+  * [#29] Authentication just fails if user cannot be serialized from session, without raising errors;
   * Default configuration values should not overwrite user values;
 
 == 0.4.2

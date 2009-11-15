@@ -5,6 +5,7 @@ module Devise
       # Validate strategy. By default will raise an error if no scope or an
       # invalid mapping is found.
       def valid?
+        raise "Could not find mapping for #{scope}" unless mapping
         mapping.for.include?(klass_type)
       end
 

@@ -45,18 +45,7 @@ module Devise
       # Redirects to stored uri before signing in or the default path and clear
       # return to.
       def redirect_back_or_to(default)
-        redirect_to(return_to || default)
-        clear_return_to
-      end
-
-      # Access to scoped stored uri
-      def return_to
-        session[:"#{resource_name}.return_to"]
-      end
-
-      # Clear scoped stored uri
-      def clear_return_to
-        session[:"#{resource_name}.return_to"] = nil
+        redirect_to(stored_location_for(resource_name) || default)
       end
 
       # Checks for the existence of the resource root path. If it exists,

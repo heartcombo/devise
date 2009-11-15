@@ -49,17 +49,45 @@ module Devise
         warden.authenticated?(scope)
       end
 
-      # Set the warden user with the scope, signing in the resource automatically,
-      # without running hooks.
-      def sign_in(scope, resource)
+      # Sign in an user that already was authenticated. This helper is useful for logging
+      # users in after sign up.
+      #
+      # Examples:
+      #
+      #   sign_in :user, @user # sign_in(scope, resource)
+      #   sign_in @user        # sign_in(resource)
+      #
+      def sign_in(resource_or_scope, resource=nil)
+        scope    ||= find_devise_scope(resource_or_scope)
+        resource ||= resource_or_scope
         warden.set_user(resource, :scope => scope)
       end
 
-      # Sign out based on scope.
-      def sign_out(scope, *args)
+      # Sign out a given user or scope. This helper is useful for signing out an user
+      # after deleting accounts.
+      #
+      # Examples:
+      #
+      #   sign_out :user     # sign_out(scope)
+      #   sign_out @user     # sign_out(resource)
+      #
+      def sign_out(resource_or_scope)
+        scope = find_devise_scope(resource_or_scope)
         warden.user(scope) # Without loading user here, before_logout hook is not called
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
-        warden.logout(scope, *args)
+        warden.logout(scope)
+      end
+
+      # Returns and delete the url stored in the session for the given scope. Useful
+      # for giving redirect backs after sign up:
+      #
+      # Example:
+      #
+      #   redirect_to stored_location_for(:user) || root_path
+      #
+      def stored_location_for(resource_or_scope)
+        scope = find_devise_scope(resource_or_scope)
+        session.delete(:"#{scope}.return_to")
       end
 
       # Define authentication filters and accessor helpers based on mappings.
@@ -104,6 +132,16 @@ module Devise
             warden.session(:#{mapping})
           end
         METHODS
+      end
+
+      protected
+
+      def find_devise_scope(resource_or_scope)
+        if resource_or_scope.is_a?(Symbol)
+          resource_or_scope
+        else
+          Devise::Mapping.find_by_class!(resource_or_scope.class).name
+        end
       end
 
     end

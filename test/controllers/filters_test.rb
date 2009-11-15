@@ -14,11 +14,13 @@ class MockController < ApplicationController
 end
 
 class ControllerAuthenticableTest < ActionController::TestCase
+  tests MockController
 
   def setup
     @controller = MockController.new
     @mock_warden = OpenStruct.new
     @controller.env = { 'warden' => @mock_warden }
+    @controller.session = {}
   end
 
   test 'setup warden' do
@@ -45,12 +47,6 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
     @mock_warden.expects(:user).with(:user).returns(true)
     @controller.current_user
-  end
-
-  test 'proxy logout to warden' do
-    @mock_warden.expects(:user).with(:user).returns(true)
-    @mock_warden.expects(:logout).with(:user).returns(true)
-    @controller.sign_out(:user)
   end
 
   test 'proxy user_authenticate! to authenticate with user scope' do
@@ -83,9 +79,46 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.admin_session
   end
 
-  test 'sign in automatically proxy to set user on warden' do
-    @mock_warden.expects(:set_user).with(user = mock, :scope => :user).returns(true)
+  test 'sign in proxy to set_user on warden' do
+    user = User.new
+    @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
     @controller.sign_in(:user, user)
+  end
+
+  test 'sign in accepts a resource as argument' do
+    user = User.new
+    @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
+    @controller.sign_in(user)
+  end
+
+  test 'sign out proxy to logout on warden' do
+    @mock_warden.expects(:user).with(:user).returns(true)
+    @mock_warden.expects(:logout).with(:user).returns(true)
+    @controller.sign_out(:user)
+  end
+
+  test 'sign out accepts a resource as argument' do
+    @mock_warden.expects(:user).with(:user).returns(true)
+    @mock_warden.expects(:logout).with(:user).returns(true)
+    @controller.sign_out(User.new)
+  end
+
+  test 'stored location for returns the location for a given scope' do
+    assert_nil @controller.stored_location_for(:user)
+    @controller.session[:"user.return_to"] = "/foo.bar"
+    assert_equal "/foo.bar", @controller.stored_location_for(:user)
+  end
+
+  test 'stored location for accepts a resource as argument' do
+    assert_nil @controller.stored_location_for(:user)
+    @controller.session[:"user.return_to"] = "/foo.bar"
+    assert_equal "/foo.bar", @controller.stored_location_for(User.new)
+  end
+
+  test 'stored location cleans information after reading' do
+    @controller.session[:"user.return_to"] = "/foo.bar"
+    assert_equal "/foo.bar", @controller.stored_location_for(:user)
+    assert_nil @controller.session[:"user.return_to"]
   end
 
   test 'is not a devise controller' do

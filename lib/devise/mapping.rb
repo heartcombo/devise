@@ -34,6 +34,18 @@ module Devise
       nil
     end
 
+    # Find a mapping by a given class. It takes into account single table inheritance as well.
+    def self.find_by_class(klass)
+      Devise.mappings.values.find { |m| return m if klass <= m.to }
+    end
+
+    # Find by class but raising an error in case it can't be found.
+    def self.find_by_class!(klass)
+      mapping = find_by_class(klass)
+      raise "Could not find a valid mapping for #{klass}" unless mapping
+      mapping
+    end
+
     # Default url options which can be used as prefix.
     def self.default_url_options
       {}

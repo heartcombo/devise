@@ -16,28 +16,30 @@ module Devise
     # To add the class methods you need to have a module ClassMethods defined
     # inside the given class.
     #
-    def self.config(mod, accessor) #:nodoc:
-      mod.class_eval <<-METHOD, __FILE__, __LINE__
-        def #{accessor}
-          self.class.#{accessor}
-        end
-      METHOD
-
-      mod.const_get(:ClassMethods).class_eval <<-METHOD, __FILE__, __LINE__
-        def #{accessor}
-          if defined?(@#{accessor})
-            @#{accessor}
-          elsif superclass.respond_to?(:#{accessor})
-            superclass.#{accessor}
-          else
-            Devise.#{accessor}
+    def self.config(mod, *accessors) #:nodoc:
+      accessors.each do |accessor|
+        mod.class_eval <<-METHOD, __FILE__, __LINE__
+          def #{accessor}
+            self.class.#{accessor}
           end
-        end
+        METHOD
 
-        def #{accessor}=(value)
-          @#{accessor} = value
-        end
-      METHOD
+        mod.const_get(:ClassMethods).class_eval <<-METHOD, __FILE__, __LINE__
+          def #{accessor}
+            if defined?(@#{accessor})
+              @#{accessor}
+            elsif superclass.respond_to?(:#{accessor})
+              superclass.#{accessor}
+            else
+              Devise.#{accessor}
+            end
+          end
+
+          def #{accessor}=(value)
+            @#{accessor} = value
+          end
+        METHOD
+      end
     end
 
     # Shortcut method for including all devise modules inside your model.

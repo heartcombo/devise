@@ -19,6 +19,10 @@ module Devise
     #
     #   stretches: defines how many times the password will be encrypted.
     #
+    #   encryptor: the encryptor going to be used. By default :sha1.
+    #
+    #   authentication_keys: parameters used for authentication. By default [:email]
+    #
     # Examples:
     #
     #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
@@ -65,7 +69,9 @@ module Devise
         # authenticated user if it's valid or nil.
         # Attributes are :email and :password
         def authenticate(attributes={})
-          authenticatable = find_by_email(attributes[:email])
+          return unless authentication_keys.all? { |k| attributes[k].present? }
+          conditions = attributes.slice(*authentication_keys)
+          authenticatable = find(:first, :conditions => conditions)
           authenticatable if authenticatable.try(:valid_password?, attributes[:password])
         end
 
@@ -91,9 +97,7 @@ module Devise
         end
       end
 
-      Devise::Models.config(self, :pepper)
-      Devise::Models.config(self, :stretches)
-      Devise::Models.config(self, :encryptor)
+      Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
     end
   end
 end

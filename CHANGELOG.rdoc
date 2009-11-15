@@ -1,3 +1,7 @@
+* enhancements
+	* Added serializers based on Warden ones
+	* Allow authentication keys to be set
+
 == 0.5.0
 
 * bug fix

@@ -13,7 +13,7 @@ module Devise
       # The first does not perform any action when calling authenticate, just
       # when authenticate! is invoked. The second always perform the action.
       def authenticate!
-        if valid_attributes? && resource = mapping.to.authenticate(attributes)
+        if valid_attributes? && resource = mapping.to.authenticate(params[scope])
           success!(resource)
         else
           store_location
@@ -23,14 +23,9 @@ module Devise
 
       private
 
-        # Find the attributes for the current mapping.
-        def attributes
-          @attributes ||= params[scope]
-        end
-
-        # Check for the right keys.
+        # Check if params and password are given. Others are checked inside authenticate.
         def valid_attributes?
-          attributes && attributes[:email].present? && attributes[:password].present?
+          params[scope] && params[scope][:password].present?
         end
 
         # Stores requested uri to redirect the user after signing in. We cannot use

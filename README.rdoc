@@ -46,7 +46,7 @@ And you're ready to go.
 
 This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You can also check out the *Generators* section below to help you start.
 
-Devise must be setted up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
+Devise must be set up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
 
 We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
 
@@ -93,7 +93,7 @@ Note that validations aren't added by default, so you're able to customize it. I
 
 == Model configuration
 
-In addition to :except, you can provide :pepper, :stretches, :confirm_within and :remember_for as options to devise method.
+In addition to :except, you can provide :pepper, :stretches, :encryptor, :authentication_keys, :confirm_within and :remember_for as options to devise method.
 
 All those options are described in "config/initializers/devise.rb", which is generated when you invoke `ruby script/generate devise_install` in your application root.
 

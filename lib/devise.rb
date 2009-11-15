@@ -36,6 +36,10 @@ module Devise
   mattr_accessor :stretches
   @@stretches = 10
 
+  # Keys used when authenticating an user.
+  mattr_accessor :authentication_keys
+  @@authentication_keys = [ :email ]
+
   # Time interval where the remember me token is valid.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks

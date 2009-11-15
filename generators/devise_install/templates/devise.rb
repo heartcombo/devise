@@ -15,6 +15,13 @@ Devise.setup do |config|
   # should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
   # config.encryptor = :sha1
 
+  # Configure which keys are used when authenticating an user. By default is
+  # just :email. You can configure it to use [:username, :subdomain], so for
+  # authenticating an user, both parameters are required. Remember that those
+  # parameters are used only when authenticating and not when retrieving from
+  # session. If you need permissions, you should implement that in a before filter.
+  # config.authentication_keys = [ :email ]
+
   # The time you want give to your user to confirm his account. During this time
   # he will be able to access your application without confirming. Default is nil.
   # config.confirm_within = 2.days

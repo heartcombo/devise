@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 1) do
   [:users, :admins].each do |table|
     create_table table do |t|
       t.authenticatable :null => table == :admins
+      t.string :username if table == :users
 
       if table == :users
         t.confirmable

@@ -76,6 +76,13 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_contain 'Welcome Admin'
   end
 
+  test 'sign in as user should not authenticate if not using proper authentication keys' do
+    swap Devise, :authentication_keys => [:username] do
+      sign_in_as_user
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'admin signing in with invalid email should return to sign in form with error message' do
     sign_in_as_admin do
       fill_in 'email', :with => 'wrongemail@test.com'

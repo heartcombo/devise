@@ -127,4 +127,22 @@ class AuthenticatableTest < ActiveSupport::TestCase
     authenticated_user = User.authenticate(:email => user.email, :password => 'another_password')
     assert_nil authenticated_user
   end
+
+  test 'should use authentication keys to retrieve users' do
+    swap Devise, :authentication_keys => [:username] do
+      user = create_user(:username => "josevalim")
+      assert_nil User.authenticate(:email => user.email, :password => user.password)
+      assert_not_nil User.authenticate(:username => user.username, :password => user.password)
+    end
+  end
+
+  test 'should serialize user into session' do
+    user = create_user
+    assert_equal [User, user.id], User.serialize_into_session(user)
+  end
+
+  test 'should serialize user from session' do
+    user = create_user
+    assert_equal user.id, User.serialize_from_session([User, user.id]).id
+  end
 end

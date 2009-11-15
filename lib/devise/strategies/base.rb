@@ -1,9 +1,7 @@
 module Devise
   module Strategies
-    # Base strategy for Devise. Responsible for verifying correct scope and
-    # mapping.
+    # Base strategy for Devise. Responsible for verifying correct scope and mapping.
     module Base
-
       # Validate strategy. By default will raise an error if no scope or an
       # invalid mapping is found.
       def valid?
@@ -13,7 +11,7 @@ module Devise
       # Checks if a valid scope was given for devise and find mapping based on
       # this scope.
       def mapping
-        @mapping ||= Devise.mappings[scope]
+        Devise.mappings[scope]
       end
 
       # Store this class type.

@@ -6,13 +6,19 @@ module Devise
     # Creates email, encrypted_password and password_salt.
     #
     # == Options
-    # * :null when true, allow columns to be null
-    # * :encryptor The encryptor going to be used, necessary for setting the proper encrypter password length
+    # * :null - When true, allow columns to be null.
+    # * :encryptor - The encryptor going to be used, necessary for setting the proper encrypter password length.
+    # * :skip_email - If you want to use another authentication key, you can skip e-mail creation.
+    #                 If you are using an ORM where the devise declaration is in the same class as the schema,
+    #                 as in Datamapper or Mongomapper, the email is skipped automatically if not included in
+    #                 authentication_keys.
     def authenticatable(options={})
       null = options[:null] || false
-      encryptor = options[:encryptor] || :sha1
+      encryptor  = options[:encryptor] || (respond_to?(:encryptor) ? self.encryptor : :sha1)
+      have_email = respond_to?(:authentication_keys) ? self.authentication_keys.include?(:email) : true
+      skip_email = options[:skip_email] || !have_email
 
-      apply_schema :email,              String, :null => null, :limit => 100
+      apply_schema :email,              String, :null => null, :limit => 100 unless skip_email
       apply_schema :encrypted_password, String, :null => null, :limit => Devise::ENCRYPTORS_LENGTH[encryptor]
       apply_schema :password_salt,      String, :null => null, :limit => 20
     end

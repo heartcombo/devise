@@ -15,11 +15,23 @@ class DeviseTest < ActiveSupport::TestCase
       @silence_missing_strategies = true
     end
 
+    def silence_missing_serializers!
+      @silence_missing_serializers = true
+    end
+
     def default_strategies(*args)
       if args.empty?
         @default_strategies
       else
         @default_strategies = args
+      end
+    end
+
+    def default_serializers(*args)
+      if args.empty?
+        @default_serializers
+      else
+        @default_serializers = args
       end
     end
   end

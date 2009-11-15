@@ -2,22 +2,23 @@ module Devise
   module Strategies
     # Base strategy for Devise. Responsible for verifying correct scope and
     # mapping.
-    class Base < Warden::Strategies::Base
+    module Base
 
       # Validate strategy. By default will raise an error if no scope or an
       # invalid mapping is found.
       def valid?
-        mapping.for.include?(self.class.name.split("::").last.underscore.to_sym)
+        mapping.for.include?(klass_type)
       end
 
       # Checks if a valid scope was given for devise and find mapping based on
       # this scope.
       def mapping
-        @mapping ||= begin
-          raise "You need to give a scope for Devise authentication" unless scope
-          raise "You need to give a valid Devise mapping"            unless mapping = Devise.mappings[scope]
-          mapping
-        end
+        @mapping ||= Devise.mappings[scope]
+      end
+
+      # Store this class type.
+      def klass_type
+        @klass_type ||= self.class.name.split("::").last.underscore.to_sym
       end
     end
   end

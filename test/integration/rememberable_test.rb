@@ -6,7 +6,7 @@ class RememberMeTest < ActionController::IntegrationTest
     Devise.remember_for = 1
     user = create_user
     user.remember_me!
-    cookies['remember_user_token'] = User.serialize_into_cookie(user) + add_to_token
+    cookies['warden.user.user.key'] = User.serialize_into_cookie(user) + add_to_token
     user
   end
 

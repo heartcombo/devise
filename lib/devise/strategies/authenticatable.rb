@@ -2,7 +2,8 @@ module Devise
   module Strategies
     # Default strategy for signing in a user, based on his email and password.
     # Redirects to sign_in page if it's not authenticated
-    class Authenticatable < Devise::Strategies::Base
+    class Authenticatable < Warden::Strategies::Base
+      include Devise::Strategies::Base
 
       # Authenticate a user based on email and password params, returning to warden
       # success and the authenticated user if everything is okay. Otherwise redirect

@@ -9,6 +9,7 @@ module Devise
   }.freeze
 
   STRATEGIES  = [:authenticatable].freeze
+  SERIALIZERS = [:authenticatable, :rememberable].freeze
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
   # Maps the messages types that comes from warden to a flash type.
@@ -104,8 +105,10 @@ module Devise
     # block.
     def configure_warden_manager(manager) #:nodoc:
       manager.default_strategies *Devise::STRATEGIES
+      manager.default_serializers *Devise::SERIALIZERS
       manager.failure_app = Devise::Failure
       manager.silence_missing_strategies!
+      manager.silence_missing_serializers!
 
       # If the user provided a warden hook, call it now.
       @warden_config.try :call, manager
@@ -118,5 +121,14 @@ module Devise
   end
 end
 
-require 'devise/warden'
+begin
+  require 'warden'
+rescue
+  gem 'warden'
+  require 'warden'
+end
+
+require 'devise/strategies/base'
+require 'devise/serializers/base'
+
 require 'devise/rails'

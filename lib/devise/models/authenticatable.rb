@@ -1,4 +1,5 @@
 require 'devise/strategies/authenticatable'
+require 'devise/serializers/authenticatable'
 
 module Devise
   module Models
@@ -76,6 +77,17 @@ module Devise
             perishable.errors.add(:email, :not_found, :default => 'not found')
           end
           perishable
+        end
+
+        # Hook to serialize user into session. Overwrite if you want.
+        def serialize_into_session(record)
+          [record.class, record.id]
+        end
+
+        # Hook to serialize user from session. Overwrite if you want.
+        def serialize_from_session(keys)
+          klass, id = keys
+          klass.find_by_id(id)
         end
       end
 

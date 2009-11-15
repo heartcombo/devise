@@ -30,13 +30,29 @@ class MappingTest < ActiveSupport::TestCase
     assert_not mapping.allows?(:passwords)
   end
 
-  test 'return mapping by path' do
+  test 'find mapping by path' do
     assert_nil   Devise::Mapping.find_by_path("/foo/bar")
     assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path("/users/session")
   end
 
-  test 'return mapping by customized path' do
+  test 'find mapping by customized path' do
     assert_equal Devise.mappings[:admin], Devise::Mapping.find_by_path("/admin_area/session")
+  end
+
+  test 'find mapping by class' do
+    assert_nil Devise::Mapping.find_by_class(String)
+    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_class(User)
+  end
+
+  test 'find mapping by class works with single table inheritance' do
+    klass = Class.new(User)
+    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_class(klass)
+  end
+
+  test 'find mapping raises an error for invalid class' do
+    assert_raise RuntimeError do
+      Devise::Mapping.find_by_class!(String)
+    end
   end
 
   test 'return default path names' do

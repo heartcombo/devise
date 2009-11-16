@@ -228,6 +228,18 @@ Devise mailer uses the same pattern to create subject messages:
 
 Take a look at our locale file to check all available messages.
 
+== Test helpers
+
+Devise includes some tests helpers for functional specs. To use them, you just
+need to include Devise::TestHelpers in your test class and use the sign_in and
+sign_out method. Such methods have the same signature as in controllers:
+
+  sign_in :user, @user   # sign_in(scope, resource)
+  sign_in @user          # sign_in(resource)
+
+  sign_out :user         # sign_out(scope)
+  sign_out @user         # sign_out(resource)
+
 == Migrating from other solutions
 
 Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of it set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devises's one (encrypted_password and password_salt).

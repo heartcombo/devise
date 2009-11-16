@@ -1,12 +1,13 @@
 * enhancements
   * [#28] Improved sign_in and sign_out helpers to accepts resources
   * [#28] Added stored_location_for as a helper
+  * [#20] Added test helpers
 
 == 0.5.1
 
 * enhancements
-	* Added serializers based on Warden ones
-	* Allow authentication keys to be set
+  * Added serializers based on Warden ones
+  * Allow authentication keys to be set
 
 == 0.5.0
 

@@ -1,5 +1,4 @@
 * Devise::Timeoutable
-* Devise::TestHelper
 * Use request_ip in session cookies
 * Devise::BruteForceProtection
 * Devise::MagicColumns

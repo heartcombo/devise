@@ -54,8 +54,8 @@ module Devise
       #
       # Examples:
       #
-      #   sign_in :user, @user # sign_in(scope, resource)
-      #   sign_in @user        # sign_in(resource)
+      #   sign_in :user, @user    # sign_in(scope, resource)
+      #   sign_in @user           # sign_in(resource)
       #
       def sign_in(resource_or_scope, resource=nil)
         scope    ||= find_devise_scope(resource_or_scope)
@@ -136,7 +136,7 @@ module Devise
 
       protected
 
-      def find_devise_scope(resource_or_scope)
+      def find_devise_scope(resource_or_scope) #:nodoc:
         if resource_or_scope.is_a?(Symbol)
           resource_or_scope
         else

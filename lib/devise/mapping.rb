@@ -39,11 +39,17 @@ module Devise
       Devise.mappings.values.find { |m| return m if klass <= m.to }
     end
 
-    # Find by class but raising an error in case it can't be found.
-    def self.find_by_class!(klass)
-      mapping = find_by_class(klass)
-      raise "Could not find a valid mapping for #{klass}" unless mapping
-      mapping
+    # Receives an object and find a scope for it. If a scope cannot be found,
+    # raises an error. If a symbol is given, it's considered to be the scope.
+    def self.find_scope!(duck)
+      if duck.is_a?(Symbol)
+        duck
+      else
+        klass = duck.is_a?(Class) ? duck : duck.class
+        mapping = Devise::Mapping.find_by_class(klass)
+        raise "Could not find a valid mapping for #{duck}" unless mapping
+        mapping.name
+      end
     end
 
     # Default url options which can be used as prefix.

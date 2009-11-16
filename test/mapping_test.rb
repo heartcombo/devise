@@ -49,9 +49,15 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal Devise.mappings[:user], Devise::Mapping.find_by_class(klass)
   end
 
-  test 'find mapping raises an error for invalid class' do
+  test 'find scope for a given object' do
+    assert_equal :user, Devise::Mapping.find_scope!(User)
+    assert_equal :user, Devise::Mapping.find_scope!(:user)
+    assert_equal :user, Devise::Mapping.find_scope!(User.new)
+  end
+
+  test 'find scope raises an error if cannot be found' do
     assert_raise RuntimeError do
-      Devise::Mapping.find_by_class!(String)
+      Devise::Mapping.find_scope!(String)
     end
   end
 

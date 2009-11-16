@@ -58,7 +58,7 @@ module Devise
       #   sign_in @user           # sign_in(resource)
       #
       def sign_in(resource_or_scope, resource=nil)
-        scope    ||= find_devise_scope(resource_or_scope)
+        scope    ||= Devise::Mapping.find_scope!(resource_or_scope)
         resource ||= resource_or_scope
         warden.set_user(resource, :scope => scope)
       end
@@ -72,7 +72,7 @@ module Devise
       #   sign_out @user     # sign_out(resource)
       #
       def sign_out(resource_or_scope)
-        scope = find_devise_scope(resource_or_scope)
+        scope = Devise::Mapping.find_scope!(resource_or_scope)
         warden.user(scope) # Without loading user here, before_logout hook is not called
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope)
@@ -86,7 +86,7 @@ module Devise
       #   redirect_to stored_location_for(:user) || root_path
       #
       def stored_location_for(resource_or_scope)
-        scope = find_devise_scope(resource_or_scope)
+        scope = Devise::Mapping.find_scope!(resource_or_scope)
         session.delete(:"#{scope}.return_to")
       end
 
@@ -132,16 +132,6 @@ module Devise
             warden.session(:#{mapping})
           end
         METHODS
-      end
-
-      protected
-
-      def find_devise_scope(resource_or_scope) #:nodoc:
-        if resource_or_scope.is_a?(Symbol)
-          resource_or_scope
-        else
-          Devise::Mapping.find_by_class!(resource_or_scope.class).name
-        end
       end
 
     end

@@ -64,7 +64,7 @@ module Devise
     #   sign_in @user          # sign_in(resource)
     #
     def sign_in(resource_or_scope, resource=nil)
-      scope    ||= find_devise_scope(resource_or_scope)
+      scope    ||= Devise::Mapping.find_scope!(resource_or_scope)
       resource ||= resource_or_scope
       session["warden.user.#{scope}.key"] = resource.class.serialize_into_session(resource)
     end
@@ -77,19 +77,9 @@ module Devise
     #   sign_out @user     # sign_out(resource)
     #
     def sign_out(resource_or_scope)
-      scope = find_devise_scope(resource_or_scope)
+      scope = Devise::Mapping.find_scope!(resource_or_scope)
       warden.logout(scope)
     end
-
-    protected
-
-      def find_devise_scope(resource_or_scope) #:nodoc:
-        if resource_or_scope.is_a?(Symbol)
-          resource_or_scope
-        else
-          Devise::Mapping.find_by_class!(resource_or_scope.class).name
-        end
-      end
 
   end
 end

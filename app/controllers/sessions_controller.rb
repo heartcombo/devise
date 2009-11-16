@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
       set_flash_message :success, :signed_in
       redirect_back_or_to home_or_root_path
     else
-      set_now_flash_message :failure, :invalid
+      set_now_flash_message :failure, warden.message || :invalid
       build_resource
       render :new
     end

@@ -62,7 +62,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     Devise.confirm_within = 0
     user = sign_in_as_user(:confirm => false)
 
-    assert_redirected_to new_user_session_path(:unconfirmed => true)
+    assert_contain 'You have to confirm your account before continuing'
     assert_not warden.authenticated?(:user)
   end
 

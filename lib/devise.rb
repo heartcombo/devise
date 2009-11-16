@@ -110,7 +110,7 @@ module Devise
     def configure_warden_manager(manager) #:nodoc:
       manager.default_strategies *Devise::STRATEGIES
       manager.default_serializers *Devise::SERIALIZERS
-      manager.failure_app = Devise::Failure
+      manager.failure_app = Devise::FailureApp
       manager.silence_missing_strategies!
       manager.silence_missing_serializers!
 

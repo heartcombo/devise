@@ -61,7 +61,7 @@ class DeviseTest < ActiveSupport::TestCase
     manager = MockManager.new
     Devise.configure_warden_manager(manager)
 
-    assert_equal Devise::Failure, manager.failure_app
+    assert_equal Devise::FailureApp, manager.failure_app
     assert_equal [:authenticatable], manager.default_strategies
     assert manager.silence_missing_strategies
   end

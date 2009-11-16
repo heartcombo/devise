@@ -1,5 +1,5 @@
 module Devise
-  module Failure
+  module FailureApp
     mattr_accessor :default_url
 
     # Failure application that will be called every time :warden is thrown from
@@ -9,13 +9,15 @@ module Devise
     def self.call(env)
       options = env['warden.options']
       scope   = options[:scope]
-      params  = case env['warden'].try(:message)
+      message = env['warden'].try(:message) || options[:message]
+
+      params  = case message
         when Symbol
-          { env['warden'].message => true }
+          { message => true }
         when String
-          { :message => env['warden'].message }
+          { :message => message }
         else
-          options[:params]
+          {}
       end
 
       redirect_path = if mapping = Devise.mappings[scope]
@@ -23,14 +25,14 @@ module Devise
       else
         "/#{default_url}"
       end
+      query_string = Rack::Utils.build_query(params)
 
       headers = {}
       headers["Location"] = redirect_path
-      headers["Location"] << "?" << Rack::Utils.build_query(params) if params
+      headers["Location"] << "?" << query_string unless query_string.empty?
       headers["Content-Type"] = 'text/plain'
 
-      message = options[:message] || "You are being redirected to #{redirect_path}"
-      [302, headers, [message]]
+      [302, headers, ["You are being redirected to #{redirect_path}"]]
     end
   end
 end

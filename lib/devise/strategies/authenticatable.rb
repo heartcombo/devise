@@ -13,8 +13,12 @@ module Devise
       # The first does not perform any action when calling authenticate, just
       # when authenticate! is invoked. The second always perform the action.
       def authenticate!
-        if valid_attributes? && resource = mapping.to.authenticate(params[scope])
-          success!(resource)
+        if valid_attributes?
+          if resource = mapping.to.authenticate(params[scope])
+            success!(resource)
+          else
+            fail!(:invalid)
+          end
         else
           store_location
           fail!(:unauthenticated)
@@ -33,7 +37,7 @@ module Devise
         # yet, but we still need to store the uri based on scope, so different scopes
         # would never use the same uri to redirect.
         def store_location
-          session[:"#{mapping.name}.return_to"] = request.request_uri if request.get?
+          session[:"#{mapping.name}.return_to"] ||= request.request_uri if request.get?
         end
     end
   end

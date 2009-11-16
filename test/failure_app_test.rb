@@ -1,10 +1,11 @@
 require 'test/test_helper'
+require 'ostruct' 
 
 class FailureTest < ActiveSupport::TestCase
 
   def call_failure(env_params={})
-    env = {'warden.options' => {:scope => :user}.update(env_params)}
-    Devise::Failure.call(env)
+    env = {'warden.options' => { :scope => :user }}.merge!(env_params)
+    Devise::FailureApp.call(env)
   end
 
   test 'return 302 status' do
@@ -15,8 +16,9 @@ class FailureTest < ActiveSupport::TestCase
     assert_equal '/users/sign_in', call_failure.second['Location']
   end
 
-  test 'add params to redirect location' do
-    location = call_failure(:params => {:test => true}).second['Location']
+  test 'uses the proxy failure message' do
+    warden = OpenStruct.new(:message => :test)
+    location = call_failure('warden' => warden).second['Location']
     assert_equal '/users/sign_in?test=true', location
   end
 
@@ -26,9 +28,5 @@ class FailureTest < ActiveSupport::TestCase
 
   test 'setup a default message' do
     assert_equal ['You are being redirected to /users/sign_in'], call_failure.last
-  end
-
-  test 'pass in a different message' do
-    assert_equal ['Hello world'], call_failure(:message => 'Hello world').last
   end
 end

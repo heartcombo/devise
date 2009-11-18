@@ -25,7 +25,7 @@ module Devise
     :authlogic_sha512 => 128
   }
 
-  # Used to encrypt password. Please generate one with rake secret
+  # Used to encrypt password. Please generate one with rake secret.
   mattr_accessor :pepper
   @@pepper = nil
 
@@ -64,9 +64,14 @@ module Devise
   mattr_accessor :orm
   @@orm = :active_record
 
-  # Configure default options used in :all
+  # Configure default options used in :all.
   mattr_accessor :all
   @@all = Devise::ALL.dup
+
+  # Tells if devise should apply the schema in ORMs where devise declaration
+  # and schema belongs to the same class (as Datamapper and MongoMapper).
+  mattr_accessor :apply_schema
+  @@apply_schema = true
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create

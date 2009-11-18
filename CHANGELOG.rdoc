@@ -1,6 +1,11 @@
+* bug fix
+  * MongoMapper now converts DateTime to Time
+
 * enhancements
   * [#35] Moved friendly_token to Devise
   * Added Devise.all, so you can freeze your app strategies
+  * Added Devise.apply_schema, so you can turn it to false in Datamapper or MongoMapper
+    in cases you don't want it be handlded automatically
 
 == 0.5.2
 

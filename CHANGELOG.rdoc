@@ -1,5 +1,8 @@
+== 0.5.3
+
 * bug fix
   * MongoMapper now converts DateTime to Time
+  * Ensure all controllers are unloadable
 
 * enhancements
   * [#35] Moved friendly_token to Devise

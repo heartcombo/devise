@@ -5,8 +5,8 @@ class SessionsController < ApplicationController
 
   # GET /resource/sign_in
   def new
-    Devise::FLASH_MESSAGES.each do |message, type|
-      set_now_flash_message type, message if params.key?(message)
+    Devise::FLASH_MESSAGES.each do |message|
+      set_now_flash_message :failure, message if params.try(:[], message) == "true"
     end
     build_resource
   end

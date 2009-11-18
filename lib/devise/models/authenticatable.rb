@@ -42,7 +42,7 @@ module Devise
       # setted.
       def password=(new_password)
         @password = new_password
-        self.password_salt = friendly_token
+        self.password_salt = Devise.friendly_token
         self.encrypted_password = password_digest(@password)
       end
 
@@ -53,15 +53,10 @@ module Devise
       end
 
       protected
-      
+
         # Digests the password using the configured encryptor
         def password_digest(password)
           encryptor.digest(password, stretches, password_salt, pepper)
-        end
-      
-        # Generate a friendly string randomically to be used as token.
-        def friendly_token
-          ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
         end
 
       module ClassMethods

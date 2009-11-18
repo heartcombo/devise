@@ -12,12 +12,9 @@ module Devise
   SERIALIZERS = [:authenticatable, :rememberable].freeze
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
 
-  # Maps the messages types that comes from warden to a flash type.
-  # This hash is not frozen, so you can add your messages as well.
-  FLASH_MESSAGES = {
-    :unauthenticated => :success,
-    :unconfirmed => :failure
-  }
+  # Maps the messages types that are used in flash message. This array is not
+  # frozen, so you can add messages from your own strategies.
+  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid ]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {
@@ -67,16 +64,15 @@ module Devise
   mattr_accessor :orm
   @@orm = :active_record
 
+  # Configure default options used in :all
+  mattr_accessor :all
+  @@all = Devise::ALL.dup
+
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
     # a fresh initializer with all configuration values.
     def setup
       yield self
-    end
-
-    def mail_sender=(value) #:nodoc:
-      ActiveSupport::Deprecation.warn "Devise.mail_sender= is deprecated, use Devise.mailer_sender instead"
-      DeviseMailer.sender = value
     end
 
     # Sets the sender in DeviseMailer.
@@ -121,6 +117,11 @@ module Devise
     # The class of the configured ORM
     def orm_class
       Devise::Orm.const_get(@@orm.to_s.camelize.to_sym)
+    end
+
+    # Generate a friendly string randomically to be used as token.
+    def friendly_token
+      ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
     end
   end
 end

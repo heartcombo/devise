@@ -43,7 +43,7 @@ module Devise
 
       # Generate a new remember token and save the record without validations.
       def remember_me!
-        self.remember_token = friendly_token
+        self.remember_token = Devise.friendly_token
         self.remember_created_at = Time.now.utc
         save(false)
       end

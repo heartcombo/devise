@@ -1,3 +1,7 @@
+* enhancements
+  * [#35] Moved friendly_token to Devise
+  * Added Devise.all, so you can freeze your app strategies
+
 == 0.5.2
 
 * enhancements

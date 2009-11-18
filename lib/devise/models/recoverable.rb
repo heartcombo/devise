@@ -42,7 +42,7 @@ module Devise
 
         # Generates a new random token for reset password
         def generate_reset_password_token
-          self.reset_password_token = friendly_token
+          self.reset_password_token = Devise.friendly_token
         end
 
         # Resets the reset password token with and save the record without

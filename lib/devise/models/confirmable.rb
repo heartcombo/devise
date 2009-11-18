@@ -119,7 +119,7 @@ module Devise
         # this token is being generated
         def generate_confirmation_token
           self.confirmed_at = nil
-          self.confirmation_token = friendly_token
+          self.confirmation_token = Devise.friendly_token
           self.confirmation_sent_at = Time.now.utc
         end
 

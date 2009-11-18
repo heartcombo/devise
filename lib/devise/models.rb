@@ -83,7 +83,7 @@ module Devise
     def devise(*modules)
       options  = modules.extract_options!
 
-      modules  = Devise::ALL if modules.include?(:all)
+      modules  = Devise.all if modules.include?(:all)
       modules -= Array(options.delete(:except))
       modules  = [:authenticatable] | modules
 

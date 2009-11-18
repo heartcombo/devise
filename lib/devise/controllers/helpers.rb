@@ -7,6 +7,8 @@ module Devise
 
       def self.included(base)
         base.class_eval do
+          unloadable
+
           helper_method :resource, :resource_name, :resource_class, :devise_mapping, :devise_controller?
           hide_action   :resource, :resource_name, :resource_class, :devise_mapping, :devise_controller?
 

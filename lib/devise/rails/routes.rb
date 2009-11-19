@@ -52,9 +52,9 @@ module ActionController::Routing
       #
       #    map.devise_for :users, :as => 'accounts'
       #
-      #  * :singular => setup the name used to create named routes. By default, for a :users key, it is going to be the singularized version, :user. To configure a named route like account_session_path instead of user_session_path just do:
+      #  * :scope => setup the scope name. This is used as the instance variable name in controller, as the name in routes and the scope given to warden. Defaults to the singular of the given name:
       #
-      #    map.devise_for :users, :singular => :account
+      #    map.devise_for :users, :scope => :account
       #
       #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :password and :confirmation.
       #
@@ -76,6 +76,11 @@ module ActionController::Routing
       #
       def devise_for(*resources)
         options = resources.extract_options!
+
+        if singular = options.delete(:singular)
+          ActiveSupport::Deprecation.warn ":singular is deprecated in devise_for, use :scope instead."
+          options[:scope] = singular
+        end
 
         resources.map!(&:to_sym)
         resources.each do |resource|

@@ -60,7 +60,7 @@ module Devise
     def initialize(name, options) #:nodoc:
       @as    = (options.delete(:as) || name).to_sym
       @klass = (options.delete(:class_name) || name.to_s.classify).to_s
-      @name  = (options.delete(:singular) || name.to_s.singularize).to_sym
+      @name  = (options.delete(:scope) || name.to_s.singularize).to_sym
       @path_names  = options.delete(:path_names) || {}
       @path_prefix = options.delete(:path_prefix) || ""
       @path_prefix << "/" unless @path_prefix[-1] == ?/

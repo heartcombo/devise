@@ -9,8 +9,8 @@ module Devise
         base.class_eval do
           unloadable
 
-          helper_method :resource, :resource_name, :resource_class, :devise_mapping, :devise_controller?
-          hide_action   :resource, :resource_name, :resource_class, :devise_mapping, :devise_controller?
+          helper_method :resource, :scope_name, :resource_name, :resource_class, :devise_mapping, :devise_controller?
+          hide_action   :resource, :scope_name, :resource_name, :resource_class, :devise_mapping, :devise_controller?
 
           skip_before_filter *Devise.mappings.keys.map { |m| :"authenticate_#{m}!" }
           before_filter :is_devise_resource?
@@ -26,6 +26,7 @@ module Devise
       def resource_name
         devise_mapping.name
       end
+      alias :scope_name :resource_name
 
       # Proxy to devise map class
       def resource_class

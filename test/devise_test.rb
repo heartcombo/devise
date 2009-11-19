@@ -66,6 +66,10 @@ class DeviseTest < ActiveSupport::TestCase
     assert manager.silence_missing_strategies
   end
 
+  test 'warden default scope is set' do
+    assert_equal :user, Warden::Manager.default_scope
+  end
+
   test 'warden manager user configuration through a block' do
     begin
       @executed = false

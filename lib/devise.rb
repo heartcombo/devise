@@ -138,6 +138,9 @@ rescue
   require 'warden'
 end
 
+# Set the default_scope to nil, so it's overwritten when the first route is declared.
+Warden::Manager.default_scope = nil
+
 require 'devise/strategies/base'
 require 'devise/serializers/base'
 

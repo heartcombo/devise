@@ -85,6 +85,7 @@ module ActionController::Routing
         resources.map!(&:to_sym)
         resources.each do |resource|
           mapping = Devise::Mapping.new(resource, options.dup)
+          Warden::Manager.default_scope ||= mapping.name
           Devise.mappings[mapping.name] = mapping
 
           route_options = mapping.route_options.merge(:path_prefix => mapping.raw_path, :name_prefix => "#{mapping.name}_")

@@ -1,7 +1,11 @@
+* deprecations
+  * Deprecate :singular in devise_for and use :scope instead
+
 * enhancements
   * [#37] Create after_sign_in_path_for and after_sign_out_path_for hooks to be
     overwriten in ApplicationController
   * Create sign_in_and_redirect and sign_out_and_redirect helpers
+  * Warden::Manager.default_scope is automatically configured to the first given scope
 
 == 0.5.3
 

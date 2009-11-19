@@ -73,6 +73,13 @@ module Devise
         # Find first record based on conditions given (ie by the sign in form).
         # Overwrite to add customized conditions, create a join, or maybe use a
         # namedscope to filter records while authenticating.
+        # Example:
+        #
+        #   def self.find_for_authentication(conditions={})
+        #     conditions[:active] = true
+        #     find(:first, :conditions => conditions)
+        #   end
+        #
         def find_for_authentication(conditions)
           find(:first, :conditions => conditions)
         end

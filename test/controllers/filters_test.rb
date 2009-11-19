@@ -149,6 +149,11 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.sign_in_and_redirect(admin)
   end
 
+  test 'only redirect if just a symbol is given' do
+    @controller.expects(:redirect_to).with(admin_root_path)
+    @controller.sign_in_and_redirect(:admin)
+  end
+
   test 'sign out and redirect uses the configured after sign out path' do
     @mock_warden.expects(:user).with(:admin).returns(true)
     @mock_warden.expects(:logout).with(:admin).returns(true)

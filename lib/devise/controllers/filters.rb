@@ -126,7 +126,7 @@ module Devise
       # If just a symbol is given, consider that the user was already signed in
       # through other means and just perform the redirection.
       def sign_in_and_redirect(*args)
-        sign_in(*args) unless args.one? && args.first.is_a?(Symbol)
+        sign_in(*args) unless args.size == 1 && args.first.is_a?(Symbol)
         redirect_to stored_location_for(args.first) || after_sign_in_path_for(args.first)
       end
 

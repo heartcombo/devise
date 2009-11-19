@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
   def create
     if authenticate(resource_name)
       set_flash_message :success, :signed_in
-      redirect_back_or_to home_or_root_path
+      sign_in_and_redirect(resource_name)
     else
       set_now_flash_message :failure, warden.message || :invalid
       build_resource
@@ -26,8 +26,7 @@ class SessionsController < ApplicationController
   # GET /resource/sign_out
   def destroy
     set_flash_message :success, :signed_out if signed_in?(resource_name)
-    sign_out(resource_name)
-    redirect_to root_path
+    sign_out_and_redirect(resource_name)
   end
 
 end

@@ -1,3 +1,8 @@
+* enhancements
+  * [#37] Create after_sign_in_path_for and after_sign_out_path_for hooks to be
+    overwriten in ApplicationController
+  * Create sign_in_and_redirect and sign_out_and_redirect helpers
+
 == 0.5.3
 
 * bug fix

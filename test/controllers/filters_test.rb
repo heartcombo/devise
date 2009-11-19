@@ -121,6 +121,42 @@ class ControllerAuthenticableTest < ActionController::TestCase
     assert_nil @controller.session[:"user.return_to"]
   end
 
+  test 'after sign in path defaults to root path if none by was specified for the given scope' do
+    assert_equal root_path, @controller.after_sign_in_path_for(:user)
+  end
+
+  test 'after sign in path defaults to the scoped root path' do
+    assert_equal admin_root_path, @controller.after_sign_in_path_for(:admin)
+  end
+
+  test 'after sign out path defaults to the root path' do
+    assert_equal root_path, @controller.after_sign_out_path_for(:admin)
+    assert_equal root_path, @controller.after_sign_out_path_for(:user)
+  end
+
+  test 'sign in and redirect uses the stored location' do
+    user = User.new
+    @controller.session[:"user.return_to"] = "/foo.bar"
+    @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
+    @controller.expects(:redirect_to).with("/foo.bar")
+    @controller.sign_in_and_redirect(user)
+  end
+
+  test 'sign in and redirect uses the configured after sign in path' do
+    admin = Admin.new
+    @mock_warden.expects(:set_user).with(admin, :scope => :admin).returns(true)
+    @controller.expects(:redirect_to).with(admin_root_path)
+    @controller.sign_in_and_redirect(admin)
+  end
+
+  test 'sign out and redirect uses the configured after sign out path' do
+    @mock_warden.expects(:user).with(:admin).returns(true)
+    @mock_warden.expects(:logout).with(:admin).returns(true)
+    @controller.expects(:redirect_to).with(admin_root_path)
+    @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
+    @controller.sign_out_and_redirect(:admin)
+  end
+
   test 'is not a devise controller' do
     assert_not @controller.devise_controller?
   end

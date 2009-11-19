@@ -103,33 +103,15 @@ The next step after setting up your model is to configure your routes for devise
 
   map.devise_for :users
 
-This is going to look inside you User model and create the needed routes:
+This is going to look inside you User model and create a set of needed routes (you can see them by running `rake routes`).
 
-  # Session routes for Authenticatable (default)
-       new_user_session GET  /users/sign_in                    {:controller=>"sessions", :action=>"new"}
-           user_session POST /users/sign_in                    {:controller=>"sessions", :action=>"create"}
-   destroy_user_session GET  /users/sign_out                   {:controller=>"sessions", :action=>"destroy"}
-
-  # Password routes for Recoverable, if User model has :recoverable configured
-      new_user_password GET  /users/password/new(.:format)     {:controller=>"passwords", :action=>"new"}
-     edit_user_password GET  /users/password/edit(.:format)    {:controller=>"passwords", :action=>"edit"}
-          user_password PUT  /users/password(.:format)         {:controller=>"passwords", :action=>"update"}
-                        POST /users/password(.:format)         {:controller=>"passwords", :action=>"create"}
-
-  # Confirmation routes for Confirmable, if User model has :confirmable configured
-  new_user_confirmation GET  /users/confirmation/new(.:format) {:controller=>"confirmations", :action=>"new"}
-      user_confirmation GET  /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"show"}
-                        POST /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
-
-You can run the routes rake task to verify what routes are being created by devise.
-
-There are also some options available for configuring your routes, as :class_name (to set the class for that route), :as and :path_names, where the last two have the same meaning as in routes. The available :path_names are:
+There are also some options available for configuring your routes, as :class_name (to set the class for that route), :as and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
 
   map.devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
 
 Be sure to check devise_for documentation for detailed description.
 
-== Controller filters
+== Controller filters and helpers
 
 Devise is gonna create some helpers to use inside your controllers and views. To setup a controller that needs user authentication, just add this before_filter:
 
@@ -151,7 +133,9 @@ After signing in a user, confirming it's account or updating it's password, devi
 
   map.root :controller => 'home'
 
-You also need to setup default url options for the mailer, if you are using confirmable or recoverable. Here's is the configuration for development:
+You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize better your redirect hooks.
+
+Finally, if you are using confirmable or recoverable, you also need to setup default url options for the mailer. Here's is the configuration for development:
 
   DeviseMailer.sender = "no-reply@yourapp.com"
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }

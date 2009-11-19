@@ -44,27 +44,6 @@ module Devise
 
     protected
 
-      # Redirects to stored uri before signing in or the default path and clear
-      # return to.
-      def redirect_back_or_to(default)
-        redirect_to(stored_location_for(resource_name) || default)
-      end
-
-      # Checks for the existence of the resource root path. If it exists,
-      # returns it, otherwise returns the default root_path.
-      # Used after authenticating a user, confirming it's account or updating
-      # it's password, so we are able to redirect to scoped root paths.
-      # Examples (for a user scope):
-      #   map.user_root '/users', :controller => 'users' # creates user_root_path
-      #
-      #   map.namespace :users do |users|
-      #     users.root # creates user_root_path
-      #   end
-      def home_or_root_path
-        home_path = :"#{resource_name}_root_path"
-        respond_to?(home_path, true) ? send(home_path) : root_path
-      end
-
       # Checks whether it's a devise mapped resource or not.
       def is_devise_resource? #:nodoc:
         raise ActionController::UnknownAction unless devise_mapping && devise_mapping.allows?(controller_name)
@@ -88,7 +67,7 @@ module Devise
       # Example:
       #   before_filter :require_no_authentication, :only => :new
       def require_no_authentication
-        redirect_to home_or_root_path if warden.authenticated?(resource_name)
+        redirect_to after_sign_in_path_for(resource_name) if warden.authenticated?(resource_name)
       end
 
       # Sets the flash message with :key, using I18n. By default you are able

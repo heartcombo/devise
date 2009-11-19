@@ -90,6 +90,53 @@ module Devise
         session.delete(:"#{scope}.return_to")
       end
 
+      # The default url to be used after signing in. This is used by all Devise
+      # controllers and you can overwrite it in your ApplicationController to
+      # provide a custom hook for a custom resource.
+      #
+      # By default, it first tries to find a resource_root_path, otherwise it
+      # uses the root path. For a user scope, you can define the default url in
+      # the following way:
+      #
+      #   map.user_root '/users', :controller => 'users' # creates user_root_path
+      #
+      #   map.resources :users do |users|
+      #     users.root # creates user_root_path
+      #   end
+      #
+      # If none of these are defined, root_path is used.
+      def after_sign_in_path_for(resource_or_scope)
+        scope = Devise::Mapping.find_scope!(resource_or_scope)
+        home_path = :"#{scope}_root_path"
+        respond_to?(home_path, true) ? send(home_path) : root_path
+      end
+
+      # The default to be used after signing out. This is used by all Devise
+      # controllers and you can overwrite it in your ApplicationController to
+      # provide a custom hook for a custom resource.
+      #
+      # By default is the root_path.
+      def after_sign_out_path_for(resource_or_scope)
+        root_path
+      end
+
+      # Sign in an user and tries to redirect first to the stored location and
+      # then to the url specified by after_sign_in_path_for.
+      #
+      # If just a symbol is given, consider that the user was already signed in
+      # through other means and just perform the redirection.
+      def sign_in_and_redirect(*args)
+        sign_in(*args) unless args.one? && args.first.is_a?(Symbol)
+        redirect_to stored_location_for(args.first) || after_sign_in_path_for(args.first)
+      end
+
+      # Sign out an user and tries to redirect to the url specified by
+      # after_sign_out_path_for.
+      def sign_out_and_redirect(resource_or_scope)
+        sign_out(resource_or_scope)
+        redirect_to after_sign_out_path_for(resource_or_scope)
+      end
+
       # Define authentication filters and accessor helpers based on mappings.
       # These filters should be used inside the controllers as before_filters,
       # so you can control the scope of the user who should be signed in to

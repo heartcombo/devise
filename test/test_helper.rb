@@ -15,12 +15,12 @@ ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
 ActiveRecord::Schema.define(:version => 1) do
-  [:users, :admins].each do |table|
+  [:users, :admins, :accounts].each do |table|
     create_table table do |t|
       t.authenticatable :null => table == :admins
-      t.string :username if table == :users
 
-      if table == :users
+      if table != :admin
+        t.string :username
         t.confirmable
         t.recoverable
         t.rememberable

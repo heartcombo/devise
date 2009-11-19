@@ -92,9 +92,9 @@ class AuthenticatableTest < ActiveSupport::TestCase
       Devise.stretches = default_stretches
     end
   end
-  
+
   test 'should respect encryptor configuration' do
-    begin 
+    begin
       Devise.encryptor = ::Devise::Encryptors::Sha512
       user = create_user
       assert_equal user.encrypted_password, encrypt_password(user, User.pepper, User.stretches, ::Devise::Encryptors::Sha512)
@@ -134,6 +134,16 @@ class AuthenticatableTest < ActiveSupport::TestCase
       assert_nil User.authenticate(:email => user.email, :password => user.password)
       assert_not_nil User.authenticate(:username => user.username, :password => user.password)
     end
+  end
+
+  test 'should allow overwriting find for authentication conditions' do
+    admin = Admin.create!(valid_attributes)
+    assert_not_nil Admin.authenticate(:email => admin.email, :password => admin.password)
+  end
+
+  test 'should never authenticate an account' do
+    account = Account.create!(valid_attributes)
+    assert_nil Account.authenticate(:email => account.email, :password => account.password)
   end
 
   test 'should serialize user into session' do

@@ -60,14 +60,21 @@ module Devise
         end
 
       module ClassMethods
-        # Authenticate a user based on email and password. Returns the
-        # authenticated user if it's valid or nil.
-        # Attributes are :email and :password
+        # Authenticate a user based on configured attribute keys. Returns the
+        # authenticated user if it's valid or nil. Attributes are by default
+        # :email and :password, the latter is always required.
         def authenticate(attributes={})
           return unless authentication_keys.all? { |k| attributes[k].present? }
           conditions = attributes.slice(*authentication_keys)
-          authenticatable = find(:first, :conditions => conditions)
+          authenticatable = find_for_authentication(conditions)
           authenticatable if authenticatable.try(:valid_password?, attributes[:password])
+        end
+
+        # Find first record based on conditions given (ie by the sign in form).
+        # Overwrite to add customized conditions, create a join, or maybe use a
+        # namedscope to filter records while authenticating.
+        def find_for_authentication(conditions)
+          find(:first, :conditions => conditions)
         end
 
         # Attempt to find a user by it's email. If not user is found, returns a
@@ -88,7 +95,7 @@ module Devise
         # Hook to serialize user from session. Overwrite if you want.
         def serialize_from_session(keys)
           klass, id = keys
-          raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self 
+          raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self
           klass.find_by_id(id)
         end
       end

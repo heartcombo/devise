@@ -224,6 +224,13 @@ sign_out method. Such methods have the same signature as in controllers:
   sign_out :user         # sign_out(scope)
   sign_out @user         # sign_out(resource)
 
+You can include the Devise Test Helpers in all of your tests by adding the
+following to the bottom of your test/test_helper.rb or spec/spec_helper.rb file:
+
+  class ActionController::TestCase
+    include Devise::TestHelpers
+  end
+
 == Migrating from other solutions
 
 Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of it set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devises's one (encrypted_password and password_salt).

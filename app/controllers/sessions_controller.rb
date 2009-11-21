@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
       set_now_flash_message :failure, message if params.try(:[], message) == "true"
     end
     build_resource
+    render_with_scope :new
   end
 
   # POST /resource/sign_in
@@ -19,7 +20,7 @@ class SessionsController < ApplicationController
     else
       set_now_flash_message :failure, warden.message || :invalid
       build_resource
-      render :new
+      render_with_scope :new
     end
   end
 

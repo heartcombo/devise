@@ -40,6 +40,11 @@ Devise.setup do |config|
   # Configure the ORM. Supports :active_record and :mongo_mapper
   # config.orm = :active_record
 
+  # Turn scoped views on. Before rendering "sessions/new", it will first check for
+  # "sessions/users/new". It's turned off by default because it's slower if you
+  # are using only default views.
+  # config.scoped_views = true
+
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below
   # allows you to setup OAuth, using http://github.com/roman/warden_oauth

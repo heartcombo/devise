@@ -44,6 +44,7 @@ module ActionController::Routing
       #                        POST /users/confirmation(.:format)     {:controller=>"confirmations", :action=>"create"}
       #
       # You can configure your routes with some options:
+      #
       #  * :class_name => setup a different class to be looked up by devise, if it cannot be correctly find by the route name.
       #
       #    map.devise_for :users, :class_name => 'Account'

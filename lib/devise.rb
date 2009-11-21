@@ -73,6 +73,11 @@ module Devise
   mattr_accessor :apply_schema
   @@apply_schema = true
 
+  # Scoped views. Since it relies on fallbacks to render default views, it's
+  # turned off by default.
+  mattr_accessor :scoped_views
+  @@scoped_views = false
+
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
     # a fresh initializer with all configuration values.

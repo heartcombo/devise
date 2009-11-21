@@ -6,6 +6,7 @@ class PasswordsController < ApplicationController
   # GET /resource/password/new
   def new
     build_resource
+    render_with_scope :new
   end
 
   # POST /resource/password
@@ -16,7 +17,7 @@ class PasswordsController < ApplicationController
       set_flash_message :success, :send_instructions
       redirect_to new_session_path(resource_name)
     else
-      render :new
+      render_with_scope :new
     end
   end
 
@@ -24,6 +25,7 @@ class PasswordsController < ApplicationController
   def edit
     self.resource = resource_class.new
     resource.reset_password_token = params[:reset_password_token]
+    render_with_scope :edit
   end
 
   # PUT /resource/password
@@ -34,7 +36,7 @@ class PasswordsController < ApplicationController
       set_flash_message :success, :updated
       sign_in_and_redirect(resource_name, resource)
     else
-      render :edit
+      render_with_scope :edit
     end
   end
 end

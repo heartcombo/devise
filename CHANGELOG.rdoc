@@ -1,5 +1,6 @@
 * enhancements
   * [#42] Do not send nil to build (DataMapper compatibility)
+  * [#44] Allow to have scoped views
 
 == 0.5.5
 

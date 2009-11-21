@@ -191,12 +191,37 @@ class AuthenticationTest < ActionController::IntegrationTest
     visit 'users/index'
     assert_equal "Cart", @controller.user_session[:cart]
   end
-  
+
   test 'destroyed account is logged out' do
     sign_in_as_user
     visit 'users/index'
     User.destroy_all
     visit 'users/index'
     assert_redirected_to '/users/sign_in?unauthenticated=true'
+  end
+
+  test 'renders the scoped view if turned on and view is available' do
+    swap Devise, :scoped_views => true do
+      assert_raise Webrat::NotFoundError do
+        sign_in_as_user
+      end
+      assert_match /Special user view/, response.body
+    end
+  end
+
+  test 'does not render the scoped view if turned off' do
+    swap Devise, :scoped_views => false do
+      assert_nothing_raised do
+        sign_in_as_user
+      end
+    end
+  end
+
+  test 'does not render the scoped view if not available' do
+    swap Devise, :scoped_views => true do
+      assert_nothing_raised do
+        sign_in_as_admin
+      end
+    end
   end
 end

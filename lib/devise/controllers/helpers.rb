@@ -96,6 +96,19 @@ module Devise
         set_flash_message(key, kind, true)
       end
 
+      # Render a view for the specified scope. Turned off by default.
+      def render_with_scope(action)
+        if Devise.scoped_views
+          begin
+            render :template => "sessions/#{devise_mapping.as}/#{action}"
+          rescue ActionView::MissingTemplate
+            render action
+          end
+        else
+          render action
+        end
+      end
+
     end
   end
 end

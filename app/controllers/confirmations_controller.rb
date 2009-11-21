@@ -4,6 +4,7 @@ class ConfirmationsController < ApplicationController
   # GET /resource/confirmation/new
   def new
     build_resource
+    render_with_scope :new
   end
 
   # POST /resource/confirmation
@@ -14,7 +15,7 @@ class ConfirmationsController < ApplicationController
       set_flash_message :success, :send_instructions
       redirect_to new_session_path(resource_name)
     else
-      render :new
+      render_with_scope :new
     end
   end
 
@@ -26,7 +27,7 @@ class ConfirmationsController < ApplicationController
       set_flash_message :success, :confirmed
       sign_in_and_redirect(resource_name, resource)
     else
-      render :new
+      render_with_scope :new
     end
   end
 end

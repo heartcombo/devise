@@ -59,7 +59,7 @@ module Devise
       def build_resource
         self.resource ||= begin
           attributes = params[resource_name].try(:except, :password, :password_confirmation)
-          resource_class.new(attributes)
+          resource_class.new(attributes || {})
         end
       end
 

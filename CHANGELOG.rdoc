@@ -1,3 +1,6 @@
+* enhancements
+  * [#42] Do not send nil to build (DataMapper compatibility)
+
 == 0.5.5
 
 * enhancements

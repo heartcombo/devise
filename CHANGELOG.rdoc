@@ -1,3 +1,6 @@
+* enhancements
+  * [#45] Do not rely attribute? methods, since they are not added on Datamapper
+
 == 0.5.6
 
 * enhancements

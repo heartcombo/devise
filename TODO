@@ -1,3 +1,5 @@
+* Create update_with_password
+* Make test run with different ORMs
 * Devise::Timeoutable
 * Use request_ip in session cookies
 * Devise::BruteForceProtection

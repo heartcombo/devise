@@ -51,7 +51,7 @@ module Devise
       # Removes the remember token only if it exists, and save the record
       # without validations.
       def forget_me!
-        if remember_token?
+        if remember_token
           self.remember_token = nil
           self.remember_created_at = nil
           save(false)
@@ -60,7 +60,7 @@ module Devise
 
       # Checks whether the incoming token matches or not with the record token.
       def valid_remember_token?(token)
-        remember_token? && !remember_expired? && remember_token == token
+        remember_token && !remember_expired? && remember_token == token
       end
 
       # Remember token should be expired if expiration time not overpass now.

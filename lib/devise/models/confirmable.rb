@@ -51,7 +51,7 @@ module Devise
 
       # Verifies whether a user is confirmed or not
       def confirmed?
-        !new_record? && confirmed_at?
+        !new_record? && !confirmed_at.nil?
       end
 
       # Send confirmation instructions by email
@@ -100,8 +100,8 @@ module Devise
         #   confirmation_period_valid?   # will always return false
         #
         def confirmation_period_valid?
-          confirmation_sent_at? &&
-            (Time.now.utc - confirmation_sent_at.utc) < confirm_within
+          confirmation_sent_at &&
+            ((Time.now.utc - confirmation_sent_at.utc) < confirm_within)
         end
 
         # Checks whether the record is confirmed or not, yielding to the block

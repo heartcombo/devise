@@ -42,7 +42,7 @@ module Devise
     end
 
     # Overwrite with specific modification to create your own schema.
-    def apply_schema(name, tupe, options={})
+    def apply_schema(name, type, options={})
       raise NotImplementedError
     end
   end

@@ -87,11 +87,10 @@ module Devise
         # Attempt to find a user by it's email. If not user is found, returns a
         # new user with an email not found error.
         def find_or_initialize_with_error_by_email(email)
-          perishable = find_or_initialize_by_email(email)
-          if perishable.new_record?
-            perishable.errors.add(:email, :not_found, :default => 'not found')
-          end
-          perishable
+          attributes = { :email => email }
+          record = find(:first, :conditions => attributes) || new(attributes)
+          record.errors.add(:email, :not_found, :default => 'not found') if record.new_record?
+          record
         end
 
         # Hook to serialize user into session. Overwrite if you want.
@@ -103,7 +102,7 @@ module Devise
         def serialize_from_session(keys)
           klass, id = keys
           raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self
-          klass.find_by_id(id)
+          klass.find(:first, :conditions => { :id => id })
         end
       end
 

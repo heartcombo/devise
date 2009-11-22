@@ -1,7 +1,6 @@
 module Devise
   module Orm
     module MongoMapper
-      # Include attributes modules and set the proper ones.
       def self.included_modules_hook(klass, modules)
         klass.send :extend, self
 

@@ -1,4 +1,6 @@
 * enhancements
+  * Remove store_location from authenticatable strategy and add it to failure app
+  * Allow a strategy to be placed after authenticatable
   * [#45] Do not rely attribute? methods, since they are not added on Datamapper
 
 == 0.5.6

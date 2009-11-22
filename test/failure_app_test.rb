@@ -12,8 +12,8 @@ class FailureTest < ActiveSupport::TestCase
     assert_equal 302, call_failure.first
   end
 
-  test 'return redirect location based on mapping with params' do
-    assert_equal '/users/sign_in', call_failure.second['Location']
+  test 'return to the default redirect location' do
+    assert_equal '/users/sign_in?unauthenticated=true', call_failure.second['Location']
   end
 
   test 'uses the proxy failure message' do
@@ -27,6 +27,6 @@ class FailureTest < ActiveSupport::TestCase
   end
 
   test 'setup a default message' do
-    assert_equal ['You are being redirected to /users/sign_in'], call_failure.last
+    assert_equal ['You are being redirected to /users/sign_in?unauthenticated=true'], call_failure.last
   end
 end

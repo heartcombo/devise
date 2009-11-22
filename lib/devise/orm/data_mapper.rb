@@ -3,6 +3,7 @@ module Devise
     module DataMapper
       def self.included_modules_hook(klass, modules)
         klass.send :extend, self
+        yield
 
         # DataMapper validations have a completely different API
         if modules.include?(:validatable) && !klass.respond_to?(:validates_presence_of)

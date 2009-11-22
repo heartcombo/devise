@@ -82,21 +82,18 @@ module Devise
     #
     def devise(*modules)
       options  = modules.extract_options!
-
       modules  = Devise.all if modules.include?(:all)
       modules -= Array(options.delete(:except))
       modules  = [:authenticatable] | modules
 
-      modules.each do |m|
-        devise_modules << m.to_sym
-        include Devise::Models.const_get(m.to_s.classify)
+      Devise.orm_class.included_modules_hook(self, modules) do
+        modules.each do |m|
+          devise_modules << m.to_sym
+          include Devise::Models.const_get(m.to_s.classify)
+        end
+
+        options.each { |key, value| send(:"#{key}=", value) }
       end
-
-      # Convert new keys to methods which overwrites Devise defaults
-      options.each { |key, value| send(:"#{key}=", value) }
-
-      # Call specific hooks for each ORM
-      Devise.orm_class.included_modules_hook(self, devise_modules)
     end
 
     # Stores all modules included inside the model, so we are able to verify

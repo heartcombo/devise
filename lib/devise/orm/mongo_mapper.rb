@@ -3,6 +3,7 @@ module Devise
     module MongoMapper
       def self.included_modules_hook(klass, modules)
         klass.send :extend, self
+        yield
 
         modules.each do |mod|
           klass.send(mod)

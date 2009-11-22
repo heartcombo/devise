@@ -17,8 +17,9 @@ module Devise
     #   add_index "accounts", ["reset_password_token"], :name => "reset_password_token", :unique => true
     #
     module ActiveRecord
-      # Required ORM hook. By default, do nothing on ActiveRecord.
+      # Required ORM hook. Just yield the given block in ActiveRecord.
       def self.included_modules_hook(klass, modules)
+        yield
       end
 
       include Devise::Schema

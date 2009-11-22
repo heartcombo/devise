@@ -10,14 +10,16 @@ module Devise
           super
         end
       end
-      
+
       def default_options(record)
         super.merge!(:expires => record.remember_expires_at)
       end
 
       def delete(scope, record=nil)
-        record.forget_me! if record && record.respond_to?(:forget_me!)
-        super
+        if record && record.respond_to?(:forget_me!)
+          record.forget_me!
+          super
+        end
       end
     end
   end

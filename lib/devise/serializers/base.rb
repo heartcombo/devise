@@ -12,21 +12,8 @@ module Devise
         mapping.to.send(:"serialize_from_#{serialization_type}", keys)
       end
 
-      def store(user, scope)
-        @scope = scope
-        return unless valid?
-        super
-      end
-
       def fetch(scope)
         @scope = scope
-        return unless valid?
-        super
-      end
-
-      def delete(scope, user=nil)
-        @scope = scope
-        return unless valid?
         super
       end
 

@@ -77,15 +77,11 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    begin
-      I18n.backend.store_translations(:en, :devise => { :sessions =>
-        { :admin => { :unconfirmed => "Not confirmed user" } } })
-
+    store_translations :en, :devise => {
+      :sessions => { :admin => { :unconfirmed => "Not confirmed user" } }
+    } do
       get new_admin_session_path(:unconfirmed => true)
-
       assert_contain 'Not confirmed user'
-    ensure
-      I18n.reload!
     end
   end
 end

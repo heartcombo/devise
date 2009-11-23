@@ -102,17 +102,14 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    begin
-      I18n.backend.store_translations(:en, :devise => { :sessions =>
-        { :admin => { :invalid => "Invalid credentials" } } })
-
+    store_translations :en, :devise => {
+      :sessions => { :admin => { :invalid => "Invalid credentials" } }
+    } do
       sign_in_as_admin do
         fill_in 'password', :with => 'abcdef'
       end
 
       assert_contain 'Invalid credentials'
-    ensure
-      I18n.reload!
     end
   end
 

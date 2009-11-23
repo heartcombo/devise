@@ -62,7 +62,7 @@ module Devise
       @klass = (options.delete(:class_name) || name.to_s.classify).to_s
       @name  = (options.delete(:scope) || name.to_s.singularize).to_sym
       @path_names  = options.delete(:path_names) || {}
-      @path_prefix = options.delete(:path_prefix) || ""
+      @path_prefix = options.delete(:path_prefix).to_s
       @path_prefix << "/" unless @path_prefix[-1] == ?/
       @route_options = options || {}
 

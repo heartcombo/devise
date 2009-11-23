@@ -59,19 +59,21 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 
   test 'not confirmed user with setup to block without confirmation should not be able to sign in' do
-    Devise.confirm_within = 0
-    sign_in_as_user(:confirm => false)
+    swap Devise, :confirm_within => 0.days do
+      sign_in_as_user(:confirm => false)
 
-    assert_contain 'You have to confirm your account before continuing'
-    assert_not warden.authenticated?(:user)
+      assert_contain 'You have to confirm your account before continuing'
+      assert_not warden.authenticated?(:user)
+    end
   end
 
   test 'not confirmed user but configured with some days to confirm should be able to sign in' do
-    Devise.confirm_within = 1
-    sign_in_as_user(:confirm => false)
+    swap Devise, :confirm_within => 1.day do
+      sign_in_as_user(:confirm => false)
 
-    assert_response :success
-    assert warden.authenticated?(:user)
+      assert_response :success
+      assert warden.authenticated?(:user)
+    end
   end
 
   test 'error message is configurable by resource name' do

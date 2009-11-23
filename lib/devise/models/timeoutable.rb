@@ -7,9 +7,12 @@ module Devise
     module Timeoutable
 
       def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-        end
+        base.extend ClassMethods
+      end
+
+      # Checks whether the user session has expired based on configured time.
+      def timeout?(last_access)
+        last_access && last_access <= timeout.ago.utc
       end
 
       module ClassMethods

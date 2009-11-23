@@ -7,7 +7,7 @@ Warden::Manager.after_set_user do |record, warden, options|
     # is logged out by any of them.
     if warden.authenticated?(scope)
       last_request_at = warden.session(scope)['last_request_at']
-      if last_request_at && last_request_at <= 10.minutes.ago.utc
+      if record.timeout?(last_request_at)
         warden.logout(scope)
         throw :warden, :scope => scope, :message => :timeout
       end

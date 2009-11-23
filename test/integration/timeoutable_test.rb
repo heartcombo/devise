@@ -41,4 +41,20 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'user configured timeout limit' do
+    swap Devise, :timeout => 8.minutes do
+      user = sign_in_as_user
+
+      # Setup last_request_at to timeout
+      get edit_user_path(user)
+      assert_not_nil last_request_at
+      assert_response :success
+      assert warden.authenticated?(:user)
+
+      get users_path
+      assert_redirected_to new_user_session_path(:timeout => true)
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
 end

@@ -58,9 +58,9 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
-  test 'not confirmed user and setup to block without confirmation should not be able to sign in' do
+  test 'not confirmed user with setup to block without confirmation should not be able to sign in' do
     Devise.confirm_within = 0
-    user = sign_in_as_user(:confirm => false)
+    sign_in_as_user(:confirm => false)
 
     assert_contain 'You have to confirm your account before continuing'
     assert_not warden.authenticated?(:user)
@@ -68,7 +68,7 @@ class ConfirmationTest < ActionController::IntegrationTest
 
   test 'not confirmed user but configured with some days to confirm should be able to sign in' do
     Devise.confirm_within = 1
-    user = sign_in_as_user(:confirm => false)
+    sign_in_as_user(:confirm => false)
 
     assert_response :success
     assert warden.authenticated?(:user)

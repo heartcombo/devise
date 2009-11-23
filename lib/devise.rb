@@ -1,5 +1,5 @@
 module Devise
-  ALL = [:authenticatable, :confirmable, :recoverable, :rememberable, :validatable].freeze
+  ALL = [:authenticatable, :confirmable, :recoverable, :rememberable, :timeoutable, :validatable].freeze
 
   # Maps controller names to devise modules
   CONTROLLERS = {
@@ -44,6 +44,10 @@ module Devise
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days
+
+  # Time interval to timeout the user session without activity.
+  mattr_accessor :timeout
+  @@timeout = 10.minutes
 
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor
@@ -141,5 +145,4 @@ Warden::Manager.default_scope = nil
 
 require 'devise/strategies/base'
 require 'devise/serializers/base'
-
 require 'devise/rails'

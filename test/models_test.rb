@@ -16,6 +16,10 @@ class Rememberable < User
   devise :authenticatable, :rememberable
 end
 
+class Timeoutable < User
+  devise :timeoutable
+end
+
 class Validatable < User
   devise :authenticatable, :validatable
 end
@@ -32,7 +36,8 @@ class Configurable < User
   devise :all, :stretches => 15,
                :pepper => 'abcdef',
                :confirm_within => 5.days,
-               :remember_for => 7.days
+               :remember_for => 7.days,
+               :timeout => 15.minutes
 end
 
 class ActiveRecordTest < ActiveSupport::TestCase
@@ -54,33 +59,38 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'include by default authenticatable only' do
-    assert_include_modules Authenticable, :authenticatable
-    assert_not_include_modules Authenticable, :confirmable, :recoverable, :rememberable, :validatable
+    assert_include_modules Authenticatable, :authenticatable
+    assert_not_include_modules Authenticatable, :confirmable, :recoverable, :rememberable, :timeoutable, :validatable
   end
 
   test 'add confirmable module only' do
     assert_include_modules Confirmable, :authenticatable, :confirmable
-    assert_not_include_modules Confirmable, :recoverable, :rememberable, :validatable
+    assert_not_include_modules Confirmable, :recoverable, :rememberable, :timeoutable, :validatable
   end
 
   test 'add recoverable module only' do
     assert_include_modules Recoverable, :authenticatable, :recoverable
-    assert_not_include_modules Recoverable, :confirmable, :rememberable, :validatable
+    assert_not_include_modules Recoverable, :confirmable, :rememberable, :timeoutable, :validatable
   end
 
   test 'add rememberable module only' do
     assert_include_modules Rememberable, :authenticatable, :rememberable
-    assert_not_include_modules Rememberable, :confirmable, :recoverable, :validatable
+    assert_not_include_modules Rememberable, :confirmable, :recoverable, :timeoutable, :validatable
+  end
+
+  test 'add timeoutable module only' do
+    assert_include_modules Timeoutable, :authenticatable, :timeoutable
+    assert_not_include_modules Timeoutable, :confirmable, :recoverable, :rememberable, :validatable
   end
 
   test 'add validatable module only' do
     assert_include_modules Validatable, :authenticatable, :validatable
-    assert_not_include_modules Validatable, :confirmable, :recoverable, :rememberable
+    assert_not_include_modules Validatable, :confirmable, :recoverable, :timeoutable, :rememberable
   end
 
   test 'add all modules' do
     assert_include_modules Devisable,
-      :authenticatable, :confirmable, :recoverable, :rememberable, :validatable
+      :authenticatable, :confirmable, :recoverable, :rememberable, :timeoutable, :validatable
   end
 
   test 'configure modules with except option' do
@@ -102,6 +112,10 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   test 'set a default value for remember_for' do
     assert_equal 7.days, Configurable.remember_for
+  end
+
+  test 'set a default value for timeout' do
+    assert_equal 15.minutes, Configurable.new.timeout
   end
 
   test 'set null fields on migrations' do

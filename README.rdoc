@@ -74,7 +74,7 @@ This line adds devise authenticatable automatically for you inside your User cla
 
 You could also include the other devise modules as below:
 
-  # Same as using only devise, authenticatable is activated by default
+  # Include only authenticatable stuff
   devise :authenticatable
 
   # Include authenticatable + confirmable
@@ -150,7 +150,7 @@ Devise let's you setup as many roles as you want, so let's say you already have 
   end
 
   # Inside your Admin model
-  devise :validatable
+  devise :authenticatable, :validatable
 
   # Inside your routes
   map.devise_for :admin

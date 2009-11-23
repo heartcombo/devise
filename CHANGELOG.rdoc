@@ -1,3 +1,8 @@
+== 0.6.0
+
+* deprecations
+  * :authenticatable is not included by default anymore
+
 * enhancements
   * Added DataMapper support
   * Remove store_location from authenticatable strategy and add it to failure app

@@ -1,23 +1,23 @@
 require 'test/test_helper'
 
 class Authenticable < User
-  devise
+  devise :authenticatable
 end
 
 class Confirmable < User
-  devise :confirmable
+  devise :authenticatable, :confirmable
 end
 
 class Recoverable < User
-  devise :recoverable
+  devise :authenticatable, :recoverable
 end
 
 class Rememberable < User
-  devise :rememberable
+  devise :authenticatable, :rememberable
 end
 
 class Validatable < User
-  devise :validatable
+  devise :authenticatable, :validatable
 end
 
 class Devisable < User
@@ -36,7 +36,6 @@ class Configurable < User
 end
 
 class ActiveRecordTest < ActiveSupport::TestCase
-
   def include_module?(klass, mod)
     klass.devise_modules.include?(mod) &&
     klass.included_modules.include?(Devise::Models::const_get(mod.to_s.classify))

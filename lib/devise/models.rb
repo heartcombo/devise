@@ -50,35 +50,36 @@ module Devise
     #
     # Examples:
     #
-    #   # include only authenticatable module (default)
-    #   devise
+    #   # include only authenticatable module
+    #   devise :authenticatable
     #
     #   # include authenticatable + confirmable modules
-    #   devise :confirmable
+    #   devise :authenticatable, :confirmable
     #
     #   # include authenticatable + recoverable modules
-    #   devise :recoverable
+    #   devise :authenticatable, :recoverable
     #
-    #   # include authenticatable + rememberable modules
-    #   devise :rememberable
+    #   # include authenticatable + rememberable + validatable modules
+    #   devise :authenticatable, :rememberable, :validatable
     #
-    #   # include authenticatable + validatable modules
-    #   devise :validatable
-    #
-    #   # include authenticatable + confirmable + recoverable + rememberable + validatable
-    #   devise :confirmable, :recoverable, :rememberable, :validatable
-    #
-    #   # shortcut to include all modules (same as above)
+    #   # shortcut to include all available modules
     #   devise :all
     #
     #   # include all except recoverable
     #   devise :all, :except => :recoverable
     #
     def devise(*modules)
+      # TODO Add this check in future versions
+      # raise "You need to give at least one Devise module" if modules.empty?
+
       options  = modules.extract_options!
       modules  = Devise.all if modules.include?(:all)
       modules -= Array(options.delete(:except))
-      modules  = [:authenticatable] | modules
+
+      if !modules.include?(:authenticatable)
+        modules  = [:authenticatable] | modules
+        ActiveSupport::Deprecation.warn ":authenticatable won't be included by default in devise in future versions, please add it", caller[0,10]
+      end
 
       Devise.orm_class.included_modules_hook(self, modules) do
         modules.each do |m|

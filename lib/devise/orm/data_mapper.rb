@@ -11,7 +11,7 @@ module Devise
         end
 
         modules.each do |mod|
-          klass.send(mod)
+          klass.send(mod) if klass.respond_to?(mod)
         end
       end
 
@@ -50,7 +50,7 @@ module Devise
         return unless Devise.apply_schema
 
         SCHEMA_OPTIONS.each do |old_key, new_key|
-          next unless options[old_key]
+          next unless options.key?(old_key)
           options[new_key] = options.delete(old_key)
         end
 

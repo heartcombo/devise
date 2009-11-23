@@ -6,7 +6,7 @@ module Devise
         yield
 
         modules.each do |mod|
-          klass.send(mod)
+          klass.send(mod) if klass.respond_to?(mod)
         end
       end
 

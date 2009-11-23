@@ -20,12 +20,6 @@ module Devise
       accessors.each do |accessor|
         mod.class_eval <<-METHOD, __FILE__, __LINE__
           def #{accessor}
-            self.class.#{accessor}
-          end
-        METHOD
-
-        mod.const_get(:ClassMethods).class_eval <<-METHOD, __FILE__, __LINE__
-          def #{accessor}
             if defined?(@#{accessor})
               @#{accessor}
             elsif superclass.respond_to?(:#{accessor})

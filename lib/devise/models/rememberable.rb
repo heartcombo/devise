@@ -70,11 +70,10 @@ module Devise
 
       # Remember token expires at created time + remember_for configuration
       def remember_expires_at
-        remember_created_at + remember_for
+        remember_created_at + self.class.remember_for
       end
 
       module ClassMethods
-
         # Create the cookie key using the record id and remember_token
         def serialize_into_cookie(rememberable)
           "#{rememberable.id}::#{rememberable.remember_token}"
@@ -86,9 +85,9 @@ module Devise
           rememberable = find_by_id(rememberable_id) if rememberable_id
           rememberable if rememberable.try(:valid_remember_token?, remember_token)
         end
-      end
 
-      Devise::Models.config(self, :remember_for)
+        Devise::Models.config(self, :remember_for)
+      end
     end
   end
 end

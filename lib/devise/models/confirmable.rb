@@ -101,7 +101,7 @@ module Devise
         #
         def confirmation_period_valid?
           confirmation_sent_at &&
-            ((Time.now.utc - confirmation_sent_at.utc) < confirm_within)
+            ((Time.now.utc - confirmation_sent_at.utc) < self.class.confirm_within)
         end
 
         # Checks whether the record is confirmed or not, yielding to the block
@@ -124,7 +124,6 @@ module Devise
         end
 
       module ClassMethods
-
         # Attempt to find a user by it's email. If a record is found, send new
         # confirmation instructions to it. If not user is found, returns a new user
         # with an email not found error.
@@ -148,9 +147,9 @@ module Devise
           end
           confirmable
         end
-      end
 
-      Devise::Models.config(self, :confirm_within)
+        Devise::Models.config(self, :confirm_within)
+      end
     end
   end
 end

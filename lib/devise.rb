@@ -46,15 +46,8 @@ module Devise
   @@confirm_within = 0.days
 
   # Used to define the password encryption algorithm.
-  def self.encryptor=(value)
-    @@encryptor = if value.is_a?(Symbol)
-      ::Devise::Encryptors.const_get(value.to_s.classify)
-    else
-      value
-    end
-  end
-  mattr_reader :encryptor
-  @@encryptor = ::Devise::Encryptors::Sha1
+  mattr_accessor :encryptor
+  @@encryptor = :sha1
 
   # Store scopes mappings.
   mattr_accessor :mappings

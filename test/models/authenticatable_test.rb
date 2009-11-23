@@ -3,7 +3,7 @@ require 'digest/sha1'
 
 class AuthenticatableTest < ActiveSupport::TestCase
 
-  def encrypt_password(user, pepper=User.pepper, stretches=User.stretches, encryptor = ::Devise::Encryptors::Sha1)
+  def encrypt_password(user, pepper=User.pepper, stretches=User.stretches, encryptor=::Devise::Encryptors::Sha1)
     encryptor.digest('123456', stretches, user.password_salt, pepper)
   end
 
@@ -82,24 +82,23 @@ class AuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should fallback to devise stretches default configuring' do
-    begin
-      default_stretches = Devise.stretches
-      Devise.stretches = 1
+    swap Devise, :stretches => 1 do
       user = new_user
       assert_equal encrypt_password(user, nil, 1), user.encrypted_password
       assert_not_equal encrypt_password(user, nil, 2), user.encrypted_password
-    ensure
-      Devise.stretches = default_stretches
     end
   end
 
   test 'should respect encryptor configuration' do
-    begin
-      Devise.encryptor = ::Devise::Encryptors::Sha512
-      user = create_user
-      assert_equal user.encrypted_password, encrypt_password(user, User.pepper, User.stretches, ::Devise::Encryptors::Sha512)
-    ensure
-      Devise.encryptor = ::Devise::Encryptors::Sha1
+    User.instance_variable_set(:@encryptor_class, nil)
+
+    swap Devise, :encryptor => :sha512 do
+      begin
+        user = create_user
+        assert_equal user.encrypted_password, encrypt_password(user, User.pepper, User.stretches, ::Devise::Encryptors::Sha512)
+      ensure
+        User.instance_variable_set(:@encryptor_class, nil)
+      end
     end
   end
 

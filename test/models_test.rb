@@ -90,19 +90,19 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'set a default value for stretches' do
-    assert_equal 15, Configurable.new.stretches
+    assert_equal 15, Configurable.stretches
   end
 
   test 'set a default value for pepper' do
-    assert_equal 'abcdef', Configurable.new.pepper
+    assert_equal 'abcdef', Configurable.pepper
   end
 
   test 'set a default value for confirm_within' do
-    assert_equal 5.days, Configurable.new.confirm_within
+    assert_equal 5.days, Configurable.confirm_within
   end
 
   test 'set a default value for remember_for' do
-    assert_equal 7.days, Configurable.new.remember_for
+    assert_equal 7.days, Configurable.remember_for
   end
 
   test 'set null fields on migrations' do

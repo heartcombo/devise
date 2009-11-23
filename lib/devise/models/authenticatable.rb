@@ -54,9 +54,9 @@ module Devise
 
       protected
 
-        # Digests the password using the configured encryptor
+        # Digests the password using the configured encryptor.
         def password_digest(password)
-          encryptor.digest(password, stretches, password_salt, pepper)
+          self.class.encryptor_class.digest(password, self.class.stretches, password_salt, self.class.pepper)
         end
 
       module ClassMethods
@@ -104,9 +104,14 @@ module Devise
           raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self
           klass.find(:first, :conditions => { :id => id })
         end
-      end
 
-      Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
+        # Returns the class for the configured encryptor.
+        def encryptor_class
+          @encryptor_class ||= ::Devise::Encryptors.const_get(encryptor.to_s.classify)
+        end
+
+        Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
+      end
     end
   end
 end

@@ -36,9 +36,9 @@ module Devise
         options = args.extract_options!
         case args.first
           when :first
-            first(options.merge(options.delete(:conditions)))
+            first(options)
           when :all
-            all(options.merge(options.delete(:conditions)))
+            all(options)
           else
             get(*args)
         end

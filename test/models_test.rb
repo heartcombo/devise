@@ -115,7 +115,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'set a default value for timeout' do
-    assert_equal 15.minutes, Configurable.new.timeout
+    assert_equal 15.minutes, Configurable.timeout
   end
 
   test 'set null fields on migrations' do

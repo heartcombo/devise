@@ -1,6 +1,6 @@
 require 'test/test_helper'
 
-class Authenticable < User
+class Authenticatable < User
   devise :authenticatable
 end
 
@@ -17,7 +17,7 @@ class Rememberable < User
 end
 
 class Timeoutable < User
-  devise :timeoutable
+  devise :authenticatable, :timeoutable
 end
 
 class Validatable < User

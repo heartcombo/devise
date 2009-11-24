@@ -49,7 +49,7 @@ module Devise
       # Verifies whether an incoming_password (ie from login) is the user
       # password.
       def valid_password?(incoming_password)
-        password_digest(incoming_password) == encrypted_password
+        !incoming_password.blank? && password_digest(incoming_password) == encrypted_password
       end
 
       protected
@@ -108,18 +108,24 @@ module Devise
           resource if resource.valid_password?(attributes[:password])
         end
 
-        # Do not rely on find_or_initialize_by_attribute since they do not work on most ORMs.
-        def find_or_initialize_by(attribute, value)
-          conditions = { attribute => value }
-          record = find(:first, :conditions => conditions) unless value.blank?
-          record || new.tap { |r| r.send(:"#{attribute}=", value) }
-        end
+        # Find an initialize a record setting an error if it can't be found
+        def find_or_initialize_with_error_by(attribute, value, error=:invalid)
+          if value
+            conditions = { attribute => value }
+            record = find(:first, :conditions => conditions)
+          end
 
-        # Attempt to find a user by it's email. If not user is found, returns a
-        # new user with an email not found error.
-        def find_or_initialize_with_error_by_email(email)
-          record = find_or_initialize_by(:email, email)
-          record.errors.add(:email, :not_found, :default => 'not found') if record.new_record?
+          unless record
+            record = new
+
+            if value
+              record.send(:"#{attribute}=", value)
+              record.errors.add(attribute, error, :default => error.to_s.gsub("_", " "))
+            else
+              record.errors.add(attribute, :blank)
+            end
+          end
+
           record
         end
 

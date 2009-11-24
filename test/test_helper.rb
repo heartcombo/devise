@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__), 'rails_app', 'config', 'environment')
 
 require 'test_help'
 require 'webrat'
+require 'mocha'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 

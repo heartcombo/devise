@@ -7,7 +7,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-Right now it's composed of five mainly modules:
+Right now it's composed of seven mainly modules:
 
 * Authenticatable: responsible for encrypting password and validating authenticity of a user while signing in.
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.

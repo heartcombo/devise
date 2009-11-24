@@ -6,10 +6,7 @@
 Warden::Manager.after_set_user do |record, warden, options|
   if record.present? && record.respond_to?(:timeout?)
     scope = options[:scope]
-    # Current record may have already be logged out by another hook.
-    # For instance, Devise confirmable hook may have logged the record out.
-    # TODO: is it possible to move this check to warden?
-    # It should stop the hooks if the record is logged out by any of them.
+    # Record may have already been logged out by another hook (ie confirmable).
     if warden.authenticated?(scope)
       last_request_at = warden.session(scope)['last_request_at']
       if record.timeout?(last_request_at)

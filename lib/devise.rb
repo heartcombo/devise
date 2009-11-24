@@ -14,7 +14,7 @@ module Devise
 
   # Maps the messages types that are used in flash message. This array is not
   # frozen, so you can add messages from your own strategies.
-  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid ]
+  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :timeout ]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {

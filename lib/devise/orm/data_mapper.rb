@@ -5,11 +5,6 @@ module Devise
         klass.send :extend, self
         yield
 
-        # DataMapper validations have a completely different API
-        if modules.include?(:validatable) && !klass.respond_to?(:validates_presence_of)
-          raise ":validatable is not supported in DataMapper, please craft your validations by hand"
-        end
-
         modules.each do |mod|
           klass.send(mod) if klass.respond_to?(mod)
         end

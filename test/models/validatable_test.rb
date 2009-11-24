@@ -96,4 +96,10 @@ class ValidatableTest < ActiveSupport::TestCase
     assert user.errors[:password]
     assert_not user.errors[:password].to_a.include?('is too short (minimum is 6 characters)')
   end
+
+  test 'shuold not be included in objects with invalid API' do
+    assert_raise RuntimeError do
+      Class.new.send :include, Devise::Models::Validatable
+    end
+  end
 end

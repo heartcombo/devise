@@ -10,7 +10,13 @@ module Devise
       # Email regex used to validate email formats. Retrieved from authlogic.
       EMAIL_REGEX = /\A[\w\.%\+\-]+@(?:[A-Z0-9\-]+\.)+(?:[A-Z]{2,4}|museum|travel)\z/i
 
+      # All validations used by this module.
+      VALIDATIONS = [ :validates_presence_of, :validates_uniqueness_of, :validates_format_of,
+                      :validates_confirmation_of, :validates_length_of ].freeze
+
       def self.included(base)
+        assert_validations_api!(base)
+
         base.class_eval do
           attribute = authentication_keys.first
 
@@ -24,6 +30,15 @@ module Devise
             v.validates_confirmation_of :password
             v.validates_length_of       :password, :within => 6..20, :allow_blank => true
           end
+        end
+      end
+
+      def self.assert_validations_api!(base) #:nodoc:
+        unavailable_validations = VALIDATIONS.select { |v| !base.respond_to?(v) }
+
+        unless unavailable_validations.empty?
+          raise "Could not use :validatable module since #{base} does not respond " <<
+                "to the following methods: #{unavailable_validations.to_sentence}."
         end
       end
 

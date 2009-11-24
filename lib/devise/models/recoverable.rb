@@ -64,7 +64,7 @@ module Devise
         # with an email not found error.
         # Attributes must contain the user email
         def send_reset_password_instructions(attributes={})
-          recoverable = find_or_initialize_with_error_by_email(attributes[:email])
+          recoverable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
           recoverable.send_reset_password_instructions unless recoverable.new_record?
           recoverable
         end
@@ -75,12 +75,8 @@ module Devise
         # containing an error in reset_password_token attribute.
         # Attributes must contain reset_password_token, password and confirmation
         def reset_password!(attributes={})
-          recoverable = find_or_initialize_by_reset_password_token(attributes[:reset_password_token])
-          if recoverable.new_record?
-            recoverable.errors.add(:reset_password_token, :invalid)
-          else
-            recoverable.reset_password!(attributes[:password], attributes[:password_confirmation])
-          end
+          recoverable = find_or_initialize_with_error_by(:reset_password_token, attributes[:reset_password_token])
+          recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) unless recoverable.new_record?
           recoverable
         end
       end

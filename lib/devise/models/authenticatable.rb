@@ -49,7 +49,7 @@ module Devise
       # Verifies whether an incoming_password (ie from login) is the user
       # password.
       def valid_password?(incoming_password)
-        password_digest(incoming_password) == encrypted_password
+        !incoming_password.blank? && password_digest(incoming_password) == encrypted_password
       end
 
       protected
@@ -104,17 +104,28 @@ module Devise
         end
 
         # Contains the logic used in authentication. Overwritten by other devise modules.
-        #
         def valid_for_authentication(resource, attributes)
           resource if resource.valid_password?(attributes[:password])
         end
 
-        # Attempt to find a user by it's email. If not user is found, returns a
-        # new user with an email not found error.
-        def find_or_initialize_with_error_by_email(email)
-          attributes = { :email => email }
-          record = find(:first, :conditions => attributes) || new(attributes)
-          record.errors.add(:email, :not_found, :default => 'not found') if record.new_record?
+        # Find an initialize a record setting an error if it can't be found
+        def find_or_initialize_with_error_by(attribute, value, error=:invalid)
+          if value
+            conditions = { attribute => value }
+            record = find(:first, :conditions => conditions)
+          end
+
+          unless record
+            record = new
+
+            if value
+              record.send(:"#{attribute}=", value)
+              record.errors.add(attribute, error, :default => error.to_s.gsub("_", " "))
+            else
+              record.errors.add(attribute, :blank)
+            end
+          end
+
           record
         end
 

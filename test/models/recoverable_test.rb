@@ -109,6 +109,8 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should find a user to reset it\'s password based on reset_password_token' do
     user = create_user
+    user.send :generate_reset_password_token!
+
     reset_password_user = User.reset_password!(:reset_password_token => user.reset_password_token)
     assert_not_nil reset_password_user
     assert_equal reset_password_user, user
@@ -129,12 +131,15 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should reset successfully user password given the new password and confirmation' do
     user = create_user
     old_password = user.password
+    user.send :generate_reset_password_token!
+
     reset_password_user = User.reset_password!(
       :reset_password_token => user.reset_password_token,
       :password => 'new_password',
       :password_confirmation => 'new_password'
     )
     user.reload
+
     assert_not user.valid_password?(old_password)
     assert user.valid_password?('new_password')
   end

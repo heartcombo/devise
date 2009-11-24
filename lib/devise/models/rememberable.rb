@@ -82,7 +82,7 @@ module Devise
         # Recreate the user based on the stored cookie
         def serialize_from_cookie(cookie)
           rememberable_id, remember_token = cookie.split('::')
-          rememberable = find_by_id(rememberable_id) if rememberable_id
+          rememberable = find(:first, :conditions => { :id => rememberable_id }) if rememberable_id
           rememberable if rememberable.try(:valid_remember_token?, remember_token)
         end
 

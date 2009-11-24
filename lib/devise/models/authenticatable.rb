@@ -66,31 +66,8 @@ module Devise
         def authenticate(attributes={})
           return unless authentication_keys.all? { |k| attributes[k].present? }
           conditions = attributes.slice(*authentication_keys)
-          authenticatable = find_for_authentication(conditions)
-          authenticatable if authenticatable.try(:valid_password?, attributes[:password])
-        end
-
-        # Find first record based on conditions given (ie by the sign in form).
-        # Overwrite to add customized conditions, create a join, or maybe use a
-        # namedscope to filter records while authenticating.
-        # Example:
-        #
-        #   def self.find_for_authentication(conditions={})
-        #     conditions[:active] = true
-        #     find(:first, :conditions => conditions)
-        #   end
-        #
-        def find_for_authentication(conditions)
-          find(:first, :conditions => conditions)
-        end
-
-        # Attempt to find a user by it's email. If not user is found, returns a
-        # new user with an email not found error.
-        def find_or_initialize_with_error_by_email(email)
-          attributes = { :email => email }
-          record = find(:first, :conditions => attributes) || new(attributes)
-          record.errors.add(:email, :not_found, :default => 'not found') if record.new_record?
-          record
+          resource = find_for_authentication(conditions)
+          valid_for_authentication(resource, attributes) if resource
         end
 
         # Hook to serialize user into session. Overwrite if you want.
@@ -108,6 +85,37 @@ module Devise
         # Returns the class for the configured encryptor.
         def encryptor_class
           @encryptor_class ||= ::Devise::Encryptors.const_get(encryptor.to_s.classify)
+        end
+
+      protected
+
+        # Find first record based on conditions given (ie by the sign in form).
+        # Overwrite to add customized conditions, create a join, or maybe use a
+        # namedscope to filter records while authenticating.
+        # Example:
+        #
+        #   def self.find_for_authentication(conditions={})
+        #     conditions[:active] = true
+        #     find(:first, :conditions => conditions)
+        #   end
+        #
+        def find_for_authentication(conditions)
+          find(:first, :conditions => conditions)
+        end
+
+        # Contains the logic used in authentication. Overwritten by other devise modules.
+        #
+        def valid_for_authentication(resource, attributes)
+          resource if resource.valid_password?(attributes[:password])
+        end
+
+        # Attempt to find a user by it's email. If not user is found, returns a
+        # new user with an email not found error.
+        def find_or_initialize_with_error_by_email(email)
+          attributes = { :email => email }
+          record = find(:first, :conditions => attributes) || new(attributes)
+          record.errors.add(:email, :not_found, :default => 'not found') if record.new_record?
+          record
         end
 
         Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)

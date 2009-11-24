@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
                               :path_prefix => '/:locale',
                               :requirements => { :extra => 'value' }
 
-  map.resources :users, :only => [:index, :new, :edit]
+  map.resources :users, :only => [:index], :member => { :expire => :get }
   map.resources :admins, :only => :index
   map.root :controller => :home
 

@@ -17,11 +17,9 @@ class SessionTimeoutTest < ActionController::IntegrationTest
   end
 
   test 'not time out user session before default limit time' do
-    user = sign_in_as_user
-
-    # Setup last_request_at to timeout
-    get edit_user_path(user)
-    assert_not_nil last_request_at
+    sign_in_as_user
+    assert_response :success
+    assert warden.authenticated?(:user)
 
     get users_path
     assert_response :success
@@ -29,12 +27,8 @@ class SessionTimeoutTest < ActionController::IntegrationTest
   end
 
   test 'time out user session after default limit time' do
-    sign_in_as_user
-    assert_response :success
-    assert warden.authenticated?(:user)
-
-    # Setup last_request_at to timeout
-    get new_user_path
+    user = sign_in_as_user
+    get expire_user_path(user)
     assert_not_nil last_request_at
 
     get users_path
@@ -46,12 +40,12 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     swap Devise, :timeout => 8.minutes do
       user = sign_in_as_user
 
-      # Setup last_request_at to timeout
-      get edit_user_path(user)
+      get users_path
       assert_not_nil last_request_at
       assert_response :success
       assert warden.authenticated?(:user)
 
+      get expire_user_path(user)
       get users_path
       assert_redirected_to new_user_session_path(:timeout => true)
       assert_not warden.authenticated?(:user)
@@ -62,11 +56,9 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     store_translations :en, :devise => {
       :sessions => { :user => { :timeout => 'Session expired!' } }
     } do
-      sign_in_as_user
+      user = sign_in_as_user
 
-      # Setup last_request_at to timeout
-      get new_user_path
-
+      get expire_user_path(user)
       get users_path
       follow_redirect!
       assert_contain 'Session expired!'

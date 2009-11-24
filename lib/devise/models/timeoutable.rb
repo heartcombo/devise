@@ -19,7 +19,7 @@ module Devise
 
       # Checks whether the user session has expired based on configured time.
       def timeout?(last_access)
-        last_access && last_access <= self.class.timeout.ago.utc
+        last_access && last_access <= self.class.timeout.ago
       end
 
       module ClassMethods

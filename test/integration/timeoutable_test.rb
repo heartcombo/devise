@@ -10,6 +10,7 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     sign_in_as_user
     old_last_request = last_request_at
     assert_not_nil last_request_at
+
     get users_path
     assert_not_nil last_request_at
     assert_not_equal old_last_request, last_request_at
@@ -62,8 +63,10 @@ class SessionTimeoutTest < ActionController::IntegrationTest
       :sessions => { :user => { :timeout => 'Session expired!' } }
     } do
       sign_in_as_user
+
       # Setup last_request_at to timeout
       get new_user_path
+
       get users_path
       follow_redirect!
       assert_contain 'Session expired!'

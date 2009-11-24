@@ -3,11 +3,11 @@ require 'test/test_helper'
 class TimeoutableTest < ActiveSupport::TestCase
 
   test 'should be expired' do
-    assert new_user.timeout?(11.minutes.ago)
+    assert new_user.timeout?(31.minutes.ago)
   end
 
   test 'should not be expired' do
-    assert_not new_user.timeout?(9.minutes.ago)
+    assert_not new_user.timeout?(29.minutes.ago)
   end
 
   test 'should not be expired when params is nil' do

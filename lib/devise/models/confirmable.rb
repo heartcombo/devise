@@ -100,8 +100,7 @@ module Devise
         #   confirmation_period_valid?   # will always return false
         #
         def confirmation_period_valid?
-          confirmation_sent_at &&
-            ((Time.now.utc - confirmation_sent_at.utc) < self.class.confirm_within)
+          confirmation_sent_at && confirmation_sent_at.utc >= self.class.confirm_within.ago
         end
 
         # Checks whether the record is confirmed or not, yielding to the block

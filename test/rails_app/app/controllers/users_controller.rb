@@ -6,12 +6,12 @@ class UsersController < ApplicationController
   end
 
   def new
-    user_session['last_request_at'] = 11.minutes.ago.utc
+    user_session['last_request_at'] = 31.minutes.ago.utc
     render :text => 'New user!'
   end
 
   def edit
-    user_session['last_request_at'] = 9.minutes.ago.utc
+    user_session['last_request_at'] = 29.minutes.ago.utc
     render :text => 'Edit user!'
   end
 end

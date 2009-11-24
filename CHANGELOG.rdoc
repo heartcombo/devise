@@ -1,3 +1,7 @@
+* enhancements
+  * Devise::Timeoutable - timeout sessions without activity
+  * DataMapper accepts conditions
+
 == 0.6.0
 
 * deprecations

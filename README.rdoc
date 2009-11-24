@@ -13,6 +13,7 @@ Right now it's composed of five mainly modules:
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
 * Recoverable: takes care of reseting the user password and send reset instructions.
 * Rememberable: manages generating and clearing token for remember the user from a saved cookie.
+* Timeoutable: expires sessions without activity in a certain period of time.
 * Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.
 
 There's an example application using Devise at http://github.com/plataformatec/devise_example .
@@ -27,7 +28,7 @@ All gems are on gemcutter, so you need to add gemcutter to your sources if you h
 
   sudo gem sources -a http://gemcutter.org/
 
-Install warden gem if you don't have it installed (requires 0.5.2 or higher):
+Install warden gem if you don't have it installed (requires 0.6.4 or higher):
 
   sudo gem install warden
 
@@ -67,10 +68,10 @@ You may also want to add some indexes to improve performance:
 Now let's setup a User model adding the devise line to have your authentication working:
 
   class User < ActiveRecord::Base
-    devise
+    devise :authenticatable
   end
 
-This line adds devise authenticatable automatically for you inside your User class. Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
+This line adds devise authenticatable inside your User class. Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
 
 You could also include the other devise modules as below:
 
@@ -78,10 +79,13 @@ You could also include the other devise modules as below:
   devise :authenticatable
 
   # Include authenticatable + confirmable
-  devise :confirmable
+  devise :authenticatable, :confirmable
 
   # Include authenticatable + recoverable + rememberable
-  devise :recoverable, :rememberable
+  devise :authenticatable, :recoverable, :rememberable
+
+  # Include authenticatable + timeoutable
+  devise :authenticatable, :timeoutable
 
   # Include all of them
   devise :all
@@ -93,7 +97,7 @@ Note that validations aren't added by default, so you're able to customize it. I
 
 == Model configuration
 
-In addition to :except, you can provide :pepper, :stretches, :encryptor, :authentication_keys, :confirm_within and :remember_for as options to devise method.
+In addition to :except, you can provide :pepper, :stretches, :encryptor, :authentication_keys, :confirm_within, :remember_for and :timeout as options to devise method.
 
 All those options are described in "config/initializers/devise.rb", which is generated when you invoke `ruby script/generate devise_install` in your application root.
 
@@ -139,6 +143,10 @@ Finally, if you are using confirmable or recoverable, you also need to setup def
 
   DeviseMailer.sender = "no-reply@yourapp.com"
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+== Views
+
+By default devise will use the same views for all scopes/roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup :scoped_views to true inside your devise config file, and you will be able to have views based on scope like 'sessions/users/new' and 'sessions/admin/new'. If no view is found within the scope, Devise will fallback to the default view.
 
 == Tidying up
 
@@ -237,7 +245,7 @@ Devise implements encryption strategies for Clearance, Authlogic and Restful-Aut
 
 == Other ORMs
 
-Devise was made to work from scratch with ActiveRecord. However it currently supports MongoMapper as well.
+Devise was made to work from scratch with ActiveRecord. However it currently supports DataMapper and MongoMapper as well.
 To use it, just set Devise.orm or configure it in the initialization file (which is created with devise_install).
 
 == TODO

@@ -4,16 +4,13 @@
 # record is set, we set the last request time inside it's scoped session to
 # verify timeout in the following request.
 Warden::Manager.after_set_user do |record, warden, options|
-  if record && record.respond_to?(:timeout?)
-    scope = options[:scope]
-    # Record may have already been logged out by another hook (ie confirmable).
-    if warden.authenticated?(scope)
-      last_request_at = warden.session(scope)['last_request_at']
-      if record.timeout?(last_request_at)
-        warden.logout(scope)
-        throw :warden, :scope => scope, :message => :timeout
-      end
-      warden.session(scope)['last_request_at'] = Time.now.utc
+  scope = options[:scope]
+  if record && record.respond_to?(:timeout?) && warden.authenticated?(scope)
+    last_request_at = warden.session(scope)['last_request_at']
+    if record.timeout?(last_request_at)
+      warden.logout(scope)
+      throw :warden, :scope => scope, :message => :timeout
     end
+    warden.session(scope)['last_request_at'] = Time.now.utc
   end
 end

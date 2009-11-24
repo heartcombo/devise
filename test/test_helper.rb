@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 1) do
         t.confirmable
         t.recoverable
         t.rememberable
+        t.trackable
       end
 
       t.timestamps

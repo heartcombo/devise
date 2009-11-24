@@ -41,6 +41,16 @@ module Devise
       apply_schema :remember_created_at, DateTime
     end
 
+    # Creates sign_in_count, current_sign_in_at, last_sign_in_at,
+    # current_sign_in_ip, last_sign_in_in.
+    def trackable
+      apply_schema :sign_in_count,      Integer
+      apply_schema :current_sign_in_at, DateTime
+      apply_schema :last_sign_in_at,    DateTime
+      apply_schema :current_sign_in_ip, String
+      apply_schema :last_sign_in_ip,    String
+    end
+
     # Overwrite with specific modification to create your own schema.
     def apply_schema(name, type, options={})
       raise NotImplementedError

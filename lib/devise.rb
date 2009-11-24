@@ -1,5 +1,6 @@
 module Devise
-  ALL = [:authenticatable, :confirmable, :recoverable, :rememberable, :timeoutable, :validatable].freeze
+  ALL = [:authenticatable, :confirmable, :recoverable, :rememberable,
+         :trackable, :timeoutable, :validatable].freeze
 
   # Maps controller names to devise modules
   CONTROLLERS = {

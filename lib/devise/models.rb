@@ -75,6 +75,7 @@ module Devise
       options  = modules.extract_options!
       modules  = Devise.all if modules.include?(:all)
       modules -= Array(options.delete(:except))
+      modules  = Devise::ALL & modules
 
       if !modules.include?(:authenticatable)
         modules  = [:authenticatable] | modules

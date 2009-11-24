@@ -75,7 +75,7 @@ module Devise
         # containing an error in reset_password_token attribute.
         # Attributes must contain reset_password_token, password and confirmation
         def reset_password!(attributes={})
-          recoverable = find_or_initialize_by_reset_password_token(attributes[:reset_password_token])
+          recoverable = find_or_initialize_by(:reset_password_token, attributes[:reset_password_token])
           if recoverable.new_record?
             recoverable.errors.add(:reset_password_token, :invalid)
           else

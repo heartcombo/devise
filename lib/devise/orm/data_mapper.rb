@@ -39,6 +39,15 @@ module Devise
         end
       end
 
+      # In Datamapper, we need to call save! if we don't want to execute callbacks.
+      def save(flag=nil)
+        if flag == false
+          save!
+        else
+          super()
+        end
+      end
+
       # Tell how to apply schema methods. This automatically maps :limit to
       # :length and :null to :nullable.
       def apply_schema(name, type, options={})

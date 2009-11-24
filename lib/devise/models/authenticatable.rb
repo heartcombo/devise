@@ -104,16 +104,21 @@ module Devise
         end
 
         # Contains the logic used in authentication. Overwritten by other devise modules.
-        #
         def valid_for_authentication(resource, attributes)
           resource if resource.valid_password?(attributes[:password])
+        end
+
+        # Do not rely on find_or_initialize_by_attribute since they do not work on most ORMs.
+        def find_or_initialize_by(attribute, value)
+          conditions = { attribute => value }
+          record = find(:first, :conditions => conditions) unless value.blank?
+          record || new.tap { |r| r.send(:"#{attribute}=", value) }
         end
 
         # Attempt to find a user by it's email. If not user is found, returns a
         # new user with an email not found error.
         def find_or_initialize_with_error_by_email(email)
-          attributes = { :email => email }
-          record = find(:first, :conditions => attributes) || new(attributes)
+          record = find_or_initialize_by(:email, email)
           record.errors.add(:email, :not_found, :default => 'not found') if record.new_record?
           record
         end

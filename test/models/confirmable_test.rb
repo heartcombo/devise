@@ -81,7 +81,7 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should generate errors for a user email if user is already confirmed' do
     user = create_user
-    user.confirm!
+    user.update_attribute(:confirmed_at, Time.now)
     confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
     assert confirmed_user.confirmed?
     assert confirmed_user.errors[:email]

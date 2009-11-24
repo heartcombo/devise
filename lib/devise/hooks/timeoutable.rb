@@ -4,7 +4,7 @@
 # record is set, we set the last request time inside it's scoped session to
 # verify timeout in the following request.
 Warden::Manager.after_set_user do |record, warden, options|
-  if record.present? && record.respond_to?(:timeout?)
+  if record && record.respond_to?(:timeout?)
     scope = options[:scope]
     # Record may have already been logged out by another hook (ie confirmable).
     if warden.authenticated?(scope)

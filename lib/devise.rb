@@ -47,7 +47,7 @@ module Devise
 
   # Time interval to timeout the user session without activity.
   mattr_accessor :timeout
-  @@timeout = 10.minutes
+  @@timeout = 30.minutes
 
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor

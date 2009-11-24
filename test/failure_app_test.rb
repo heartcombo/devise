@@ -1,5 +1,5 @@
 require 'test/test_helper'
-require 'ostruct' 
+require 'ostruct'
 
 class FailureTest < ActiveSupport::TestCase
 
@@ -20,6 +20,18 @@ class FailureTest < ActiveSupport::TestCase
     warden = OpenStruct.new(:message => :test)
     location = call_failure('warden' => warden).second['Location']
     assert_equal '/users/sign_in?test=true', location
+  end
+
+  test 'uses the given message' do
+    warden = OpenStruct.new(:message => 'Hello world')
+    location = call_failure('warden' => warden).second['Location']
+    assert_equal '/users/sign_in?message=Hello+world', location
+  end
+
+  test 'setup default url' do
+    Devise::FailureApp.default_url = 'test/sign_in'
+    location = call_failure('warden.options' => { :scope => nil }).second['Location']
+    assert_equal '/test/sign_in?unauthenticated=true', location
   end
 
   test 'set content type to default text/plain' do

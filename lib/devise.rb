@@ -1,5 +1,5 @@
 module Devise
-  ALL = [:authenticatable, :confirmable, :recoverable, :rememberable, :validatable].freeze
+  ALL = [:authenticatable, :confirmable, :recoverable, :rememberable, :timeoutable, :validatable].freeze
 
   # Maps controller names to devise modules
   CONTROLLERS = {
@@ -14,7 +14,7 @@ module Devise
 
   # Maps the messages types that are used in flash message. This array is not
   # frozen, so you can add messages from your own strategies.
-  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid ]
+  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :timeout ]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {
@@ -44,6 +44,10 @@ module Devise
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days
+
+  # Time interval to timeout the user session without activity.
+  mattr_accessor :timeout
+  @@timeout = 30.minutes
 
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor
@@ -141,5 +145,4 @@ Warden::Manager.default_scope = nil
 
 require 'devise/strategies/base'
 require 'devise/serializers/base'
-
 require 'devise/rails'

@@ -1,3 +1,6 @@
+* enhancements
+  * Devise::Trackable - track sign in count, timestamps and ips
+
 == 0.6.1
 
 * enhancements

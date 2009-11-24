@@ -1,6 +1,6 @@
 require 'test/test_helper'
 
-class TrackableTest < ActionController::IntegrationTest
+class TrackableHooksTest < ActionController::IntegrationTest
 
   test "current and last sign in timestamps are updated on each sign in" do
     user = create_user
@@ -52,11 +52,13 @@ class TrackableTest < ActionController::IntegrationTest
   end
 
   test "does not update anything if user is signed out along the way" do
-    user = create_user(:confirm => false)
-    sign_in_as_user
+    swap Devise, :confirm_within => 0 do
+      user = create_user(:confirm => false)
+      sign_in_as_user
 
-    user.reload
-    assert_nil user.current_sign_in_at
-    assert_nil user.last_sign_in_at
+      user.reload
+      assert_nil user.current_sign_in_at
+      assert_nil user.last_sign_in_at
+    end
   end
 end

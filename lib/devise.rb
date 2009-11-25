@@ -47,8 +47,8 @@ module Devise
   @@confirm_within = 0.days
 
   # Time interval to timeout the user session without activity.
-  mattr_accessor :timeout
-  @@timeout = 30.minutes
+  mattr_accessor :timeout_in
+  @@timeout_in = 30.minutes
 
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor

@@ -37,7 +37,7 @@ class SessionTimeoutTest < ActionController::IntegrationTest
   end
 
   test 'user configured timeout limit' do
-    swap Devise, :timeout => 8.minutes do
+    swap Devise, :timeout_in => 8.minutes do
       user = sign_in_as_user
 
       get users_path

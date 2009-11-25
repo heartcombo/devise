@@ -41,7 +41,7 @@ class Configurable < User
                :pepper => 'abcdef',
                :confirm_within => 5.days,
                :remember_for => 7.days,
-               :timeout => 15.minutes
+               :timeout_in => 15.minutes
 end
 
 class ActiveRecordTest < ActiveSupport::TestCase
@@ -113,8 +113,8 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal 7.days, Configurable.remember_for
   end
 
-  test 'set a default value for timeout' do
-    assert_equal 15.minutes, Configurable.timeout
+  test 'set a default value for timeout_in' do
+    assert_equal 15.minutes, Configurable.timeout_in
   end
 
   test 'set null fields on migrations' do

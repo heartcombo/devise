@@ -36,7 +36,7 @@ Devise.setup do |config|
 
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again.
-  # config.timeout = 10.minutes
+  # config.timeout_in = 10.minutes
 
   # Configure the e-mail address which will be shown in DeviseMailer.
   # config.mailer_sender = "foo.bar@yourapp.com"

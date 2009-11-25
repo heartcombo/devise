@@ -19,6 +19,7 @@ class TimeoutableTest < ActiveSupport::TestCase
       user = new_user
       assert user.timeout?(2.minutes.ago)
       assert_not user.timeout?(30.seconds.ago)
+
       Devise.timeout = 5.minutes
       assert_not user.timeout?(2.minutes.ago)
       assert user.timeout?(6.minutes.ago)

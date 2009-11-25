@@ -82,49 +82,48 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'remember for should fallback to devise remember for default configuration' do
-    begin
-      remember_for = Devise.remember_for
+    swap Devise, :remember_for => 1.day do
       user = create_user
-      Devise.remember_for = 1.day
       user.remember_me!
       assert_not user.remember_expired?
-      Devise.remember_for = 0.days
-      user.remember_me!
-      assert user.remember_expired?
-    ensure
-      Devise.remember_for = remember_for
     end
   end
 
   test 'remember expires at should sum date of creation with remember for configuration' do
-    Devise.remember_for = 3.days
-    user = create_user
-    user.remember_me!
-    assert_equal 3.days.from_now.to_date, user.remember_expires_at.to_date
-    Devise.remember_for = 5.days
-    assert_equal 5.days.from_now.to_date, user.remember_expires_at.to_date
+    swap Devise, :remember_for => 3.days do
+      user = create_user
+      user.remember_me!
+      assert_equal 3.days.from_now.to_date, user.remember_expires_at.to_date
+
+      Devise.remember_for = 5.days
+      assert_equal 5.days.from_now.to_date, user.remember_expires_at.to_date
+    end
   end
 
   test 'remember should be expired if remember_for is zero' do
-    Devise.remember_for = 0.days
-    user = create_user
-    user.remember_me!
-    assert user.remember_expired?
+    swap Devise, :remember_for => 0.days do
+      Devise.remember_for = 0.days
+      user = create_user
+      user.remember_me!
+      assert user.remember_expired?
+    end
   end
 
   test 'remember should be expired if it was created before limit time' do
-    Devise.remember_for = 1.day
-    user = create_user
-    user.remember_me!
-    user.update_attribute(:remember_created_at, 2.days.ago)
-    assert user.remember_expired?
+    swap Devise, :remember_for => 1.day do
+      user = create_user
+      user.remember_me!
+      user.update_attribute(:remember_created_at, 2.days.ago)
+      assert user.remember_expired?
+    end
   end
 
   test 'remember should not be expired if it was created whitin the limit time' do
-    Devise.remember_for = 30.days
-    user = create_user
-    user.remember_me!
-    user.update_attribute(:remember_created_at, 30.days.ago + 2.minutes)
-    assert_not user.remember_expired?
+    swap Devise, :remember_for => 30.days do
+      user = create_user
+      user.remember_me!
+      user.update_attribute(:remember_created_at, 30.days.ago + 2.minutes)
+      assert_not user.remember_expired?
+    end
   end
 end

@@ -13,11 +13,10 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert user.respond_to?(:password_confirmation)
   end
 
-  test 'should generate salt while setting password' do
-    assert_present new_user.password_salt
-    assert_present new_user(:password => nil).password_salt
-    assert_present new_user(:password => '').password_salt
-    assert_present create_user.password_salt
+  test 'should generate encrypted password and salt while setting password' do
+    user = new_user
+    assert_present user.password_salt
+    assert_present user.encrypted_password
   end
 
   test 'should not change password salt when updating' do
@@ -33,20 +32,14 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_equal 'friendly_token', new_user.password_salt
   end
 
-  test 'should never generate the same salt for different users' do
-    password_salts = []
-    10.times do
-      salt = create_user.password_salt
-      assert_not password_salts.include?(salt)
-      password_salts << salt
-    end
+  test 'should not generate salt if password is blank' do
+    assert_blank new_user(:password => nil).password_salt
+    assert_blank new_user(:password => '').password_salt
   end
 
-  test 'should generate encrypted password while setting password' do
-    assert_present new_user.encrypted_password
-    assert_present new_user(:password => nil).encrypted_password
-    assert_present new_user(:password => '').encrypted_password
-    assert_present create_user.encrypted_password
+  test 'should not generate encrypted password if password is blank' do
+    assert_blank new_user(:password => nil).encrypted_password
+    assert_blank new_user(:password => '').encrypted_password
   end
 
   test 'should encrypt password again if password has changed' do
@@ -57,31 +50,28 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_not_equal encrypted_password, user.encrypted_password
   end
 
-  test 'should fallback to Sha1 as default encryption' do
+  test 'should fallback to sha1 as default encryption' do
     user = new_user
     assert_equal encrypt_password(user), user.encrypted_password
   end
 
-  test 'should fallback to devise pepper default configuring' do
+  test 'should fallback to devise pepper default configuration' do
     begin
       Devise.pepper = ''
       user = new_user
       assert_equal encrypt_password(user), user.encrypted_password
       assert_not_equal encrypt_password(user, 'another_pepper'), user.encrypted_password
+
       Devise.pepper = 'new_pepper'
       user = new_user
       assert_equal encrypt_password(user, 'new_pepper'), user.encrypted_password
-      assert_not_equal encrypt_password(user, 'another_pepper'), user.encrypted_password
-      Devise.pepper = '123456'
-      user = new_user
-      assert_equal encrypt_password(user, '123456'), user.encrypted_password
       assert_not_equal encrypt_password(user, 'another_pepper'), user.encrypted_password
     ensure
       Devise.pepper = nil
     end
   end
 
-  test 'should fallback to devise stretches default configuring' do
+  test 'should fallback to devise stretches default configuration' do
     swap Devise, :stretches => 1 do
       user = new_user
       assert_equal encrypt_password(user, nil, 1), user.encrypted_password
@@ -140,11 +130,6 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_not_nil Admin.authenticate(:email => admin.email, :password => admin.password)
   end
 
-  test 'should never authenticate an account' do
-    account = Account.create!(valid_attributes)
-    assert_nil Account.authenticate(:email => account.email, :password => account.password)
-  end
-
   test 'should serialize user into session' do
     user = create_user
     assert_equal [User, user.id], User.serialize_into_session(user)
@@ -155,16 +140,16 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_equal user.id, User.serialize_from_session([User, user.id]).id
   end
 
-  test 'should not serialize another klass from session' do
+  test 'should serialize another klass from session if it is an ancestors' do
+    user = create_user
+    klass = Class.new(User)
+    assert_equal user.id, User.serialize_from_session([klass, user.id]).id
+  end
+
+  test 'should not serialize another klass from session if not an ancestors' do
     user = create_user
     assert_raise RuntimeError, /ancestors/ do
       User.serialize_from_session([Admin, user.id])
     end
-  end
-
-  test 'should serialize another klass from session' do
-    user = create_user
-    klass = Class.new(User)
-    assert_equal user.id, User.serialize_from_session([klass, user.id]).id
   end
 end

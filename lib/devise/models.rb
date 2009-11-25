@@ -97,5 +97,26 @@ module Devise
     def devise_modules
       @devise_modules ||= []
     end
+
+    # Find an initialize a record setting an error if it can't be found
+    def find_or_initialize_with_error_by(attribute, value, error=:invalid)
+      if value.present?
+        conditions = { attribute => value }
+        record = find(:first, :conditions => conditions)
+      end
+
+      unless record
+        record = new
+
+        if value.present?
+          record.send(:"#{attribute}=", value)
+          record.errors.add(attribute, error, :default => error.to_s.gsub("_", " "))
+        else
+          record.errors.add(attribute, :blank)
+        end
+      end
+
+      record
+    end
   end
 end

@@ -38,18 +38,19 @@ module Devise
         end
       end
 
-      # Regenerates password salt and encrypted password each time password is
-      # setted.
+      # Regenerates password salt and encrypted password each time password is set.
       def password=(new_password)
         @password = new_password
-        self.password_salt = Devise.friendly_token
-        self.encrypted_password = password_digest(@password)
+
+        if @password.present?
+          self.password_salt = Devise.friendly_token
+          self.encrypted_password = password_digest(@password)
+        end
       end
 
-      # Verifies whether an incoming_password (ie from login) is the user
-      # password.
+      # Verifies whether an incoming_password (ie from login) is the user password.
       def valid_password?(incoming_password)
-        !incoming_password.blank? && password_digest(incoming_password) == encrypted_password
+        password_digest(incoming_password) == encrypted_password
       end
 
       protected
@@ -106,27 +107,6 @@ module Devise
         # Contains the logic used in authentication. Overwritten by other devise modules.
         def valid_for_authentication(resource, attributes)
           resource if resource.valid_password?(attributes[:password])
-        end
-
-        # Find an initialize a record setting an error if it can't be found
-        def find_or_initialize_with_error_by(attribute, value, error=:invalid)
-          if value
-            conditions = { attribute => value }
-            record = find(:first, :conditions => conditions)
-          end
-
-          unless record
-            record = new
-
-            if value
-              record.send(:"#{attribute}=", value)
-              record.errors.add(attribute, error, :default => error.to_s.gsub("_", " "))
-            else
-              record.errors.add(attribute, :blank)
-            end
-          end
-
-          record
         end
 
         Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)

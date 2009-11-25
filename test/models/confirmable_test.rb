@@ -22,14 +22,14 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should never generate the same confirmation token for different users' do
     confirmation_tokens = []
-    10.times do
+    3.times do
       token = create_user.confirmation_token
       assert !confirmation_tokens.include?(token)
       confirmation_tokens << token
     end
   end
 
-  test 'should confirm a user updating confirmed at' do
+  test 'should confirm a user by updating confirmed at' do
     user = create_user
     assert_nil user.confirmed_at
     assert user.confirm!
@@ -51,32 +51,32 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert user.confirmed?
   end
 
-  test 'should not confirm a user already confirmed and add an error to email' do
+  test 'should not confirm a user already confirmed' do
     user = create_user
     assert user.confirm!
     assert_nil user.errors[:email]
+
     assert_not user.confirm!
-    assert_not_nil user.errors[:email]
     assert_equal 'already confirmed', user.errors[:email]
   end
 
   test 'should find and confirm an user automatically' do
     user = create_user
     confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
-    assert_not_nil confirmed_user
     assert_equal confirmed_user, user
     assert user.reload.confirmed?
   end
 
-  test 'should return a new user with errors if no user exists while trying to confirm' do
+  test 'should return a new record with errors when a invalid token is given' do
     confirmed_user = User.confirm!(:confirmation_token => 'invalid_confirmation_token')
     assert confirmed_user.new_record?
+    assert_equal "is invalid", confirmed_user.errors[:confirmation_token]
   end
 
-  test 'should return errors for a new user when trying to confirm' do
-    confirmed_user = User.confirm!(:confirmation_token => 'invalid_confirmation_token')
-    assert_not_nil confirmed_user.errors[:confirmation_token]
-    assert_equal 'is invalid', confirmed_user.errors[:confirmation_token]
+  test 'should return a new record with errors when a blank token is given' do
+    confirmed_user = User.confirm!(:confirmation_token => '')
+    assert confirmed_user.new_record?
+    assert_equal "can't be blank", confirmed_user.errors[:confirmation_token]
   end
 
   test 'should generate errors for a user email if user is already confirmed' do
@@ -91,7 +91,6 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     user.confirm!
     authenticated_user = User.authenticate(:email => user.email, :password => user.password)
-    assert_not_nil authenticated_user
     assert_equal authenticated_user, user
   end
 
@@ -112,13 +111,11 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should find a user to send confirmation instructions' do
     user = create_user
     confirmation_user = User.send_confirmation_instructions(:email => user.email)
-    assert_not_nil confirmation_user
     assert_equal confirmation_user, user
   end
 
   test 'should return a new user if no email was found' do
     confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
-    assert_not_nil confirmation_user
     assert confirmation_user.new_record?
   end
 
@@ -173,58 +170,47 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.confirm!
     assert_not user.reset_confirmation!
     assert user.confirmed?
-    assert user.errors[:email].present?
     assert_equal 'already confirmed', user.errors[:email]
   end
 
   test 'confirm time should fallback to devise confirm in default configuration' do
-    begin
-      confirm_within = Devise.confirm_within
-      Devise.confirm_within = 1.day
+    swap Devise, :confirm_within => 1.day do
       user = new_user
       user.confirmation_sent_at = 2.days.ago
       assert_not user.active?
+
       Devise.confirm_within = 3.days
       assert user.active?
-    ensure
-      Devise.confirm_within = confirm_within
     end
   end
 
   test 'should be active when confirmation sent at is not overpast' do
-    Devise.confirm_within = 5.days
-    user = create_user
-    user.confirmation_sent_at = 4.days.ago
-    assert user.active?
+    swap Devise, :confirm_within => 5.days do
+      Devise.confirm_within = 5.days
+      user = create_user
+
+      user.confirmation_sent_at = 4.days.ago
+      assert user.active?
+
+      user.confirmation_sent_at = 5.days.ago
+      assert_not user.active?
+    end
   end
 
   test 'should be active when already confirmed' do
     user = create_user
     assert_not user.confirmed?
     assert_not user.active?
+
     user.confirm!
     assert user.confirmed?
     assert user.active?
   end
 
-  test 'should not be active when confirmation was sent within the limit' do
-    Devise.confirm_within = 5.days
-    user = create_user
-    user.confirmation_sent_at = 5.days.ago
-    assert_not user.active?
-  end
-
-  test 'should be active when confirm in is zero' do
+  test 'should not be active when confirm in is zero' do
     Devise.confirm_within = 0.days
     user = create_user
     user.confirmation_sent_at = Date.today
-    assert_not user.active?
-  end
-
-  test 'should not be active when confirmation was sent before confirm in time' do
-    Devise.confirm_within = 4.days
-    user = create_user
-    user.confirmation_sent_at = 5.days.ago
     assert_not user.active?
   end
 
@@ -233,5 +219,4 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.update_attribute(:confirmation_sent_at, nil)
     assert_not user.reload.active?
   end
-
 end

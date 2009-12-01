@@ -1,4 +1,8 @@
 module Devise
+  autoload :Schema, 'devise/schema'
+  autoload :Mapping, 'devise/mapping'
+  autoload :FailureApp, 'devise/failure_app'
+
   ALL = [:authenticatable, :confirmable, :recoverable, :rememberable,
          :timeoutable, :trackable, :validatable].freeze
 
@@ -144,6 +148,8 @@ end
 # Set the default_scope to nil, so it's overwritten when the first route is declared.
 Warden::Manager.default_scope = nil
 
+require 'devise/controllers'
+require 'devise/encryptors'
 require 'devise/strategies/base'
 require 'devise/serializers/base'
 require 'devise/rails'

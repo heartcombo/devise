@@ -18,12 +18,10 @@ module Devise
         assert_validations_api!(base)
 
         base.class_eval do
-          attribute = authentication_keys.first
-
-          validates_presence_of   attribute
-          validates_uniqueness_of attribute, :allow_blank => true
-          validates_format_of     attribute, :with => EMAIL_REGEX, :allow_blank => true,
-                                              :scope => authentication_keys[1..-1]
+          validates_presence_of   :email
+          validates_uniqueness_of :email, :allow_blank => true
+          validates_format_of     :email, :with => EMAIL_REGEX, :allow_blank => true,
+                                          :scope => authentication_keys[1..-1]
 
           with_options :if => :password_required? do |v|
             v.validates_presence_of     :password

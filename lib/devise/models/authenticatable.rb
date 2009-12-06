@@ -63,7 +63,7 @@ module Devise
       module ClassMethods
         # Authenticate a user based on configured attribute keys. Returns the
         # authenticated user if it's valid or nil. Attributes are by default
-        # :email and :password, the latter is always required.
+        # :email and :password, but the latter is always required.
         def authenticate(attributes={})
           return unless authentication_keys.all? { |k| attributes[k].present? }
           conditions = attributes.slice(*authentication_keys)

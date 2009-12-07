@@ -1,3 +1,5 @@
+require 'devise/serializers/base'
+
 module Devise
   module Serializers
     class Rememberable < Warden::Serializers::Cookie

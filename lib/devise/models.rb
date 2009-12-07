@@ -1,5 +1,13 @@
 module Devise
   module Models
+    autoload :Authenticatable, 'devise/models/authenticatable' 
+    autoload :Confirmable, 'devise/models/confirmable' 
+    autoload :Recoverable, 'devise/models/recoverable' 
+    autoload :Rememberable, 'devise/models/rememberable' 
+    autoload :Timeoutable, 'devise/models/timeoutable' 
+    autoload :Trackable, 'devise/models/trackable' 
+    autoload :Validatable, 'devise/models/validatable' 
+
     # Creates configuration values for Devise and for the given module.
     #
     #   Devise::Models.config(Devise::Authenticable, :stretches, 10)

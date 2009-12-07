@@ -3,7 +3,8 @@ module Devise
     autoload :Authenticatable, 'devise/models/authenticatable' 
     autoload :Confirmable, 'devise/models/confirmable' 
     autoload :Recoverable, 'devise/models/recoverable' 
-    autoload :Rememberable, 'devise/models/rememberable' 
+    autoload :Rememberable, 'devise/models/rememberable'
+    autoload :SessionSerializer, 'devise/models/authenticatable'
     autoload :Timeoutable, 'devise/models/timeoutable' 
     autoload :Trackable, 'devise/models/trackable' 
     autoload :Validatable, 'devise/models/validatable' 
@@ -77,18 +78,12 @@ module Devise
     #   devise :all, :except => :recoverable
     #
     def devise(*modules)
-      # TODO Add this check in future versions
-      # raise "You need to give at least one Devise module" if modules.empty?
+      raise "You need to give at least one Devise module" if modules.empty?
 
       options  = modules.extract_options!
       modules  = Devise.all if modules.include?(:all)
       modules -= Array(options.delete(:except))
       modules  = Devise::ALL & modules
-
-      if !modules.include?(:authenticatable)
-        modules  = [:authenticatable] | modules
-        ActiveSupport::Deprecation.warn ":authenticatable won't be included by default in devise in future versions, please add it", caller[0,10]
-      end
 
       Devise.orm_class.included_modules_hook(self, modules) do
         modules.each do |m|

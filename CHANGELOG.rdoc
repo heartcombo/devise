@@ -1,3 +1,12 @@
+== 0.7.0
+
+* deprecations
+  * :authenticatable is not included by default anymore
+
+* enhancements
+  * Improve loading process
+  * Extract SessionSerializer from Authenticatable
+
 == 0.6.3
 
 * bug fix
@@ -19,7 +28,7 @@
 == 0.6.0
 
 * deprecations
-  * :authenticatable is not included by default anymore
+  * :authenticatable is still included by default, but yields a deprecation warning
 
 * enhancements
   * Added DataMapper support

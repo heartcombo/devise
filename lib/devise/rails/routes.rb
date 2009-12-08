@@ -79,11 +79,6 @@ module ActionController::Routing
       def devise_for(*resources)
         options = resources.extract_options!
 
-        if singular = options.delete(:singular)
-          ActiveSupport::Deprecation.warn ":singular is deprecated in devise_for, use :scope instead."
-          options[:scope] = singular
-        end
-
         resources.map!(&:to_sym)
         resources.each do |resource|
           mapping = Devise::Mapping.new(resource, options.dup)

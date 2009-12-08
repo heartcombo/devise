@@ -150,6 +150,5 @@ Warden::Manager.default_scope = nil
 
 require 'devise/controllers'
 require 'devise/encryptors'
-require 'devise/strategies/base'
-require 'devise/serializers/base'
+require 'devise/orm'
 require 'devise/rails'

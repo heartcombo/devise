@@ -1,3 +1,5 @@
+require 'devise/strategies/base'
+
 module Devise
   module Serializers
     module Base

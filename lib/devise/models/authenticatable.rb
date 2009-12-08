@@ -3,6 +3,19 @@ require 'devise/serializers/authenticatable'
 
 module Devise
   module Models
+    module SessionSerializer
+      # Hook to serialize user into session. Overwrite if you want.
+      def serialize_into_session(record)
+        [record.class, record.id]
+      end
+
+      # Hook to serialize user from session. Overwrite if you want.
+      def serialize_from_session(keys)
+        klass, id = keys
+        raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self
+        klass.find(:first, :conditions => { :id => id })
+      end
+    end
 
     # Authenticable Module, responsible for encrypting password and validating
     # authenticity of a user while signing in.
@@ -32,6 +45,7 @@ module Devise
       def self.included(base)
         base.class_eval do
           extend ClassMethods
+          extend SessionSerializer
 
           attr_reader :password
           attr_accessor :password_confirmation
@@ -69,18 +83,6 @@ module Devise
           conditions = attributes.slice(*authentication_keys)
           resource = find_for_authentication(conditions)
           valid_for_authentication(resource, attributes) if resource
-        end
-
-        # Hook to serialize user into session. Overwrite if you want.
-        def serialize_into_session(record)
-          [record.class, record.id]
-        end
-
-        # Hook to serialize user from session. Overwrite if you want.
-        def serialize_from_session(keys)
-          klass, id = keys
-          raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self
-          klass.find(:first, :conditions => { :id => id })
         end
 
         # Returns the class for the configured encryptor.

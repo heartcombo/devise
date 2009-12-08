@@ -1,3 +1,5 @@
+require 'devise/strategies/base'
+
 module Devise
   module Strategies
     # Default strategy for signing in a user, based on his email and password.

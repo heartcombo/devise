@@ -4,7 +4,7 @@ module Devise
   autoload :FailureApp, 'devise/failure_app'
 
   ALL = [:authenticatable, :confirmable, :recoverable, :rememberable,
-         :timeoutable, :trackable, :validatable].freeze
+         :timeoutable, :trackable, :validatable]
 
   # Maps controller names to devise modules
   CONTROLLERS = {
@@ -13,9 +13,9 @@ module Devise
     :confirmations => :confirmable
   }.freeze
 
-  STRATEGIES  = [:authenticatable].freeze
-  SERIALIZERS = [:authenticatable, :rememberable].freeze
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'].freeze
+  STRATEGIES  = [:authenticatable]
+  SERIALIZERS = [:authenticatable, :rememberable]
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
   # Maps the messages types that are used in flash message. This array is not
   # frozen, so you can add messages from your own strategies.

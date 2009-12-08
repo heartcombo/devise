@@ -8,9 +8,9 @@ module Devise
 
   # Maps controller names to devise modules
   CONTROLLERS = {
-    :sessions => :authenticatable,
-    :passwords => :recoverable,
-    :confirmations => :confirmable
+    :sessions => [:authenticatable],
+    :passwords => [:recoverable],
+    :confirmations => [:confirmable]
   }.freeze
 
   STRATEGIES  = [:authenticatable]

@@ -84,7 +84,7 @@ module Devise
 
     # Check if the respective controller has a module in the mapping class.
     def allows?(controller)
-      self.for.include?(CONTROLLERS[controller.to_sym])
+      (self.for & CONTROLLERS[controller.to_sym]).present?
     end
 
     # Return in which position in the path prefix devise should find the as mapping.

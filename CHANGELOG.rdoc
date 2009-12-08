@@ -1,3 +1,8 @@
+== 0.7.1
+
+* enhancements
+  * Small enhancements for other plugins compatibility (by github.com/grimen)
+
 == 0.7.0
 
 * deprecations

@@ -11,7 +11,7 @@ module Devise
     :sessions => [:authenticatable],
     :passwords => [:recoverable],
     :confirmations => [:confirmable]
-  }.freeze
+  }
 
   STRATEGIES  = [:authenticatable]
   SERIALIZERS = [:authenticatable, :rememberable]

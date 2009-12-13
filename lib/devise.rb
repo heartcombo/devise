@@ -1,7 +1,28 @@
 module Devise
-  autoload :Schema, 'devise/schema'
-  autoload :Mapping, 'devise/mapping'
   autoload :FailureApp, 'devise/failure_app'
+  autoload :Mapping, 'devise/mapping'
+  autoload :Schema, 'devise/schema'
+  autoload :TestHelpers, 'devise/test_helpers'
+
+  module Controllers
+    autoload :Filters, 'devise/controllers/filters'
+    autoload :Helpers, 'devise/controllers/helpers'
+    autoload :UrlHelpers, 'devise/controllers/url_helpers'
+  end
+
+  module Encryptors
+    autoload :AuthlogicSha512, 'devise/encryptors/authlogic_sha512'
+    autoload :AuthlogicSha1, 'devise/encryptors/authlogic_sha1'
+    autoload :RestfulAuthenticationSha1, 'devise/encryptors/restful_authentication_sha1'
+    autoload :Sha512, 'devise/encryptors/sha512'
+    autoload :Sha1, 'devise/encryptors/sha1'
+  end
+
+  module Orm
+    autoload :ActiveRecord, 'devise/orm/active_record'
+    autoload :DataMapper, 'devise/orm/data_mapper'
+    autoload :MongoMapper, 'devise/orm/mongo_mapper'
+  end
 
   ALL = [:authenticatable, :confirmable, :recoverable, :rememberable,
          :timeoutable, :trackable, :validatable]
@@ -147,8 +168,4 @@ end
 
 # Set the default_scope to nil, so it's overwritten when the first route is declared.
 Warden::Manager.default_scope = nil
-
-require 'devise/controllers'
-require 'devise/encryptors'
-require 'devise/orm'
 require 'devise/rails'

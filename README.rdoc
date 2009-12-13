@@ -42,6 +42,10 @@ Configure warden and devise gems inside your app:
   config.gem 'warden'
   config.gem 'devise'
 
+Run the generator:
+
+	ruby script/generate devise_install
+
 And you're ready to go.
 
 == Basic Usage

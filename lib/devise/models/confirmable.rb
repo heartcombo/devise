@@ -27,7 +27,7 @@ module Devise
     #   User.find(1).confirm!      # returns true unless it's already confirmed
     #   User.find(1).confirmed?    # true/false
     #   User.find(1).send_confirmation_instructions # manually send instructions
-    #   User.find(1).reset_confirmation! # reset confirmation status and send instructions
+    #   User.find(1).resend_confirmation! # generates a new token and resent it
     module Confirmable
 
       def self.included(base)
@@ -62,7 +62,7 @@ module Devise
       # Remove confirmation date and send confirmation instructions, to ensure
       # after sending these instructions the user won't be able to sign in without
       # confirming it's account
-      def reset_confirmation!
+      def resend_confirmation!
         unless_confirmed do
           generate_confirmation_token
           save(false)
@@ -129,7 +129,7 @@ module Devise
         # Options must contain the user email
         def send_confirmation_instructions(attributes={})
           confirmable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
-          confirmable.reset_confirmation! unless confirmable.new_record?
+          confirmable.resend_confirmation! unless confirmable.new_record?
           confirmable
         end
 

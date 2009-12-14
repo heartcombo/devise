@@ -15,7 +15,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     3.times do
       token = user.confirmation_token
-      user.reset_confirmation!
+      user.resend_confirmation!
       assert_not_equal token, user.confirmation_token
     end
   end
@@ -168,7 +168,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should not be able to send instructions if the user is already confirmed' do
     user = create_user
     user.confirm!
-    assert_not user.reset_confirmation!
+    assert_not user.resend_confirmation!
     assert user.confirmed?
     assert_equal 'already confirmed', user.errors[:email]
   end

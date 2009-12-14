@@ -100,7 +100,7 @@ module Devise
       def render_with_scope(action)
         if Devise.scoped_views
           begin
-            render :template => "sessions/#{devise_mapping.as}/#{action}"
+            render :template => "#{controller_name}/#{devise_mapping.as}/#{action}"
           rescue ActionView::MissingTemplate
             render action
           end

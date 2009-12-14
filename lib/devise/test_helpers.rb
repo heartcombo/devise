@@ -78,6 +78,7 @@ module Devise
     #
     def sign_out(resource_or_scope)
       scope = Devise::Mapping.find_scope!(resource_or_scope)
+      @controller.instance_variable_set(:"@current_#{scope}", nil)
       warden.logout(scope)
     end
 

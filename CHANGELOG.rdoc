@@ -1,3 +1,7 @@
+* bug fix
+  * Fixed render_with_scope to work with all controllers
+  * Allow sign in with two different users in Devise::TestHelpers
+
 == 0.7.1
 
 * enhancements

@@ -32,7 +32,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should reset password and password confirmation from params' do
     user = create_user
-    user.reset_password('123456789', '987654321')
+    user.reset_password!('123456789', '987654321')
     assert_equal '123456789', user.password
     assert_equal '987654321', user.password_confirmation
   end

@@ -108,6 +108,17 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not generate a new token neither send e-mail if skip_confirmation! is invoked' do
+    user = new_user
+    user.skip_confirmation!
+
+    assert_email_not_sent do
+      user.save!
+      assert_nil user.confirmation_token
+      assert_not_nil user.confirmed_at
+    end
+  end
+
   test 'should find a user to send confirmation instructions' do
     user = create_user
     confirmation_user = User.send_confirmation_instructions(:email => user.email)
@@ -125,18 +136,11 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal 'not found', confirmation_user.errors[:email]
   end
 
-  test 'should reset confirmation token before send the confirmation instructions email' do
+  test 'should generate a confirmation token before send the confirmation instructions email' do
     user = create_user
     token = user.confirmation_token
     confirmation_user = User.send_confirmation_instructions(:email => user.email)
     assert_not_equal token, user.reload.confirmation_token
-  end
-
-  test 'should reset confirmation status when sending the confirmation instructions' do
-    user = create_user
-    assert_not user.confirmed?
-    confirmation_user = User.send_confirmation_instructions(:email => user.email)
-    assert_not user.reload.confirmed?
   end
 
   test 'should send email instructions for the user confirm it\'s email' do

@@ -34,8 +34,8 @@ module Devise
         base.class_eval do
           extend ClassMethods
 
-          before_create :generate_confirmation_token
-          after_create  :send_confirmation_instructions
+          before_create :generate_confirmation_token, :if => :confirmation_required?
+          after_create  :send_confirmation_instructions, :if => :confirmation_required?
         end
       end
 
@@ -78,7 +78,19 @@ module Devise
         confirmed? || confirmation_period_valid?
       end
 
+      # If you don't want confirmation to be sent on create, neither a code
+      # to be generated, call skip_confirmation!
+      def skip_confirmation!
+        self.confirmed_at  = Time.now
+        @skip_confirmation = true
+      end
+
       protected
+
+        # Callback to overwrite if confirmation is required or not.
+        def confirmation_required?
+          !@skip_confirmation
+        end
 
         # Checks if the confirmation for the user is within the limit time.
         # We do this by calculating if the difference between today and the

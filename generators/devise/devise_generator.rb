@@ -4,9 +4,6 @@ class DeviseGenerator < Rails::Generator::NamedBase
 
   def manifest
     record do |m|
-      # Check for class naming collisions.
-      m.class_collisions(class_name)
-
       # Model
       m.directory(File.join('app', 'models', class_path))
       m.template 'model.rb', File.join('app', 'models', "#{file_path}.rb")

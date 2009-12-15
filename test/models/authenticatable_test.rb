@@ -152,4 +152,26 @@ class AuthenticatableTest < ActiveSupport::TestCase
       User.serialize_from_session([Admin, user.id])
     end
   end
+
+  test 'should update password with valid old password' do
+    user = create_user
+    assert user.update_with_password(:old_password => '123456',
+      :password => 'pass321', :password_confirmation => 'pass321')
+    assert user.reload.valid_password?('pass321')
+  end
+
+  test 'should add an error to old password when it is invalid' do
+    user = create_user
+    assert_not user.update_with_password(:old_password => 'other',
+      :password => 'pass321', :password_confirmation => 'pass321')
+    assert_equal 'is invalid', user.errors[:old_password]
+    assert user.reload.valid_password?('123456')
+  end
+
+  test 'should not update password with invalid confirmation' do
+    user = create_user
+    assert_not user.update_with_password(:old_password => '123456',
+      :password => 'pass321', :password_confirmation => 'other')
+    assert user.reload.valid_password?('123456')
+  end
 end

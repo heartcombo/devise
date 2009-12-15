@@ -67,6 +67,17 @@ module Devise
         password_digest(incoming_password) == encrypted_password
       end
 
+      # Update record attributes when :old_password matches, otherwise returns
+      # error on :old_password.
+      def update_with_password(params={})
+        if valid_password?(params[:old_password])
+          update_attributes(params)
+        else
+          errors.add(:old_password, :invalid)
+          false
+        end
+      end
+
       protected
 
         # Digests the password using the configured encryptor.

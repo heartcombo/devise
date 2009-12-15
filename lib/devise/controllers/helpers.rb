@@ -97,15 +97,17 @@ module Devise
       end
 
       # Render a view for the specified scope. Turned off by default.
-      def render_with_scope(action)
+      # Accepts just :controller as option.
+      def render_with_scope(action, options={})
+        controller_name = options.delete(:controller) || self.controller_name
         if Devise.scoped_views
           begin
             render :template => "#{controller_name}/#{devise_mapping.as}/#{action}"
           rescue ActionView::MissingTemplate
-            render action
+            render action, :controller => controller_name
           end
         else
-          render action
+          render action, :controller => controller_name
         end
       end
 

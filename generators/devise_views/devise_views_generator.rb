@@ -15,9 +15,6 @@ class DeviseViewsGenerator < Rails::Generator::Base
         m.directory  File.dirname(file)
         m.file       file, file
       end
-
-      m.directory "config/locales"
-      m.file "lib/devise/locales/en.yml", "config/locales/devise.en.yml"
     end
   end
 

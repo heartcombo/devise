@@ -62,9 +62,17 @@ module Devise
         end
       end
 
-      # Verifies whether an incoming_password (ie from login) is the user password.
+      # Verifies whether an incoming_password (ie from sign in) is the user password.
       def valid_password?(incoming_password)
         password_digest(incoming_password) == encrypted_password
+      end
+
+      # Overwrite update_attributes to not care for blank passwords.
+      def update_attributes(attributes)
+        [:password, :password_confirmation].each do |k|
+          attributes.delete(k) unless attributes[k].present?
+        end
+        super
       end
 
       protected

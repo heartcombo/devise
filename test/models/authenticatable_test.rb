@@ -27,6 +27,13 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_equal salt, user.password_salt
   end
 
+  test 'should not care about empty password on update' do
+    user = create_user
+    user.update_attributes(:email => "jose.valim+updated@gmail.com", :password => "")
+    user.reload
+    assert_equal user.email, "jose.valim+updated@gmail.com"
+  end
+
   test 'should generate a base64 hash using SecureRandom for password salt' do
     ActiveSupport::SecureRandom.expects(:base64).with(15).returns('friendly_token')
     assert_equal 'friendly_token', new_user.password_salt

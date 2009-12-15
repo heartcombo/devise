@@ -1,5 +1,6 @@
 * enhancements
   * Do not care about blank passwords on update
+  * Mail views are scoped as well
 
 == 0.7.2
 

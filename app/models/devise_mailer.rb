@@ -26,7 +26,7 @@ class DeviseMailer < ::ActionMailer::Base
 
     # Configure default email options
     def setup_mail(record, key)
-      mapping = Devise.mappings.values.find { |m| m.to == record.class }
+      mapping = Devise::Mapping.find_by_class(record.class)
       raise "Invalid devise resource #{record}" unless mapping
 
       subject      translate(mapping, key)
@@ -34,7 +34,19 @@ class DeviseMailer < ::ActionMailer::Base
       recipients   record.email
       sent_on      Time.now
       content_type 'text/html'
-      body         mapping.name => record, :resource => record
+      body         render_with_scope(key, mapping, mapping.name => record, :resource => record)
+    end
+
+    def render_with_scope(key, mapping, assigns)
+      if Devise.scoped_views
+        begin
+          render :file => "devise_mailer/#{mapping.as}/#{key}", :body => assigns
+        rescue ActionView::MissingTemplate
+          render :file => "devise_mailer/#{key}", :body => assigns
+        end
+      else
+        render :file => "devise_mailer/#{key}", :body => assigns
+      end
     end
 
     # Setup subject namespaced by model. It means you're able to setup your

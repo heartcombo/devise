@@ -1,1 +1,3 @@
 * Make test run with different ORMs
+* Add registerable support
+* Add http authentication support

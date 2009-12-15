@@ -160,6 +160,10 @@ class AuthenticatableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should respond to old password' do
+    assert new_user.respond_to?(:old_password)
+  end
+
   test 'should update password with valid old password' do
     user = create_user
     assert user.update_with_password(:old_password => '123456',

@@ -47,7 +47,7 @@ module Devise
           extend ClassMethods
           extend SessionSerializer
 
-          attr_reader :password
+          attr_reader :password, :old_password
           attr_accessor :password_confirmation
         end
       end

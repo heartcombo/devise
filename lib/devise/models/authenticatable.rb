@@ -78,14 +78,6 @@ module Devise
         end
       end
 
-      # Overwrite update_attributes to not care for blank passwords.
-      def update_attributes(attributes)
-        [:password, :password_confirmation].each do |k|
-          attributes.delete(k) unless attributes[k].present?
-        end
-        super
-      end
-
       protected
 
         # Digests the password using the configured encryptor.

@@ -1,3 +1,5 @@
+== 0.7.3
+
 * bug fix
   * Give scope to the proper model validation
 

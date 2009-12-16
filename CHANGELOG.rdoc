@@ -1,3 +1,6 @@
+* bug fix
+  * Give scope to the proper model validation
+
 * enhancements
   * Do not care about blank passwords on update
   * Mail views are scoped as well

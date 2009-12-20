@@ -1,5 +1,4 @@
-require 'digest/sha1'
-require 'devise/serializers/rememberable'
+require 'devise/serializers/cookie'
 
 module Devise
   module Models

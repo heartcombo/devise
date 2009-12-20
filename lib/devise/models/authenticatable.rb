@@ -1,22 +1,8 @@
 require 'devise/strategies/authenticatable'
-require 'devise/serializers/authenticatable'
+require 'devise/models/session_serializer'
 
 module Devise
   module Models
-    module SessionSerializer
-      # Hook to serialize user into session. Overwrite if you want.
-      def serialize_into_session(record)
-        [record.class, record.id]
-      end
-
-      # Hook to serialize user from session. Overwrite if you want.
-      def serialize_from_session(keys)
-        klass, id = keys
-        raise "#{self} cannot serialize from #{klass} session since it's not its ancestors" unless klass <= self
-        klass.find(:first, :conditions => { :id => id })
-      end
-    end
-
     # Authenticable Module, responsible for encrypting password and validating
     # authenticity of a user while signing in.
     #

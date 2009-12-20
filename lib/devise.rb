@@ -35,7 +35,7 @@ module Devise
   }
 
   STRATEGIES  = [:authenticatable]
-  SERIALIZERS = [:authenticatable, :rememberable]
+  SERIALIZERS = [:session, :cookie]
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
   # Maps the messages types that are used in flash message. This array is not
@@ -166,6 +166,9 @@ rescue
   require 'warden'
 end
 
-# Set the default_scope to nil, so it's overwritten when the first route is declared.
+# Clear some Warden default configuration which will be overwritten
+Warden::Strategies.clear!
+Warden::Serializers.clear!
 Warden::Manager.default_scope = nil
+
 require 'devise/rails'

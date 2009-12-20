@@ -37,11 +37,11 @@ class Exceptable < User
 end
 
 class Configurable < User
-  devise :all, :stretches => 15,
-               :pepper => 'abcdef',
-               :confirm_within => 5.days,
-               :remember_for => 7.days,
-               :timeout_in => 15.minutes
+  devise :all, :timeoutable, :stretches => 15,
+                             :pepper => 'abcdef',
+                             :confirm_within => 5.days,
+                             :remember_for => 7.days,
+                             :timeout_in => 15.minutes
 end
 
 class ActiveRecordTest < ActiveSupport::TestCase
@@ -60,7 +60,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
     end
   end
 
-  test 'include by default authenticatable only' do
+  test 'add authenticatable module only' do
     assert_include_modules Authenticatable, :authenticatable
   end
 
@@ -90,11 +90,11 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   test 'add all modules' do
     assert_include_modules Devisable,
-      :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :timeoutable, :validatable
+      :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
   end
 
   test 'configure modules with except option' do
-    assert_include_modules Exceptable, :authenticatable, :confirmable, :trackable, :timeoutable
+    assert_include_modules Exceptable, :authenticatable, :confirmable, :trackable
   end
 
   test 'set a default value for stretches' do

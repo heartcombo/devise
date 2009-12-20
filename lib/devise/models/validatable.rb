@@ -6,10 +6,6 @@ module Devise
     # Automatically validate if the email is present, unique and it's format is
     # valid. Also tests presence of password, confirmation and length
     module Validatable
-
-      # Email regex used to validate email formats. Retrieved from authlogic.
-      EMAIL_REGEX = /\A[\w\.%\+\-]+@(?:[A-Z0-9\-]+\.)+(?:[A-Z]{2,4}|museum|travel)\z/i
-
       # All validations used by this module.
       VALIDATIONS = [ :validates_presence_of, :validates_uniqueness_of, :validates_format_of,
                       :validates_confirmation_of, :validates_length_of ].freeze

@@ -13,6 +13,7 @@ Right now it's composed of seven mainly modules:
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
 * Recoverable: takes care of reseting the user password and send reset instructions.
 * Rememberable: manages generating and clearing token for remember the user from a saved cookie.
+* Activatable: if you need to activate accounts by other means, which are not through confirmation, use this module.
 * Timeoutable: expires sessions without activity in a certain period of time.
 * Trackable: tracks sign in count, timestamps and ip.
 * Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.

@@ -1,3 +1,7 @@
+* enhancements
+  * Extract Activatable from Confirmable
+  * Decouple Serializers from Devise modules
+
 == 0.7.3
 
 * bug fix

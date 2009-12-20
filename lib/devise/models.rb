@@ -1,5 +1,6 @@
 module Devise
   module Models
+    autoload :Activatable, 'devise/models/activatable'
     autoload :Authenticatable, 'devise/models/authenticatable' 
     autoload :Confirmable, 'devise/models/confirmable' 
     autoload :Recoverable, 'devise/models/recoverable' 
@@ -81,9 +82,9 @@ module Devise
       raise "You need to give at least one Devise module" if modules.empty?
 
       options  = modules.extract_options!
-      modules  = Devise.all if modules.include?(:all)
+      modules += Devise.all if modules.delete(:all)
       modules -= Array(options.delete(:except))
-      modules  = Devise::ALL & modules
+      modules  = Devise::ALL & modules.uniq
 
       Devise.orm_class.included_modules_hook(self, modules) do
         modules.each do |m|

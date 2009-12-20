@@ -24,7 +24,7 @@ module Devise
     autoload :MongoMapper, 'devise/orm/mongo_mapper'
   end
 
-  ALL = [:authenticatable, :confirmable, :recoverable, :rememberable,
+  ALL = [:authenticatable, :activatable, :confirmable, :recoverable, :rememberable,
          :timeoutable, :trackable, :validatable]
 
   # Maps controller names to devise modules
@@ -38,9 +38,8 @@ module Devise
   SERIALIZERS = [:session, :cookie]
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
-  # Maps the messages types that are used in flash message. This array is not
-  # frozen, so you can add messages from your own strategies.
-  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :timeout ]
+  # Maps the messages types that are used in flash message.
+  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :timeout, :inactive ]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {
@@ -50,6 +49,9 @@ module Devise
     :restful_authentication_sha1 => 40,
     :authlogic_sha512 => 128
   }
+
+  # Email regex used to validate email formats. Retrieved from authlogic.
+  EMAIL_REGEX = /\A[\w\.%\+\-]+@(?:[A-Z0-9\-]+\.)+(?:[A-Z]{2,4}|museum|travel)\z/i
 
   # Used to encrypt password. Please generate one with rake secret.
   mattr_accessor :pepper

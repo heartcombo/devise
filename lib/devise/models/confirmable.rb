@@ -1,4 +1,4 @@
-require 'devise/hooks/confirmable'
+require 'devise/models/activatable'
 
 module Devise
   module Models
@@ -29,6 +29,7 @@ module Devise
     #   User.find(1).send_confirmation_instructions # manually send instructions
     #   User.find(1).resend_confirmation! # generates a new token and resent it
     module Confirmable
+      include Devise::Models::Activatable
 
       def self.included(base)
         base.class_eval do
@@ -70,12 +71,17 @@ module Devise
         end
       end
 
-      # Verify whether a user is active to sign in or not. If the user is
-      # already confirmed, it should never be blocked. Otherwise we need to
-      # calculate if the confirm time has not expired for this user, in other
-      # words, if the confirmation is still valid.
+      # Overwrites active? from Devise::Models::Activatable for confirmation
+      # by verifying whether an user is active to sign in or not. If the user
+      # is already confirmed, it should never be blocked. Otherwise we need to
+      # calculate if the confirm time has not expired for this user.
       def active?
         confirmed? || confirmation_period_valid?
+      end
+
+      # The message to be shown if the account is inactive.
+      def inactive_message
+        :unconfirmed
       end
 
       # If you don't want confirmation to be sent on create, neither a code

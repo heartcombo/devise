@@ -6,12 +6,13 @@ Warden::Manager.after_set_user do |record, warden, options|
   if record && record.respond_to?(:active?) && !record.active?
     scope = options[:scope]
     warden.logout(scope)
+
+    # If winning strategy was set, this is being called after authenticate and
+    # there is no need to force a redirect.
     if warden.winning_strategy
-      # If winning strategy was set, this is being called after authenticate and
-      # there is no need to force a redirect.
-      warden.winning_strategy.fail!(:unconfirmed)
+      warden.winning_strategy.fail!(record.inactive_message)
     else
-      throw :warden, :scope => scope, :message => :unconfirmed
+      throw :warden, :scope => scope, :message => record.inactive_message
     end
   end
 end

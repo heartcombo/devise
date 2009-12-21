@@ -56,6 +56,6 @@ class TestHelpersTest < ActionController::TestCase
   end
 
   def create_user(i=nil)
-    User.create!(:email => "jose.valim#{i}@plataformatec.com", :password => "123456")
+    super(:email => "jose.valim#{i}@plataformatec.com")
   end
 end

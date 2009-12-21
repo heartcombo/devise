@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), '..', 'rails_app', 'config', 'environment')
+require 'test_help'
 
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = Logger.new(nil)
@@ -22,7 +23,6 @@ ActiveRecord::Schema.define(:version => 1) do
   end
 end
 
-require 'test_help'
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false

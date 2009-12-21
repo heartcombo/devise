@@ -56,7 +56,7 @@ class RememberableTest < ActiveSupport::TestCase
   test 'valid remember token should also verify if remember is not expired' do
     user = create_user
     user.remember_me!
-    user.update_attribute(:remember_created_at, 3.days.ago)
+    user.update_attributes(:remember_created_at => 3.days.ago)
     assert_not user.valid_remember_token?(user.remember_token)
   end
 

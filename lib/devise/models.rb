@@ -114,9 +114,15 @@ module Devise
 
         if value.present?
           record.send(:"#{attribute}=", value)
-          record.errors.add(attribute, error, :default => error.to_s.gsub("_", " "))
+          options = { :default => error.to_s.gsub("_", " ") }
         else
-          record.errors.add(attribute, :blank)
+          error, options = :blank, {}
+        end
+
+        begin
+          record.errors.add(attribute, error, options)
+        rescue ArgumentError
+          record.errors.add(attribute, error.to_s.gsub("_", " "))
         end
       end
 

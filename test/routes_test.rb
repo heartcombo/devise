@@ -53,30 +53,18 @@ class MapRoutingTest < ActionController::TestCase
   end
 
   test 'map account with custom path name for session sign in' do
-    assert_recognizes({:controller => 'sessions', :action => 'new'}, 'account/login')
+    assert_recognizes({:controller => 'sessions', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/login')
   end
 
   test 'map account with custom path name for session sign out' do
-    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, 'account/logout')
+    assert_recognizes({:controller => 'sessions', :action => 'destroy', :locale => 'en', :extra => 'value'}, '/en/accounts/logout')
   end
 
   test 'map account with custom path name for password' do
-    assert_recognizes({:controller => 'passwords', :action => 'new'}, 'account/secret/new')
+    assert_recognizes({:controller => 'passwords', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/secret/new')
   end
 
   test 'map account with custom path name for confirmation' do
-    assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'account/verification/new')
-  end
-
-  test 'map organizer with custom singular name' do
-    assert_recognizes({:controller => 'passwords', :action => 'new', :locale => "en", :extra => 'value'}, '/en/organizers/password/new')
-  end
-
-  test 'map organizer with path prefix' do
-    assert_recognizes({:controller => 'sessions', :action => 'new', :locale => "en", :extra => 'value'}, '/en/organizers/sign_in')
-  end
-
-  test 'map organizer with additional route options' do
-    assert_recognizes({:controller => 'passwords', :action => 'new', :locale => "en", :extra => 'value'}, '/en/organizers/password/new')
+    assert_recognizes({:controller => 'confirmations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/verification/new')
   end
 end

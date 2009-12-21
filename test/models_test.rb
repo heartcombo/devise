@@ -24,7 +24,7 @@ class Timeoutable < User
   devise :authenticatable, :timeoutable
 end
 
-class Validatable < User
+class IsValidatable < User
   devise :authenticatable, :validatable
 end
 
@@ -85,7 +85,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'add validatable module only' do
-    assert_include_modules Validatable, :authenticatable, :validatable
+    assert_include_modules IsValidatable, :authenticatable, :validatable
   end
 
   test 'add all modules' do

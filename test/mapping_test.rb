@@ -14,8 +14,8 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal :admin_area, Devise.mappings[:admin].as
   end
 
-  test 'allow custom singular to be given' do
-    assert_equal :organizers, Devise.mappings[:manager].as
+  test 'allow custom scope to be given' do
+    assert_equal :accounts, Devise.mappings[:manager].as
   end
 
   test 'allows a controller depending on the mapping' do
@@ -70,7 +70,7 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'allow custom path names to be given' do
-    mapping = Devise.mappings[:account]
+    mapping = Devise.mappings[:manager]
     assert_equal 'login', mapping.path_names[:sign_in]
     assert_equal 'logout', mapping.path_names[:sign_out]
     assert_equal 'secret', mapping.path_names[:password]
@@ -78,7 +78,7 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'has an empty path as default path prefix' do
-    mapping = Devise.mappings[:account]
+    mapping = Devise.mappings[:user]
     assert_equal '/', mapping.path_prefix
   end
 
@@ -88,20 +88,20 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'retrieve as from the proper position' do
-    assert_equal 1, Devise.mappings[:account].as_position
+    assert_equal 1, Devise.mappings[:user].as_position
     assert_equal 2, Devise.mappings[:manager].as_position
   end
 
   test 'raw path is returned' do
-    assert_equal '/account', Devise.mappings[:account].raw_path
-    assert_equal '/:locale/organizers', Devise.mappings[:manager].raw_path
+    assert_equal '/users', Devise.mappings[:user].raw_path
+    assert_equal '/:locale/accounts', Devise.mappings[:manager].raw_path
   end
 
   test 'parsed path is returned' do
     begin
       Devise.default_url_options {{ :locale => I18n.locale }}
-      assert_equal '/account', Devise.mappings[:account].parsed_path
-      assert_equal '/en/organizers', Devise.mappings[:manager].parsed_path
+      assert_equal '/users', Devise.mappings[:user].parsed_path
+      assert_equal '/en/accounts', Devise.mappings[:manager].parsed_path
     ensure
       Devise.default_url_options {{ }}
     end

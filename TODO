@@ -1,5 +1,5 @@
-* Make test run with different ORMs
-* Add registerable support
+* Make test run with DataMapper (ActiveRecord, MongoMapper)
+* Add Registerable support
 * Add http authentication support
 * Extract SessionSerializer tests from Authenticatable
 * Extract CookieSerializer tests from Authenticatable

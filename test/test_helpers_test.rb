@@ -39,7 +39,7 @@ class TestHelpersTest < ActionController::TestCase
   end
 
   test "allows to sign in with different users" do
-    first_user = create_user(1)
+    first_user = create_user
     first_user.confirm!
 
     sign_in first_user
@@ -47,15 +47,11 @@ class TestHelpersTest < ActionController::TestCase
     assert_equal first_user.id.to_s, @response.body
     sign_out first_user
 
-    second_user = create_user(2)
+    second_user = create_user
     second_user.confirm!
 
     sign_in second_user
     get :show
     assert_equal second_user.id.to_s, @response.body
-  end
-
-  def create_user(i=nil)
-    super(:email => "jose.valim#{i}@plataformatec.com")
   end
 end

@@ -7,7 +7,7 @@ class ActionController::IntegrationTest
   def create_user(options={})
     @user ||= begin
       user = User.create!(
-        :email => 'user@test.com', :password => '123456', :password_confirmation => '123456'
+        :email => 'user@test.com', :password => '123456', :password_confirmation => '123456', :created_at => Time.now.utc
       )
       user.confirm! unless options[:confirm] == false
       user

@@ -168,8 +168,8 @@ class AuthenticatableTest < ActiveSupport::TestCase
     user = create_user
     assert_not user.update_with_password(:old_password => 'other',
       :password => 'pass321', :password_confirmation => 'pass321')
-    assert_equal 'is invalid', user.errors[:old_password]
     assert user.reload.valid_password?('123456')
+    assert_match /invalid/, user.errors[:old_password]
   end
 
   test 'should not update password with invalid confirmation' do

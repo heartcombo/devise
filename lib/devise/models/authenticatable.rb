@@ -64,7 +64,7 @@ module Devise
         if valid_password?(params[:old_password])
           update_attributes(params)
         else
-          errors.add(:old_password, :invalid)
+          self.class.add_error_on(self, :old_password, :invalid, false)
           false
         end
       end

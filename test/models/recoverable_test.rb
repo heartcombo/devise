@@ -83,7 +83,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should return a new record with errors if user was not found by e-mail' do
     reset_password_user = User.send_reset_password_instructions(:email => "invalid@email.com")
     assert reset_password_user.new_record?
-    assert_equal 'not found', reset_password_user.errors[:email]
+    assert_match /not found/, reset_password_user.errors[:email]
   end
 
   test 'should reset reset_password_token before send the reset instructions email' do
@@ -111,13 +111,13 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should a new record with errors if no reset_password_token is found' do
     reset_password_user = User.reset_password!(:reset_password_token => 'invalid_token')
     assert reset_password_user.new_record?
-    assert_equal 'is invalid', reset_password_user.errors[:reset_password_token]
+    assert_match /invalid/, reset_password_user.errors[:reset_password_token]
   end
 
   test 'should a new record with errors if reset_password_token is blank' do
     reset_password_user = User.reset_password!(:reset_password_token => '')
     assert reset_password_user.new_record?
-    assert_equal "can't be blank", reset_password_user.errors[:reset_password_token]
+    assert_match /blank/, reset_password_user.errors[:reset_password_token]
   end
 
   test 'should reset successfully user password given the new password and confirmation' do

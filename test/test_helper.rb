@@ -2,6 +2,8 @@ require 'rubygems'
 
 ENV["RAILS_ENV"] = "test"
 DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
+
+puts "\n==> Devise.orm = #{DEVISE_ORM.inspect}"
 require File.join(File.dirname(__FILE__), 'orm', DEVISE_ORM.to_s)
 
 require 'webrat'

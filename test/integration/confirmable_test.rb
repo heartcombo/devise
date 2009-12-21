@@ -27,7 +27,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert_response :success
     assert_template 'confirmations/new'
     assert_have_selector '#errorExplanation'
-    assert_contain 'Confirmation token is invalid'
+    assert_contain /Confirmation token(.*)invalid/
   end
 
   test 'user with valid confirmation token should be able to confirm an account' do
@@ -44,7 +44,8 @@ class ConfirmationTest < ActionController::IntegrationTest
 
   test 'user already confirmed user should not be able to confirm the account again' do
     user = create_user(:confirm => false)
-    user.update_attribute(:confirmed_at, Time.now)
+    user.confirmed_at = Time.now
+    user.save
     visit_user_confirmation_with_token(user.confirmation_token)
 
     assert_template 'confirmations/new'

@@ -78,7 +78,7 @@ class PasswordTest < ActionController::IntegrationTest
     assert_response :success
     assert_template 'passwords/edit'
     assert_have_selector '#errorExplanation'
-    assert_contain 'Reset password token is invalid'
+    assert_contain /Reset password token(.*)invalid/
     assert_not user.reload.valid_password?('987654321')
   end
 

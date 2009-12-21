@@ -5,10 +5,18 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require File.join(File.dirname(__FILE__), 'lib', 'devise', 'version')
 
-desc 'Default: run unit tests.'
-task :default => :test
+desc 'Default: run tests for all ORMs.'
+task :default => :pre_commit
 
-desc 'Test Devise.'
+desc 'Run Devise tests for all ORMs.'
+task :pre_commit do
+  Dir[File.join(File.dirname(__FILE__), 'test', 'orm', '*.rb')].each do |file|
+    orm = File.basename(file).split(".").first
+    system "rake test DEVISE_ORM=#{orm}"
+  end
+end
+
+desc 'Run Devise unit tests.'
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
   t.libs << 'test'

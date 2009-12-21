@@ -102,7 +102,7 @@ module Devise
       @devise_modules ||= []
     end
 
-    # Find an initialize a record setting an error if it can't be found
+    # Find an initialize a record setting an error if it can't be found.
     def find_or_initialize_with_error_by(attribute, value, error=:invalid)
       if value.present?
         conditions = { attribute => value }
@@ -114,19 +114,25 @@ module Devise
 
         if value.present?
           record.send(:"#{attribute}=", value)
-          options = { :default => error.to_s.gsub("_", " ") }
         else
-          error, options = :blank, {}
+          error, skip_default = :blank, true
         end
 
-        begin
-          record.errors.add(attribute, error, options)
-        rescue ArgumentError
-          record.errors.add(attribute, error.to_s.gsub("_", " "))
-        end
+        add_error_on(record, attribute, error, !skip_default)
       end
 
       record
+    end
+
+    # Wraps add error logic in a method that works for different frameworks.
+    def add_error_on(record, attribute, error, add_default=true)
+      options = add_default ? { :default => error.to_s.gsub("_", " ") } : {}
+
+      begin
+        record.errors.add(attribute, error, options)
+      rescue ArgumentError
+        record.errors.add(attribute, error.to_s.gsub("_", " "))
+      end
     end
   end
 end

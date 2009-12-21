@@ -57,7 +57,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_nil user.errors[:email]
 
     assert_not user.confirm!
-    assert_equal 'already confirmed', user.errors[:email]
+    assert_match /already confirmed/, user.errors[:email]
   end
 
   test 'should find and confirm an user automatically' do
@@ -70,18 +70,19 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should return a new record with errors when a invalid token is given' do
     confirmed_user = User.confirm!(:confirmation_token => 'invalid_confirmation_token')
     assert confirmed_user.new_record?
-    assert_equal "is invalid", confirmed_user.errors[:confirmation_token]
+    assert_match /invalid/, confirmed_user.errors[:confirmation_token]
   end
 
   test 'should return a new record with errors when a blank token is given' do
     confirmed_user = User.confirm!(:confirmation_token => '')
     assert confirmed_user.new_record?
-    assert_equal "can't be blank", confirmed_user.errors[:confirmation_token]
+    assert_match /blank/, confirmed_user.errors[:confirmation_token]
   end
 
   test 'should generate errors for a user email if user is already confirmed' do
     user = create_user
-    user.update_attribute(:confirmed_at, Time.now)
+    user.confirmed_at = Time.now
+    user.save
     confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
     assert confirmed_user.confirmed?
     assert confirmed_user.errors[:email]
@@ -220,7 +221,8 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should not be active without confirmation' do
     user = create_user
-    user.update_attribute(:confirmation_sent_at, nil)
+    user.confirmation_sent_at = nil
+    user.save
     assert_not user.reload.active?
   end
 end

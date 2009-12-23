@@ -257,12 +257,16 @@ To use it, just set Devise.orm or configure it in the initialization file (which
 
 Please refer to TODO file.
 
-== Contributors
+== Maintainers
 
 * José Valim (http://github.com/josevalim)
 * Carlos Antônio da Silva (http://github.com/carlosantoniodasilva)
+
+== Contributors
+
 * Marcelo Silveira (http://github.com/mhfs)
 * Cyril Mougel (http://github.com/shingara)
+* Jonas Grimfelt (http://github.com/grimen)
 
 == Bugs and Feedback
 

@@ -57,7 +57,7 @@ Devise must be set up within the model (or models) you want to use, and devise r
 
 We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
 
-  create_table :users do
+  create_table :users do |t|
     t.authenticatable
     t.confirmable
     t.recoverable

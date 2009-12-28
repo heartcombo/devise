@@ -24,3 +24,4 @@ module Devise
 end
 
 MongoMapper::Document::ClassMethods.send(:include, Devise::Models)
+MongoMapper::EmbeddedDocument::ClassMethods.send(:include, Devise::Models)

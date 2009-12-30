@@ -5,6 +5,7 @@ en:
       signed_out: 'Signed out successfully.'
       unauthenticated: 'You need to sign in or sign up before continuing.'
       unconfirmed: 'You have to confirm your account before continuing.'
+      locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'
@@ -14,8 +15,10 @@ en:
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
+    unlocks:
+      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
+      unlocked: 'Your account was successfully unlocked. You are now signed in.'
     mailer:
       confirmation_instructions: 'Confirmation instructions'
       reset_password_instructions: 'Reset password instructions'
-
-
+      unlock_instructions: 'Unlock Instructions'

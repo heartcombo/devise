@@ -1,6 +1,7 @@
 * enhancements
   * Extract Activatable from Confirmable
   * Decouple Serializers from Devise modules
+  * Devise::Lockable
 
 == 0.7.3
 

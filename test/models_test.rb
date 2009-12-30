@@ -24,6 +24,10 @@ class Timeoutable < User
   devise :authenticatable, :timeoutable
 end
 
+class Lockable < User
+  devise :authenticatable, :lockable
+end
+
 class IsValidatable < User
   devise :authenticatable, :validatable
 end
@@ -33,7 +37,7 @@ class Devisable < User
 end
 
 class Exceptable < User
-  devise :all, :except => [:recoverable, :rememberable, :validatable]
+  devise :all, :except => [:recoverable, :rememberable, :validatable, :lockable]
 end
 
 class Configurable < User
@@ -84,13 +88,17 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_include_modules Timeoutable, :authenticatable, :timeoutable
   end
 
+  test 'add lockable module only' do
+    assert_include_modules Lockable, :authenticatable, :lockable
+  end
+
   test 'add validatable module only' do
     assert_include_modules IsValidatable, :authenticatable, :validatable
   end
 
   test 'add all modules' do
     assert_include_modules Devisable,
-      :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
+      :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, :lockable
   end
 
   test 'configure modules with except option' do

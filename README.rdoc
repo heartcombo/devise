@@ -17,6 +17,7 @@ Right now it's composed of seven mainly modules:
 * Timeoutable: expires sessions without activity in a certain period of time.
 * Trackable: tracks sign in count, timestamps and ip.
 * Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.
+* Lockable: takes care of locking an account based on the number of failed sign in attempts. Handles unlock via expire and email.
 
 There's an example application using Devise at http://github.com/plataformatec/devise_example .
 
@@ -62,6 +63,7 @@ We're assuming here you want a User model. First of all you have to setup a migr
     t.confirmable
     t.recoverable
     t.rememberable
+    t.lockable
     t.timestamps
   end
 
@@ -70,6 +72,7 @@ You may also want to add some indexes to improve performance:
   add_index :your_table, :email
   add_index :your_table, :confirmation_token    # for confirmable
   add_index :your_table, :reset_password_token  # for recoverable
+  add_index :your_table, :unlock_token          # for lockable
 
 Now let's setup a User model adding the devise line to have your authentication working:
 

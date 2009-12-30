@@ -76,12 +76,16 @@ module Devise
       # is already confirmed, it should never be blocked. Otherwise we need to
       # calculate if the confirm time has not expired for this user.
       def active?
-        confirmed? || confirmation_period_valid?
+        super && (confirmed? || confirmation_period_valid?)
       end
 
       # The message to be shown if the account is inactive.
       def inactive_message
-        :unconfirmed
+        if !confirmed?
+          :unconfirmed
+        else
+          super
+        end
       end
 
       # If you don't want confirmation to be sent on create, neither a code

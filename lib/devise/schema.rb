@@ -45,6 +45,13 @@ module Devise
       apply_schema :last_sign_in_ip,    String
     end
 
+    # Creates failed_attempts, unlock_token and locked_at
+    def lockable
+      apply_schema :failed_attempts, Integer, :default => 0
+      apply_schema :unlock_token,    String, :limit => 20
+      apply_schema :locked_at,       DateTime
+    end
+
     # Overwrite with specific modification to create your own schema.
     def apply_schema(name, type, options={})
       raise NotImplementedError

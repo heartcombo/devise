@@ -19,7 +19,7 @@ module Devise
     # Those helpers are added to your ApplicationController.
     module UrlHelpers
 
-      [:session, :password, :confirmation].each do |module_name|
+      [:session, :password, :confirmation, :unlock].each do |module_name|
         [:path, :url].each do |path_or_url|
           actions = [ nil, :new_ ]
           actions << :edit_    if module_name == :password

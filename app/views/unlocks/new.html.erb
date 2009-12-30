@@ -1,0 +1,16 @@
+<h2>Resend unlock instructions</h2>
+
+<% form_for resource_name, resource, :url => unlock_path(resource_name) do |f| %>
+  <%= f.error_messages %>
+
+  <p><%= f.label :email %></p>
+  <p><%= f.text_field :email %></p>
+
+  <p><%= f.submit "Resend unlock instructions" %></p>
+<% end %>
+
+<%= link_to "Sign in", new_session_path(resource_name) %><br />
+
+<%- if devise_mapping.recoverable? %>
+  <%= link_to "Forgot password?", new_password_path(resource_name) %><br />
+<% end -%>

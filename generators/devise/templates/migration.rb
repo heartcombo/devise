@@ -6,6 +6,7 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
       t.recoverable
       t.rememberable
       t.trackable
+      t.lockable
 
       t.timestamps
     end

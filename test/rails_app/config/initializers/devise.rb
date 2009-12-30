@@ -8,7 +8,7 @@ Devise.setup do |config|
   # Remember that Devise includes other modules on its own (like :activatable
   # and :timeoutable) which are not included here and also plugins. So be sure
   # to check the docs for a complete set.
-  config.all = [:authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable]
+  config.all = [:authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, :lockable]
 
   # Invoke `rake secret` and use the printed value to setup a pepper to generate
   # the encrypted password. By default no pepper is used.
@@ -53,6 +53,18 @@ Devise.setup do |config|
   # "sessions/users/new". It's turned off by default because it's slower if you
   # are using only default views.
   # config.scoped_views = true
+
+  # Number of authentication tries before locking an account.
+  # config.maximum_attempts = 5
+
+  # Defines which strategy will be used to unlock an account.
+  # :email = Sends an unlock link to the user email
+  # :time  = Reanables login after a certain ammount of time (see :unlock_in below)
+  # :both  = enables both strategies
+  # config.unlock_strategy = :both
+
+  # Time interval to unlock the account if :time is enabled as unlock_strategy.
+  # config.unlock_in = 1.hour
 
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below

@@ -23,3 +23,7 @@
 <%- if devise_mapping.confirmable? %>
   <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
 <% end -%>
+
+<%- if devise_mapping.lockable? %>
+  <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
+<% end -%>

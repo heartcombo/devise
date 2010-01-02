@@ -1,3 +1,11 @@
+== 0.7.5
+
+* enhancements
+  * Set a default value for mailer to avoid find_template issues
+  * Add models configuration to MongoMapper::EmbeddedDocument as well
+
+== 0.7.4
+
 * enhancements
   * Extract Activatable from Confirmable
   * Decouple Serializers from Devise modules

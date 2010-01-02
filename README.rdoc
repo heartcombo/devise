@@ -47,7 +47,7 @@ Run the generator:
 
 	ruby script/generate devise_install
 
-And you're ready to go.
+And you're ready to go. The generator will install an initializer which describes Devise's configuration options. Be sure to take a look.
 
 == Basic Usage
 
@@ -145,9 +145,8 @@ After signing in a user, confirming it's account or updating it's password, devi
 
 You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize better your redirect hooks.
 
-Finally, if you are using confirmable or recoverable, you also need to setup default url options for the mailer. Here's is the configuration for development:
+Finally, if you are using confirmable or recoverable, you also need to setup default url options for the mailer in each environment. Here's is the configuration for config/environments/development.rb:
 
-  DeviseMailer.sender = "no-reply@yourapp.com"
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
 == Views

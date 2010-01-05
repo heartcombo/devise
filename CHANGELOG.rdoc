@@ -1,3 +1,9 @@
+* enhancements
+  * Warden 0.8.0 compatibility
+
+* deprecation
+  * Removed DeviseMailer.sender
+
 == 0.7.5
 
 * enhancements

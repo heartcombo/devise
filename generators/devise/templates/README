@@ -1,22 +1,22 @@
 
-================================================================================
+===============================================================================
 
 Some setup you must do manually if you haven't yet:
 
-1. Setup defaut url options for your specific environment. Here is an example of development environment:
+  1. Run devise install generator:
 
-    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+       ruby script/generate devise_install
 
-It's a Rails required configuration. In production it must be the actual host your application is deployed to.
+  2. Setup defaut url options for your specific environment. Here is an
+     example of development environment:
 
-2. Setup default sender for mails. In config/environment.rb:
+       config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
-    DeviseMailer.sender = "test@example.com"
+     This is a required Rails configuration. In production is must be the
+     actual host of your application
 
-You can also configure this value by running script/generate devise_install and setting config.mailer_sender,
+  3. Ensure you have defined root_url to *something* in your config/routes.rb:
 
-3. Ensure you have defined root_url to *something* in your config/routes.rb:
+       map.root :controller => 'home'
 
-    map.root :controller => 'home'
-
-================================================================================
+===============================================================================

@@ -107,18 +107,16 @@ module Devise
   mattr_accessor :default_scope
   @@default_scope = nil
 
+  # Address which sends Devise e-mails
+  mattr_accessor :mailer_sender
+  @@mailer_sender
+
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
     # a fresh initializer with all configuration values.
     def setup
       yield self
     end
-
-    # Sets the sender in DeviseMailer.
-    def mailer_sender=(value)
-      DeviseMailer.sender = value
-    end
-    alias :sender= :mailer_sender=
 
     # Sets warden configuration using a block that will be invoked on warden
     # initialization.

@@ -7,15 +7,6 @@ module Devise
 end
 
 class DeviseTest < ActiveSupport::TestCase
-
-  test 'DeviseMailer.sender can be configured through Devise' do
-    swap DeviseMailer, :sender => "foo@bar" do
-      assert_equal "foo@bar", DeviseMailer.sender
-      Devise.mailer_sender = "bar@foo"
-      assert_equal "bar@foo", DeviseMailer.sender
-    end
-  end
-
   test 'model options can be configured through Devise' do
     swap Devise, :confirm_within => 113, :pepper => "foo" do
       assert_equal 113, Devise.confirm_within

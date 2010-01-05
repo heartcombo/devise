@@ -8,9 +8,6 @@ module Devise
     # will be asked for credentials again, it means, he/she will be redirected
     # to the sign in page.
     #
-    # In order to use timeoutable, you need to use trackable. So don't forget
-    # to invoke trackable in your migrations.
-    #
     # Configuration:
     #
     #   timeout: the time you want to timeout the user session without activity.

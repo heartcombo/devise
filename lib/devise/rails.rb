@@ -6,8 +6,8 @@ Rails.configuration.after_initialize do
 
   # Adds Warden Manager to Rails middleware stack, configuring default devise
   # strategy and also the failure app.
-  Rails.configuration.middleware.use Warden::Manager do |manager|
-    Devise.configure_warden_manager(manager)
+  Rails.configuration.middleware.use Warden::Manager do |config|
+    Devise.configure_warden(config)
   end
 
   I18n.load_path.unshift File.expand_path(File.join(File.dirname(__FILE__), 'locales', 'en.yml'))

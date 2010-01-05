@@ -7,34 +7,6 @@ module Devise
 end
 
 class DeviseTest < ActiveSupport::TestCase
-  class MockManager
-    attr_accessor :failure_app
-    attr_reader :default_strategies, :silence_missing_strategies
-
-    def silence_missing_strategies!
-      @silence_missing_strategies = true
-    end
-
-    def silence_missing_serializers!
-      @silence_missing_serializers = true
-    end
-
-    def default_strategies(*args)
-      if args.empty?
-        @default_strategies
-      else
-        @default_strategies = args
-      end
-    end
-
-    def default_serializers(*args)
-      if args.empty?
-        @default_serializers
-      else
-        @default_serializers = args
-      end
-    end
-  end
 
   test 'DeviseMailer.sender can be configured through Devise' do
     swap DeviseMailer, :sender => "foo@bar" do
@@ -58,28 +30,25 @@ class DeviseTest < ActiveSupport::TestCase
   end
 
   test 'warden manager configuration' do
-    manager = MockManager.new
-    Devise.configure_warden_manager(manager)
+    config = Warden::Config.new
+    Devise.configure_warden(config)
 
-    assert_equal Devise::FailureApp, manager.failure_app
-    assert_equal [:authenticatable], manager.default_strategies
-    assert manager.silence_missing_strategies
-  end
-
-  test 'warden default scope is set' do
-    assert_equal :user, Warden::Manager.default_scope
+    assert_equal Devise::FailureApp, config.failure_app
+    assert_equal [:authenticatable], config.default_strategies
+    assert_equal :user, config.default_scope
+    assert config.silence_missing_strategies?
+    assert config.silence_missing_serializers?
   end
 
   test 'warden manager user configuration through a block' do
     begin
       @executed = false
-      Devise.warden do |manager|
+      Devise.warden do |config|
         @executed = true
-        assert_kind_of MockManager, manager
+        assert_kind_of Warden::Config, config
       end
 
-      manager = MockManager.new
-      Devise.configure_warden_manager(manager)
+      Devise.configure_warden(Warden::Config.new)
       assert @executed
     ensure
       Devise.clean_warden_config!

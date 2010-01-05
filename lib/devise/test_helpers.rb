@@ -14,10 +14,10 @@ module Devise
 
       def initialize(controller)
         @controller = controller
-        manager = Warden::Manager.new(nil) do |manager|
-          Devise.configure_warden_manager(manager)
+        manager = Warden::Manager.new(nil) do |config|
+          Devise.configure_warden(config)
         end
-        super(controller.request.env, manager.config)
+        super(controller.request.env, manager)
       end
 
       def authenticate!(*args)

@@ -103,11 +103,15 @@ module Devise
   mattr_accessor :scoped_views
   @@scoped_views = false
 
-  # The default scope which is used by warden
+  # Tell when to use the default scope, if one cannot be found from routes.
+  mattr_accessor :use_default_scope
+  @@use_default_scope
+
+  # The default scope which is used by warden.
   mattr_accessor :default_scope
   @@default_scope = nil
 
-  # Address which sends Devise e-mails
+  # Address which sends Devise e-mails.
   mattr_accessor :mailer_sender
   @@mailer_sender
 

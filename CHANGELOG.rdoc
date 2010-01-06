@@ -1,5 +1,6 @@
 * enhancements
   * Warden 0.8.0 compatibility
+  * Add an easy for map.connect 'sign_in', :controller => "sessions", :action => "new" to work
 
 * deprecation
   * Removed DeviseMailer.sender

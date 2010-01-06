@@ -10,6 +10,9 @@ Devise.setup do |config|
   # to check the docs for a complete set.
   config.all = [:authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable]
 
+  # Configure the e-mail address which will be shown in DeviseMailer.
+  config.mailer_sender = "please-change-me@config-initializers-devise.com"
+
   # Invoke `rake secret` and use the printed value to setup a pepper to generate
   # the encrypted password. By default no pepper is used.
   # config.pepper = "rake secret output"
@@ -42,9 +45,6 @@ Devise.setup do |config|
   # time the user will be asked for credentials again.
   # config.timeout_in = 10.minutes
 
-  # Configure the e-mail address which will be shown in DeviseMailer.
-  config.mailer_sender = "please-change-me@config-initializers-devise.com"
-
   # Load and configure the ORM. Supports :active_record, :data_mapper and :mongo_mapper.
   # require 'devise/orm/mongo_mapper'
   # config.orm = :mongo_mapper
@@ -53,6 +53,16 @@ Devise.setup do |config|
   # "sessions/users/new". It's turned off by default because it's slower if you
   # are using only default views.
   # config.scoped_views = true
+
+  # By default, devise detects the role accessed based on the url. So whenever
+  # accessing "/users/sign_in", it knows you are accessing an User. This makes
+  # routes as "/sign_in" not possible, unless you tell Devise to use the default
+  # scope, setting true below.
+  # config.use_default_scope = true
+
+  # Configure the default scope used by Devise. By default it's the first devise
+  # role declared in your routes.
+  # config.default_scope = :user
 
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below

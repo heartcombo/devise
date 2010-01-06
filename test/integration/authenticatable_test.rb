@@ -154,12 +154,6 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_contain 'You need to sign in or sign up before continuing.'
   end
 
-  test 'render 404 on roles without permission' do
-    get 'admin_area/password/new'
-    assert_response :not_found
-    assert_not_contain 'Send me reset password instructions'
-  end
-
   test 'return to default url if no other was requested' do
     sign_in_as_user
 
@@ -219,6 +213,26 @@ class AuthenticationTest < ActionController::IntegrationTest
       assert_nothing_raised do
         sign_in_as_admin
       end
+    end
+  end
+
+  test 'render 404 on roles without permission' do
+    get 'admin_area/password/new'
+    assert_response :not_found
+    assert_not_contain 'Send me reset password instructions'
+  end
+
+  test 'render 404 on roles without mapping' do
+    get 'sign_in'
+    assert_response :not_found
+    assert_not_contain 'Sign in'
+  end
+
+  test 'uses the mapping from the default scope if specified' do
+    swap Devise, :use_default_scope => true do
+      get 'sign_in'
+      assert_response :ok
+      assert_contain 'Sign in'
     end
   end
 end

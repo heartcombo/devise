@@ -35,7 +35,11 @@ module Devise
 
       # Attempt to find the mapped route for devise based on request path
       def devise_mapping
-        @devise_mapping ||= Devise::Mapping.find_by_path(request.path)
+        @devise_mapping ||= begin
+          mapping   = Devise::Mapping.find_by_path(request.path)
+          mapping ||= Devise.mappings[Devise.default_scope] if Devise.use_default_scope
+          mapping
+        end
       end
 
       # Overwrites devise_controller? to return true

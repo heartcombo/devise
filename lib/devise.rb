@@ -16,6 +16,7 @@ module Devise
     autoload :RestfulAuthenticationSha1, 'devise/encryptors/restful_authentication_sha1'
     autoload :Sha512, 'devise/encryptors/sha512'
     autoload :Sha1, 'devise/encryptors/sha1'
+    autoload :BCrypt, 'devise/encryptors/bcrypt'
   end
 
   module Orm

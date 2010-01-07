@@ -17,6 +17,14 @@ class Encryptors < ActiveSupport::TestCase
     encryptor = Devise::Encryptors::ClearanceSha1.digest('123mudar', nil, '65c58472c207c829f28c68619d3e3aefed18ab3f', nil)
     assert_equal clearance, encryptor
   end
+  
+  test 'should match a password created by bcrypt' do
+    bcrypt = "$2a$10$81UWRL4S01M6zxjMPyBame1He8EHYgdFm26rQh0qKzglf2ijtEyfa"
+    encryptor = Devise::Encryptors::BCrypt.digest('123mudar', 4, '$2a$10$81UWRL4S01M6zxjMPyBame', '')
+    assert_equal bcrypt, encryptor
+  end
+
+
 
   Devise::ENCRYPTORS_LENGTH.each do |key, value|
     test "should have length #{value} for #{key.inspect}" do

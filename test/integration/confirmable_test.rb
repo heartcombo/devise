@@ -60,6 +60,14 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'increases sign count when signed in through confirmation' do
+    user = create_user(:confirm => false)
+    visit_user_confirmation_with_token(user.confirmation_token)
+
+    user.reload
+    assert_equal 1, user.sign_in_count
+  end
+
   test 'not confirmed user with setup to block without confirmation should not be able to sign in' do
     swap Devise, :confirm_within => 0.days do
       sign_in_as_user(:confirm => false)

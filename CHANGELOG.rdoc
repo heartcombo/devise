@@ -3,6 +3,10 @@
   * Add an easy for map.connect "sign_in", :controller => "sessions", :action => "new" to work
   * Added :bcrypt encryptor (by github.com/capotej)
 
+* bug fix
+  * sign_in_count is also increased when user signs in via password change, confirmation, etc..
+  * More DataMapper compatibility (by github.com/lancecarlson)
+
 * deprecation
   * Removed DeviseMailer.sender
 

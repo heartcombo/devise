@@ -1,6 +1,7 @@
 * enhancements
   * Warden 0.8.0 compatibility
-  * Add an easy for map.connect 'sign_in', :controller => "sessions", :action => "new" to work
+  * Add an easy for map.connect "sign_in", :controller => "sessions", :action => "new" to work
+  * Added :bcrypt encryptor (by github.com/capotej)
 
 * deprecation
   * Removed DeviseMailer.sender

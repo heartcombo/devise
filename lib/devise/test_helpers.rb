@@ -7,7 +7,7 @@ module Devise
     end
 
     # This is a Warden::Proxy customized for functional tests. It's meant to
-    # some of Warden::Manager resposnabilities, as retrieving configuration
+    # some of Warden::Manager responsibilities, as retrieving configuration
     # options and calling the FailureApp.
     class TestWarden < Warden::Proxy #:nodoc:
       attr_reader :controller

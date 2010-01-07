@@ -21,10 +21,10 @@ Devise.setup do |config|
   # config.stretches = 10
 
   # Define which will be the encryption algorithm. Supported algorithms are :sha1
-  # (default) and :sha512. Devise also supports encryptors from others authentication
-  # frameworks as :clearance_sha1, :authlogic_sha512 (then you should set stretches
-  # above to 20 for default behavior) and :restful_authentication_sha1 (then you
-  # should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
+  # (default), :sha512 and :bcrypt. Devise also supports encryptors from others
+  # authentication tools as :clearance_sha1, :authlogic_sha512 (then you should set
+  # stretches above to 20 for default behavior) and :restful_authentication_sha1
+  # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
   # config.encryptor = :sha1
 
   # Configure which keys are used when authenticating an user. By default is

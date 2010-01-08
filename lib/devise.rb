@@ -11,12 +11,13 @@ module Devise
   end
 
   module Encryptors
+    autoload :Base, 'devise/encryptors/base'
+    autoload :Bcrypt, 'devise/encryptors/bcrypt'
     autoload :AuthlogicSha512, 'devise/encryptors/authlogic_sha512'
     autoload :AuthlogicSha1, 'devise/encryptors/authlogic_sha1'
     autoload :RestfulAuthenticationSha1, 'devise/encryptors/restful_authentication_sha1'
     autoload :Sha512, 'devise/encryptors/sha512'
     autoload :Sha1, 'devise/encryptors/sha1'
-    autoload :BCrypt, 'devise/encryptors/bcrypt'
   end
 
   module Orm
@@ -48,7 +49,8 @@ module Devise
     :sha512 => 128,
     :clearance_sha1 => 40,
     :restful_authentication_sha1 => 40,
-    :authlogic_sha512 => 128
+    :authlogic_sha512 => 128,
+    :bcrypt => 60
   }
 
   # Email regex used to validate email formats. Retrieved from authlogic.

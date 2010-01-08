@@ -18,18 +18,11 @@ class Encryptors < ActiveSupport::TestCase
     assert_equal clearance, encryptor
   end
   
-  test 'should match a password created by bcrypt' do
-    bcrypt = "$2a$10$81UWRL4S01M6zxjMPyBame1He8EHYgdFm26rQh0qKzglf2ijtEyfa"
-    encryptor = Devise::Encryptors::BCrypt.digest('123mudar', 4, '$2a$10$81UWRL4S01M6zxjMPyBame', '')
-    assert_equal bcrypt, encryptor
-  end
-
-
-
   Devise::ENCRYPTORS_LENGTH.each do |key, value|
     test "should have length #{value} for #{key.inspect}" do
       swap Devise, :encryptor => key do
-        assert_equal value, Devise::Encryptors.const_get(key.to_s.classify).digest('a', 2, 'b', 'c').size
+        encryptor = Devise::Encryptors.const_get(key.to_s.classify)
+        assert_equal value, encryptor.digest('a', 4, encryptor.salt, nil).size
       end
     end
   end

@@ -43,7 +43,7 @@ module Devise
         @password = new_password
 
         if @password.present?
-          self.password_salt = Devise.friendly_token
+          self.password_salt = self.class.encryptor_class.salt
           self.encrypted_password = password_digest(@password)
         end
       end

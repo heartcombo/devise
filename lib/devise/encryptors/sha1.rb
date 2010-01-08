@@ -1,17 +1,10 @@
 require "digest/sha1"
 
 module Devise
-  # Implements a way of adding different encryptions.
-  # The class should implement a self.digest method that taks the following params:
-  #   - password
-  #   - stretches: the number of times the encryption will be applied
-  #   - salt: the password salt as defined by devise
-  #   - pepper: Devise config option
-  #
   module Encryptors
     # = Sha1
     # Uses the Sha1 hash algorithm to encrypt passwords.
-    class Sha1
+    class Sha1 < Base
       
       # Gererates a default password digest based on stretches, salt, pepper and the
       # incoming password.

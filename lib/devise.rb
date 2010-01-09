@@ -109,7 +109,7 @@ module Devise
 
   # Number of authentication tries before locking an account
   mattr_accessor :maximum_attempts
-  @@maximum_attempts = 5
+  @@maximum_attempts = 20
 
   # Defines which strategy can be used to unlock an account.
   # Values: :email, :time, :both

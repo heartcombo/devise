@@ -98,7 +98,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   test 'add all modules' do
     assert_include_modules Devisable,
-      :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, :lockable
+      :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
   end
 
   test 'configure modules with except option' do

@@ -8,7 +8,7 @@ Devise.setup do |config|
   # Remember that Devise includes other modules on its own (like :activatable
   # and :timeoutable) which are not included here and also plugins. So be sure
   # to check the docs for a complete set.
-  config.all = [:authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, :lockable]
+  config.all = [:authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable]
 
   # Invoke `rake secret` and use the printed value to setup a pepper to generate
   # the encrypted password. By default no pepper is used.
@@ -55,7 +55,7 @@ Devise.setup do |config|
   # config.scoped_views = true
 
   # Number of authentication tries before locking an account.
-  # config.maximum_attempts = 5
+  # config.maximum_attempts = 20
 
   # Defines which strategy will be used to unlock an account.
   # :email = Sends an unlock link to the user email

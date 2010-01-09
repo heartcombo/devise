@@ -1,5 +1,6 @@
 * enhancements
   * Move salt to encryptors
+  * Devise::Lockable
 
 * bug fix
   * Bcrypt generator was not being loaded neither setting the proper salt
@@ -29,7 +30,6 @@
 * enhancements
   * Extract Activatable from Confirmable
   * Decouple Serializers from Devise modules
-  * Devise::Lockable
 
 == 0.7.3
 

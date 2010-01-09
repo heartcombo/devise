@@ -4,7 +4,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
 
   def setup
     setup_mailer
-    DeviseMailer.sender = 'test@example.com'
+    Devise.mailer_sender = 'test@example.com'
   end
 
   def user

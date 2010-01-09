@@ -9,6 +9,7 @@ module Devise
     autoload :Timeoutable, 'devise/models/timeoutable' 
     autoload :Trackable, 'devise/models/trackable' 
     autoload :Validatable, 'devise/models/validatable' 
+    autoload :Lockable, 'devise/models/lockable'
 
     # Creates configuration values for Devise and for the given module.
     #

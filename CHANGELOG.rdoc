@@ -1,6 +1,7 @@
 * enhancements
   * Move salt to encryptors
   * Devise::Lockable
+  * Moved view links into partial and I18n'ed them
 
 * bug fix
   * Bcrypt generator was not being loaded neither setting the proper salt

@@ -1,16 +1,5 @@
 class DeviseMailer < ::ActionMailer::Base
 
-  # Sets who is sending the e-mail
-  def self.sender=(value)
-    @@sender = value
-  end
-
-  # Reads who is sending the e-mail
-  def self.sender
-    @@sender
-  end
-  self.sender = nil
-
   # Deliver confirmation instructions when the user is created or its email is
   # updated, and also when confirmation is manually requested
   def confirmation_instructions(record)
@@ -34,7 +23,7 @@ class DeviseMailer < ::ActionMailer::Base
       raise "Invalid devise resource #{record}" unless mapping
 
       subject      translate(mapping, key)
-      from         self.class.sender
+      from         Devise.mailer_sender
       recipients   record.email
       sent_on      Time.now
       content_type 'text/html'

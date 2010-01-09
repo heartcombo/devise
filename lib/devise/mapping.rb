@@ -29,7 +29,7 @@ module Devise
     def self.find_by_path(path)
       Devise.mappings.each_value do |mapping|
         route = path.split("/")[mapping.as_position]
-        return mapping if mapping.as == route.to_sym
+        return mapping if route && mapping.as == route.to_sym
       end
       nil
     end

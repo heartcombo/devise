@@ -7,6 +7,8 @@ class DeviseInstallGenerator < Rails::Generator::Base
 
       m.directory "config/locales"
       m.file      "../../../lib/devise/locales/en.yml", "config/locales/devise.en.yml"
+
+      m.readme "README"
     end
   end
 

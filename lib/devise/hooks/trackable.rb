@@ -1,5 +1,5 @@
 # After each sign in, update sign in time, sign in count and sign in IP.
-Warden::Manager.after_authentication do |record, warden, options|
+Warden::Manager.after_set_user :event => [:authentication, :set_user] do |record, warden, options|
   scope = options[:scope]
   if Devise.mappings[scope].try(:trackable?) && warden.authenticated?(scope)
     old_current, new_current  = record.current_sign_in_at, Time.now

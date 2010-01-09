@@ -1,8 +1,20 @@
 module Devise
   module Orm
     module DataMapper
+      module InstanceMethods
+        def save(flag=nil)
+          if flag == false
+            save!
+          else
+            super()
+          end
+        end
+      end
+
       def self.included_modules_hook(klass, modules)
         klass.send :extend, self
+        klass.send :include, InstanceMethods
+
         yield
 
         modules.each do |mod|
@@ -19,11 +31,24 @@ module Devise
 
       # Hooks for confirmable
       def before_create(*args)
-        before :create, *args
+        wrap_hook(:before, *args)
       end
 
       def after_create(*args)
-        after :create, *args
+        wrap_hook(:after, *args)
+      end
+
+      def wrap_hook(action, *args)
+        options = args.extract_options!
+
+        args.each do |callback|
+          send action, :create, callback
+          class_eval <<-METHOD, __FILE__, __LINE__ + 1
+            def #{callback}
+              super if #{options[:if] || true}
+            end
+          METHOD
+        end
       end
 
       # Add ActiveRecord like finder
@@ -36,15 +61,6 @@ module Devise
             all(options)
           else
             get(*args)
-        end
-      end
-
-      # In Datamapper, we need to call save! if we don't want to execute callbacks.
-      def save(flag=nil)
-        if flag == false
-          save!
-        else
-          super()
         end
       end
 

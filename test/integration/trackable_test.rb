@@ -51,7 +51,7 @@ class TrackableHooksTest < ActionController::IntegrationTest
     assert_equal 2, user.sign_in_count
   end
 
-  test "does not update anything if user is signed out along the way" do
+  test "does not update anything if user has signed out along the way" do
     swap Devise, :confirm_within => 0 do
       user = create_user(:confirm => false)
       sign_in_as_user

@@ -11,6 +11,8 @@ module Devise
   end
 
   module Encryptors
+    autoload :Base, 'devise/encryptors/base'
+    autoload :Bcrypt, 'devise/encryptors/bcrypt'
     autoload :AuthlogicSha512, 'devise/encryptors/authlogic_sha512'
     autoload :AuthlogicSha1, 'devise/encryptors/authlogic_sha1'
     autoload :RestfulAuthenticationSha1, 'devise/encryptors/restful_authentication_sha1'
@@ -48,7 +50,8 @@ module Devise
     :sha512 => 128,
     :clearance_sha1 => 40,
     :restful_authentication_sha1 => 40,
-    :authlogic_sha512 => 128
+    :authlogic_sha512 => 128,
+    :bcrypt => 60
   }
 
   # Email regex used to validate email formats. Retrieved from authlogic.
@@ -117,18 +120,24 @@ module Devise
   mattr_accessor :unlock_in
   @@unlock_in = 1.hour
 
+  # Tell when to use the default scope, if one cannot be found from routes.
+  mattr_accessor :use_default_scope
+  @@use_default_scope
+
+  # The default scope which is used by warden.
+  mattr_accessor :default_scope
+  @@default_scope = nil
+
+  # Address which sends Devise e-mails.
+  mattr_accessor :mailer_sender
+  @@mailer_sender
+
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create
     # a fresh initializer with all configuration values.
     def setup
       yield self
     end
-
-    # Sets the sender in DeviseMailer.
-    def mailer_sender=(value)
-      DeviseMailer.sender = value
-    end
-    alias :sender= :mailer_sender=
 
     # Sets warden configuration using a block that will be invoked on warden
     # initialization.
@@ -152,15 +161,16 @@ module Devise
 
     # A method used internally to setup warden manager from the Rails initialize
     # block.
-    def configure_warden_manager(manager) #:nodoc:
-      manager.default_strategies *Devise::STRATEGIES
-      manager.default_serializers *Devise::SERIALIZERS
-      manager.failure_app = Devise::FailureApp
-      manager.silence_missing_strategies!
-      manager.silence_missing_serializers!
+    def configure_warden(config) #:nodoc:
+      config.default_strategies *Devise::STRATEGIES
+      config.default_serializers *Devise::SERIALIZERS
+      config.failure_app = Devise::FailureApp
+      config.silence_missing_strategies!
+      config.silence_missing_serializers!
+      config.default_scope = Devise.default_scope
 
       # If the user provided a warden hook, call it now.
-      @warden_config.try :call, manager
+      @warden_config.try :call, config
     end
 
     # The class of the configured ORM
@@ -185,6 +195,5 @@ end
 # Clear some Warden default configuration which will be overwritten
 Warden::Strategies.clear!
 Warden::Serializers.clear!
-Warden::Manager.default_scope = nil
 
 require 'devise/rails'

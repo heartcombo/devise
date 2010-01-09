@@ -1,17 +1,10 @@
 require "digest/sha2"
 
 module Devise
-  # Implements a way of adding different encryptions.
-  # The class should implement a self.digest method that taks the following params:
-  #   - password
-  #   - stretches: the number of times the encryption will be applied
-  #   - salt: the password salt as defined by devise
-  #   - pepper: Devise config option
-  #
   module Encryptors
     # = Sha512
     # Uses the Sha512 hash algorithm to encrypt passwords.
-    class Sha512
+    class Sha512 < Base
       
       # Gererates a default password digest based on salt, pepper and the
       # incoming password.

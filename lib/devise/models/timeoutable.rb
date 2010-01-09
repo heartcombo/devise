@@ -12,7 +12,6 @@ module Devise
     #
     #   timeout: the time you want to timeout the user session without activity.
     module Timeoutable
-
       def self.included(base)
         base.extend ClassMethods
       end

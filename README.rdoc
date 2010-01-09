@@ -7,23 +7,26 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-Right now it's composed of seven mainly modules:
+Right now it's composed of six modules included by default when you invoke "devise :all" in your models:
 
 * Authenticatable: responsible for encrypting password and validating authenticity of a user while signing in.
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
 * Recoverable: takes care of reseting the user password and send reset instructions.
 * Rememberable: manages generating and clearing token for remember the user from a saved cookie.
-* Activatable: if you need to activate accounts by other means, which are not through confirmation, use this module.
-* Timeoutable: expires sessions without activity in a certain period of time.
 * Trackable: tracks sign in count, timestamps and ip.
 * Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.
+
+And it also includes the optional modules:
+
+* Activatable: if you need to activate accounts by other means, which are not through confirmation, use this module.
+* Timeoutable: expires sessions without activity in a certain period of time.
 * Lockable: takes care of locking an account based on the number of failed sign in attempts. Handles unlock via expire and email.
 
 There's an example application using Devise at http://github.com/plataformatec/devise_example .
 
 == Dependencies
 
-Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework so you need to install it as a gem. Please ensure you have it installed in order to use devise (see instalation below).
+Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework so you need to install it as a gem. Please ensure you have it installed in order to use devise (see installation below).
 
 == Installation
 
@@ -48,13 +51,13 @@ Run the generator:
 
 	ruby script/generate devise_install
 
-And you're ready to go.
+And you're ready to go. The generator will install an initializer which describes Devise's configuration options. Be sure to take a look.
 
 == Basic Usage
 
 This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You can also check out the *Generators* section below to help you start.
 
-Devise must be set up within the model (or models) you want to use, and devise routes must be created inside your routes.rb file.
+Devise must be set up within the model (or models) you want to use, and devise routes must be created inside your config/routes.rb file.
 
 We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
 
@@ -63,6 +66,7 @@ We're assuming here you want a User model. First of all you have to setup a migr
     t.confirmable
     t.recoverable
     t.rememberable
+    t.trackable
     t.lockable
     t.timestamps
   end
@@ -74,35 +78,21 @@ You may also want to add some indexes to improve performance:
   add_index :your_table, :reset_password_token  # for recoverable
   add_index :your_table, :unlock_token          # for lockable
 
-Now let's setup a User model adding the devise line to have your authentication working:
+Now let's setup a User model adding the devise line:
 
   class User < ActiveRecord::Base
-    devise :authenticatable
+    devise :all
   end
 
-This line adds devise authenticatable inside your User class. Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
+This will include the six default modules outlined at the beginning. You can exclude and remove any module at will:
 
-You could also include the other devise modules as below:
+  # Include timeout configuration
+  devise :all, :timeoutable
 
-  # Include only authenticatable stuff
-  devise :authenticatable
+  # Remove validations
+  devise :all, :except => :validatable
 
-  # Include authenticatable + confirmable
-  devise :authenticatable, :confirmable
-
-  # Include authenticatable + recoverable + rememberable
-  devise :authenticatable, :recoverable, :rememberable
-
-  # Include authenticatable + timeoutable
-  devise :authenticatable, :timeoutable
-
-  # Include all of them
-  devise :all
-
-  # Include all except recoverable
-  devise :all, :except => :recoverable
-
-Note that validations aren't added by default, so you're able to customize it. In order to have automatic validations working just include :validatable.
+Remember that Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
 
 == Model configuration
 
@@ -148,26 +138,26 @@ After signing in a user, confirming it's account or updating it's password, devi
 
 You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize better your redirect hooks.
 
-Finally, if you are using confirmable or recoverable, you also need to setup default url options for the mailer. Here's is the configuration for development:
+Finally, if you are using confirmable or recoverable, you also need to setup default url options for the mailer in each environment. Here's is the configuration for config/environments/development.rb:
 
-  DeviseMailer.sender = "no-reply@yourapp.com"
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
 == Views
 
-By default devise will use the same views for all scopes/roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup :scoped_views to true inside your devise config file, and you will be able to have views based on scope like 'sessions/users/new' and 'sessions/admin/new'. If no view is found within the scope, Devise will fallback to the default view.
+By default devise will use the same views for all scopes/roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup config,scoped_views to true inside your devise config file, and you will be able to have views based on scope like 'sessions/users/new' and 'sessions/admin/new'. If no view is found within the scope, Devise will fallback to the default view.
 
 == Tidying up
 
-Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with the same authentication stuff, but not confirmation or password recovery. Just follow the same steps:
+Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with just authentication, trackable and timeoutable stuff and none of confirmation or password recovery. Just follow the same steps:
 
   # Create a migration with the required fields
   create_table :admins do |t|
     t.authenticatable
+    t.trackable
   end
 
   # Inside your Admin model
-  devise :authenticatable, :validatable
+  devise :authenticatable, :trackable, :timeoutable
 
   # Inside your routes
   map.devise_for :admin

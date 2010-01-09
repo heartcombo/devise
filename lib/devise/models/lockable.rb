@@ -14,12 +14,17 @@ module Devise
       end
 
       # Lock an user setting it's locked_at to actual time.
-      def lock!
+      def lock
         self.locked_at = Time.now
         if [:both, :email].include?(self.class.unlock_strategy)
           generate_unlock_token
           self.send_unlock_instructions
         end
+      end
+
+      # calls lock and save the model
+      def lock!
+        self.lock
         save(false)
       end
 
@@ -64,12 +69,11 @@ module Devise
       def valid_for_authentication?(attributes)
         unless result = super
           self.failed_attempts += 1
-          save(false)
-          self.lock! if self.failed_attempts > self.class.maximum_attempts
+          self.lock if self.failed_attempts > self.class.maximum_attempts
         else
           self.failed_attempts = 0
-          save(false)
         end
+        save(false) if changed?
         result
       end
 

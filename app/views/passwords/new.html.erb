@@ -9,8 +9,4 @@
   <p><%= f.submit "Send me reset password instructions" %></p>
 <% end %>
 
-<%= link_to "Sign in", new_session_path(resource_name) %><br />
-
-<%- if devise_mapping.confirmable? %>
-  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
-<% end -%>
+<%= render :partial => "shared/links" %>

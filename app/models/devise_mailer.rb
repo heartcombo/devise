@@ -19,7 +19,7 @@ class DeviseMailer < ::ActionMailer::Base
       raise "Invalid devise resource #{record}" unless mapping
 
       subject      translate(mapping, key)
-      from         Devise.mailer_sender
+      from         Devise.mailer_sender.is_a?(Proc) ? Devise.mailer_sender.call(mapping.name) : Devise.mailer_sender
       recipients   record.email
       sent_on      Time.now
       content_type 'text/html'

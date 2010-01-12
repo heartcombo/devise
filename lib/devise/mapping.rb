@@ -92,9 +92,9 @@ module Devise
       self.path_prefix.count("/")
     end
 
-    # Returns the raw path using path_prefix and as.
+    # Returns the raw path using the current relative_url_root, path_prefix and as.
     def raw_path
-      path_prefix + as.to_s
+      ActionController::Base.relative_url_root.to_s + path_prefix + as.to_s
     end
 
     # Returns the parsed path. If you need meta information in your path_prefix,

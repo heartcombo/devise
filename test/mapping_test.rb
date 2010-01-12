@@ -86,7 +86,7 @@ class MappingTest < ActiveSupport::TestCase
     mapping = Devise.mappings[:manager]
     assert_equal '/:locale/', mapping.path_prefix
   end
-
+  
   test 'retrieve as from the proper position' do
     assert_equal 1, Devise.mappings[:user].as_position
     assert_equal 2, Devise.mappings[:manager].as_position
@@ -95,6 +95,18 @@ class MappingTest < ActiveSupport::TestCase
   test 'raw path is returned' do
     assert_equal '/users', Devise.mappings[:user].raw_path
     assert_equal '/:locale/accounts', Devise.mappings[:manager].raw_path
+  end
+  
+  test 'raw path adds in the relative_url_root' do
+    swap ActionController::Base, :relative_url_root => '/abc' do
+      assert_equal '/abc/users', Devise.mappings[:user].raw_path
+    end
+  end
+
+  test 'raw path deals with a nil relative_url_root' do
+    swap ActionController::Base, :relative_url_root => nil do
+      assert_equal '/users', Devise.mappings[:user].raw_path
+    end
   end
 
   test 'parsed path is returned' do
@@ -106,7 +118,13 @@ class MappingTest < ActiveSupport::TestCase
       Devise.default_url_options {{ }}
     end
   end
-
+  
+  test 'parsed path deals with non-standard relative_url_roots' do
+    swap ActionController::Base, :relative_url_root => "/abc" do
+      assert_equal '/abc/users', Devise.mappings[:user].parsed_path
+    end
+  end
+  
   test 'should have default route options' do
     assert_equal({}, Devise.mappings[:user].route_options)
   end

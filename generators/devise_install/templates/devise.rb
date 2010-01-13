@@ -54,6 +54,18 @@ Devise.setup do |config|
   # are using only default views.
   # config.scoped_views = true
 
+  # Number of authentication tries before locking an account.
+  # config.maximum_attempts = 20
+
+  # Defines which strategy will be used to unlock an account.
+  # :email = Sends an unlock link to the user email
+  # :time  = Reanables login after a certain ammount of time (see :unlock_in below)
+  # :both  = enables both strategies
+  # config.unlock_strategy = :both
+
+  # Time interval to unlock the account if :time is enabled as unlock_strategy.
+  # config.unlock_in = 1.hour
+
   # By default, devise detects the role accessed based on the url. So whenever
   # accessing "/users/sign_in", it knows you are accessing an User. This makes
   # routes as "/sign_in" not possible, unless you tell Devise to use the default

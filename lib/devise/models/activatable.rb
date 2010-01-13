@@ -5,7 +5,7 @@ module Devise
     # This module implements the default API required in activatable hook. 
     module Activatable
       def active?
-        raise NotImplementedError
+        true
       end
 
       def inactive_message

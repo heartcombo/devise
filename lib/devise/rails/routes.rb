@@ -113,6 +113,10 @@ module ActionController::Routing
           routes.resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
         end
 
+        def lockable(routes, mapping)
+          routes.resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock]
+        end
+
     end
   end
 end

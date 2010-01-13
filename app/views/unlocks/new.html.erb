@@ -1,0 +1,12 @@
+<h2>Resend unlock instructions</h2>
+
+<% form_for resource_name, resource, :url => unlock_path(resource_name) do |f| %>
+  <%= f.error_messages %>
+
+  <p><%= f.label :email %></p>
+  <p><%= f.text_field :email %></p>
+
+  <p><%= f.submit "Resend unlock instructions" %></p>
+<% end %>
+
+<%= render :partial => "shared/links" %>

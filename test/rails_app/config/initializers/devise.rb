@@ -54,6 +54,18 @@ Devise.setup do |config|
   # are using only default views.
   # config.scoped_views = true
 
+  # Number of authentication tries before locking an account.
+  # config.maximum_attempts = 20
+
+  # Defines which strategy will be used to unlock an account.
+  # :email = Sends an unlock link to the user email
+  # :time  = Reanables login after a certain ammount of time (see :unlock_in below)
+  # :both  = enables both strategies
+  # config.unlock_strategy = :both
+
+  # Time interval to unlock the account if :time is enabled as unlock_strategy.
+  # config.unlock_in = 1.hour
+
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below
   # allows you to setup OAuth, using http://github.com/roman/warden_oauth

@@ -27,13 +27,14 @@ module Devise
   end
 
   ALL = [:authenticatable, :activatable, :confirmable, :recoverable, :rememberable,
-         :timeoutable, :trackable, :validatable]
+         :timeoutable, :trackable, :validatable, :lockable]
 
   # Maps controller names to devise modules
   CONTROLLERS = {
     :sessions => [:authenticatable],
     :passwords => [:recoverable],
-    :confirmations => [:confirmable]
+    :confirmations => [:confirmable],
+    :unlocks => [:lockable]
   }
 
   STRATEGIES  = [:authenticatable]
@@ -41,7 +42,7 @@ module Devise
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
   # Maps the messages types that are used in flash message.
-  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :timeout, :inactive ]
+  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :timeout, :inactive, :locked ]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {
@@ -105,6 +106,19 @@ module Devise
   # turned off by default.
   mattr_accessor :scoped_views
   @@scoped_views = false
+
+  # Number of authentication tries before locking an account
+  mattr_accessor :maximum_attempts
+  @@maximum_attempts = 20
+
+  # Defines which strategy can be used to unlock an account.
+  # Values: :email, :time, :both
+  mattr_accessor :unlock_strategy
+  @@unlock_strategy = :both
+
+  # Time interval to unlock the account if :time is defined as unlock_strategy.
+  mattr_accessor :unlock_in
+  @@unlock_in = 1.hour
 
   # Tell when to use the default scope, if one cannot be found from routes.
   mattr_accessor :use_default_scope

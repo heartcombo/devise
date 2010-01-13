@@ -11,6 +11,10 @@ class DeviseMailer < ::ActionMailer::Base
     setup_mail(record, :reset_password_instructions)
   end
 
+  def unlock_instructions(record)
+    setup_mail(record, :unlock_instructions)
+  end
+
   private
 
     # Configure default email options

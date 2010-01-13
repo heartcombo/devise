@@ -1,3 +1,6 @@
+* enhancements
+  * Added devise lockable (by github/mhfs)
+
 == 0.8.2
 
 * enhancements

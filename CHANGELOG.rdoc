@@ -1,3 +1,6 @@
+* bug fix
+  * Fix bug with passenger, update is required to anyone deploying on passenger
+
 == 0.8.1
 
 * enhancements

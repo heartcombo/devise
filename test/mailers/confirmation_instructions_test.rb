@@ -62,4 +62,10 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
       assert_equal user.email, mail.body
     end
   end
+
+  test 'mailer sender accepts a proc' do
+    swap Devise, :mailer_sender => lambda { "another@example.com" } do
+      assert_equal ['another@example.com'], mail.from
+    end
+  end
 end

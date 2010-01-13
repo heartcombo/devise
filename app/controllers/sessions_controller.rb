@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-  include Devise::Controllers::Helpers
+  include Devise::Controllers::InternalHelpers
+  include Devise::Controllers::Common
 
   before_filter :require_no_authentication, :only => [ :new, :create ]
 
@@ -8,8 +9,7 @@ class SessionsController < ApplicationController
     Devise::FLASH_MESSAGES.each do |message|
       set_now_flash_message :failure, message if params.try(:[], message) == "true"
     end
-    build_resource
-    render_with_scope :new
+    super
   end
 
   # POST /resource/sign_in

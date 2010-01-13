@@ -1,23 +1,6 @@
 class UnlocksController < ApplicationController
-  include Devise::Controllers::Helpers
-
-  # GET /resource/unlock/new
-  def new
-    build_resource
-    render_with_scope :new
-  end
-  
-  # POST /resource/unlock
-  def create
-    self.resource = resource_class.send_unlock_instructions(params[resource_name])
-  
-    if resource.errors.empty?
-      set_flash_message :success, :send_instructions
-      redirect_to new_session_path(resource_name)
-    else
-      render_with_scope :new
-    end
-  end
+  include Devise::Controllers::InternalHelpers
+  include Devise::Controllers::Common
 
   # GET /resource/unlock?unlock_token=abcdef
   def show
@@ -30,4 +13,10 @@ class UnlocksController < ApplicationController
       render_with_scope :new
     end
   end
+
+  protected
+
+    def send_instructions_with
+      :send_unlock_instructions
+    end
 end

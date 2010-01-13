@@ -1,15 +1,15 @@
 <%- unless current_page?(:controller => 'sessions') %>
-  <%= link_to t('devise.sessions.sign_in'), new_session_path(resource_name) %><br />
+  <%= link_to t('devise.sessions.link'), new_session_path(resource_name) %><br />
 <% end -%>
 
 <%- if devise_mapping.recoverable? && !current_page?(:controller => 'passwords') %>
-  <%= link_to t('devise.passwords.recover'), new_password_path(resource_name) %><br />
+  <%= link_to t('devise.passwords.link'), new_password_path(resource_name) %><br />
 <% end -%>
 
 <%- if devise_mapping.confirmable? && !current_page?(:controller => 'confirmations') %>
-  <%= link_to t('devise.confirmations.confirm'), new_confirmation_path(resource_name) %><br />
+  <%= link_to t('devise.confirmations.link'), new_confirmation_path(resource_name) %><br />
 <% end -%>
 
 <%- if devise_mapping.lockable? && !current_page?(:controller => 'unlocks') %>
-  <%= link_to t('devise.unlocks.unlock'), new_unlock_path(resource_name) %><br />
+  <%= link_to t('devise.unlocks.link'), new_unlock_path(resource_name) %><br />
 <% end -%>

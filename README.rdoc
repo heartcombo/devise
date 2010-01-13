@@ -160,7 +160,7 @@ The devise method in your models also accept some options to configure its modul
 
   devise :authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
 
-Besides :encryptor, you can provide :pepper, :stretches, :confirm_within, :remember_for, :timeout, :unlock_in and others. All those are describer in the initializer created when you invoke the devise_install generator describer above.
+Besides :encryptor, you can provide :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and others. All those are describer in the initializer created when you invoke the devise_install generator describer above.
 
 == Views
 

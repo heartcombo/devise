@@ -1,3 +1,6 @@
+* deprecation
+  * devise :all is deprecated
+
 * enhancements
   * Added devise lockable (by github/mhfs)
 

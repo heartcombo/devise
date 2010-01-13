@@ -84,13 +84,7 @@ module Devise
           return unless authentication_keys.all? { |k| attributes[k].present? }
           conditions = attributes.slice(*authentication_keys)
           resource = find_for_authentication(conditions)
-          if respond_to?(:valid_for_authentication)
-            ActiveSupport::Deprecation.warn "valid_for_authentication class method is deprecated. " <<
-              "Use valid_for_authentication? in the instance instead."
-            valid_for_authentication(resource, attributes)
-          elsif resource.try(:valid_for_authentication?, attributes)
-            resource
-          end
+          resource if resource.try(:valid_for_authentication?, attributes)
         end
 
         # Returns the class for the configured encryptor.

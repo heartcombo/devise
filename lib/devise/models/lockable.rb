@@ -67,11 +67,11 @@ module Devise
       # for verifying whether an user is allowed to sign in or not. If the user
       # is locked, it should never be allowed.
       def valid_for_authentication?(attributes)
-        unless result = super
+        if result = super
+          self.failed_attempts = 0
+        else
           self.failed_attempts += 1
           self.lock if self.failed_attempts > self.class.maximum_attempts
-        else
-          self.failed_attempts = 0
         end
         save(false) if changed?
         result

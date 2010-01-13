@@ -1,7 +1,7 @@
 class Account
   include MongoMapper::Document
 
-  devise :all
+  devise :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
 
   def self.find_for_authentication(conditions)
     nil

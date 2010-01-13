@@ -47,43 +47,24 @@ module Devise
       end
     end
 
-    # Shortcut method for including all devise modules inside your model.
-    # You can give some extra options while declaring devise in your model:
+    # Include the chosen devise modules in your model:
     #
-    # * except: convenient option that allows you to add all devise modules,
-    #   removing only the modules you setup here:
-    #
-    #    devise :all, :except => :rememberable
+    #   devise :authenticatable, :confirmable, :recoverable
     #
     # You can also give the following configuration values in a hash: :pepper,
     # :stretches, :confirm_within and :remember_for. Please check your Devise
     # initialiazer for a complete description on those values.
     #
-    # Examples:
-    #
-    #   # include only authenticatable module
-    #   devise :authenticatable
-    #
-    #   # include authenticatable + confirmable modules
-    #   devise :authenticatable, :confirmable
-    #
-    #   # include authenticatable + recoverable modules
-    #   devise :authenticatable, :recoverable
-    #
-    #   # include authenticatable + rememberable + validatable modules
-    #   devise :authenticatable, :rememberable, :validatable
-    #
-    #   # shortcut to include all available modules
-    #   devise :all
-    #
-    #   # include all except recoverable
-    #   devise :all, :except => :recoverable
-    #
     def devise(*modules)
       raise "You need to give at least one Devise module" if modules.empty?
-
       options  = modules.extract_options!
-      modules += Devise.all if modules.delete(:all)
+
+      # TODO Remove me
+      if modules.delete(:all)
+        ActiveSupport::Deprecation.warn "devise :all is deprecated. List your modules instead", caller
+        modules += Devise.all
+      end
+
       modules -= Array(options.delete(:except))
       modules  = Devise::ALL & modules.uniq
 

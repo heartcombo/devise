@@ -67,4 +67,9 @@ class MapRoutingTest < ActionController::TestCase
   test 'map account with custom path name for confirmation' do
     assert_recognizes({:controller => 'confirmations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/verification/new')
   end
+
+  test 'map account with custom path name for unlock' do
+    assert_recognizes({:controller => 'unlocks', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/unblock/new')
+  end
+
 end

@@ -1,9 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
   map.devise_for :users
   map.devise_for :admin, :as => 'admin_area'
-  map.devise_for :accounts, :path_names => {
-    :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification'
-  }, :scope => 'manager', :path_prefix => '/:locale', :requirements => { :extra => 'value' }
+  map.devise_for :accounts, :scope => 'manager', :path_prefix => '/:locale',
+    :class_name => "User", :requirements => { :extra => 'value' }, :path_names => {
+      :sign_in => 'login', :sign_out => 'logout', :password => 'secret',
+      :confirmation => 'verification', :unlock => 'unblock'
+    }
 
   map.resources :users, :only => [:index], :member => { :expire => :get }
   map.resources :admins, :only => :index

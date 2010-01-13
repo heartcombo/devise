@@ -94,9 +94,9 @@ module Devise
   mattr_accessor :orm
   @@orm = :active_record
 
-  # Configure default options used in :all.
+  # TODO Remove
   mattr_accessor :all
-  @@all = Devise::ALL.dup
+  @@all = []
 
   # Tells if devise should apply the schema in ORMs where devise declaration
   # and schema belongs to the same class (as Datamapper and MongoMapper).

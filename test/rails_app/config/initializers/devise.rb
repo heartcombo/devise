@@ -1,15 +1,6 @@
 # Use this hook to configure devise mailer, warden hooks and so forth. The first
 # four configuration values can also be set straight in your models.
 Devise.setup do |config|
-  # Configure Devise modules used by default. You should always set this value
-  # because if Devise adds a new strategy, it won't be added to your application
-  # by default, unless you configure it here.
-  #
-  # Remember that Devise includes other modules on its own (like :activatable
-  # and :timeoutable) which are not included here and also plugins. So be sure
-  # to check the docs for a complete set.
-  config.all = [:authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable]
-
   # Invoke `rake secret` and use the printed value to setup a pepper to generate
   # the encrypted password. By default no pepper is used.
   # config.pepper = "rake secret output"
@@ -43,7 +34,7 @@ Devise.setup do |config|
   # config.timeout_in = 10.minutes
 
   # Configure the e-mail address which will be shown in DeviseMailer.
-  # config.mailer_sender = "foo.bar@yourapp.com"
+  config.mailer_sender = "please-change-me-omg@yourapp.com"
 
   # Load and configure the ORM. Supports :active_record, :data_mapper and :mongo_mapper.
   require "devise/orm/#{DEVISE_ORM}"

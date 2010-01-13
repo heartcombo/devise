@@ -1,5 +1,10 @@
+== 0.8.2
+
+* enhancements
+  * Allow Devise.mailer_sender to be a proc (by github/grimen)
+
 * bug fix
-  * Fix bug with passenger, update is required to anyone deploying on passenger
+  * Fix bug with passenger, update is required to anyone deploying on passenger (by github/dvdpalm)
 
 == 0.8.1
 

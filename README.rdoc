@@ -59,7 +59,7 @@ This is a walkthrough with all steps you need to setup a devise resource, includ
 
 Devise must be set up within the model (or models) you want to use, and devise routes must be created inside your config/routes.rb file.
 
-We're assuming here you want a User model. First of all you have to setup a migration with the following fields:
+We're assuming here you want a User model with the six default modules. First of all, you have to setup a migration with the following:
 
   create_table :users do |t|
     t.authenticatable
@@ -67,16 +67,8 @@ We're assuming here you want a User model. First of all you have to setup a migr
     t.recoverable
     t.rememberable
     t.trackable
-    t.lockable
     t.timestamps
   end
-
-You may also want to add some indexes to improve performance:
-
-  add_index :your_table, :email
-  add_index :your_table, :confirmation_token    # for confirmable
-  add_index :your_table, :reset_password_token  # for recoverable
-  add_index :your_table, :unlock_token          # for lockable
 
 Now let's setup a User model adding the devise line:
 
@@ -108,9 +100,9 @@ The next step after setting up your model is to configure your routes for devise
 
 This is going to look inside you User model and create a set of needed routes (you can see them by running `rake routes`).
 
-There are also some options available for configuring your routes, as :class_name (to set the class for that route), :as and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
+There are also some options available for configuring your routes, as :class_name (to set the class for that route), :path_prefix, :as and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
 
-  map.devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
+  map.devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock' }
 
 Be sure to check devise_for documentation for detailed description.
 
@@ -138,7 +130,7 @@ After signing in a user, confirming it's account or updating it's password, devi
 
 You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize better your redirect hooks.
 
-Finally, if you are using confirmable or recoverable, you also need to setup default url options for the mailer in each environment. Here's is the configuration for config/environments/development.rb:
+Finally, you also need to setup default url options for the mailer in each environment. Here's is the configuration for config/environments/development.rb:
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
@@ -148,16 +140,17 @@ By default devise will use the same views for all scopes/roles you have. But wha
 
 == Tidying up
 
-Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with just authentication, trackable and timeoutable stuff and none of confirmation or password recovery. Just follow the same steps:
+Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with just authentication, trackable, lockable and timeoutable stuff and none of confirmation or password recovery. Just follow the same steps:
 
   # Create a migration with the required fields
   create_table :admins do |t|
     t.authenticatable
+    t.lockable
     t.trackable
   end
 
   # Inside your Admin model
-  devise :authenticatable, :trackable, :timeoutable
+  devise :authenticatable, :trackable, :timeoutable, :lockable
 
   # Inside your routes
   map.devise_for :admin
@@ -257,9 +250,7 @@ Please refer to TODO file.
 
 == Contributors
 
-* Marcelo Silveira (http://github.com/mhfs)
-* Cyril Mougel (http://github.com/shingara)
-* Jonas Grimfelt (http://github.com/grimen)
+We have a long running list of contributors. Check them in the CHANGELOG or do `git shortlog -s -n` in the cloned repository.
 
 == Bugs and Feedback
 

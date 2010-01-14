@@ -3,6 +3,7 @@
 
 * enhancements
   * Added devise lockable (by github/mhfs)
+  * Warden 0.9.0 compatibility
 
 == 0.8.2
 

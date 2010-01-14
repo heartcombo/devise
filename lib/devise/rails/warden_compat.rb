@@ -23,3 +23,16 @@ module Warden::Mixins::Common
     end
   end
 end
+
+class Warden::SessionSerializer
+  # Hook to serialize user into session. Overwrite if you want.
+  def serialize(record)
+    [record.class, record.id]
+  end
+
+  # Hook to serialize user from session. Overwrite if you want.
+  def deserialize(keys)
+    klass, id = keys
+    klass.find(:first, :conditions => { :id => id })
+  end
+end

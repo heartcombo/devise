@@ -38,8 +38,7 @@ module Devise
     :unlocks => [:lockable]
   }
 
-  STRATEGIES  = [:authenticatable]
-  SERIALIZERS = [:session, :cookie]
+  STRATEGIES  = [:rememberable, :authenticatable]
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
   # Maps the messages types that are used in flash message.
@@ -164,10 +163,8 @@ module Devise
     # block.
     def configure_warden(config) #:nodoc:
       config.default_strategies *Devise::STRATEGIES
-      config.default_serializers *Devise::SERIALIZERS
       config.failure_app = Devise::FailureApp
       config.silence_missing_strategies!
-      config.silence_missing_serializers!
       config.default_scope = Devise.default_scope
 
       # If the user provided a warden hook, call it now.
@@ -192,9 +189,5 @@ rescue
   gem 'warden'
   require 'warden'
 end
-
-# Clear some Warden default configuration which will be overwritten
-Warden::Strategies.clear!
-Warden::Serializers.clear!
 
 require 'devise/rails'

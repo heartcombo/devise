@@ -1,6 +1,4 @@
-* Make test run with DataMapper (ActiveRecord, MongoMapper)
+* Make test run with DataMapper
 * Add Registerable support
 * Add http authentication support
-* Extract SessionSerializer tests from Authenticatable
-* Extract CookieSerializer tests from Authenticatable
 * Extract Activatable tests from Confirmable

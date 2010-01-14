@@ -1,5 +1,4 @@
 require 'devise/strategies/authenticatable'
-require 'devise/models/session_serializer'
 
 module Devise
   module Models
@@ -31,7 +30,6 @@ module Devise
       def self.included(base)
         base.class_eval do
           extend ClassMethods
-          extend SessionSerializer
 
           attr_reader :password, :old_password
           attr_accessor :password_confirmation

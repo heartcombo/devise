@@ -6,7 +6,6 @@ module Devise
     autoload :Lockable, 'devise/models/lockable'
     autoload :Recoverable, 'devise/models/recoverable'
     autoload :Rememberable, 'devise/models/rememberable'
-    autoload :SessionSerializer, 'devise/models/session_serializer'
     autoload :Timeoutable, 'devise/models/timeoutable'
     autoload :Trackable, 'devise/models/trackable'
     autoload :Validatable, 'devise/models/validatable'

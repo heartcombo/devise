@@ -66,7 +66,7 @@ module Devise
     def sign_in(resource_or_scope, resource=nil)
       scope    ||= Devise::Mapping.find_scope!(resource_or_scope)
       resource ||= resource_or_scope
-      session["warden.user.#{scope}.key"] = resource.class.serialize_into_session(resource)
+      warden.session_serializer.store(resource, scope)
     end
 
     # Sign out a given resource or scope by calling logout on Warden.

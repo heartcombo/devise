@@ -31,21 +31,18 @@ class ControllerAuthenticableTest < ActionController::TestCase
     assert_equal @controller.warden, @controller.env['warden']
   end
 
-  test 'run authenticate? with scope on warden' do
-    @mock_warden.expects(:authenticated?).with(:my_scope)
-    @controller.signed_in?(:my_scope)
-  end
-
   test 'proxy signed_in? to authenticated' do
-    @mock_warden.expects(:authenticated?).with(:my_scope)
+    @mock_warden.expects(:authenticate?).with(:scope => :my_scope)
     @controller.signed_in?(:my_scope)
   end
 
-  test 'run user with scope on warden' do
-    @mock_warden.expects(:user).with(:admin).returns(true)
+  test 'proxy current_admin to authenticate with admin scope' do
+    @mock_warden.expects(:authenticate).with(:scope => :admin)
     @controller.current_admin
+  end
 
-    @mock_warden.expects(:user).with(:user).returns(true)
+  test 'proxy current_user to authenticate with user scope' do
+    @mock_warden.expects(:authenticate).with(:scope => :user)
     @controller.current_user
   end
 
@@ -59,22 +56,24 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.authenticate_admin!
   end
 
-  test 'proxy user_authenticated? to authenticate with user scope' do
-    @mock_warden.expects(:authenticated?).with(:user)
+  test 'proxy user_signed_in? to authenticate? with user scope' do
+    @mock_warden.expects(:authenticate?).with(:scope => :user)
     @controller.user_signed_in?
   end
 
-  test 'proxy admin_authenticated? to authenticate with admin scope' do
-    @mock_warden.expects(:authenticated?).with(:admin)
+  test 'proxy admin_signed_in? to authenticate? with admin scope' do
+    @mock_warden.expects(:authenticate?).with(:scope => :admin)
     @controller.admin_signed_in?
   end
 
   test 'proxy user_session to session scope in warden' do
+    @mock_warden.expects(:authenticate).with(:scope => :user).returns(true)
     @mock_warden.expects(:session).with(:user).returns({})
     @controller.user_session
   end
 
   test 'proxy admin_session to session scope in warden' do
+    @mock_warden.expects(:authenticate).with(:scope => :admin).returns(true)
     @mock_warden.expects(:session).with(:admin).returns({})
     @controller.admin_session
   end

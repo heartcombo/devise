@@ -130,29 +130,6 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_not_nil Admin.authenticate(:email => admin.email, :password => admin.password)
   end
 
-  test 'should serialize user into session' do
-    user = create_user
-    assert_equal [User, user.id], User.serialize_into_session(user)
-  end
-
-  test 'should serialize user from session' do
-    user = create_user
-    assert_equal user.id, User.serialize_from_session([User, user.id]).id
-  end
-
-  test 'should serialize another klass from session if it is an ancestors' do
-    user = create_user
-    klass = Class.new(User)
-    assert_equal user.id, User.serialize_from_session([klass, user.id]).id
-  end
-
-  test 'should not serialize another klass from session if not an ancestors' do
-    user = create_user
-    assert_raise RuntimeError, /ancestors/ do
-      User.serialize_from_session([Admin, user.id])
-    end
-  end
-
   test 'should respond to old password' do
     assert new_user.respond_to?(:old_password)
   end

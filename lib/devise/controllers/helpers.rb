@@ -45,7 +45,7 @@ module Devise
       # Check if the given scope is signed in session, without running
       # authentication hooks.
       def signed_in?(scope)
-        warden.authenticated?(scope)
+        warden.authenticate?(:scope => scope)
       end
 
       # Sign in an user that already was authenticated. This helper is useful for logging
@@ -167,15 +167,15 @@ module Devise
           end
 
           def #{mapping}_signed_in?
-            warden.authenticated?(:#{mapping})
+            warden.authenticate?(:scope => :#{mapping})
           end
 
           def current_#{mapping}
-            @current_#{mapping} ||= warden.user(:#{mapping})
+            @current_#{mapping} ||= warden.authenticate(:scope => :#{mapping})
           end
 
           def #{mapping}_session
-            warden.session(:#{mapping})
+            current_#{mapping} && warden.session(:#{mapping})
           end
         METHODS
       end

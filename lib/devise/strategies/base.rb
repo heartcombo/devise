@@ -1,7 +1,7 @@
 module Devise
   module Strategies
     # Base strategy for Devise. Responsible for verifying correct scope and mapping.
-    module Base
+    class Base < ::Warden::Strategies::Base
       # Validate strategy. By default will raise an error if no scope or an
       # invalid mapping is found.
       def valid?

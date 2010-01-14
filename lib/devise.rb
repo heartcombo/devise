@@ -27,8 +27,8 @@ module Devise
     autoload :MongoMapper, 'devise/orm/mongo_mapper'
   end
 
-  ALL = [:authenticatable, :activatable, :confirmable, :recoverable, :rememberable,
-         :timeoutable, :trackable, :validatable, :lockable]
+  ALL = [:authenticatable, :activatable, :confirmable, :recoverable,
+         :rememberable, :validatable, :trackable, :timeoutable, :lockable]
 
   # Maps controller names to devise modules
   CONTROLLERS = {

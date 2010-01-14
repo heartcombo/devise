@@ -1,3 +1,6 @@
+require 'devise/strategies/rememberable'
+require 'devise/hooks/rememberable'
+
 module Devise
   module Models
     # Rememberable manages generating and clearing token for remember the user

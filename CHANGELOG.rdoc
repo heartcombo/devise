@@ -6,6 +6,9 @@
   * Warden 0.9.0 compatibility
   * Mongomapper 0.6.10 compatibility
 
+* bug fix
+  * Accept path prefix not starting with slash
+
 == 0.8.2
 
 * enhancements

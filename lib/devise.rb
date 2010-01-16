@@ -87,7 +87,7 @@ module Devise
 
   # Store scopes mappings.
   mattr_accessor :mappings
-  @@mappings = {}
+  @@mappings = ActiveSupport::OrderedHash.new
 
   # Stores the chosen ORM.
   mattr_accessor :orm

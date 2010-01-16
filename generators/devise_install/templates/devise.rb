@@ -54,7 +54,8 @@ Devise.setup do |config|
   # config.unlock_in = 1.hour
 
   # ==> General configuration
-  # Load and configure the ORM. Supports :active_record, :data_mapper and :mongo_mapper.
+  # Load and configure the ORM. Supports :active_record (default), :mongo_mapper
+  # (requires mongo_ext installed) and :data_mapper (experimental).
   # require 'devise/orm/mongo_mapper'
   # config.orm = :mongo_mapper
 

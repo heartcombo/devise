@@ -4,6 +4,7 @@
 * enhancements
   * Added devise lockable (by github/mhfs)
   * Warden 0.9.0 compatibility
+  * Mongomapper 0.6.10 compatibility
 
 == 0.8.2
 

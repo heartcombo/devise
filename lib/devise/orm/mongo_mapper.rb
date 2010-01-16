@@ -1,8 +1,19 @@
 module Devise
   module Orm
     module MongoMapper
+      module InstanceMethods
+        def save(options={})
+          if options == false
+            super(:validate => false)
+          else
+            super
+          end
+        end
+      end
+
       def self.included_modules_hook(klass, modules)
-        klass.send :extend, self
+        klass.send :extend,  self
+        klass.send :include, InstanceMethods
         yield
 
         modules.each do |mod|

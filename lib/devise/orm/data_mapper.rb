@@ -12,7 +12,7 @@ module Devise
       end
 
       def self.included_modules_hook(klass, modules)
-        klass.send :extend, self
+        klass.send :extend,  self
         klass.send :include, InstanceMethods
 
         yield

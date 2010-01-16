@@ -14,9 +14,9 @@ class SessionsController < ApplicationController
 
   # POST /resource/sign_in
   def create
-    if authenticate(resource_name)
+    if resource = authenticate(resource_name)
       set_flash_message :success, :signed_in
-      sign_in_and_redirect(resource_name)
+      sign_in_and_redirect(resource_name, resource, true)
     else
       set_now_flash_message :failure, warden.message || :invalid
       build_resource

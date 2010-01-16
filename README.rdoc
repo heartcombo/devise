@@ -48,7 +48,9 @@ Run the generator:
 
 	ruby script/generate devise_install
 
-And you're ready to go. The generator will install an initializer which describes Devise's configuration options. Be sure to take a look.
+And you're ready to go. The generator will install an initializer which describes ALL Devise's configuration options, so be sure to take a look at it and the documentation as well:
+
+  http://rdoc.info/projects/plataformatec/devise
 
 == Basic Usage
 

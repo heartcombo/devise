@@ -148,9 +148,10 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.sign_in_and_redirect(admin)
   end
 
-  test 'only redirect if just a symbol is given' do
+  test 'only redirect if skip is given' do
+    admin = Admin.new
     @controller.expects(:redirect_to).with(admin_root_path)
-    @controller.sign_in_and_redirect(:admin)
+    @controller.sign_in_and_redirect(:admin, admin, true)
   end
 
   test 'sign out and redirect uses the configured after sign out path' do

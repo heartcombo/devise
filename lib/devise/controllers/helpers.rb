@@ -57,7 +57,7 @@ module Devise
       #   sign_in @user           # sign_in(resource)
       #
       def sign_in(resource_or_scope, resource=nil)
-        scope    ||= Devise::Mapping.find_scope!(resource_or_scope)
+        scope      = Devise::Mapping.find_scope!(resource_or_scope)
         resource ||= resource_or_scope
         warden.set_user(resource, :scope => scope)
       end
@@ -103,16 +103,28 @@ module Devise
       #     users.root # creates user_root_path
       #   end
       #
-      # If none of these are defined, root_path is used.
+      #
+      # If none of these are defined, root_path is used. However, if this default
+      # is not enough, you can customize it, for example:
+      #
+      #   def after_sign_in_path_for(resource)
+      #     if resource.is_a?(User) && resource.can_publish?
+      #       redirect_to publisher_url
+      #     else
+      #       super
+      #     end
+      #   end
+      #
       def after_sign_in_path_for(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         home_path = :"#{scope}_root_path"
         respond_to?(home_path, true) ? send(home_path) : root_path
       end
 
-      # The default to be used after signing out. This is used by all Devise
-      # controllers and you can overwrite it in your ApplicationController to
-      # provide a custom hook for a custom resource.
+      # Method used by sessions controller to sign out an user. You can overwrite
+      # it in your ApplicationController to provide a custom hook for a custom
+      # scope. Notice that differently from +after_sign_in_path_for+ this method
+      # receives a symbol with the scope, and not the resource.
       #
       # By default is the root_path.
       def after_sign_out_path_for(resource_or_scope)
@@ -124,16 +136,19 @@ module Devise
       #
       # If just a symbol is given, consider that the user was already signed in
       # through other means and just perform the redirection.
-      def sign_in_and_redirect(*args)
-        sign_in(*args) unless args.size == 1 && args.first.is_a?(Symbol)
-        redirect_to stored_location_for(args.first) || after_sign_in_path_for(args.first)
+      def sign_in_and_redirect(resource_or_scope, resource=nil, skip=false)
+        scope      = Devise::Mapping.find_scope!(resource_or_scope)
+        resource ||= resource_or_scope
+        sign_in(scope, resource) unless skip
+        redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
       end
 
       # Sign out an user and tries to redirect to the url specified by
       # after_sign_out_path_for.
       def sign_out_and_redirect(resource_or_scope)
-        sign_out(resource_or_scope)
-        redirect_to after_sign_out_path_for(resource_or_scope)
+        scope = Devise::Mapping.find_scope!(resource_or_scope)
+        sign_out(scope)
+        redirect_to after_sign_out_path_for(scope)
       end
 
       # Define authentication filters and accessor helpers based on mappings.

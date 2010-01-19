@@ -42,7 +42,8 @@ module Devise
     # Receives an object and find a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.
     def self.find_scope!(duck)
-      if duck.is_a?(Symbol)
+      case duck
+      when String, Symbol
         duck
       else
         klass = duck.is_a?(Class) ? duck : duck.class
@@ -103,7 +104,7 @@ module Devise
     def parsed_path
       returning raw_path do |path|
         self.class.default_url_options.each do |key, value|
-          path.gsub!(key.inspect, value.to_s)
+          path.gsub!(key.inspect, value.to_param)
         end
       end
     end

@@ -8,6 +8,7 @@
 
 * bug fix
   * Accept path prefix not starting with slash
+  * url helpers should rely on find_scope!
 
 == 0.8.2
 

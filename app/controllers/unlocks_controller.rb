@@ -7,7 +7,7 @@ class UnlocksController < ApplicationController
     self.resource = resource_class.unlock!(:unlock_token => params[:unlock_token])
 
     if resource.errors.empty?
-      set_flash_message :success, :unlocked
+      set_flash_message :notice, :unlocked
       sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :new

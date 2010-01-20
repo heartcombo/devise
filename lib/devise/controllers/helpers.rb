@@ -109,7 +109,7 @@ module Devise
       #
       #   def after_sign_in_path_for(resource)
       #     if resource.is_a?(User) && resource.can_publish?
-      #       redirect_to publisher_url
+      #       publisher_url
       #     else
       #       super
       #     end

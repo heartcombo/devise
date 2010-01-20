@@ -7,7 +7,7 @@ class ConfirmationsController < ApplicationController
     self.resource = resource_class.confirm!(:confirmation_token => params[:confirmation_token])
 
     if resource.errors.empty?
-      set_flash_message :success, :confirmed
+      set_flash_message :notice, :confirmed
       sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :new

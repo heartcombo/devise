@@ -5,6 +5,7 @@
   * Added devise lockable (by github/mhfs)
   * Warden 0.9.0 compatibility
   * Mongomapper 0.6.10 compatibility
+  * :success and :failure flash messages are now :notice and :alert
 
 * bug fix
   * Accept path prefix not starting with slash

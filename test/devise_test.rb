@@ -2,7 +2,7 @@ require 'test/test_helper'
 
 module Devise
   def self.clean_warden_config!
-    @warden_config = nil 
+    @warden_config = nil
   end
 end
 
@@ -43,5 +43,27 @@ class DeviseTest < ActiveSupport::TestCase
     ensure
       Devise.clean_warden_config!
     end
+  end
+
+  test 'add new module using the helper method' do
+    assert_nothing_raised(Exception) { Devise.add_module(:coconut) }
+    assert_equal 1, Devise::ALL.select { |v| v == :coconut }.size
+    assert_not Devise::STRATEGIES.include?(:coconut)
+    assert_not defined?(Devise::Models::Coconut)
+    Devise::ALL.delete(:coconut)
+
+    assert_nothing_raised(Exception) { Devise.add_module(:banana, :strategy => true) }
+    assert_equal 1, Devise::STRATEGIES.select { |v| v == :banana }.size
+    Devise::ALL.delete(:banana)
+    Devise::STRATEGIES.delete(:banana)
+
+    assert_nothing_raised(Exception) { Devise.add_module(:kivi, :controller => :fruits) }
+    assert_not_nil Devise::CONTROLLERS[:fruits]
+    assert_equal 1, Devise::CONTROLLERS[:fruits].select { |v| v == :kivi }.size
+    Devise::ALL.delete(:kivi)
+    Devise::CONTROLLERS.delete(:fruits)
+
+    assert_nothing_raised(Exception) { Devise.add_module(:authenticatable_again, :model => 'devise/model/authenticatable') }
+    assert defined?(Devise::Models::AuthenticatableAgain)
   end
 end

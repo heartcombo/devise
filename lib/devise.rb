@@ -180,6 +180,38 @@ module Devise
     def friendly_token
       ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
     end
+
+    # Make Devise aware of an 3rd party Devise-module. For convenience.
+    #
+    # == Options:
+    #
+    #   +strategy+    - Boolean value representing if this module got a custom *strategy*.
+    #                   Default is +false+. Note: Devise will auto-detect this in such case if this is true.
+    #   +model+       - String representing a load path to a custom *model* for this module (to autoload).
+    #                   Default is +nil+ (i.e. +false+).
+    #   +controller+  - Symbol representing a name of an exisiting or custom *controller* for this module.
+    #                   Default is +nil+ (i.e. +false+).
+    #
+    # == Examples:
+    #
+    #   Devise.add_module(:party_module)
+    #   Devise.add_module(:party_module, :strategy => true, :controller => :sessions)
+    #   Devise.add_module(:party_module, :model => 'party_module/model')
+    #
+    def add_module(module_name, options = {})
+      Devise::ALL.unshift module_name unless Devise::ALL.include?(module_name)
+      Devise::STRATEGIES.unshift module_name if options[:strategy] && !Devise::STRATEGIES.include?(module_name)
+      if options[:controller].present?
+        controller = options[:controller].to_sym
+        Devise::CONTROLLERS[controller] ||= []
+        Devise::CONTROLLERS[controller].unshift module_name unless Devise::CONTROLLERS[controller].include?(module_name)
+      end
+      if options[:model].present?
+        Devise::Models.module_eval do
+          autoload :"#{module_name.to_s.classify}", options[:model]
+        end
+      end
+    end
   end
 end
 

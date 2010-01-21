@@ -1,6 +1,5 @@
 module Devise
   autoload :FailureApp, 'devise/failure_app'
-  autoload :Mapping, 'devise/mapping'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
 
@@ -199,18 +198,22 @@ module Devise
     #   Devise.add_module(:party_module, :model => 'party_module/model')
     #
     def add_module(module_name, options = {})
-      Devise::ALL.unshift module_name unless Devise::ALL.include?(module_name)
+      Devise::ALL.unshift module_name        unless Devise::ALL.include?(module_name)
       Devise::STRATEGIES.unshift module_name if options[:strategy] && !Devise::STRATEGIES.include?(module_name)
-      if options[:controller].present?
+
+      if options[:controller]
         controller = options[:controller].to_sym
         Devise::CONTROLLERS[controller] ||= []
         Devise::CONTROLLERS[controller].unshift module_name unless Devise::CONTROLLERS[controller].include?(module_name)
       end
-      if options[:model].present?
+
+      if options[:model]
         Devise::Models.module_eval do
           autoload :"#{module_name.to_s.classify}", options[:model]
         end
       end
+
+      Devise::Mapping.register module_name
     end
   end
 end
@@ -222,4 +225,5 @@ rescue
   require 'warden'
 end
 
+require 'devise/mapping'
 require 'devise/rails'

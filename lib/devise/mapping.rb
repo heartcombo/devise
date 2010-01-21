@@ -109,6 +109,7 @@ module Devise
       end
     end
 
+
     # Create magic predicates for verifying what module is activated by this map.
     # Example:
     #
@@ -116,13 +117,16 @@ module Devise
     #     self.for.include?(:confirmable)
     #   end
     #
-    ALL.each do |m|
-      class_eval <<-METHOD, __FILE__, __LINE__
-        def #{m}?
-          self.for.include?(:#{m})
-        end
-      METHOD
+    def self.register(*modules)
+      modules.each do |m|
+        class_eval <<-METHOD, __FILE__, __LINE__
+          def #{m}?
+            self.for.include?(:#{m})
+          end
+        METHOD
+      end
     end
+    Devise::Mapping.register *ALL
 
     private
 

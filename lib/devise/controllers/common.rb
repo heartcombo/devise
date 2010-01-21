@@ -1,6 +1,6 @@
 module Devise
   module Controllers
-    # Common actions shared between Devie controllers
+    # Common actions shared between Devise controllers
     module Common #:nodoc:
       # GET /resource/controller/new
       def new

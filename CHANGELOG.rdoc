@@ -1,11 +1,13 @@
 * deprecation
   * devise :all is deprecated
+  * :success and :failure flash messages are now :notice and :alert
 
 * enhancements
-  * Added devise lockable (by github/mhfs)
+  * Added devise lockable (by github.com/mhfs)
   * Warden 0.9.0 compatibility
   * Mongomapper 0.6.10 compatibility
-  * :success and :failure flash messages are now :notice and :alert
+  * Added Devise.add_module as hooks for extensions (by github.com/grimen)
+  * Ruby 1.9.1 compatibility (by github.com/grimen)
 
 * bug fix
   * Accept path prefix not starting with slash
@@ -14,10 +16,10 @@
 == 0.8.2
 
 * enhancements
-  * Allow Devise.mailer_sender to be a proc (by github/grimen)
+  * Allow Devise.mailer_sender to be a proc (by github.com/grimen)
 
 * bug fix
-  * Fix bug with passenger, update is required to anyone deploying on passenger (by github/dvdpalm)
+  * Fix bug with passenger, update is required to anyone deploying on passenger (by github.com/dvdpalm)
 
 == 0.8.1
 

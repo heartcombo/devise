@@ -71,7 +71,7 @@ module Devise
 
         # Digests the password using the configured encryptor.
         def password_digest(password)
-          self.class.encryptor_class.digest(password, self.class.stretches, password_salt, self.class.pepper)
+          self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)
         end
 
       module ClassMethods

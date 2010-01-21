@@ -18,7 +18,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user.email = existing_user.email
     assert user.invalid?
     assert user.errors[:email]
-    assert_equal 1, user.errors[:email].to_a.size
+    assert_equal 1, [*user.errors[:email]].size
     assert_equal 'has already been taken', user.errors[:email]
   end
 
@@ -30,7 +30,7 @@ class ValidatableTest < ActiveSupport::TestCase
       user.email = email
       assert user.invalid?, 'should be invalid with email ' << email
       assert user.errors[:email]
-      assert_equal 1, user.errors[:email].to_a.size
+      assert_equal 1, [*user.errors[:email]].size
       assert_equal 'is invalid', user.errors[:email]
     end
   end

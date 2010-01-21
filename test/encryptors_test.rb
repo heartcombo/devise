@@ -1,3 +1,5 @@
+gem 'bcrypt-ruby'
+
 class Encryptors < ActiveSupport::TestCase
 
   test 'should match a password created by authlogic' do
@@ -17,7 +19,7 @@ class Encryptors < ActiveSupport::TestCase
     encryptor = Devise::Encryptors::ClearanceSha1.digest('123mudar', nil, '65c58472c207c829f28c68619d3e3aefed18ab3f', nil)
     assert_equal clearance, encryptor
   end
-  
+
   Devise::ENCRYPTORS_LENGTH.each do |key, value|
     test "should have length #{value} for #{key.inspect}" do
       swap Devise, :encryptor => key do

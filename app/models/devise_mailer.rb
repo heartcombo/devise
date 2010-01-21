@@ -44,7 +44,8 @@ class DeviseMailer < ::ActionMailer::Base
 
     def mailer_sender(mapping)
       if Devise.mailer_sender.is_a?(Proc)
-        Devise.mailer_sender.call(mapping.name)
+        block_args = mapping.name if Devise.mailer_sender.arity > 0
+        Devise.mailer_sender.call(*block_args)
       else
         Devise.mailer_sender
       end

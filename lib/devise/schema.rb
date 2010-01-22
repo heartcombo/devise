@@ -14,7 +14,7 @@ module Devise
 
       apply_schema :email,              String, :null => null, :limit => 100
       apply_schema :encrypted_password, String, :null => null, :limit => Devise::ENCRYPTORS_LENGTH[encryptor]
-      apply_schema :password_salt,      String, :null => null, :limit => 20
+      apply_schema :password_salt,      String, :null => null, :limit => 30
     end
 
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.

@@ -94,7 +94,7 @@ module Devise
 
     # Returns the raw path using the current relative_url_root, path_prefix and as.
     def raw_path
-      ActionController::Base.relative_url_root.to_s + path_prefix + as.to_s
+      path_prefix + as.to_s
     end
 
     # Returns the parsed path. If you need meta information in your path_prefix,
@@ -102,7 +102,7 @@ module Devise
     # by default is I18n.locale.
     #
     def parsed_path
-      returning raw_path do |path|
+      returning (ActionController::Base.relative_url_root.to_s + raw_path) do |path|
         self.class.default_url_options.each do |key, value|
           path.gsub!(key.inspect, value.to_param)
         end

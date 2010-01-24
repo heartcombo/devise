@@ -11,13 +11,13 @@ module Devise
         end
       end
 
-      def self.included_modules_hook(klass, modules)
+      def self.included_modules_hook(klass)
         klass.send :extend,  self
         klass.send :include, InstanceMethods
 
         yield
 
-        modules.each do |mod|
+        klass.devise_modules.each do |mod|
           klass.send(mod) if klass.respond_to?(mod)
         end
       end

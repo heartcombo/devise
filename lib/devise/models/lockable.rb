@@ -5,7 +5,6 @@ module Devise
 
     module Lockable
       include Devise::Models::Activatable
-      include Devise::Models::Authenticatable
 
       def self.included(base)
         base.class_eval do
@@ -16,15 +15,15 @@ module Devise
       # Lock an user setting it's locked_at to actual time.
       def lock
         self.locked_at = Time.now
-        if [:both, :email].include?(self.class.unlock_strategy)
+        if unlock_strategy_enabled?(:email)
           generate_unlock_token
-          self.send_unlock_instructions
+          send_unlock_instructions
         end
       end
 
       # calls lock and save the model
       def lock!
-        self.lock
+        lock
         save(false)
       end
 
@@ -40,7 +39,7 @@ module Devise
 
       # Verifies whether a user is locked or not
       def locked?
-        self.locked_at && !lock_expired?
+        locked_at && !lock_expired?
       end
 
       # Send unlock instructions by email
@@ -51,7 +50,7 @@ module Devise
       # Resend the unlock instructions if the user is locked
       def resend_unlock!
         if_locked do
-          generate_unlock_token unless self.unlock_token.present?
+          generate_unlock_token unless unlock_token.present?
           save(false)
           send_unlock_instructions
         end
@@ -61,20 +60,6 @@ module Devise
       # by verifying whether an user is active to sign in or not based on locked?
       def active?
         super && !locked?
-      end
-
-      # Overwrites valid_for_authentication? from Devise::Models::Authenticatable
-      # for verifying whether an user is allowed to sign in or not. If the user
-      # is locked, it should never be allowed.
-      def valid_for_authentication?(attributes)
-        if result = super
-          self.failed_attempts = 0
-        else
-          self.failed_attempts += 1
-          self.lock if self.failed_attempts > self.class.maximum_attempts
-        end
-        save(false) if changed?
-        result
       end
 
       # Overwrites invalid_message from Devise::Models::Authenticatable to define
@@ -87,6 +72,20 @@ module Devise
         end
       end
 
+      # Overwrites valid_for_authentication? from Devise::Models::Authenticatable
+      # for verifying whether an user is allowed to sign in or not. If the user
+      # is locked, it should never be allowed.
+      def valid_for_authentication?(attributes)
+        if result = super
+          self.failed_attempts = 0
+        else
+          self.failed_attempts += 1
+          lock if failed_attempts > self.class.maximum_attempts
+        end
+        save(false) if changed?
+        result
+      end
+
       protected
 
         # Generates unlock token
@@ -96,8 +95,8 @@ module Devise
 
         # Tells if the lock is expired if :time unlock strategy is active
         def lock_expired?
-          if [:both, :time].include?(self.class.unlock_strategy)
-            self.locked_at && self.locked_at < self.class.unlock_in.ago
+          if unlock_strategy_enabled?(:time)
+            locked_at && locked_at < self.class.unlock_in.ago
           else
             false
           end
@@ -112,6 +111,11 @@ module Devise
             self.class.add_error_on(self, :email, :not_locked)
             false
           end
+        end
+
+        # Is the unlock enabled for the given unlock option?
+        def unlock_strategy_enabled?(strategy)
+          [:both, strategy].include?(self.class.unlock_strategy)
         end
 
       module ClassMethods

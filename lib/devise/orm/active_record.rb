@@ -20,7 +20,7 @@ module Devise
     #
     module ActiveRecord
       # Required ORM hook. Just yield the given block in ActiveRecord.
-      def self.included_modules_hook(klass, modules)
+      def self.included_modules_hook(klass)
         yield
       end
 

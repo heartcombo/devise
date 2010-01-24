@@ -51,26 +51,18 @@ module Devise
     #
     #   devise :authenticatable, :confirmable, :recoverable
     #
-    # You can also give the following configuration values in a hash: :pepper,
-    # :stretches, :confirm_within and :remember_for. Please check your Devise
-    # initialiazer for a complete description on those values.
+    # You can also give any of the devise configuration values in form of a hash,
+    # with specific values for this model. Please check your Devise initializer
+    # for a complete description on those values.
     #
     def devise(*modules)
       raise "You need to give at least one Devise module" if modules.empty?
       options  = modules.extract_options!
 
-      # TODO Remove me
-      if modules.delete(:all)
-        ActiveSupport::Deprecation.warn "devise :all is deprecated. List your modules instead", caller
-        modules += Devise.all
-      end
+      @devise_modules = modules.map(&:to_sym).uniq
 
-      modules -= Array(options.delete(:except))
-      modules  = Devise::ALL & modules.uniq
-
-      Devise.orm_class.included_modules_hook(self, modules) do
-        modules.each do |m|
-          devise_modules << m.to_sym
+      Devise.orm_class.included_modules_hook(self) do
+        devise_modules.each do |m|
           include Devise::Models.const_get(m.to_s.classify)
         end
 

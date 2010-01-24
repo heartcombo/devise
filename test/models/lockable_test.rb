@@ -1,25 +1,25 @@
 require 'test/test_helper'
 
 class LockableTest < ActiveSupport::TestCase
-  
+
   def setup
     setup_mailer
   end
-  
+
   test "should increment failed attempts on unsuccessful authentication" do
     user = create_user
     assert_equal 0, user.failed_attempts
     authenticated_user = User.authenticate(:email => user.email, :password => "anotherpassword")
     assert_equal 1, user.reload.failed_attempts
   end
-  
+
   test "should lock account base on maximum_attempts" do
     user = create_user
     attempts = Devise.maximum_attempts + 1
     attempts.times { authenticated_user = User.authenticate(:email => user.email, :password => "anotherpassword") }
     assert user.reload.locked?
   end
-  
+
   test "should respect maximum attempts configuration" do
     user = create_user
     swap Devise, :maximum_attempts => 2 do
@@ -27,7 +27,7 @@ class LockableTest < ActiveSupport::TestCase
       assert user.reload.locked?
     end
   end
-  
+
   test "should clear failed_attempts on successfull sign in" do
     user = create_user
     User.authenticate(:email => user.email, :password => "anotherpassword")
@@ -61,8 +61,8 @@ class LockableTest < ActiveSupport::TestCase
     assert_nil user.reload.unlock_token
     assert 0, user.reload.failed_attempts
   end
-  
-  test 'should not unlcok an unlocked user' do
+
+  test 'should not unlock an unlocked user' do
     user = create_user
     assert_not user.unlock!
     assert_match /not locked/, user.errors[:email]

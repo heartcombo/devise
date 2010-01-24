@@ -30,7 +30,7 @@ module Devise
          :registerable, :rememberable, :timeoutable, :token_authenticatable,
          :trackable, :validatable]
 
-  # Maps controller names to devise modules
+  # Maps controller names to devise modules.
   CONTROLLERS = {
     :sessions => [:authenticatable, :token_authenticatable],
     :passwords => [:recoverable],
@@ -39,12 +39,18 @@ module Devise
     :unlocks => [:lockable]
   }
 
+  # Routes for generating url helpers.
+  ROUTES = [:session, :password, :confirmation, :registration, :unlock]
+
+  # Path names used in routes.
+  PATH_NAMES = [:sign_in, :sign_out, :password, :confirmation, :registration, :unlock]
+
   STRATEGIES  = [:rememberable, :token_authenticatable, :authenticatable]
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
   # Maps the messages types that are used in flash message.
-  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked ]
+  FLASH_MESSAGES = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {

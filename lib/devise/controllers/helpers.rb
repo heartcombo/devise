@@ -176,7 +176,7 @@ module Devise
       #     before_filter :authenticate_admin! # Tell devise to use :admin map
       #
       Devise.mappings.each_key do |mapping|
-        class_eval <<-METHODS, __FILE__, __LINE__
+        class_eval <<-METHODS, __FILE__, __LINE__ + 1
           def authenticate_#{mapping}!
             warden.authenticate!(:scope => :#{mapping})
           end

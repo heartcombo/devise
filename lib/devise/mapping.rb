@@ -115,7 +115,7 @@ module Devise
     #
     def self.register(*modules)
       modules.each do |m|
-        class_eval <<-METHOD, __FILE__, __LINE__
+        class_eval <<-METHOD, __FILE__, __LINE__ + 1
           def #{m}?
             self.for.include?(:#{m})
           end
@@ -129,7 +129,7 @@ module Devise
       # Configure default path names, allowing the user overwrite defaults by
       # passing a hash in :path_names.
       def setup_path_names
-        [:sign_in, :sign_out, :password, :confirmation, :registration, :unlock].each do |path_name|
+        Devise::PATH_NAMES.each do |path_name|
           @path_names[path_name] ||= path_name.to_s
         end
       end

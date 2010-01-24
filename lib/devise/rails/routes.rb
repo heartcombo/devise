@@ -105,10 +105,6 @@ module ActionController::Routing
           end
         end
 
-        def recoverable(routes, mapping)
-          routes.resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password]
-        end
-
         def confirmable(routes, mapping)
           routes.resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
         end
@@ -117,6 +113,13 @@ module ActionController::Routing
           routes.resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock]
         end
 
+        def recoverable(routes, mapping)
+          routes.resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password]
+        end
+
+        def registerable(routes, mapping)
+          routes.resource :registration, :only => [:new, :create], :as => mapping.path_names[:registration]
+        end
     end
   end
 end

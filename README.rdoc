@@ -7,11 +7,12 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-Right now it's composed of nine modules:
+Right now it's composed of ten modules:
 
 * Authenticatable: responsible for encrypting password and validating authenticity of a user while signing in.
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
 * Recoverable: takes care of reseting the user password and send reset instructions.
+* Registerable: handles signing up users through a registration process.
 * Rememberable: manages generating and clearing token for remember the user from a saved cookie.
 * Trackable: tracks sign in count, timestamps and ip.
 * Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.
@@ -170,7 +171,7 @@ Since devise is an engine, it has all default views inside the gem. They are goo
 
   ruby script/generate devise_views
 
-By default Devise will use the same views for all roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup config.scoped_views to true inside "config/initializers/devise.rb". 
+By default Devise will use the same views for all roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup config.scoped_views to true inside "config/initializers/devise.rb".
 
 After doing so you will be able to have views based on the scope like 'sessions/users/new' and 'sessions/admin/new'. If no view is found within the scope, Devise will fallback to the default view.
 

@@ -23,7 +23,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'add modules cherry pick' do
-    assert_include_modules Admin, :authenticatable, :timeoutable
+    assert_include_modules Admin, :authenticatable, :registerable, :timeoutable
   end
 
   test 'set a default value for stretches' do

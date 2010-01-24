@@ -1,0 +1,19 @@
+<h2>Sign up</h2>
+
+<%- if devise_mapping.registerable? %>
+  <% form_for resource_name, resource, :url => registration_path(resource_name) do |f| -%>
+    <%= f.error_messages %>
+    <p><%= f.label :email %></p>
+    <p><%= f.text_field :email %></p>
+
+    <p><%= f.label :password %></p>
+    <p><%= f.password_field :password %></p>
+
+    <p><%= f.label :password_confirmation %></p>
+    <p><%= f.password_field :password_confirmation %></p>
+
+    <p><%= f.submit "Register" %></p>
+  <% end -%>
+<% end%>
+
+<%= render :partial => "shared/devise_links" %>

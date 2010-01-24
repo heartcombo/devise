@@ -42,6 +42,26 @@ class MapRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'passwords', :action => 'update'}, {:path => 'users/password', :method => :put})
   end
 
+  test 'map new user unlock' do
+    assert_recognizes({:controller => 'unlocks', :action => 'new'}, 'users/unlock/new')
+  end
+
+  test 'map create user unlock' do
+    assert_recognizes({:controller => 'unlocks', :action => 'create'}, {:path => 'users/unlock', :method => :post})
+  end
+
+  test 'map show user unlock' do
+    assert_recognizes({:controller => 'unlocks', :action => 'show'}, {:path => 'users/unlock', :method => :get})
+  end
+
+  test 'map new user registration' do
+    assert_recognizes({:controller => 'registrations', :action => 'new'}, 'users/registration/new')
+  end
+
+  test 'map create user registration' do
+    assert_recognizes({:controller => 'registrations', :action => 'create'}, {:path => 'users/registration', :method => :post})
+  end
+
   test 'map admin session with :as option' do
     assert_recognizes({:controller => 'sessions', :action => 'new'}, {:path => 'admin_area/sign_in', :method => :get})
   end
@@ -72,4 +92,7 @@ class MapRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'unlocks', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/unblock/new')
   end
 
+  test 'map account with custom path name for registration' do
+    assert_recognizes({:controller => 'registrations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/sign_up/new')
+  end
 end

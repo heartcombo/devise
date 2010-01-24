@@ -19,6 +19,9 @@ en:
       link: "Didn't receive confirmation instructions?"
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
+    registrations:
+      link: 'Sign up'
+      signed_up: 'You have signed up successfully.'
     unlocks:
       link: "Didn't receive unlock instructions?"
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
@@ -27,3 +30,4 @@ en:
       confirmation_instructions: 'Confirmation instructions'
       reset_password_instructions: 'Reset password instructions'
       unlock_instructions: 'Unlock Instructions'
+

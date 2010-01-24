@@ -2,6 +2,10 @@
   <%= link_to t('devise.sessions.link'), new_session_path(resource_name) %><br />
 <% end -%>
 
+<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+  <%= link_to t('devise.registrations.link'), new_registration_path(resource_name) %><br />
+<% end -%>
+
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
   <%= link_to t('devise.passwords.link'), new_password_path(resource_name) %><br />
 <% end -%>

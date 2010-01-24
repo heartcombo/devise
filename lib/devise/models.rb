@@ -59,7 +59,7 @@ module Devise
       raise "You need to give at least one Devise module" if modules.empty?
       options  = modules.extract_options!
 
-      @devise_modules = modules.map(&:to_sym).uniq
+      @devise_modules = Devise::ALL & modules.map(&:to_sym).uniq
 
       Devise.orm_class.included_modules_hook(self) do
         devise_modules.each do |m|

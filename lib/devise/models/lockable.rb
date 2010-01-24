@@ -3,6 +3,20 @@ require 'devise/models/activatable'
 module Devise
   module Models
 
+    # Handles blocking a user access after a certain number of attempts.
+    # Lockable accepts two different strategies to unlock a user after it's
+    # blocked: email and time. The former will send an email to the user when
+    # the lock happens, containing a link to unlock it's account. The second
+    # will unlock the user automatically after some configured time (ie 2.hours).
+    # It's also possible to setup lockable to use both email and time strategies.
+    #
+    # Configuration:
+    #
+    #   maximum_attempts: how many attempts should be accepted before blocking the user.
+    #   unlock_strategy: unlock the user account by :time, :email or :both.
+    #   unlock_in: the time you want to lock the user after to lock happens. Only
+    #              available when unlock_strategy is :time or :both.
+    #
     module Lockable
       include Devise::Models::Activatable
 
@@ -21,13 +35,13 @@ module Devise
         end
       end
 
-      # calls lock and save the model
+      # Lock an user also saving the record.
       def lock!
         lock
         save(false)
       end
 
-      # Unlock an user by cleaning locket_at and failed_attempts
+      # Unlock an user by cleaning locket_at and failed_attempts.
       def unlock!
         if_locked do
           self.locked_at = nil
@@ -37,7 +51,7 @@ module Devise
         end
       end
 
-      # Verifies whether a user is locked or not
+      # Verifies whether a user is locked or not.
       def locked?
         locked_at && !lock_expired?
       end
@@ -47,7 +61,7 @@ module Devise
         ::DeviseMailer.deliver_unlock_instructions(self)
       end
 
-      # Resend the unlock instructions if the user is locked
+      # Resend the unlock instructions if the user is locked.
       def resend_unlock!
         if_locked do
           generate_unlock_token unless unlock_token.present?
@@ -113,7 +127,7 @@ module Devise
           end
         end
 
-        # Is the unlock enabled for the given unlock option?
+        # Is the unlock enabled for the given unlock strategy?
         def unlock_strategy_enabled?(strategy)
           [:both, strategy].include?(self.class.unlock_strategy)
         end

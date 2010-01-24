@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 1) do
         t.rememberable
         t.trackable
         t.lockable
+        t.token_authenticatable
       end
 
       t.timestamps

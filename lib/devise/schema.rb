@@ -17,6 +17,11 @@ module Devise
       apply_schema :password_salt,      String, :null => null
     end
 
+    # Creates authentication_token.
+    def token_authenticatable
+      apply_schema :authentication_token, String, :limit => 20
+    end
+
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.
     def confirmable
       apply_schema :confirmation_token,   String, :limit => 20

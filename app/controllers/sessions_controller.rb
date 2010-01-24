@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
       set_flash_message :notice, :signed_in
       sign_in_and_redirect(resource_name, resource, true)
     else
-      set_now_flash_message :alert, warden.message || :invalid
+      set_now_flash_message :alert, (warden.message || :invalid)
       build_resource
       render_with_scope :new
     end

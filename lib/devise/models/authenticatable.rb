@@ -36,7 +36,8 @@ module Devise
         end
       end
 
-      # Regenerates password salt and encrypted password each time password is set.
+      # Regenerates password salt and encrypted password each time password is set,
+      # and then trigger any "after_changed_password"-callbacks.
       def password=(new_password)
         @password = new_password
 
@@ -44,11 +45,19 @@ module Devise
           self.password_salt = self.class.encryptor_class.salt
           self.encrypted_password = password_digest(@password)
         end
+
+        ::Devise::Models.event!(self, :after_changed_password, self, self.class.name.underscore.to_sym)
       end
 
       # Verifies whether an incoming_password (ie from sign in) is the user password.
       def valid_password?(incoming_password)
-        password_digest(incoming_password) == encrypted_password
+        password_digest(incoming_password) == self.encrypted_password
+      end
+
+      # Verifies whether an +incoming_authentication_token+ (i.e. from single access URL)
+      # is the user authentication token.
+      def valid_authentication_token?(incoming_auth_token)
+        incoming_auth_token == self.authentication_token
       end
 
       # Checks if a resource is valid upon authentication.
@@ -74,7 +83,15 @@ module Devise
           self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)
         end
 
+        def password_changed?
+          !valid_password?(params[:old_password])
+        end
+
       module ClassMethods
+
+        Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
+        Devise::Models.events(self, :after_changed_password)
+
         # Authenticate a user based on configured attribute keys. Returns the
         # authenticated user if it's valid or nil. Attributes are by default
         # :email and :password, but the latter is always required.
@@ -106,7 +123,6 @@ module Devise
           find(:first, :conditions => conditions)
         end
 
-        Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
       end
     end
   end

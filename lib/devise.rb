@@ -27,21 +27,22 @@ module Devise
   end
 
   ALL = [:authenticatable, :activatable, :confirmable, :recoverable,
-         :rememberable, :validatable, :trackable, :timeoutable, :lockable]
+         :rememberable, :validatable, :trackable, :timeoutable, :lockable, :token_authenticatable]
 
   # Maps controller names to devise modules
   CONTROLLERS = {
-    :sessions => [:authenticatable],
+    :sessions => [:authenticatable, :token_authenticatable],
     :passwords => [:recoverable],
     :confirmations => [:confirmable],
     :unlocks => [:lockable]
   }
 
-  STRATEGIES  = [:rememberable, :authenticatable]
+  STRATEGIES  = [:rememberable, :token_authenticatable, :authenticatable]
+
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
   # Maps the messages types that are used in flash message.
-  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :timeout, :inactive, :locked ]
+  FLASH_MESSAGES = [ :unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked ]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {
@@ -130,6 +131,21 @@ module Devise
   # Address which sends Devise e-mails.
   mattr_accessor :mailer_sender
   @@mailer_sender
+
+  # Array of known events that should trigger a authentication token reset.
+  #
+  # == Valid events:
+  #
+  # Warden: :after_set_user, :before_logout
+  # Authenticatable: :after_changed_password
+  #
+  # Note: If set to nil, authentication token will never be reset automatically.
+  mattr_accessor :reset_authentication_token_on
+  @@reset_authentication_token_on = nil
+
+  # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
+  mattr_accessor :authentication_token_param_key
+  @@authentication_token_param_key = :auth_token
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create

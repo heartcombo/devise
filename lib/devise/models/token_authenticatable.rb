@@ -1,5 +1,4 @@
 require 'devise/strategies/token_authenticatable'
-require 'devise/hooks/token_authenticatable'
 
 module Devise
   module Models
@@ -30,13 +29,11 @@ module Devise
       end
 
       # Generate authentication token unless already exists.
-      #
       def ensure_authentication_token!
         self.reset_authentication_token!(false) if self.authentication_token.blank?
       end
 
       # Generate new authentication token (a.k.a. "single access token").
-      #
       def reset_authentication_token!(do_save = true)
         self.authentication_token = self.class.authentication_token
         self.save if do_save
@@ -44,17 +41,15 @@ module Devise
 
       # Verifies whether an +incoming_authentication_token+ (i.e. from single access URL)
       # is the user authentication token.
-      #
       def valid_authentication_token?(incoming_auth_token)
         incoming_auth_token.present? && incoming_auth_token == self.authentication_token
       end
 
       module ClassMethods
 
-        ::Devise::Models.config(self, :authentication_token_param_key, :reset_authentication_token_on)
+        ::Devise::Models.config(self, :authentication_token_param_key)
 
         # Authenticate a user based on authentication token.
-        #
         def authenticate_with_token(attributes = {})
           token = attributes[::Devise.authentication_token_param_key]
           resource = self.find_for_token_authentication(token)
@@ -70,7 +65,8 @@ module Devise
           # Find first record based on conditions given (ie by the sign in form).
           # Overwrite to add customized conditions, create a join, or maybe use a
           # namedscope to filter records while authenticating.
-          # Example:
+          #
+          # == Example:
           #
           #   def self.find_for_token_authentication(token, conditions = {})
           #     conditions = {:active => true}

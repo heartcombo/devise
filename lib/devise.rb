@@ -132,17 +132,6 @@ module Devise
   mattr_accessor :mailer_sender
   @@mailer_sender
 
-  # Array of known events that should trigger a authentication token reset.
-  #
-  # == Valid events:
-  #
-  # Warden: :after_set_user, :before_logout
-  # Authenticatable: :after_changed_password
-  #
-  # Note: If set to nil, authentication token will never be reset automatically.
-  mattr_accessor :reset_authentication_token_on
-  @@reset_authentication_token_on = nil
-
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :authentication_token_param_key
   @@authentication_token_param_key = :auth_token

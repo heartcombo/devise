@@ -45,8 +45,6 @@ module Devise
           self.password_salt = self.class.encryptor_class.salt
           self.encrypted_password = password_digest(@password)
         end
-
-        ::Devise::Models.event!(self, :after_changed_password, self, self.class.name.underscore.to_sym)
       end
 
       # Verifies whether an incoming_password (ie from sign in) is the user password.
@@ -83,14 +81,9 @@ module Devise
           self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)
         end
 
-        def password_changed?
-          !valid_password?(params[:old_password])
-        end
-
       module ClassMethods
 
         Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
-        Devise::Models.events(self, :after_changed_password)
 
         # Authenticate a user based on configured attribute keys. Returns the
         # authenticated user if it's valid or nil. Attributes are by default

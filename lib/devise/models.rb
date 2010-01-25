@@ -46,53 +46,6 @@ module Devise
       end
     end
 
-    # Creates events/hooks for Devise and for the given module.
-    #
-    #   Devise::Models.events(Devise::Authenticable, :after_changed_password, :after_timeout_hooks)
-    #
-    # The line above creates:
-    #
-    #   1) Accessor for each hook holding any callback hooks (see +Devise::Models::config+), or explicit:
-    #
-    #       Devise::Models.config(Devise::Authenticable, :after_changed_password_hooks, :after_timeout_hooks)
-    #
-    #   1) Setup module accessor hook holding any callback hooks (default fallback config that is):
-    #
-    #       Devise.after_changed_password_hooks = []
-    #       Devise.after_timeout_hooks = []
-    #
-    #   2) Callback hooks: +Devise::Authenticable.after_changed_password_hooks+ and +Devise::Authenticable.on_timeout+,
-    #       used in same manner as +Warden::Manager::after_set_user+, etc.
-    #
-    # To add the class methods you need to have a module ClassMethods defined
-    # inside the given class.
-    #
-    def self.events(mod, *events)
-      ::Devise::Models.config(mod, *events.collect { |event| :"#{event}_hooks" })
-
-      events.each do |event|
-        ::Devise.class_eval <<-METHOD, __FILE__, __LINE__
-          mattr_accessor :#{event}_hooks
-          @@#{event}_hooks = []
-
-          # Hook for changed password event.
-          def self.#{event}(options = {}, &block)
-            raise BlockNotGiven unless block_given?
-            self.#{event}_hooks << [block, options]
-          end
-        METHOD
-      end
-    end
-
-    # Triggers a named event for a Devise model instance, or more explicitly
-    # triggers all callback hooks for this event.
-    #
-    def self.event!(object, event, *args)
-      object.class.send(:"#{event}_hooks").each { |hook| hook.first.call(*args[0..hook.first.arity]) }
-    rescue
-      # raise "An invalid event was triggered: #{event}. See Devise::Models::events() for usage."
-    end
-
     # Include the chosen devise modules in your model:
     #
     #   devise :authenticatable, :confirmable, :recoverable

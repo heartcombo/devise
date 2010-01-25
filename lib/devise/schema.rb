@@ -12,9 +12,9 @@ module Devise
       null       = options[:null] || false
       encryptor  = options[:encryptor] || (respond_to?(:encryptor) ? self.encryptor : :sha1)
 
-      apply_schema :email,              String, :null => null, :limit => 100
+      apply_schema :email,              String, :null => null
       apply_schema :encrypted_password, String, :null => null, :limit => Devise::ENCRYPTORS_LENGTH[encryptor]
-      apply_schema :password_salt,      String, :null => null, :limit => 30
+      apply_schema :password_salt,      String, :null => null
     end
 
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.

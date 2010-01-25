@@ -92,15 +92,12 @@ module Devise
       self.path_prefix.count("/")
     end
 
-    # Returns the raw path using the current relative_url_root, path_prefix and as.
+    # Returns the raw path using path_prefix and as.
     def raw_path
       path_prefix + as.to_s
     end
 
-    # Returns the parsed path. If you need meta information in your path_prefix,
-    # you should overwrite this method to use it. The only information supported
-    # by default is I18n.locale.
-    #
+    # Returns the parsed path taking into account the relative url root and raw path.
     def parsed_path
       returning (ActionController::Base.relative_url_root.to_s + raw_path) do |path|
         self.class.default_url_options.each do |key, value|
@@ -108,7 +105,6 @@ module Devise
         end
       end
     end
-
 
     # Create magic predicates for verifying what module is activated by this map.
     # Example:

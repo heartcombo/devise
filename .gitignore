@@ -4,5 +4,4 @@
 coverage/*
 *.sqlite3
 rdoc/*
-devise.gemspec
 pkg

@@ -54,8 +54,8 @@ module Devise
     :bcrypt => 60
   }
 
-  # Email regex used to validate email formats. Retrieved from authlogic.
-  EMAIL_REGEX = /\A[\w\.%\+\-]+@(?:[A-Z0-9\-]+\.)+(?:[A-Z]{2,4}|museum|travel)\z/i
+  # Email regex used to validate email formats. Adapted from authlogic.
+  EMAIL_REGEX = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
 
   # Used to encrypt password. Please generate one with rake secret.
   mattr_accessor :pepper

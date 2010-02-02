@@ -133,8 +133,8 @@ module Devise
   @@mailer_sender
 
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
-  mattr_accessor :authentication_token_param_key
-  @@authentication_token_param_key = :auth_token
+  mattr_accessor :token_authentication_key
+  @@token_authentication_key = :auth_token
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create

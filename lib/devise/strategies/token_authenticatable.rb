@@ -25,9 +25,9 @@ module Devise
         # Detect authentication token in params: scoped or not.
         def authentication_token(scope)
           if params[scope]
-            params[scope][::Devise.authentication_token_param_key]
+            params[scope][mapping.to.token_authentication_key]
           else
-            params[::Devise.authentication_token_param_key]
+            params[mapping.to.token_authentication_key]
           end
         end
 

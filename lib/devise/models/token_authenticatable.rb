@@ -10,9 +10,7 @@ module Devise
     # You can overwrite configuration values by setting in globally in Devise (+Devise.setup+),
     # using devise method, or overwriting the respective instance method.
     #
-    # +authentication_token_param_key+ - Defines name of the authentication token params key. E.g. /users/sign_in?some_key=...
-    #
-    # +reset_authentication_token_on+ - Defines which callback hooks that should trigger a authentication token reset.
+    # +token_authentication_key+ - Defines name of the authentication token params key. E.g. /users/sign_in?some_key=...
     #
     # == Examples:
     #
@@ -23,20 +21,29 @@ module Devise
       def self.included(base)
         base.class_eval do
           extend ClassMethods
-
-          before_save :ensure_authentication_token!
+          before_save :ensure_authentication_token
         end
       end
 
-      # Generate authentication token unless already exists.
-      def ensure_authentication_token!
-        self.reset_authentication_token!(false) if self.authentication_token.blank?
+      # Generate new authentication token (a.k.a. "single access token").
+      def reset_authentication_token
+        self.authentication_token = self.class.authentication_token
       end
 
-      # Generate new authentication token (a.k.a. "single access token").
-      def reset_authentication_token!(do_save = true)
-        self.authentication_token = self.class.authentication_token
-        self.save if do_save
+      # Generate new authentication token and save the record.
+      def reset_authentication_token!
+        reset_authentication_token
+        self.save
+      end
+
+      # Generate authentication token unless already exists.
+      def ensure_authentication_token
+        self.reset_authentication_token if self.authentication_token.blank?
+      end
+
+      # Generate authentication token unless already exists and save the record.
+      def ensure_authentication_token!
+        self.reset_authentication_token! if self.authentication_token.blank?
       end
 
       # Verifies whether an +incoming_authentication_token+ (i.e. from single access URL)
@@ -46,12 +53,11 @@ module Devise
       end
 
       module ClassMethods
-
-        ::Devise::Models.config(self, :authentication_token_param_key)
+        ::Devise::Models.config(self, :token_authentication_key)
 
         # Authenticate a user based on authentication token.
-        def authenticate_with_token(attributes = {})
-          token = attributes[::Devise.authentication_token_param_key]
+        def authenticate_with_token(attributes)
+          token = attributes[self.token_authentication_key]
           resource = self.find_for_token_authentication(token)
           resource if resource.try(:valid_authentication_token?, token)
         end
@@ -73,8 +79,8 @@ module Devise
           #     self.find_by_authentication_token(token, :conditions => conditions)
           #   end
           #
-          def find_for_token_authentication(token, conditions = {})
-            self.find_by_authentication_token(token, :conditions => conditions)
+          def find_for_token_authentication(token)
+            self.find(:first, :conditions => { :authentication_token => token})
           end
 
       end

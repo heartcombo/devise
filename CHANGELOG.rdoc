@@ -1,3 +1,7 @@
+* enhancements
+  * Added gemspec to repo
+  * Added token authenticatable (by github.com/grimen)
+
 == 0.9.1
 
 * bug fix

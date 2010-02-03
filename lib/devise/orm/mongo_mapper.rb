@@ -20,7 +20,19 @@ module Devise
           klass.send(mod) if klass.respond_to?(mod)
         end
       end
-
+      
+      def find(*args)
+        options = args.extract_options!
+        case args.first
+          when :first
+            first(options)
+          when :all
+            all(options)
+          else
+            super
+        end
+      end
+      
       include Devise::Schema
 
       # Tell how to apply schema methods. This automatically converts DateTime

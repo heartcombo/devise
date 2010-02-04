@@ -59,7 +59,7 @@ module Devise
     # yet, but we still need to store the uri based on scope, so different scopes
     # would never use the same uri to redirect.
     def store_location!(scope)
-      session[:"#{scope}.return_to"] ||= request.request_uri if request && request.get?
+      session[:"#{scope}.return_to"] = request.request_uri if request && request.get?
     end
   end
 end

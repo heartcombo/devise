@@ -154,25 +154,42 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_contain 'You need to sign in or sign up before continuing.'
   end
 
-  test 'return to default url if no other was requested' do
+  test 'redirect to default url if no other was configured' do
     sign_in_as_user
 
     assert_template 'home/index'
-    assert_nil session[:return_to]
+    assert_nil session[:"user.return_to"]
   end
 
-  test 'return to given url after sign in' do
+  test 'redirect to requested url after sign in' do
     get users_path
     assert_redirected_to new_user_session_path(:unauthenticated => true)
     assert_equal users_path, session[:"user.return_to"]
-    follow_redirect!
 
+    follow_redirect!
     sign_in_as_user :visit => false
+
     assert_template 'users/index'
     assert_nil session[:"user.return_to"]
   end
 
-  test 'return to configured home path after sign in' do
+  test 'redirect to last requested url overwriting the stored return_to option' do
+    get expire_user_path(create_user)
+    assert_redirected_to new_user_session_path(:unauthenticated => true)
+    assert_equal expire_user_path(create_user), session[:"user.return_to"]
+
+    get users_path
+    assert_redirected_to new_user_session_path(:unauthenticated => true)
+    assert_equal users_path, session[:"user.return_to"]
+
+    follow_redirect!
+    sign_in_as_user :visit => false
+
+    assert_template 'users/index'
+    assert_nil session[:"user.return_to"]
+  end
+
+  test 'redirect to configured home path for a given scope after sign in' do
     sign_in_as_admin
     assert_equal "/admin_area/home", @request.path
   end

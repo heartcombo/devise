@@ -26,8 +26,19 @@ module Devise
     autoload :MongoMapper, 'devise/orm/mongo_mapper'
   end
 
-  ALL = [:authenticatable, :activatable, :confirmable, :recoverable,
-         :rememberable, :validatable, :trackable, :timeoutable, :lockable, :token_authenticatable]
+  ALL = []
+
+  # Authentication ones first
+  ALL.push :authenticatable, :token_authenticatable, :rememberable
+
+  # Misc after
+  ALL.push :recoverable, :validatable
+
+  # The ones which can sign out after
+  ALL.push :activatable, :confirmable, :lockable, :timeoutable
+
+  # Stats for last, so we make sure the user is really signed in
+  ALL.push :trackable
 
   # Maps controller names to devise modules
   CONTROLLERS = {

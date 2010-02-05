@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{devise}
-  s.version = "0.9.1"
+  s.version = "0.9.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-02-01}
+  s.date = %q{2010-02-05}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -75,6 +75,7 @@ Gem::Specification.new do |s|
      "lib/devise/models/recoverable.rb",
      "lib/devise/models/rememberable.rb",
      "lib/devise/models/timeoutable.rb",
+     "lib/devise/models/token_authenticatable.rb",
      "lib/devise/models/trackable.rb",
      "lib/devise/models/validatable.rb",
      "lib/devise/orm/active_record.rb",
@@ -87,6 +88,7 @@ Gem::Specification.new do |s|
      "lib/devise/strategies/authenticatable.rb",
      "lib/devise/strategies/base.rb",
      "lib/devise/strategies/rememberable.rb",
+     "lib/devise/strategies/token_authenticatable.rb",
      "lib/devise/test_helpers.rb",
      "lib/devise/version.rb"
   ]
@@ -108,6 +110,7 @@ Gem::Specification.new do |s|
      "test/integration/recoverable_test.rb",
      "test/integration/rememberable_test.rb",
      "test/integration/timeoutable_test.rb",
+     "test/integration/token_authenticatable_test.rb",
      "test/integration/trackable_test.rb",
      "test/mailers/confirmation_instructions_test.rb",
      "test/mailers/reset_password_instructions_test.rb",
@@ -119,6 +122,7 @@ Gem::Specification.new do |s|
      "test/models/recoverable_test.rb",
      "test/models/rememberable_test.rb",
      "test/models/timeoutable_test.rb",
+     "test/models/token_authenticatable_test.rb",
      "test/models/trackable_test.rb",
      "test/models/validatable_test.rb",
      "test/models_test.rb",
@@ -148,6 +152,7 @@ Gem::Specification.new do |s|
      "test/support/integration_tests_helper.rb",
      "test/support/model_tests_helper.rb",
      "test/support/test_silencer.rb",
+     "test/support/tests_helper.rb",
      "test/test_helper.rb",
      "test/test_helpers_test.rb"
   ]

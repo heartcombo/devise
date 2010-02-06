@@ -26,6 +26,9 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # config.authentication_keys = [ :email ]
 
+  # The realm used in Http Basic Authentication
+  # config.http_authentication_realm = "Application"
+
   # ==> Configuration for :confirmable
   # The time you want give to your user to confirm his account. During this time
   # he will be able to access your application without confirming. Default is nil.
@@ -93,7 +96,6 @@ Devise.setup do |config|
 
   # Configure default_url_options if you are using dynamic segments in :path_prefix
   # for devise_for.
-  #
   # config.default_url_options do
   #   { :locale => I18n.locale }
   # end

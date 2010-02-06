@@ -2,7 +2,7 @@ require 'test/test_helper'
 
 class TokenAuthenticationTest < ActionController::IntegrationTest
 
-  test 'sign in user should authenticate with valid authentication token and proper authentication token key' do
+  test 'sign in should authenticate with valid authentication token and proper authentication token key' do
     swap Devise, :token_authentication_key => :secret_token do
       sign_in_as_new_user_with_token(:auth_token_key => :secret_token)
 
@@ -13,7 +13,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
-  test 'user signing in with valid authentication token - but improper authentication token key - return to sign in form with error message' do
+  test 'signing in with valid authentication token - but improper authentication token key - return to sign in form with error message' do
     swap Devise, :token_authentication_key => :donald_duck_token do
       sign_in_as_new_user_with_token(:auth_token_key => :secret_token)
       assert_redirected_to new_user_session_path(:unauthenticated => true)
@@ -25,7 +25,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
-  test 'user signing in with invalid authentication token should return to sign in form with error message' do
+  test 'signing in with invalid authentication token should return to sign in form with error message' do
     store_translations :en, :devise => {:sessions => {:invalid_token => 'LOL, that was not a single character correct.'}} do
       sign_in_as_new_user_with_token(:auth_token => '*** INVALID TOKEN ***')
       assert_redirected_to new_user_session_path(:invalid_token => true)
@@ -40,7 +40,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
 
   private
 
-    def sign_in_as_new_user_with_token(options = {}, &block)
+    def sign_in_as_new_user_with_token(options = {})
       options[:auth_token_key] ||= Devise.token_authentication_key
       options[:auth_token]     ||= VALID_AUTHENTICATION_TOKEN
 

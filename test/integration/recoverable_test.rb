@@ -128,4 +128,14 @@ class PasswordTest < ActionController::IntegrationTest
 
     assert warden.authenticated?(:user)
   end
+
+  test 'does not sign in user automatically after changing it\'s password if it\'s not active' do
+    user = create_user(:confirm => false)
+    request_forgot_password
+    reset_password :reset_password_token => user.reload.reset_password_token
+
+    assert_redirected_to new_user_session_path(:unconfirmed => true)
+    assert !warden.authenticated?(:user)
+  end
+
 end

@@ -36,7 +36,10 @@ module Devise
 
     # Find a mapping by a given class. It takes into account single table inheritance as well.
     def self.find_by_class(klass)
-      Devise.mappings.values.find { |m| return m if klass <= m.to }
+      Devise.mappings.each_value do |mapping|
+        return mapping if klass <= mapping.to
+      end
+      nil
     end
 
     # Receives an object and find a scope for it. If a scope cannot be found,

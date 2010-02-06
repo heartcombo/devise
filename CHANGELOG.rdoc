@@ -1,4 +1,13 @@
 * enhancements
+  * Added Http Basic Authentication support
+
+== 0.9.2
+
+* bug fix
+  * Ensure inactive user cannot sign in
+  * Ensure redirect to proper url after sign up
+
+* enhancements
   * Added gemspec to repo
   * Added token authenticatable (by github.com/grimen)
 

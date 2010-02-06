@@ -26,9 +26,19 @@ module Devise
     autoload :MongoMapper, 'devise/orm/mongo_mapper'
   end
 
-  ALL = [:authenticatable, :activatable, :confirmable, :lockable, :recoverable,
-         :registerable, :rememberable, :timeoutable, :token_authenticatable,
-         :trackable, :validatable]
+  ALL = []
+
+  # Authentication ones first
+  ALL.push :authenticatable, :token_authenticatable, :rememberable
+
+  # Misc after
+  ALL.push :recoverable, :registerable, :validatable
+
+  # The ones which can sign out after
+  ALL.push :activatable, :confirmable, :lockable, :timeoutable
+
+  # Stats for last, so we make sure the user is really signed in
+  ALL.push :trackable
 
   # Maps controller names to devise modules.
   CONTROLLERS = {
@@ -45,7 +55,7 @@ module Devise
   # Path names used in routes.
   PATH_NAMES = [:sign_in, :sign_out, :password, :confirmation, :registration, :unlock]
 
-  STRATEGIES  = [:rememberable, :token_authenticatable, :authenticatable]
+  STRATEGIES  = [:rememberable, :http_authenticatable, :token_authenticatable, :authenticatable]
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
@@ -143,6 +153,10 @@ module Devise
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
+
+  # The realm used in Http Basic Authentication
+  mattr_accessor :http_authentication_realm
+  @@http_authentication_realm = "Application"
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create

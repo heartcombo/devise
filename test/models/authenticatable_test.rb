@@ -119,7 +119,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
 
   test 'should use authentication keys to retrieve users' do
     swap Devise, :authentication_keys => [:username] do
-      user = create_user(:username => "josevalim")
+      user = create_user
       assert_nil User.authenticate(:email => user.email, :password => user.password)
       assert_not_nil User.authenticate(:username => user.username, :password => user.password)
     end

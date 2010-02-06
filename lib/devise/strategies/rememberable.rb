@@ -10,7 +10,7 @@ module Devise
 
       # A valid strategy for rememberable needs a remember token in the cookies.
       def valid?
-        super && remember_me_cookie.present?
+        remember_me_cookie.present? && mapping.to.respond_to?(:serialize_from_cookie)
       end
 
       # To authenticate a user we deserialize the cookie and attempt finding

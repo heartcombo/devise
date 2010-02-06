@@ -129,7 +129,7 @@ module Devise
       # Configure default path names, allowing the user overwrite defaults by
       # passing a hash in :path_names.
       def setup_path_names
-        [:sign_in, :sign_out, :password, :confirmation].each do |path_name|
+        [:sign_in, :sign_out, :password, :confirmation, :unlock].each do |path_name|
           @path_names[path_name] ||= path_name.to_s
         end
       end

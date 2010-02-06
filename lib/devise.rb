@@ -48,7 +48,7 @@ module Devise
     :unlocks => [:lockable]
   }
 
-  STRATEGIES  = [:rememberable, :token_authenticatable, :authenticatable]
+  STRATEGIES  = [:rememberable, :http_authenticatable, :token_authenticatable, :authenticatable]
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
@@ -146,6 +146,10 @@ module Devise
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
+
+  # The realm used in Http Basic Authentication
+  mattr_accessor :http_authentication_realm
+  @@http_authentication_realm = "Application"
 
   class << self
     # Default way to setup Devise. Run script/generate devise_install to create

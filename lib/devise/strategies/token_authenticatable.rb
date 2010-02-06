@@ -20,17 +20,16 @@ module Devise
         end
       end
 
-      private
+    private
 
-        # Detect authentication token in params: scoped or not.
-        def authentication_token(scope)
-          if params[scope]
-            params[scope][mapping.to.token_authentication_key]
-          else
-            params[mapping.to.token_authentication_key]
-          end
+      # Detect authentication token in params: scoped or not.
+      def authentication_token(scope)
+        if params[scope]
+          params[scope][mapping.to.token_authentication_key]
+        else
+          params[mapping.to.token_authentication_key]
         end
-
+      end
     end
   end
 end

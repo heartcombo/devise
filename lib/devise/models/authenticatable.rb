@@ -1,4 +1,5 @@
 require 'devise/strategies/authenticatable'
+require 'devise/strategies/http_authenticatable'
 
 module Devise
   module Models
@@ -82,17 +83,20 @@ module Devise
         end
 
       module ClassMethods
-
         Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
 
         # Authenticate a user based on configured attribute keys. Returns the
-        # authenticated user if it's valid or nil. Attributes are by default
-        # :email and :password, but the latter is always required.
+        # authenticated user if it's valid or nil.
         def authenticate(attributes={})
           return unless authentication_keys.all? { |k| attributes[k].present? }
           conditions = attributes.slice(*authentication_keys)
           resource = find_for_authentication(conditions)
           resource if resource.try(:valid_for_authentication?, attributes)
+        end
+
+        # Authenticate an user using http.
+        def authenticate_with_http(username, password)
+          authenticate(authentication_keys.first => username, :password => password)
         end
 
         # Returns the class for the configured encryptor.

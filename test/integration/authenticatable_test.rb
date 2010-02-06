@@ -1,8 +1,7 @@
 require 'test/test_helper'
 
-class AuthenticationTest < ActionController::IntegrationTest
-
-  test 'home should be accessible without signed in' do
+class AuthenticationSanityTest < ActionController::IntegrationTest
+  test 'home should be accessible without sign in' do
     visit '/'
     assert_response :success
     assert_template 'home/index'
@@ -76,43 +75,6 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_contain 'Welcome Admin'
   end
 
-  test 'sign in as user should not authenticate if not using proper authentication keys' do
-    swap Devise, :authentication_keys => [:username] do
-      sign_in_as_user
-      assert_not warden.authenticated?(:user)
-    end
-  end
-
-  test 'admin signing in with invalid email should return to sign in form with error message' do
-    sign_in_as_admin do
-      fill_in 'email', :with => 'wrongemail@test.com'
-    end
-
-    assert_contain 'Invalid email or password'
-    assert_not warden.authenticated?(:admin)
-  end
-
-  test 'admin signing in with invalid pasword should return to sign in form with error message' do
-    sign_in_as_admin do
-      fill_in 'password', :with => 'abcdef'
-    end
-
-    assert_contain 'Invalid email or password'
-    assert_not warden.authenticated?(:admin)
-  end
-
-  test 'error message is configurable by resource name' do
-    store_translations :en, :devise => {
-      :sessions => { :admin => { :invalid => "Invalid credentials" } }
-    } do
-      sign_in_as_admin do
-        fill_in 'password', :with => 'abcdef'
-      end
-
-      assert_contain 'Invalid credentials'
-    end
-  end
-
   test 'authenticated admin should not be able to sign as admin again' do
     sign_in_as_admin
     get new_admin_session_path
@@ -142,6 +104,45 @@ class AuthenticationTest < ActionController::IntegrationTest
 
     get root_path
     assert_not_contain 'Signed out successfully'
+  end
+end
+
+class AuthenticationTest < ActionController::IntegrationTest
+  test 'sign in should not authenticate if not using proper authentication keys' do
+    swap Devise, :authentication_keys => [:username] do
+      sign_in_as_user
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  test 'sign in with invalid email should return to sign in form with error message' do
+    sign_in_as_admin do
+      fill_in 'email', :with => 'wrongemail@test.com'
+    end
+
+    assert_contain 'Invalid email or password'
+    assert_not warden.authenticated?(:admin)
+  end
+
+  test 'sign in with invalid pasword should return to sign in form with error message' do
+    sign_in_as_admin do
+      fill_in 'password', :with => 'abcdef'
+    end
+
+    assert_contain 'Invalid email or password'
+    assert_not warden.authenticated?(:admin)
+  end
+
+  test 'error message is configurable by resource name' do
+    store_translations :en, :devise => {
+      :sessions => { :admin => { :invalid => "Invalid credentials" } }
+    } do
+      sign_in_as_admin do
+        fill_in 'password', :with => 'abcdef'
+      end
+
+      assert_contain 'Invalid credentials'
+    end
   end
 
   test 'redirect from warden shows sign in or sign up message' do
@@ -194,18 +195,19 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_equal "/admin_area/home", @request.path
   end
 
+  test 'destroyed account is signed out' do
+    sign_in_as_user
+    visit 'users/index'
+
+    User.destroy_all
+    visit 'users/index'
+    assert_redirected_to '/users/sign_in?unauthenticated=true'
+  end
+
   test 'allows session to be set by a given scope' do
     sign_in_as_user
     visit 'users/index'
     assert_equal "Cart", @controller.user_session[:cart]
-  end
-
-  test 'destroyed account is logged out' do
-    sign_in_as_user
-    visit 'users/index'
-    User.destroy_all
-    visit 'users/index'
-    assert_redirected_to '/users/sign_in?unauthenticated=true'
   end
 
   test 'renders the scoped view if turned on and view is available' do

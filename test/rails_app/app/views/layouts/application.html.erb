@@ -7,8 +7,12 @@
   <body>
     <div id="container">
       <%- flash.each do |name, msg| -%>
-        <%= content_tag :div, msg, :id => "flash_#{name}" %>
+        <%= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String) %>
       <%- end -%>
+
+      <% if user_signed_in? -%>
+        <p>Hello User! You are signed in!</p>
+      <% end -%>
 
       <%= yield %>
     </div>

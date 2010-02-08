@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def new
     Devise::FLASH_MESSAGES.each do |message|
       set_now_flash_message :alert, message if params.try(:[], message) == "true"
-    end
+    end unless flash[:"#{resource_name}.signed_up"]
     super
   end
 

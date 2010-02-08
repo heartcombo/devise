@@ -6,7 +6,7 @@ module Devise
     # Redirects to sign_in page if it's not authenticated
     class Authenticatable < Base
       def valid?
-        params[scope] && params[scope][:password].present? && mapping.to.respond_to?(:authenticate)
+        valid_controller? && valid_params? && mapping.to.respond_to?(:authenticate)
       end
 
       # Authenticate a user based on email and password params, returning to warden
@@ -19,6 +19,16 @@ module Devise
           fail!(:invalid)
         end
       end
+
+      protected
+
+        def valid_controller?
+          params[:controller] == 'sessions'
+        end
+
+        def valid_params?
+          params[scope] && params[scope][:password].present?
+        end
     end
   end
 end

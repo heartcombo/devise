@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
     :class_name => "User", :requirements => { :extra => 'value' }, :path_names => {
       :sign_in => 'login', :sign_out => 'logout',
       :password => 'secret', :confirmation => 'verification',
-      :unlock => 'unblock', :registration => 'sign_up'
+      :unlock => 'unblock', :sign_up => 'register'
     }
 
   map.resources :users, :only => [:index], :member => { :expire => :get }

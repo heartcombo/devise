@@ -63,22 +63,22 @@ class MappingTest < ActiveSupport::TestCase
 
   test 'return default path names' do
     mapping = Devise.mappings[:user]
-    assert_equal 'sign_in', mapping.path_names[:sign_in]
-    assert_equal 'sign_out', mapping.path_names[:sign_out]
-    assert_equal 'password', mapping.path_names[:password]
+    assert_equal 'sign_in',      mapping.path_names[:sign_in]
+    assert_equal 'sign_out',     mapping.path_names[:sign_out]
+    assert_equal 'password',     mapping.path_names[:password]
     assert_equal 'confirmation', mapping.path_names[:confirmation]
-    assert_equal 'registration', mapping.path_names[:registration]
-    assert_equal 'unlock', mapping.path_names[:unlock]
+    assert_equal 'sign_up', mapping.path_names[:sign_up]
+    assert_equal 'unlock',       mapping.path_names[:unlock]
   end
 
   test 'allow custom path names to be given' do
     mapping = Devise.mappings[:manager]
-    assert_equal 'login', mapping.path_names[:sign_in]
-    assert_equal 'logout', mapping.path_names[:sign_out]
-    assert_equal 'secret', mapping.path_names[:password]
+    assert_equal 'login',        mapping.path_names[:sign_in]
+    assert_equal 'logout',       mapping.path_names[:sign_out]
+    assert_equal 'secret',       mapping.path_names[:password]
     assert_equal 'verification', mapping.path_names[:confirmation]
-    assert_equal 'sign_up', mapping.path_names[:registration]
-    assert_equal 'unblock', mapping.path_names[:unlock]
+    assert_equal 'register',     mapping.path_names[:sign_up]
+    assert_equal 'unblock',      mapping.path_names[:unlock]
   end
 
   test 'has an empty path as default path prefix' do

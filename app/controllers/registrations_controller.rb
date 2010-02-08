@@ -7,14 +7,9 @@ class RegistrationsController < ApplicationController
     self.resource = resource_class.new(params[resource_name])
 
     if resource.save
-      # Attempt to sign the resource in. When there is no other thing blocking
-      # the resource (ie confirmations), then the resource will be signed in,
-      # otherwise the specific message is shown and the resource will be
-      # redirected to the sign in page.
-      sign_in(resource_name, resource)
-      # At this time the resource has signed in and no hook has signed it out.
+      flash[:"#{resource_name}.signed_up"] = true
       set_flash_message :notice, :signed_up
-      sign_in_and_redirect(resource_name, resource, true)
+      sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :new
     end

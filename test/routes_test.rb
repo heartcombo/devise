@@ -55,11 +55,11 @@ class MapRoutingTest < ActionController::TestCase
   end
 
   test 'map new user registration' do
-    assert_recognizes({:controller => 'registrations', :action => 'new'}, 'users/registration/new')
+    assert_recognizes({:controller => 'registrations', :action => 'new'}, 'users/sign_up')
   end
 
   test 'map create user registration' do
-    assert_recognizes({:controller => 'registrations', :action => 'create'}, {:path => 'users/registration', :method => :post})
+    assert_recognizes({:controller => 'registrations', :action => 'create'}, {:path => 'users/sign_up', :method => :post})
   end
 
   test 'map admin session with :as option' do
@@ -93,6 +93,6 @@ class MapRoutingTest < ActionController::TestCase
   end
 
   test 'map account with custom path name for registration' do
-    assert_recognizes({:controller => 'registrations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/sign_up/new')
+    assert_recognizes({:controller => 'registrations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/register')
   end
 end

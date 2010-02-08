@@ -118,7 +118,10 @@ module ActionController::Routing
         end
 
         def registerable(routes, mapping)
-          routes.resource :registration, :only => [:new, :create], :as => mapping.path_names[:registration]
+          routes.with_options(:controller => 'registrations', :name_prefix => nil) do |session|
+            session.send(:"new_#{mapping.name}_registration", mapping.path_names[:sign_up],  :action => 'new',     :conditions => { :method => :get })
+            session.send(:"#{mapping.name}_registration",     mapping.path_names[:sign_up],  :action => 'create',  :conditions => { :method => :post })
+          end
         end
     end
   end

@@ -31,15 +31,15 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'password confirmation', :with => 'new_user123'
     click_button 'Sign up'
 
-    assert_equal true, @controller.send(:flash)[:"user.signed_up"]
+    assert_equal true, @controller.send(:flash)[:"user_signed_up"]
     assert_equal "You have signed up successfully.", @controller.send(:flash)[:notice]
 
     # For some reason flash is not being set correctly, so instead of getting the
     # "signed_up" message we get the unconfirmed one. Seems to be an issue with
     # the internal redirect by the hook and the tests.
-#    follow_redirect!
-#    assert_contain 'You have signed up successfully.'
-#    assert_not_contain 'confirm your account'
+    # follow_redirect!
+    # assert_contain 'You have signed up successfully.'
+    # assert_not_contain 'confirm your account'
 
     assert_not warden.authenticated?(:user)
 

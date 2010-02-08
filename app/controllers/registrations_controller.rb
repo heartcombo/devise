@@ -7,7 +7,7 @@ class RegistrationsController < ApplicationController
     self.resource = resource_class.new(params[resource_name])
 
     if resource.save
-      flash[:"#{resource_name}.signed_up"] = true
+      flash[:"#{resource_name}_signed_up"] = true
       set_flash_message :notice, :signed_up
       sign_in_and_redirect(resource_name, resource)
     else

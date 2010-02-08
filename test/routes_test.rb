@@ -59,7 +59,19 @@ class MapRoutingTest < ActionController::TestCase
   end
 
   test 'map create user registration' do
-    assert_recognizes({:controller => 'registrations', :action => 'create'}, {:path => 'users/sign_up', :method => :post})
+    assert_recognizes({:controller => 'registrations', :action => 'create'}, {:path => 'users', :method => :post})
+  end
+
+  test 'map edit user registration' do
+    assert_recognizes({:controller => 'registrations', :action => 'edit'}, {:path => 'users/edit', :method => :get})
+  end
+
+  test 'map update user registration' do
+    assert_recognizes({:controller => 'registrations', :action => 'update'}, {:path => 'users', :method => :put})
+  end
+
+  test 'map destroy user registration' do
+    assert_recognizes({:controller => 'registrations', :action => 'destroy'}, {:path => 'users', :method => :delete})
   end
 
   test 'map admin session with :as option' do

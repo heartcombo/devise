@@ -65,11 +65,12 @@ module Devise
       @as    = (options.delete(:as) || name).to_sym
       @klass = (options.delete(:class_name) || name.to_s.classify).to_s
       @name  = (options.delete(:scope) || name.to_s.singularize).to_sym
-      @path_names = options.delete(:path_names) || {}
-      @path_prefix = "/#{options.delete(:path_prefix)}/".squeeze("/")
+
+      @path_prefix   = "/#{options.delete(:path_prefix)}/".squeeze("/")
       @route_options = options || {}
 
-      setup_path_names
+      @path_names = Hash.new { |h,k| h[k] = k.to_s }
+      @path_names.merge!(options.delete(:path_names) || {})
     end
 
     # Return modules for the mapping.
@@ -126,15 +127,5 @@ module Devise
       end
     end
     Devise::Mapping.register *ALL
-
-    private
-
-      # Configure default path names, allowing the user overwrite defaults by
-      # passing a hash in :path_names.
-      def setup_path_names
-        Devise::PATH_NAMES.each do |path_name|
-          @path_names[path_name] ||= path_name.to_s
-        end
-      end
   end
 end

@@ -88,8 +88,8 @@ module ActionController::Routing
           route_options = mapping.route_options.merge(:path_prefix => mapping.raw_path, :name_prefix => "#{mapping.name}_")
 
           with_options(route_options) do |routes|
-            mapping.for.each do |strategy|
-              send(strategy, routes, mapping) if self.respond_to?(strategy, true)
+            mapping.for.each do |mod|
+              send(mod, routes, mapping) if self.respond_to?(mod, true)
             end
           end
         end
@@ -118,10 +118,7 @@ module ActionController::Routing
         end
 
         def registerable(routes, mapping)
-          routes.with_options(:controller => 'registrations', :name_prefix => nil) do |session|
-            session.send(:"new_#{mapping.name}_registration", mapping.path_names[:sign_up],  :action => 'new',     :conditions => { :method => :get })
-            session.send(:"#{mapping.name}_registration",     mapping.path_names[:sign_up],  :action => 'create',  :conditions => { :method => :post })
-          end
+          routes.resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => mapping.raw_path[1..-1], :path_prefix => nil, :path_names => { :new => mapping.path_names[:sign_up] }
         end
     end
   end

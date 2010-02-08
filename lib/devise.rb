@@ -51,9 +51,6 @@ module Devise
   # Routes for generating url helpers.
   ROUTES = [:session, :password, :confirmation, :registration, :unlock]
 
-  # Path names used in routes.
-  PATH_NAMES = [:sign_in, :sign_out, :sign_up, :password, :confirmation, :unlock]
-
   STRATEGIES  = [:rememberable, :http_authenticatable, :token_authenticatable, :authenticatable]
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']

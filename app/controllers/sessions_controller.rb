@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
       sign_in_and_redirect(resource_name, resource, true)
     else
       set_now_flash_message :alert, (warden.message || :invalid)
-      clean_up_password_methods(build_resource)
+      clean_up_passwords(build_resource)
       render_with_scope :new
     end
   end
@@ -39,9 +39,7 @@ class SessionsController < ApplicationController
     flash[:"#{resource_name}_signed_up"]
   end
 
-  def clean_up_password_methods(object)
-    [:password=, :password_confirmation=].each do |method|
-      object.send(method, nil) if object.respond_to?(method)
-    end
+  def clean_up_passwords(object)
+    object.clean_up_passwords if object.respond_to?(:clean_up_passwords)
   end
 end

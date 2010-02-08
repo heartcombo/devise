@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{devise}
-  s.version = "0.9.2"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-02-05}
+  s.date = %q{2010-02-08}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "TODO",
      "app/controllers/confirmations_controller.rb",
      "app/controllers/passwords_controller.rb",
+     "app/controllers/registrations_controller.rb",
      "app/controllers/sessions_controller.rb",
      "app/controllers/unlocks_controller.rb",
      "app/models/devise_mailer.rb",
@@ -33,6 +34,8 @@ Gem::Specification.new do |s|
      "app/views/devise_mailer/unlock_instructions.html.erb",
      "app/views/passwords/edit.html.erb",
      "app/views/passwords/new.html.erb",
+     "app/views/registrations/edit.html.erb",
+     "app/views/registrations/new.html.erb",
      "app/views/sessions/new.html.erb",
      "app/views/shared/_devise_links.erb",
      "app/views/unlocks/new.html.erb",
@@ -49,7 +52,6 @@ Gem::Specification.new do |s|
      "generators/devise_views/devise_views_generator.rb",
      "init.rb",
      "lib/devise.rb",
-     "lib/devise/controllers/common.rb",
      "lib/devise/controllers/helpers.rb",
      "lib/devise/controllers/internal_helpers.rb",
      "lib/devise/controllers/url_helpers.rb",
@@ -73,6 +75,7 @@ Gem::Specification.new do |s|
      "lib/devise/models/confirmable.rb",
      "lib/devise/models/lockable.rb",
      "lib/devise/models/recoverable.rb",
+     "lib/devise/models/registerable.rb",
      "lib/devise/models/rememberable.rb",
      "lib/devise/models/timeoutable.rb",
      "lib/devise/models/token_authenticatable.rb",
@@ -87,6 +90,7 @@ Gem::Specification.new do |s|
      "lib/devise/schema.rb",
      "lib/devise/strategies/authenticatable.rb",
      "lib/devise/strategies/base.rb",
+     "lib/devise/strategies/http_authenticatable.rb",
      "lib/devise/strategies/rememberable.rb",
      "lib/devise/strategies/token_authenticatable.rb",
      "lib/devise/test_helpers.rb",
@@ -106,8 +110,10 @@ Gem::Specification.new do |s|
      "test/failure_app_test.rb",
      "test/integration/authenticatable_test.rb",
      "test/integration/confirmable_test.rb",
+     "test/integration/http_authenticatable_test.rb",
      "test/integration/lockable_test.rb",
      "test/integration/recoverable_test.rb",
+     "test/integration/registerable_test.rb",
      "test/integration/rememberable_test.rb",
      "test/integration/timeoutable_test.rb",
      "test/integration/token_authenticatable_test.rb",
@@ -150,7 +156,6 @@ Gem::Specification.new do |s|
      "test/routes_test.rb",
      "test/support/assertions_helper.rb",
      "test/support/integration_tests_helper.rb",
-     "test/support/model_tests_helper.rb",
      "test/support/test_silencer.rb",
      "test/support/tests_helper.rb",
      "test/test_helper.rb",

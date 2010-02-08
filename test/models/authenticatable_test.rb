@@ -130,28 +130,28 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_not_nil Admin.authenticate(:email => admin.email, :password => admin.password)
   end
 
-  test 'should respond to old password' do
-    assert new_user.respond_to?(:old_password)
+  test 'should respond to current password' do
+    assert new_user.respond_to?(:current_password)
   end
 
   test 'should update password with valid old password' do
     user = create_user
-    assert user.update_with_password(:old_password => '123456',
+    assert user.update_with_password(:current_password => '123456',
       :password => 'pass321', :password_confirmation => 'pass321')
     assert user.reload.valid_password?('pass321')
   end
 
   test 'should add an error to old password when it is invalid' do
     user = create_user
-    assert_not user.update_with_password(:old_password => 'other',
+    assert_not user.update_with_password(:current_password => 'other',
       :password => 'pass321', :password_confirmation => 'pass321')
     assert user.reload.valid_password?('123456')
-    assert_match /invalid/, user.errors[:old_password]
+    assert_match /invalid/, user.errors[:current_password]
   end
 
   test 'should not update password with invalid confirmation' do
     user = create_user
-    assert_not user.update_with_password(:old_password => '123456',
+    assert_not user.update_with_password(:current_password => '123456',
       :password => 'pass321', :password_confirmation => 'other')
     assert user.reload.valid_password?('123456')
   end

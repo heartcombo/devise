@@ -32,9 +32,14 @@ module Devise
         base.class_eval do
           extend ClassMethods
 
-          attr_reader :password, :old_password
+          attr_reader :password, :current_password
           attr_accessor :password_confirmation
         end
+      end
+
+      def old_password
+        ActiveSupport::Deprecation.warn "old_password is deprecated, please use current_password instead", caller
+        @old_password
       end
 
       # Regenerates password salt and encrypted password each time password is set,
@@ -67,10 +72,12 @@ module Devise
       # Update record attributes when :old_password matches, otherwise returns
       # error on :old_password.
       def update_with_password(params={})
-        if valid_password?(params[:old_password])
+        params[:current_password] ||= params[:old_password] if params[:old_password]
+
+        if valid_password?(params[:current_password])
           update_attributes(params)
         else
-          self.class.add_error_on(self, :old_password, :invalid, false)
+          self.class.add_error_on(self, :current_password, :invalid, false)
           false
         end
       end

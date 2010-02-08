@@ -1,0 +1,24 @@
+<h2>Edit <%= resource_name.to_s.humanize %></h2>
+
+<% form_for resource_name, resource, :url => registration_path(resource_name) do |f| -%>
+  <%= f.error_messages %>
+
+  <h4>Change your settings<h4>
+  <p><%= f.label :email %></p>
+  <p><%= f.text_field :email %></p>
+
+  <h4>Change your password (leave blank if you don't want to)</h4>
+  <p><%= f.label :password %></p>
+  <p><%= f.password_field :password %></p>
+
+  <p><%= f.label :password_confirmation %></p>
+  <p><%= f.password_field :password_confirmation %></p>
+
+  <h4>We need your current password to confirm your changes</h4>
+  <p><%= f.label :current_password %></p>
+  <p><%= f.password_field :current_password %></p>
+
+  <p><%= f.submit "Update" %></p>
+<% end -%>
+
+<%= render :partial => "shared/devise_links" %>

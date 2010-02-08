@@ -1,3 +1,6 @@
+* deprecation
+  * :old_password in update_with_password is deprecated, use :current_password instead
+
 * enhancements
   * Added Registerable
   * Added Http Basic Authentication support

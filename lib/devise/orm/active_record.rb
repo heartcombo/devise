@@ -36,5 +36,6 @@ end
 
 if defined?(ActiveRecord)
   ActiveRecord::Base.extend Devise::Models
+  ActiveRecord::ConnectionAdapters::Table.send :include, Devise::Orm::ActiveRecord
   ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Orm::ActiveRecord
 end

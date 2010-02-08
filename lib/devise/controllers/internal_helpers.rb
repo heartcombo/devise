@@ -70,12 +70,9 @@ module Devise
         instance_variable_set(:"@#{resource_name}", new_resource)
       end
 
-      # Build a devise resource without setting password and password confirmation fields.
+      # Build a devise resource.
       def build_resource
-        self.resource ||= begin
-          attributes = params[resource_name].try(:except, :password, :password_confirmation)
-          resource_class.new(attributes || {})
-        end
+        self.resource ||= resource_class.new(params[resource_name] || {})
       end
 
       # Helper for use in before_filters where no authentication is required.

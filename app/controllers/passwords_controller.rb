@@ -1,8 +1,25 @@
 class PasswordsController < ApplicationController
   include Devise::Controllers::InternalHelpers
-  include Devise::Controllers::Common
 
   before_filter :require_no_authentication
+
+  # GET /resource/password/new
+  def new
+    build_resource
+    render_with_scope :new
+  end
+
+  # POST /resource/password
+  def create
+    self.resource = resource_class.send_reset_password_instructions(params[resource_name])
+
+    if resource.errors.empty?
+      set_flash_message :notice, :send_instructions
+      redirect_to new_session_path(resource_name)
+    else
+      render_with_scope :new
+    end
+  end
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
@@ -22,10 +39,4 @@ class PasswordsController < ApplicationController
       render_with_scope :edit
     end
   end
-
-  protected
-
-    def send_instructions_with
-      :send_reset_password_instructions
-    end
 end

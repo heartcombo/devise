@@ -4,7 +4,6 @@ module Devise
   autoload :TestHelpers, 'devise/test_helpers'
 
   module Controllers
-    autoload :Common, 'devise/controllers/common'
     autoload :Helpers, 'devise/controllers/helpers'
     autoload :InternalHelpers, 'devise/controllers/internal_helpers'
     autoload :UrlHelpers, 'devise/controllers/url_helpers'

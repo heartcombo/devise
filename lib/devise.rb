@@ -140,7 +140,7 @@ module Devise
 
   # Tell when to use the default scope, if one cannot be found from routes.
   mattr_accessor :use_default_scope
-  @@use_default_scope
+  @@use_default_scope = false
 
   # The default scope which is used by warden.
   mattr_accessor :default_scope
@@ -148,7 +148,7 @@ module Devise
 
   # Address which sends Devise e-mails.
   mattr_accessor :mailer_sender
-  @@mailer_sender
+  @@mailer_sender = nil
 
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :token_authentication_key

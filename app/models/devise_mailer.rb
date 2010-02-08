@@ -1,4 +1,5 @@
 class DeviseMailer < ::ActionMailer::Base
+  extend Devise::Controllers::InternalHelpers::ScopedViews
 
   # Deliver confirmation instructions when the user is created or its email is
   # updated, and also when confirmation is manually requested
@@ -31,7 +32,7 @@ class DeviseMailer < ::ActionMailer::Base
     end
 
     def render_with_scope(key, mapping, assigns)
-      if Devise.scoped_views
+      if self.class.scoped_views
         begin
           render :file => "devise_mailer/#{mapping.as}/#{key}", :body => assigns
         rescue ActionView::MissingTemplate

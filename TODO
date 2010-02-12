@@ -1,3 +1,2 @@
 * Make test run with DataMapper
-* Add Registerable support
 * Extract Activatable tests from Confirmable

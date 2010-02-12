@@ -3,7 +3,7 @@ require 'devise/strategies/token_authenticatable'
 module Devise
   module Models
     # Token Authenticatable Module, responsible for generate authentication token and validating
-    # authenticity of a user while signing in using a authentication token (say follows an URL).
+    # authenticity of a user while signing in using an authentication token (say follows an URL).
     #
     # == Configuration:
     #

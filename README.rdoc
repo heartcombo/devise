@@ -177,6 +177,8 @@ By default Devise will use the same views for all roles you have. But what if yo
 
 After doing so you will be able to have views based on the scope like 'sessions/users/new' and 'sessions/admin/new'. If no view is found within the scope, Devise will fallback to the default view.
 
+Devise uses flash messages to let users know if their login is successful or not. Devise expects your application to call 'flash[:notice]' and 'flash[:alert]' as appropriate.
+
 == I18n
 
 Devise uses flash messages with I18n with the flash keys :success and :failure. To customize your app, you can setup your locale file this way:

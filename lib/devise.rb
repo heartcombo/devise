@@ -28,7 +28,7 @@ module Devise
   ALL = []
 
   # Authentication ones first
-  ALL.push :authenticatable, :token_authenticatable, :rememberable
+  ALL.push :authenticatable, :http_authenticatable, :token_authenticatable, :rememberable
 
   # Misc after
   ALL.push :recoverable, :registerable, :validatable

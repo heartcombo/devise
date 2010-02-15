@@ -1,5 +1,4 @@
 require 'devise/strategies/authenticatable'
-require 'devise/strategies/http_authenticatable'
 
 module Devise
   module Models
@@ -118,11 +117,6 @@ module Devise
           conditions = attributes.slice(*authentication_keys)
           resource = find_for_authentication(conditions)
           resource if resource.try(:valid_for_authentication?, attributes)
-        end
-
-        # Authenticate an user using http.
-        def authenticate_with_http(username, password)
-          authenticate(authentication_keys.first => username, :password => password)
         end
 
         # Returns the class for the configured encryptor.

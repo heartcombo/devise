@@ -1,3 +1,12 @@
+== 1.0.1
+
+* enhancements
+  * HttpAuthenticatable is not added by default automatically.
+  * Avoid mass assignment error messages with current password.
+
+* bug fix
+  * Fixed encryptors autoload
+
 == 1.0.0
 
 * deprecation

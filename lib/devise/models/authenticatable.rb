@@ -86,11 +86,12 @@ module Devise
 
         params.delete(:password) if params[:password].blank?
         params.delete(:password_confirmation) if params[:password_confirmation].blank?
+        current_password = params.delete(:current_password)
 
-        result = if valid_password?(params[:current_password])
+        result = if valid_password?(current_password)
           update_attributes(params)
         else
-          message = params[:current_password].blank? ? :blank : :invalid
+          message = current_password.blank? ? :blank : :invalid
           self.class.add_error_on(self, :current_password, message, false)
           self.attributes = params
           false

@@ -145,7 +145,6 @@ module Devise
         def find_for_authentication(conditions)
           find(:first, :conditions => conditions)
         end
-
       end
     end
   end

@@ -6,7 +6,7 @@ Rails::Application.routes.draw do
   devise_for :users
   devise_for :admin, :as => 'admin_area'
   devise_for :accounts, :scope => 'manager', :path_prefix => ':locale',
-    :class_name => "User", :requirements => { :extra => 'value' }, :path_names => {
+    :class_name => "User", :path_names => {
       :sign_in => 'login', :sign_out => 'logout',
       :password => 'secret', :confirmation => 'verification',
       :unlock => 'unblock', :sign_up => 'register'

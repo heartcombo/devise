@@ -5,7 +5,7 @@ module Devise
     # Sign in an user using HTTP authentication.
     class HttpAuthenticatable < Base
       def valid?
-        http_authentication? && mapping.to.respond_to?(:authenticate_with_http)
+        request.authorization && mapping.to.respond_to?(:authenticate_with_http)
       end
 
       def authenticate!
@@ -24,16 +24,8 @@ module Devise
         decode_credentials(request).split(/:/, 2)
       end
 
-      def http_authentication
-        request.env['HTTP_AUTHORIZATION']   ||
-        request.env['X-HTTP_AUTHORIZATION'] ||
-        request.env['X_HTTP_AUTHORIZATION'] ||
-        request.env['REDIRECT_X_HTTP_AUTHORIZATION']
-      end
-      alias :http_authentication? :http_authentication
-
       def decode_credentials(request)
-        ActiveSupport::Base64.decode64(http_authentication.split(' ', 2).last || '')
+        ActiveSupport::Base64.decode64(request.authorization.split(' ', 2).last || '')
       end
 
       def custom_headers

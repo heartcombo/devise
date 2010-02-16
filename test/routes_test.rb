@@ -85,26 +85,26 @@ class MapRoutingTest < ActionController::TestCase
   end
 
   test 'map account with custom path name for session sign in' do
-    assert_recognizes({:controller => 'sessions', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/login')
+    assert_recognizes({:controller => 'sessions', :action => 'new', :locale => 'en'}, '/en/accounts/login')
   end
 
   test 'map account with custom path name for session sign out' do
-    assert_recognizes({:controller => 'sessions', :action => 'destroy', :locale => 'en', :extra => 'value'}, '/en/accounts/logout')
+    assert_recognizes({:controller => 'sessions', :action => 'destroy', :locale => 'en'}, '/en/accounts/logout')
   end
 
   test 'map account with custom path name for password' do
-    assert_recognizes({:controller => 'passwords', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/secret/new')
+    assert_recognizes({:controller => 'passwords', :action => 'new', :locale => 'en'}, '/en/accounts/secret/new')
   end
 
   test 'map account with custom path name for confirmation' do
-    assert_recognizes({:controller => 'confirmations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/verification/new')
+    assert_recognizes({:controller => 'confirmations', :action => 'new', :locale => 'en'}, '/en/accounts/verification/new')
   end
 
   test 'map account with custom path name for unlock' do
-    assert_recognizes({:controller => 'unlocks', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/unblock/new')
+    assert_recognizes({:controller => 'unlocks', :action => 'new', :locale => 'en'}, '/en/accounts/unblock/new')
   end
 
   test 'map account with custom path name for registration' do
-    assert_recognizes({:controller => 'registrations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/register')
+    assert_recognizes({:controller => 'registrations', :action => 'new', :locale => 'en'}, '/en/accounts/register')
   end
 end

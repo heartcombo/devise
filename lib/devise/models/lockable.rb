@@ -122,7 +122,7 @@ module Devise
           if locked?
             yield
           else
-            self.class.add_error_on(self, :email, :not_locked)
+            self.errors.add(:email, :not_locked)
             false
           end
         end

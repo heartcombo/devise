@@ -9,6 +9,7 @@ class LockableTest < ActiveSupport::TestCase
   test "should increment failed attempts on unsuccessful authentication" do
     user = create_user
     assert_equal 0, user.failed_attempts
+
     authenticated_user = User.authenticate(:email => user.email, :password => "anotherpassword")
     assert_equal 1, user.reload.failed_attempts
   end
@@ -56,6 +57,7 @@ class LockableTest < ActiveSupport::TestCase
     user.lock!
     assert_not_nil user.reload.locked_at
     assert_not_nil user.reload.unlock_token
+
     user.unlock!
     assert_nil user.reload.locked_at
     assert_nil user.reload.unlock_token
@@ -65,7 +67,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'should not unlock an unlocked user' do
     user = create_user
     assert_not user.unlock!
-    assert_match /not locked/, user.errors[:email]
+    assert_match "was not locked", user.errors[:email].join
   end
 
   test "new user should not be locked and should have zero failed_attempts" do
@@ -157,13 +159,13 @@ class LockableTest < ActiveSupport::TestCase
   test 'should return a new record with errors when a invalid token is given' do
     locked_user = User.unlock!(:unlock_token => 'invalid_token')
     assert locked_user.new_record?
-    assert_match /invalid/, locked_user.errors[:unlock_token]
+    assert_equal "is invalid", locked_user.errors[:unlock_token].join
   end
 
   test 'should return a new record with errors when a blank token is given' do
     locked_user = User.unlock!(:unlock_token => '')
     assert locked_user.new_record?
-    assert_match /blank/, locked_user.errors[:unlock_token]
+    assert_equal "can't be blank", locked_user.errors[:unlock_token].join
   end
 
   test 'should authenticate a unlocked user' do
@@ -188,15 +190,14 @@ class LockableTest < ActiveSupport::TestCase
 
   test 'should add error to new user email if no email was found' do
     unlock_user = User.send_unlock_instructions(:email => "invalid@email.com")
-    assert unlock_user.errors[:email]
-    assert_equal 'not found', unlock_user.errors[:email]
+    assert_equal 'not found', unlock_user.errors[:email].join
   end
 
   test 'should not be able to send instructions if the user is not locked' do
     user = create_user
     assert_not user.resend_unlock!
     assert_not user.locked?
-    assert_equal 'not locked', user.errors[:email]
+    assert_equal 'was not locked', user.errors[:email].join
   end
 
 end

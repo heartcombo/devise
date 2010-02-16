@@ -45,10 +45,7 @@ module Devise
 
     # We need to setup the environment variables and the response in the controller.
     def setup_controller_for_warden #:nodoc:
-      @request.env['action_controller.rescue.request']  = @request
-      @request.env['action_controller.rescue.response'] = @response
-      @request.env['rack.session'] = session
-      @controller.response = @response
+      @request.env['action_controller.instance'] = @controller
     end
 
     # Quick access to Warden::Proxy.

@@ -131,7 +131,7 @@ module Devise
           unless confirmed?
             yield
           else
-            self.class.add_error_on(self, :email, :already_confirmed)
+            self.errors.add(:email, :already_confirmed)
             false
           end
         end

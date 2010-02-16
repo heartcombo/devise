@@ -54,10 +54,10 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should not confirm a user already confirmed' do
     user = create_user
     assert user.confirm!
-    assert_nil user.errors[:email]
+    assert_blank user.errors[:email]
 
     assert_not user.confirm!
-    assert_match /already confirmed/, user.errors[:email]
+    assert_equal "was already confirmed", user.errors[:email].join
   end
 
   test 'should find and confirm an user automatically' do
@@ -70,13 +70,13 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should return a new record with errors when a invalid token is given' do
     confirmed_user = User.confirm!(:confirmation_token => 'invalid_confirmation_token')
     assert confirmed_user.new_record?
-    assert_match /invalid/, confirmed_user.errors[:confirmation_token]
+    assert_equal "is invalid", confirmed_user.errors[:confirmation_token].join
   end
 
   test 'should return a new record with errors when a blank token is given' do
     confirmed_user = User.confirm!(:confirmation_token => '')
     assert confirmed_user.new_record?
-    assert_match /blank/, confirmed_user.errors[:confirmation_token]
+    assert_equal "can't be blank", confirmed_user.errors[:confirmation_token].join
   end
 
   test 'should generate errors for a user email if user is already confirmed' do
@@ -85,7 +85,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.save
     confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
     assert confirmed_user.confirmed?
-    assert confirmed_user.errors[:email]
+    assert_equal "was already confirmed", confirmed_user.errors[:email].join
   end
 
   test 'should authenticate a confirmed user' do
@@ -134,7 +134,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should add error to new user email if no email was found' do
     confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
     assert confirmation_user.errors[:email]
-    assert_equal 'not found', confirmation_user.errors[:email]
+    assert_equal "not found", confirmation_user.errors[:email].join
   end
 
   test 'should generate a confirmation token before send the confirmation instructions email' do
@@ -175,7 +175,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.confirm!
     assert_not user.resend_confirmation!
     assert user.confirmed?
-    assert_equal 'already confirmed', user.errors[:email]
+    assert_equal 'was already confirmed', user.errors[:email].join
   end
 
   test 'confirm time should fallback to devise confirm in default configuration' do

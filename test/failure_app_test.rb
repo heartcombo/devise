@@ -4,7 +4,12 @@ require 'ostruct'
 class FailureTest < ActiveSupport::TestCase
 
   def call_failure(env_params={})
-    env = {'warden.options' => { :scope => :user }}.merge!(env_params)
+    env = {
+      'warden.options' => { :scope => :user },
+      'REQUEST_URI' => 'http://test.host/',
+      'REQUEST_METHOD' => 'GET',
+      'rack.session' => {}
+    }.merge!(env_params)
     Devise::FailureApp.call(env)
   end
 

@@ -100,7 +100,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
 
   test 'should authenticate a valid user with email and password and return it' do
     user = create_user
-    User.any_instance.stubs(:confirmed?).returns(true)
+    user.confirm!
     authenticated_user = User.authenticate(:email => user.email, :password => user.password)
     assert_equal authenticated_user, user
   end
@@ -146,7 +146,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_not user.update_with_password(:current_password => 'other',
       :password => 'pass321', :password_confirmation => 'pass321')
     assert user.reload.valid_password?('123456')
-    assert_match /invalid/, user.errors[:current_password]
+    assert_match "is invalid", user.errors[:current_password].join
   end
 
   test 'should add an error to current password when it is blank' do
@@ -154,7 +154,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_not user.update_with_password(:password => 'pass321',
       :password_confirmation => 'pass321')
     assert user.reload.valid_password?('123456')
-    assert_match /blank/, user.errors[:current_password]
+    assert_match "can't be blank", user.errors[:current_password].join
   end
 
   test 'should ignore password and its confirmation if they are blank' do

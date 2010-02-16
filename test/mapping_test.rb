@@ -67,7 +67,7 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal 'sign_out',     mapping.path_names[:sign_out]
     assert_equal 'password',     mapping.path_names[:password]
     assert_equal 'confirmation', mapping.path_names[:confirmation]
-    assert_equal 'sign_up', mapping.path_names[:sign_up]
+    assert_equal 'sign_up',      mapping.path_names[:sign_up]
     assert_equal 'unlock',       mapping.path_names[:unlock]
   end
 
@@ -129,20 +129,13 @@ class MappingTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should have default route options' do
-    assert_equal({}, Devise.mappings[:user].route_options)
-  end
-
-  test 'should allow passing route options to devise routes' do
-    assert_equal({ :requirements => { :extra => 'value' } }, Devise.mappings[:manager].route_options)
-  end
-
   test 'magic predicates' do
     mapping = Devise.mappings[:user]
     assert mapping.authenticatable?
     assert mapping.confirmable?
     assert mapping.recoverable?
     assert mapping.rememberable?
+    assert mapping.registerable?
 
     mapping = Devise.mappings[:admin]
     assert mapping.authenticatable?

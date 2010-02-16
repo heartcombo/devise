@@ -30,7 +30,7 @@ class ActionController::IntegrationTest
 
   def sign_in_as_user(options={}, &block)
     user = create_user(options)
-    visit new_user_session_path unless options[:visit] == false
+    get new_user_session_path unless options[:visit] == false
     fill_in 'email', :with => 'user@test.com'
     fill_in 'password', :with => '123456'
     check 'remember me' if options[:remember_me] == true
@@ -41,12 +41,16 @@ class ActionController::IntegrationTest
 
   def sign_in_as_admin(options={}, &block)
     admin = create_admin(options)
-    visit new_admin_session_path unless options[:visit] == false
+    get new_admin_session_path unless options[:visit] == false
     fill_in 'email', :with => 'admin@test.com'
     fill_in 'password', :with => '123456'
     yield if block_given?
     click_button 'Sign In'
     admin
+  end
+
+  def assert_current_path(path)
+    assert_equal path, current_url
   end
 
   # Fix assert_redirect_to in integration sessions because they don't take into

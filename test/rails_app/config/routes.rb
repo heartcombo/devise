@@ -1,4 +1,8 @@
 Rails::Application.routes.draw do
+  resources :users, :only => [:index] do
+    get :expire, :on => :member
+  end
+
   devise_for :users
   devise_for :admin, :as => 'admin_area'
   devise_for :accounts, :scope => 'manager', :path_prefix => ':locale',
@@ -7,10 +11,6 @@ Rails::Application.routes.draw do
       :password => 'secret', :confirmation => 'verification',
       :unlock => 'unblock', :sign_up => 'register'
     }
-
-  resources :users, :only => [:index] do
-    get :expire, :on => :member
-  end
 
   resources :admins, :only => [:index]
   root :to => "home#index"

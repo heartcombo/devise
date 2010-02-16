@@ -3,7 +3,7 @@ require 'test/test_helper'
 class RegistrationTest < ActionController::IntegrationTest
 
   test 'a guest admin should be able to sign in successfully' do
-    visit new_admin_session_path
+    get new_admin_session_path
     click_link 'Sign up'
 
     assert_template 'registrations/new'
@@ -21,7 +21,7 @@ class RegistrationTest < ActionController::IntegrationTest
   end
 
   test 'a guest user should be able to sign up successfully and be blocked by confirmation' do
-    visit new_user_registration_path
+    get new_user_registration_path
 
     fill_in 'email', :with => 'new_user@test.com'
     fill_in 'password', :with => 'new_user123'
@@ -46,7 +46,7 @@ class RegistrationTest < ActionController::IntegrationTest
   end
 
   test 'a guest user cannot sign up with invalid information' do
-    visit new_user_registration_path
+    get new_user_registration_path
 
     fill_in 'email', :with => 'invalid_email'
     fill_in 'password', :with => 'new_user123'
@@ -64,7 +64,7 @@ class RegistrationTest < ActionController::IntegrationTest
 
   test 'a guest should not sign up with email/password that already exists' do
     user = create_user
-    visit new_user_registration_path
+    get new_user_registration_path
 
     fill_in 'email', :with => 'user@test.com'
     fill_in 'password', :with => '123456'
@@ -78,20 +78,20 @@ class RegistrationTest < ActionController::IntegrationTest
   end
 
   test 'a guest should not be able to change account' do
-    visit edit_user_registration_path
+    get edit_user_registration_path
     follow_redirect!
     assert_template 'sessions/new'
   end
 
   test 'a signed in user should not be able to access sign up' do
     sign_in_as_user
-    visit new_user_registration_path
+    get new_user_registration_path
     assert_template 'home/index'
   end
 
   test 'a signed in user should be able to edit his account' do
     sign_in_as_user
-    visit edit_user_registration_path
+    get edit_user_registration_path
 
     fill_in 'email', :with => 'user.new@email.com'
     fill_in 'current password', :with => '123456'
@@ -105,7 +105,7 @@ class RegistrationTest < ActionController::IntegrationTest
 
   test 'a signed in user should be able to edit his password' do
     sign_in_as_user
-    visit edit_user_registration_path
+    get edit_user_registration_path
 
     fill_in 'password', :with => 'pas123'
     fill_in 'password confirmation', :with => 'pas123'
@@ -120,7 +120,7 @@ class RegistrationTest < ActionController::IntegrationTest
 
   test 'a signed in user should be able to cancel his account' do
     sign_in_as_user
-    visit edit_user_registration_path
+    get edit_user_registration_path
 
     click_link "Cancel my account"
     assert_contain "Bye! Your account was successfully cancelled. We hope to see you again soon."

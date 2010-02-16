@@ -11,16 +11,29 @@ class MockController < ApplicationController
   def path
     ''
   end
+
+  def index
+  end
+
+  def host_with_port
+    "test.host:3000"
+  end
+
+  def protocol
+    "http"
+  end
+
+  def symbolized_path_parameters
+    {}
+  end
 end
 
 class ControllerAuthenticableTest < ActionController::TestCase
   tests MockController
 
   def setup
-    @controller = MockController.new
     @mock_warden = OpenStruct.new
     @controller.env = { 'warden' => @mock_warden }
-    @controller.session = {}
   end
 
   test 'setup warden' do

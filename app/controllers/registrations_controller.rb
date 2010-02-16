@@ -34,6 +34,8 @@ class RegistrationsController < ApplicationController
       set_flash_message :notice, :updated
       redirect_to after_sign_in_path_for(self.resource)
     else
+      build_resource
+      send(:"current_#{resource_name}").reload
       render_with_scope :edit
     end
   end
@@ -50,6 +52,6 @@ class RegistrationsController < ApplicationController
     # Authenticates the current scope and dup the resource
     def authenticate_scope!
       send(:"authenticate_#{resource_name}!")
-      self.resource = send(:"current_#{resource_name}").dup
+      self.resource = send(:"current_#{resource_name}")
     end
 end

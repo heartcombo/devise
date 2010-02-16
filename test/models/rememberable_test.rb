@@ -1,11 +1,6 @@
 require 'test/test_helper'
 
 class RememberableTest < ActiveSupport::TestCase
-
-  def setup
-    Devise.remember_for = 1
-  end
-
   test 'should respond to remember_me attribute' do
     user = new_user
     assert user.respond_to?(:remember_me)
@@ -54,11 +49,13 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'valid remember token should also verify if remember is not expired' do
-    user = create_user
-    user.remember_me!
-    user.remember_created_at = 3.days.ago
-    user.save
-    assert_not user.valid_remember_token?(user.remember_token)
+    swap Devise, :remember_for => 1.day do
+      user = create_user
+      user.remember_me!
+      user.remember_created_at = 3.days.ago
+      user.save
+      assert_not user.valid_remember_token?(user.remember_token)
+    end
   end
 
   test 'serialize into cookie' do

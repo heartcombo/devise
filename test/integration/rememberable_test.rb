@@ -31,16 +31,17 @@ class RememberMeTest < ActionController::IntegrationTest
   test 'do not remember with invalid token' do
     user = create_user_and_remember('add')
     get users_path
-    assert_response :success
     assert_not warden.authenticated?(:user)
+    assert_redirected_to new_user_session_path(:unauthenticated => true)
   end
 
   test 'do not remember with token expired' do
     user = create_user_and_remember
-    Devise.remember_for = 0
-    get users_path
-    assert_response :success
-    assert_not warden.authenticated?(:user)
+    swap Devise, :remember_for => 0 do
+      get users_path
+      assert_not warden.authenticated?(:user)
+      assert_redirected_to new_user_session_path(:unauthenticated => true)
+    end
   end
 
   test 'forget the user before sign out' do

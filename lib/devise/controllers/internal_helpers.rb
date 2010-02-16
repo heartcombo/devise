@@ -8,7 +8,6 @@ module Devise
       def self.included(base)
         base.class_eval do
           extend ScopedViews
-          unloadable
 
           helper_method :resource, :scope_name, :resource_name, :resource_class, :devise_mapping, :devise_controller?
           hide_action   :resource, :scope_name, :resource_name, :resource_class, :devise_mapping, :devise_controller?
@@ -72,7 +71,7 @@ module Devise
 
       # Build a devise resource.
       def build_resource
-        self.resource ||= resource_class.new(params[resource_name] || {})
+        self.resource = resource_class.new(params[resource_name] || {})
       end
 
       # Helper for use in before_filters where no authentication is required.

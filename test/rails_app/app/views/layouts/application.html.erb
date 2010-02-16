@@ -11,7 +11,7 @@
       <%- end -%>
 
       <% if user_signed_in? -%>
-        <p>Hello User! You are signed in!</p>
+        <p>Hello User <%= current_user.email %>! You are signed in!</p>
       <% end -%>
 
       <%= yield %>

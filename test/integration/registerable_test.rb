@@ -28,15 +28,9 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'password confirmation', :with => 'new_user123'
     click_button 'Sign up'
 
-    assert_equal true, @controller.send(:flash)[:"user_signed_up"]
-    assert_equal "You have signed up successfully.", @controller.send(:flash)[:notice]
-
-    # For some reason flash is not being set correctly, so instead of getting the
-    # "signed_up" message we get the unconfirmed one. Seems to be an issue with
-    # the internal redirect by the hook and the tests.
-    # follow_redirect!
-    # assert_contain 'You have signed up successfully.'
-    # assert_not_contain 'confirm your account'
+    assert_contain 'You have signed up successfully.'
+    assert_contain 'Sign in'
+    assert_not_contain 'Confirm your account'
 
     assert_not warden.authenticated?(:user)
 
@@ -79,14 +73,13 @@ class RegistrationTest < ActionController::IntegrationTest
 
   test 'a guest should not be able to change account' do
     get edit_user_registration_path
-    follow_redirect!
-    assert_template 'sessions/new'
+    assert_redirected_to new_user_session_path(:unauthenticated => true)
   end
 
   test 'a signed in user should not be able to access sign up' do
     sign_in_as_user
     get new_user_registration_path
-    assert_template 'home/index'
+    assert_redirected_to root_path
   end
 
   test 'a signed in user should be able to edit his account' do
@@ -102,6 +95,22 @@ class RegistrationTest < ActionController::IntegrationTest
 
     assert_equal "user.new@email.com", User.first.email
   end
+
+  test 'a signed in user should not change his current user with invalid password' do
+    sign_in_as_user
+    get edit_user_registration_path
+
+    fill_in 'email', :with => 'user.new@email.com'
+    fill_in 'current password', :with => 'invalid'
+    click_button 'Update'
+
+    assert_template 'registrations/edit'
+    assert_contain 'user@test.com'
+    assert_have_selector 'form input[value="user.new@email.com"]'
+
+    assert_equal "user@test.com", User.first.email
+  end
+
 
   test 'a signed in user should be able to edit his password' do
     sign_in_as_user
@@ -122,7 +131,7 @@ class RegistrationTest < ActionController::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    click_link "Cancel my account"
+    click_link "Cancel my account", :method => :delete
     assert_contain "Bye! Your account was successfully cancelled. We hope to see you again soon."
 
     assert User.all.empty?

@@ -1,6 +1,6 @@
 module Warden::Mixins::Common
   def request
-    @request ||= env['action_controller.rescue.request']
+    @request ||= ActionDispatch::Request.new(env)
   end
 
   def reset_session!
@@ -9,7 +9,7 @@ module Warden::Mixins::Common
   end
 
   def response
-    @response ||= env['action_controller.rescue.response']
+    @response ||= env['action_controller.instance'].response
   end
 end
 

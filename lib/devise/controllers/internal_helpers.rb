@@ -117,10 +117,10 @@ module Devise
           begin
             render :template => "#{controller_name}/#{devise_mapping.as}/#{action}"
           rescue ActionView::MissingTemplate
-            render action, :controller => controller_name
+            render :template => "#{controller_name}/#{action}"
           end
         else
-          render action, :controller => controller_name
+          render :template => "#{controller_name}/#{action}"
         end
       end
 

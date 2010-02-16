@@ -1,15 +1,10 @@
-require 'rubygems'
-
 ENV["RAILS_ENV"] = "test"
 DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
 
 puts "\n==> Devise.orm = #{DEVISE_ORM.inspect}"
-require File.join(File.dirname(__FILE__), 'orm', DEVISE_ORM.to_s)
+require File.expand_path("../orm/#{DEVISE_ORM}", __FILE__)
 
-require 'webrat'
-require 'mocha'
-
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+require "mocha"
 
 ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.perform_deliveries = true
@@ -19,3 +14,5 @@ Webrat.configure do |config|
   config.mode = :rails
   config.open_error_files = false
 end
+
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}

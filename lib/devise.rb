@@ -1,4 +1,18 @@
 module Devise
+  class Engine < ::Rails::Engine
+    engine_name :devise
+
+    config.after_initialize do
+      require "devise/orm/#{Devise.orm}"
+
+      # Adds Warden Manager to Rails middleware stack, configuring default devise
+      # strategy and also the failure app.
+      config.middleware.use Warden::Manager do |config|
+        Devise.configure_warden(config)
+      end
+    end
+  end
+
   autoload :FailureApp, 'devise/failure_app'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'

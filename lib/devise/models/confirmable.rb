@@ -46,7 +46,7 @@ module Devise
         unless_confirmed do
           self.confirmation_token = nil
           self.confirmed_at = Time.now
-          save(false)
+          save(:validate => false)
         end
       end
 
@@ -57,7 +57,7 @@ module Devise
 
       # Send confirmation instructions by email
       def send_confirmation_instructions
-        ::DeviseMailer.deliver_confirmation_instructions(self)
+        ::DeviseMailer.confirmation_instructions(self).deliver
       end
 
       # Remove confirmation date and send confirmation instructions, to ensure
@@ -66,7 +66,7 @@ module Devise
       def resend_confirmation!
         unless_confirmed do
           generate_confirmation_token
-          save(false)
+          save(:validate => false)
           send_confirmation_instructions
         end
       end

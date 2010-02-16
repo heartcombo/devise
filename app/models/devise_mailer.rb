@@ -28,18 +28,20 @@ class DeviseMailer < ::ActionMailer::Base
       recipients   record.email
       sent_on      Time.now
       content_type 'text/html'
-      body         render_with_scope(key, mapping, mapping.name => record, :resource => record)
+      
+      @resource = instance_variable_set("@#{mapping.name}", record)
+      render_with_scope(key, mapping)
     end
 
-    def render_with_scope(key, mapping, assigns)
+    def render_with_scope(key, mapping)
       if self.class.scoped_views
         begin
-          render :file => "devise_mailer/#{mapping.as}/#{key}", :body => assigns
+          render :file => "devise_mailer/#{mapping.as}/#{key}"
         rescue ActionView::MissingTemplate
-          render :file => "devise_mailer/#{key}", :body => assigns
+          render :file => "devise_mailer/#{key}"
         end
       else
-        render :file => "devise_mailer/#{key}", :body => assigns
+        render :file => "devise_mailer/#{key}"
       end
     end
 

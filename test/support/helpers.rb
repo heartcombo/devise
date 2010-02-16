@@ -7,15 +7,13 @@ class ActiveSupport::TestCase
 
   def store_translations(locale, translations, &block)
     begin
-      I18n.backend.store_translations locale, translations
+      I18n.backend.store_translations(locale, translations)
       yield
     ensure
       I18n.reload!
     end
   end
 
-  # Helpers for creating new users
-  #
   def generate_unique_email
     @@email_count ||= 0
     @@email_count += 1
@@ -35,5 +33,20 @@ class ActiveSupport::TestCase
 
   def create_user(attributes={})
     User.create!(valid_attributes(attributes))
+  end
+
+  # Execute the block setting the given values and restoring old values after
+  # the block is executed.
+  def swap(object, new_values)
+    old_values = {}
+    new_values.each do |key, value|
+      old_values[key] = object.send key
+      object.send :"#{key}=", value
+    end
+    yield
+  ensure
+    old_values.each do |key, value|
+      object.send :"#{key}=", value
+    end
   end
 end

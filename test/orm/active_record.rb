@@ -1,9 +1,8 @@
-require File.join(File.dirname(__FILE__), '..', 'rails_app', 'config', 'environment')
-require 'test_help'
+require File.expand_path('../../rails_app/config/environment', __FILE__)
+require 'rails/test_help'
 
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = Logger.new(nil)
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
 ActiveRecord::Schema.define(:version => 1) do
   [:users, :admins, :accounts].each do |table|

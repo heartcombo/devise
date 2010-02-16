@@ -13,6 +13,6 @@ Warden::Manager.after_set_user :except => :fetch do |record, warden, options|
     record.sign_in_count ||= 0
     record.sign_in_count += 1
 
-    record.save(false)
+    record.save(:validate => false)
   end
 end

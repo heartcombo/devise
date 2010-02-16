@@ -44,7 +44,7 @@ module Devise
       def remember_me!
         self.remember_token = Devise.friendly_token
         self.remember_created_at = Time.now.utc
-        save(false)
+        save(:validate => false)
       end
 
       # Removes the remember token only if it exists, and save the record
@@ -53,7 +53,7 @@ module Devise
         if remember_token
           self.remember_token = nil
           self.remember_created_at = nil
-          save(false)
+          save(:validate => false)
         end
       end
 

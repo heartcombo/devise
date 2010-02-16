@@ -38,7 +38,7 @@ module Devise
       # Lock an user also saving the record.
       def lock!
         lock
-        save(false)
+        save(:validate => false)
       end
 
       # Unlock an user by cleaning locket_at and failed_attempts.
@@ -47,7 +47,7 @@ module Devise
           self.locked_at = nil
           self.failed_attempts = 0
           self.unlock_token = nil
-          save(false)
+          save(:validate => false)
         end
       end
 
@@ -58,14 +58,14 @@ module Devise
 
       # Send unlock instructions by email
       def send_unlock_instructions
-        ::DeviseMailer.deliver_unlock_instructions(self)
+        ::DeviseMailer.unlock_instructions(self).deliver
       end
 
       # Resend the unlock instructions if the user is locked.
       def resend_unlock!
         if_locked do
           generate_unlock_token unless unlock_token.present?
-          save(false)
+          save(:validate => false)
           send_unlock_instructions
         end
       end
@@ -96,7 +96,7 @@ module Devise
           self.failed_attempts += 1
           lock if failed_attempts > self.class.maximum_attempts
         end
-        save(false) if changed?
+        save(:validate => false) if changed?
         result
       end
 

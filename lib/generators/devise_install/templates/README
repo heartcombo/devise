@@ -11,8 +11,9 @@ Some setup you must do manually if you haven't yet:
      This is a required Rails configuration. In production is must be the
      actual host of your application
 
-  2. Ensure you have defined root_url to *something* in your config/routes.rb:
+  2. Ensure you have defined root_url to *something* in your config/routes.rb.
+     For example:
 
-       map.root :controller => 'home'
+       root :to => "home#index"
 
 ===============================================================================

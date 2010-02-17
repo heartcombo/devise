@@ -30,17 +30,13 @@ Devise is based on Warden (http://github.com/hassox/warden), a Rack Authenticati
 
 == Installation
 
-All gems are on gemcutter, so you need to add gemcutter to your sources if you haven't yet:
-
-  sudo gem sources -a http://gemcutter.org/
-
-Install warden gem if you don't have it installed (requires 0.6.4 or higher):
+Install warden gem if you don't have it installed:
 
   sudo gem install warden
 
 Install devise gem:
 
-  sudo gem install devise
+  sudo gem install devise --version=1.0.1
 
 Configure warden and devise gems inside your app:
 
@@ -54,6 +50,10 @@ Run the generator:
 And you're ready to go. The generator will install an initializer which describes ALL Devise's configuration options, so be sure to take a look at it and the documentation as well:
 
   http://rdoc.info/projects/plataformatec/devise
+
+If you want to use Devise with bundler on Rails 2.3, you need to follow the instructions here:
+
+  http://github.com/carlhuda/bundler/issues/issue/83
 
 == Basic Usage
 

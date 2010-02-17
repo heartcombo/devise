@@ -134,9 +134,7 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    store_translations :en, :devise => {
-      :sessions => { :admin => { :invalid => "Invalid credentials" } }
-    } do
+    store_translations :en, :devise => { :sessions => { :admin => { :invalid => "Invalid credentials" } } } do
       sign_in_as_admin do
         fill_in 'password', :with => 'abcdef'
       end
@@ -210,6 +208,7 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_equal "Cart", @controller.user_session[:cart]
   end
 
+  # Scoped views
   test 'renders the scoped view if turned on and view is available' do
     swap Devise, :scoped_views => true do
       assert_raise Webrat::NotFoundError do
@@ -249,6 +248,24 @@ class AuthenticationTest < ActionController::IntegrationTest
     end
   end
 
+  # Default scope
+  test 'uses the mapping from the default scope if specified' do
+    swap Devise, :use_default_scope => true do
+      get '/sign_in'
+      assert_response :ok
+      assert_contain 'Sign in'
+    end
+  end
+
+  # Custom controller
+  test 'uses the custom controller with the custom controller view' do
+    get '/admin_area/sign_in'
+    assert_contain 'Sign in'
+    assert_contain 'Welcome to "sessions" controller!'
+    assert_contain 'Welcome to "sessions/new" view!'
+  end
+
+  # Access
   test 'render 404 on roles without permission' do
     get '/admin_area/password/new', {}, "action_dispatch.show_exceptions" => true
     assert_response :not_found
@@ -259,13 +276,5 @@ class AuthenticationTest < ActionController::IntegrationTest
     get '/sign_in', {}, "action_dispatch.show_exceptions" => true
     assert_response :not_found
     assert_not_contain 'Sign in'
-  end
-
-  test 'uses the mapping from the default scope if specified' do
-    swap Devise, :use_default_scope => true do
-      get '/sign_in'
-      assert_response :ok
-      assert_contain 'Sign in'
-    end
   end
 end

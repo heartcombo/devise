@@ -42,16 +42,16 @@ Install devise gem:
 
   sudo gem install devise
 
-Configure warden and devise gems inside your app:
+Configure warden and devise gems inside your gemfile:
 
-  config.gem 'warden'
-  config.gem 'devise'
+  gem 'warden'
+  gem 'devise'
 
 Run the generator:
 
-	ruby script/generate devise_install
+	rails generate devise_install
 
-And you're ready to go. The generator will install an initializer which describes ALL Devise's configuration options, so be sure to take a look at it and the documentation as well:
+And you're ready to go. The generator will install an initializer which describes ALL Devise's configuration options, so be sure to take a look at it and at the documentation as well:
 
   http://rdoc.info/projects/plataformatec/devise
 
@@ -82,13 +82,13 @@ Remember that Devise don't rely on _attr_accessible_ or _attr_protected_ inside 
 
 The next setup after setting up your model is to configure your routes. You do this by opening up your config/routes.rb and adding:
 
-  map.devise_for :users
+  devise_for :users
 
 This is going to look inside you User model and create a set of needed routes (you can see them by running `rake routes`).
 
 There are also some options available for configuring your routes, as :class_name (to set the class for that route), :path_prefix, :as and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
 
-  map.devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock' }
+  devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock' }
 
 Be sure to check devise_for documentation for detailed description.
 
@@ -114,7 +114,7 @@ You have also access to the session for this scope:
 
 After signing in a user, confirming it's account or updating it's password, devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
 
-  map.root :controller => 'home'
+  root :to => "home"
 
 You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize better your redirect hooks.
 
@@ -137,7 +137,7 @@ Devise let's you setup as many roles as you want, so let's say you already have 
   devise :authenticatable, :trackable, :timeoutable, :lockable
 
   # Inside your routes
-  map.devise_for :admin
+  devise_for :admin
 
   # Inside your protected controller
   before_filter :authenticate_admin!
@@ -151,33 +151,48 @@ Devise let's you setup as many roles as you want, so let's say you already have 
 
 Devise comes with some generators to help you start:
 
-  ruby script/generate devise_install
+  rails generate devise_install
 
 This will generate an initializer, with a description of all configuration values. You can also generate models through:
 
-  ruby script/generate devise Model
+  rails generate devise Model
 
 A model configured with all devise modules and attr_accessible for default fields will be created. The generator will also create the migration and configure your routes for devise.
 
 == Model configuration
 
-The devise method in your models also accept some options to configure its modules. For example, you can chose which encryptor to use in authenticatable:
+The devise method in your models also accept some options to configure its modules. For example, you can chose which encryptor to use in authenticatable simply doing:
 
   devise :authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
 
-Besides :encryptor, you can provide :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and others. All those are describer in the initializer created when you invoke the devise_install generator describer above.
+Besides :encryptor, you can provide :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and others. All those are described in the initializer created when you invoke the devise_install generator describer above.
 
-== Views
+== Configuring controllers and views
 
-Since devise is an engine, it has all default views inside the gem. They are good to get you started, but you will want to customize them at some point. And Devise has a generator to make copy them all to your application:
+One of Devise goals is to help you bootstrap your application with authentication really fast. Another goal is to not be in your way when you need to customize it.
 
-  ruby script/generate devise_views
+Since devise is an engine, it has all default views inside the gem. They are good to get you started, but you will want to customize them at some point. And Devise has a generator to copy them all to your application:
 
-By default Devise will use the same views for all roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup config.scoped_views to true inside "config/initializers/devise.rb".
+  rails generate devise_views
 
-After doing so you will be able to have views based on the scope like 'users/sessions/new' and 'admin/sessions/new'. If no view is found within the scope, Devise will fallback to the default view.
+If you have more than one role in your application, you will notice that Devise uses the same views for all roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup config.scoped_views to true inside "config/initializers/devise.rb".
 
-Devise uses flash messages to let users know if their login is successful or not. Devise expects your application to call 'flash[:notice]' and 'flash[:alert]' as appropriate.
+After doing so you will be able to have views based on the scope like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will fallback to the default view at "devise/sessions/new".
+
+Finally, if the customization at the views level is not enough, you can customize each controller by following these steps:
+
+  1) Create your custom controller, for example a Admins::SessionsController:
+
+    class Admins::SessionsController < Devise::SessionsController
+    end
+
+  2) Tell the router to use this controller:
+
+    devise_for :admins, :controllers => { :sessions = "admin/sessions" }
+
+  3) And finally, since we changed the controller, it won't use "devise/sessions" as views anymore, so remember to make a copy of "devise/sessions" to "admin/sessions".
+
+Remember that Devise uses flash messages to let users know if sign in wass successful or not. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
 
 == I18n
 

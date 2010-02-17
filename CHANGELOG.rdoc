@@ -3,10 +3,11 @@
 * enhancements
   * Rails 3 compatibility.
   * All controllers and views are namespaced, for example: Devise::SessionsController and "devise/sessions".
+  * You can specify the controller in routes and have specific controllers for each role.
 
 * deprecations
   * Rails 3 compatible only.
-  * The scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
+  * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
 
 == 1.0.1
 

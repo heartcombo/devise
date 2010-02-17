@@ -74,8 +74,12 @@ class MapRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'devise/registrations', :action => 'destroy'}, {:path => 'users', :method => :delete})
   end
 
-  test 'map admin session with :as option' do
-    assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, {:path => 'admin_area/sign_in', :method => :get})
+  test 'map admin with :as option' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'admin_area/sign_up', :method => :get})
+  end
+
+  test 'map admin with :controllers option' do
+    assert_recognizes({:controller => 'sessions', :action => 'new'}, {:path => 'admin_area/sign_in', :method => :get})
   end
 
   test 'does not map admin confirmation' do

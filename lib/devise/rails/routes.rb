@@ -48,19 +48,23 @@ module ActionDispatch::Routing
     #
     # You can configure your routes with some options:
     #
-    #  * :class_name => setup a different class to be looked up by devise, if it cannot be correctly find by the route name.
+    #  * :class_name => setup a different class to be looked up by devise,
+    #                   if it cannot be correctly find by the route name.
     #
     #    devise_for :users, :class_name => 'Account'
     #
-    #  * :as => allows you to setup path name that will be used, as rails routes does. The following route configuration would setup your route as /accounts instead of /users:
+    #  * :as => allows you to setup path name that will be used, as rails routes does.
+    #           The following route configuration would setup your route as /accounts instead of /users:
     #
     #    devise_for :users, :as => 'accounts'
     #
-    #  * :scope => setup the scope name. This is used as the instance variable name in controller, as the name in routes and the scope given to warden. Defaults to the singular of the given name:
+    #  * :scope => setup the scope name. This is used as the instance variable name in controller,
+    #              as the name in routes and the scope given to warden. Defaults to the singular of the given name:
     #
     #    devise_for :users, :scope => :account
     #
-    #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :password and :confirmation.
+    #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :sign_up,
+    #                   :password, :confirmation, :unlock.
     #
     #    devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
     #
@@ -68,63 +72,69 @@ module ActionDispatch::Routing
     #
     #    devise_for :users, :path_prefix => "/:locale"
     #
-    #  Any other options will be passed to route definition. If you need conditions for your routes, just map:
-    #
-    #    devise_for :users, :conditions => { :subdomain => /.+/ }
-    #
-    #  If you are using a dynamic prefix, like :locale above, you need to configure default_url_options through Devise. You can do that in config/initializers/devise.rb or setting a Devise.default_url_options:
+    #  If you are using a dynamic prefix, like :locale above, you need to configure default_url_options through Devise.
+    #  You can do that in config/initializers/devise.rb or setting a Devise.default_url_options:
     #
     #    Devise.default_url_options do
     #      { :locale => I18n.locale }
     #    end
     #
+    #  * :controllers => the controller which should be used. All routes by default points to Devise controllers.
+    #    However, if you want them to point to custom controller, you should do:
+    #
+    #    devise_for :users, :controllers => { :sessions => "users/sessions" }
+    #
     def devise_for(*resources)
       options = resources.extract_options!
-
       resources.map!(&:to_sym)
+
+      controllers = Hash.new { |h,k| h[k] = "devise/#{k}" }
+      controllers.merge!(options.delete(:controllers) || {})
+
       resources.each do |resource|
         mapping = Devise::Mapping.new(resource, options.dup)
+
         Devise.default_scope ||= mapping.name
         Devise.mappings[mapping.name] = mapping
 
         mapping.for.each do |mod|
-          send(mod, mapping) if self.respond_to?(mod, true)
+          send(mod, mapping, controllers) if self.respond_to?(mod, true)
         end
       end
     end
 
     protected
 
-      def authenticatable(mapping)
+      def authenticatable(mapping, controllers)
         scope mapping.raw_path do
-          get  mapping.path_names[:sign_in],  :to => "devise/sessions#new",     :as => :"new_#{mapping.name}_session"
-          post mapping.path_names[:sign_in],  :to => "devise/sessions#create",  :as => :"#{mapping.name}_session"
-          get  mapping.path_names[:sign_out], :to => "devise/sessions#destroy", :as => :"destroy_#{mapping.name}_session"
+          get  mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#new",     :as => :"new_#{mapping.name}_session"
+          post mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#create",  :as => :"#{mapping.name}_session"
+          get  mapping.path_names[:sign_out], :to => "#{controllers[:sessions]}#destroy", :as => :"destroy_#{mapping.name}_session"
         end
       end
  
-      def recoverable(mapping)
+      def recoverable(mapping, controllers)
         scope mapping.raw_path, :name_prefix => mapping.name do
-          resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password], :controller => "devise/passwords"
+          resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password], :controller => controllers[:passwords]
         end
       end
  
-      def confirmable(mapping)
+      def confirmable(mapping, controllers)
         scope mapping.raw_path, :name_prefix => mapping.name do
-          resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation], :controller => "devise/confirmations"
+          resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
         end
       end
  
-      def lockable(mapping)
+      def lockable(mapping, controllers)
         scope mapping.raw_path, :name_prefix => mapping.name do
-          resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock], :controller => "devise/unlocks"
+          resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock], :controller => controllers[:unlocks]
         end
       end
 
-      def registerable(mapping)
+      def registerable(mapping, controllers)
         scope :name_prefix => mapping.name do
           resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => mapping.raw_path[1..-1],
-                   :path_names => { :new => mapping.path_names[:sign_up] }, :controller => "devise/registrations"
+                   :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end
       end
   end

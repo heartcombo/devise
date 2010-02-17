@@ -3,6 +3,9 @@ require 'rails/generators/migration'
 class DeviseGenerator < Rails::Generators::NamedBase
   include Rails::Generators::Migration
 
+  desc "Generates a model with the given NAME (if one does not exist) with devise " <<
+       "configuration plus a migration file and devise routes."
+
   def self.source_root
     @_devise_source_root ||= File.expand_path("../templates", __FILE__)
   end

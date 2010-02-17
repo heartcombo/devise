@@ -1,3 +1,0 @@
-To copy a Devise initializer to your Rails App, with some configuration values, just do:
-
-    script/generate devise_install

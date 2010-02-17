@@ -1,5 +1,0 @@
-To create a devise resource user:
-
-    script/generate devise User
-
-This will generate a model named User (if one does not exist), add devise configuration, a route map for devise called :users and a migration file for table :users with default devise modules.

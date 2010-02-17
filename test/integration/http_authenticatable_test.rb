@@ -16,6 +16,12 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
     assert_equal 'Basic realm="Application"', headers["WWW-Authenticate"]
   end
 
+  test 'uses the request format as response content type' do
+    sign_in_as_new_user_with_http("unknown", "123456", :xml)
+    assert_equal 401, status
+    assert_equal "application/xml", headers["Content-Type"]
+  end
+
   test 'returns a custom response with www-authenticate and chosen realm' do
     swap Devise, :http_authentication_realm => "MyApp" do
       sign_in_as_new_user_with_http("unknown")
@@ -36,9 +42,9 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
 
   private
 
-    def sign_in_as_new_user_with_http(username="user@test.com", password="123456")
+    def sign_in_as_new_user_with_http(username="user@test.com", password="123456", format=:html)
       user = create_user
-      get users_path, {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{username}:#{password}")}"
+      get users_path(:format => format), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{username}:#{password}")}"
       user
     end
 end

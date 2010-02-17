@@ -9,6 +9,14 @@
   * Rails 3 compatible only.
   * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
 
+== 1.0.2
+
+* enhancements
+  * Allows you set mailer content type (by github.com/glennr)
+
+* bug fix
+  * Uses the same content type as request on http authenticatable 401 responses
+
 == 1.0.1
 
 * enhancements

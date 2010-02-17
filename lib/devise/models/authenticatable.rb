@@ -27,13 +27,11 @@ module Devise
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
     module Authenticatable
-      def self.included(base)
-        base.class_eval do
-          extend ClassMethods
+      extend ActiveSupport::Concern
 
-          attr_reader :password, :current_password
-          attr_accessor :password_confirmation
-        end
+      included do
+        attr_reader :password, :current_password
+        attr_accessor :password_confirmation
       end
 
       # Regenerates password salt and encrypted password each time password is set,

@@ -6,9 +6,7 @@ module Devise
     # model class responds to authenticate and authentication_keys methods
     # (which for example are defined in authenticatable).
     module HttpAuthenticatable
-      def self.included(base)
-        base.extend ClassMethods
-      end
+      extend ActiveSupport::Concern
 
       module ClassMethods
         # Authenticate an user using http.

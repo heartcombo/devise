@@ -18,13 +18,8 @@ module Devise
     #              available when unlock_strategy is :time or :both.
     #
     module Lockable
+      extend ActiveSupport::Concern
       include Devise::Models::Activatable
-
-      def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-        end
-      end
 
       # Lock an user setting it's locked_at to actual time.
       def lock

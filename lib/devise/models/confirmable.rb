@@ -29,15 +29,12 @@ module Devise
     #   User.find(1).send_confirmation_instructions # manually send instructions
     #   User.find(1).resend_confirmation! # generates a new token and resent it
     module Confirmable
+      extend ActiveSupport::Concern
       include Devise::Models::Activatable
 
-      def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-
-          before_create :generate_confirmation_token, :if => :confirmation_required?
-          after_create  :send_confirmation_instructions, :if => :confirmation_required?
-        end
+      included do
+        before_create :generate_confirmation_token, :if => :confirmation_required?
+        after_create  :send_confirmation_instructions, :if => :confirmation_required?
       end
 
       # Confirm a user by setting it's confirmed_at to actual time. If the user

@@ -30,14 +30,11 @@ module Devise
     #   # lookup the user based on the incoming cookie information
     #   User.serialize_from_cookie(cookie_string)
     module Rememberable
+      extend ActiveSupport::Concern
 
-      def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-
-          # Remember me option available in after_authentication hook.
-          attr_accessor :remember_me
-        end
+      included do
+        # Remember me option available in after_authentication hook.
+        attr_accessor :remember_me
       end
 
       # Generate a new remember token and save the record without validations.

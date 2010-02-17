@@ -14,11 +14,7 @@ module Devise
     #   # creates a new token and send it with instructions about how to reset the password
     #   User.find(1).send_reset_password_instructions
     module Recoverable
-      def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-        end
-      end
+      extend ActiveSupport::Concern
 
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.

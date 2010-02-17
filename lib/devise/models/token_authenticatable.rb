@@ -18,11 +18,10 @@ module Devise
     #    User.find(1).valid_authentication_token?('rI1t6PKQ8yP7VetgwdybB')  # returns true/false
     #
     module TokenAuthenticatable
-      def self.included(base)
-        base.class_eval do
-          extend ClassMethods
-          before_save :ensure_authentication_token
-        end
+      extend ActiveSupport::Concern
+
+      included do
+        before_save :ensure_authentication_token
       end
 
       # Generate new authentication token (a.k.a. "single access token").

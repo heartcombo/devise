@@ -30,30 +30,32 @@ Devise is based on Warden (http://github.com/hassox/warden), a Rack Authenticati
 
 == Installation
 
-All gems are on gemcutter, so you need to add gemcutter to your sources if you haven't yet:
+Devise master branch now supports Rails 3 and is NOT backward compatible. You can install it as:
 
-  sudo gem sources -a http://gemcutter.org/
+  sudo gem install devise --version=1.1.pre
 
-Install warden gem if you don't have it installed (requires 0.6.4 or higher):
-
-  sudo gem install warden
-
-Install devise gem:
-
-  sudo gem install devise
-
-Configure warden and devise gems inside your gemfile:
+After installing them, you need configure warden and devise gems inside your gemfile:
 
   gem 'warden'
   gem 'devise'
 
-Run the generator:
+And run the generator:
 
 	rails generate devise_install
 
 And you're ready to go. The generator will install an initializer which describes ALL Devise's configuration options, so be sure to take a look at it and at the documentation as well:
 
   http://rdoc.info/projects/plataformatec/devise
+
+== Rails 2.3
+
+If you want to use the Rails 2.3.x version, you should do:
+
+  sudo gem install devise --version=1.0.1
+
+Or checkout from the v1.0 branch:
+
+  http://github.com/plataformatec/devise/tree/v1.0
 
 == Basic Usage
 

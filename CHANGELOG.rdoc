@@ -1,4 +1,4 @@
-== 1.1.0
+== 1.1.pre
 
 * enhancements
   * Rails 3 compatibility.

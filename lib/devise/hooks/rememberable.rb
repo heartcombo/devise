@@ -3,7 +3,7 @@
 # that specific user and adds a cookie with this user info to sign in this user
 # automatically without asking for credentials. Refer to rememberable strategy
 # for more info.
-Warden::Manager.after_authentication do |record, warden, options|
+Warden::Manager.prepend_after_authentication do |record, warden, options|
   scope = options[:scope]
   remember_me = warden.params[scope].try(:fetch, :remember_me, nil)
 

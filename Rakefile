@@ -43,8 +43,9 @@ begin
     s.homepage = "http://github.com/plataformatec/devise"
     s.description = "Flexible authentication solution for Rails with Warden"
     s.authors = ['José Valim', 'Carlos Antônio']
-    s.files =  FileList["[A-Z]*", "{app,config,generators,lib}/**/*", "init.rb"]
-    s.add_dependency("warden", "~> 0.9.0")
+    s.files =  FileList["[A-Z]*", "{app,config,lib}/**/*"]
+    s.extra_rdoc_files = FileList["[A-Z]*"] - %w(Gemfile Rakefile)
+    s.add_dependency("warden", "~> 0.9.3")
   end
 
   Jeweler::GemcutterTasks.new

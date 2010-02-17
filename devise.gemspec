@@ -5,55 +5,48 @@
 
 Gem::Specification.new do |s|
   s.name = %q{devise}
-  s.version = "1.0.1"
+  s.version = "1.1.pre"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-02-15}
+  s.date = %q{2010-02-17}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
-    "README.rdoc",
+    "CHANGELOG.rdoc",
+     "MIT-LICENSE",
+     "README.rdoc",
      "TODO"
   ]
   s.files = [
     "CHANGELOG.rdoc",
+     "Gemfile",
      "MIT-LICENSE",
      "README.rdoc",
      "Rakefile",
      "TODO",
-     "app/controllers/confirmations_controller.rb",
-     "app/controllers/passwords_controller.rb",
-     "app/controllers/registrations_controller.rb",
-     "app/controllers/sessions_controller.rb",
-     "app/controllers/unlocks_controller.rb",
-     "app/models/devise_mailer.rb",
-     "app/views/confirmations/new.html.erb",
-     "app/views/devise_mailer/confirmation_instructions.html.erb",
-     "app/views/devise_mailer/reset_password_instructions.html.erb",
-     "app/views/devise_mailer/unlock_instructions.html.erb",
-     "app/views/passwords/edit.html.erb",
-     "app/views/passwords/new.html.erb",
-     "app/views/registrations/edit.html.erb",
-     "app/views/registrations/new.html.erb",
-     "app/views/sessions/new.html.erb",
-     "app/views/shared/_devise_links.erb",
-     "app/views/unlocks/new.html.erb",
-     "generators/devise/USAGE",
-     "generators/devise/devise_generator.rb",
-     "generators/devise/lib/route_devise.rb",
-     "generators/devise/templates/migration.rb",
-     "generators/devise/templates/model.rb",
-     "generators/devise_install/USAGE",
-     "generators/devise_install/devise_install_generator.rb",
-     "generators/devise_install/templates/README",
-     "generators/devise_install/templates/devise.rb",
-     "generators/devise_views/USAGE",
-     "generators/devise_views/devise_views_generator.rb",
-     "init.rb",
+     "app/controllers/devise/confirmations_controller.rb",
+     "app/controllers/devise/passwords_controller.rb",
+     "app/controllers/devise/registrations_controller.rb",
+     "app/controllers/devise/sessions_controller.rb",
+     "app/controllers/devise/unlocks_controller.rb",
+     "app/models/devise/mailer.rb",
+     "app/views/devise/confirmations/new.html.erb",
+     "app/views/devise/mailer/confirmation_instructions.html.erb",
+     "app/views/devise/mailer/reset_password_instructions.html.erb",
+     "app/views/devise/mailer/unlock_instructions.html.erb",
+     "app/views/devise/passwords/edit.html.erb",
+     "app/views/devise/passwords/new.html.erb",
+     "app/views/devise/registrations/edit.html.erb",
+     "app/views/devise/registrations/new.html.erb",
+     "app/views/devise/sessions/new.html.erb",
+     "app/views/devise/shared/_links.erb",
+     "app/views/devise/unlocks/new.html.erb",
+     "config/locales/en.yml",
      "lib/devise.rb",
      "lib/devise/controllers/helpers.rb",
      "lib/devise/controllers/internal_helpers.rb",
+     "lib/devise/controllers/scoped_views.rb",
      "lib/devise/controllers/url_helpers.rb",
      "lib/devise/encryptors/authlogic_sha512.rb",
      "lib/devise/encryptors/base.rb",
@@ -67,7 +60,6 @@ Gem::Specification.new do |s|
      "lib/devise/hooks/rememberable.rb",
      "lib/devise/hooks/timeoutable.rb",
      "lib/devise/hooks/trackable.rb",
-     "lib/devise/locales/en.yml",
      "lib/devise/mapping.rb",
      "lib/devise/models.rb",
      "lib/devise/models/activatable.rb",
@@ -95,7 +87,13 @@ Gem::Specification.new do |s|
      "lib/devise/strategies/rememberable.rb",
      "lib/devise/strategies/token_authenticatable.rb",
      "lib/devise/test_helpers.rb",
-     "lib/devise/version.rb"
+     "lib/devise/version.rb",
+     "lib/generators/devise/devise_generator.rb",
+     "lib/generators/devise/templates/migration.rb",
+     "lib/generators/devise_install/devise_install_generator.rb",
+     "lib/generators/devise_install/templates/README",
+     "lib/generators/devise_install/templates/devise.rb",
+     "lib/generators/devise_views/devise_views_generator.rb"
   ]
   s.homepage = %q{http://github.com/plataformatec/devise}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -125,6 +123,7 @@ Gem::Specification.new do |s|
      "test/mapping_test.rb",
      "test/models/authenticatable_test.rb",
      "test/models/confirmable_test.rb",
+     "test/models/http_authenticatable_test.rb",
      "test/models/lockable_test.rb",
      "test/models/recoverable_test.rb",
      "test/models/rememberable_test.rb",
@@ -140,25 +139,29 @@ Gem::Specification.new do |s|
      "test/rails_app/app/controllers/admins_controller.rb",
      "test/rails_app/app/controllers/application_controller.rb",
      "test/rails_app/app/controllers/home_controller.rb",
+     "test/rails_app/app/controllers/sessions_controller.rb",
      "test/rails_app/app/controllers/users_controller.rb",
      "test/rails_app/app/helpers/application_helper.rb",
      "test/rails_app/app/mongo_mapper/admin.rb",
      "test/rails_app/app/mongo_mapper/user.rb",
+     "test/rails_app/config/application.rb",
      "test/rails_app/config/boot.rb",
      "test/rails_app/config/environment.rb",
      "test/rails_app/config/environments/development.rb",
      "test/rails_app/config/environments/production.rb",
      "test/rails_app/config/environments/test.rb",
+     "test/rails_app/config/initializers/backtrace_silencers.rb",
+     "test/rails_app/config/initializers/cookie_verification_secret.rb",
      "test/rails_app/config/initializers/devise.rb",
      "test/rails_app/config/initializers/inflections.rb",
-     "test/rails_app/config/initializers/new_rails_defaults.rb",
      "test/rails_app/config/initializers/session_store.rb",
      "test/rails_app/config/routes.rb",
      "test/routes_test.rb",
-     "test/support/assertions_helper.rb",
-     "test/support/integration_tests_helper.rb",
+     "test/support/assertions.rb",
+     "test/support/helpers.rb",
+     "test/support/integration.rb",
      "test/support/test_silencer.rb",
-     "test/support/tests_helper.rb",
+     "test/support/webrat/integrations/rails.rb",
      "test/test_helper.rb",
      "test/test_helpers_test.rb"
   ]
@@ -168,12 +171,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<warden>, ["~> 0.9.0"])
+      s.add_runtime_dependency(%q<warden>, ["~> 0.9.3"])
     else
-      s.add_dependency(%q<warden>, ["~> 0.9.0"])
+      s.add_dependency(%q<warden>, ["~> 0.9.3"])
     end
   else
-    s.add_dependency(%q<warden>, ["~> 0.9.0"])
+    s.add_dependency(%q<warden>, ["~> 0.9.3"])
   end
 end
 

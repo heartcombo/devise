@@ -17,7 +17,8 @@
   * Added Http Basic Authentication support
   * Allow scoped_views to be customized per controller/mailer class
   * [#99] Allow authenticatable to used in change_table statements
-
+  * Add mailer_content_type configuration parameter (by github.com/glennr)
+  
 == 0.9.2
 
 * bug fix

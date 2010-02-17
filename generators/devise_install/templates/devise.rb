@@ -3,6 +3,9 @@
 Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.mailer_sender = "please-change-me@config-initializers-devise.com"
+  
+  # Configure the content type of DeviseMailer mails (defaults to text/html")
+  # config.mailer_content_type = "text/plain"
 
   # ==> Configuration for :authenticatable
   # Invoke `rake secret` and use the printed value to setup a pepper to generate

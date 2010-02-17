@@ -144,7 +144,11 @@ module Devise
 
   # Address which sends Devise e-mails.
   mattr_accessor :mailer_sender
-  @@mailer_sender = nil
+  @@mailer_sender = nil  
+  
+  # Content Type of Devise e-mails.
+  mattr_accessor :mailer_content_type
+  @@mailer_content_type = 'text/html'
 
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :token_authentication_key

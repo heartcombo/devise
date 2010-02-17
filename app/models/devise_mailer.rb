@@ -27,7 +27,7 @@ class DeviseMailer < ::ActionMailer::Base
       from         mailer_sender(mapping)
       recipients   record.email
       sent_on      Time.now
-      content_type 'text/html'
+      content_type Devise.mailer_content_type
       body         render_with_scope(key, mapping, mapping.name => record, :resource => record)
     end
 

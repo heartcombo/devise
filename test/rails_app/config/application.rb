@@ -8,7 +8,7 @@ require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
 
-Bundler.require
+Bundler.require :default, DEVISE_ORM
 require "devise"
 
 module RailsApp
@@ -16,7 +16,8 @@ module RailsApp
     config.root = File.expand_path("../..", __FILE__)
 
     # Add additional load paths for your own custom dirs
-    config.load_paths += [ "#{config.root}/app/#{DEVISE_ORM}/" ]
+    config.load_paths.reject!{ |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers views).include?($1) }
+    config.load_paths += [ "#{config.root}/app/#{DEVISE_ORM}" ]
 
     # Configure generators values. Many other options are available, be sure to check the documentation.
     # config.generators do |g|

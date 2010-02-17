@@ -10,3 +10,9 @@ gem "bcrypt-ruby", :require => "bcrypt"
 if RUBY_VERSION < '1.9'
   gem "ruby-debug", ">= 0.10.3"
 end
+
+group :mongo_mapper do
+  gem "mongo",        "0.18.3"
+  gem "mongo_ext",    "0.18.3", :require => false
+  gem "mongo_mapper", "0.7.0"
+end

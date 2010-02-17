@@ -1,5 +1,6 @@
 module Devise
   autoload :FailureApp, 'devise/failure_app'
+  autoload :Models, 'devise/models'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
 

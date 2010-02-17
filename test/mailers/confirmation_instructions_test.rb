@@ -63,6 +63,12 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     end
   end
 
+  test 'content type should be set to plain when manually configured' do
+    swap Devise, :mailer_content_type => "text/plain" do
+      assert_equal "text/plain", mail.content_type
+    end
+  end
+
   test 'renders a scoped if scoped_views is set in the mailer class' do
     begin
       DeviseMailer.scoped_views = true

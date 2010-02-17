@@ -35,6 +35,9 @@ Devise.setup do |config|
 
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.mailer_sender = "please-change-me-omg@yourapp.com"
+  
+  # Configure the content type of DeviseMailer mails (defaults to text/html")
+  # config.mailer_content_type = "text/plain"
 
   # Load and configure the ORM. Supports :active_record, :data_mapper and :mongo_mapper.
   require "devise/orm/#{DEVISE_ORM}"

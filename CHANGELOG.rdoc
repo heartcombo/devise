@@ -1,3 +1,9 @@
+* enhancements
+  * Allows you set mailer content type (by github.com/glennr)
+
+* bug fix
+  * Uses the same content type as request on http authenticatable 401 responses
+
 == 1.0.1
 
 * enhancements
@@ -18,7 +24,7 @@
   * Allow scoped_views to be customized per controller/mailer class
   * [#99] Allow authenticatable to used in change_table statements
   * Add mailer_content_type configuration parameter (by github.com/glennr)
-  
+
 == 0.9.2
 
 * bug fix

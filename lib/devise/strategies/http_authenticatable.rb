@@ -38,7 +38,7 @@ module Devise
 
       def custom_headers
         {
-          "Content-Type" => "text/plain",
+          "Content-Type" => Mime::Type.lookup_by_extension(request.template_format.to_s).to_s,
           "WWW-Authenticate" => %(Basic realm="#{Devise.http_authentication_realm.gsub(/"/, "")}")
         }
       end

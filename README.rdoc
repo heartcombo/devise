@@ -175,7 +175,7 @@ Since devise is an engine, it has all default views inside the gem. They are goo
 
 By default Devise will use the same views for all roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup config.scoped_views to true inside "config/initializers/devise.rb".
 
-After doing so you will be able to have views based on the scope like 'sessions/users/new' and 'sessions/admin/new'. If no view is found within the scope, Devise will fallback to the default view.
+After doing so you will be able to have views based on the scope like 'users/sessions/new' and 'admin/sessions/new'. If no view is found within the scope, Devise will fallback to the default view.
 
 Devise uses flash messages to let users know if their login is successful or not. Devise expects your application to call 'flash[:notice]' and 'flash[:alert]' as appropriate.
 

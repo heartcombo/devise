@@ -1,4 +1,4 @@
-class PasswordsController < ApplicationController
+class Devise::PasswordsController < ApplicationController
   include Devise::Controllers::InternalHelpers
 
   before_filter :require_no_authentication

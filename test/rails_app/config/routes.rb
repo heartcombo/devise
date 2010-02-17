@@ -15,8 +15,6 @@ Rails::Application.routes.draw do
   resources :admins, :only => [:index]
   root :to => "home#index"
 
-  match '/admin_area/password/new', :to => "passwords#new"
   match '/admin_area/home', :to => "admins#index", :as => :admin_root
-
-  match '/sign_in', :to => "sessions#new"
+  match '/sign_in', :to => "devise/sessions#new"
 end

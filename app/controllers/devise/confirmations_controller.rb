@@ -1,15 +1,15 @@
-class UnlocksController < ApplicationController
+class Devise::ConfirmationsController < ApplicationController
   include Devise::Controllers::InternalHelpers
 
-  # GET /resource/unlock/new
+  # GET /resource/confirmation/new
   def new
     build_resource
     render_with_scope :new
   end
 
-  # POST /resource/unlock
+  # POST /resource/confirmation
   def create
-    self.resource = resource_class.send_unlock_instructions(params[resource_name])
+    self.resource = resource_class.send_confirmation_instructions(params[resource_name])
 
     if resource.errors.empty?
       set_flash_message :notice, :send_instructions
@@ -19,12 +19,12 @@ class UnlocksController < ApplicationController
     end
   end
 
-  # GET /resource/unlock?unlock_token=abcdef
+  # GET /resource/confirmation?confirmation_token=abcdef
   def show
-    self.resource = resource_class.unlock!(:unlock_token => params[:unlock_token])
+    self.resource = resource_class.confirm!(:confirmation_token => params[:confirmation_token])
 
     if resource.errors.empty?
-      set_flash_message :notice, :unlocked
+      set_flash_message :notice, :confirmed
       sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :new

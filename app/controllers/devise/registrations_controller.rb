@@ -1,4 +1,4 @@
-class RegistrationsController < ApplicationController
+class Devise::RegistrationsController < ApplicationController
   include Devise::Controllers::InternalHelpers
 
   before_filter :require_no_authentication, :only => [ :new, :create ]

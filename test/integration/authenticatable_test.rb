@@ -221,15 +221,15 @@ class AuthenticationTest < ActionController::IntegrationTest
 
   test 'renders the scoped view if turned on in an specific controller' do
     begin
-      SessionsController.scoped_views = true
+      Devise::SessionsController.scoped_views = true
       assert_raise Webrat::NotFoundError do
         sign_in_as_user
       end
 
       assert_match /Special user view/, response.body
-      assert !PasswordsController.scoped_views
+      assert !Devise::PasswordsController.scoped_views
     ensure
-      SessionsController.send :remove_instance_variable, :@scoped_views
+      Devise::SessionsController.send :remove_instance_variable, :@scoped_views
     end
   end
 

@@ -1,13 +1,12 @@
-class DeviseMailer < ::ActionMailer::Base
-  extend Devise::Controllers::InternalHelpers::ScopedViews
+class Devise::Mailer < ::ActionMailer::Base
+  include Devise::Controllers::ScopedViews
 
-  # Deliver confirmation instructions when the user is created or its email is
-  # updated, and also when confirmation is manually requested
+  attr_reader :devise_mapping, :resource
+
   def confirmation_instructions(record)
     setup_mail(record, :confirmation_instructions)
   end
 
-  # Deliver reset password instructions when manually requested
   def reset_password_instructions(record)
     setup_mail(record, :reset_password_instructions)
   end
@@ -19,27 +18,15 @@ class DeviseMailer < ::ActionMailer::Base
   private
 
     # Configure default email options
-    def setup_mail(record, key)
-      mapping = Devise::Mapping.find_by_class(record.class)
-      raise "Invalid devise resource #{record}" unless mapping
+    def setup_mail(record, action)
+      @devise_mapping = Devise::Mapping.find_by_class(record.class)
 
-      @resource = instance_variable_set("@#{mapping.name}", record)
+      raise "Invalid devise resource #{record}" unless @devise_mapping
+      @resource = instance_variable_set("@#{@devise_mapping.name}", record)
 
-      mail(:subject => translate(mapping, key), :from => mailer_sender(mapping),
-           :to => record.email) do |format|
-        format.html { render_with_scope(key, mapping) }
-      end
-    end
-
-    def render_with_scope(key, mapping)
-      if self.class.scoped_views
-        begin
-          render :template => "devise_mailer/#{mapping.as}/#{key}"
-        rescue ActionView::MissingTemplate
-          render :template => "devise_mailer/#{key}"
-        end
-      else
-        render :template => "devise_mailer/#{key}"
+      mail(:subject => translate(@devise_mapping, action),
+           :from => mailer_sender(@devise_mapping), :to => record.email) do |format|
+        format.html { render_with_scope(action, :controller => "mailer") }
       end
     end
 

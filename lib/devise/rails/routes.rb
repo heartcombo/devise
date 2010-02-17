@@ -96,35 +96,35 @@ module ActionDispatch::Routing
     protected
 
       def authenticatable(mapping)
-        scope(mapping.raw_path) do
-          get  mapping.path_names[:sign_in],  :to => "sessions#new",     :as => :"new_#{mapping.name}_session"
-          post mapping.path_names[:sign_in],  :to => "sessions#create",  :as => :"#{mapping.name}_session"
-          get  mapping.path_names[:sign_out], :to => "sessions#destroy", :as => :"destroy_#{mapping.name}_session"
+        scope mapping.raw_path do
+          get  mapping.path_names[:sign_in],  :to => "devise/sessions#new",     :as => :"new_#{mapping.name}_session"
+          post mapping.path_names[:sign_in],  :to => "devise/sessions#create",  :as => :"#{mapping.name}_session"
+          get  mapping.path_names[:sign_out], :to => "devise/sessions#destroy", :as => :"destroy_#{mapping.name}_session"
         end
       end
  
       def recoverable(mapping)
-        scope(mapping.raw_path, :name_prefix => mapping.name) do
-          resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password]
+        scope mapping.raw_path, :name_prefix => mapping.name do
+          resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password], :controller => "devise/passwords"
         end
       end
  
       def confirmable(mapping)
-        scope(mapping.raw_path, :name_prefix => mapping.name) do
-          resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
+        scope mapping.raw_path, :name_prefix => mapping.name do
+          resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation], :controller => "devise/confirmations"
         end
       end
  
       def lockable(mapping)
-        scope(mapping.raw_path, :name_prefix => mapping.name) do
-          resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock]
+        scope mapping.raw_path, :name_prefix => mapping.name do
+          resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock], :controller => "devise/unlocks"
         end
       end
 
       def registerable(mapping)
         scope :name_prefix => mapping.name do
           resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => mapping.raw_path[1..-1],
-                   :path_names => { :new => mapping.path_names[:sign_up] }
+                   :path_names => { :new => mapping.path_names[:sign_up] }, :controller => "devise/registrations"
         end
       end
   end

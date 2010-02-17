@@ -1,3 +1,0 @@
-To copy all session, password, confirmation and mailer views from devise to your app just run the following command:
-
-    script/generate devise_views

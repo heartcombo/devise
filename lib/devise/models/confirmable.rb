@@ -57,7 +57,7 @@ module Devise
 
       # Send confirmation instructions by email
       def send_confirmation_instructions
-        ::DeviseMailer.confirmation_instructions(self).deliver
+        ::Devise::Mailer.confirmation_instructions(self).deliver
       end
 
       # Remove confirmation date and send confirmation instructions, to ensure

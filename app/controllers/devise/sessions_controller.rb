@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class Devise::SessionsController < ApplicationController
   include Devise::Controllers::InternalHelpers
 
   before_filter :require_no_authentication, :only => [ :new, :create ]

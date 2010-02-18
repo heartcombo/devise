@@ -1,8 +1,7 @@
 module ActionDispatch::Routing
   class RouteSet #:nodoc:
     # Ensure Devise modules are included only after loading routes, because we
-    # need devise_for mappings already declared to create magic filters and
-    # helpers.
+    # need devise_for mappings already declared to create filters and helpers.
     def finalize_with_devise!
       finalize_without_devise!
       return if Devise.mappings.empty?

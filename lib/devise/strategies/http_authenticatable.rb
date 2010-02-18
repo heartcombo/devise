@@ -14,7 +14,7 @@ module Devise
         if resource = mapping.to.authenticate_with_http(username, password)
           success!(resource)
         else
-          custom!([401, custom_headers, ["HTTP Basic: Access denied.\n"]])
+          custom!([401, custom_headers, [response_body]])
         end
       end
 
@@ -22,6 +22,12 @@ module Devise
 
       def username_and_password
         decode_credentials(request).split(/:/, 2)
+      end
+
+      def response_body
+        body   = "HTTP Basic: Access denied."
+        method = :"to_#{request_format.to_sym}"
+        {}.respond_to?(method) ? { :error => body }.send(method) : body
       end
 
       def http_authentication
@@ -38,9 +44,13 @@ module Devise
 
       def custom_headers
         {
-          "Content-Type" => Mime::Type.lookup_by_extension(request.template_format.to_s).to_s,
+          "Content-Type" => request_format.to_s,
           "WWW-Authenticate" => %(Basic realm="#{Devise.http_authentication_realm.gsub(/"/, "")}")
         }
+      end
+
+      def request_format
+        @request_format ||= Mime::Type.lookup_by_extension(request.template_format.to_s)
       end
     end
   end

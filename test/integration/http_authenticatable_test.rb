@@ -20,6 +20,7 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
     sign_in_as_new_user_with_http("unknown", "123456", :xml)
     assert_equal 401, status
     assert_equal "application/xml", headers["Content-Type"]
+    assert response.body.include?("<error>HTTP Basic: Access denied.</error>")
   end
 
   test 'returns a custom response with www-authenticate and chosen realm' do

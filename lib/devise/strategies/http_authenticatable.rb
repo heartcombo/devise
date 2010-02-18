@@ -14,7 +14,7 @@ module Devise
         if resource = mapping.to.authenticate_with_http(username, password)
           success!(resource)
         else
-          custom!([401, custom_headers, ["HTTP Basic: Access denied.\n"]])
+          custom!([401, custom_headers, [response_body]])
         end
       end
 
@@ -26,6 +26,12 @@ module Devise
 
       def decode_credentials(request)
         ActiveSupport::Base64.decode64(request.authorization.split(' ', 2).last || '')
+      end
+
+      def response_body
+        body   = "HTTP Basic: Access denied."
+        method = :"to_#{request.format.to_sym}"
+        {}.respond_to?(method) ? { :error => body }.send(method) : body
       end
 
       def custom_headers

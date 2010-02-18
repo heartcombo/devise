@@ -9,7 +9,7 @@ module Devise
       Devise.configure_warden(config)
     end
 
-    config.after_initialize do
+    initializer "devise.load_orm" do
       require "devise/orm/#{Devise.orm}"
     end
   end

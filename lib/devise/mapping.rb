@@ -56,11 +56,6 @@ module Devise
       end
     end
 
-    # Default url options which can be used as prefix.
-    def self.default_url_options
-      {}
-    end
-
     def initialize(name, options) #:nodoc:
       @as    = (options.delete(:as) || name).to_sym
       @klass = (options.delete(:class_name) || name.to_s.classify).to_s
@@ -95,17 +90,8 @@ module Devise
     end
 
     # Returns the raw path using path_prefix and as.
-    def raw_path
+    def path
       path_prefix + as.to_s
-    end
-
-    # Returns the parsed path taking into account the relative url root and raw path.
-    def parsed_path
-      returning (ActionController::Base.relative_url_root.to_s + raw_path) do |path|
-        self.class.default_url_options.each do |key, value|
-          path.gsub!(key.inspect, value.to_param)
-        end
-      end
     end
 
     # Create magic predicates for verifying what module is activated by this map.

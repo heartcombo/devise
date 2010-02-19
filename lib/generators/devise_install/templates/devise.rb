@@ -63,8 +63,7 @@ Devise.setup do |config|
   # ==> General configuration
   # Load and configure the ORM. Supports :active_record (default), :mongo_mapper
   # (requires mongo_ext installed) and :data_mapper (experimental).
-  # require 'devise/orm/mongo_mapper'
-  # config.orm = :mongo_mapper
+  require 'devise/orm/active_record'
 
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "sessions/users/new". It's turned off by default because it's slower if you
@@ -92,11 +91,5 @@ Devise.setup do |config|
   #     twitter.options :site => 'http://twitter.com'
   #   end
   #   manager.default_strategies.unshift :twitter_oauth
-  # end
-
-  # Configure default_url_options if you are using dynamic segments in :path_prefix
-  # for devise_for.
-  # config.default_url_options do
-  #   { :locale => I18n.locale }
   # end
 end

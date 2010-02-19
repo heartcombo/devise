@@ -5,11 +5,13 @@
   * All controllers and views are namespaced, for example: Devise::SessionsController and "devise/sessions".
   * You can specify the controller in routes and have specific controllers for each role.
   * Devise.orm is deprecated. This reduces the required API to hook your ORM with devise.
+  * Use metal for failure app.
 
 * deprecations
   * Rails 3 compatible only.
   * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
   * Devise.orm is deprecated, just require "devise/orm/YOUR_ORM" instead.
+  * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options.
 
 == 1.0.2
 

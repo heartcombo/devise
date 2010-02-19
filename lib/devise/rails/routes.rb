@@ -69,11 +69,13 @@ module ActionDispatch::Routing
     #
     #    devise_for :users, :path_prefix => "/:locale"
     #
-    #  If you are using a dynamic prefix, like :locale above, you need to configure default_url_options through Devise.
-    #  You can do that in config/initializers/devise.rb or setting a Devise.default_url_options:
+    #  If you are using a dynamic prefix, like :locale above, you need to configure default_url_options in your ApplicationController
+    #  class level, so Devise can pick it:
     #
-    #    Devise.default_url_options do
-    #      { :locale => I18n.locale }
+    #    class ApplicationController < ActionController::Base
+    #      def self.default_url_options
+    #        { :locale => I18n.locale }
+    #      end
     #    end
     #
     #  * :controllers => the controller which should be used. All routes by default points to Devise controllers.
@@ -103,7 +105,7 @@ module ActionDispatch::Routing
     protected
 
       def authenticatable(mapping, controllers)
-        scope mapping.raw_path do
+        scope mapping.path do
           get  mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#new",     :as => :"new_#{mapping.name}_session"
           post mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#create",  :as => :"#{mapping.name}_session"
           get  mapping.path_names[:sign_out], :to => "#{controllers[:sessions]}#destroy", :as => :"destroy_#{mapping.name}_session"
@@ -111,26 +113,26 @@ module ActionDispatch::Routing
       end
  
       def recoverable(mapping, controllers)
-        scope mapping.raw_path, :name_prefix => mapping.name do
+        scope mapping.path, :name_prefix => mapping.name do
           resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password], :controller => controllers[:passwords]
         end
       end
  
       def confirmable(mapping, controllers)
-        scope mapping.raw_path, :name_prefix => mapping.name do
+        scope mapping.path, :name_prefix => mapping.name do
           resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
         end
       end
  
       def lockable(mapping, controllers)
-        scope mapping.raw_path, :name_prefix => mapping.name do
+        scope mapping.path, :name_prefix => mapping.name do
           resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock], :controller => controllers[:unlocks]
         end
       end
 
       def registerable(mapping, controllers)
         scope :name_prefix => mapping.name do
-          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => mapping.raw_path[1..-1],
+          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => mapping.path[1..-1],
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end
       end

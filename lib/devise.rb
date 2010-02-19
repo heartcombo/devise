@@ -149,10 +149,16 @@ module Devise
       yield self
     end
 
-    # TODO Remove me on final release
+    # TODO Remove me on 1.1.0 final
     def orm=(value)
       ActiveSupport::Deprecation.warn "Devise.orm= and config.orm= are deprecated. " <<
-        "Just load devise/orm/\#{ORM_NAME} if Devise supports your ORM"
+        "Just load \"devise/orm/\#{ORM_NAME}\" if Devise supports your ORM"
+    end
+
+    # TODO Remove me on 1.1.0 final
+    def default_url_options
+      ActiveSupport::Deprecation.warn "Devise.default_url_options and config.default_url_options are deprecated. " <<
+        "Just modify ApplicationController.default_url_options and Devise will automatically pick it up"
     end
 
     # Sets warden configuration using a block that will be invoked on warden
@@ -168,11 +174,6 @@ module Devise
     #  end
     def warden(&block)
       @warden_config = block
-    end
-
-    # Configure default url options to be used within Devise and ActionController.
-    def default_url_options(&block)
-      Devise::Mapping.metaclass.send :define_method, :default_url_options, &block
     end
 
     # A method used internally to setup warden manager from the Rails initialize

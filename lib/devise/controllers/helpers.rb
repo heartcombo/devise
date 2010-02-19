@@ -7,12 +7,6 @@ module Devise
       included do
         helper_method :warden, :signed_in?, :devise_controller?,
                       *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?"] }.flatten
-
-        # Use devise default_url_options. We have to declare it here to overwrite
-        # default definitions.
-        def default_url_options(options=nil)
-          Devise::Mapping.default_url_options
-        end
       end
 
       # The main accessor for the warden proxy instance

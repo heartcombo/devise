@@ -4,7 +4,6 @@ class MappingTest < ActiveSupport::TestCase
 
   test 'store options' do
     mapping = Devise.mappings[:user]
-
     assert_equal User,                mapping.to
     assert_equal User.devise_modules, mapping.for
     assert_equal :users,              mapping.as
@@ -96,37 +95,9 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal 2, Devise.mappings[:manager].as_position
   end
 
-  test 'raw path is returned' do
-    assert_equal '/users', Devise.mappings[:user].raw_path
-    assert_equal '/:locale/accounts', Devise.mappings[:manager].raw_path
-  end
-
-  test 'raw path ignores the relative_url_root' do
-    swap ActionController::Base, :relative_url_root => "/abc" do
-      assert_equal '/users', Devise.mappings[:user].raw_path
-    end
-  end
-
-  test 'parsed path is returned' do
-    begin
-      Devise.default_url_options {{ :locale => I18n.locale }}
-      assert_equal '/users', Devise.mappings[:user].parsed_path
-      assert_equal '/en/accounts', Devise.mappings[:manager].parsed_path
-    ensure
-      Devise.default_url_options {{ }}
-    end
-  end
-
-  test 'parsed path adds in the relative_url_root' do
-    swap ActionController::Base, :relative_url_root => '/abc' do
-      assert_equal '/abc/users', Devise.mappings[:user].parsed_path
-    end
-  end
-
-  test 'parsed path deals with a nil relative_url_root' do
-    swap ActionController::Base, :relative_url_root => nil do
-      assert_equal '/users', Devise.mappings[:user].raw_path
-    end
+  test 'path is returned with path prefix and as' do
+    assert_equal '/users', Devise.mappings[:user].path
+    assert_equal '/:locale/accounts', Devise.mappings[:manager].path
   end
 
   test 'magic predicates' do

@@ -178,13 +178,4 @@ class ControllerAuthenticableTest < ActionController::TestCase
   test 'is not a devise controller' do
     assert_not @controller.devise_controller?
   end
-
-  test 'default url options are retrieved from devise' do
-    begin
-      Devise.default_url_options {{ :locale => I18n.locale }}
-      assert_equal({ :locale => :en }, @controller.send(:default_url_options))
-    ensure
-      Devise.default_url_options {{ }}
-    end
-  end
 end

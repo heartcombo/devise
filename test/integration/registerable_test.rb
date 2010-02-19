@@ -16,7 +16,7 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_contain 'You have signed up successfully.'
     assert warden.authenticated?(:admin)
 
-    admin = Admin.last
+    admin = Admin.last :order => "id"
     assert_equal admin.email, 'new_user@test.com'
   end
 
@@ -34,7 +34,7 @@ class RegistrationTest < ActionController::IntegrationTest
 
     assert_not warden.authenticated?(:user)
 
-    user = User.last
+    user = User.last :order => "id"
     assert_equal user.email, 'new_user@test.com'
     assert_not user.confirmed?
   end

@@ -57,15 +57,12 @@ module Devise
     #
     def devise(*modules)
       raise "You need to give at least one Devise module" if modules.empty?
-      options  = modules.extract_options!
 
+      options = modules.extract_options!
       @devise_modules = Devise::ALL & modules.map(&:to_sym).uniq
 
-      Devise.orm_class.included_modules_hook(self) do
-        devise_modules.each do |m|
-          include Devise::Models.const_get(m.to_s.classify)
-        end
-
+      devise_modules_hook! do
+        devise_modules.each { |m| include Devise::Models.const_get(m.to_s.classify) }
         options.each { |key, value| send(:"#{key}=", value) }
       end
     end
@@ -74,6 +71,12 @@ module Devise
     # which routes are needed.
     def devise_modules
       @devise_modules ||= []
+    end
+
+    # The hook which is called inside devise. So your ORM can include devise
+    # compatibility stuff.
+    def devise_modules_hook!
+      yield
     end
 
     # Find an initialize a record setting an error if it can't be found.

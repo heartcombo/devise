@@ -38,7 +38,6 @@ Devise.setup do |config|
 
   # Load and configure the ORM. Supports :active_record, :data_mapper and :mongo_mapper.
   require "devise/orm/#{DEVISE_ORM}"
-  config.orm = DEVISE_ORM
 
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "sessions/users/new". It's turned off by default because it's slower if you

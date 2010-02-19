@@ -21,12 +21,6 @@ module Devise
     autoload :Sha1, 'devise/encryptors/sha1'
   end
 
-  module Orm
-    autoload :ActiveRecord, 'devise/orm/active_record'
-    autoload :DataMapper, 'devise/orm/data_mapper'
-    autoload :MongoMapper, 'devise/orm/mongo_mapper'
-  end
-
   ALL = []
 
   # Authentication ones first
@@ -105,14 +99,6 @@ module Devise
   mattr_accessor :mappings
   @@mappings = ActiveSupport::OrderedHash.new
 
-  # Stores the chosen ORM.
-  mattr_accessor :orm
-  @@orm = :active_record
-
-  # TODO Remove
-  mattr_accessor :all
-  @@all = []
-
   # Tells if devise should apply the schema in ORMs where devise declaration
   # and schema belongs to the same class (as Datamapper and MongoMapper).
   mattr_accessor :apply_schema
@@ -163,6 +149,12 @@ module Devise
       yield self
     end
 
+    # TODO Remove me on final release
+    def orm=(value)
+      ActiveSupport::Deprecation.warn "Devise.orm= and config.orm= are deprecated. " <<
+        "Just load devise/orm/\#{ORM_NAME} if Devise supports your ORM"
+    end
+
     # Sets warden configuration using a block that will be invoked on warden
     # initialization.
     #
@@ -193,11 +185,6 @@ module Devise
 
       # If the user provided a warden hook, call it now.
       @warden_config.try :call, config
-    end
-
-    # The class of the configured ORM
-    def orm_class
-      Devise::Orm.const_get(@@orm.to_s.camelize.to_sym)
     end
 
     # Generate a friendly string randomically to be used as token.

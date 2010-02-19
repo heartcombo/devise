@@ -19,16 +19,13 @@ module Devise
     #   add_index "accounts", ["reset_password_token"], :name => "reset_password_token", :unique => true
     #
     module ActiveRecord
-      # Required ORM hook. Just yield the given block in ActiveRecord.
-      def self.included_modules_hook(klass)
-        yield
-      end
+      module Schema
+        include Devise::Schema
 
-      include Devise::Schema
-
-      # Tell how to apply schema methods.
-      def apply_schema(name, type, options={})
-        column name, type.to_s.downcase.to_sym, options
+        # Tell how to apply schema methods.
+        def apply_schema(name, type, options={})
+          column name, type.to_s.downcase.to_sym, options
+        end
       end
     end
   end
@@ -36,6 +33,6 @@ end
 
 if defined?(ActiveRecord)
   ActiveRecord::Base.extend Devise::Models
-  ActiveRecord::ConnectionAdapters::Table.send :include, Devise::Orm::ActiveRecord
-  ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Orm::ActiveRecord
+  ActiveRecord::ConnectionAdapters::Table.send :include, Devise::Orm::ActiveRecord::Schema
+  ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Orm::ActiveRecord::Schema
 end

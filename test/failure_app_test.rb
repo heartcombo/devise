@@ -7,6 +7,7 @@ class FailureTest < ActiveSupport::TestCase
     env = {
       'warden.options' => { :scope => :user },
       'REQUEST_URI' => 'http://test.host/',
+      'HTTP_HOST' => 'test.host',
       'REQUEST_METHOD' => 'GET',
       'rack.session' => {}
     }.merge!(env_params)
@@ -18,32 +19,28 @@ class FailureTest < ActiveSupport::TestCase
   end
 
   test 'return to the default redirect location' do
-    assert_equal '/users/sign_in?unauthenticated=true', call_failure.second['Location']
+    assert_equal 'http://test.host/users/sign_in?unauthenticated=true', call_failure.second['Location']
   end
 
   test 'uses the proxy failure message' do
     warden = OpenStruct.new(:message => :test)
     location = call_failure('warden' => warden).second['Location']
-    assert_equal '/users/sign_in?test=true', location
+    assert_equal 'http://test.host/users/sign_in?test=true', location
   end
 
   test 'uses the given message' do
     warden = OpenStruct.new(:message => 'Hello world')
     location = call_failure('warden' => warden).second['Location']
-    assert_equal '/users/sign_in?message=Hello+world', location
+    assert_equal 'http://test.host/users/sign_in?message=Hello+world', location
   end
 
-  test 'setup default url' do
-    Devise::FailureApp.default_url = 'test/sign_in'
-    location = call_failure('warden.options' => { :scope => nil }).second['Location']
-    assert_equal '/test/sign_in?unauthenticated=true', location
-  end
-
-  test 'set content type to default text/plain' do
-    assert_equal 'text/plain', call_failure.second['Content-Type']
+  test 'set content type to default text/html' do
+    assert_equal 'text/html; charset=utf-8', call_failure.second['Content-Type']
   end
 
   test 'setup a default message' do
-    assert_equal ['You are being redirected to /users/sign_in?unauthenticated=true'], call_failure.last
+    assert_match /You are being/, call_failure.last.body
+    assert_match /redirected/, call_failure.last.body
+    assert_match /\?unauthenticated=true/, call_failure.last.body
   end
 end

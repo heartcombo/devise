@@ -1,57 +1,54 @@
+require "action_controller/metal"
+
 module Devise
   # Failure application that will be called every time :warden is thrown from
   # any strategy or hook. Responsible for redirect the user to the sign in
   # page based on current scope and mapping. If no scope is given, redirect
   # to the default_url.
-  class FailureApp
-    attr_reader :env
-    include Warden::Mixins::Common
+  class FailureApp < ActionController::Metal
+    include ActionController::RackDelegation
+    include ActionController::UrlFor
+    include ActionController::Redirecting
 
-    cattr_accessor :default_url, :default_message, :instance_writer => false
-    @@default_message = :unauthenticated
+    mattr_accessor :default_message
+    self.default_message = :unauthenticated
 
     def self.call(env)
-      new(env).respond!
+      action(:respond).call(env)
     end
 
-    def initialize(env)
-      @env = env
+    def self.default_url_options(*args)
+      ApplicationController.default_url_options(*args)
     end
 
-    def respond!
-      options = @env['warden.options']
-      scope   = options[:scope]
-
-      redirect_path = if mapping = Devise.mappings[scope]
-        "#{mapping.parsed_path}/#{mapping.path_names[:sign_in]}"
-      else
-        "/#{default_url}"
-      end
-      query_string = query_string_for(options)
+    def respond
+      scope = env['warden.options'][:scope]
       store_location!(scope)
-
-      headers = {}
-      headers["Location"] = redirect_path
-      headers["Location"] << "?" << query_string unless query_string.empty?
-      headers["Content-Type"] = 'text/plain'
-
-      [302, headers, ["You are being redirected to #{redirect_path}"]]
+      redirect_to send(:"new_#{scope}_session_path", query_string_params)
     end
+
+  protected
 
     # Build the proper query string based on the given message.
-    def query_string_for(options)
-      message = @env['warden'].try(:message) || options[:message] || default_message
+    def query_string_params
+      message = warden.try(:message) || warden_options[:message] || self.class.default_message
 
-      params = case message
-        when Symbol
-          { message => true }
-        when String
-          { :message => message }
-        else
-          {}
+      case message
+      when Symbol
+        { message => true }
+      when String
+        { :message => message }
+      else
+        {}
       end
+    end
 
-      Rack::Utils.build_query(params)
+    def warden
+      env['warden']
+    end
+
+    def warden_options
+      env['warden.options']
     end
 
     # Stores requested uri to redirect the user after signing in. We cannot use

@@ -50,7 +50,7 @@ class ActionController::IntegrationTest
   end
 
   def assert_current_path(path)
-    assert_equal path, current_url
+    assert_equal(prepend_host(path), prepend_host(current_url))
   end
 
   # Fix assert_redirect_to in integration sessions because they don't take into

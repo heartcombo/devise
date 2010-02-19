@@ -14,5 +14,5 @@ end
 group :mongo_mapper do
   gem "mongo",        "0.18.3"
   gem "mongo_ext",    "0.18.3", :require => false
-  gem "mongo_mapper", "0.7.0"
+  gem "mongo_mapper", :git => "git://github.com/merbjedi/mongomapper.git", :branch => "rails3"
 end

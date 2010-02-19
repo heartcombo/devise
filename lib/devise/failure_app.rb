@@ -22,7 +22,7 @@ module Devise
     end
 
     def respond
-      scope = env['warden.options'][:scope]
+      scope = warden_options[:scope]
       store_location!(scope)
       redirect_to send(:"new_#{scope}_session_path", query_string_params)
     end

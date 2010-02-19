@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-02-17}
+  s.date = %q{2010-02-19}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -50,7 +50,6 @@ Gem::Specification.new do |s|
      "generators/devise_install/templates/devise.rb",
      "generators/devise_views/USAGE",
      "generators/devise_views/devise_views_generator.rb",
-     "init.rb",
      "lib/devise.rb",
      "lib/devise/controllers/helpers.rb",
      "lib/devise/controllers/internal_helpers.rb",
@@ -95,7 +94,8 @@ Gem::Specification.new do |s|
      "lib/devise/strategies/rememberable.rb",
      "lib/devise/strategies/token_authenticatable.rb",
      "lib/devise/test_helpers.rb",
-     "lib/devise/version.rb"
+     "lib/devise/version.rb",
+     "rails/init.rb"
   ]
   s.homepage = %q{http://github.com/plataformatec/devise}
   s.rdoc_options = ["--charset=UTF-8"]

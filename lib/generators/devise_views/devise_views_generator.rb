@@ -8,4 +8,8 @@ class DeviseViewsGenerator < Rails::Generators::Base
   def copy_views
     directory "devise"
   end
+
+  def say_restart_server
+    say "Views copied. Please restart your server."
+  end
 end

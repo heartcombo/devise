@@ -28,6 +28,14 @@ class RememberMeTest < ActionController::IntegrationTest
     assert warden.user(:user) == user
   end
 
+  test 'does not remember other scopes' do
+    user = create_user_and_remember
+    get root_path
+    assert_response :success
+    assert warden.authenticated?(:user)
+    assert_not warden.authenticated?(:admin)
+  end
+
   test 'do not remember with invalid token' do
     user = create_user_and_remember('add')
     get users_path

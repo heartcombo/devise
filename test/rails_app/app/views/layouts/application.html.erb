@@ -14,6 +14,10 @@
         <p>Hello User <%= current_user.email %>! You are signed in!</p>
       <% end -%>
 
+      <% if admin_signed_in? -%>
+        <p>Hello Admin <%= current_admin.email %>! You are signed in!</p>
+      <% end -%>
+
       <%= yield %>
     </div>
   </body>

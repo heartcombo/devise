@@ -22,14 +22,11 @@ module Devise
       end
       
       def find(*args)
-        options = args.extract_options!
         case args.first
-          when :first
-            first(options)
-          when :all
-            all(options)
-          else
-            super
+        when :first, :all
+          send(args.shift, *args)
+        else
+          super
         end
       end
       

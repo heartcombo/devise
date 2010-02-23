@@ -1,3 +1,9 @@
+== 1.0.3
+
+* enhancements
+  * HTML e-mails now have proper formatting
+  * Do not remove MongoMapper options in find
+
 == 1.0.2
 
 * enhancements

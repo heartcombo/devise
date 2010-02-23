@@ -216,7 +216,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     Devise.confirm_within = 0.days
     user = create_user
     user.confirmation_sent_at = Date.today
-    assert_not user.active?
+    assert_not user.reload.active?
   end
 
   test 'should not be active without confirmation' do

@@ -59,14 +59,11 @@ module Devise
 
           # Add ActiveRecord like finder
           def find(*args)
-            options = args.extract_options!
             case args.first
-              when :first
-                first(options)
-              when :all
-                all(options)
-              else
-                get(*args)
+            when :first, :all
+              send(args.shift, *args)
+            else
+              get(*args)
             end
           end
         end

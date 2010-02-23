@@ -7,12 +7,19 @@
   * Devise.orm is deprecated. This reduces the required API to hook your ORM with devise.
   * Use metal for failure app.
   * HTML e-mails now have proper formatting.
+  * Do not remove options from Datamapper and MongoMapper in find
 
 * deprecations
   * Rails 3 compatible only.
   * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
   * Devise.orm is deprecated, just require "devise/orm/YOUR_ORM" instead.
   * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options.
+
+== 1.0.3
+
+* enhancements
+  * HTML e-mails now have proper formatting
+  * Do not remove MongoMapper options in find
 
 == 1.0.2
 

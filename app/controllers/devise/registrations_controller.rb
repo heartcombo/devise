@@ -4,7 +4,7 @@ class Devise::RegistrationsController < ApplicationController
   before_filter :require_no_authentication, :only => [ :new, :create ]
   before_filter :authenticate_scope!, :only => [:edit, :update, :destroy]
 
-  # GET /resource/sign_in
+  # GET /resource/sign_up
   def new
     build_resource
     render_with_scope :new

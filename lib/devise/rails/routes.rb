@@ -93,6 +93,12 @@ module ActionDispatch::Routing
       resources.each do |resource|
         mapping = Devise::Mapping.new(resource, options.dup)
 
+        unless mapping.to.respond_to?(:devise)
+          raise "#{mapping.to.name} does not respond to 'devise' method. This usually means you haven't " <<
+            "loaded your ORM file or it's being loaded to late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " <<
+            "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
+        end
+
         Devise.default_scope ||= mapping.name
         Devise.mappings[mapping.name] = mapping
 

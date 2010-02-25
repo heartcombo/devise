@@ -22,9 +22,11 @@ end
 # Before logout hook to forget the user in the given scope, only if rememberable
 # is activated for this scope. Also clear remember token to ensure the user
 # won't be remembered again.
+# Notice that we forget the user if the record is frozen. This usually means the
+# user was just deleted.
 Warden::Manager.before_logout do |record, warden, scope|
   if record.respond_to?(:forget_me!)
-    record.forget_me!
+    record.forget_me! unless record.frozen?
     warden.response.delete_cookie "remember_#{scope}_token"
   end
 end

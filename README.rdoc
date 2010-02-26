@@ -266,6 +266,10 @@ Please refer to TODO file.
 
 We have a long running list of contributors. Check them in the CHANGELOG or do `git shortlog -s -n` in the cloned repository.
 
+== Related Applications
+
+* http://github.com/scambra/devise_invitable adds support to Devise for sending invitations by email.
+
 == Bugs and Feedback
 
 If you discover any bugs or want to drop a line, feel free to create an issue on

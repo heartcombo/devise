@@ -22,7 +22,10 @@ Right now it's composed of 12 modules:
 * Lockable: takes care of locking an account based on the number of failed sign in attempts. Handles unlock via expire and email.
 * Activatable: if you need to activate accounts by other means, which are not through confirmation, use this module.
 
-There's an example application using Devise at http://github.com/plataformatec/devise_example .
+== Examples
+
+* Example application using Devise at http://github.com/plataformatec/devise_example
+* Example Rails 2.3 web app combining subdomains with Devise at http://github.com/fortuity/subdomain-authentication
 
 == Dependencies
 

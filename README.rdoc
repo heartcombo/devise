@@ -9,18 +9,18 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 Right now it's composed of 12 modules:
 
-* Authenticatable: responsible for encrypting password and validating authenticity of a user while signing in.
-* Token Authenticatable: validates authenticity of a user while signing in using an authentication token (also known as "single access token").
+* Authenticatable: encrypts a password and validates the authenticity of a user while signing in.
+* Token Authenticatable: validates the authenticity of a user while signing in using an authentication token (also known as "single access token").
 * HttpAuthenticatable: sign in users using basic HTTP authentication.
-* Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
-* Recoverable: takes care of reseting the user password and send reset instructions.
+* Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+* Recoverable: resets the user password and sends reset instructions.
 * Registerable: handles signing up users through a registration process.
-* Rememberable: manages generating and clearing token for remember the user from a saved cookie.
-* Trackable: tracks sign in count, timestamps and ip.
-* Timeoutable: expires sessions without activity in a certain period of time.
-* Validatable: creates all needed validations for email and password. It's totally optional, so you're able to to customize validations by yourself.
-* Lockable: takes care of locking an account based on the number of failed sign in attempts. Handles unlock via expire and email.
-* Activatable: if you need to activate accounts by other means, which are not through confirmation, use this module.
+* Rememberable: manages generating and clearing a token for remembering the user from a saved cookie.
+* Trackable: tracks sign in count, timestamps and IP address.
+* Timeoutable: expires sessions that have no activity in a specified period of time.
+* Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+* Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+* Activatable: use this module if you need to activate accounts by means other than confirmation.
 
 == Examples
 
@@ -29,7 +29,7 @@ Right now it's composed of 12 modules:
 
 == Dependencies
 
-Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework so you need to install it as a gem. Please ensure you have it installed in order to use devise (see installation below).
+Devise is based on Warden (http://github.com/hassox/warden), a Rack Authentication Framework. You need to install Warden as a gem. Please ensure you have it installed in order to use Devise (see installation below).
 
 == Installation
 
@@ -37,7 +37,7 @@ Devise master branch now supports Rails 3 and is NOT backward compatible. You ca
 
   sudo gem install devise --version=1.1.pre
 
-After installing them, you need configure warden and devise gems inside your gemfile:
+After installing the Warden and Devise gems, you need to configure the gems inside your gemfile:
 
   gem 'warden'
   gem 'devise'
@@ -64,15 +64,15 @@ Or checkout from the v1.0 branch:
 
 This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You MUST also check out the *Generators* section below to help you start.
 
-Devise must be set up within the model (or models) you want to use, and devise routes must be created inside your config/routes.rb file.
+Devise must be set up within the model (or models) you want to use. Devise routes must be created inside your config/routes.rb file.
 
-We're assuming here you want a User model with some modules, as outlined below:
+We're assuming here you want a User model with some Devise modules, as outlined below:
 
   class User < ActiveRecord::Base
     devise :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
   end
 
-After you choose which modules to use, you need to setup your migrations. Luckily, devise has some helpers to save you from this boring work:
+After you choose which modules to use, you need to set up your migrations. Luckily, Devise has some helpers to save you from this boring work:
 
   create_table :users do |t|
     t.authenticatable
@@ -83,53 +83,53 @@ After you choose which modules to use, you need to setup your migrations. Luckil
     t.timestamps
   end
 
-Remember that Devise don't rely on _attr_accessible_ or _attr_protected_ inside its modules, so be sure to setup what attributes are accessible or protected in your model.
+Devise doesn't use _attr_accessible_ or _attr_protected_ inside its modules, so be sure to define attributes as accessible or protected in your model.
 
-The next setup after setting up your model is to configure your routes. You do this by opening up your config/routes.rb and adding:
+Configure your routes after setting up your model. Open your config/routes.rb file and add:
 
   devise_for :users
 
-This is going to look inside you User model and create a set of needed routes (you can see them by running `rake routes`).
+This will use your User model to create a set of needed routes (you can see them by running `rake routes`).
 
-There are also some options available for configuring your routes, as :class_name (to set the class for that route), :path_prefix, :as and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
+Options for configuring your routes include :class_name (to set the class for that route), :path_prefix, :as and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
 
   devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock' }
 
-Be sure to check devise_for documentation for detailed description.
+Be sure to check devise_for documentation for details.
 
-After this steps, run your migrations, and you are ready to go! But don't finish reading, we still have a lot to tell you:
+After creating your models and routes, run your migrations, and you are ready to go! But don't stop reading here, we still have a lot to tell you:
 
 == Controller filters and helpers
 
-Devise is gonna create some helpers to use inside your controllers and views. To setup a controller that needs user authentication, just add this before_filter:
+Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_filter:
 
   before_filter :authenticate_user!
 
-To verify if a user is signed in, you have the following helper:
+To verify if a user is signed in, use the following helper:
 
   user_signed_in?
 
-And to get the current signed in user this helper is available:
+For the current signed-in user, this helper is available:
 
   current_user
 
-You have also access to the session for this scope:
+You can access the session for this scope:
 
   user_session
 
-After signing in a user, confirming it's account or updating it's password, devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
+After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
 
   root :to => "home"
 
-You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize better your redirect hooks.
+You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize your redirect hooks.
 
-Finally, you also need to setup default url options for the mailer in each environment. Here's is the configuration for config/environments/development.rb:
+Finally, you need to set up default url options for the mailer in each environment. Here is the configuration for config/environments/development.rb:
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
 == Tidying up
 
-Devise let's you setup as many roles as you want, so let's say you already have this User model and also want an Admin model with just authentication, trackable, lockable and timeoutable stuff and none of confirmation or password recovery. Just follow the same steps:
+Devise allows you to set up as many roles as you want. For example, you may have a User model and also want an Admin model with just authentication, trackable, lockable and timeoutable features and no confirmation or password-recovery features. Just follow these steps:
 
   # Create a migration with the required fields
   create_table :admins do |t|
@@ -154,35 +154,37 @@ Devise let's you setup as many roles as you want, so let's say you already have 
 
 == Generators
 
-Devise comes with some generators to help you start:
+Devise has generators to help you get started:
 
   rails generate devise_install
 
-This will generate an initializer, with a description of all configuration values. You can also generate models through:
+This will generate an initializer, with a description of all configuration values.
+
+You can also generate models:
 
   rails generate devise Model
 
-A model configured with all devise modules and attr_accessible for default fields will be created. The generator will also create the migration and configure your routes for devise.
+This will create a model named "Model" configured with default Devise modules and attr_accessible set for default fields. The generator will also create the migration and configure your routes for Devise.
 
 == Model configuration
 
-The devise method in your models also accept some options to configure its modules. For example, you can chose which encryptor to use in authenticatable simply doing:
+The devise method in your models also accepts some options to configure its modules. For example, you can choose which encryptor to use in authenticatable:
 
   devise :authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
 
-Besides :encryptor, you can provide :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and others. All those are described in the initializer created when you invoke the devise_install generator describer above.
+Besides :encryptor, you can define :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the devise_install generator described above.
 
 == Configuring controllers and views
 
-One of Devise goals is to help you bootstrap your application with authentication really fast. Another goal is to not be in your way when you need to customize it.
+We built Devise to help you quickly develop an application that uses authentication. We don't want to be in your way when you need to customize it.
 
-Since devise is an engine, it has all default views inside the gem. They are good to get you started, but you will want to customize them at some point. And Devise has a generator to copy them all to your application:
+Since Devise is an engine, all its default views are packaged inside the gem. The default views will get you started but you may want to customize them. Devise has a generator to copy the default views to your application. After they've been copied to your application, you can make changes as required:
 
   rails generate devise_views
 
-If you have more than one role in your application, you will notice that Devise uses the same views for all roles you have. But what if you need so different views to each of them? Devise also has an easy way to accomplish it: just setup config.scoped_views to true inside "config/initializers/devise.rb".
+If you have more than one role in your application (such as "user" and "admin"), you will notice that Devise uses the same views for all roles. You may need different views for each role. Devise offers an easy way to customize views for each role. Just set config.scoped_views to "true" inside "config/initializers/devise.rb".
 
-After doing so you will be able to have views based on the scope like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will fallback to the default view at "devise/sessions/new".
+After doing so you will be able to have views based on the scope like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will use the default view at "devise/sessions/new".
 
 Finally, if the customization at the views level is not enough, you can customize each controller by following these steps:
 
@@ -195,13 +197,13 @@ Finally, if the customization at the views level is not enough, you can customiz
 
     devise_for :admins, :controllers => { :sessions = "admin/sessions" }
 
-  3) And finally, since we changed the controller, it won't use "devise/sessions" as views anymore, so remember to make a copy of "devise/sessions" to "admin/sessions".
+  3) And finally, since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
 
-Remember that Devise uses flash messages to let users know if sign in wass successful or not. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
+Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
 
 == I18n
 
-Devise uses flash messages with I18n with the flash keys :success and :failure. To customize your app, you can setup your locale file this way:
+Devise uses flash messages with I18n with the flash keys :success and :failure. To customize your app, you can set up your locale file:
 
   en:
     devise:
@@ -218,7 +220,7 @@ You can also create distinct messages based on the resource you've configured us
         admin:
           signed_in: 'Hello admin!'
 
-Devise mailer uses the same pattern to create subject messages:
+The Devise mailer uses the same pattern to create subject messages:
 
   en:
     devise:
@@ -246,15 +248,15 @@ You can include the Devise Test Helpers in all of your tests by adding the follo
     include Devise::TestHelpers
   end
 
-Do not use such helpers for integration tests like Cucumber, Webrat... Just fill in the form or explicitly set the user in session. For more tips, check the wiki (http://wiki.github.com/plataformatec/devise).
+Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (http://wiki.github.com/plataformatec/devise).
 
 == Migrating from other solutions
 
-Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of it set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devises's one (encrypted_password and password_salt).
+Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of these strategies, set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devise's fields (encrypted_password and password_salt).
 
 == Other ORMs
 
-Devise supports both ActiveRecord (default) and MongoMapper, and has experimental Datamapper supports (in a sense that Devise test suite does not run completely with Datamapper). To choose other ORM, you just need to configure it in the initializer file.
+Devise supports ActiveRecord (by default) and MongoMapper. We offer experimental Datamapper support (with the limitation that the Devise test suite does not run completely with Datamapper). To choose other ORM, you just need to configure it in the initializer file.
 
 == TODO
 
@@ -267,7 +269,7 @@ Please refer to TODO file.
 
 == Contributors
 
-We have a long running list of contributors. Check them in the CHANGELOG or do `git shortlog -s -n` in the cloned repository.
+We have a long list of valued contributors. See the CHANGELOG or do `git shortlog -s -n` in the cloned repository.
 
 == Related Applications
 
@@ -275,11 +277,18 @@ We have a long running list of contributors. Check them in the CHANGELOG or do `
 
 == Bugs and Feedback
 
-If you discover any bugs or want to drop a line, feel free to create an issue on
-GitHub or send an e-mail to the mailing list.
+If you discover any bugs, please create an issue on GitHub.
 
-http://github.com/plataformatec/devise/issues | 
-http://groups.google.com/group/plataformatec-devise | 
+http://github.com/plataformatec/devise/issues
+
+For support, send an e-mail to the mailing list.
+
+http://groups.google.com/group/plataformatec-devise
+
+See the wiki for additional documentation and support.
+
 http://wiki.github.com/plataformatec/devise/
+
+== License
 
 MIT License. Copyright 2009 Plataforma Tecnologia. http://blog.plataformatec.com.br

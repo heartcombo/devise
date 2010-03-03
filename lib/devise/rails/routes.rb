@@ -87,11 +87,8 @@ module ActionDispatch::Routing
       options = resources.extract_options!
       resources.map!(&:to_sym)
 
-      controllers = Hash.new { |h,k| h[k] = "devise/#{k}" }
-      controllers.merge!(options.delete(:controllers) || {})
-
       resources.each do |resource|
-        mapping = Devise::Mapping.new(resource, options.dup)
+        mapping = Devise::Mapping.new(resource, options)
 
         unless mapping.to.respond_to?(:devise)
           raise "#{mapping.to.name} does not respond to 'devise' method. This usually means you haven't " <<
@@ -102,8 +99,8 @@ module ActionDispatch::Routing
         Devise.default_scope ||= mapping.name
         Devise.mappings[mapping.name] = mapping
 
-        mapping.for.each do |mod|
-          send(mod, mapping, controllers) if self.respond_to?(mod, true)
+        mapping.modules.each do |mod|
+          send(mod, mapping, mapping.controllers) if self.respond_to?(mod, true)
         end
       end
     end

@@ -37,11 +37,12 @@ module Devise
 
   # Maps controller names to devise modules.
   CONTROLLERS = {
-    :sessions => [:authenticatable, :token_authenticatable],
-    :passwords => [:recoverable],
-    :confirmations => [:confirmable],
-    :registrations => [:registerable],
-    :unlocks => [:lockable]
+    :authenticatable => :sessions,
+    :token_authenticatable => :sessions,
+    :recoverable => :passwords,
+    :confirmable => :confirmations,
+    :registerable => :registrations,
+    :lockable => :unlocks
   }
 
   # Routes for generating url helpers.
@@ -215,9 +216,7 @@ module Devise
       Devise::STRATEGIES.unshift module_name if options[:strategy] && !Devise::STRATEGIES.include?(module_name)
 
       if options[:controller]
-        controller = options[:controller].to_sym
-        Devise::CONTROLLERS[controller] ||= []
-        Devise::CONTROLLERS[controller].unshift module_name unless Devise::CONTROLLERS[controller].include?(module_name)
+        Devise::CONTROLLERS[module_name] = options[:controller].to_sym
       end
 
       if options[:model]

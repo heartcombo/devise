@@ -84,13 +84,14 @@ module Devise
       klass
     end
 
-    # Check if the given controller can be accessed by the current mapping.
-    # The validation is done by checking all devise modules in the mapping,
-    # retrieving their cannonical controller name and finally getting the
-    # real controllers names.
-    def allows?(controller)
-      canonical_controllers = CONTROLLERS.values_at(*self.modules).compact
-      @controllers.values_at(*canonical_controllers).include?(controller)
+    # Keep a list of allowed controllers for this mapping. It's useful to ensure
+    # that an Admin cannot access the registrations controller unless it has
+    # :registerable in the model.
+    def allowed_controllers
+      @allowed_controllers ||= begin
+        canonical = CONTROLLERS.values_at(*self.modules).compact
+        @controllers.values_at(*canonical)
+      end
     end
 
     # Return in which position in the path prefix devise should find the as mapping.

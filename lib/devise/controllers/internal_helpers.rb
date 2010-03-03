@@ -52,7 +52,8 @@ module Devise
 
       # Checks whether it's a devise mapped resource or not.
       def is_devise_resource? #:nodoc:
-        raise ActionController::UnknownAction unless devise_mapping && devise_mapping.allows?(controller_path)
+        raise ActionController::UnknownAction unless devise_mapping &&
+          devise_mapping.allowed_controllers.include?(controller_path)
       end
 
       # Sets the resource creating an instance variable

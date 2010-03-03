@@ -15,6 +15,12 @@
   * Devise.orm is deprecated, just require "devise/orm/YOUR_ORM" instead.
   * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options.
 
+== 1.0.4
+
+* bug fix
+  * Fixed a bug when deleting an account with rememberable
+  * Fixed a bug with custom controllers
+
 == 1.0.3
 
 * enhancements

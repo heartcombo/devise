@@ -111,15 +111,12 @@ module Devise
     #     self.modules.include?(:confirmable)
     #   end
     #
-    def self.register(*modules)
-      modules.each do |m|
-        class_eval <<-METHOD, __FILE__, __LINE__ + 1
-          def #{m}?
-            self.modules.include?(:#{m})
-          end
-        METHOD
-      end
+    def self.register(m)
+      class_eval <<-METHOD, __FILE__, __LINE__ + 1
+        def #{m}?
+          self.modules.include?(:#{m})
+        end
+      METHOD
     end
-    Devise::Mapping.register *ALL
   end
 end

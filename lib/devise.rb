@@ -1,6 +1,5 @@
 module Devise
   autoload :FailureApp, 'devise/failure_app'
-  autoload :Models, 'devise/models'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
 
@@ -21,39 +20,16 @@ module Devise
     autoload :Sha1, 'devise/encryptors/sha1'
   end
 
-  ALL = []
+  # Constants which holds devise configuration for extensions. Those should
+  # not be modified by the "end user".
+  ALL            = []
+  CONTROLLERS    = {}
+  ROUTES         = []
+  STRATEGIES     = []
+  FLASH_MESSAGES = [:unauthenticated]
 
-  # Authentication ones first
-  ALL.push :authenticatable, :http_authenticatable, :token_authenticatable, :rememberable
-
-  # Misc after
-  ALL.push :recoverable, :registerable, :validatable
-
-  # The ones which can sign out after
-  ALL.push :activatable, :confirmable, :lockable, :timeoutable
-
-  # Stats for last, so we make sure the user is really signed in
-  ALL.push :trackable
-
-  # Maps controller names to devise modules.
-  CONTROLLERS = {
-    :authenticatable => :sessions,
-    :token_authenticatable => :sessions,
-    :recoverable => :passwords,
-    :confirmable => :confirmations,
-    :registerable => :registrations,
-    :lockable => :unlocks
-  }
-
-  # Routes for generating url helpers.
-  ROUTES = [:session, :password, :confirmation, :registration, :unlock]
-
-  STRATEGIES  = [:rememberable, :http_authenticatable, :token_authenticatable, :authenticatable]
-
+  # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
-
-  # Maps the messages types that are used in flash message.
-  FLASH_MESSAGES = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
 
   # Declare encryptors length which are used in migrations.
   ENCRYPTORS_LENGTH = {
@@ -143,99 +119,90 @@ module Devise
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"
 
-  class << self
-    # Default way to setup Devise. Run script/generate devise_install to create
-    # a fresh initializer with all configuration values.
-    def setup
-      yield self
+  # Default way to setup Devise. Run rails generate devise_install to create
+  # a fresh initializer with all configuration values.
+  def self.setup
+    yield self
+  end
+
+  # Make Devise aware of an 3rd party Devise-module. For convenience.
+  #
+  # == Options:
+  #
+  #   +strategy+    - Boolean value representing if this module got a custom *strategy*.
+  #                   Default is +false+. Note: Devise will auto-detect this in such case if this is true.
+  #   +model+       - String representing the load path to a custom *model* for this module (to autoload.)
+  #                   Default is +nil+ (i.e. +false+).
+  #   +controller+  - Symbol representing the name of an exisiting or custom *controller* for this module.
+  #                   Default is +nil+ (i.e. +false+).
+  #   +route+       - Symbol representing the named *router* helper for this module.
+  #                   Default is +nil+ (i.e. +false+).
+  #   +flash+       - Symbol representing the *flash messages* used by this helper.
+  #                   Default is +nil+ (i.e. +false+).
+  #
+  # == Examples:
+  #
+  #   Devise.add_module(:party_module)
+  #   Devise.add_module(:party_module, :strategy => true, :controller => :sessions)
+  #   Devise.add_module(:party_module, :autoload => 'party_module/model')
+  #
+  def self.add_module(module_name, options = {})
+    ALL << module_name
+    options.assert_valid_keys(:strategy, :model, :controller, :route, :flash)
+
+    { :strategy => STRATEGIES, :flash => FLASH_MESSAGES, :route => ROUTES }.each do |key, value|
+      next unless options[key]
+      name = (options[key] == true ? module_name : options[key])
+      value.unshift(name) unless value.include?(name)
     end
 
-    # TODO Remove me on 1.1.0 final
-    def orm=(value)
-      ActiveSupport::Deprecation.warn "Devise.orm= and config.orm= are deprecated. " <<
-        "Just load \"devise/orm/\#{ORM_NAME}\" if Devise supports your ORM"
+    if options[:controller]
+      Devise::CONTROLLERS[module_name] = options[:controller].to_sym
     end
 
-    # TODO Remove me on 1.1.0 final
-    def default_url_options
-      ActiveSupport::Deprecation.warn "Devise.default_url_options and config.default_url_options are deprecated. " <<
-        "Just modify ApplicationController.default_url_options and Devise will automatically pick it up"
+    if options[:model]
+      model_path = (options[:model] == true ? "devise/models/#{module_name}" : options[:model])
+      Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, model_path)
     end
 
-    # Sets warden configuration using a block that will be invoked on warden
-    # initialization.
-    #
-    #  Devise.initialize do |config|
-    #    config.confirm_within = 2.days
-    #
-    #    config.warden do |manager|
-    #      # Configure warden to use other strategies, like oauth.
-    #      manager.oauth(:twitter)
-    #    end
-    #  end
-    def warden(&block)
-      @warden_config = block
-    end
+    Devise::Mapping.register module_name
+  end
 
-    # A method used internally to setup warden manager from the Rails initialize
-    # block.
-    def configure_warden(config) #:nodoc:
-      config.default_strategies *Devise::STRATEGIES
-      config.failure_app = Devise::FailureApp
-      config.silence_missing_strategies!
-      config.default_scope = Devise.default_scope
+  # Sets warden configuration using a block that will be invoked on warden
+  # initialization.
+  #
+  #  Devise.initialize do |config|
+  #    config.confirm_within = 2.days
+  #
+  #    config.warden do |manager|
+  #      # Configure warden to use other strategies, like oauth.
+  #      manager.oauth(:twitter)
+  #    end
+  #  end
+  def self.warden(&block)
+    @warden_config = block
+  end
 
-      # If the user provided a warden hook, call it now.
-      @warden_config.try :call, config
-    end
+  # A method used internally to setup warden manager from the Rails initialize
+  # block.
+  def self.configure_warden(config) #:nodoc:
+    config.default_strategies *Devise::STRATEGIES
+    config.failure_app = Devise::FailureApp
+    config.silence_missing_strategies!
+    config.default_scope = Devise.default_scope
 
-    # Generate a friendly string randomically to be used as token.
-    def friendly_token
-      ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
-    end
+    # If the user provided a warden hook, call it now.
+    @warden_config.try :call, config
+  end
 
-    # Make Devise aware of an 3rd party Devise-module. For convenience.
-    #
-    # == Options:
-    #
-    #   +strategy+    - Boolean value representing if this module got a custom *strategy*.
-    #                   Default is +false+. Note: Devise will auto-detect this in such case if this is true.
-    #   +model+       - String representing a load path to a custom *model* for this module (to autoload).
-    #                   Default is +nil+ (i.e. +false+).
-    #   +controller+  - Symbol representing a name of an exisiting or custom *controller* for this module.
-    #                   Default is +nil+ (i.e. +false+).
-    #
-    # == Examples:
-    #
-    #   Devise.add_module(:party_module)
-    #   Devise.add_module(:party_module, :strategy => true, :controller => :sessions)
-    #   Devise.add_module(:party_module, :model => 'party_module/model')
-    #
-    def add_module(module_name, options = {})
-      Devise::ALL.unshift module_name        unless Devise::ALL.include?(module_name)
-      Devise::STRATEGIES.unshift module_name if options[:strategy] && !Devise::STRATEGIES.include?(module_name)
-
-      if options[:controller]
-        Devise::CONTROLLERS[module_name] = options[:controller].to_sym
-      end
-
-      if options[:model]
-        Devise::Models.module_eval do
-          autoload :"#{module_name.to_s.classify}", options[:model]
-        end
-      end
-
-      Devise::Mapping.register module_name
-    end
+  # Generate a friendly string randomically to be used as token.
+  def self.friendly_token
+    ActiveSupport::SecureRandom.base64(15).tr('+/=', '-_ ').strip.delete("\n")
   end
 end
 
-begin
-  require 'warden'
-rescue
-  gem 'warden'
-  require 'warden'
-end
-
+require 'warden'
 require 'devise/mapping'
+require 'devise/models'
+require 'devise/modules'
 require 'devise/rails'

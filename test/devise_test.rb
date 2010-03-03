@@ -25,7 +25,7 @@ class DeviseTest < ActiveSupport::TestCase
     Devise.configure_warden(config)
 
     assert_equal Devise::FailureApp, config.failure_app
-    assert_equal [:rememberable, :http_authenticatable, :token_authenticatable, :authenticatable], config.default_strategies
+    assert_equal [:rememberable, :token_authenticatable, :http_authenticatable, :authenticatable], config.default_strategies
     assert_equal :user, config.default_scope
     assert config.silence_missing_strategies?
   end
@@ -58,10 +58,9 @@ class DeviseTest < ActiveSupport::TestCase
     Devise::STRATEGIES.delete(:banana)
 
     assert_nothing_raised(Exception) { Devise.add_module(:kivi, :controller => :fruits) }
-    assert_not_nil Devise::CONTROLLERS[:fruits]
-    assert_equal 1, Devise::CONTROLLERS[:fruits].select { |v| v == :kivi }.size
+    assert_equal :fruits, Devise::CONTROLLERS[:kivi]
     Devise::ALL.delete(:kivi)
-    Devise::CONTROLLERS.delete(:fruits)
+    Devise::CONTROLLERS.delete(:kivi)
 
     assert_nothing_raised(Exception) { Devise.add_module(:authenticatable_again, :model => 'devise/model/authenticatable') }
     assert defined?(Devise::Models::AuthenticatableAgain)

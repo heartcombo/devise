@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-02-24}
+  s.date = %q{2010-03-03}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -74,6 +74,7 @@ Gem::Specification.new do |s|
      "lib/devise/models/token_authenticatable.rb",
      "lib/devise/models/trackable.rb",
      "lib/devise/models/validatable.rb",
+     "lib/devise/modules.rb",
      "lib/devise/orm/active_record.rb",
      "lib/devise/orm/data_mapper.rb",
      "lib/devise/orm/mongo_mapper.rb",

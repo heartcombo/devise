@@ -5,7 +5,7 @@ class MappingTest < ActiveSupport::TestCase
   test 'store options' do
     mapping = Devise.mappings[:user]
     assert_equal User,                mapping.to
-    assert_equal User.devise_modules, mapping.for
+    assert_equal User.devise_modules, mapping.modules
     assert_equal :users,              mapping.as
   end
 
@@ -18,15 +18,15 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'allows a controller depending on the mapping' do
-    mapping = Devise.mappings[:user]
-    assert mapping.allows?(:sessions)
-    assert mapping.allows?(:confirmations)
-    assert mapping.allows?(:passwords)
+    allowed = Devise.mappings[:user].allowed_controllers
+    assert allowed.include?("devise/sessions")
+    assert allowed.include?("devise/confirmations")
+    assert allowed.include?("devise/passwords")
 
-    mapping = Devise.mappings[:admin]
-    assert mapping.allows?(:sessions)
-    assert_not mapping.allows?(:confirmations)
-    assert_not mapping.allows?(:passwords)
+    allowed = Devise.mappings[:admin].allowed_controllers
+    assert allowed.include?("sessions")
+    assert_not allowed.include?("devise/confirmations")
+    assert_not allowed.include?("devise/passwords")
   end
 
   test 'find mapping by path' do

@@ -1,3 +1,9 @@
+== 1.0.4
+
+* bug fix
+  * Fixed a bug when deleting an account with rememberable
+  * Fixed a bug with custom controllers
+
 == 1.0.3
 
 * enhancements

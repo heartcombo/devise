@@ -81,6 +81,6 @@ module Devise
 end
 
 DataMapper::Model.class_eval do
-  extend  Devise::ORM::DataMapper::Hook
+  extend  Devise::Orm::DataMapper::Hook
   include Devise::Models
 end

@@ -78,15 +78,10 @@ module Devise
       # error on :current_password. It also automatically rejects :password and
       # :password_confirmation if they are blank.
       def update_with_password(params={})
-        # TODO Remove me in next release
-        if params[:old_password].present?
-          params[:current_password] ||= params[:old_password]
-          ActiveSupport::Deprecation.warn "old_password is deprecated, please use current_password instead", caller
-        end
-
-        params.delete(:password) if params[:password].blank?
-        params.delete(:password_confirmation) if params[:password_confirmation].blank?
         current_password = params.delete(:current_password)
+
+        params.delete(:password)              if params[:password].blank?
+        params.delete(:password_confirmation) if params[:password_confirmation].blank?
 
         result = if valid_password?(current_password)
           update_attributes(params)

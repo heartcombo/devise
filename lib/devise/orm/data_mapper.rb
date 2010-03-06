@@ -27,7 +27,7 @@ module Devise
             options[new_key] = options.delete(old_key)
           end
 
-          options.delete(:default)
+          options.delete(:default) if options[:default].nil?
           property name, type, options
         end
       end
@@ -83,5 +83,5 @@ end
 
 DataMapper::Model.class_eval do
   include Devise::Models
-  include  Devise::Orm::DataMapper::Hook
+  include Devise::Orm::DataMapper::Hook
 end

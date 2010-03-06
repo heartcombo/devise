@@ -24,9 +24,10 @@ module Devise
         def apply_schema(name, type, options={})
           SCHEMA_OPTIONS.each do |old_key, new_key|
             next unless options.key?(old_key)
-            options[new_key] = !options.delete(old_key)
+            options[new_key] = options.delete(old_key)
           end
 
+          options.delete(:default)
           property name, type, options
         end
       end
@@ -81,6 +82,6 @@ module Devise
 end
 
 DataMapper::Model.class_eval do
-  extend  Devise::Orm::DataMapper::Hook
   include Devise::Models
+  include  Devise::Orm::DataMapper::Hook
 end

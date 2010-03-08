@@ -1,7 +1,7 @@
 class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
   def self.up
     create_table(:<%= table_name %>) do |t|
-      t.authenticatable :encryptor => :sha1, :null => false
+      t.authenticatable :encryptor => :<%= Devise.encryptor %>, :null => false
       t.confirmable
       t.recoverable
       t.rememberable

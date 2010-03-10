@@ -65,7 +65,7 @@ module Devise
         # try saving the record. If not user is found, returns a new user
         # containing an error in reset_password_token attribute.
         # Attributes must contain reset_password_token, password and confirmation
-        def reset_password!(attributes={})
+        def reset_password_by_token(attributes={})
           recoverable = find_or_initialize_with_error_by(:reset_password_token, attributes[:reset_password_token])
           recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) unless recoverable.new_record?
           recoverable

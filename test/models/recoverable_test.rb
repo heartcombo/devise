@@ -104,18 +104,18 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     user.send :generate_reset_password_token!
 
-    reset_password_user = User.reset_password!(:reset_password_token => user.reset_password_token)
+    reset_password_user = User.reset_password_by_token(:reset_password_token => user.reset_password_token)
     assert_equal reset_password_user, user
   end
 
   test 'should a new record with errors if no reset_password_token is found' do
-    reset_password_user = User.reset_password!(:reset_password_token => 'invalid_token')
+    reset_password_user = User.reset_password_by_token(:reset_password_token => 'invalid_token')
     assert reset_password_user.new_record?
     assert_equal "is invalid", reset_password_user.errors[:reset_password_token].join
   end
 
   test 'should a new record with errors if reset_password_token is blank' do
-    reset_password_user = User.reset_password!(:reset_password_token => '')
+    reset_password_user = User.reset_password_by_token(:reset_password_token => '')
     assert reset_password_user.new_record?
     assert_match "can't be blank", reset_password_user.errors[:reset_password_token].join
   end
@@ -125,7 +125,7 @@ class RecoverableTest < ActiveSupport::TestCase
     old_password = user.password
     user.send :generate_reset_password_token!
 
-    reset_password_user = User.reset_password!(
+    reset_password_user = User.reset_password_by_token(
       :reset_password_token => user.reset_password_token,
       :password => 'new_password',
       :password_confirmation => 'new_password'

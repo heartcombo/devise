@@ -14,7 +14,7 @@ class ActionController::IntegrationTest
         :created_at => Time.now.utc
       )
       user.confirm! unless options[:confirm] == false
-      user.lock! if options[:locked] == true
+      user.lock_access! if options[:locked] == true
       user
     end
   end

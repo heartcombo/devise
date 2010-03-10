@@ -15,7 +15,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     3.times do
       token = user.confirmation_token
-      user.resend_confirmation!
+      user.resend_confirmation_token
       assert_not_equal token, user.confirmation_token
     end
   end
@@ -62,19 +62,19 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should find and confirm an user automatically' do
     user = create_user
-    confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
+    confirmed_user = User.confirm_by_token(user.confirmation_token)
     assert_equal confirmed_user, user
     assert user.reload.confirmed?
   end
 
   test 'should return a new record with errors when a invalid token is given' do
-    confirmed_user = User.confirm!(:confirmation_token => 'invalid_confirmation_token')
+    confirmed_user = User.confirm_by_token('invalid_confirmation_token')
     assert confirmed_user.new_record?
     assert_equal "is invalid", confirmed_user.errors[:confirmation_token].join
   end
 
   test 'should return a new record with errors when a blank token is given' do
-    confirmed_user = User.confirm!(:confirmation_token => '')
+    confirmed_user = User.confirm_by_token('')
     assert confirmed_user.new_record?
     assert_equal "can't be blank", confirmed_user.errors[:confirmation_token].join
   end
@@ -83,7 +83,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     user.confirmed_at = Time.now
     user.save
-    confirmed_user = User.confirm!(:confirmation_token => user.confirmation_token)
+    confirmed_user = User.confirm_by_token(user.confirmation_token)
     assert confirmed_user.confirmed?
     assert_equal "was already confirmed", confirmed_user.errors[:email].join
   end
@@ -173,7 +173,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should not be able to send instructions if the user is already confirmed' do
     user = create_user
     user.confirm!
-    assert_not user.resend_confirmation!
+    assert_not user.resend_confirmation_token
     assert user.confirmed?
     assert_equal 'was already confirmed', user.errors[:email].join
   end

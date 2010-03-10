@@ -22,23 +22,20 @@ module Devise
       include Devise::Models::Activatable
 
       # Lock an user setting it's locked_at to actual time.
-      def lock
+      def lock_access!
         self.locked_at = Time.now
+
         if unlock_strategy_enabled?(:email)
           generate_unlock_token
           send_unlock_instructions
         end
-      end
 
-      # Lock an user also saving the record.
-      def lock!
-        lock
         save(:validate => false)
       end
 
       # Unlock an user by cleaning locket_at and failed_attempts.
-      def unlock!
-        if_locked do
+      def unlock_access!
+        if_access_locked do
           self.locked_at = nil
           self.failed_attempts = 0
           self.unlock_token = nil
@@ -47,7 +44,7 @@ module Devise
       end
 
       # Verifies whether a user is locked or not.
-      def locked?
+      def access_locked?
         locked_at && !lock_expired?
       end
 
@@ -57,8 +54,8 @@ module Devise
       end
 
       # Resend the unlock instructions if the user is locked.
-      def resend_unlock!
-        if_locked do
+      def resend_unlock_token
+        if_access_locked do
           generate_unlock_token unless unlock_token.present?
           save(:validate => false)
           send_unlock_instructions
@@ -68,17 +65,13 @@ module Devise
       # Overwrites active? from Devise::Models::Activatable for locking purposes
       # by verifying whether an user is active to sign in or not based on locked?
       def active?
-        super && !locked?
+        super && !access_locked?
       end
 
       # Overwrites invalid_message from Devise::Models::Authenticatable to define
       # the correct reason for blocking the sign in.
       def inactive_message
-        if locked?
-          :locked
-        else
-          super
-        end
+        access_locked? ? :locked : super
       end
 
       # Overwrites valid_for_authentication? from Devise::Models::Authenticatable
@@ -89,7 +82,10 @@ module Devise
           self.failed_attempts = 0
         else
           self.failed_attempts += 1
-          lock if failed_attempts > self.class.maximum_attempts
+          if failed_attempts > self.class.maximum_attempts
+            lock_access! 
+            return false
+          end
         end
         save(:validate => false) if changed?
         result
@@ -113,8 +109,8 @@ module Devise
 
         # Checks whether the record is locked or not, yielding to the block
         # if it's locked, otherwise adds an error to email.
-        def if_locked
-          if locked?
+        def if_access_locked
+          if access_locked?
             yield
           else
             self.errors.add(:email, :not_locked)
@@ -134,7 +130,7 @@ module Devise
         # Options must contain the user email
         def send_unlock_instructions(attributes={})
          lockable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
-         lockable.resend_unlock! unless lockable.new_record?
+         lockable.resend_unlock_token unless lockable.new_record?
          lockable
         end
 
@@ -142,9 +138,9 @@ module Devise
         # If no user is found, returns a new user with an error.
         # If the user is not locked, creates an error for the user
         # Options must have the unlock_token
-        def unlock!(attributes={})
-          lockable = find_or_initialize_with_error_by(:unlock_token, attributes[:unlock_token])
-          lockable.unlock! unless lockable.new_record?
+        def unlock_access_by_token(unlock_token)
+          lockable = find_or_initialize_with_error_by(:unlock_token, unlock_token)
+          lockable.unlock_access! unless lockable.new_record?
           lockable
         end
 

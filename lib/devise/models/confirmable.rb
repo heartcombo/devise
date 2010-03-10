@@ -63,7 +63,7 @@ module Devise
       # Remove confirmation date and send confirmation instructions, to ensure
       # after sending these instructions the user won't be able to sign in without
       # confirming it's account
-      def resend_confirmation!
+      def resend_confirmation_token
         unless_confirmed do
           generate_confirmation_token
           save(false)
@@ -81,11 +81,7 @@ module Devise
 
       # The message to be shown if the account is inactive.
       def inactive_message
-        if !confirmed?
-          :unconfirmed
-        else
-          super
-        end
+        !confirmed? ? :unconfirmed : super
       end
 
       # If you don't want confirmation to be sent on create, neither a code
@@ -151,7 +147,7 @@ module Devise
         # Options must contain the user email
         def send_confirmation_instructions(attributes={})
           confirmable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
-          confirmable.resend_confirmation! unless confirmable.new_record?
+          confirmable.resend_confirmation_token unless confirmable.new_record?
           confirmable
         end
 
@@ -159,8 +155,8 @@ module Devise
         # If no user is found, returns a new user with an error.
         # If the user is already confirmed, create an error for the user
         # Options must have the confirmation_token
-        def confirm!(attributes={})
-          confirmable = find_or_initialize_with_error_by(:confirmation_token, attributes[:confirmation_token])        
+        def confirm_by_token(confirmation_token)
+          confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
           confirmable.confirm! unless confirmable.new_record?
           confirmable
         end

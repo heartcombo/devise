@@ -21,7 +21,7 @@ class UnlocksController < ApplicationController
 
   # GET /resource/unlock?unlock_token=abcdef
   def show
-    self.resource = resource_class.unlock!(:unlock_token => params[:unlock_token])
+    self.resource = resource_class.unlock_access_by_token(params[:unlock_token])
 
     if resource.errors.empty?
       set_flash_message :notice, :unlocked

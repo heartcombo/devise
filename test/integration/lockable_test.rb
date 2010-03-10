@@ -47,14 +47,14 @@ class LockTest < ActionController::IntegrationTest
 
   test "locked user should be able to unlock account" do
     user = create_user(:locked => true)
-    assert user.locked?
+    assert user.access_locked?
 
     visit_user_unlock_with_token(user.unlock_token)
 
     assert_template 'home/index'
     assert_contain 'Your account was successfully unlocked.'
 
-    assert_not user.reload.locked?
+    assert_not user.reload.access_locked?
   end
 
   test "sign in user automatically after unlocking it's account" do

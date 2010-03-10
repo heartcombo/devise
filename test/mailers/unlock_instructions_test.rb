@@ -10,7 +10,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
   def user
     @user ||= begin
       user = create_user
-      user.lock!
+      user.lock_access!
       user
     end
   end

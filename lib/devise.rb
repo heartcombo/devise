@@ -1,3 +1,5 @@
+require 'active_support/core_ext/numeric/time'
+
 module Devise
   autoload :FailureApp, 'devise/failure_app'
   autoload :Schema, 'devise/schema'

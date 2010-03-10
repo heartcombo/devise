@@ -23,6 +23,10 @@ class MockController < ApplicationController
     "http"
   end
 
+  def script_name
+    ""
+  end
+
   def symbolized_path_parameters
     {}
   end

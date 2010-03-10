@@ -5,8 +5,16 @@ module Devise
   class Engine < ::Rails::Engine
     engine_name :devise
 
-    config.middleware.use Warden::Manager do |config|
-      Devise.configure_warden(config)
+    initializer "devise.add_middleware" do |app|
+      app.config.middleware.use Warden::Manager do |config|
+        Devise.configure_warden(config)
+      end
+    end
+
+    initializer "devise.add_url_helpers" do |app|
+      if app.routes.respond_to?(:url_helpers)
+        Devise::FailureApp.send :include, app.routes.url_helpers
+      end
     end
   end
 end

@@ -1,6 +1,7 @@
 source "http://gemcutter.org"
 
-gem "rails", "3.0.0.beta"
+# Need to install Rails from source
+gem "rails", "3.0.0.beta1"
 gem "warden", "0.9.4"
 gem "sqlite3-ruby", :require => "sqlite3"
 gem "webrat", "0.7"

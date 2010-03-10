@@ -6,7 +6,7 @@ class DeviseViewsGenerator < Rails::Generators::Base
   end
 
   def copy_views
-    directory "devise"
+    directory "devise", "app/views/devise"
   end
 
   def say_restart_server

@@ -12,9 +12,7 @@ module Devise
     end
 
     initializer "devise.add_url_helpers" do |app|
-      if app.routes.respond_to?(:url_helpers)
-        Devise::FailureApp.send :include, app.routes.url_helpers
-      end
+      Devise::FailureApp.send :include, app.routes.url_helpers
     end
   end
 end

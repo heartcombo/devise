@@ -51,12 +51,16 @@ module Devise
       env['warden.options']
     end
 
+    def attempted_path
+      warden_options[:attempted_path]
+    end
+
     # Stores requested uri to redirect the user after signing in. We cannot use
     # scoped session provided by warden here, since the user is not authenticated
     # yet, but we still need to store the uri based on scope, so different scopes
     # would never use the same uri to redirect.
     def store_location!(scope)
-      session[:"#{scope}.return_to"] = request.fullpath if request && request.get?
+      session[:"#{scope}.return_to"] = attempted_path if request && request.get?
     end
   end
 end

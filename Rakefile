@@ -45,7 +45,7 @@ begin
     s.authors = ['José Valim', 'Carlos Antônio']
     s.files =  FileList["[A-Z]*", "{app,config,lib}/**/*"]
     s.extra_rdoc_files = FileList["[A-Z]*"] - %w(Gemfile Rakefile)
-    s.add_dependency("warden", "~> 0.9.4")
+    s.add_dependency("warden", "~> 0.9.7")
   end
 
   Jeweler::GemcutterTasks.new

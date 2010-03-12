@@ -26,7 +26,7 @@ class MappingTest < ActiveSupport::TestCase
     allowed = Devise.mappings[:admin].allowed_controllers
     assert allowed.include?("sessions")
     assert_not allowed.include?("devise/confirmations")
-    assert_not allowed.include?("devise/passwords")
+    assert_not allowed.include?("devise/unlocks")
   end
 
   test 'find mapping by path' do
@@ -110,8 +110,9 @@ class MappingTest < ActiveSupport::TestCase
 
     mapping = Devise.mappings[:admin]
     assert mapping.authenticatable?
+    assert mapping.recoverable?
     assert_not mapping.confirmable?
-    assert_not mapping.recoverable?
+    assert_not mapping.lockable?
     assert_not mapping.rememberable?
   end
 end

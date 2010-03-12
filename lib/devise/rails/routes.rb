@@ -83,6 +83,10 @@ module ActionDispatch::Routing
     #
     #    devise_for :users, :controllers => { :sessions => "users/sessions" }
     #
+    #  * :skip => tell which modules you want to skip routes from being created:
+    #
+    #    devise_for :users, :skip => :authenticatable
+    #
     def devise_for(*resources)
       options = resources.extract_options!
       resources.map!(&:to_sym)
@@ -99,7 +103,8 @@ module ActionDispatch::Routing
         Devise.default_scope ||= mapping.name
         Devise.mappings[mapping.name] = mapping
 
-        mapping.modules.each do |mod|
+        routes_modules = mapping.modules - Array(options.delete(:skip))
+        routes_modules.each do |mod|
           send(mod, mapping, mapping.controllers) if self.respond_to?(mod, true)
         end
       end

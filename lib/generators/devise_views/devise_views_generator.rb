@@ -17,6 +17,7 @@ class DeviseViewsGenerator < Rails::Generators::Base
       directory "devise", "app/views/devise/#{scope}"
     when "haml"
       require 'haml'
+      verify_haml_version
       create_and_copy_haml_views
     end
   end
@@ -39,5 +40,12 @@ class DeviseViewsGenerator < Rails::Generators::Base
     end
     
     directory devise_haml_source_root, "app/views/devise/#{scope}"
+  end
+  
+  def verify_haml_version
+    unless Haml.version[:major] >= 2 and Haml.version[:minor] >= 3
+      say "To generate HAML templates, you need to install HAML 2.3 or above."
+      exit
+    end
   end
 end

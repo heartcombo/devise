@@ -42,6 +42,9 @@ class DeviseViewsGenerator < Rails::Generators::Base
     devise_html_source_root = "#{DeviseViewsGenerator.source_root}/devise"
     devise_haml_source_root = "#{DeviseViewsGenerator.source_root}/devise-haml"
     
+    # reset the ghost folder so that no deprecated files (if any) will get copied across
+    FileUtils.remove_dir devise_haml_source_root, true
+    
     Dir["#{devise_html_source_root}/**/*"].each do |path|
       relative_path = path.sub(devise_html_source_root, "")
       source_path   = (devise_haml_source_root + relative_path).sub(/erb$/, "haml")

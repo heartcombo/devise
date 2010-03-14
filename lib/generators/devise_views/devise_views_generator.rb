@@ -42,24 +42,21 @@ class DeviseViewsGenerator < Rails::Generators::Base
   
   def create_and_copy_haml_views
     require 'tmpdir'
-    
     html_root = "#{self.class.source_root}/devise"
-    haml_root = "#{Dir.tmpdir}/devise-haml"
-    
-    # Reset the temp folder so that no deprecated files (if any) will get copied across
-    FileUtils.rm_rf(haml_root, true)
-    
-    Dir["#{html_root}/**/*"].each do |path|
-      relative_path = path.sub(html_root, "")
-      source_path   = (haml_root + relative_path).sub(/erb$/, "haml")
-      
-      if File.directory?(path)
-        FileUtils.mkdir_p(source_path)
-      else
-        `html2haml -r #{path} #{source_path}`
+
+    Dir.mktmpdir("devise-haml.") do |haml_root|
+      Dir["#{html_root}/**/*"].each do |path|
+        relative_path = path.sub(html_root, "")
+        source_path   = (haml_root + relative_path).sub(/erb$/, "haml")
+
+        if File.directory?(path)
+          FileUtils.mkdir_p(source_path)
+        else
+          `html2haml -r #{path} #{source_path}`
+        end
       end
+
+      directory haml_root, "app/views/devise/#{scope}"
     end
-    
-    directory haml_root, "app/views/devise/#{scope}"
   end
 end

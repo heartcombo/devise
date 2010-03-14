@@ -25,7 +25,9 @@ class DeviseViewsGenerator < Rails::Generators::Base
   protected
   
   def verify_haml_existence
-    unless Module.const_defined? "Haml"
+    begin
+      require 'haml'
+    rescue LoadError
       say "HAML is not installed, or it is not specified in your Gemfile."
       exit
     end

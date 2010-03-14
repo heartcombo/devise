@@ -41,10 +41,12 @@ class DeviseViewsGenerator < Rails::Generators::Base
   end
   
   def create_and_copy_haml_views
-    devise_html_source_root = "#{DeviseViewsGenerator.source_root}/devise"
-    devise_haml_source_root = "#{DeviseViewsGenerator.source_root}/devise-haml"
+    require 'tmpdir'
     
-    # reset the ghost folder so that no deprecated files (if any) will get copied across
+    devise_html_source_root = "#{DeviseViewsGenerator.source_root}/devise"
+    devise_haml_source_root = "#{Dir.tmpdir}/devise-haml"
+    
+    # reset the temp folder so that no deprecated files (if any) will get copied across
     FileUtils.remove_dir devise_haml_source_root, true
     
     Dir["#{devise_html_source_root}/**/*"].each do |path|

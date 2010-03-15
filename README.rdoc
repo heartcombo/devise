@@ -33,18 +33,13 @@ Devise is based on Warden (http://github.com/hassox/warden), a Rack Authenticati
 
 == Installation
 
-Devise master branch now supports Rails 3 and is NOT backward compatible. You can install it as:
+Devise master branch now supports Rails 3 and is NOT backward compatible. If you are using Rails 3.0.0 beta gem, you need to install devise as a gem:
 
-  sudo gem install devise --version=1.1.pre
+  sudo gem install devise --version=1.1.pre4
 
-After installing the Warden and Devise gems, you need to configure the gems inside your gemfile:
+However, if you are using Rails edge, from the git repository, you also need to use Devise from the git repository. After you install Devise and add it to your gemfile, you need to run the generator:
 
-  gem 'warden'
-  gem 'devise'
-
-And run the generator:
-
-	rails generate devise_install
+  rails generate devise_install
 
 And you're ready to go. The generator will install an initializer which describes ALL Devise's configuration options, so be sure to take a look at it and at the documentation as well:
 
@@ -54,7 +49,7 @@ And you're ready to go. The generator will install an initializer which describe
 
 If you want to use the Rails 2.3.x version, you should do:
 
-  sudo gem install devise --version=1.0.1
+  sudo gem install devise --version=1.0.4
 
 Or checkout from the v1.0 branch:
 

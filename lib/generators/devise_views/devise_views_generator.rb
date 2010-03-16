@@ -13,12 +13,12 @@ class DeviseViewsGenerator < Rails::Generators::Base
 
   def copy_views
     case options[:template_engine]
-    when "erb"
-      directory "devise", "app/views/devise/#{scope}"
     when "haml"
       verify_haml_existence
       verify_haml_version
       create_and_copy_haml_views
+    else
+      directory "devise", "app/views/devise/#{scope}"
     end
   end
   

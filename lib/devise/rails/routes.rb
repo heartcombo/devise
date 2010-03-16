@@ -139,8 +139,8 @@ module ActionDispatch::Routing
       end
 
       def registerable(mapping, controllers)
-        scope :name_prefix => mapping.name do
-          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => mapping.path[1..-1],
+        scope mapping.path[1..-1], :name_prefix => "#{mapping.name}_registration" do
+          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => "",
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end
       end

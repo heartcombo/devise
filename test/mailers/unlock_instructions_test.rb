@@ -51,12 +51,12 @@ class UnlockInstructionsTest < ActionMailer::TestCase
   end
 
   test 'body should have user info' do
-    assert_match /#{user.email}/, mail.body
+    assert_match(/#{user.email}/, mail.body.encoded)
   end
 
   test 'body should have link to unlock the account' do
     host = ActionMailer::Base.default_url_options[:host]
     unlock_url_regexp = %r{<a href=\"http://#{host}/users/unlock\?unlock_token=#{user.unlock_token}">}
-    assert_match unlock_url_regexp, mail.body
+    assert_match unlock_url_regexp, mail.body.encoded
   end
 end

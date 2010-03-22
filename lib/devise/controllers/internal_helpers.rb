@@ -8,8 +8,10 @@ module Devise
       include Devise::Controllers::ScopedViews
 
       included do
-        helpers = [:resource, :scope_name, :resource_name,
-                  :resource_class, :devise_mapping, :devise_controller?]
+        unloadable
+
+        helpers = %w(resource scope_name resource_name
+                     resource_class devise_mapping devise_controller?)
 
         hide_action *helpers
         helper_method *helpers

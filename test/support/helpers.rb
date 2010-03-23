@@ -1,3 +1,5 @@
+require 'active_support/test_case'
+
 class ActiveSupport::TestCase
   VALID_AUTHENTICATION_TOKEN = 'AbCdEfGhIjKlMnOpQrSt'.freeze
 

@@ -1,4 +1,5 @@
 require 'webrat/core/elements/field'
+require 'action_dispatch/testing/integration'
 
 module Webrat
   Field.class_eval do
@@ -8,7 +9,7 @@ module Webrat
   end
 end
 
-module ActionController #:nodoc:
+module ActionDispatch #:nodoc:
   IntegrationTest.class_eval do
     include Webrat::Methods
     include Webrat::Matchers

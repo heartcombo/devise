@@ -1,5 +1,6 @@
-class ActionController::IntegrationTest
+require 'action_dispatch/testing/integration'
 
+class ActionDispatch::IntegrationTest
   def warden
     request.env['warden']
   end

@@ -1,6 +1,8 @@
 class UnlocksController < ApplicationController
   include Devise::Controllers::InternalHelpers
 
+  before_filter :require_no_authentication
+
   # GET /resource/unlock/new
   def new
     build_resource

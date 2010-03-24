@@ -63,6 +63,11 @@ class DeviseTest < ActiveSupport::TestCase
     Devise::ALL.delete(:kivi)
     Devise::CONTROLLERS.delete(:fruits)
 
+    assert_nothing_raised(Exception) { Devise.add_module(:carrot, :route => :vegetable) }
+    assert_equal 1, Devise::ROUTES.select { |v| v == :vegetable }.size
+    Devise::ALL.delete(:carrot)
+    Devise::ROUTES.delete(:vegetable)
+
     assert_nothing_raised(Exception) { Devise.add_module(:authenticatable_again, :model => 'devise/model/authenticatable') }
     assert defined?(Devise::Models::AuthenticatableAgain)
   end

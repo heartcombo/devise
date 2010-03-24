@@ -145,8 +145,8 @@ module Devise
 
   # Address which sends Devise e-mails.
   mattr_accessor :mailer_sender
-  @@mailer_sender = nil  
-  
+  @@mailer_sender = nil
+
   # Content Type of Devise e-mails.
   mattr_accessor :mailer_content_type
   @@mailer_content_type = 'text/html'
@@ -218,6 +218,9 @@ module Devise
     #                   Default is +nil+ (i.e. +false+).
     #   +controller+  - Symbol representing a name of an exisiting or custom *controller* for this module.
     #                   Default is +nil+ (i.e. +false+).
+    #   +route+       - Symbol representing the name of a *route* related to this module which a set of
+    #                   route view helpers should be created for.
+    #                   Default is +nil+ (i.e. +false+).
     #
     # == Examples:
     #
@@ -233,6 +236,10 @@ module Devise
         controller = options[:controller].to_sym
         Devise::CONTROLLERS[controller] ||= []
         Devise::CONTROLLERS[controller].unshift module_name unless Devise::CONTROLLERS[controller].include?(module_name)
+      end
+
+      if options[:route]
+        Devise::ROUTES.unshift options[:route] unless Devise::ROUTES.include?(options[:route])
       end
 
       if options[:model]

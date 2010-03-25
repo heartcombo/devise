@@ -229,7 +229,7 @@ module Devise
     #   Devise.add_module(:party_module, :model => 'party_module/model')
     #
     def add_module(module_name, options = {})
-      Devise::ALL.unshift module_name        unless Devise::ALL.include?(module_name)
+      Devise::ALL << module_name        unless Devise::ALL.include?(module_name)
       Devise::STRATEGIES.unshift module_name if options[:strategy] && !Devise::STRATEGIES.include?(module_name)
 
       if options[:controller]

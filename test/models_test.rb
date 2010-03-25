@@ -23,7 +23,21 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'add modules cherry pick' do
-    assert_include_modules Admin, :authenticatable, :registerable, :timeoutable, :recoverable
+    assert_include_modules Admin, :authenticatable, :registerable, :timeoutable
+  end
+
+  test 'order of module inclusion' do
+    correct_module_order   = [:authenticatable, :registerable, :timeoutable]
+    incorrect_module_order = [:authenticatable, :timeoutable, :registerable]
+
+    assert_include_modules Admin, *incorrect_module_order
+
+    # get module constants from symbol list
+    module_constants = correct_module_order.collect { |mod| Devise::Models::const_get(mod.to_s.classify) }
+
+    # confirm that they adhere to the order in ALL
+    # get included modules, filter out the noise, and reverse the order
+    assert_equal module_constants, (Admin.included_modules & module_constants).reverse
   end
 
   test 'set a default value for stretches' do

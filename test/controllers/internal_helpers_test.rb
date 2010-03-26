@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 
 class MyController < ApplicationController
   include Devise::Controllers::InternalHelpers
@@ -6,6 +6,11 @@ end
 
 class HelpersTest < ActionController::TestCase
   tests MyController
+
+  def setup
+    @mock_warden = OpenStruct.new
+    @controller.request.env['warden'] = @mock_warden
+  end
 
   test 'get resource name from request path' do
     @request.path = '/users/session'

@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 
 class AuthenticationSanityTest < ActionController::IntegrationTest
   test 'home should be accessible without sign in' do

@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 
 class RememberableTest < ActiveSupport::TestCase
   test 'should respond to remember_me attribute' do

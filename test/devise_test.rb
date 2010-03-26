@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 
 module Devise
   def self.clean_warden_config!

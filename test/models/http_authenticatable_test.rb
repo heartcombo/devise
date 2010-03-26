@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 
 class HttpAuthenticatableTest < ActiveSupport::TestCase
   test 'should authenticate a valid user with email and password and return it' do

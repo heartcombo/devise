@@ -1,2 +1,2 @@
-* Make test run with DataMapper
 * Extract Activatable tests from Confirmable
+* Move integration tests to Capybara

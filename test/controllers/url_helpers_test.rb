@@ -1,9 +1,9 @@
-require 'test/test_helper'
+require 'test_helper'
 
 class RoutesTest < ActionController::TestCase
   tests ApplicationController
 
-  def test_path_and_url(name, prepend_path=nil)
+  def assert_path_and_url(name, prepend_path=nil)
     @request.path = '/users/session'
     prepend_path = "#{prepend_path}_" if prepend_path
 
@@ -29,19 +29,19 @@ class RoutesTest < ActionController::TestCase
 
 
   test 'should alias session to mapped user session' do
-    test_path_and_url :session
-    test_path_and_url :session, :new
-    test_path_and_url :session, :destroy
+    assert_path_and_url :session
+    assert_path_and_url :session, :new
+    assert_path_and_url :session, :destroy
   end
 
   test 'should alias password to mapped user password' do
-    test_path_and_url :password
-    test_path_and_url :password, :new
-    test_path_and_url :password, :edit
+    assert_path_and_url :password
+    assert_path_and_url :password, :new
+    assert_path_and_url :password, :edit
   end
 
   test 'should alias confirmation to mapped user confirmation' do
-    test_path_and_url :confirmation
-    test_path_and_url :confirmation, :new
+    assert_path_and_url :confirmation
+    assert_path_and_url :confirmation, :new
   end
 end

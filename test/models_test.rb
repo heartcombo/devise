@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require 'test_helper'
 
 class Configurable < User
   devise :authenticatable, :confirmable, :rememberable, :timeoutable, :lockable,

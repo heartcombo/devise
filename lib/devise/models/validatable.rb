@@ -34,15 +34,6 @@ module Devise
                 "to the following methods: #{unavailable_validations.to_sentence}."
         end
       end
-
-      protected
-
-        # Checks whether a password is needed or not. For validations only.
-        # Passwords are always required if it's a new record, or if the password
-        # or confirmation are being set somewhere.
-        def password_required?
-          new_record? || !password.nil? || !password_confirmation.nil?
-        end
     end
   end
 end

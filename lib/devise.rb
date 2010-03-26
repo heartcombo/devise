@@ -43,9 +43,6 @@ module Devise
     :bcrypt => 60
   }
 
-  # Email regex used to validate email formats. Adapted from authlogic.
-  EMAIL_REGEX = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
-
   # Used to encrypt password. Please generate one with rake secret.
   mattr_accessor :pepper
   @@pepper = nil
@@ -57,7 +54,15 @@ module Devise
   # Keys used when authenticating an user.
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]
-
+  
+  # Range validation for password length
+  mattr_accessor :password_length
+  @@password_length = 6..20
+  
+  # Email regex used to validate email formats. Adapted from authlogic.
+  mattr_accessor :email_regex
+  @@email_regex = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
+  
   # Time interval where the remember me token is valid.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks

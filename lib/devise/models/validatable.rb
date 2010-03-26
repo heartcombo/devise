@@ -16,12 +16,12 @@ module Devise
         base.class_eval do
           validates_presence_of   :email
           validates_uniqueness_of :email, :scope => authentication_keys[1..-1], :allow_blank => true
-          validates_format_of     :email, :with  => EMAIL_REGEX, :allow_blank => true
+          validates_format_of     :email, :with  => Devise.email_regex, :allow_blank => true
 
           with_options :if => :password_required? do |v|
             v.validates_presence_of     :password
             v.validates_confirmation_of :password
-            v.validates_length_of       :password, :within => 6..20, :allow_blank => true
+            v.validates_length_of       :password, :within => Devise.password_length, :allow_blank => true
           end
         end
       end

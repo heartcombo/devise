@@ -94,6 +94,13 @@ module Devise
 
       protected
 
+        # Checks whether a password is needed or not. For validations only.
+        # Passwords are always required if it's a new record, or if the password
+        # or confirmation are being set somewhere.
+        def password_required?
+          new_record? || !password.nil? || !password_confirmation.nil?
+        end
+
         # Digests the password using the configured encryptor.
         def password_digest(password)
           self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)

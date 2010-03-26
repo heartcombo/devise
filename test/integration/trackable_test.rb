@@ -39,7 +39,7 @@ class TrackableHooksTest < ActionController::IntegrationTest
 
   test "increase sign in count" do
     user = create_user
-    assert_nil user.sign_in_count
+    assert_equal 0, user.sign_in_count
 
     sign_in_as_user
     user.reload

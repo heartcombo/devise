@@ -24,16 +24,23 @@ class Devise::Mailer < ::ActionMailer::Base
       raise "Invalid devise resource #{record}" unless @devise_mapping
       @resource = instance_variable_set("@#{@devise_mapping.name}", record)
 
-      mail(:subject => translate(@devise_mapping, action),
-           :from => mailer_sender(@devise_mapping), :to => record.email) do |format|
-        format.html { render_with_scope(action, :controller => "mailer") }
-      end
+      template_path = ["devise/mailer"]
+      template_path.unshift "#{@devise_mapping.as}/mailer" if self.class.scoped_views?
+
+      headers = {
+        :subject => translate(@devise_mapping, action),
+        :from => mailer_sender(@devise_mapping),
+        :to => record.email,
+        :template_path => template_path
+      }
+
+      headers.merge!(record.headers_for(action)) if record.respond_to?(:headers_for)
+      mail(headers)
     end
 
     def mailer_sender(mapping)
       if Devise.mailer_sender.is_a?(Proc)
-        block_args = mapping.name if Devise.mailer_sender.arity > 0
-        Devise.mailer_sender.call(block_args)
+        Devise.mailer_sender.call(mapping.name)
       else
         Devise.mailer_sender
       end

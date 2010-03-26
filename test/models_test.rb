@@ -23,12 +23,12 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'add modules cherry pick' do
-    assert_include_modules Admin, :authenticatable, :registerable, :timeoutable
+    assert_include_modules Admin, :authenticatable, :registerable, :timeoutable, :recoverable
   end
 
   test 'order of module inclusion' do
-    correct_module_order   = [:authenticatable, :registerable, :timeoutable]
-    incorrect_module_order = [:authenticatable, :timeoutable, :registerable]
+    correct_module_order   = [:authenticatable, :recoverable, :registerable, :timeoutable]
+    incorrect_module_order = [:authenticatable, :timeoutable, :registerable, :recoverable]
 
     assert_include_modules Admin, *incorrect_module_order
 

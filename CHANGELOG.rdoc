@@ -7,7 +7,14 @@
   * Devise.orm is deprecated. This reduces the required API to hook your ORM with devise.
   * Use metal for failure app.
   * HTML e-mails now have proper formatting.
-  * Do not remove options from Datamapper and MongoMapper in find
+  * Do not remove options from Datamapper and MongoMapper in find.
+  * Allow to give :skip and :controllers in routes.
+  * Move trackable logic to the model.
+  * E-mails now use any template available in the filesystem. Easy to create multipart e-mails.
+  * E-mails asks headers_for in the model to set the proper headers.
+
+* bug fix
+  * Do not use lock! on lockable since it's part of ActiveRecord API.
 
 * deprecations
   * Rails 3 compatible only.

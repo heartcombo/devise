@@ -87,6 +87,11 @@ module Devise
         result
       end
 
+      # Allows you to overwrite mail messages headers for a given mail.
+      def headers_for(action)
+        {}
+      end
+
       protected
 
         # Digests the password using the configured encryptor.

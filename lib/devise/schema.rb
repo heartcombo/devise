@@ -44,7 +44,7 @@ module Devise
     # Creates sign_in_count, current_sign_in_at, last_sign_in_at,
     # current_sign_in_ip, last_sign_in_ip.
     def trackable
-      apply_schema :sign_in_count,      Integer
+      apply_schema :sign_in_count,      Integer, :default => 0
       apply_schema :current_sign_in_at, DateTime
       apply_schema :last_sign_in_at,    DateTime
       apply_schema :current_sign_in_ip, String
@@ -54,7 +54,7 @@ module Devise
     # Creates failed_attempts, unlock_token and locked_at
     def lockable
       apply_schema :failed_attempts, Integer, :default => 0
-      apply_schema :unlock_token,    String, :limit => 20
+      apply_schema :unlock_token,    String,  :limit => 20
       apply_schema :locked_at,       DateTime
     end
 

@@ -1,7 +1,6 @@
 class Devise::SessionsController < ApplicationController
+  prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
   include Devise::Controllers::InternalHelpers
-
-  before_filter :require_no_authentication, :only => [ :new, :create ]
 
   # GET /resource/sign_in
   def new
@@ -35,11 +34,11 @@ class Devise::SessionsController < ApplicationController
 
   protected
 
-  def resource_just_signed_up?
-    flash[:"#{resource_name}_signed_up"]
-  end
+    def resource_just_signed_up?
+      flash[:"#{resource_name}_signed_up"]
+    end
 
-  def clean_up_passwords(object)
-    object.clean_up_passwords if object.respond_to?(:clean_up_passwords)
-  end
+    def clean_up_passwords(object)
+      object.clean_up_passwords if object.respond_to?(:clean_up_passwords)
+    end
 end

@@ -24,6 +24,10 @@ module Devise
         catch_with_redirect { super }
       end
 
+      def user(*args)
+        catch_with_redirect { super }
+      end
+
       def catch_with_redirect(&block)
         result = catch(:warden, &block)
 

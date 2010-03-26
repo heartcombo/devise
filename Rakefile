@@ -44,7 +44,7 @@ begin
     s.description = "Flexible authentication solution for Rails with Warden"
     s.authors = ['José Valim', 'Carlos Antônio']
     s.files =  FileList["[A-Z]*", "{app,config,generators,lib}/**/*", "rails/init.rb"]
-    s.add_dependency("warden", "~> 0.9.4")
+    s.add_dependency("warden", "~> 0.10.2")
   end
 
   Jeweler::GemcutterTasks.new

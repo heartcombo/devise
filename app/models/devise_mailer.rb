@@ -20,8 +20,8 @@ class DeviseMailer < ::ActionMailer::Base
 
     # Configure default email options
     def setup_mail(record, key)
-      mapping = Devise::Mapping.find_by_class(record.class)
-      raise "Invalid devise resource #{record}" unless mapping
+      scope_name = Devise::Mapping.find_scope!(record)
+      mapping    = Devise.mappings[scope_name]
 
       subject      translate(mapping, key)
       from         mailer_sender(mapping)

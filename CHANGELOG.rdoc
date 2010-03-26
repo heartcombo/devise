@@ -1,3 +1,9 @@
+* bug fix
+  * Use prepend_before_filter in require_no_authentication.
+  * require_no_authentication on unlockable.
+  * Fix a bug when giving an association proxy to devise.
+  * Do not use lock! on lockable since it's part of ActiveRecord API.
+
 == 1.0.4
 
 * bug fix

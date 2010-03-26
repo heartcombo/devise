@@ -14,7 +14,7 @@ module Devise
           hide_action   :resource, :scope_name, :resource_name, :resource_class, :devise_mapping, :devise_controller?
 
           skip_before_filter *Devise.mappings.keys.map { |m| :"authenticate_#{m}!" }
-          before_filter :is_devise_resource?
+          prepend_before_filter :is_devise_resource?
         end
       end
 

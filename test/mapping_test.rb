@@ -38,20 +38,15 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal Devise.mappings[:admin], Devise::Mapping.find_by_path("/admin_area/session")
   end
 
-  test 'find mapping by class' do
-    assert_nil Devise::Mapping.find_by_class(String)
-    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_class(User)
-  end
-
-  test 'find mapping by class works with single table inheritance' do
-    klass = Class.new(User)
-    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_class(klass)
-  end
-
   test 'find scope for a given object' do
     assert_equal :user, Devise::Mapping.find_scope!(User)
     assert_equal :user, Devise::Mapping.find_scope!(:user)
     assert_equal :user, Devise::Mapping.find_scope!(User.new)
+  end
+
+  test 'find scope works with single table inheritance' do
+    assert_equal :user, Devise::Mapping.find_scope!(Class.new(User))
+    assert_equal :user, Devise::Mapping.find_scope!(Class.new(User).new)
   end
 
   test 'find scope raises an error if cannot be found' do

@@ -15,6 +15,7 @@
 
 * bug fix
   * Do not use lock! on lockable since it's part of ActiveRecord API.
+  * Fix a bug when giving an association proxy to devise.
 
 * deprecations
   * Rails 3 compatible only.

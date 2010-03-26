@@ -34,26 +34,19 @@ module Devise
       nil
     end
 
-    # Find a mapping by a given class. It takes into account single table inheritance as well.
-    def self.find_by_class(klass)
-      Devise.mappings.each_value do |mapping|
-        return mapping if klass <= mapping.to
-      end
-      nil
-    end
-
     # Receives an object and find a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.
     def self.find_scope!(duck)
       case duck
       when String, Symbol
-        duck
+        return duck
+      when Class
+        Devise.mappings.each_value { |m| return m.name if duck <= m.to }
       else
-        klass = duck.is_a?(Class) ? duck : duck.class
-        mapping = Devise::Mapping.find_by_class(klass)
-        raise "Could not find a valid mapping for #{duck}" unless mapping
-        mapping.name
+        Devise.mappings.each_value { |m| return m.name if duck.is_a?(m.to) }
       end
+
+      raise "Could not find a valid mapping for #{duck}"
     end
 
     def initialize(name, options) #:nodoc:

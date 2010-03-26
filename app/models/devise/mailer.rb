@@ -19,10 +19,9 @@ class Devise::Mailer < ::ActionMailer::Base
 
     # Configure default email options
     def setup_mail(record, action)
-      @devise_mapping = Devise::Mapping.find_by_class(record.class)
-
-      raise "Invalid devise resource #{record}" unless @devise_mapping
-      @resource = instance_variable_set("@#{@devise_mapping.name}", record)
+      @scope_name     = Devise::Mapping.find_scope!(record)
+      @devise_mapping = Devise.mappings[@scope_name]
+      @resource       = instance_variable_set("@#{@devise_mapping.name}", record)
 
       template_path = ["devise/mailer"]
       template_path.unshift "#{@devise_mapping.as}/mailer" if self.class.scoped_views?

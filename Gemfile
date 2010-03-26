@@ -12,8 +12,8 @@ if RUBY_VERSION < '1.9'
   gem "ruby-debug", ">= 0.10.3"
 end
 
-group :mongo_mapper do
+group :mongoid do
   gem "mongo",        ">= 0.18.3"
   gem "mongo_ext",    ">= 0.18.3", :require => false
-  gem "mongo_mapper", :git => "git://github.com/jnunemaker/mongomapper.git"
+  gem "mongoid", :git => "git://github.com/durran/mongoid.git"
 end

@@ -1,49 +1,51 @@
 module Devise
   module Orm
-    module MongoMapper
+    module Mongoid
+      
       module Hook
         def devise_modules_hook!
           extend Schema
+          include ::Mongoid::Timestamps
           include Compatibility
           yield
           return unless Devise.apply_schema
           devise_modules.each { |m| send(m) if respond_to?(m, true) }
         end
       end
-
+      
       module Schema
         include Devise::Schema
 
-        # Tell how to apply schema methods. This automatically converts DateTime
-        # to Time, since MongoMapper does not recognize the former.
+        # Tell how to apply schema methods
         def apply_schema(name, type, options={})
           type = Time if type == DateTime
-          key name, type, options
+          field name, {:type => type}.merge(options)
         end
       end
-
+      
       module Compatibility
-        extend ActiveSupport::Concern
-
-        module ClassMethods
-          def find(*args)
-            case args.first
-            when :first, :all
-              send(args.shift, *args)
-            else
-              super
-            end
+        def lock!
+          self.reload
+        end
+        
+        def save(validate = true)
+          if validate.is_a?(Hash) && validate.has_key?(:validate)
+            validate = validate[:validate]
           end
+          super(validate)
+        end
+
+        def ==(other)
+          other.is_a?(self.class) && _id == other._id
         end
       end
-
     end
   end
 end
 
-[MongoMapper::Document, MongoMapper::EmbeddedDocument].each do |mod|
+[Mongoid::Document].each do |mod|
   mod::ClassMethods.class_eval do
     include Devise::Models
-    include Devise::Orm::MongoMapper::Hook
+    include Devise::Orm::Mongoid::Hook
   end
 end

@@ -79,7 +79,7 @@ module Devise
   @@mappings = ActiveSupport::OrderedHash.new
 
   # Tells if devise should apply the schema in ORMs where devise declaration
-  # and schema belongs to the same class (as Datamapper and MongoMapper).
+  # and schema belongs to the same class (as Datamapper and Mongoid).
   mattr_accessor :apply_schema
   @@apply_schema = true
 

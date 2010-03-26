@@ -70,11 +70,8 @@ class RememberableTest < ActiveSupport::TestCase
     assert_equal user, User.serialize_from_cookie("#{user.id}::#{user.remember_token}")
   end
 
-  # MongoMapper cries if an invalid ID is given, so this does not need to be tested
-  unless DEVISE_ORM == :mongo_mapper
-    test 'serialize should return nil if no user is found' do
-      assert_nil User.serialize_from_cookie('0::123')
-    end
+  test 'serialize should return nil if no user is found' do
+    assert_nil User.serialize_from_cookie('0::123')
   end
 
   test 'remember me return nil if is a valid user with invalid token' do

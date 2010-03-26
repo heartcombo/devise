@@ -251,7 +251,7 @@ Devise implements encryption strategies for Clearance, Authlogic and Restful-Aut
 
 == Other ORMs
 
-Devise supports ActiveRecord (by default) and MongoMapper. We offer experimental Datamapper support (with the limitation that the Devise test suite does not run completely with Datamapper). To choose other ORM, you just need to configure it in the initializer file.
+Devise supports ActiveRecord (by default) and Mongoid. We offer experimental Datamapper support (with the limitation that the Devise test suite does not run completely with Datamapper). To choose other ORM, you just need to configure it in the initializer file.
 
 == TODO
 

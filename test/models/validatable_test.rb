@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ValidatableTest < ActiveSupport::TestCase
-  extend Devise::TestSilencer if [:mongo_mapper, :data_mapper].include?(DEVISE_ORM)
+  extend Devise::TestSilencer if [:mongoid, :data_mapper].include?(DEVISE_ORM)
 
   test 'should require email to be set' do
     user = new_user(:email => nil)

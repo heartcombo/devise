@@ -61,7 +61,7 @@ Devise.setup do |config|
   # config.token_authentication_key = :auth_token
 
   # ==> General configuration
-  # Load and configure the ORM. Supports :active_record (default), :mongo_mapper
+  # Load and configure the ORM. Supports :active_record (default), :mongoid
   # (requires mongo_ext installed) and :data_mapper (experimental).
   require 'devise/orm/active_record'
 

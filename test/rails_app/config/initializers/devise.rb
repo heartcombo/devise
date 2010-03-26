@@ -36,7 +36,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.mailer_sender = "please-change-me-omg@yourapp.com"
 
-  # Load and configure the ORM. Supports :active_record, :data_mapper and :mongo_mapper.
+  # Load and configure the ORM. Supports :active_record, :data_mapper and :mongoid.
   require "devise/orm/#{DEVISE_ORM}"
 
   # Turn scoped views on. Before rendering "sessions/new", it will first check for

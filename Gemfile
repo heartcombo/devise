@@ -17,3 +17,12 @@ group :mongoid do
   gem "mongo_ext",    ">= 0.18.3", :require => false
   gem "mongoid", :git => "git://github.com/durran/mongoid.git"
 end
+
+group :data_mapper do
+  gem 'do_sqlite3', '>= 0.10.1'
+  gem "dm-core", :git => "git://github.com/datamapper/dm-core.git"
+  
+  gem "dm-validations", :git => "git://github.com/datamapper/dm-more.git"
+  gem "dm-timestamps", :git => "git://github.com/datamapper/dm-more.git"
+  gem "dm-rails", :git => "git://github.com/datamapper/dm-rails.git"
+end

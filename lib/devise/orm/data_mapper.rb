@@ -38,18 +38,22 @@ module Devise
         module ClassMethods
           # Hooks for confirmable
           def before_create(*args)
-            wrap_hook(:before, *args)
+            wrap_hook(:before, :create, *args)
           end
 
           def after_create(*args)
-            wrap_hook(:after, *args)
+            wrap_hook(:after, :create, *args)
+          end
+          
+          def before_save(*args)
+            wrap_hook(:before, :save, *args)
           end
 
-          def wrap_hook(action, *args)
+          def wrap_hook(action, method, *args)
             options = args.extract_options!
 
             args.each do |callback|
-              send action, :create, callback
+              send action, method, callback
               class_eval <<-METHOD, __FILE__, __LINE__ + 1
                 def #{callback}
                   super if #{options[:if] || true}
@@ -68,10 +72,14 @@ module Devise
             end
           end
         end
-
+        
+        def changed?
+          dirty?
+        end
+        
         def save(options=nil)
           if options.is_a?(Hash) && options[:validate] == false
-            save!
+            save
           else
             super()
           end

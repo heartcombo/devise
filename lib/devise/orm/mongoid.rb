@@ -34,10 +34,6 @@ module Devise
           end
           super(validate)
         end
-
-        def ==(other)
-          other.is_a?(self.class) && _id == other._id
-        end
       end
     end
   end

@@ -49,7 +49,7 @@ module Devise
 
       # Verifies whether a user is confirmed or not
       def confirmed?
-        !new_record? && !confirmed_at.nil?
+        persisted? && !confirmed_at.nil?
       end
 
       # Send confirmation instructions by email
@@ -138,7 +138,7 @@ module Devise
         # Options must contain the user email
         def send_confirmation_instructions(attributes={})
           confirmable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
-          confirmable.resend_confirmation_token unless confirmable.new_record?
+          confirmable.resend_confirmation_token if confirmable.persisted?
           confirmable
         end
 
@@ -148,7 +148,7 @@ module Devise
         # Options must have the confirmation_token
         def confirm_by_token(confirmation_token)
           confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
-          confirmable.confirm! unless confirmable.new_record?
+          confirmable.confirm! if confirmable.persisted?
           confirmable
         end
 

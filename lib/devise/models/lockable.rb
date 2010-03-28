@@ -119,7 +119,7 @@ module Devise
         # Options must contain the user email
         def send_unlock_instructions(attributes={})
          lockable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
-         lockable.resend_unlock_token unless lockable.new_record?
+         lockable.resend_unlock_token if lockable.persisted?
          lockable
         end
 
@@ -129,7 +129,7 @@ module Devise
         # Options must have the unlock_token
         def unlock_access_by_token(unlock_token)
           lockable = find_or_initialize_with_error_by(:unlock_token, unlock_token)
-          lockable.unlock_access! unless lockable.new_record?
+          lockable.unlock_access! if lockable.persisted?
           lockable
         end
 

@@ -60,13 +60,13 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should return a new record with errors when a invalid token is given' do
     confirmed_user = User.confirm_by_token('invalid_confirmation_token')
-    assert confirmed_user.new_record?
+    assert_not confirmed_user.persisted?
     assert_equal "is invalid", confirmed_user.errors[:confirmation_token].join
   end
 
   test 'should return a new record with errors when a blank token is given' do
     confirmed_user = User.confirm_by_token('')
-    assert confirmed_user.new_record?
+    assert_not confirmed_user.persisted?
     assert_equal "can't be blank", confirmed_user.errors[:confirmation_token].join
   end
 
@@ -119,7 +119,7 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should return a new user if no email was found' do
     confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
-    assert confirmation_user.new_record?
+    assert_not confirmation_user.persisted?
   end
 
   test 'should add error to new user email if no email was found' do

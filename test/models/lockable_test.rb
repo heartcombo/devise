@@ -156,13 +156,13 @@ class LockableTest < ActiveSupport::TestCase
 
   test 'should return a new record with errors when a invalid token is given' do
     locked_user = User.unlock_access_by_token('invalid_token')
-    assert locked_user.new_record?
+    assert_not locked_user.persisted?
     assert_equal "is invalid", locked_user.errors[:unlock_token].join
   end
 
   test 'should return a new record with errors when a blank token is given' do
     locked_user = User.unlock_access_by_token('')
-    assert locked_user.new_record?
+    assert_not locked_user.persisted?
     assert_equal "can't be blank", locked_user.errors[:unlock_token].join
   end
 
@@ -183,7 +183,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test 'should return a new user if no email was found' do
     unlock_user = User.send_unlock_instructions(:email => "invalid@email.com")
-    assert unlock_user.new_record?
+    assert_not unlock_user.persisted?
   end
 
   test 'should add error to new user email if no email was found' do

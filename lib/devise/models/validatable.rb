@@ -42,7 +42,7 @@ module Devise
       # Passwords are always required if it's a new record, or if the password
       # or confirmation are being set somewhere.
       def password_required?
-        new_record? || !password.nil? || !password_confirmation.nil?
+        !persisted? || !password.nil? || !password_confirmation.nil?
       end
 
       module ClassMethods

@@ -50,12 +50,6 @@ module Devise
         password_digest(incoming_password) == self.encrypted_password
       end
 
-      # Verifies whether an +incoming_authentication_token+ (i.e. from single access URL)
-      # is the user authentication token.
-      def valid_authentication_token?(incoming_auth_token)
-        incoming_auth_token == self.authentication_token
-      end
-
       # Checks if a resource is valid upon authentication.
       def valid_for_authentication?(attributes)
         valid_password?(attributes[:password])

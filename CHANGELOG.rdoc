@@ -13,6 +13,7 @@
   * E-mails now use any template available in the filesystem. Easy to create multipart e-mails.
   * E-mails asks headers_for in the model to set the proper headers.
   * Allow to specify haml in devise_views.
+  * Compatibility with Datamapper and Mongoid.
 
 * bug fix
   * Do not use lock! on lockable since it's part of ActiveRecord API.

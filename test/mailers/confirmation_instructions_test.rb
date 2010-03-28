@@ -23,7 +23,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'content type should be set to html' do
-    assert_equal 'text/html', mail.content_type
+    assert mail.content_type.include?('text/html')
   end
 
   test 'send confirmation instructions to the user email' do

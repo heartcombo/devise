@@ -272,6 +272,8 @@ We have a long list of valued contributors. See the CHANGELOG or do `git shortlo
 
 * http://github.com/grimen/devise_facebook_connectable adds support for Facebook Connect authentication, and optionally fetching user info from Facebook in the same step.
 
+* http://github.com/joshk/imapable adds support for imap based authentication, excellent for internal apps when an LDAP server isn't available.
+
 == Bugs and Feedback
 
 If you discover any bugs, please create an issue on GitHub.

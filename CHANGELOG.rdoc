@@ -16,14 +16,22 @@
   * Compatibility with Datamapper and Mongoid.
 
 * bug fix
-  * Do not use lock! on lockable since it's part of ActiveRecord API.
-  * Fix a bug when giving an association proxy to devise.
+  * Do not allow unlockable strategies based on time to access a controller.
+  * Do not send unlockable email several times.
 
 * deprecations
   * Rails 3 compatible only.
   * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
   * Devise.orm is deprecated, just require "devise/orm/YOUR_ORM" instead.
   * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options.
+
+== 1.0.5
+
+* bug fix
+  * Use prepend_before_filter in require_no_authentication.
+  * require_no_authentication on unlockable.
+  * Fix a bug when giving an association proxy to devise.
+  * Do not use lock! on lockable since it's part of ActiveRecord API.
 
 == 1.0.4
 

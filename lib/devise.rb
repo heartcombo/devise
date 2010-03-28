@@ -27,7 +27,7 @@ module Devise
   ALL            = []
   CONTROLLERS    = {}
   ROUTES         = []
-  STRATEGIES     = []
+  STRATEGIES     = ActiveSupport::OrderedHash.new
   FLASH_MESSAGES = [:unauthenticated]
 
   # True values used to check params
@@ -122,9 +122,14 @@ module Devise
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
 
-  # The realm used in Http Basic Authentication
+  # The realm used in Http Basic Authentication.
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"
+
+  # Private methods to interface with Warden.
+  mattr_reader :warden_config
+  @@warden_config = nil
+  @@warden_config_block = nil
 
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
@@ -132,39 +137,58 @@ module Devise
     yield self
   end
 
+  # Register a model in Devise. You can call this manually if you don't want
+  # to use devise routes. Check devise_for in routes to know which options
+  # are available.
+  def self.register(resource, options)
+    mapping = Devise::Mapping.new(resource, options)
+    self.mappings[mapping.name] = mapping
+    self.default_scope ||= mapping.name
+
+    warden_config.default_scope ||= mapping.name
+    warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
+    mapping
+  end
+
   # Make Devise aware of an 3rd party Devise-module. For convenience.
   #
   # == Options:
   #
-  #   +strategy+    - Boolean value representing if this module got a custom *strategy*.
-  #                   Default is +false+. Note: Devise will auto-detect this in such case if this is true.
-  #   +model+       - String representing the load path to a custom *model* for this module (to autoload.)
-  #                   Default is +nil+ (i.e. +false+).
-  #   +controller+  - Symbol representing the name of an exisiting or custom *controller* for this module.
-  #                   Default is +nil+ (i.e. +false+).
-  #   +route+       - Symbol representing the named *router* helper for this module.
-  #                   Default is +nil+ (i.e. +false+).
-  #   +flash+       - Symbol representing the *flash messages* used by this helper.
-  #                   Default is +nil+ (i.e. +false+).
+  #   +model+      - String representing the load path to a custom *model* for this module (to autoload.)
+  #   +controller+ - Symbol representing the name of an exisiting or custom *controller* for this module.
+  #   +route+      - Symbol representing the named *route* helper for this module.
+  #   +flash+      - Symbol representing the *flash messages* used by this helper.
+  #   +strategy+   - Symbol representing if this module got a custom *strategy*.
+  #
+  # All values, except :model, accept also a boolean and will have the same name as the given module
+  # name.
   #
   # == Examples:
   #
   #   Devise.add_module(:party_module)
   #   Devise.add_module(:party_module, :strategy => true, :controller => :sessions)
-  #   Devise.add_module(:party_module, :autoload => 'party_module/model')
+  #   Devise.add_module(:party_module, :model => 'party_module/model')
   #
   def self.add_module(module_name, options = {})
     ALL << module_name
-    options.assert_valid_keys(:strategy, :model, :controller, :route, :flash)
+    options.assert_valid_keys(:strategy, :model, :controller, :route, :flash, :passive_strategy)
 
-    { :strategy => STRATEGIES, :flash => FLASH_MESSAGES, :route => ROUTES }.each do |key, value|
+    config = {
+      :strategy => STRATEGIES,
+      :flash => FLASH_MESSAGES,
+      :route => ROUTES,
+      :controller => CONTROLLERS
+    }
+
+    config.each do |key, value|
       next unless options[key]
       name = (options[key] == true ? module_name : options[key])
-      value.unshift(name) unless value.include?(name)
-    end
 
-    if options[:controller]
-      Devise::CONTROLLERS[module_name] = options[:controller].to_sym
+      if value.is_a?(Hash)
+        value[module_name] = name
+      else
+        value << name unless value.include?(name)
+      end
     end
 
     if options[:model]
@@ -172,7 +196,7 @@ module Devise
       Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, model_path)
     end
 
-    Devise::Mapping.register module_name
+    Devise::Mapping.add_module module_name
   end
 
   # Sets warden configuration using a block that will be invoked on warden
@@ -187,19 +211,17 @@ module Devise
   #    end
   #  end
   def self.warden(&block)
-    @warden_config = block
+    @@warden_config_block = block
   end
 
   # A method used internally to setup warden manager from the Rails initialize
   # block.
   def self.configure_warden(config) #:nodoc:
-    config.default_strategies *Devise::STRATEGIES
-    config.failure_app = Devise::FailureApp
-    config.silence_missing_strategies!
+    config.failure_app   = Devise::FailureApp
     config.default_scope = Devise.default_scope
 
-    # If the user provided a warden hook, call it now.
-    @warden_config.try :call, config
+    @@warden_config = config
+    @@warden_config_block.try :call, config
   end
 
   # Generate a friendly string randomically to be used as token.

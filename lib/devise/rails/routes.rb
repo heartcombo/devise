@@ -92,16 +92,13 @@ module ActionDispatch::Routing
       resources.map!(&:to_sym)
 
       resources.each do |resource|
-        mapping = Devise::Mapping.new(resource, options)
+        mapping = Devise.register(resource, options)
 
         unless mapping.to.respond_to?(:devise)
           raise "#{mapping.to.name} does not respond to 'devise' method. This usually means you haven't " <<
-            "loaded your ORM file or it's being loaded to late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " <<
+            "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " <<
             "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
         end
-
-        Devise.default_scope ||= mapping.name
-        Devise.mappings[mapping.name] = mapping
 
         routes_modules = mapping.modules - Array(options.delete(:skip))
         routes_modules.each do |mod|

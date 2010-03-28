@@ -15,7 +15,7 @@ module Devise
       def initialize(controller)
         @controller = controller
         manager = Warden::Manager.new(nil) do |config|
-          Devise.configure_warden(config)
+          config.merge! Devise.warden_config
         end
         super(controller.request.env, manager)
       end

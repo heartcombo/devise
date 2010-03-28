@@ -6,7 +6,7 @@ module Devise
     # Redirects to sign_in page if it's not authenticated.
     class TokenAuthenticatable < Base
       def valid?
-        mapping.to.respond_to?(:authenticate_with_token) && authentication_token(scope).present?
+        authentication_token(scope).present?
       end
 
       # Authenticate a user based on authenticatable token params, returning to warden

@@ -13,7 +13,7 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal :admin_area, Devise.mappings[:admin].as
   end
 
-  test 'allow custom scope to be given' do
+  test 'allows custom scope to be given' do
     assert_equal :accounts, Devise.mappings[:manager].as
   end
 
@@ -27,6 +27,12 @@ class MappingTest < ActiveSupport::TestCase
     assert allowed.include?("sessions")
     assert_not allowed.include?("devise/confirmations")
     assert_not allowed.include?("devise/unlocks")
+  end
+
+  test 'has strategies depending on the model declaration' do
+    assert_equal [:rememberable, :token_authenticatable,
+     :http_authenticatable, :authenticatable], Devise.mappings[:user].strategies
+    assert_equal [:authenticatable], Devise.mappings[:admin].strategies
   end
 
   test 'find mapping by path' do

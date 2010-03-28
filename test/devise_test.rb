@@ -1,8 +1,11 @@
 require 'test_helper'
 
 module Devise
-  def self.clean_warden_config!
-    @warden_config = nil
+  def self.yield_and_restore
+    c, b = @@warden_config, @@warden_config_block
+    yield
+  ensure
+    @@warden_config, @@warden_config_block = c, b
   end
 end
 
@@ -21,17 +24,17 @@ class DeviseTest < ActiveSupport::TestCase
   end
 
   test 'warden manager configuration' do
-    config = Warden::Config.new
-    Devise.configure_warden(config)
+    Devise.yield_and_restore do
+      config = Warden::Config.new
+      Devise.configure_warden(config)
 
-    assert_equal Devise::FailureApp, config.failure_app
-    assert_equal [:rememberable, :token_authenticatable, :http_authenticatable, :authenticatable], config.default_strategies
-    assert_equal :user, config.default_scope
-    assert config.silence_missing_strategies?
+      assert_equal Devise::FailureApp, config.failure_app
+      assert_equal :user, config.default_scope
+    end
   end
 
   test 'warden manager user configuration through a block' do
-    begin
+    Devise.yield_and_restore do
       @executed = false
       Devise.warden do |config|
         @executed = true
@@ -40,8 +43,6 @@ class DeviseTest < ActiveSupport::TestCase
 
       Devise.configure_warden(Warden::Config.new)
       assert @executed
-    ensure
-      Devise.clean_warden_config!
     end
   end
 
@@ -52,8 +53,8 @@ class DeviseTest < ActiveSupport::TestCase
     assert_not defined?(Devise::Models::Coconut)
     Devise::ALL.delete(:coconut)
 
-    assert_nothing_raised(Exception) { Devise.add_module(:banana, :strategy => true) }
-    assert_equal 1, Devise::STRATEGIES.select { |v| v == :banana }.size
+    assert_nothing_raised(Exception) { Devise.add_module(:banana, :strategy => :fruits) }
+    assert_equal :fruits, Devise::STRATEGIES[:banana]
     Devise::ALL.delete(:banana)
     Devise::STRATEGIES.delete(:banana)
 

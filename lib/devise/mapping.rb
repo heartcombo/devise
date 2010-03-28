@@ -77,6 +77,10 @@ module Devise
       klass
     end
 
+    def strategies
+      @strategies ||= STRATEGIES.values_at(*self.modules).compact.reverse
+    end
+
     # Keep a list of allowed controllers for this mapping. It's useful to ensure
     # that an Admin cannot access the registrations controller unless it has
     # :registerable in the model.
@@ -104,7 +108,7 @@ module Devise
     #     self.modules.include?(:confirmable)
     #   end
     #
-    def self.register(m)
+    def self.add_module(m)
       class_eval <<-METHOD, __FILE__, __LINE__ + 1
         def #{m}?
           self.modules.include?(:#{m})

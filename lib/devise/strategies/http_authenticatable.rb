@@ -5,7 +5,7 @@ module Devise
     # Sign in an user using HTTP authentication.
     class HttpAuthenticatable < Base
       def valid?
-        request.authorization && mapping.to.respond_to?(:authenticate_with_http)
+        request.authorization
       end
 
       def authenticate!

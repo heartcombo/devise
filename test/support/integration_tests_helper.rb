@@ -32,7 +32,7 @@ class ActionController::IntegrationTest
     user = create_user(options)
     visit new_user_session_path unless options[:visit] == false
     fill_in 'email', :with => 'user@test.com'
-    fill_in 'password', :with => '123456'
+    fill_in 'password', :with => options[:password] || '123456'
     check 'remember me' if options[:remember_me] == true
     yield if block_given?
     click_button 'Sign In'

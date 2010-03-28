@@ -60,15 +60,9 @@ module Devise
         ::DeviseMailer.deliver_confirmation_instructions(self)
       end
 
-      # Remove confirmation date and send confirmation instructions, to ensure
-      # after sending these instructions the user won't be able to sign in without
-      # confirming it's account
+      # Resend confirmation token. This method does not need to generate a new token.
       def resend_confirmation_token
-        unless_confirmed do
-          generate_confirmation_token
-          save(false)
-          send_confirmation_instructions
-        end
+        unless_confirmed { send_confirmation_instructions }
       end
 
       # Overwrites active? from Devise::Models::Activatable for confirmation

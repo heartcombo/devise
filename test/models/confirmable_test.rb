@@ -11,15 +11,6 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_nil create_user.confirmation_token
   end
 
-  test 'should regenerate confirmation token each time' do
-    user = create_user
-    3.times do
-      token = user.confirmation_token
-      user.resend_confirmation_token
-      assert_not_equal token, user.confirmation_token
-    end
-  end
-
   test 'should never generate the same confirmation token for different users' do
     confirmation_tokens = []
     3.times do
@@ -135,13 +126,6 @@ class ConfirmableTest < ActiveSupport::TestCase
     confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
     assert confirmation_user.errors[:email]
     assert_equal 'not found', confirmation_user.errors[:email]
-  end
-
-  test 'should generate a confirmation token before send the confirmation instructions email' do
-    user = create_user
-    token = user.confirmation_token
-    confirmation_user = User.send_confirmation_instructions(:email => user.email)
-    assert_not_equal token, user.reload.confirmation_token
   end
 
   test 'should send email instructions for the user confirm it\'s email' do

@@ -1,4 +1,10 @@
 * bug fix
+  * Do not allow unlockable strategies based on time to access a controller.
+  * Do not send unlockable email several times.
+
+== 1.0.5
+
+* bug fix
   * Use prepend_before_filter in require_no_authentication.
   * require_no_authentication on unlockable.
   * Fix a bug when giving an association proxy to devise.

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-03-03}
+  s.date = %q{2010-03-28}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -77,7 +77,7 @@ Gem::Specification.new do |s|
      "lib/devise/modules.rb",
      "lib/devise/orm/active_record.rb",
      "lib/devise/orm/data_mapper.rb",
-     "lib/devise/orm/mongo_mapper.rb",
+     "lib/devise/orm/mongoid.rb",
      "lib/devise/rails.rb",
      "lib/devise/rails/routes.rb",
      "lib/devise/rails/warden_compat.rb",
@@ -99,7 +99,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/plataformatec/devise}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Flexible authentication solution for Rails with Warden}
   s.test_files = [
     "test/controllers/helpers_test.rb",
@@ -134,7 +134,8 @@ Gem::Specification.new do |s|
      "test/models/validatable_test.rb",
      "test/models_test.rb",
      "test/orm/active_record.rb",
-     "test/orm/mongo_mapper.rb",
+     "test/orm/data_mapper.rb",
+     "test/orm/mongoid.rb",
      "test/rails_app/app/active_record/admin.rb",
      "test/rails_app/app/active_record/user.rb",
      "test/rails_app/app/controllers/admins_controller.rb",
@@ -142,9 +143,11 @@ Gem::Specification.new do |s|
      "test/rails_app/app/controllers/home_controller.rb",
      "test/rails_app/app/controllers/sessions_controller.rb",
      "test/rails_app/app/controllers/users_controller.rb",
+     "test/rails_app/app/data_mapper/admin.rb",
+     "test/rails_app/app/data_mapper/user.rb",
      "test/rails_app/app/helpers/application_helper.rb",
-     "test/rails_app/app/mongo_mapper/admin.rb",
-     "test/rails_app/app/mongo_mapper/user.rb",
+     "test/rails_app/app/mongoid/admin.rb",
+     "test/rails_app/app/mongoid/user.rb",
      "test/rails_app/config/application.rb",
      "test/rails_app/config/boot.rb",
      "test/rails_app/config/environment.rb",
@@ -152,10 +155,8 @@ Gem::Specification.new do |s|
      "test/rails_app/config/environments/production.rb",
      "test/rails_app/config/environments/test.rb",
      "test/rails_app/config/initializers/backtrace_silencers.rb",
-     "test/rails_app/config/initializers/cookie_verification_secret.rb",
      "test/rails_app/config/initializers/devise.rb",
      "test/rails_app/config/initializers/inflections.rb",
-     "test/rails_app/config/initializers/session_store.rb",
      "test/rails_app/config/routes.rb",
      "test/routes_test.rb",
      "test/support/assertions.rb",
@@ -172,12 +173,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<warden>, ["~> 0.9.4"])
+      s.add_runtime_dependency(%q<warden>, ["~> 0.10.2"])
     else
-      s.add_dependency(%q<warden>, ["~> 0.9.4"])
+      s.add_dependency(%q<warden>, ["~> 0.10.2"])
     end
   else
-    s.add_dependency(%q<warden>, ["~> 0.9.4"])
+    s.add_dependency(%q<warden>, ["~> 0.10.2"])
   end
 end
 

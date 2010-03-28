@@ -6,9 +6,8 @@ class User
   
   devise :authenticatable, :http_authenticatable, :confirmable, :lockable, :recoverable,
          :registerable, :rememberable, :timeoutable, :token_authenticatable,
-         :trackable
+         :trackable, :validatable
 
-  # :validatable disabled for now
   timestamps :at
   
   def save!(*args)
@@ -17,5 +16,9 @@ class User
   
   def self.create!(*args)
     create(*args)
+  end
+  
+  def self.destroy_all
+    all.destroy
   end
 end

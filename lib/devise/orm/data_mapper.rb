@@ -77,16 +77,20 @@ module Devise
           dirty?
         end
 
-        def new_record?
-          new?
-        end
-
         def save(options=nil)
           if options.is_a?(Hash) && options[:validate] == false
             save
           else
             super()
           end
+        end
+        
+        def update_attributes(*args)
+          update(*args)
+        end
+        
+        def lock!
+          self.reload
         end
       end
     end

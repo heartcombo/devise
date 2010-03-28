@@ -1,5 +1,5 @@
 class Admin
-  include DataMapper::Resource
+  include DataMapper::Resource  
   
   property :id,   Serial
   property :username, String

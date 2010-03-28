@@ -16,7 +16,7 @@ module Devise
         if resource = mapping.to.authenticate(params[scope])
           success!(resource)
         else
-          fail!(:invalid)
+          fail(:invalid)
         end
       end
 

@@ -60,8 +60,8 @@ module Devise
   @@password_length = 6..20
   
   # Email regex used to validate email formats. Adapted from authlogic.
-  mattr_accessor :email_regex
-  @@email_regex = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
+  mattr_accessor :email_regexp
+  @@email_regexp = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
   
   # Time interval where the remember me token is valid.
   mattr_accessor :remember_for

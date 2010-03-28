@@ -3,7 +3,7 @@ begin
 rescue LoadError
   require 'rubygems'
   require 'bundler'
-  Bundler.setup
+  Bundler.setup :default, DEVISE_ORM
 end
 
 $:.unshift File.expand_path('../../../../lib', __FILE__)

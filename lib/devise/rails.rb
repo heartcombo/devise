@@ -3,8 +3,6 @@ require 'devise/rails/warden_compat'
 
 module Devise
   class Engine < ::Rails::Engine
-    engine_name :devise
-
     initializer "devise.add_middleware" do |app|
       app.config.middleware.use Warden::Manager do |config|
         Devise.configure_warden(config)

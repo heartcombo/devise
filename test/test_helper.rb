@@ -1,11 +1,14 @@
 ENV["RAILS_ENV"] = "test"
 DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
 
+$:.unshift File.dirname(__FILE__)
 puts "\n==> Devise.orm = #{DEVISE_ORM.inspect}"
 
-require File.expand_path('../rails_app/config/application', __FILE__)
-require File.expand_path("../orm/#{DEVISE_ORM}", __FILE__)
+require "rails_app/config/environment"
+require "rails/test_help"
+require "orm/#{DEVISE_ORM}"
 
+I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__)
 require 'mocha'
 
 ActionMailer::Base.delivery_method = :test

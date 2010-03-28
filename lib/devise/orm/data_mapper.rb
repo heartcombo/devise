@@ -76,7 +76,11 @@ module Devise
         def changed?
           dirty?
         end
-        
+
+        def new_record?
+          new?
+        end
+
         def save(options=nil)
           if options.is_a?(Hash) && options[:validate] == false
             save

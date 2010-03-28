@@ -37,7 +37,7 @@ class LockableTest < ActiveSupport::TestCase
     assert_equal 0, user.reload.failed_attempts
   end
 
-  test "should verify wheter a user is locked or not" do
+  test "should verify whether a user is locked or not" do
     user = create_user
     assert_not user.access_locked?
     user.lock_access!
@@ -62,6 +62,14 @@ class LockableTest < ActiveSupport::TestCase
     assert_nil user.reload.locked_at
     assert_nil user.reload.unlock_token
     assert 0, user.reload.failed_attempts
+  end
+
+  test "should not lock a locked account" do
+    user = create_user
+    user.lock_access!
+    assert_no_difference "ActionMailer::Base.deliveries.size" do
+      user.lock_access!
+    end
   end
 
   test 'should not unlock an unlocked user' do
@@ -99,16 +107,6 @@ class LockableTest < ActiveSupport::TestCase
     assert_nil user.unlock_token
     user.lock_access!
     assert_not_nil user.unlock_token
-  end
-
-  test 'should not regenerate unlock token if it already exists' do
-    user = create_user
-    user.lock!
-    3.times do
-      token = user.unlock_token
-      user.resend_unlock_token
-      assert_equal token, user.unlock_token
-    end
   end
 
   test "should never generate the same unlock token for different users" do

@@ -36,6 +36,15 @@ class LockTest < ActionController::IntegrationTest
     assert_equal 0, ActionMailer::Base.deliveries.size
   end
 
+  test 'unlocked pages should not be available if email strategy is disabled' do
+    visit new_user_unlock_path
+    swap Devise, :unlock_strategy => :time do
+      assert_raise AbstractController::ActionNotFound do
+        visit new_user_unlock_path
+      end
+    end
+  end
+
   test 'user with invalid unlock token should not be able to unlock an account' do
     visit_user_unlock_with_token('invalid_token')
 
@@ -60,7 +69,6 @@ class LockTest < ActionController::IntegrationTest
   test "sign in user automatically after unlocking it's account" do
     user = create_user(:locked => true)
     visit_user_unlock_with_token(user.unlock_token)
-
     assert warden.authenticated?(:user)
   end
 
@@ -69,6 +77,16 @@ class LockTest < ActionController::IntegrationTest
     assert_template 'sessions/new'
     assert_contain 'Your account is locked.'
     assert_not warden.authenticated?(:user)
+  end
+
+  test "user should not send a new e-mail if already locked" do
+    user = create_user(:locked => true)
+    user.update_attribute(:failed_attempts, User.maximum_attempts + 1)
+    ActionMailer::Base.deliveries.clear
+
+    sign_in_as_user(:password => "invalid")
+    assert_contain 'Invalid email or password.'
+    assert ActionMailer::Base.deliveries.empty?
   end
 
   test 'error message is configurable by resource name' do

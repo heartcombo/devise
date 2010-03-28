@@ -23,9 +23,10 @@ module Devise
 
       # Lock an user setting it's locked_at to actual time.
       def lock_access!
+        return true if access_locked?
         self.locked_at = Time.now
 
-        if unlock_strategy_enabled?(:email)
+        if self.class.unlock_strategy_enabled?(:email)
           generate_unlock_token
           send_unlock_instructions
         end
@@ -55,11 +56,7 @@ module Devise
 
       # Resend the unlock instructions if the user is locked.
       def resend_unlock_token
-        if_access_locked do
-          generate_unlock_token unless unlock_token.present?
-          save(:validate => false)
-          send_unlock_instructions
-        end
+        if_access_locked { send_unlock_instructions }
       end
 
       # Overwrites active? from Devise::Models::Activatable for locking purposes
@@ -82,10 +79,7 @@ module Devise
           self.failed_attempts = 0
         else
           self.failed_attempts += 1
-          if failed_attempts > self.class.maximum_attempts
-            lock_access! 
-            return false
-          end
+          lock_access! if failed_attempts > self.class.maximum_attempts
         end
         save(:validate => false) if changed?
         result
@@ -100,7 +94,7 @@ module Devise
 
         # Tells if the lock is expired if :time unlock strategy is active
         def lock_expired?
-          if unlock_strategy_enabled?(:time)
+          if self.class.unlock_strategy_enabled?(:time)
             locked_at && locked_at < self.class.unlock_in.ago
           else
             false
@@ -116,11 +110,6 @@ module Devise
             self.errors.add(:email, :not_locked)
             false
           end
-        end
-
-        # Is the unlock enabled for the given unlock strategy?
-        def unlock_strategy_enabled?(strategy)
-          [:both, strategy].include?(self.class.unlock_strategy)
         end
 
       module ClassMethods
@@ -142,6 +131,11 @@ module Devise
           lockable = find_or_initialize_with_error_by(:unlock_token, unlock_token)
           lockable.unlock_access! unless lockable.new_record?
           lockable
+        end
+
+        # Is the unlock enabled for the given unlock strategy?
+        def unlock_strategy_enabled?(strategy)
+          [:both, strategy].include?(self.unlock_strategy)
         end
 
         Devise::Models.config(self, :maximum_attempts, :unlock_strategy, :unlock_in)

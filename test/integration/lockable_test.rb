@@ -81,7 +81,9 @@ class LockTest < ActionController::IntegrationTest
 
   test "user should not send a new e-mail if already locked" do
     user = create_user(:locked => true)
-    user.update_attribute(:failed_attempts, User.maximum_attempts + 1)
+    user.failed_attempts = User.maximum_attempts + 1
+    user.save!
+
     ActionMailer::Base.deliveries.clear
 
     sign_in_as_user(:password => "invalid")

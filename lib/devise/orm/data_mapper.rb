@@ -79,7 +79,7 @@ module Devise
 
         def save(options=nil)
           if options.is_a?(Hash) && options[:validate] == false
-            save
+            save!
           else
             super()
           end
@@ -87,10 +87,6 @@ module Devise
         
         def update_attributes(*args)
           update(*args)
-        end
-        
-        def lock!
-          self.reload
         end
       end
     end

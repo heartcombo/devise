@@ -53,6 +53,10 @@ module Devise
         modules << :database_authenticatable
       end
 
+      if modules.delete(:http_authenticatable)
+        ActiveSupport::Deprecation.warn ":http_authenticatable as module is deprecated and is on by default. Revert by setting :http_authenticatable => false.", caller
+      end
+
       @devise_modules = Devise::ALL & modules.map(&:to_sym).uniq
 
       devise_modules_hook! do

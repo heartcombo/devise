@@ -54,15 +54,23 @@ module Devise
   # Keys used when authenticating an user.
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]
-  
-  # Range validation for password length
-  mattr_accessor :password_length
-  @@password_length = 6..20
-  
+
+  # If http authentication is enabled by default.
+  mattr_accessor :http_authenticatable
+  @@http_authenticatable = true
+
+  # The realm used in Http Basic Authentication.
+  mattr_accessor :http_authentication_realm
+  @@http_authentication_realm = "Application"
+
   # Email regex used to validate email formats. Adapted from authlogic.
   mattr_accessor :email_regexp
   @@email_regexp = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
-  
+
+  # Range validation for password length
+  mattr_accessor :password_length
+  @@password_length = 6..20
+
   # Time interval where the remember me token is valid.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks
@@ -121,10 +129,6 @@ module Devise
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
-
-  # The realm used in Http Basic Authentication.
-  mattr_accessor :http_authentication_realm
-  @@http_authentication_realm = "Application"
 
   # Private methods to interface with Warden.
   mattr_reader :warden_config

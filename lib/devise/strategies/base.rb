@@ -12,6 +12,7 @@ module Devise
         end
       end
 
+      # TODO Move to a module
       def success!(record)
         if record.respond_to?(:active?) && !record.active?
           fail!(record.inactive_message)

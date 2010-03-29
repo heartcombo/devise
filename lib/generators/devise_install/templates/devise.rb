@@ -12,6 +12,9 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # config.authentication_keys = [ :email ]
 
+  # Tell if authentication for http is enabled. True by default.
+  # config.http_authenticatable = true
+
   # The realm used in Http Basic Authentication
   # config.http_authentication_realm = "Application"
 

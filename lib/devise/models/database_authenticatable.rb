@@ -1,3 +1,4 @@
+require 'devise/models/authenticatable'
 require 'devise/strategies/database_authenticatable'
 
 module Devise
@@ -19,8 +20,6 @@ module Devise
     #
     #   encryptor: the encryptor going to be used. By default :sha1.
     #
-    #   authentication_keys: parameters used for authentication. By default [:email]
-    #
     # Examples:
     #
     #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
@@ -30,6 +29,8 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
+        include Devise::Models::Authenticatable
+
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
       end
@@ -89,15 +90,13 @@ module Devise
         end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :stretches, :encryptor, :authentication_keys)
+        Devise::Models.config(self, :pepper, :stretches, :encryptor)
 
         # Authenticate a user based on configured attribute keys. Returns the
         # authenticated user if it's valid or nil.
-        def authenticate(attributes={})
-          return unless authentication_keys.all? { |k| attributes[k].present? }
-          conditions = attributes.slice(*authentication_keys)
-          resource = find_for_authentication(conditions)
-          resource if resource.try(:valid_for_authentication?, attributes)
+        def authenticate(conditions)
+          resource = find_for_database_authentication(conditions.except(:password))
+          resource if resource.try(:valid_for_authentication?, conditions)
         end
 
         # Returns the class for the configured encryptor.
@@ -105,20 +104,8 @@ module Devise
           @encryptor_class ||= ::Devise::Encryptors.const_get(encryptor.to_s.classify)
         end
 
-      protected
-
-        # Find first record based on conditions given (ie by the sign in form).
-        # Overwrite to add customized conditions, create a join, or maybe use a
-        # namedscope to filter records while authenticating.
-        # Example:
-        #
-        #   def self.find_for_authentication(conditions={})
-        #     conditions[:active] = true
-        #     find(:first, :conditions => conditions)
-        #   end
-        #
-        def find_for_authentication(conditions)
-          find(:first, :conditions => conditions)
+        def find_for_database_authentication(*args)
+          find_for_authentication(*args)
         end
       end
     end

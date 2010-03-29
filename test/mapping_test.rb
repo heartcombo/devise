@@ -30,8 +30,7 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'has strategies depending on the model declaration' do
-    assert_equal [:rememberable, :token_authenticatable,
-     :http_authenticatable, :database_authenticatable], Devise.mappings[:user].strategies
+    assert_equal [:rememberable, :token_authenticatable, :database_authenticatable], Devise.mappings[:user].strategies
     assert_equal [:database_authenticatable], Devise.mappings[:admin].strategies
   end
 

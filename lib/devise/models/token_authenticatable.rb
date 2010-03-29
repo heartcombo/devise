@@ -68,7 +68,7 @@ module Devise
         #
         #   def self.find_for_token_authentication(token, conditions = {})
         #     conditions = {:active => true}
-        #     self.find_by_authentication_token(token, :conditions => conditions)
+        #     super
         #   end
         #
         def find_for_token_authentication(token)

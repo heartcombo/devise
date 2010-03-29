@@ -98,38 +98,6 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_not user.valid_password?('654321')
   end
 
-  test 'should authenticate a valid user with email and password and return it' do
-    user = create_user
-    user.confirm!
-    authenticated_user = User.authenticate(:email => user.email, :password => user.password)
-    assert_equal authenticated_user, user
-  end
-
-  test 'should return nil when authenticating an invalid user by email' do
-    user = create_user
-    authenticated_user = User.authenticate(:email => 'another.email@email.com', :password => user.password)
-    assert_nil authenticated_user
-  end
-
-  test 'should return nil when authenticating an invalid user by password' do
-    user = create_user
-    authenticated_user = User.authenticate(:email => user.email, :password => 'another_password')
-    assert_nil authenticated_user
-  end
-
-  test 'should use authentication keys to retrieve users' do
-    swap Devise, :authentication_keys => [:username] do
-      user = create_user
-      assert_nil User.authenticate(:email => user.email, :password => user.password)
-      assert_not_nil User.authenticate(:username => user.username, :password => user.password)
-    end
-  end
-
-  test 'should allow overwriting find for authentication conditions' do
-    admin = Admin.create!(valid_attributes)
-    assert_not_nil Admin.authenticate(:email => admin.email, :password => admin.password)
-  end
-
   test 'should respond to current password' do
     assert new_user.respond_to?(:current_password)
   end

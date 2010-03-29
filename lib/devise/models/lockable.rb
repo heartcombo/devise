@@ -37,8 +37,8 @@ module Devise
       def unlock_access!
         if_access_locked do
           self.locked_at = nil
-          self.failed_attempts = 0
-          self.unlock_token = nil if self.respond_to?(:unlock_token=)
+          self.failed_attempts = 0 if self.respond_to?(:failed_attempts=)
+          self.unlock_token = nil  if self.respond_to?(:unlock_token=)
           save(:validate => false)
         end
       end
@@ -75,7 +75,7 @@ module Devise
       # is locked, it should never be allowed.
       def valid_for_authentication?
         return :locked if access_locked?
-        return super unless persisted?
+        return super   if !persisted? || self.class.unlock_strategy == :none
 
         if result = super
           self.failed_attempts = 0

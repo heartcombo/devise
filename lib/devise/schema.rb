@@ -68,9 +68,15 @@ module Devise
       unlock_strategy = options[:unlock_strategy] ||
         (respond_to?(:unlock_strategy) ? self.unlock_strategy : :both)
 
-      apply_schema :failed_attempts, Integer, :default => 0
-      apply_schema :unlock_token,    String   if [:both, :email].include?(unlock_strategy)
-      apply_schema :locked_at,       DateTime
+      unless unlock_strategy == :none
+        apply_schema :failed_attempts, Integer, :default => 0
+      end
+
+      if [:both, :email].include?(unlock_strategy)
+        apply_schema :unlock_token, String
+      end
+
+      apply_schema :locked_at, DateTime
     end
 
     # Overwrite with specific modification to create your own schema.

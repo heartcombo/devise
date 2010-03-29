@@ -13,7 +13,7 @@ module Devise
     # Configuration:
     #
     #   maximum_attempts: how many attempts should be accepted before blocking the user.
-    #   unlock_strategy: unlock the user account by :time, :email or :both.
+    #   unlock_strategy: unlock the user account by :time, :email, :both or :none.
     #   unlock_in: the time you want to lock the user after to lock happens. Only
     #              available when unlock_strategy is :time or :both.
     #
@@ -34,12 +34,11 @@ module Devise
       end
 
       # Unlock an user by cleaning locket_at and failed_attempts.
-      # TODO Check if unlock_token is available.
       def unlock_access!
         if_access_locked do
           self.locked_at = nil
           self.failed_attempts = 0
-          self.unlock_token = nil
+          self.unlock_token = nil if self.respond_to?(:unlock_token=)
           save(:validate => false)
         end
       end

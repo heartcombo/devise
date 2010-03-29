@@ -14,6 +14,7 @@
   * E-mails asks headers_for in the model to set the proper headers.
   * Allow to specify haml in devise_views.
   * Compatibility with Datamapper and Mongoid.
+  * Allow :unlock_strategy to be :none.
 
 * bug fix
   * Do not allow unlockable strategies based on time to access a controller.

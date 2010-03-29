@@ -12,37 +12,40 @@ module Devise
     #
     # == Options
     # * :null - When true, allow columns to be null.
-    # * :encryptor - The encryptor going to be used, necessary for setting the proper encrypter password length.
+    # * :default - Should be set to "" when :null is true.
     def database_authenticatable(options={})
-      null      = options[:null] || false
-      default   = options[:default]
-      encryptor = options[:encryptor] || (respond_to?(:encryptor) ? self.encryptor : :sha1)
+      null    = options[:null] || false
+      default = options[:default]
+
+      if options.delete(:encryptor)
+        ActiveSupport::Deprecation.warn ":encryptor as option is deprecated, simply remove it."
+      end
 
       apply_schema :email,              String, :null => null, :default => default
-      apply_schema :encrypted_password, String, :null => null, :default => default, :limit => Devise::ENCRYPTORS_LENGTH[encryptor]
+      apply_schema :encrypted_password, String, :null => null, :default => default
       apply_schema :password_salt,      String, :null => null, :default => default
     end      
 
     # Creates authentication_token.
-    def token_authenticatable
-      apply_schema :authentication_token, String, :limit => 20
+    def token_authenticatable(options={})
+      apply_schema :authentication_token, String
     end
 
     # Creates confirmation_token, confirmed_at and confirmation_sent_at.
     def confirmable
-      apply_schema :confirmation_token,   String, :limit => 20
+      apply_schema :confirmation_token,   String
       apply_schema :confirmed_at,         DateTime
       apply_schema :confirmation_sent_at, DateTime
     end
 
     # Creates reset_password_token.
     def recoverable
-      apply_schema :reset_password_token, String, :limit => 20
+      apply_schema :reset_password_token, String
     end
 
     # Creates remember_token and remember_created_at.
     def rememberable
-      apply_schema :remember_token,      String, :limit => 20
+      apply_schema :remember_token,      String
       apply_schema :remember_created_at, DateTime
     end
 
@@ -56,10 +59,17 @@ module Devise
       apply_schema :last_sign_in_ip,    String
     end
 
-    # Creates failed_attempts, unlock_token and locked_at
-    def lockable
+    # Creates failed_attempts, unlock_token and locked_at.
+    #
+    # == Options
+    # * :unlock_strategy - The strategy used for unlock. Can be :time, :email, :both, :none.
+    #   If :email or :both, creates a unlock_token field.
+    def lockable(options={})
+      unlock_strategy = options[:unlock_strategy] ||
+        (respond_to?(:unlock_strategy) ? self.unlock_strategy : :both)
+
       apply_schema :failed_attempts, Integer, :default => 0
-      apply_schema :unlock_token,    String,  :limit => 20
+      apply_schema :unlock_token,    String   if [:both, :email].include?(unlock_strategy)
       apply_schema :locked_at,       DateTime
     end
 

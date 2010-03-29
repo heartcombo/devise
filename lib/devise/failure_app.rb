@@ -22,17 +22,41 @@ module Devise
     end
 
     def respond
-      scope = warden_options[:scope]
-      store_location!(scope)
-      redirect_to send(:"new_#{scope}_session_path", query_string_params)
+      if http_auth?
+        self.status = 401
+        self.headers["WWW-Authenticate"] = %(Basic realm=#{Devise.http_authentication_realm.inspect})
+        self.content_type = request.format.to_s
+        self.response_body = http_auth_body
+      else
+        scope = warden_options[:scope]
+        store_location!(scope)
+        redirect_to send(:"new_#{scope}_session_path", query_string_params)
+      end
     end
 
   protected
 
+    def message
+      @message ||= warden.try(:message) || warden_options[:message] || self.class.default_message
+    end
+
+    def http_auth?
+      request.authorization
+    end
+
+    def http_auth_body
+      body = if message.is_a?(Symbol)
+        I18n.t "devise.sessions.#{message}", :default => message.to_s
+      else
+        message.to_s
+      end
+
+      method = :"to_#{request.format.to_sym}"
+      {}.respond_to?(method) ? { :error => body }.send(method) : body
+    end
+
     # Build the proper query string based on the given message.
     def query_string_params
-      message = warden.try(:message) || warden_options[:message] || self.class.default_message
-
       case message
       when Symbol
         { message => true }

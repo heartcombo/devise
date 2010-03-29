@@ -19,8 +19,8 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
   test 'uses the request format as response content type' do
     sign_in_as_new_user_with_http("unknown", "123456", :xml)
     assert_equal 401, status
-    assert_equal "application/xml", headers["Content-Type"]
-    assert response.body.include?("<error>HTTP Basic: Access denied.</error>")
+    assert_equal "application/xml; charset=utf-8", headers["Content-Type"]
+    assert response.body.include?("<error>Invalid email or password.</error>")
   end
 
   test 'returns a custom response with www-authenticate and chosen realm' do

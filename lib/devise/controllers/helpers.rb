@@ -150,9 +150,9 @@ module Devise
       # access that specific controller/action.
       # Example:
       #
-      #   Maps:
-      #     User => :authenticatable
-      #     Admin => :authenticatable
+      #   Roles:
+      #     User
+      #     Admin
       #
       #   Generated methods:
       #     authenticate_user!  # Signs user in or redirect

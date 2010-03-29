@@ -3,7 +3,7 @@ module Devise
     # This module contains some helpers and handle schema (migrations):
     #
     #   create_table :accounts do |t|
-    #     t.authenticatable
+    #     t.database_authenticatable
     #     t.confirmable
     #     t.recoverable
     #     t.rememberable

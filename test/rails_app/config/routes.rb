@@ -6,7 +6,7 @@ Rails::Application.routes.draw do
   resources :admins, :only => [:index]
 
   devise_for :users
-  devise_for :admin, :as => "admin_area", :controllers => { :sessions => "sessions" }, :skip => :recoverable
+  devise_for :admin, :as => "admin_area", :controllers => { :sessions => "sessions" }, :skip => :passwords
   devise_for :accounts, :scope => "manager", :path_prefix => ":locale",
     :class_name => "User", :path_names => {
       :sign_in => "login", :sign_out => "logout",

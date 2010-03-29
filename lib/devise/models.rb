@@ -38,7 +38,7 @@ module Devise
 
     # Include the chosen devise modules in your model:
     #
-    #   devise :authenticatable, :confirmable, :recoverable
+    #   devise :database_authenticatable, :confirmable, :recoverable
     #
     # You can also give any of the devise configuration values in form of a hash,
     # with specific values for this model. Please check your Devise initializer
@@ -46,12 +46,17 @@ module Devise
     #
     def devise(*modules)
       raise "You need to give at least one Devise module" if modules.empty?
-
       options = modules.extract_options!
+
+      if modules.delete(:authenticatable)
+        ActiveSupport::Deprecation.warn ":authenticatable as module is deprecated. Please give :database_authenticatable instead.", caller
+        modules << :database_authenticatable
+      end
+
       @devise_modules = Devise::ALL & modules.map(&:to_sym).uniq
 
       devise_modules_hook! do
-        devise_modules.each { |m| include Devise::Models.const_get(m.to_s.classify) }
+        @devise_modules.each { |m| include Devise::Models.const_get(m.to_s.classify) }
         options.each { |key, value| send(:"#{key}=", value) }
       end
     end

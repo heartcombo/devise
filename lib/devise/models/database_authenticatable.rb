@@ -1,4 +1,4 @@
-require 'devise/strategies/authenticatable'
+require 'devise/strategies/database_authenticatable'
 
 module Devise
   module Models
@@ -26,7 +26,7 @@ module Devise
     #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
-    module Authenticatable
+    module DatabaseAuthenticatable
       extend ActiveSupport::Concern
 
       included do
@@ -79,11 +79,6 @@ module Devise
 
         clean_up_passwords unless result
         result
-      end
-
-      # Allows you to overwrite mail messages headers for a given mail.
-      def headers_for(action)
-        {}
       end
 
       protected

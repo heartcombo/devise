@@ -25,8 +25,8 @@ module Devise
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user".
   ALL            = []
-  CONTROLLERS    = {}
-  ROUTES         = []
+  CONTROLLERS    = ActiveSupport::OrderedHash.new
+  ROUTES         = ActiveSupport::OrderedHash.new
   STRATEGIES     = ActiveSupport::OrderedHash.new
   FLASH_MESSAGES = [:unauthenticated]
 

@@ -127,7 +127,7 @@ module Devise
         # this token is being generated
         def generate_confirmation_token
           self.confirmed_at = nil
-          self.confirmation_token = Devise.friendly_token
+          self.confirmation_token = self.class.confirmation_token
           self.confirmation_sent_at = Time.now.utc
         end
 
@@ -150,6 +150,10 @@ module Devise
           confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
           confirmable.confirm! if confirmable.persisted?
           confirmable
+        end
+
+        def confirmation_token
+          Devise.friendly_token
         end
 
         Devise::Models.config(self, :confirm_within)

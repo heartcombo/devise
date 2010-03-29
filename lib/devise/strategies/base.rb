@@ -11,6 +11,14 @@ module Devise
           mapping
         end
       end
+
+      def success!(record)
+        if record.respond_to?(:active?) && !record.active?
+          fail!(record.inactive_message)
+        else
+          super
+        end
+      end
     end
   end
 end

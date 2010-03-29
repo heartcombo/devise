@@ -3,12 +3,17 @@ module Devise
   # and overwrite the apply_schema method.
   module Schema
 
+    def authenticatable(*args)
+      ActiveSupport::Deprecation.warn "t.authenticatable in migrations is deprecated. Please use t.database_authenticatable instead.", caller
+      database_authenticatable(*args)
+    end
+
     # Creates email, encrypted_password and password_salt.
     #
     # == Options
     # * :null - When true, allow columns to be null.
     # * :encryptor - The encryptor going to be used, necessary for setting the proper encrypter password length.
-    def authenticatable(options={})
+    def database_authenticatable(options={})
       null      = options[:null] || false
       default   = options[:default]
       encryptor = options[:encryptor] || (respond_to?(:encryptor) ? self.encryptor : :sha1)
@@ -16,7 +21,7 @@ module Devise
       apply_schema :email,              String, :null => null, :default => default
       apply_schema :encrypted_password, String, :null => null, :default => default, :limit => Devise::ENCRYPTORS_LENGTH[encryptor]
       apply_schema :password_salt,      String, :null => null, :default => default
-    end
+    end      
 
     # Creates authentication_token.
     def token_authenticatable

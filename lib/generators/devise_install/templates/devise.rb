@@ -4,7 +4,18 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.mailer_sender = "please-change-me@config-initializers-devise.com"
 
-  # ==> Configuration for :authenticatable
+  # ==> Configuration for any authentication mechanism
+  # Configure which keys are used when authenticating an user. By default is
+  # just :email. You can configure it to use [:username, :subdomain], so for
+  # authenticating an user, both parameters are required. Remember that those
+  # parameters are used only when authenticating and not when retrieving from
+  # session. If you need permissions, you should implement that in a before filter.
+  # config.authentication_keys = [ :email ]
+
+  # The realm used in Http Basic Authentication
+  # config.http_authentication_realm = "Application"
+
+  # ==> Configuration for :database_authenticatable
   # Invoke `rake secret` and use the printed value to setup a pepper to generate
   # the encrypted password. By default no pepper is used.
   # config.pepper = "rake secret output"
@@ -18,16 +29,6 @@ Devise.setup do |config|
   # stretches above to 20 for default behavior) and :restful_authentication_sha1
   # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
   # config.encryptor = :sha1
-
-  # Configure which keys are used when authenticating an user. By default is
-  # just :email. You can configure it to use [:username, :subdomain], so for
-  # authenticating an user, both parameters are required. Remember that those
-  # parameters are used only when authenticating and not when retrieving from
-  # session. If you need permissions, you should implement that in a before filter.
-  # config.authentication_keys = [ :email ]
-
-  # The realm used in Http Basic Authentication
-  # config.http_authentication_realm = "Application"
 
   # ==> Configuration for :confirmable
   # The time you want give to your user to confirm his account. During this time

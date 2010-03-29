@@ -89,7 +89,7 @@ module Devise
 
         # Generates unlock token
         def generate_unlock_token
-          self.unlock_token = Devise.friendly_token
+          self.unlock_token = self.class.unlock_token
         end
 
         # Tells if the lock is expired if :time unlock strategy is active
@@ -136,6 +136,10 @@ module Devise
         # Is the unlock enabled for the given unlock strategy?
         def unlock_strategy_enabled?(strategy)
           [:both, strategy].include?(self.unlock_strategy)
+        end
+
+        def unlock_token
+          Devise.friendly_token
         end
 
         Devise::Models.config(self, :maximum_attempts, :unlock_strategy, :unlock_in)

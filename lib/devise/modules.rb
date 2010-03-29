@@ -3,9 +3,9 @@ require 'active_support/core_ext/object/with_options'
 Devise.with_options :model => true do |d|
   # Strategies first
   d.with_options :strategy => true do |s|
-    s.add_module :authenticatable,       :controller => :sessions, :flash => :invalid,       :route => :session
+    s.add_module :database_authenticatable, :controller => :sessions, :flash => :invalid,       :route => :session
     s.add_module :http_authenticatable
-    s.add_module :token_authenticatable, :controller => :sessions, :flash => :invalid_token, :route => :session
+    s.add_module :token_authenticatable,    :controller => :sessions, :flash => :invalid_token, :route => :session
     s.add_module :rememberable
   end
 

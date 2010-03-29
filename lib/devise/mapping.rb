@@ -78,7 +78,11 @@ module Devise
     end
 
     def strategies
-      @strategies ||= STRATEGIES.values_at(*self.modules).compact.reverse
+      @strategies ||= STRATEGIES.values_at(*self.modules).compact.uniq.reverse
+    end
+
+    def routes
+      @routes ||= ROUTES.values_at(*self.modules).compact.uniq
     end
 
     # Keep a list of allowed controllers for this mapping. It's useful to ensure
@@ -99,6 +103,10 @@ module Devise
     # Returns the raw path using path_prefix and as.
     def path
       path_prefix + as.to_s
+    end
+
+    def authenticatable?
+      @authenticatable ||= self.modules.any? { |m| m.to_s =~ /authenticatable/ }
     end
 
     # Create magic predicates for verifying what module is activated by this map.

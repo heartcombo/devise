@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AuthenticationSanityTest < ActionController::IntegrationTest
+class DatabaseAuthenticationSanityTest < ActionController::IntegrationTest
   test 'home should be accessible without sign in' do
     visit '/'
     assert_response :success

@@ -45,43 +45,35 @@ module Devise
         self.reset_authentication_token! if self.authentication_token.blank?
       end
 
-      # Verifies whether an +incoming_authentication_token+ (i.e. from single access URL)
-      # is the user authentication token.
-      def valid_authentication_token?(incoming_auth_token)
-        incoming_auth_token.present? && incoming_auth_token == self.authentication_token
-      end
-
       module ClassMethods
         ::Devise::Models.config(self, :token_authentication_key)
 
         # Authenticate a user based on authentication token.
         def authenticate_with_token(attributes)
           token = attributes[self.token_authentication_key]
-          resource = self.find_for_token_authentication(token)
-          resource if resource.try(:valid_authentication_token?, token)
+          self.find_for_token_authentication(token)
         end
 
         def authentication_token
           ::Devise.friendly_token
         end
 
-        protected
+      protected
 
-          # Find first record based on conditions given (ie by the sign in form).
-          # Overwrite to add customized conditions, create a join, or maybe use a
-          # namedscope to filter records while authenticating.
-          #
-          # == Example:
-          #
-          #   def self.find_for_token_authentication(token, conditions = {})
-          #     conditions = {:active => true}
-          #     self.find_by_authentication_token(token, :conditions => conditions)
-          #   end
-          #
-          def find_for_token_authentication(token)
-            self.find(:first, :conditions => { :authentication_token => token})
-          end
-
+        # Find first record based on conditions given (ie by the sign in form).
+        # Overwrite to add customized conditions, create a join, or maybe use a
+        # namedscope to filter records while authenticating.
+        #
+        # == Example:
+        #
+        #   def self.find_for_token_authentication(token, conditions = {})
+        #     conditions = {:active => true}
+        #     self.find_by_authentication_token(token, :conditions => conditions)
+        #   end
+        #
+        def find_for_token_authentication(token)
+          self.find(:first, :conditions => { :authentication_token => token})
+        end
       end
     end
   end

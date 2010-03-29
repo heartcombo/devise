@@ -19,7 +19,7 @@ module Devise
     # Those helpers are added to your ApplicationController.
     module UrlHelpers
 
-      Devise::ROUTES.each do |module_name|
+      Devise::ROUTES.values.uniq.each do |module_name|
         [:path, :url].each do |path_or_url|
           actions = [ nil, :new_ ]
           actions << :edit_    if [:password, :registration].include?(module_name)

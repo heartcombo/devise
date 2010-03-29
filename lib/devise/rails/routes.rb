@@ -83,9 +83,9 @@ module ActionDispatch::Routing
     #
     #    devise_for :users, :controllers => { :sessions => "users/sessions" }
     #
-    #  * :skip => tell which modules you want to skip routes from being created:
+    #  * :skip => tell which controller you want to skip routes from being created:
     #
-    #    devise_for :users, :skip => :authenticatable
+    #    devise_for :users, :skip => :sessions
     #
     def devise_for(*resources)
       options = resources.extract_options!
@@ -100,16 +100,18 @@ module ActionDispatch::Routing
             "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
         end
 
-        routes_modules = mapping.modules - Array(options.delete(:skip))
-        routes_modules.each do |mod|
-          send(mod, mapping, mapping.controllers) if self.respond_to?(mod, true)
+        routes  = mapping.routes
+        routes -= Array(options.delete(:skip)).map { |s| s.to_s.singularize.to_sym }
+
+        routes.each do |mod|
+          send(:"devise_#{mod}", mapping, mapping.controllers)
         end
       end
     end
 
     protected
 
-      def authenticatable(mapping, controllers)
+      def devise_session(mapping, controllers)
         scope mapping.path do
           get  mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#new",     :as => :"new_#{mapping.name}_session"
           post mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#create",  :as => :"#{mapping.name}_session"
@@ -117,25 +119,25 @@ module ActionDispatch::Routing
         end
       end
  
-      def recoverable(mapping, controllers)
+      def devise_password(mapping, controllers)
         scope mapping.path, :name_prefix => mapping.name do
           resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password], :controller => controllers[:passwords]
         end
       end
  
-      def confirmable(mapping, controllers)
+      def devise_confirmation(mapping, controllers)
         scope mapping.path, :name_prefix => mapping.name do
           resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
         end
       end
  
-      def lockable(mapping, controllers)
+      def devise_unlock(mapping, controllers)
         scope mapping.path, :name_prefix => mapping.name do
           resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock], :controller => controllers[:unlocks]
         end
       end
 
-      def registerable(mapping, controllers)
+      def devise_registration(mapping, controllers)
         scope mapping.path[1..-1], :name_prefix => "#{mapping.name}_registration" do
           resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => "",
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]

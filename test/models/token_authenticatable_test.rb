@@ -25,13 +25,6 @@ class TokenAuthenticatableTest < ActiveSupport::TestCase
     assert_equal previous_token, user.authentication_token
   end
 
-  test 'should test for a valid authentication token' do
-    User.expects(:authentication_token).returns(VALID_AUTHENTICATION_TOKEN)
-    user = create_user
-    assert user.valid_authentication_token?(VALID_AUTHENTICATION_TOKEN)
-    assert_not user.valid_authentication_token?(VALID_AUTHENTICATION_TOKEN.reverse)
-  end
-
   test 'should authenticate a valid user with authentication token and return it' do
     User.expects(:authentication_token).returns(VALID_AUTHENTICATION_TOKEN)
     user = create_user

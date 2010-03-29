@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'digest/sha1'
 
-class AuthenticatableTest < ActiveSupport::TestCase
+class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   def encrypt_password(user, pepper=User.pepper, stretches=User.stretches, encryptor=::Devise::Encryptors::Sha1)
     encryptor.digest('123456', stretches, user.password_salt, pepper)

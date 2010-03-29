@@ -79,13 +79,6 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal "was already confirmed", confirmed_user.errors[:email].join
   end
 
-  test 'should authenticate a confirmed user' do
-    user = create_user
-    user.confirm!
-    authenticated_user = User.authenticate(:email => user.email, :password => user.password)
-    assert_equal authenticated_user, user
-  end
-
   test 'should send confirmation instructions by email' do
     assert_email_sent do
       create_user

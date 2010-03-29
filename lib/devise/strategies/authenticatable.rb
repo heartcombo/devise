@@ -2,6 +2,9 @@ require 'devise/strategies/base'
 
 module Devise
   module Strategies
+    # This strategy should be used as basis for authentication strategies. It retrieves
+    # parameters both from params or from http authorization headers. See database_authenticatable
+    # for an example.
     class Authenticatable < Base
       attr_accessor :authentication_hash, :password
 
@@ -10,6 +13,18 @@ module Devise
       end
 
     private
+
+      # Simply invokes valid_for_authentication? with the given block and deal with the result.
+      def validate(resource, &block)
+        result = resource && resource.valid_for_authentication?(&block)
+
+        case result
+        when Symbol, String
+          fail!(result)
+        else
+          result
+        end 
+      end
 
       def valid_for_http_auth?
         mapping.to.http_authenticatable? && request.authorization && set_http_auth_hash

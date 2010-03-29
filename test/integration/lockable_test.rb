@@ -85,7 +85,7 @@ class LockTest < ActionController::IntegrationTest
     ActionMailer::Base.deliveries.clear
 
     sign_in_as_user(:password => "invalid")
-    assert_contain 'Invalid email or password.'
+    assert_contain 'Your account is locked.'
     assert ActionMailer::Base.deliveries.empty?
   end
 

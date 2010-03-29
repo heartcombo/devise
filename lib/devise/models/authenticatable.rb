@@ -14,6 +14,12 @@ module Devise
     module Authenticatable
       extend ActiveSupport::Concern
 
+      # Yields the given block. This method is overwritten by other modules to provide
+      # hooks around authentication.
+      def valid_for_authentication?
+        yield
+      end
+
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :http_authenticatable)
 

@@ -1,40 +1,31 @@
 require 'test_helper'
 
 class LockableTest < ActiveSupport::TestCase
-
   def setup
     setup_mailer
-  end
-
-  test "should increment failed attempts on unsuccessful authentication" do
-    user = create_user
-    assert_equal 0, user.failed_attempts
-
-    authenticated_user = User.authenticate(:email => user.email, :password => "anotherpassword")
-    assert_equal 1, user.reload.failed_attempts
-  end
-
-  test "should lock account base on maximum_attempts" do
-    user = create_user
-    attempts = Devise.maximum_attempts + 1
-    attempts.times { authenticated_user = User.authenticate(:email => user.email, :password => "anotherpassword") }
-    assert user.reload.access_locked?
   end
 
   test "should respect maximum attempts configuration" do
     user = create_user
     swap Devise, :maximum_attempts => 2 do
-      3.times { authenticated_user = User.authenticate(:email => user.email, :password => "anotherpassword") }
+      3.times { user.valid_for_authentication?{ false } }
       assert user.reload.access_locked?
     end
   end
 
-  test "should clear failed_attempts on successfull sign in" do
+  test "should clear failed_attempts on successfull validation" do
     user = create_user
-    User.authenticate(:email => user.email, :password => "anotherpassword")
+    user.valid_for_authentication?{ false }
     assert_equal 1, user.reload.failed_attempts
-    User.authenticate(:email => user.email, :password => "123456")
+    user.valid_for_authentication?{ true }
     assert_equal 0, user.reload.failed_attempts
+  end
+
+  test 'should be valid for authentication with a unlocked user' do
+    user = create_user
+    user.lock_access!
+    user.unlock_access!
+    assert user.valid_for_authentication?{ true }
   end
 
   test "should verify whether a user is locked or not" do
@@ -62,14 +53,6 @@ class LockableTest < ActiveSupport::TestCase
     assert_nil user.reload.locked_at
     assert_nil user.reload.unlock_token
     assert 0, user.reload.failed_attempts
-  end
-
-  test "should not lock a locked account" do
-    user = create_user
-    user.lock_access!
-    assert_no_difference "ActionMailer::Base.deliveries.size" do
-      user.lock_access!
-    end
   end
 
   test 'should not unlock an unlocked user' do
@@ -164,14 +147,6 @@ class LockableTest < ActiveSupport::TestCase
     locked_user = User.unlock_access_by_token('')
     assert_not locked_user.persisted?
     assert_equal "can't be blank", locked_user.errors[:unlock_token].join
-  end
-
-  test 'should authenticate a unlocked user' do
-    user = create_user
-    user.lock_access!
-    user.unlock_access!
-    authenticated_user = User.authenticate(:email => user.email, :password => user.password)
-    assert_equal authenticated_user, user
   end
 
   test 'should find a user to send unlock instructions' do

@@ -12,10 +12,10 @@ module Devise
         end
       end
 
-      # TODO Move to a module
-      def success!(record)
-        if record.respond_to?(:active?) && !record.active?
-          fail!(record.inactive_message)
+      # Check if the resource is active before signing him in once and for all.
+      def success!(resource)
+        if resource.respond_to?(:active?) && !resource.active?
+          fail!(resource.inactive_message)
         else
           super
         end

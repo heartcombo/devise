@@ -22,15 +22,13 @@ module Devise
     #
     # Examples:
     #
-    #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
     module DatabaseAuthenticatable
-      extend ActiveSupport::Concern
+      extend  ActiveSupport::Concern
+      include Devise::Models::Authenticatable
 
       included do
-        include Devise::Models::Authenticatable
-
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
       end
@@ -49,11 +47,6 @@ module Devise
       # Verifies whether an incoming_password (ie from sign in) is the user password.
       def valid_password?(incoming_password)
         password_digest(incoming_password) == self.encrypted_password
-      end
-
-      # Checks if a resource is valid upon authentication.
-      def valid_for_authentication?(attributes)
-        valid_password?(attributes[:password])
       end
 
       # Set password and password confirmation to nil
@@ -82,22 +75,15 @@ module Devise
         result
       end
 
-      protected
+    protected
 
-        # Digests the password using the configured encryptor.
-        def password_digest(password)
-          self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)
-        end
+      # Digests the password using the configured encryptor.
+      def password_digest(password)
+        self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)
+      end
 
       module ClassMethods
         Devise::Models.config(self, :pepper, :stretches, :encryptor)
-
-        # Authenticate a user based on configured attribute keys. Returns the
-        # authenticated user if it's valid or nil.
-        def authenticate(conditions)
-          resource = find_for_database_authentication(conditions.except(:password))
-          resource if resource.try(:valid_for_authentication?, conditions)
-        end
 
         # Returns the class for the configured encryptor.
         def encryptor_class

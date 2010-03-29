@@ -18,12 +18,11 @@ module Devise
     #              available when unlock_strategy is :time or :both.
     #
     module Lockable
-      extend ActiveSupport::Concern
+      extend  ActiveSupport::Concern
       include Devise::Models::Activatable
 
       # Lock an user setting it's locked_at to actual time.
       def lock_access!
-        return true if access_locked?
         self.locked_at = Time.now
 
         if self.class.unlock_strategy_enabled?(:email)
@@ -35,6 +34,7 @@ module Devise
       end
 
       # Unlock an user by cleaning locket_at and failed_attempts.
+      # TODO Check if unlock_token is available.
       def unlock_access!
         if_access_locked do
           self.locked_at = nil
@@ -74,18 +74,30 @@ module Devise
       # Overwrites valid_for_authentication? from Devise::Models::Authenticatable
       # for verifying whether an user is allowed to sign in or not. If the user
       # is locked, it should never be allowed.
-      def valid_for_authentication?(attributes)
+      def valid_for_authentication?
+        return :locked if access_locked?
+        return super unless persisted?
+
         if result = super
           self.failed_attempts = 0
         else
           self.failed_attempts += 1
-          lock_access! if failed_attempts > self.class.maximum_attempts
+
+          if attempts_exceeded?
+            lock_access!
+            return :locked
+          end
         end
+
         save(:validate => false) if changed?
         result
       end
 
       protected
+
+        def attempts_exceeded?
+          self.failed_attempts > self.class.maximum_attempts
+        end
 
         # Generates unlock token
         def generate_unlock_token

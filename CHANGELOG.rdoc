@@ -15,6 +15,7 @@
   * Allow to specify haml in devise_views.
   * Compatibility with Datamapper and Mongoid.
   * Allow :unlock_strategy to be :none.
+  * Make config.devise available on config/application.rb.
 
 * bug fix
   * Do not allow unlockable strategies based on time to access a controller.

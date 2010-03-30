@@ -11,7 +11,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     ActionMailer::Base.deliveries.clear
 
     visit new_user_session_path
-    click_link 'Didn\'t receive confirmation instructions?'
+    click_link "Didn't receive confirmation instructions?"
 
     fill_in 'email', :with => user.email
     click_button 'Resend confirmation instructions'

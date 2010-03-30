@@ -11,7 +11,7 @@ class LockTest < ActionController::IntegrationTest
     ActionMailer::Base.deliveries.clear
 
     visit new_user_session_path
-    click_link 'Didn\'t receive unlock instructions?'
+    click_link "Didn't receive unlock instructions?"
 
     fill_in 'email', :with => user.email
     click_button 'Resend unlock instructions'
@@ -26,7 +26,7 @@ class LockTest < ActionController::IntegrationTest
     ActionMailer::Base.deliveries.clear
 
     visit new_user_session_path
-    click_link 'Didn\'t receive unlock instructions?'
+    click_link "Didn't receive unlock instructions?"
 
     fill_in 'email', :with => user.email
     click_button 'Resend unlock instructions'

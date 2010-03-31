@@ -34,7 +34,7 @@ class DeviseViewsGenerator < Rails::Generators::Base
   end
   
   def verify_haml_version
-    unless Haml.version[:major] >= 2 and Haml.version[:minor] >= 3
+    unless Haml.version[:major] == 2 and Haml.version[:minor] >= 3 or Haml.version[:major] >= 3
       say "To generate HAML templates, you need to install HAML 2.3 or above."
       exit
     end

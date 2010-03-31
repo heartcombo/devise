@@ -8,8 +8,8 @@ module Warden::Mixins::Common
     raw_session.clear
   end
 
-  def response
-    @response ||= env['action_controller.instance'].response
+  def cookies
+    request.cookie_jar
   end
 end
 

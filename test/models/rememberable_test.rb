@@ -39,44 +39,25 @@ class RememberableTest < ActiveSupport::TestCase
     user.forget_me!
   end
 
-  test 'valid remember token' do
-    user = create_user
-    assert_not user.valid_remember_token?(user.remember_token)
-    user.remember_me!
-    assert user.valid_remember_token?(user.remember_token)
-    user.forget_me!
-    assert_not user.valid_remember_token?(user.remember_token)
-  end
-
-  test 'valid remember token should also verify if remember is not expired' do
-    swap Devise, :remember_for => 1.day do
-      user = create_user
-      user.remember_me!
-      user.remember_created_at = 3.days.ago
-      user.save
-      assert_not user.valid_remember_token?(user.remember_token)
-    end
-  end
-
   test 'serialize into cookie' do
     user = create_user
     user.remember_me!
-    assert_equal "#{user.id}::#{user.remember_token}", User.serialize_into_cookie(user)
+    assert_equal [user.id, user.remember_token], User.serialize_into_cookie(user)
   end
 
   test 'serialize from cookie' do
     user = create_user
     user.remember_me!
-    assert_equal user, User.serialize_from_cookie("#{user.id}::#{user.remember_token}")
+    assert_equal user, User.serialize_from_cookie(user.id, user.remember_token)
   end
 
   test 'serialize should return nil if no user is found' do
-    assert_nil User.serialize_from_cookie('0::123')
+    assert_nil User.serialize_from_cookie(0, "123")
   end
 
   test 'remember me return nil if is a valid user with invalid token' do
     user = create_user
-    assert_nil User.serialize_from_cookie("#{user.id}::#{user.remember_token}123")
+    assert_nil User.serialize_from_cookie(user.id, "123")
   end
 
   test 'remember for should fallback to devise remember for default configuration' do

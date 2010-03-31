@@ -23,14 +23,9 @@ class DeviseTest < ActiveSupport::TestCase
     end
   end
 
-  test 'warden manager configuration' do
-    Devise.yield_and_restore do
-      config = Warden::Config.new
-      Devise.configure_warden(config)
-
-      assert_equal Devise::FailureApp, config.failure_app
-      assert_equal :user, config.default_scope
-    end
+  test 'stores warden configuration' do
+    assert_equal Devise::FailureApp, Devise.warden_config.failure_app
+    assert_equal :user, Devise.warden_config.default_scope
   end
 
   test 'warden manager user configuration through a block' do
@@ -41,7 +36,7 @@ class DeviseTest < ActiveSupport::TestCase
         assert_kind_of Warden::Config, config
       end
 
-      Devise.configure_warden(Warden::Config.new)
+      Devise.configure_warden!
       assert @executed
     end
   end

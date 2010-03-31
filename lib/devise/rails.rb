@@ -7,7 +7,9 @@ module Devise
 
     initializer "devise.add_middleware" do |app|
       app.config.middleware.use Warden::Manager do |config|
-        Devise.configure_warden(config)
+        Devise.warden_config = config
+        config.failure_app   = Devise::FailureApp
+        config.default_scope = Devise.default_scope
       end
     end
 

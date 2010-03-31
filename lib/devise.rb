@@ -230,12 +230,8 @@ module Devise
 
   # A method used internally to setup warden manager from the Rails initialize
   # block.
-  def self.configure_warden(config) #:nodoc:
-    config.failure_app   = Devise::FailureApp
-    config.default_scope = Devise.default_scope
-
-    @@warden_config = config
-    @@warden_config_block.try :call, config
+  def self.configure_warden! #:nodoc:
+    @@warden_config_block.try :call, Devise.warden_config
   end
 
   # Generate a friendly string randomically to be used as token.

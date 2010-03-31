@@ -101,14 +101,19 @@ module Devise
   mattr_accessor :scoped_views
   @@scoped_views = false
 
-  # Number of authentication tries before locking an account
-  mattr_accessor :maximum_attempts
-  @@maximum_attempts = 20
+  # Defines which strategy can be used to lock an account.
+  # Values: :failed_attempts, :none
+  mattr_accessor :lock_strategy
+  @@lock_strategy = :failed_attempts
 
   # Defines which strategy can be used to unlock an account.
   # Values: :email, :time, :both
   mattr_accessor :unlock_strategy
   @@unlock_strategy = :both
+
+  # Number of authentication tries before locking an account
+  mattr_accessor :maximum_attempts
+  @@maximum_attempts = 20
 
   # Time interval to unlock the account if :time is defined as unlock_strategy.
   mattr_accessor :unlock_in
@@ -131,7 +136,7 @@ module Devise
   @@token_authentication_key = :auth_token
 
   # Private methods to interface with Warden.
-  mattr_reader :warden_config
+  mattr_accessor :warden_config
   @@warden_config = nil
   @@warden_config_block = nil
 

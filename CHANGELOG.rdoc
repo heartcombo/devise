@@ -14,8 +14,10 @@
   * E-mails asks headers_for in the model to set the proper headers.
   * Allow to specify haml in devise_views.
   * Compatibility with Datamapper and Mongoid.
-  * Allow :unlock_strategy to be :none.
   * Make config.devise available on config/application.rb.
+  * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or
+    none. Setting those values to :none means that you want to handle lock and unlocking by
+    yourself.
 
 * bug fix
   * Do not allow unlockable strategies based on time to access a controller.

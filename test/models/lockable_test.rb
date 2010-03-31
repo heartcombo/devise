@@ -21,6 +21,15 @@ class LockableTest < ActiveSupport::TestCase
     assert_equal 0, user.reload.failed_attempts
   end
 
+  test "should not touch failed_attempts if lock_strategy is none" do
+    user = create_user
+    swap Devise, :lock_strategy => :none, :maximum_attempts => 2 do
+      3.times { user.valid_for_authentication?{ false } }
+      assert !user.access_locked?
+      assert_equal 0, user.failed_attempts
+    end
+  end
+
   test 'should be valid for authentication with a unlocked user' do
     user = create_user
     user.lock_access!

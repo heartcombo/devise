@@ -22,6 +22,11 @@ module Devise
     autoload :Sha1, 'devise/encryptors/sha1'
   end
 
+  module Strategies
+    autoload :Base, 'devise/strategies/base'
+    autoload :Authenticatable, 'devise/strategies/authenticatable'
+  end
+
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user".
   ALL            = []

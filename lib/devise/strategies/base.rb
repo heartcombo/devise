@@ -2,8 +2,7 @@ module Devise
   module Strategies
     # Base strategy for Devise. Responsible for verifying correct scope and mapping.
     class Base < ::Warden::Strategies::Base
-      # Checks if a valid scope was given for devise and find mapping based on
-      # this scope.
+      # Checks if a valid scope was given for devise and find mapping based on this scope.
       def mapping
         @mapping ||= begin
           mapping = Devise.mappings[scope]
@@ -12,13 +11,8 @@ module Devise
         end
       end
 
-      # Check if the resource is active before signing him in once and for all.
-      def success!(resource)
-        if resource.respond_to?(:active?) && !resource.active?
-          fail!(resource.inactive_message)
-        else
-          super
-        end
+      def succeeded?
+        @result == :success
       end
     end
   end

@@ -12,10 +12,10 @@ module Devise
     #
     # == Options
     # * :null - When true, allow columns to be null.
-    # * :default - Should be set to "" when :null is true.
+    # * :default - Should be set to "" when :null is false.
     def database_authenticatable(options={})
       null    = options[:null] || false
-      default = options[:default]
+      default = options[:default] || ""
 
       if options.delete(:encryptor)
         ActiveSupport::Deprecation.warn ":encryptor as option is deprecated, simply remove it."

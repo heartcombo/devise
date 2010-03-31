@@ -1,4 +1,4 @@
-# Each time a record is set we check whether it's session has already timed out
+# Each time a record is set we check whether its session has already timed out
 # or not, based on last request time. If so, the record is logged out and
 # redirected to the sign in page. Also, each time the request comes and the
 # record is set, we set the last request time inside it's scoped session to

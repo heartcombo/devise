@@ -153,6 +153,7 @@ class ControllerAuthenticableTest < ActionController::TestCase
   test 'sign in and redirect uses the stored location' do
     user = User.new
     @controller.session[:"user.return_to"] = "/foo.bar"
+    @mock_warden.expects(:user).with(:user).returns(nil)
     @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
     @controller.expects(:redirect_to).with("/foo.bar")
     @controller.sign_in_and_redirect(user)
@@ -160,15 +161,18 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
   test 'sign in and redirect uses the configured after sign in path' do
     admin = Admin.new
+    @mock_warden.expects(:user).with(:admin).returns(nil)
     @mock_warden.expects(:set_user).with(admin, :scope => :admin).returns(true)
     @controller.expects(:redirect_to).with(admin_root_path)
     @controller.sign_in_and_redirect(admin)
   end
 
-  test 'only redirect if skip is given' do
+  test 'sign in and redirect does not sign in again if user is already signed' do
     admin = Admin.new
+    @mock_warden.expects(:user).with(:admin).returns(admin)
+    @mock_warden.expects(:set_user).never
     @controller.expects(:redirect_to).with(admin_root_path)
-    @controller.sign_in_and_redirect(:admin, admin, true)
+    @controller.sign_in_and_redirect(admin)
   end
 
   test 'sign out and redirect uses the configured after sign out path' do

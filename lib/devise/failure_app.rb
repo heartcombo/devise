@@ -10,9 +10,6 @@ module Devise
     include ActionController::UrlFor
     include ActionController::Redirecting
 
-    mattr_accessor :default_message
-    self.default_message = :unauthenticated
-
     def self.call(env)
       action(:respond).call(env)
     end
@@ -27,6 +24,11 @@ module Devise
         self.headers["WWW-Authenticate"] = %(Basic realm=#{Devise.http_authentication_realm.inspect})
         self.content_type = request.format.to_s
         self.response_body = http_auth_body
+      elsif action = warden_options[:recall]
+        default_message :invalid
+        env["PATH_INFO"] = attempted_path
+        params.merge!(query_string_params)
+        self.response = recall_controller.action(action).call(env)
       else
         scope = warden_options[:scope]
         store_location!(scope)
@@ -37,7 +39,12 @@ module Devise
   protected
 
     def message
-      @message ||= warden.try(:message) || warden_options[:message] || self.class.default_message
+      @message ||= warden.message || warden_options[:message] || default_message
+    end
+
+    def default_message(message=nil)
+      @default_message = message if message
+      @default_message ||= :unauthenticated
     end
 
     def http_auth?
@@ -59,12 +66,16 @@ module Devise
     def query_string_params
       case message
       when Symbol
-        { message => true }
+        { message => "true" }
       when String
         { :message => message }
       else
         {}
       end
+    end
+
+    def recall_controller
+      "#{params[:controller].camelize}Controller".constantize
     end
 
     def warden

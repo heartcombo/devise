@@ -18,7 +18,8 @@ module Devise
     #    User.find(1).valid_authentication_token?('rI1t6PKQ8yP7VetgwdybB')  # returns true/false
     #
     module TokenAuthenticatable
-      extend ActiveSupport::Concern
+      extend  ActiveSupport::Concern
+      include Devise::Models::Authenticatable
 
       included do
         before_save :ensure_authentication_token

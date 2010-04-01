@@ -10,6 +10,10 @@ module Devise
     #   authentication_keys: parameters used for authentication. By default [:email].
     #
     #   http_authenticatable: if this model allows http authentication. By default true.
+    #   It also accepts an array specifying the strategies that should allow http.
+    #
+    #   params_authenticatable: if this model allows authentication through request params. By default true.
+    #   It also accepts an array specifying the strategies that should allow params authentication.
     #
     module Authenticatable
       extend ActiveSupport::Concern
@@ -21,9 +25,17 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :authentication_keys, :http_authenticatable)
+        Devise::Models.config(self, :authentication_keys, :http_authenticatable, :params_authenticatable)
 
-        alias :http_authenticatable? :http_authenticatable
+        def params_authenticatable?(strategy)
+          params_authenticatable.is_a?(Array) ?
+            params_authenticatable.include?(strategy) : params_authenticatable
+        end
+
+        def http_authenticatable?(strategy)
+          http_authenticatable.is_a?(Array) ?
+            http_authenticatable.include?(strategy) : http_authenticatable
+        end
 
         # Find first record based on conditions given (ie by the sign in form).
         # Overwrite to add customized conditions, create a join, or maybe use a

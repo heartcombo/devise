@@ -2,33 +2,42 @@ require 'devise/strategies/base'
 
 module Devise
   module Strategies
-    # Strategy for signing in a user, based on a authenticatable token.
-    # Redirects to sign_in page if it's not authenticated.
-    class TokenAuthenticatable < Base
-      def valid?
-        authentication_token(scope).present?
-      end
-
-      # Authenticate a user based on authenticatable token params, returning to warden
-      # success and the authenticated user if everything is okay. Otherwise redirect
-      # to sign in page.
+    # Strategy for signing in a user, based on a authenticatable token. This works for both params
+    # and http. For the former, all you need to do is to pass the params in the URL:
+    #
+    #   http://myapp.example.com/?user_token=SECRET
+    #
+    # For HTTP, you can pass the token as username. Since some clients may require a password,
+    # you can pass anything and it will simply be ignored.
+    class TokenAuthenticatable < Authenticatable
       def authenticate!
-        if resource = mapping.to.authenticate_with_token(params[scope] || params)
+        if resource = mapping.to.authenticate_with_token(authentication_hash)
           success!(resource)
         else
-          fail!(:invalid_token)
+          fail(:invalid_token)
         end
       end
 
     private
 
-      # Detect authentication token in params: scoped or not.
-      def authentication_token(scope)
-        if params[scope]
-          params[scope][mapping.to.token_authentication_key]
-        else
-          params[mapping.to.token_authentication_key]
-        end
+      # TokenAuthenticatable params can be given to any controller.
+      def valid_controller?
+        true
+      end
+
+      # Do not use remember_me behavir with token.
+      def remember_me?
+        false
+      end
+
+      # Try both scoped and non scoped keys.
+      def params_auth_hash
+        params[scope] || params
+      end
+
+      # Overwrite authentication keys to use token_authentication_key.
+      def authentication_keys
+        @authentication_keys ||= [mapping.to.token_authentication_key]
       end
     end
   end

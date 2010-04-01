@@ -26,44 +26,71 @@ module Devise
         end 
       end
 
+      # Check if this is strategy is valid for http authentication.
       def valid_for_http_auth?
-        mapping.to.http_authenticatable? && request.authorization && set_http_auth_hash
+        http_authenticatable? && request.authorization && with_authentication_hash(http_auth_hash)
       end
 
+      # Check if this is strategy is valid for params authentication.
       def valid_for_params_auth?
-        valid_controller? && valid_params? && set_params_auth_hash
+        params_authenticatable? && valid_controller? &&
+          valid_params? && with_authentication_hash(params_auth_hash)
       end
 
+      # Check if the model accepts this strategy as http authenticatable.
+      def http_authenticatable?
+        mapping.to.http_authenticatable?(authenticatable_name)
+      end
+
+      # Check if the model accepts this strategy as params authenticatable.
+      def params_authenticatable?
+        mapping.to.params_authenticatable?(authenticatable_name)
+      end
+
+      # Extract the appropriate subhash for authentication from params.
+      def params_auth_hash
+         params[scope]
+       end
+
+      # Extract a hash with attributes:values from the http params.
+      def http_auth_hash
+        keys = [authentication_keys.first, :password]
+        Hash[*keys.zip(decode_credentials).flatten]
+      end
+
+      # Check if the controller is valid for params authentication.
       def valid_controller?
         mapping.controllers[:sessions] == params[:controller]
       end
 
+      # Check if the params_auth_hash is valid for params authentication.
       def valid_params?
-        params[scope].is_a?(Hash)
+        params_auth_hash.is_a?(Hash)
       end
 
-      def set_http_auth_hash
-        keys = [authentication_keys.first, :password]
-        with_authentication_hash Hash[*keys.zip(decode_credentials).flatten]
-      end
-
+      # Helper to decode credentials from HTTP.
       def decode_credentials
         username_and_password = request.authorization.split(' ', 2).last || ''
         ActiveSupport::Base64.decode64(username_and_password).split(/:/, 2)
       end
 
-      def set_params_auth_hash
-        with_authentication_hash params[scope]
-      end
-
+      # Sets the authentication hash and the password from params_auth_hash or http_auth_hash.
       def with_authentication_hash(hash)
         self.authentication_hash = hash.slice(*authentication_keys)
         self.password = hash[:password]
-        authentication_keys.all?{ |k| authentication_hash[k].present? } && password.present?
+        authentication_keys.all?{ |k| authentication_hash[k].present? }
       end
 
+      # Holds the authentication keys.
       def authentication_keys
         @authentication_keys ||= mapping.to.authentication_keys
+      end
+
+      # Holds the authenticatable name for this class. Devise::Strategies::DatabaseAuthenticatable
+      # becomes simply :database.
+      def authenticatable_name
+        @authenticatable_name ||=
+          self.class.name.split("::").last.underscore.sub("_authenticatable", "").to_sym
       end
     end
   end

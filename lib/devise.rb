@@ -64,6 +64,10 @@ module Devise
   mattr_accessor :http_authenticatable
   @@http_authenticatable = true
 
+  # If params authenticatable is enabled by default.
+  mattr_accessor :params_authenticatable
+  @@params_authenticatable = true
+
   # The realm used in Http Basic Authentication.
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"

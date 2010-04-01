@@ -3,7 +3,6 @@
 * enhancements
   * Rails 3 compatibility.
   * All controllers and views are namespaced, for example: Devise::SessionsController and "devise/sessions".
-  * You can specify the controller in routes and have specific controllers for each role.
   * Devise.orm is deprecated. This reduces the required API to hook your ORM with devise.
   * Use metal for failure app.
   * HTML e-mails now have proper formatting.
@@ -15,6 +14,7 @@
   * Allow to specify haml in devise_views.
   * Compatibility with Datamapper and Mongoid.
   * Make config.devise available on config/application.rb.
+  * TokenAuthenticatable now works with HTTP Basic Auth.
   * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or
     none. Setting those values to :none means that you want to handle lock and unlocking by
     yourself.

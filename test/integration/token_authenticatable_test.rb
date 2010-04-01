@@ -2,9 +2,9 @@ require 'test_helper'
 
 class TokenAuthenticationTest < ActionController::IntegrationTest
 
-  test 'sign in should authenticate with valid authentication token and proper authentication token key' do
+  test 'authenticate with valid authentication token key and value through params' do
     swap Devise, :token_authentication_key => :secret_token do
-      sign_in_as_new_user_with_token(:auth_token_key => :secret_token)
+      sign_in_as_new_user_with_token
 
       assert_response :success
       assert_template 'users/index'
@@ -13,7 +13,38 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
-  test 'signing in with valid authentication token - but improper authentication token key - return to sign in form with error message' do
+  test 'authenticate with valid authentication token key and value through http' do
+    swap Devise, :token_authentication_key => :secret_token do
+      sign_in_as_new_user_with_token(:http_auth => true)
+
+      assert_response :success
+      assert_template 'users/index'
+      assert_contain 'Welcome'
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'does authenticate with valid authentication token key and value through params if not configured' do
+    swap Devise, :token_authentication_key => :secret_token, :params_authenticatable => [:database] do
+      sign_in_as_new_user_with_token
+
+      assert_contain 'You need to sign in or sign up before continuing'
+      assert_contain 'Sign in'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  test 'does authenticate with valid authentication token key and value through http if not configured' do
+    swap Devise, :token_authentication_key => :secret_token, :http_authenticatable => [:database] do
+      sign_in_as_new_user_with_token(:http_auth => true)
+
+      assert_response 401
+      assert_contain 'Invalid email or password.'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  test 'does not authenticate with improper authentication token key' do
     swap Devise, :token_authentication_key => :donald_duck_token do
       sign_in_as_new_user_with_token(:auth_token_key => :secret_token)
       assert_current_path new_user_session_path(:unauthenticated => true)
@@ -24,12 +55,11 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
-  test 'signing in with invalid authentication token should return to sign in form with error message' do
+  test 'does not authenticate with improper authentication token value' do
     store_translations :en, :devise => {:sessions => {:invalid_token => 'LOL, that was not a single character correct.'}} do
       sign_in_as_new_user_with_token(:auth_token => '*** INVALID TOKEN ***')
       assert_current_path new_user_session_path(:invalid_token => true)
 
-      assert_response :success
       assert_contain 'LOL, that was not a single character correct.'
       assert_contain 'Sign in'
       assert_not warden.authenticated?(:user)
@@ -46,7 +76,13 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
       user.authentication_token = VALID_AUTHENTICATION_TOKEN
       user.save
 
-      visit users_path(options[:auth_token_key].to_sym => options[:auth_token])
+      if options[:http_auth]
+        header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
+        get users_path, {}, "HTTP_AUTHORIZATION" => header
+      else
+        visit users_path(options[:auth_token_key].to_sym => options[:auth_token])
+      end
+
       user
     end
 

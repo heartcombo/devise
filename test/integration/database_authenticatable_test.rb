@@ -265,6 +265,24 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_contain 'Welcome to "sessions/new" view!'
   end
 
+  # Custom strategy invoking custom!
+  test 'custom strategy invoking custom on sign up bevahes as expected' do
+    Warden::Strategies.add(:custom) do
+      def authenticate!
+        custom!([401, {"Content-Type" => "text/html"}, ["Custom strategy"]])
+      end
+    end
+
+    begin
+      Devise.warden_config.default_strategies(:scope => :user).unshift(:custom)
+      sign_in_as_user
+      assert_equal 401, status
+      assert_contain 'Custom strategy'
+    ensure
+      Devise.warden_config.default_strategies(:scope => :user).shift
+    end
+  end
+
   # Access
   test 'render 404 on roles without permission' do
     get '/admin_area/password/new', {}, "action_dispatch.show_exceptions" => true

@@ -23,18 +23,6 @@ module Devise
         false
       end
 
-      # Attempts to authenticate the given scope by running authentication hooks,
-      # but does not redirect in case of failures.
-      def authenticate(scope)
-        warden.authenticate(:scope => scope)
-      end
-
-      # Attempts to authenticate the given scope by running authentication hooks,
-      # redirecting in case of failures.
-      def authenticate!(scope)
-        warden.authenticate!(:scope => scope)
-      end
-
       # Check if the given scope is signed in session, without running
       # authentication hooks.
       def signed_in?(scope)

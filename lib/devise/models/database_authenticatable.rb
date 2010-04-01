@@ -67,10 +67,11 @@ module Devise
           update_attributes(params)
         else
           self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
-          self.attributes = params.except(:password, :password_confirmation)
+          self.attributes = params
           false
         end
 
+        clean_up_passwords
         result
       end
 

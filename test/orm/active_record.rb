@@ -1,25 +1,7 @@
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = Logger.new(nil)
 
-ActiveRecord::Schema.define(:version => 1) do
-  [:users, :admins, :accounts].each do |table|
-    create_table table do |t|
-      t.authenticatable :null => table == :admins
-
-      if table != :admin
-        t.string :username
-        t.confirmable
-        t.recoverable
-        t.rememberable
-        t.trackable
-        t.lockable
-        t.token_authenticatable
-      end
-
-      t.timestamps
-    end
-  end
-end
+ActiveRecord::Migrator.migrate(File.expand_path("../../rails_app/db/migrate/", __FILE__))
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-03-30}
+  s.date = %q{2010-04-01}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -157,6 +157,8 @@ Gem::Specification.new do |s|
      "test/rails_app/config/initializers/devise.rb",
      "test/rails_app/config/initializers/inflections.rb",
      "test/rails_app/config/routes.rb",
+     "test/rails_app/db/migrate/20100401102949_create_tables.rb",
+     "test/rails_app/db/schema.rb",
      "test/routes_test.rb",
      "test/support/assertions.rb",
      "test/support/helpers.rb",
@@ -172,12 +174,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<warden>, ["~> 0.10.2"])
+      s.add_runtime_dependency(%q<warden>, ["~> 0.10.3"])
     else
-      s.add_dependency(%q<warden>, ["~> 0.10.2"])
+      s.add_dependency(%q<warden>, ["~> 0.10.3"])
     end
   else
-    s.add_dependency(%q<warden>, ["~> 0.10.2"])
+    s.add_dependency(%q<warden>, ["~> 0.10.3"])
   end
 end
 

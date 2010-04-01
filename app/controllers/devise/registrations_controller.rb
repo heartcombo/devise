@@ -5,7 +5,7 @@ class Devise::RegistrationsController < ApplicationController
 
   # GET /resource/sign_up
   def new
-    build_resource
+    build_resource({})
     render_with_scope :new
   end
 
@@ -14,10 +14,10 @@ class Devise::RegistrationsController < ApplicationController
     build_resource
 
     if resource.save
-      flash[:"#{resource_name}_signed_up"] = true
       set_flash_message :notice, :signed_up
       sign_in_and_redirect(resource_name, resource)
     else
+      clean_up_passwords(resource)
       render_with_scope :new
     end
   end
@@ -33,6 +33,7 @@ class Devise::RegistrationsController < ApplicationController
       set_flash_message :notice, :updated
       redirect_to after_sign_in_path_for(self.resource)
     else
+      clean_up_passwords(resource)
       render_with_scope :edit
     end
   end

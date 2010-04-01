@@ -63,8 +63,9 @@ module Devise
       end
 
       # Build a devise resource.
-      def build_resource
-        self.resource = resource_class.new(params[resource_name] || {})
+      def build_resource(hash=nil)
+        hash ||= params[resource_name] || {}
+        self.resource = resource_class.new(hash)
       end
 
       # Helper for use in before_filters where no authentication is required.
@@ -91,8 +92,8 @@ module Devise
       # available.
       def set_flash_message(key, kind, now=false)
         flash_hash = now ? flash.now : flash
-        flash_hash[key] = I18n.t(:"#{resource_name}.#{kind}",
-                            :scope => [:devise, controller_name.to_sym], :default => kind)
+        flash_hash[key] = I18n.t(:"#{resource_name}.#{kind}", :resource_name => resource_name,
+                                 :scope => [:devise, controller_name.to_sym], :default => kind)
       end
 
       # Shortcut to set flash.now message. Same rules applied from set_flash_message
@@ -100,6 +101,9 @@ module Devise
         set_flash_message(key, kind, true)
       end
 
+      def clean_up_passwords(object)
+        object.clean_up_passwords if object.respond_to?(:clean_up_passwords)
+      end
     end
   end
 end

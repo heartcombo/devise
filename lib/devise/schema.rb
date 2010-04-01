@@ -21,7 +21,7 @@ module Devise
       end
 
       apply_schema :email,              String, :null => null, :default => default
-      apply_schema :encrypted_password, String, :null => null, :default => default
+      apply_schema :encrypted_password, String, :null => null, :default => default, :limit => 128
       apply_schema :password_salt,      String, :null => null, :default => default
     end
 

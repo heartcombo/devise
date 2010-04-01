@@ -29,7 +29,7 @@ module Devise
   ALL = []
 
   # Authentication ones first
-  ALL.push :authenticatable, :http_authenticatable, :token_authenticatable, :rememberable
+  ALL.push :database_authenticatable, :http_authenticatable, :token_authenticatable, :rememberable
 
   # Misc after
   ALL.push :recoverable, :registerable, :validatable
@@ -42,7 +42,7 @@ module Devise
 
   # Maps controller names to devise modules.
   CONTROLLERS = {
-    :sessions => [:authenticatable, :token_authenticatable],
+    :sessions => [:database_authenticatable, :token_authenticatable],
     :passwords => [:recoverable],
     :confirmations => [:confirmable],
     :registrations => [:registerable],
@@ -52,7 +52,7 @@ module Devise
   # Routes for generating url helpers.
   ROUTES = [:session, :password, :confirmation, :registration, :unlock]
 
-  STRATEGIES  = [:rememberable, :http_authenticatable, :token_authenticatable, :authenticatable]
+  STRATEGIES  = [:rememberable, :http_authenticatable, :token_authenticatable, :database_authenticatable]
 
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 

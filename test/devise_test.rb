@@ -25,7 +25,7 @@ class DeviseTest < ActiveSupport::TestCase
     Devise.configure_warden(config)
 
     assert_equal Devise::FailureApp, config.failure_app
-    assert_equal [:rememberable, :http_authenticatable, :token_authenticatable, :authenticatable], config.default_strategies
+    assert_equal [:rememberable, :http_authenticatable, :token_authenticatable, :database_authenticatable], config.default_strategies
     assert_equal :user, config.default_scope
     assert config.silence_missing_strategies?
   end

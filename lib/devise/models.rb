@@ -1,7 +1,7 @@
 module Devise
   module Models
     autoload :Activatable, 'devise/models/activatable'
-    autoload :Authenticatable, 'devise/models/authenticatable'
+    autoload :DatabaseAuthenticatable, 'devise/models/database_authenticatable'
     autoload :Confirmable, 'devise/models/confirmable'
     autoload :Lockable, 'devise/models/lockable'
     autoload :Recoverable, 'devise/models/recoverable'
@@ -57,7 +57,12 @@ module Devise
     #
     def devise(*modules)
       raise "You need to give at least one Devise module" if modules.empty?
-      options  = modules.extract_options!
+      options = modules.extract_options!
+
+      if modules.delete(:authenticatable)
+        ActiveSupport::Deprecation.warn ":authenticatable as module is deprecated. Please give :database_authenticatable instead.", caller
+        modules << :database_authenticatable
+      end
 
       @devise_modules = Devise::ALL & modules.map(&:to_sym).uniq
 

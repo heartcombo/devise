@@ -1,4 +1,4 @@
-require 'devise/strategies/authenticatable'
+require 'devise/strategies/database_authenticatable'
 
 module Devise
   module Models
@@ -26,7 +26,7 @@ module Devise
     #    User.authenticate('email@test.com', 'password123')  # returns authenticated user or nil
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
-    module Authenticatable
+    module DatabaseAuthenticatable
       def self.included(base)
         base.class_eval do
           extend ClassMethods

@@ -103,6 +103,10 @@ module Devise
       end
     end
 
+    def authenticatable?
+      @authenticatable ||= self.for.any? { |m| m.to_s =~ /authenticatable/ }
+    end
+
     # Create magic predicates for verifying what module is activated by this map.
     # Example:
     #

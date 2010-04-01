@@ -97,7 +97,7 @@ module ActionController::Routing
 
       protected
 
-        def authenticatable(routes, mapping)
+        def database_authenticatable(routes, mapping)
           routes.with_options(:controller => 'sessions', :name_prefix => nil) do |session|
             session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
             session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })

@@ -33,7 +33,7 @@ module Devise
 
       # Check if this is strategy is valid for params authentication.
       def valid_for_params_auth?
-        params_authenticatable? && valid_controller? &&
+        params_authenticatable? && valid_request? &&
           valid_params? && with_authentication_hash(params_auth_hash)
       end
 
@@ -58,12 +58,22 @@ module Devise
         Hash[*keys.zip(decode_credentials).flatten]
       end
 
+      # By default, a request is valid  if the controller is allowed and the VERB is POST.
+      def valid_request?
+        valid_controller? && valid_verb?
+      end
+
       # Check if the controller is valid for params authentication.
       def valid_controller?
         mapping.controllers[:sessions] == params[:controller]
       end
 
       # Check if the params_auth_hash is valid for params authentication.
+      def valid_verb?
+        request.post?
+      end
+
+      # If the request is valid, finally check if params_auth_hash returns a hash.
       def valid_params?
         params_auth_hash.is_a?(Hash)
       end

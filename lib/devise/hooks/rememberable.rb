@@ -32,7 +32,7 @@ module Devise
       protected
 
       def remember_me?
-        @remember_me ||= Devise::TRUE_VALUES.include?(valid_params? && params[scope][:remember_me])
+        valid_params? && Devise::TRUE_VALUES.include?(params_auth_hash[:remember_me])
       end
     end
   end

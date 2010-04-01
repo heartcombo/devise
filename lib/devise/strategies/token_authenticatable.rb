@@ -20,8 +20,8 @@ module Devise
 
     private
 
-      # TokenAuthenticatable params can be given to any controller.
-      def valid_controller?
+      # TokenAuthenticatable request is valid for any controller and any verb.
+      def valid_request?
         true
       end
 

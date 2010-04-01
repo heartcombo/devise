@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-03-26}
+  s.date = %q{2010-04-01}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -70,8 +70,8 @@ Gem::Specification.new do |s|
      "lib/devise/mapping.rb",
      "lib/devise/models.rb",
      "lib/devise/models/activatable.rb",
-     "lib/devise/models/authenticatable.rb",
      "lib/devise/models/confirmable.rb",
+     "lib/devise/models/database_authenticatable.rb",
      "lib/devise/models/http_authenticatable.rb",
      "lib/devise/models/lockable.rb",
      "lib/devise/models/recoverable.rb",
@@ -88,8 +88,8 @@ Gem::Specification.new do |s|
      "lib/devise/rails/routes.rb",
      "lib/devise/rails/warden_compat.rb",
      "lib/devise/schema.rb",
-     "lib/devise/strategies/authenticatable.rb",
      "lib/devise/strategies/base.rb",
+     "lib/devise/strategies/database_authenticatable.rb",
      "lib/devise/strategies/http_authenticatable.rb",
      "lib/devise/strategies/rememberable.rb",
      "lib/devise/strategies/token_authenticatable.rb",
@@ -168,12 +168,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<warden>, ["~> 0.10.2"])
+      s.add_runtime_dependency(%q<warden>, ["~> 0.10.3"])
     else
-      s.add_dependency(%q<warden>, ["~> 0.10.2"])
+      s.add_dependency(%q<warden>, ["~> 0.10.3"])
     end
   else
-    s.add_dependency(%q<warden>, ["~> 0.10.2"])
+    s.add_dependency(%q<warden>, ["~> 0.10.3"])
   end
 end
 

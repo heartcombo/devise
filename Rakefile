@@ -44,10 +44,10 @@ begin
     s.description = "Flexible authentication solution for Rails with Warden"
     s.authors = ['José Valim', 'Carlos Antônio']
     s.files =  FileList["[A-Z]*", "{app,config,generators,lib}/**/*", "rails/init.rb"]
-    s.add_dependency("warden", "~> 0.10.2")
+    s.add_dependency("warden", "~> 0.10.3")
   end
 
   Jeweler::GemcutterTasks.new
 rescue LoadError
-  puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler, or one of its dependencies, is not available. Install it with: gem install jeweler"
 end

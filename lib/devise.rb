@@ -189,7 +189,7 @@ module Devise
   #
   def self.add_module(module_name, options = {})
     ALL << module_name
-    options.assert_valid_keys(:strategy, :model, :controller, :route, :flash, :passive_strategy)
+    options.assert_valid_keys(:strategy, :model, :controller, :route, :flash)
 
     config = {
       :strategy => STRATEGIES,

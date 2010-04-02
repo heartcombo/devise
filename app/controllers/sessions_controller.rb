@@ -19,8 +19,9 @@ class SessionsController < ApplicationController
     if resource = authenticate(resource_name)
       set_flash_message :notice, :signed_in
       sign_in_and_redirect(resource_name, resource, true)
+    elsif [:custom, :redirect].include?(warden.result)
+      throw :warden, :scope => resource_name
     else
-      throw :warden if warden.result == :custom
       set_now_flash_message :alert, (warden.message || :invalid)
       clean_up_passwords(build_resource)
       render_with_scope :new

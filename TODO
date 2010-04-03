@@ -1,2 +1,3 @@
 * Extract Activatable tests from Confirmable
 * Move integration tests to Capybara
+* Better ORM integration

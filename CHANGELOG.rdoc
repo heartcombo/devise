@@ -17,6 +17,7 @@
   * TokenAuthenticatable now works with HTTP Basic Auth.
   * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or none. Setting those values to :none means that you want to handle lock and unlocking by yourself.
   * No need to append ?unauthenticated=true in URLs anymore since Flash was moved to a middleware in Rails 3.
+  * All messages under devise.sessions, except :signed_in and :signed_out, should be moved to devise.failure.
 
 * bug fix
   * Do not allow unlockable strategies based on time to access a controller.
@@ -27,6 +28,7 @@
   * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
   * Devise.orm is deprecated, just require "devise/orm/YOUR_ORM" instead.
   * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options.
+  * All messages under devise.sessions, except :signed_in and :signed_out, should be moved to devise.failure.
 
 == 1.0.5
 

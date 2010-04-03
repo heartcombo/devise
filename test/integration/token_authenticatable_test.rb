@@ -56,7 +56,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'does not authenticate with improper authentication token value' do
-    store_translations :en, :devise => {:sessions => {:invalid_token => 'LOL, that was not a single character correct.'}} do
+    store_translations :en, :devise => {:failure => {:invalid_token => 'LOL, that was not a single character correct.'}} do
       sign_in_as_new_user_with_token(:auth_token => '*** INVALID TOKEN ***')
       assert_equal new_user_session_path, @request.path
 

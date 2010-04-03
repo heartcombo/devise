@@ -88,7 +88,7 @@ class ConfirmationTest < ActionController::IntegrationTest
 
   test 'error message is configurable by resource name' do
     store_translations :en, :devise => {
-      :sessions => { :user => { :unconfirmed => "Not confirmed user" } }
+      :failure => { :user => { :unconfirmed => "Not confirmed user" } }
     } do
       sign_in_as_user(:confirm => false)
       assert_contain 'Not confirmed user'

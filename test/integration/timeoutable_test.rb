@@ -54,7 +54,7 @@ class SessionTimeoutTest < ActionController::IntegrationTest
 
   test 'error message with i18n' do
     store_translations :en, :devise => {
-      :sessions => { :user => { :timeout => 'Session expired!' } }
+      :failure => { :user => { :timeout => 'Session expired!' } }
     } do
       user = sign_in_as_user
 

@@ -29,11 +29,10 @@ module Devise
 
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user".
-  ALL            = []
-  CONTROLLERS    = ActiveSupport::OrderedHash.new
-  ROUTES         = ActiveSupport::OrderedHash.new
-  STRATEGIES     = ActiveSupport::OrderedHash.new
-  FLASH_MESSAGES = [:unauthenticated]
+  ALL         = []
+  CONTROLLERS = ActiveSupport::OrderedHash.new
+  ROUTES      = ActiveSupport::OrderedHash.new
+  STRATEGIES  = ActiveSupport::OrderedHash.new
 
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
@@ -189,11 +188,10 @@ module Devise
   #
   def self.add_module(module_name, options = {})
     ALL << module_name
-    options.assert_valid_keys(:strategy, :model, :controller, :route, :flash)
+    options.assert_valid_keys(:strategy, :model, :controller, :route)
 
     config = {
       :strategy => STRATEGIES,
-      :flash => FLASH_MESSAGES,
       :route => ROUTES,
       :controller => CONTROLLERS
     }

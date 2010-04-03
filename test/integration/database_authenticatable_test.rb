@@ -134,7 +134,7 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    store_translations :en, :devise => { :sessions => { :admin => { :invalid => "Invalid credentials" } } } do
+    store_translations :en, :devise => { :failure => { :admin => { :invalid => "Invalid credentials" } } } do
       sign_in_as_admin do
         fill_in 'password', :with => 'abcdef'
       end

@@ -93,7 +93,7 @@ class LockTest < ActionController::IntegrationTest
 
   test 'error message is configurable by resource name' do
     store_translations :en, :devise => {
-      :sessions => { :user => { :locked => "You are locked!" } }
+      :failure => { :user => { :locked => "You are locked!" } }
     } do
       user = sign_in_as_user(:locked => true)
       assert_contain 'You are locked!'

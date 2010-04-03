@@ -4,9 +4,6 @@ class Devise::SessionsController < ApplicationController
 
   # GET /resource/sign_in
   def new
-    Devise::FLASH_MESSAGES.each do |message|
-      set_now_flash_message :alert, message if params[message] == "true"
-    end unless flash[:notice]
     clean_up_passwords(build_resource)
     render_with_scope :new
   end

@@ -6,14 +6,14 @@ class TestHelpersTest < ActionController::TestCase
 
   test "redirects if attempting to access a page unauthenticated" do
     get :index
-    assert_redirected_to "/users/sign_in?unauthenticated=true"
+    assert_redirected_to new_user_session_path
   end
 
   test "redirects if attempting to access a page with a unconfirmed account" do
     swap Devise, :confirm_within => 0 do
       sign_in create_user
       get :index
-      assert_redirected_to "/users/sign_in?unconfirmed=true"
+      assert_redirected_to new_user_session_path
     end
   end
 
@@ -35,7 +35,7 @@ class TestHelpersTest < ActionController::TestCase
 
     sign_out user
     get :index
-    assert_redirected_to "/users/sign_in?unauthenticated=true"
+    assert_redirected_to new_user_session_path
   end
 
   test "allows to sign in with different users" do

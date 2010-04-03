@@ -50,7 +50,7 @@ class DatabaseAuthenticationSanityTest < ActionController::IntegrationTest
   test 'not signed in as admin should not be able to access admins actions' do
     get admins_path
 
-    assert_redirected_to new_admin_session_path(:unauthenticated => true)
+    assert_redirected_to new_admin_session_path
     assert_not warden.authenticated?(:admin)
   end
 
@@ -60,7 +60,7 @@ class DatabaseAuthenticationSanityTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
 
     get admins_path
-    assert_redirected_to new_admin_session_path(:unauthenticated => true)
+    assert_redirected_to new_admin_session_path
   end
 
   test 'signed in as admin should be able to access admin actions' do
@@ -146,7 +146,7 @@ class AuthenticationTest < ActionController::IntegrationTest
   test 'redirect from warden shows sign in or sign up message' do
     get admins_path
 
-    warden_path = new_admin_session_path(:unauthenticated => true)
+    warden_path = new_admin_session_path
     assert_redirected_to warden_path
 
     get warden_path
@@ -157,35 +157,35 @@ class AuthenticationTest < ActionController::IntegrationTest
     sign_in_as_user
 
     assert_template 'home/index'
-    assert_nil session[:"user.return_to"]
+    assert_nil session[:"user_return_to"]
   end
 
   test 'redirect to requested url after sign in' do
     get users_path
-    assert_redirected_to new_user_session_path(:unauthenticated => true)
-    assert_equal users_path, session[:"user.return_to"]
+    assert_redirected_to new_user_session_path
+    assert_equal users_path, session[:"user_return_to"]
 
     follow_redirect!
     sign_in_as_user :visit => false
 
     assert_template 'users/index'
-    assert_nil session[:"user.return_to"]
+    assert_nil session[:"user_return_to"]
   end
 
   test 'redirect to last requested url overwriting the stored return_to option' do
     get expire_user_path(create_user)
-    assert_redirected_to new_user_session_path(:unauthenticated => true)
-    assert_equal expire_user_path(create_user), session[:"user.return_to"]
+    assert_redirected_to new_user_session_path
+    assert_equal expire_user_path(create_user), session[:"user_return_to"]
 
     get users_path
-    assert_redirected_to new_user_session_path(:unauthenticated => true)
-    assert_equal users_path, session[:"user.return_to"]
+    assert_redirected_to new_user_session_path
+    assert_equal users_path, session[:"user_return_to"]
 
     follow_redirect!
     sign_in_as_user :visit => false
 
     assert_template 'users/index'
-    assert_nil session[:"user.return_to"]
+    assert_nil session[:"user_return_to"]
   end
 
   test 'redirect to configured home path for a given scope after sign in' do
@@ -199,7 +199,7 @@ class AuthenticationTest < ActionController::IntegrationTest
 
     User.destroy_all
     get '/users'
-    assert_redirected_to '/users/sign_in?unauthenticated=true'
+    assert_redirected_to new_user_session_path
   end
 
   test 'allows session to be set by a given scope' do

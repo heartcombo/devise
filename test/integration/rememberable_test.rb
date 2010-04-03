@@ -47,7 +47,7 @@ class RememberMeTest < ActionController::IntegrationTest
     user = create_user_and_remember('add')
     get users_path
     assert_not warden.authenticated?(:user)
-    assert_redirected_to new_user_session_path(:unauthenticated => true)
+    assert_redirected_to new_user_session_path
   end
 
   test 'do not remember with token expired' do
@@ -55,7 +55,7 @@ class RememberMeTest < ActionController::IntegrationTest
     swap Devise, :remember_for => 0 do
       get users_path
       assert_not warden.authenticated?(:user)
-      assert_redirected_to new_user_session_path(:unauthenticated => true)
+      assert_redirected_to new_user_session_path
     end
   end
 

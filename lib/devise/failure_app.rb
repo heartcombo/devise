@@ -10,6 +10,8 @@ module Devise
     include ActionController::UrlFor
     include ActionController::Redirecting
 
+    delegate :flash, :to => :request
+
     def self.call(env)
       action(:respond).call(env)
     end
@@ -20,31 +22,44 @@ module Devise
 
     def respond
       if http_auth?
-        self.status = 401
-        self.headers["WWW-Authenticate"] = %(Basic realm=#{Devise.http_authentication_realm.inspect})
-        self.content_type = request.format.to_s
-        self.response_body = http_auth_body
-      elsif action = warden_options[:recall]
-        default_message :invalid
-        env["PATH_INFO"] = attempted_path
-        params.merge!(query_string_params)
-        self.response = recall_controller.action(action).call(env)
+        http_auth
+      elsif warden_options[:recall]
+        recall
       else
-        scope = warden_options[:scope]
-        store_location!(scope)
-        redirect_to send(:"new_#{scope}_session_path", query_string_params)
+        redirect
       end
+    end
+
+    def http_auth
+      self.status = 401
+      self.headers["WWW-Authenticate"] = %(Basic realm=#{Devise.http_authentication_realm.inspect})
+      self.content_type = request.format.to_s
+      self.response_body = http_auth_body
+    end
+
+    def recall
+      env["PATH_INFO"]  = attempted_path
+      flash.now[:alert] = i18n_message(:invalid)
+      self.response = recall_controller.action(warden_options[:recall]).call(env)
+    end
+
+    def redirect
+      store_location!
+      flash[:alert] = i18n_message unless flash[:notice]
+      redirect_to send(:"new_#{scope}_session_path")
     end
 
   protected
 
-    def message
-      @message ||= warden.message || warden_options[:message] || default_message
-    end
+    def i18n_message(default = nil)
+      message = warden.message || warden_options[:message] || default || :unauthenticated
 
-    def default_message(message=nil)
-      @default_message = message if message
-      @default_message ||= :unauthenticated
+      if message.is_a?(Symbol)
+        I18n.t(:"#{scope}.#{message}", :resource_name => scope,
+               :scope => [:devise, :sessions], :default => [message, message.to_s])
+      else
+        message.to_s
+      end
     end
 
     def http_auth?
@@ -52,26 +67,8 @@ module Devise
     end
 
     def http_auth_body
-      body = if message.is_a?(Symbol)
-        I18n.t "devise.sessions.#{message}", :default => message.to_s
-      else
-        message.to_s
-      end
-
       method = :"to_#{request.format.to_sym}"
-      {}.respond_to?(method) ? { :error => body }.send(method) : body
-    end
-
-    # Build the proper query string based on the given message.
-    def query_string_params
-      case message
-      when Symbol
-        { message => "true" }
-      when String
-        { :message => message }
-      else
-        {}
-      end
+      {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message
     end
 
     def recall_controller
@@ -86,6 +83,10 @@ module Devise
       env['warden.options']
     end
 
+    def scope
+      @scope ||= warden_options[:scope]
+    end
+
     def attempted_path
       warden_options[:attempted_path]
     end
@@ -94,8 +95,8 @@ module Devise
     # scoped session provided by warden here, since the user is not authenticated
     # yet, but we still need to store the uri based on scope, so different scopes
     # would never use the same uri to redirect.
-    def store_location!(scope)
-      session[:"#{scope}.return_to"] = attempted_path if request && request.get?
+    def store_location!
+      session[:"#{scope}_return_to"] = attempted_path if request && request.get?
     end
   end
 end

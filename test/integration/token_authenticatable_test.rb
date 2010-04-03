@@ -47,7 +47,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
   test 'does not authenticate with improper authentication token key' do
     swap Devise, :token_authentication_key => :donald_duck_token do
       sign_in_as_new_user_with_token(:auth_token_key => :secret_token)
-      assert_current_path new_user_session_path(:unauthenticated => true)
+      assert_equal new_user_session_path, @request.path
 
       assert_contain 'You need to sign in or sign up before continuing'
       assert_contain 'Sign in'
@@ -58,7 +58,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
   test 'does not authenticate with improper authentication token value' do
     store_translations :en, :devise => {:sessions => {:invalid_token => 'LOL, that was not a single character correct.'}} do
       sign_in_as_new_user_with_token(:auth_token => '*** INVALID TOKEN ***')
-      assert_current_path new_user_session_path(:invalid_token => true)
+      assert_equal new_user_session_path, @request.path
 
       assert_contain 'LOL, that was not a single character correct.'
       assert_contain 'Sign in'

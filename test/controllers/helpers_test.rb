@@ -121,20 +121,20 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
   test 'stored location for returns the location for a given scope' do
     assert_nil @controller.stored_location_for(:user)
-    @controller.session[:"user.return_to"] = "/foo.bar"
+    @controller.session[:"user_return_to"] = "/foo.bar"
     assert_equal "/foo.bar", @controller.stored_location_for(:user)
   end
 
   test 'stored location for accepts a resource as argument' do
     assert_nil @controller.stored_location_for(:user)
-    @controller.session[:"user.return_to"] = "/foo.bar"
+    @controller.session[:"user_return_to"] = "/foo.bar"
     assert_equal "/foo.bar", @controller.stored_location_for(User.new)
   end
 
   test 'stored location cleans information after reading' do
-    @controller.session[:"user.return_to"] = "/foo.bar"
+    @controller.session[:"user_return_to"] = "/foo.bar"
     assert_equal "/foo.bar", @controller.stored_location_for(:user)
-    assert_nil @controller.session[:"user.return_to"]
+    assert_nil @controller.session[:"user_return_to"]
   end
 
   test 'after sign in path defaults to root path if none by was specified for the given scope' do
@@ -152,7 +152,7 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
   test 'sign in and redirect uses the stored location' do
     user = User.new
-    @controller.session[:"user.return_to"] = "/foo.bar"
+    @controller.session[:"user_return_to"] = "/foo.bar"
     @mock_warden.expects(:user).with(:user).returns(nil)
     @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
     @controller.expects(:redirect_to).with("/foo.bar")

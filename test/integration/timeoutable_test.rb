@@ -32,7 +32,7 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     assert_not_nil last_request_at
 
     get users_path
-    assert_redirected_to new_user_session_path(:timeout => true)
+    assert_redirected_to new_user_session_path
     assert_not warden.authenticated?(:user)
   end
 
@@ -47,7 +47,7 @@ class SessionTimeoutTest < ActionController::IntegrationTest
 
       get expire_user_path(user)
       get users_path
-      assert_redirected_to new_user_session_path(:timeout => true)
+      assert_redirected_to new_user_session_path
       assert_not warden.authenticated?(:user)
     end
   end

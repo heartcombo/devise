@@ -90,15 +90,9 @@ module Devise
       #
       # Please refer to README or en.yml locale file to check what messages are
       # available.
-      def set_flash_message(key, kind, now=false)
-        flash_hash = now ? flash.now : flash
-        flash_hash[key] = I18n.t(:"#{resource_name}.#{kind}", :resource_name => resource_name,
-                                 :scope => [:devise, controller_name.to_sym], :default => kind)
-      end
-
-      # Shortcut to set flash.now message. Same rules applied from set_flash_message
-      def set_now_flash_message(key, kind)
-        set_flash_message(key, kind, true)
+      def set_flash_message(key, kind)
+        flash[key] = I18n.t(:"#{resource_name}.#{kind}", :resource_name => resource_name,
+                            :scope => [:devise, controller_name.to_sym], :default => kind)
       end
 
       def clean_up_passwords(object)

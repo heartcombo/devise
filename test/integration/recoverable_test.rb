@@ -134,7 +134,7 @@ class PasswordTest < ActionController::IntegrationTest
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token
 
-    assert_current_path new_user_session_path(:unconfirmed => true)
+    assert_equal new_user_session_path, @request.path
     assert !warden.authenticated?(:user)
   end
 

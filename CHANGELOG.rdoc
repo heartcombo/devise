@@ -1,6 +1,9 @@
+== 1.0.6
+
 * bug fix
   * Do not allow unlockable strategies based on time to access a controller.
   * Do not send unlockable email several times.
+  * Allow controller to upstram custom! failures to Warden.
 
 == 1.0.5
 

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{devise}
-  s.version = "1.0.5"
+  s.version = "1.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-04-01}
+  s.date = %q{2010-04-03}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -113,6 +113,7 @@ Gem::Specification.new do |s|
      "test/integration/confirmable_test.rb",
      "test/integration/http_authenticatable_test.rb",
      "test/integration/lockable_test.rb",
+     "test/integration/rack_middleware_test.rb",
      "test/integration/recoverable_test.rb",
      "test/integration/registerable_test.rb",
      "test/integration/rememberable_test.rb",

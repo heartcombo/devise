@@ -36,7 +36,7 @@ Install warden gem if you don't have it installed:
 
 Install devise gem:
 
-  sudo gem install devise --version=1.0.1
+  sudo gem install devise --version=1.0.6
 
 Configure warden and devise gems inside your app:
 

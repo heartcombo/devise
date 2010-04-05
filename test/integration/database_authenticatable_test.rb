@@ -284,15 +284,15 @@ class AuthenticationTest < ActionController::IntegrationTest
   end
 
   # Access
-  test 'render 404 on roles without permission' do
-    get '/admin_area/password/new', {}, "action_dispatch.show_exceptions" => true
-    assert_response :not_found
-    assert_not_contain 'Send me reset password instructions'
+  test 'render 404 on roles without routes' do
+    assert_raise ActionController::RoutingError do
+      get '/admin_area/password/new'
+    end
   end
 
   test 'render 404 on roles without mapping' do
-    get '/sign_in', {}, "action_dispatch.show_exceptions" => true
-    assert_response :not_found
-    assert_not_contain 'Sign in'
+    assert_raise AbstractController::ActionNotFound do
+      get '/sign_in'
+    end
   end
 end

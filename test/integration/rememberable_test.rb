@@ -12,7 +12,7 @@ class RememberMeTest < ActionController::IntegrationTest
   end
 
   def generate_signed_cookie(raw_cookie)
-    request = ActionDispatch::Request.new({})
+    request = ActionDispatch::TestRequest.new
     request.cookie_jar.signed['raw_cookie'] = raw_cookie
     request.cookie_jar['raw_cookie']
   end

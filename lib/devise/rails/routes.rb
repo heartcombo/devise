@@ -119,25 +119,25 @@ module ActionDispatch::Routing
  
       def devise_password(mapping, controllers)
         scope mapping.path, :name_prefix => mapping.name do
-          resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password], :controller => controllers[:passwords]
+          resource :password, :only => [:new, :create, :edit, :update], :path => mapping.path_names[:password], :controller => controllers[:passwords]
         end
       end
  
       def devise_confirmation(mapping, controllers)
         scope mapping.path, :name_prefix => mapping.name do
-          resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
+          resource :confirmation, :only => [:new, :create, :show], :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
         end
       end
  
       def devise_unlock(mapping, controllers)
         scope mapping.path, :name_prefix => mapping.name do
-          resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock], :controller => controllers[:unlocks]
+          resource :unlock, :only => [:new, :create, :show], :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
         end
       end
 
       def devise_registration(mapping, controllers)
-        scope mapping.path[1..-1], :name_prefix => "#{mapping.name}_registration" do
-          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => "",
+        scope mapping.path[1..-1], :name_prefix => mapping.name do
+          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => "",
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end
       end

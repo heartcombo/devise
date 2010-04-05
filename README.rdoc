@@ -36,7 +36,7 @@ Devise master branch now supports Rails 3 and is NOT backward compatible. You ca
 
   sudo gem install devise --version=1.1.rc0
 
-However, if you are using Rails edge, from the git repository, you also need to use Devise from the git repository. After you install Devise and add it to your gemfile, you need to run the generator:
+After you install Devise and add it to your Gemfile, you need to run the generator:
 
   rails generate devise_install
 
@@ -44,11 +44,13 @@ And you're ready to go. The generator will install an initializer which describe
 
   http://rdoc.info/projects/plataformatec/devise
 
+The documentation above is for Rails 3. If you want to consult the documentation for Rails 2.3, you need to start `gem server` in your own machine.
+
 == Rails 2.3
 
 If you want to use the Rails 2.3.x version, you should do:
 
-  sudo gem install devise --version=1.0.4
+  sudo gem install devise --version=1.0.6
 
 Or checkout from the v1.0 branch:
 

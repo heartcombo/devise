@@ -14,7 +14,6 @@ Devise.with_options :model => true do |d|
   d.add_module :validatable
 
   # The ones which can sign out after
-  d.add_module :activatable
   d.add_module :confirmable,  :controller => :confirmations, :route => :confirmation
   d.add_module :lockable,     :controller => :unlocks,       :route => :unlock
   d.add_module :timeoutable

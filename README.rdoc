@@ -19,7 +19,6 @@ Right now it's composed of 11 modules:
 * Timeoutable: expires sessions that have no activity in a specified period of time.
 * Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
-* Activatable: use this module if you need to activate accounts by means other than confirmation.
 
 == Examples
 

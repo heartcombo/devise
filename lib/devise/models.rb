@@ -1,3 +1,5 @@
+require 'devise/models/authenticatable'
+
 module Devise
   module Models
     # Creates configuration values for Devise and for the given module.
@@ -45,12 +47,16 @@ module Devise
     # for a complete description on those values.
     #
     def devise(*modules)
-      raise "You need to give at least one Devise module" if modules.empty?
+      include Devise::Models::Authenticatable
       options = modules.extract_options!
 
       if modules.delete(:authenticatable)
         ActiveSupport::Deprecation.warn ":authenticatable as module is deprecated. Please give :database_authenticatable instead.", caller
         modules << :database_authenticatable
+      end
+
+      if modules.delete(:activatable)
+        ActiveSupport::Deprecation.warn ":activatable as module is deprecated. It's included in your model by default.", caller
       end
 
       if modules.delete(:http_authenticatable)

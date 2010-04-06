@@ -1,5 +1,6 @@
 require 'devise/strategies/rememberable'
 require 'devise/hooks/rememberable'
+require 'devise/hooks/forgetable'
 
 module Devise
   module Models

@@ -7,6 +7,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "should respect maximum attempts configuration" do
     user = create_user
+    user.confirm!
     swap Devise, :maximum_attempts => 2 do
       3.times { user.valid_for_authentication?{ false } }
       assert user.reload.access_locked?
@@ -15,6 +16,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "should clear failed_attempts on successfull validation" do
     user = create_user
+    user.confirm!
     user.valid_for_authentication?{ false }
     assert_equal 1, user.reload.failed_attempts
     user.valid_for_authentication?{ true }
@@ -23,6 +25,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "should not touch failed_attempts if lock_strategy is none" do
     user = create_user
+    user.confirm!
     swap Devise, :lock_strategy => :none, :maximum_attempts => 2 do
       3.times { user.valid_for_authentication?{ false } }
       assert !user.access_locked?

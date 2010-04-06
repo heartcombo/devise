@@ -14,18 +14,6 @@ module Devise
 
     private
 
-      # Simply invokes valid_for_authentication? with the given block and deal with the result.
-      def validate(resource, &block)
-        result = resource && resource.valid_for_authentication?(&block)
-
-        case result
-        when Symbol, String
-          fail!(result)
-        else
-          result
-        end 
-      end
-
       # Check if this is strategy is valid for http authentication.
       def valid_for_http_auth?
         http_authenticatable? && request.authorization &&

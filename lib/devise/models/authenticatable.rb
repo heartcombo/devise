@@ -1,8 +1,10 @@
+require 'devise/hooks/activatable'
+
 module Devise
   module Models
     # Authenticable module. Holds common settings for authentication.
     #
-    # Configuration:
+    # == Configuration:
     #
     # You can overwrite configuration values by setting in globally in Devise,
     # using devise method or overwriting the respective instance method.
@@ -15,13 +17,47 @@ module Devise
     #   params_authenticatable: if this model allows authentication through request params. By default true.
     #   It also accepts an array specifying the strategies that should allow params authentication.
     #
+    # == Active?
+    #
+    # Before authenticating an user and in each request, Devise checks if your model is active by
+    # calling model.active?. This method is overwriten by other devise modules. For instance,
+    # :confirmable overwrites .active? to only return true if your model was confirmed.
+    #
+    # You overwrite this method yourself, but if you do, don't forget to call super:
+    #
+    #   def active?
+    #     super && special_condition_is_valid?
+    #   end
+    #
+    # Whenever active? returns false, Devise asks the reason why your model is inactive using
+    # the inactive_message method. You can overwrite it as well:
+    #
+    #   def inactive_message
+    #     special_condition_is_valid? ? super : :special_condition_is_not_valid
+    #   end
+    #
     module Authenticatable
       extend ActiveSupport::Concern
 
-      # Yields the given block. This method is overwritten by other modules to provide
-      # hooks around authentication.
+      # Check if the current object is valid for authentication. This method and find_for_authentication
+      # are the methods used in a Warden::Strategy to check if a model should be signed in or not.
+      #
+      # However, you should not need to overwrite this method, you should overwrite active? and
+      # inactive_message instead.
       def valid_for_authentication?
-        yield
+        if active?
+          block_given? ? yield : true
+        else
+          inactive_message
+        end
+      end
+
+      def active?
+        true
+      end
+
+      def inactive_message
+        :inactive
       end
 
       module ClassMethods

@@ -1,19 +1,9 @@
-# Before logout hook to forget the user in the given scope, if it responds
-# to forget_me! Also clear remember token to ensure the user won't be
-# remembered again. Notice that we forget the user unless the record is frozen.
-# This avoids forgetting deleted users.
-Warden::Manager.before_logout do |record, warden, scope|
-  if record.respond_to?(:forget_me!)
-    record.forget_me! unless record.frozen?
-    warden.cookies.delete "remember_#{scope}_token"
-  end
-end
-
 module Devise
   module Hooks
     # Overwrite success! in authentication strategies allowing users to be remembered.
-    # We choose to implement this as an strategy hook instead of a Devise hook to avoid users
-    # giving a remember_me access in strategies that should not create remember me tokens.
+    # We choose to implement this as an strategy hook instead of a warden hook to allow a specific
+    # strategy (like token authenticatable or facebook authenticatable) to turn off remember_me?
+    # cookies.
     module Rememberable #:nodoc:
       def success!(resource)
         super
@@ -29,7 +19,7 @@ module Devise
         end
       end
 
-      protected
+    protected
 
       def remember_me?
         valid_params? && Devise::TRUE_VALUES.include?(params_auth_hash[:remember_me])

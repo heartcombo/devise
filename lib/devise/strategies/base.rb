@@ -11,8 +11,22 @@ module Devise
         end
       end
 
+    protected
+
       def succeeded?
         @result == :success
+      end
+
+      # Simply invokes valid_for_authentication? with the given block and deal with the result.
+      def validate(resource, &block)
+        result = resource && resource.valid_for_authentication?(&block)
+
+        case result
+        when Symbol, String
+          fail!(result)
+        else
+          result
+        end 
       end
     end
   end

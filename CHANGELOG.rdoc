@@ -17,6 +17,7 @@
   * TokenAuthenticatable now works with HTTP Basic Auth.
   * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or none. Setting those values to :none means that you want to handle lock and unlocking by yourself.
   * No need to append ?unauthenticated=true in URLs anymore since Flash was moved to a middleware in Rails 3.
+  * :activatable is included by default in your models.
 
 * deprecations
   * Rails 3 compatible only.

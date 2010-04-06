@@ -1,4 +1,3 @@
-require 'devise/models/authenticatable'
 require 'devise/strategies/database_authenticatable'
 
 module Devise
@@ -25,8 +24,7 @@ module Devise
     #    User.find(1).valid_password?('password123')         # returns true/false
     #
     module DatabaseAuthenticatable
-      extend  ActiveSupport::Concern
-      include Devise::Models::Authenticatable
+      extend ActiveSupport::Concern
 
       included do
         attr_reader :password, :current_password

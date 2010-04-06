@@ -1,8 +1,5 @@
-require 'devise/models/activatable'
-
 module Devise
   module Models
-
     # Handles blocking a user access after a certain number of attempts.
     # Lockable accepts two different strategies to unlock a user after it's
     # blocked: email and time. The former will send an email to the user when
@@ -20,7 +17,6 @@ module Devise
     #
     module Lockable
       extend  ActiveSupport::Concern
-      include Devise::Models::Activatable
 
       delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, :to => "self.class"
 
@@ -77,15 +73,15 @@ module Devise
       # for verifying whether an user is allowed to sign in or not. If the user
       # is locked, it should never be allowed.
       def valid_for_authentication?
-        return :locked if access_locked?
-        return super   unless persisted?
-        return super   unless lock_strategy_enabled?(:failed_attempts)
+        return super unless persisted? && lock_strategy_enabled?(:failed_attempts)
 
-        if result = super
+        case (result = super)
+        when Symbol
+          return result
+        when TrueClass
           self.failed_attempts = 0
-        else
+        when FalseClass
           self.failed_attempts += 1
-
           if attempts_exceeded?
             lock_access!
             return :locked

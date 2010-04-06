@@ -16,8 +16,7 @@ module Devise
     # +token_authentication_key+ - Defines name of the authentication token params key. E.g. /users/sign_in?some_key=...
     #
     module TokenAuthenticatable
-      extend  ActiveSupport::Concern
-      include Devise::Models::Authenticatable
+      extend ActiveSupport::Concern
 
       # Generate new authentication token (a.k.a. "single access token").
       def reset_authentication_token

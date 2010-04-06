@@ -1,5 +1,3 @@
-require 'devise/models/authenticatable'
-
 module Devise
   module Models
     # Creates configuration values for Devise and for the given module.
@@ -106,3 +104,5 @@ module Devise
     end
   end
 end
+
+require 'devise/models/authenticatable'

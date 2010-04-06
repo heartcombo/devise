@@ -1,6 +1,6 @@
 <h2>Resend confirmation instructions</h2>
 
-<%= form_for(resource_name, resource, :url => confirmation_path(resource_name)) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name)) do |f| %>
   <%= f.error_messages %>
 
   <p><%= f.label :email %></p>

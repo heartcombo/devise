@@ -75,6 +75,9 @@ module Devise
         result
       end
 
+      def after_database_authentication
+      end
+
     protected
 
       # Digests the password using the configured encryptor.
@@ -90,8 +93,8 @@ module Devise
           @encryptor_class ||= ::Devise::Encryptors.const_get(encryptor.to_s.classify)
         end
 
-        def find_for_database_authentication(*args)
-          find_for_authentication(*args)
+        def find_for_database_authentication(conditions)
+          find_for_authentication(conditions)
         end
       end
     end

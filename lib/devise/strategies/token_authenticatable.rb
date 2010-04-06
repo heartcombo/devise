@@ -11,7 +11,8 @@ module Devise
     # you can pass anything and it will simply be ignored.
     class TokenAuthenticatable < Authenticatable
       def authenticate!
-        if resource = mapping.to.authenticate_with_token(authentication_hash)
+        if resource = mapping.to.find_for_token_authentication(authentication_hash)
+          resource.after_token_authentication
           success!(resource)
         else
           fail(:invalid_token)

@@ -6,7 +6,9 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
       t.recoverable
       t.rememberable
       t.trackable
+
       # t.lockable :lock_strategy => :<%= Devise.lock_strategy %>, :unlock_strategy => :<%= Devise.unlock_strategy %>
+      # t.token_authenticatable
 
       t.timestamps
     end

@@ -63,7 +63,7 @@ module Devise
     end
 
     def http_auth?
-      request.authorization
+      env["devise.authentication_method"] == :http && request.authorization
     end
 
     def http_auth_body

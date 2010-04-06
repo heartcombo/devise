@@ -22,8 +22,11 @@ class FailureTest < ActiveSupport::TestCase
   end
 
   def call_failure_with_http(env_params={})
-    env = { "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("foo:bar")}" }
-    call_failure(env_params.merge!(env))
+    env = {
+      "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("foo:bar")}",
+      "devise.authentication_method" => :http
+    }
+    call_failure(env.merge!(env_params))
   end
 
   context 'When redirecting' do
@@ -67,6 +70,11 @@ class FailureTest < ActiveSupport::TestCase
     test 'return 401 status' do
       call_failure_with_http
       assert_equal 401, @response.first
+    end
+
+    test 'does trigger http authentication if devise.authentication_method is not :http' do
+      call_failure_with_http("devise.authentication_method" => :params)
+      assert_equal 302, @response.first
     end
 
     test 'return WWW-authenticate headers' do

@@ -28,13 +28,14 @@ module Devise
 
       # Check if this is strategy is valid for http authentication.
       def valid_for_http_auth?
-        http_authenticatable? && request.authorization && with_authentication_hash(http_auth_hash)
+        http_authenticatable? && request.authorization &&
+          with_authentication_hash(http_auth_hash) && (env["devise.authentication_method"] = :http)
       end
 
       # Check if this is strategy is valid for params authentication.
       def valid_for_params_auth?
-        params_authenticatable? && valid_request? &&
-          valid_params? && with_authentication_hash(params_auth_hash)
+        params_authenticatable? && valid_request? && valid_params? &&
+          with_authentication_hash(params_auth_hash) && (env["devise.authentication_method"] = :params)
       end
 
       # Check if the model accepts this strategy as http authenticatable.

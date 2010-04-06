@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-04-03}
+  s.date = %q{2010-04-06}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -57,12 +57,12 @@ Gem::Specification.new do |s|
      "lib/devise/encryptors/sha512.rb",
      "lib/devise/failure_app.rb",
      "lib/devise/hooks/activatable.rb",
+     "lib/devise/hooks/forgetable.rb",
      "lib/devise/hooks/rememberable.rb",
      "lib/devise/hooks/timeoutable.rb",
      "lib/devise/hooks/trackable.rb",
      "lib/devise/mapping.rb",
      "lib/devise/models.rb",
-     "lib/devise/models/activatable.rb",
      "lib/devise/models/authenticatable.rb",
      "lib/devise/models/confirmable.rb",
      "lib/devise/models/database_authenticatable.rb",
@@ -156,6 +156,7 @@ Gem::Specification.new do |s|
      "test/rails_app/config/initializers/backtrace_silencers.rb",
      "test/rails_app/config/initializers/devise.rb",
      "test/rails_app/config/initializers/inflections.rb",
+     "test/rails_app/config/initializers/secret_token.rb",
      "test/rails_app/config/routes.rb",
      "test/rails_app/db/migrate/20100401102949_create_tables.rb",
      "test/rails_app/db/schema.rb",

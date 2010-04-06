@@ -44,7 +44,9 @@ And you're ready to go. The generator will install an initializer which describe
 
   http://rdoc.info/projects/plataformatec/devise
 
-The documentation above is for Rails 3. If you want to consult the documentation for Rails 2.3, you need to start `gem server` in your own machine.
+The documentation above is for Rails 3. If you want to consult the documentation for Rails 2.3, you need to start `gem server` in your own machine. Finally, another good resource for information, is the wiki:
+
+  http://wiki.github.com/plataformatec/devise
 
 == Rails 2.3
 
@@ -287,7 +289,7 @@ http://groups.google.com/group/plataformatec-devise
 
 See the wiki for additional documentation and support.
 
-http://wiki.github.com/plataformatec/devise/
+http://wiki.github.com/plataformatec/devise
 
 == License
 

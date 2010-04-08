@@ -66,13 +66,13 @@ Devise must be set up within the model (or models) you want to use. Devise route
 We're assuming here you want a User model with some Devise modules, as outlined below:
 
   class User < ActiveRecord::Base
-    devise :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
+    devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
   end
 
 After you choose which modules to use, you need to set up your migrations. Luckily, Devise has some helpers to save you from this boring work:
 
   create_table :users do |t|
-    t.authenticatable
+    t.database_authenticatable
     t.confirmable
     t.recoverable
     t.rememberable
@@ -130,13 +130,13 @@ Devise allows you to set up as many roles as you want. For example, you may have
 
   # Create a migration with the required fields
   create_table :admins do |t|
-    t.authenticatable
+    t.database_authenticatable
     t.lockable
     t.trackable
   end
 
   # Inside your Admin model
-  devise :authenticatable, :trackable, :timeoutable, :lockable
+  devise :database_authenticatable, :trackable, :timeoutable, :lockable
 
   # Inside your routes
   devise_for :admin
@@ -165,9 +165,9 @@ This will create a model named "Model" configured with default Devise modules an
 
 == Model configuration
 
-The devise method in your models also accepts some options to configure its modules. For example, you can choose which encryptor to use in authenticatable:
+The devise method in your models also accepts some options to configure its modules. For example, you can choose which encryptor to use in database_authenticatable:
 
-  devise :authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
+  devise :database_authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
 
 Besides :encryptor, you can define :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the devise_install generator described above.
 

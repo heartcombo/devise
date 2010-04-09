@@ -1,4 +1,3 @@
-
 ===============================================================================
 
 Some setup you must do manually if you haven't yet:
@@ -15,5 +14,10 @@ Some setup you must do manually if you haven't yet:
      For example:
 
        root :to => "home#index"
+
+  3. Ensure you have flash messages in your application layout. For example:
+
+       <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
 
 ===============================================================================

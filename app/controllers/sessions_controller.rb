@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   # GET /resource/sign_in
   def new
-    unless resource_just_signed_up?
+    unless flash[:notice].present?
       Devise::FLASH_MESSAGES.each do |message|
         set_now_flash_message :alert, message if params.try(:[], message) == "true"
       end
@@ -35,10 +35,6 @@ class SessionsController < ApplicationController
   end
 
   protected
-
-    def resource_just_signed_up?
-      flash[:"#{resource_name}_signed_up"]
-    end
 
     def clean_up_passwords(object)
       object.clean_up_passwords if object.respond_to?(:clean_up_passwords)

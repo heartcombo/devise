@@ -171,30 +171,32 @@ The devise method in your models also accepts some options to configure its modu
 
 Besides :encryptor, you can define :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the devise_install generator described above.
 
-== Configuring controllers and views
+== Configuring views
 
-We built Devise to help you quickly develop an application that uses authentication. We don't want to be in your way when you need to customize it.
+We built Devise to help you quickly develop an application that uses authentication. However, we don't want to be in your way when you need to customize it.
 
-Since Devise is an engine, all its default views are packaged inside the gem. The default views will get you started but you may want to customize them. Devise has a generator to copy the default views to your application. After they've been copied to your application, you can make changes as required:
+Since Devise is an engine, all its views are packaged inside the gem. These views will help you get started, but after sometime you may want to change them. If this is the case, you just need to invoke the following generator, and it will copy all views to your application:
 
   rails generate devise_views
 
-If you have more than one role in your application (such as "user" and "admin"), you will notice that Devise uses the same views for all roles. You may need different views for each role. Devise offers an easy way to customize views for each role. Just set config.scoped_views to "true" inside "config/initializers/devise.rb".
+However, if you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
 
-After doing so you will be able to have views based on the scope like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will use the default view at "devise/sessions/new".
+After doing so, you will be able to have views based on the role like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will use the default view at "devise/sessions/new".
 
-Finally, if the customization at the views level is not enough, you can customize each controller by following these steps:
+== Configuring controllers
 
-  1) Create your custom controller, for example a Admins::SessionsController:
+If the customization at the views level is not enough, you can customize each controller by following these steps:
+
+1) Create your custom controller, for example a Admins::SessionsController:
 
     class Admins::SessionsController < Devise::SessionsController
     end
 
-  2) Tell the router to use this controller:
+2) Tell the router to use this controller:
 
     devise_for :admins, :controllers => { :sessions = "admin/sessions" }
 
-  3) And finally, since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
+3) And since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
 
 Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
 

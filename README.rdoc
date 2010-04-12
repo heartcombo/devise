@@ -9,7 +9,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 Right now it's composed of 12 modules:
 
-* Authenticatable: responsible for encrypting password and validating authenticity of a user while signing in.
+* Database Authenticatable: responsible for encrypting password and validating authenticity of a user while signing in.
 * Token Authenticatable: validates authenticity of a user while signing in using an authentication token (also known as "single access token").
 * HttpAuthenticatable: sign in users using basic HTTP authentication.
 * Confirmable: responsible for verifying whether an account is already confirmed to sign in, and to send emails with confirmation instructions.
@@ -64,13 +64,13 @@ Devise must be set up within the model (or models) you want to use, and devise r
 We're assuming here you want a User model with some modules, as outlined below:
 
   class User < ActiveRecord::Base
-    devise :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
+    devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
   end
 
 After you choose which modules to use, you need to setup your migrations. Luckily, devise has some helpers to save you from this boring work:
 
   create_table :users do |t|
-    t.authenticatable
+    t.database_authenticatable
     t.confirmable
     t.recoverable
     t.rememberable
@@ -128,13 +128,13 @@ Devise let's you setup as many roles as you want, so let's say you already have 
 
   # Create a migration with the required fields
   create_table :admins do |t|
-    t.authenticatable
+    t.database_authenticatable
     t.lockable
     t.trackable
   end
 
   # Inside your Admin model
-  devise :authenticatable, :trackable, :timeoutable, :lockable
+  devise :database_authenticatable, :trackable, :timeoutable, :lockable
 
   # Inside your routes
   map.devise_for :admin
@@ -161,9 +161,9 @@ A model configured with all devise modules and attr_accessible for default field
 
 == Model configuration
 
-The devise method in your models also accept some options to configure its modules. For example, you can chose which encryptor to use in authenticatable:
+The devise method in your models also accept some options to configure its modules. For example, you can chose which encryptor to use in database_authenticatable:
 
-  devise :authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
+  devise :database_authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
 
 Besides :encryptor, you can provide :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and others. All those are describer in the initializer created when you invoke the devise_install generator describer above.
 

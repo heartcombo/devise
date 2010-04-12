@@ -18,7 +18,7 @@ class DeviseViewsGenerator < Rails::Generators::Base
       verify_haml_version
       create_and_copy_haml_views
     else
-      directory "devise", "app/views/devise/#{scope}"
+      directory "devise", "app/views/#{scope || 'devise'}"
     end
   end
   
@@ -56,7 +56,7 @@ class DeviseViewsGenerator < Rails::Generators::Base
         end
       end
 
-      directory haml_root, "app/views/devise/#{scope}"
+      directory haml_root, "app/views/#{scope || 'devise'}"
     end
   end
 end

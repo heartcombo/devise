@@ -37,7 +37,7 @@ class DeviseGenerator < Rails::Generators::NamedBase
   def inject_devise_config_into_model
     inject_into_class model_path, class_name, <<-CONTENT
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :lockable, :timeoutable and :activatable
+  # :token_authenticatable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 

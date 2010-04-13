@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-04-06}
+  s.date = %q{2010-04-13}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -30,7 +30,8 @@ Gem::Specification.new do |s|
      "app/controllers/devise/registrations_controller.rb",
      "app/controllers/devise/sessions_controller.rb",
      "app/controllers/devise/unlocks_controller.rb",
-     "app/models/devise/mailer.rb",
+     "app/helpers/devise_helper.rb",
+     "app/mailers/devise/mailer.rb",
      "app/views/devise/confirmations/new.html.erb",
      "app/views/devise/mailer/confirmation_instructions.html.erb",
      "app/views/devise/mailer/reset_password_instructions.html.erb",

@@ -1,4 +1,3 @@
-
 ===============================================================================
 
 Some setup you must do manually if you haven't yet:
@@ -14,5 +13,11 @@ Some setup you must do manually if you haven't yet:
   2. Ensure you have defined root_url to *something* in your config/routes.rb:
 
        map.root :controller => 'home'
+
+ 3. Ensure you have a default layout in app/views/layouts and it shows
+     flash messages. For example:
+
+       <p class="notice"><%= flash[:notice] %></p>
+       <p class="alert"><%= flash[:alert] %></p>
 
 ===============================================================================

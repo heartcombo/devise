@@ -37,6 +37,13 @@ class Devise::Mailer < ::ActionMailer::Base
       mail(headers)
     end
 
+    # Fix a bug in Rails 3 beta 3
+    def mail(*) #:nodoc:
+      super
+      @_message["template_path"] = nil
+      @_message
+    end
+
     def mailer_sender(mapping)
       if Devise.mailer_sender.is_a?(Proc)
         Devise.mailer_sender.call(mapping.name)

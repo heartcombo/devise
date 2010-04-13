@@ -26,7 +26,7 @@ class ConfirmationTest < ActionController::IntegrationTest
 
     assert_response :success
     assert_template 'confirmations/new'
-    assert_have_selector '#errorExplanation'
+    assert_have_selector '#error_explanation'
     assert_contain /Confirmation token(.*)invalid/
   end
 
@@ -49,7 +49,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     visit_user_confirmation_with_token(user.confirmation_token)
 
     assert_template 'confirmations/new'
-    assert_have_selector '#errorExplanation'
+    assert_have_selector '#error_explanation'
     assert_contain 'already confirmed'
   end
 

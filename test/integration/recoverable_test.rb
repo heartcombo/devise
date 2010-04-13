@@ -77,7 +77,7 @@ class PasswordTest < ActionController::IntegrationTest
 
     assert_response :success
     assert_template 'passwords/edit'
-    assert_have_selector '#errorExplanation'
+    assert_have_selector '#error_explanation'
     assert_contain /Reset password token(.*)invalid/
     assert_not user.reload.valid_password?('987654321')
   end
@@ -91,7 +91,7 @@ class PasswordTest < ActionController::IntegrationTest
 
     assert_response :success
     assert_template 'passwords/edit'
-    assert_have_selector '#errorExplanation'
+    assert_have_selector '#error_explanation'
     assert_contain 'Password doesn\'t match confirmation'
     assert_not user.reload.valid_password?('987654321')
   end
@@ -113,7 +113,7 @@ class PasswordTest < ActionController::IntegrationTest
       fill_in 'Password confirmation', :with => 'other_password'
     end
     assert_response :success
-    assert_have_selector '#errorExplanation'
+    assert_have_selector '#error_explanation'
     assert_not user.reload.valid_password?('987654321')
 
     reset_password :reset_password_token => user.reload.reset_password_token, :visit => false

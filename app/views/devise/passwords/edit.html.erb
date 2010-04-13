@@ -1,7 +1,7 @@
 <h2>Change your password</h2>
 
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= f.error_messages %>
+  <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
 
   <p><%= f.label :password %></p>

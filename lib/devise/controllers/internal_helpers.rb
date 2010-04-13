@@ -9,6 +9,7 @@ module Devise
 
       included do
         unloadable
+        helper DeviseHelper
 
         helpers = %w(resource scope_name resource_name
                      resource_class devise_mapping devise_controller?)

@@ -50,7 +50,7 @@ class LockTest < ActionController::IntegrationTest
 
     assert_response :success
     assert_template 'unlocks/new'
-    assert_have_selector '#errorExplanation'
+    assert_have_selector '#error_explanation'
     assert_contain /Unlock token(.*)invalid/
   end
 

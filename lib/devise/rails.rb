@@ -15,6 +15,8 @@ module Devise
 
     initializer "devise.add_url_helpers" do |app|
       Devise::FailureApp.send :include, app.routes.url_helpers
+      ActionController::Base.send :include, Devise::Controllers::UrlHelpers
+      ActionView::Base.send :include, Devise::Controllers::UrlHelpers
     end
 
     config.after_initialize do

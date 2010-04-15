@@ -37,8 +37,16 @@ class LockTest < ActionController::IntegrationTest
   end
 
   test 'unlocked pages should not be available if email strategy is disabled' do
-    visit new_user_unlock_path
+    visit "/users/sign_in"
+    click_link "Didn't receive unlock instructions?"
+
     swap Devise, :unlock_strategy => :time do
+      visit "/users/sign_in"
+
+      assert_raise Webrat::NotFoundError do
+        click_link "Didn't receive unlock instructions?"
+      end
+
       assert_raise AbstractController::ActionNotFound do
         visit new_user_unlock_path
       end

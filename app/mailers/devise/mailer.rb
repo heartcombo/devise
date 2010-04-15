@@ -24,7 +24,7 @@ class Devise::Mailer < ::ActionMailer::Base
       @resource       = instance_variable_set("@#{@devise_mapping.name}", record)
 
       template_path = ["devise/mailer"]
-      template_path.unshift "#{@devise_mapping.as}/mailer" if self.class.scoped_views?
+      template_path.unshift "#{@devise_mapping.plural}/mailer" if self.class.scoped_views?
 
       headers = {
         :subject => translate(@devise_mapping, action),

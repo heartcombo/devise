@@ -22,7 +22,7 @@ module Devise
 
         if self.class.scoped_views?
           begin
-            render :template => "#{devise_mapping.as}/#{controller_name}/#{action}"
+            render :template => "#{devise_mapping.plural}/#{controller_name}/#{action}"
           rescue ActionView::MissingTemplate
             render :template => "#{controller_path}/#{action}"
           end

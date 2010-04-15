@@ -14,13 +14,14 @@ module ActionDispatch::Routing
     # Includes devise_for method for routes. This method is responsible to
     # generate all needed routes for devise, based on what modules you have
     # defined in your model.
+    #
     # Examples: Let's say you have an User model configured to use
     # authenticatable, confirmable and recoverable modules. After creating this
     # inside your routes:
     #
     #   devise_for :users
     #
-    # this method is going to look inside your User model and create the
+    # This method is going to look inside your User model and create the
     # needed routes:
     #
     #  # Session routes for Authenticatable (default)
@@ -44,44 +45,44 @@ module ActionDispatch::Routing
     #  * :class_name => setup a different class to be looked up by devise,
     #                   if it cannot be correctly find by the route name.
     #
-    #    devise_for :users, :class_name => 'Account'
+    #      devise_for :users, :class_name => 'Account'
     #
-    #  * :as => allows you to setup path name that will be used, as rails routes does.
-    #           The following route configuration would setup your route as /accounts instead of /users:
+    #  * :path => allows you to setup path name that will be used, as rails routes does.
+    #             The following route configuration would setup your route as /accounts instead of /users:
     #
-    #    devise_for :users, :as => 'accounts'
+    #      devise_for :users, :path => 'accounts'
     #
-    #  * :scope => setup the scope name. This is used as the instance variable name in controller,
-    #              as the name in routes and the scope given to warden. Defaults to the singular of the given name:
+    #  * :singular => setup the singular name for the given resource. This is used as the instance variable name in
+    #                 controller, as the name in routes and the scope given to warden.
     #
-    #    devise_for :users, :scope => :account
+    #      devise_for :users, :singular => :user
     #
     #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :sign_up,
     #                   :password, :confirmation, :unlock.
     #
-    #    devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
+    #      devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
     #
     #  * :path_prefix => the path prefix to be used in all routes.
     #
-    #    devise_for :users, :path_prefix => "/:locale"
+    #      devise_for :users, :path_prefix => "/:locale"
     #
     #  If you are using a dynamic prefix, like :locale above, you need to configure default_url_options in your ApplicationController
     #  class level, so Devise can pick it:
     #
-    #    class ApplicationController < ActionController::Base
-    #      def self.default_url_options
-    #        { :locale => I18n.locale }
+    #      class ApplicationController < ActionController::Base
+    #        def self.default_url_options
+    #          { :locale => I18n.locale }
+    #        end
     #      end
-    #    end
     #
     #  * :controllers => the controller which should be used. All routes by default points to Devise controllers.
     #    However, if you want them to point to custom controller, you should do:
     #
-    #    devise_for :users, :controllers => { :sessions => "users/sessions" }
+    #      devise_for :users, :controllers => { :sessions => "users/sessions" }
     #
     #  * :skip => tell which controller you want to skip routes from being created:
     #
-    #    devise_for :users, :skip => :sessions
+    #      devise_for :users, :skip => :sessions
     #
     def devise_for(*resources)
       options = resources.extract_options!
@@ -108,7 +109,7 @@ module ActionDispatch::Routing
     protected
 
       def devise_session(mapping, controllers)
-        scope mapping.path do
+        scope mapping.full_path do
           get  mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#new",     :as => :"new_#{mapping.name}_session"
           post mapping.path_names[:sign_in],  :to => "#{controllers[:sessions]}#create",  :as => :"#{mapping.name}_session"
           get  mapping.path_names[:sign_out], :to => "#{controllers[:sessions]}#destroy", :as => :"destroy_#{mapping.name}_session"
@@ -116,25 +117,25 @@ module ActionDispatch::Routing
       end
  
       def devise_password(mapping, controllers)
-        scope mapping.path, :name_prefix => mapping.name do
+        scope mapping.full_path, :name_prefix => mapping.name do
           resource :password, :only => [:new, :create, :edit, :update], :path => mapping.path_names[:password], :controller => controllers[:passwords]
         end
       end
  
       def devise_confirmation(mapping, controllers)
-        scope mapping.path, :name_prefix => mapping.name do
+        scope mapping.full_path, :name_prefix => mapping.name do
           resource :confirmation, :only => [:new, :create, :show], :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
         end
       end
  
       def devise_unlock(mapping, controllers)
-        scope mapping.path, :name_prefix => mapping.name do
+        scope mapping.full_path, :name_prefix => mapping.name do
           resource :unlock, :only => [:new, :create, :show], :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
         end
       end
 
       def devise_registration(mapping, controllers)
-        scope mapping.path[1..-1], :name_prefix => mapping.name do
+        scope mapping.full_path[1..-1], :name_prefix => mapping.name do
           resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => "",
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end

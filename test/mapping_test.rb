@@ -6,15 +6,17 @@ class MappingTest < ActiveSupport::TestCase
     mapping = Devise.mappings[:user]
     assert_equal User,                mapping.to
     assert_equal User.devise_modules, mapping.modules
-    assert_equal :users,              mapping.as
+    assert_equal :users,              mapping.plural
+    assert_equal :user,               mapping.singular
+    assert_equal :users,              mapping.path
   end
 
-  test 'allows as to be given' do
-    assert_equal :admin_area, Devise.mappings[:admin].as
+  test 'allows path to be given' do
+    assert_equal :admin_area, Devise.mappings[:admin].path
   end
 
-  test 'allows custom scope to be given' do
-    assert_equal :accounts, Devise.mappings[:manager].as
+  test 'allows custom singular to be given' do
+    assert_equal :accounts, Devise.mappings[:manager].path
   end
 
   test 'allows a controller depending on the mapping' do
@@ -91,13 +93,13 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'retrieve as from the proper position' do
-    assert_equal 1, Devise.mappings[:user].as_position
-    assert_equal 2, Devise.mappings[:manager].as_position
+    assert_equal 1, Devise.mappings[:user].segment_position
+    assert_equal 2, Devise.mappings[:manager].segment_position
   end
 
   test 'path is returned with path prefix and as' do
-    assert_equal '/users', Devise.mappings[:user].path
-    assert_equal '/:locale/accounts', Devise.mappings[:manager].path
+    assert_equal '/users', Devise.mappings[:user].full_path
+    assert_equal '/:locale/accounts', Devise.mappings[:manager].full_path
   end
 
   test 'magic predicates' do

@@ -22,14 +22,15 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :name, :as, :controllers, :path_names, :path_prefix
+    attr_reader :singular, :plural, :path, :controllers, :path_names, :path_prefix
+    alias :name :singular
 
     # Loop through all mappings looking for a map that matches with the requested
     # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
     def self.find_by_path(path)
       Devise.mappings.each_value do |mapping|
-        route = path.split("/")[mapping.as_position]
-        return mapping if route && mapping.as == route.to_sym
+        route = path.split("/")[mapping.segment_position]
+        return mapping if route && mapping.path == route.to_sym
       end
       nil
     end
@@ -50,9 +51,20 @@ module Devise
     end
 
     def initialize(name, options) #:nodoc:
-      @as    = (options.delete(:as) || name).to_sym
-      @klass = (options.delete(:class_name) || name.to_s.classify).to_s
-      @name  = (options.delete(:scope) || name.to_s.singularize).to_sym
+      if as = options.delete(:as)
+        ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
+        options[:path] ||= as
+      end
+
+      if scope = options.delete(:scope)
+        ActiveSupport::Deprecation.warn ":scope is deprecated, please use :singular instead."
+        options[:singular] ||= scope
+      end
+
+      @plural   = name.to_sym
+      @path     = (options.delete(:path) || name).to_sym
+      @klass    = (options.delete(:class_name) || name.to_s.classify).to_s
+      @singular = (options.delete(:singular) || name.to_s.singularize).to_sym
 
       @path_prefix = "/#{options.delete(:path_prefix)}/".squeeze("/")
 
@@ -96,13 +108,13 @@ module Devise
     end
 
     # Return in which position in the path prefix devise should find the as mapping.
-    def as_position
+    def segment_position
       self.path_prefix.count("/")
     end
 
     # Returns the raw path using path_prefix and as.
-    def path
-      path_prefix + as.to_s
+    def full_path
+      path_prefix + path.to_s
     end
 
     def authenticatable?

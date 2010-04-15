@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class Configurable < User
-  devise :authenticatable, :confirmable, :rememberable, :timeoutable, :lockable,
+  devise :database_authenticatable, :confirmable, :rememberable, :timeoutable, :lockable,
          :stretches => 15, :pepper => 'abcdef', :confirm_within => 5.days,
          :remember_for => 7.days, :timeout_in => 15.minutes, :unlock_in => 10.days
 end

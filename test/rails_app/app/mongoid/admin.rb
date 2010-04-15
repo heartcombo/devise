@@ -1,7 +1,7 @@
 class Admin
   include Mongoid::Document
 
-  devise :authenticatable, :timeoutable, :registerable, :recoverable
+  devise :database_authenticatable, :timeoutable, :registerable, :recoverable
   
   def self.last(options={})
     options.delete(:order) if options[:order] == "id"

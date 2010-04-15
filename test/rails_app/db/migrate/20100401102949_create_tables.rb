@@ -2,7 +2,7 @@ class CreateTables < ActiveRecord::Migration
   def self.up
     [:users, :admins, :accounts].each do |table|
       create_table table do |t|
-        t.authenticatable :null => table == :admins
+        t.database_authenticatable :null => (table == :admins)
 
         if table != :admin
           t.string :username

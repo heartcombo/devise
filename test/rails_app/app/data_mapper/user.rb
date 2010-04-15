@@ -4,7 +4,7 @@ class User
   property :id, Serial
   property :username, String
   
-  devise :authenticatable, :http_authenticatable, :confirmable, :lockable, :recoverable,
+  devise :database_authenticatable, :confirmable, :lockable, :recoverable,
          :registerable, :rememberable, :timeoutable, :token_authenticatable,
          :trackable, :validatable
 

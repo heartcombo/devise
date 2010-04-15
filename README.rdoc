@@ -139,7 +139,7 @@ Devise allows you to set up as many roles as you want. For example, you may have
   devise :database_authenticatable, :trackable, :timeoutable, :lockable
 
   # Inside your routes
-  devise_for :admin
+  devise_for :admins
 
   # Inside your protected controller
   before_filter :authenticate_admin!

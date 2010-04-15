@@ -33,7 +33,7 @@ Devise is based on Warden (http://github.com/hassox/warden), a Rack Authenticati
 
 Devise master branch now supports Rails 3 and is NOT backward compatible. You can use the latest Rails 3 beta gem with Devise latest gem:
 
-  sudo gem install devise --version=1.1.rc0
+  sudo gem install devise --version=1.1.rc1
 
 After you install Devise and add it to your Gemfile, you need to run the generator:
 

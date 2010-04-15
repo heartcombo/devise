@@ -19,6 +19,9 @@
   * No need to append ?unauthenticated=true in URLs anymore since Flash was moved to a middleware in Rails 3.
   * :activatable is included by default in your models.
 
+* bug fix
+  * fix a bug with STI
+
 * deprecations
   * Rails 3 compatible only.
   * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".

@@ -1,5 +1,17 @@
 module Devise
   module Models
+    class << self
+      def hook(base)
+        base.class_eval do
+          class_attribute :devise_modules, :instance_writer => false
+          self.devise_modules ||= []
+        end
+      end
+
+      alias :included :hook
+      alias :extended :hook
+    end
+
     # Creates configuration values for Devise and for the given module.
     #
     #   Devise::Models.config(Devise::Authenticable, :stretches, 10)
@@ -61,18 +73,12 @@ module Devise
         ActiveSupport::Deprecation.warn ":http_authenticatable as module is deprecated and is on by default. Revert by setting :http_authenticatable => false.", caller
       end
 
-      @devise_modules = Devise::ALL & modules.map(&:to_sym).uniq
+      self.devise_modules += Devise::ALL & modules.map(&:to_sym).uniq
 
       devise_modules_hook! do
-        @devise_modules.each { |m| include Devise::Models.const_get(m.to_s.classify) }
+        devise_modules.each { |m| include Devise::Models.const_get(m.to_s.classify) }
         options.each { |key, value| send(:"#{key}=", value) }
       end
-    end
-
-    # Stores all modules included inside the model, so we are able to verify
-    # which routes are needed.
-    def devise_modules
-      @devise_modules ||= []
     end
 
     # The hook which is called inside devise. So your ORM can include devise

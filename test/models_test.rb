@@ -6,6 +6,9 @@ class Configurable < User
          :remember_for => 7.days, :timeout_in => 15.minutes, :unlock_in => 10.days
 end
 
+class Inheritable < Admin
+end
+
 class ActiveRecordTest < ActiveSupport::TestCase
   def include_module?(klass, mod)
     klass.devise_modules.include?(mod) &&
@@ -22,8 +25,12 @@ class ActiveRecordTest < ActiveSupport::TestCase
     end
   end
 
-  test 'add modules cherry pick' do
+  test 'can cherry pick modules' do
     assert_include_modules Admin, :database_authenticatable, :registerable, :timeoutable, :recoverable
+  end
+
+  test 'chosen modules are inheritable' do
+    assert_include_modules Inheritable, :database_authenticatable, :registerable, :timeoutable, :recoverable
   end
 
   test 'order of module inclusion' do

@@ -1,17 +1,5 @@
 module Devise
   module Models
-    class << self
-      def hook(base)
-        base.class_eval do
-          class_attribute :devise_modules, :instance_writer => false
-          self.devise_modules ||= []
-        end
-      end
-
-      alias :included :hook
-      alias :extended :hook
-    end
-
     # Creates configuration values for Devise and for the given module.
     #
     #   Devise::Models.config(Devise::Authenticable, :stretches, 10)
@@ -57,6 +45,7 @@ module Devise
     # for a complete description on those values.
     #
     def devise(*modules)
+      define_devise_class_attributes!
       include Devise::Models::Authenticatable
       options = modules.extract_options!
 
@@ -88,7 +77,7 @@ module Devise
     end
 
     # Find an initialize a record setting an error if it can't be found.
-    def find_or_initialize_with_error_by(attribute, value, error=:invalid)
+    def find_or_initialize_with_error_by(attribute, value, error=:invalid) #:nodoc:
       if value.present?
         conditions = { attribute => value }
         record = find(:first, :conditions => conditions)
@@ -96,17 +85,21 @@ module Devise
 
       unless record
         record = new
-
         if value.present?
           record.send(:"#{attribute}=", value)
         else
           error = :blank
         end
-
         record.errors.add(attribute, error)
       end
 
       record
+    end
+
+    def define_devise_class_attributes! #:nodoc:
+      return if respond_to?(:devise_modules)
+      class_attribute :devise_modules, :instance_writer => false
+      self.devise_modules = []
     end
   end
 end

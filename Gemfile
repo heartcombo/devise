@@ -13,7 +13,9 @@ if RUBY_VERSION < '1.9'
 end
 
 group :mongoid do
+  gem "mongo"
   gem "mongoid", :git => "git://github.com/durran/mongoid.git"
+  gem "bson_ext"
 end
 
 group :data_mapper do

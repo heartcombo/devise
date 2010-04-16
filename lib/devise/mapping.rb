@@ -77,7 +77,7 @@ module Devise
 
     # Return modules for the mapping.
     def modules
-      @modules ||= to.devise_modules
+      @modules ||= to.respond_to?(:devise_modules) ? to.devise_modules : []
     end
 
     # Gives the class the mapping points to.

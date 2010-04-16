@@ -39,6 +39,11 @@ module Devise
     module Authenticatable
       extend ActiveSupport::Concern
 
+      included do
+        class_attribute :devise_modules, :instance_writer => false
+        self.devise_modules ||= []
+      end
+
       # Check if the current object is valid for authentication. This method and find_for_authentication
       # are the methods used in a Warden::Strategy to check if a model should be signed in or not.
       #
@@ -85,6 +90,26 @@ module Devise
         #
         def find_for_authentication(conditions)
           find(:first, :conditions => conditions)
+        end
+
+        # Find an initialize a record setting an error if it can't be found.
+        def find_or_initialize_with_error_by(attribute, value, error=:invalid) #:nodoc:
+          if value.present?
+            conditions = { attribute => value }
+            record = find(:first, :conditions => conditions)
+          end
+
+          unless record
+            record = new
+            if value.present?
+              record.send(:"#{attribute}=", value)
+            else
+              error = :blank
+            end
+            record.errors.add(attribute, error)
+          end
+
+          record
         end
       end
     end

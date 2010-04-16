@@ -45,7 +45,6 @@ module Devise
     # for a complete description on those values.
     #
     def devise(*modules)
-      define_devise_class_attributes!
       include Devise::Models::Authenticatable
       options = modules.extract_options!
 
@@ -74,32 +73,6 @@ module Devise
     # compatibility stuff.
     def devise_modules_hook!
       yield
-    end
-
-    # Find an initialize a record setting an error if it can't be found.
-    def find_or_initialize_with_error_by(attribute, value, error=:invalid) #:nodoc:
-      if value.present?
-        conditions = { attribute => value }
-        record = find(:first, :conditions => conditions)
-      end
-
-      unless record
-        record = new
-        if value.present?
-          record.send(:"#{attribute}=", value)
-        else
-          error = :blank
-        end
-        record.errors.add(attribute, error)
-      end
-
-      record
-    end
-
-    def define_devise_class_attributes! #:nodoc:
-      return if respond_to?(:devise_modules)
-      class_attribute :devise_modules, :instance_writer => false
-      self.devise_modules = []
     end
   end
 end

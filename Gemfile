@@ -13,8 +13,6 @@ if RUBY_VERSION < '1.9'
 end
 
 group :mongoid do
-  gem "mongo",        ">= 0.18.3"
-  gem "mongo_ext",    ">= 0.18.3", :require => false
   gem "mongoid", :git => "git://github.com/durran/mongoid.git"
 end
 

@@ -83,7 +83,7 @@ Devise.setup do |config|
 
   # ==> General configuration
   # Load and configure the ORM. Supports :active_record (default), :mongoid
-  # (requires mongo_ext installed) and :data_mapper (experimental).
+  # (bson_ext recommended) and :data_mapper (experimental).
   require 'devise/orm/active_record'
 
   # Turn scoped views on. Before rendering "sessions/new", it will first check for

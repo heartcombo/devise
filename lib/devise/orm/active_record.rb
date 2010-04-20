@@ -31,8 +31,6 @@ module Devise
   end
 end
 
-if defined?(ActiveRecord)
-  ActiveRecord::Base.extend Devise::Models
-  ActiveRecord::ConnectionAdapters::Table.send :include, Devise::Orm::ActiveRecord::Schema
-  ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Orm::ActiveRecord::Schema
-end
+ActiveRecord::Base.extend Devise::Models
+ActiveRecord::ConnectionAdapters::Table.send :include, Devise::Orm::ActiveRecord::Schema
+ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Orm::ActiveRecord::Schema

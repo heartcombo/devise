@@ -273,6 +273,8 @@ Devise also has extensions created by the community:
 
 * http://github.com/joshk/devise_imapable adds support for imap based authentication, excellent for internal apps when an LDAP server isn't available.
 
+* http://github.com/cschiewek/devise_ldap_authenticatable adds support for LDAP authentication via simple bind.
+
 Please consult their respective documentation for more information and requirements.
 
 == TODO

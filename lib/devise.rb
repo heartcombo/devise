@@ -157,13 +157,10 @@ module Devise
   # Register a model in Devise. You can call this manually if you don't want
   # to use devise routes. Check devise_for in routes to know which options
   # are available.
-  def self.register(resource, options)
+  def self.add_model(resource, options)
     mapping = Devise::Mapping.new(resource, options)
     self.mappings[mapping.name] = mapping
     self.default_scope ||= mapping.name
-
-    warden_config.default_scope ||= mapping.name
-    warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
     mapping
   end
 
@@ -233,6 +230,15 @@ module Devise
   # A method used internally to setup warden manager from the Rails initialize
   # block.
   def self.configure_warden! #:nodoc:
+    return unless warden_config
+
+    warden_config.failure_app   = Devise::FailureApp
+    warden_config.default_scope = Devise.default_scope
+
+    Devise.mappings.each_value do |mapping|
+      warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
+    end
+
     @@warden_config_block.try :call, Devise.warden_config
   end
 

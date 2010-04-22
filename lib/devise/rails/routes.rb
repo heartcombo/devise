@@ -89,7 +89,7 @@ module ActionDispatch::Routing
       resources.map!(&:to_sym)
 
       resources.each do |resource|
-        mapping = Devise.register(resource, options)
+        mapping = Devise.add_model(resource, options)
 
         unless mapping.to.respond_to?(:devise)
           raise "#{mapping.to.name} does not respond to 'devise' method. This usually means you haven't " <<

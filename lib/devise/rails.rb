@@ -5,11 +5,14 @@ module Devise
   class Engine < ::Rails::Engine
     config.devise = Devise
 
+    initializer "devise.ensure_routes_are_loaded", :before => :load_app_classes, :after => :load_config_initializers do |app|
+      app.reload_routes!
+    end
+
     initializer "devise.add_middleware" do |app|
       app.config.middleware.use Warden::Manager do |config|
         Devise.warden_config = config
-        config.failure_app   = Devise::FailureApp
-        config.default_scope = Devise.default_scope
+        Devise.configure_warden!
       end
     end
 

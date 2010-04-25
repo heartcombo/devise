@@ -54,6 +54,7 @@ Both links above are for Devise with Rails 3. If you need to use Devise with Rai
 Another great way to learn Devise are Ryan Bates' screencasts:
 
 * http://railscasts.com/episodes/209-introducing-devise
+* http://railscasts.com/episodes/210-customizing-devise
 
 And a few example applications:
 

@@ -113,7 +113,6 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_equal "user@test.com", User.first.email
   end
 
-
   test 'a signed in user should be able to edit his password' do
     sign_in_as_user
     get edit_user_registration_path
@@ -127,6 +126,19 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_contain 'You updated your account successfully.'
 
     assert User.first.valid_password?('pas123')
+  end
+
+  test 'a signed in user should not be able to edit his password with invalid confirmation' do
+    sign_in_as_user
+    get edit_user_registration_path
+
+    fill_in 'password', :with => 'pas123'
+    fill_in 'password confirmation', :with => ''
+    fill_in 'current password', :with => '123456'
+    click_button 'Update'
+
+    assert_contain "Password doesn't match confirmation"
+    assert_not User.first.valid_password?('pas123')
   end
 
   test 'a signed in user should be able to cancel his account' do

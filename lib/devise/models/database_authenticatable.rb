@@ -58,8 +58,10 @@ module Devise
       def update_with_password(params={})
         current_password = params.delete(:current_password)
 
-        params.delete(:password)              if params[:password].blank?
-        params.delete(:password_confirmation) if params[:password_confirmation].blank?
+        if params[:password].blank?
+          params.delete(:password)
+          params.delete(:password_confirmation) if params[:password_confirmation].blank?
+        end
 
         result = if valid_password?(current_password)
           update_attributes(params)

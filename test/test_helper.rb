@@ -11,10 +11,6 @@ require "orm/#{DEVISE_ORM}"
 I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__)
 require 'mocha'
 
-ActionMailer::Base.delivery_method = :test
-ActionMailer::Base.perform_deliveries = true
-ActionMailer::Base.default_url_options[:host] = 'test.com'
-
 Webrat.configure do |config|
   config.mode = :rails
   config.open_error_files = false

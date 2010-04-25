@@ -6,7 +6,7 @@ module Devise
 
       included do
         helper_method :warden, :signed_in?, :devise_controller?,
-                      *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?"] }.flatten
+                      *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?", :"#{m}_session"] }.flatten
       end
 
       # The main accessor for the warden proxy instance

@@ -3,8 +3,8 @@
 <%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
 
-  <p><%= f.label :email %></p>
-  <p><%= f.text_field :email %></p>
+  <p><%= f.label :email %><br />
+  <%= f.text_field :email %></p>
 
   <p><%= f.submit "Resend confirmation instructions" %></p>
 <% end %>

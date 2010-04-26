@@ -38,6 +38,7 @@ class Devise::Mailer < ::ActionMailer::Base
     end
 
     # Fix a bug in Rails 3 beta 3
+    # TODO: Remove me in next release
     def mail(*) #:nodoc:
       super
       @_message["template_path"] = nil

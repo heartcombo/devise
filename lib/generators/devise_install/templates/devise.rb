@@ -37,8 +37,12 @@ Devise.setup do |config|
   # config.encryptor = :sha1
 
   # ==> Configuration for :confirmable
-  # The time you want give to your user to confirm his account. During this time
+  # The time you want to give your user to confirm his account. During this time
   # he will be able to access your application without confirming. Default is nil.
+  # When confirm_within is zero, the user won't be able to sign in without confirming. 
+  # You can use this to let your user access some features of your application 
+  # without confirming the account, but blocking it after a certain period 
+  # (ie 2 days). 
   # config.confirm_within = 2.days
 
   # ==> Configuration for :rememberable

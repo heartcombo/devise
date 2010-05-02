@@ -38,8 +38,8 @@ class DeviseGenerator < Rails::Generators::NamedBase
     devise_class_setup = <<-CONTENT
 
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :lockable and :timeoutable
-  devise :database_authenticatable, :registerable, :confirmable,
+  # :token_authenticatable, :confirmable, :lockable and :timeoutable
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
 CONTENT

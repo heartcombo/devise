@@ -21,7 +21,6 @@
 * bug fix
   * Fix a bug with STI.
   * Do not remove options from Datamapper and MongoMapper in find.
-  * Fixed a bug where password confirmation was not required while editing an user.
 
 * deprecations
   * Rails 3 compatible only.
@@ -30,6 +29,15 @@
   * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options.
   * All messages under devise.sessions, except :signed_in and :signed_out, should be moved to devise.failure.
   * :as and :scope in routes is deprecated. Use :path and :singular instead.
+
+== 1.0.7
+
+* bug fix
+  * Ensure password confirmation is always required
+
+* deprecations
+  * authenticatable was deprecated and renamed to database_authenticatable
+  * confirmable is not included by default on generation
 
 == 1.0.6
 

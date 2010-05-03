@@ -36,7 +36,7 @@ Install warden gem if you don't have it installed:
 
 Install devise gem:
 
-  sudo gem install devise --version=1.0.6
+  sudo gem install devise --version=1.0.7
 
 Configure warden and devise gems inside your app:
 
@@ -247,7 +247,9 @@ Please refer to TODO file.
 
 == Contributors
 
-We have a long running list of contributors. Check them in the CHANGELOG or do `git shortlog -s -n` in the cloned repository.
+We have a long running list of contributors. Check them all here:
+
+http://github.com/plataformatec/devise/contributors
 
 == Bugs and Feedback
 

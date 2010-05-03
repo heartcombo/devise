@@ -36,7 +36,7 @@ And you're ready to go. The generator will install an initializer which describe
 
 If you want to use the Rails 2.3.x version, you should do:
 
-  gem install devise --version=1.0.6
+  gem install devise --version=1.0.7
 
 Or checkout from the v1.0 branch:
 
@@ -289,7 +289,9 @@ Please refer to TODO file.
 
 == Contributors
 
-We have a long list of valued contributors. See the CHANGELOG or do `git shortlog -s -n` in the cloned repository.
+We have a long list of valued contributors. Check them all at:
+
+http://github.com/plataformatec/devise/contributors
 
 == Bugs and Feedback
 

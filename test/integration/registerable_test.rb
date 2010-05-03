@@ -28,7 +28,7 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'password confirmation', :with => 'new_user123'
     click_button 'Sign up'
 
-    assert_equal "You have signed up successfully. If enabled, a confirmation was sent your e-mail.", @controller.send(:flash)[:notice]
+    assert_equal "You have signed up successfully. If enabled, a confirmation was sent to your e-mail.", @controller.send(:flash)[:notice]
 
     # For some reason flash is not being set correctly, so instead of getting the
     # "signed_up" message we get the unconfirmed one. Seems to be an issue with

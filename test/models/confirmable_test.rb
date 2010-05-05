@@ -202,4 +202,12 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.save
     assert_not user.reload.active?
   end
+  
+  test 'should be active without confirmation when confirmation is not required' do
+    user = create_user
+    user.instance_eval { def confirmation_required?; false end }
+    user.confirmation_sent_at = nil
+    user.save
+    assert user.reload.active?
+  end
 end

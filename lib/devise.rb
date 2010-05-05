@@ -47,6 +47,10 @@ module Devise
     :bcrypt => 60
   }
 
+  # Custom domain for cookies. Not set by default
+  mattr_accessor :cookie_domain
+  @@cookie_domain = false
+
   # Used to encrypt password. Please generate one with rake secret.
   mattr_accessor :pepper
   @@pepper = nil

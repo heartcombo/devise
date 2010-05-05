@@ -65,6 +65,14 @@ module Devise
         remember_created_at + self.class.remember_for
       end
 
+      def cookie_domain
+        self.class.cookie_domain
+      end
+
+      def cookie_domain?
+        self.class.cookie_domain != false
+      end
+
       module ClassMethods
         # Create the cookie key using the record id and remember_token
         def serialize_into_cookie(record)
@@ -79,6 +87,7 @@ module Devise
         end
 
         Devise::Models.config(self, :remember_for)
+        Devise::Models.config(self, :cookie_domain)
       end
     end
   end

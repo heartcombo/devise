@@ -11,11 +11,17 @@ module Devise
         if succeeded? && resource.respond_to?(:remember_me!) && remember_me?
           resource.remember_me!
 
-          cookies.signed["remember_#{scope}_token"] = {
+          conf = {
             :value => resource.class.serialize_into_cookie(resource),
             :expires => resource.remember_expires_at,
             :path => "/"
           }
+
+          conf[:domain] = resource.cookie_domain if resource.cookie_domain?  
+
+          Warden::Manager.after_set_user do |record, warden, options|
+            warden.cookies["remember_#{options[:scope]}_token"] = conf
+          end
         end
       end
 
@@ -29,3 +35,4 @@ module Devise
 end
 
 Devise::Strategies::Authenticatable.send :include, Devise::Hooks::Rememberable
+

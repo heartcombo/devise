@@ -47,7 +47,7 @@ CONTENT
     case options[:orm].to_s
     when "mongoid"
       inject_into_file model_path, devise_class_setup, :after => "include Mongoid::Document\n"
-    when "datamapper"
+    when "data_mapper"
       inject_into_file model_path, devise_class_setup, :after => "include DataMapper::Resource\n"
     when "active_record"
       inject_into_class model_path, class_name, devise_class_setup + <<-CONTENT

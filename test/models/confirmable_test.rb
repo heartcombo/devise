@@ -134,6 +134,14 @@ class ConfirmableTest < ActiveSupport::TestCase
       User.send_confirmation_instructions(:email => user.email)
     end
   end
+  
+  test 'should always have confirmation token when email is sent' do
+    user = new_user
+    user.instance_eval { def confirmation_required?; false end }
+    user.save
+    user.send_confirmation_instructions
+    assert_not_nil user.confirmation_token
+  end
 
   test 'should not resend email instructions if the user change his email' do
     user = create_user

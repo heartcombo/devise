@@ -13,7 +13,7 @@ Right now it's composed of 11 modules:
 * Token Authenticatable: signs in an user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
 * Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
 * Recoverable: resets the user password and sends reset instructions.
-* Registerable: handles signing up users through a registration process.
+* Registerable: handles signing up users through a registration process, also allowing them to edit and destroy their account.
 * Rememberable: manages generating and clearing a token for remembering the user from a saved cookie.
 * Trackable: tracks sign in count, timestamps and IP address.
 * Timeoutable: expires sessions that have no activity in a specified period of time.

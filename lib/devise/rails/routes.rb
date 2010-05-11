@@ -136,7 +136,7 @@ module ActionDispatch::Routing
 
       def devise_registration(mapping, controllers)
         scope mapping.full_path[1..-1], :name_prefix => mapping.name do
-          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => "",
+          resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => mapping.path_names[:registration],
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end
       end

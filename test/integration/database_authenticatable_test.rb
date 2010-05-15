@@ -267,9 +267,8 @@ class AuthenticationTest < ActionController::IntegrationTest
 
   # Access
   test 'render 404 on roles without routes' do
-    assert_raise ActionController::RoutingError do
-      get '/admin_area/password/new'
-    end
+    get '/admin_area/password/new'
+    assert_equal 404, response.status
   end
 
   test 'render 404 on roles without mapping' do

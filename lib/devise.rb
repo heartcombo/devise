@@ -230,16 +230,17 @@ module Devise
   # A method used internally to setup warden manager from the Rails initialize
   # block.
   def self.configure_warden! #:nodoc:
-    return unless warden_config
+    @@warden_configured ||= begin
+      warden_config.failure_app   = Devise::FailureApp
+      warden_config.default_scope = Devise.default_scope
 
-    warden_config.failure_app   = Devise::FailureApp
-    warden_config.default_scope = Devise.default_scope
+      Devise.mappings.each_value do |mapping|
+        warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
+      end
 
-    Devise.mappings.each_value do |mapping|
-      warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
+      @@warden_config_block.try :call, Devise.warden_config
+      true
     end
-
-    @@warden_config_block.try :call, Devise.warden_config
   end
 
   # Generate a friendly string randomically to be used as token.

@@ -9,6 +9,7 @@ module Devise
     include ActionController::RackDelegation
     include ActionController::UrlFor
     include ActionController::Redirecting
+    include Rails.application.routes.url_helpers
 
     delegate :flash, :to => :request
 

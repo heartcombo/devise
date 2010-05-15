@@ -1,32 +1,32 @@
 require 'devise/rails/routes'
 require 'devise/rails/warden_compat'
 
+# Include UrlHelpers in ActionController and ActionView as soon as they are loaded.
+ActiveSupport.on_load(:action_controller) { include Devise::Controllers::UrlHelpers }
+ActiveSupport.on_load(:action_view) { include Devise::Controllers::UrlHelpers }
+
 module Devise
   class Engine < ::Rails::Engine
     config.devise = Devise
 
-    initializer "devise.ensure_routes_are_loaded", :before => :load_app_classes, :after => :load_config_initializers do |app|
-      app.reload_routes!
+    config.app_middleware.use Warden::Manager do |config|
+      Devise.warden_config = config
     end
 
-    initializer "devise.add_middleware" do |app|
-      app.config.middleware.use Warden::Manager do |config|
-        Devise.warden_config = config
-        Devise.configure_warden!
-      end
-    end
-
-    initializer "devise.add_url_helpers" do |app|
-      Devise::FailureApp.send :include, app.routes.url_helpers
-      ActionController::Base.send :include, Devise::Controllers::UrlHelpers
-      ActionView::Base.send :include, Devise::Controllers::UrlHelpers
-    end
+    # Force routes to be loaded if we are doing any eager load.
+    config.before_eager_load { |app| app.reload_routes! }
 
     config.after_initialize do
-      I18n.available_locales
       flash = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
 
-      I18n.backend.send(:translations).each do |locale, translations|
+      translations = begin
+        I18n.available_locales
+        I18n.backend.send(:translations)
+      rescue Exception => e # Do not care if something fails
+        {}
+      end
+
+      translations.each do |locale, translations|
         keys = flash & (translations[:devise][:sessions].keys) rescue []
 
         if keys.any?

@@ -2,6 +2,7 @@ require 'test_helper'
 
 module Devise
   def self.yield_and_restore
+    @@warden_configured = nil
     c, b = @@warden_config, @@warden_config_block
     yield
   ensure

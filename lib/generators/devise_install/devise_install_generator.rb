@@ -1,6 +1,8 @@
 class DeviseInstallGenerator < Rails::Generators::Base
   desc "Creates a Devise initializer and copy locale files to your application."
 
+  class_option :orm
+
   def self.source_root
     @_devise_source_root ||= File.expand_path("../templates", __FILE__)
   end

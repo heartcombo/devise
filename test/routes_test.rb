@@ -109,6 +109,6 @@ class MapRoutingTest < ActionController::TestCase
   end
 
   test 'map account with custom path name for registration' do
-    assert_recognizes({:controller => 'devise/registrations', :action => 'new', :locale => 'en'}, '/en/accounts/register')
+    assert_recognizes({:controller => 'devise/registrations', :action => 'new', :locale => 'en'}, '/en/accounts/management/register')
   end
 end

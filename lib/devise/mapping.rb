@@ -72,6 +72,7 @@ module Devise
       @controllers.merge!(options.delete(:controllers) || {})
 
       @path_names  = Hash.new { |h,k| h[k] = k.to_s }
+      @path_names.merge!(:registration => "")
       @path_names.merge!(options.delete(:path_names) || {})
     end
 

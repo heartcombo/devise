@@ -11,7 +11,8 @@ Rails::Application.routes.draw do
     :class_name => "User", :path_names => {
       :sign_in => "login", :sign_out => "logout",
       :password => "secret", :confirmation => "verification",
-      :unlock => "unblock", :sign_up => "register"
+      :unlock => "unblock", :sign_up => "register",
+      :registration => "management"
     }
 
   match "/admin_area/home", :to => "admins#index", :as => :admin_root

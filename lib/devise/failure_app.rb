@@ -64,7 +64,7 @@ module Devise
     end
 
     def http_auth?
-      request.authorization
+      !Devise.navigational_formats.include?(request.format.to_sym) || request.xhr?
     end
 
     def http_auth_body
@@ -97,7 +97,7 @@ module Devise
     # yet, but we still need to store the uri based on scope, so different scopes
     # would never use the same uri to redirect.
     def store_location!
-      session[:"#{scope}_return_to"] = attempted_path if request && request.get?
+      session[:"#{scope}_return_to"] = attempted_path if request.get? && !http_auth?
     end
   end
 end

@@ -8,22 +8,18 @@ class FailureTest < ActiveSupport::TestCase
 
   def call_failure(env_params={})
     env = {
-      'warden.options' => { :scope => :user },
       'REQUEST_URI' => 'http://test.host/',
       'HTTP_HOST' => 'test.host',
       'REQUEST_METHOD' => 'GET',
+      'warden.options' => { :scope => :user },
       'rack.session' => {},
+      'action_dispatch.request.formats' => Array(env_params.delete('formats') || :html),
       'rack.input' => "",
       'warden' => OpenStruct.new(:message => nil)
     }.merge!(env_params)
     
     @response = Devise::FailureApp.call(env).to_a
     @request  = ActionDispatch::Request.new(env)
-  end
-
-  def call_failure_with_http(env_params={})
-    env = { "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("foo:bar")}" }
-    call_failure(env_params.merge!(env))
   end
 
   context 'When redirecting' do
@@ -61,22 +57,41 @@ class FailureTest < ActiveSupport::TestCase
       assert_match /redirected/, @response.last.body
       assert_match /users\/sign_in/, @response.last.body
     end
+
+    test 'works for any navigational format' do
+      swap Devise, :navigational_formats => [:xml] do
+        call_failure('formats' => :xml)
+        assert_equal 302, @response.first
+      end
+    end
   end
 
   context 'For HTTP request' do
     test 'return 401 status' do
-      call_failure_with_http
+      call_failure('formats' => :xml)
       assert_equal 401, @response.first
     end
 
     test 'return WWW-authenticate headers' do
-      call_failure_with_http
+      call_failure('formats' => :xml)
       assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]
     end
 
     test 'uses the proxy failure message as response body' do
-      call_failure_with_http('warden' => OpenStruct.new(:message => :invalid))
-      assert_equal 'Invalid email or password.', @response.third.body
+      call_failure('formats' => :xml, 'warden' => OpenStruct.new(:message => :invalid))
+      assert_match '<error>Invalid email or password.</error>', @response.third.body
+    end
+
+    test 'works for any non navigational format' do
+      swap Devise, :navigational_formats => [] do
+        call_failure('formats' => :html)
+        assert_equal 401, @response.first
+      end
+    end
+
+    test 'works for xml http requests' do
+      call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+      assert_equal 401, @response.first
     end
   end
 

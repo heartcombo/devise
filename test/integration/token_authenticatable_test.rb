@@ -18,8 +18,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
       sign_in_as_new_user_with_token(:http_auth => true)
 
       assert_response :success
-      assert_template 'users/index'
-      assert_contain 'Welcome'
+      assert_match '<email>user@test.com</email>', response.body
       assert warden.authenticated?(:user)
     end
   end
@@ -78,7 +77,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
 
       if options[:http_auth]
         header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
-        get users_path, {}, "HTTP_AUTHORIZATION" => header
+        get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => header
       else
         visit users_path(options[:auth_token_key].to_sym => options[:auth_token])
       end

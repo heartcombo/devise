@@ -4,6 +4,11 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.mailer_sender = "please-change-me@config-initializers-devise.com"
 
+  # ==> ORM configuration
+  # Load and configure the ORM. Supports :active_record (default), :mongoid
+  # (bson_ext recommended) and :data_mapper (experimental).
+  require 'devise/orm/<%= options[:orm] %>'
+
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating an user. By default is
   # just :email. You can configure it to use [:username, :subdomain], so for
@@ -85,11 +90,7 @@ Devise.setup do |config|
   # Defines name of the authentication token params key
   # config.token_authentication_key = :auth_token
 
-  # ==> General configuration
-  # Load and configure the ORM. Supports :active_record (default), :mongoid
-  # (bson_ext recommended) and :data_mapper (experimental).
-  require 'devise/orm/<%= options[:orm] %>'
-
+  # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "sessions/users/new". It's turned off by default because it's slower if you
   # are using only default views.
@@ -105,6 +106,15 @@ Devise.setup do |config|
   # role declared in your routes.
   # config.default_scope = :user
 
+  # ==> Navigation configuration
+  # Lists the formats that should be treated as navigational. Formats like
+  # :html, should redirect to the sign in page when the user does not have
+  # access, but formats like :xml or :json, should return 401.
+  # If you have any extra navigational formats, like :iphone or :mobile, you
+  # should add them to the navigational formats lists. Default is [:html]
+  # config.navigational_formats = [:html, :iphone]
+
+  # ==> Warden configuration
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below
   # allows you to setup OAuth, using http://github.com/roman/warden_oauth

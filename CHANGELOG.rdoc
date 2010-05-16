@@ -18,6 +18,7 @@
   * No need to append ?unauthenticated=true in URLs anymore since Flash was moved to a middleware in Rails 3.
   * :activatable is included by default in your models.
   * Allow to set cookie domain for the remember token. (by github.com/mantas)
+	* Added navigational formats to specify when it should return a 302 and when a 401.
 
 * bug fix
   * Fix a bug with STI.

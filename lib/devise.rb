@@ -147,6 +147,9 @@ module Devise
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
 
+  mattr_accessor :navigational_formats
+  @@navigational_formats = [:html]
+
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
   @@warden_config = nil

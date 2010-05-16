@@ -5,8 +5,7 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
   test 'sign in should authenticate with http' do
     sign_in_as_new_user_with_http
     assert_response :success
-    assert_template 'users/index'
-    assert_contain 'Welcome'
+    assert_match '<email>user@test.com</email>', response.body
     assert warden.authenticated?(:user)
   end
 
@@ -17,10 +16,10 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'uses the request format as response content type' do
-    sign_in_as_new_user_with_http("unknown", "123456", :xml)
+    sign_in_as_new_user_with_http("unknown")
     assert_equal 401, status
     assert_equal "application/xml; charset=utf-8", headers["Content-Type"]
-    assert response.body.include?("<error>Invalid email or password.</error>")
+    assert_match "<error>Invalid email or password.</error>", response.body
   end
 
   test 'returns a custom response with www-authenticate and chosen realm' do
@@ -33,19 +32,18 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
 
   test 'sign in should authenticate with http even with specific authentication keys' do
     swap Devise, :authentication_keys => [:username] do
-      sign_in_as_new_user_with_http "usertest"
+      sign_in_as_new_user_with_http("usertest")
       assert_response :success
-      assert_template 'users/index'
-      assert_contain 'Welcome'
+      assert_match '<email>user@test.com</email>', response.body
       assert warden.authenticated?(:user)
     end
   end
 
   private
 
-    def sign_in_as_new_user_with_http(username="user@test.com", password="123456", format=:html)
+    def sign_in_as_new_user_with_http(username="user@test.com", password="123456")
       user = create_user
-      get users_path(:format => format), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{username}:#{password}")}"
+      get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{username}:#{password}")}"
       user
     end
 end

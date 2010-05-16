@@ -155,7 +155,6 @@ class AuthenticationTest < ActionController::IntegrationTest
 
   test 'redirect to default url if no other was configured' do
     sign_in_as_user
-
     assert_template 'home/index'
     assert_nil session[:"user_return_to"]
   end
@@ -185,6 +184,12 @@ class AuthenticationTest < ActionController::IntegrationTest
     sign_in_as_user :visit => false
 
     assert_template 'users/index'
+    assert_nil session[:"user_return_to"]
+  end
+
+  test 'xml http requests does not store urls for redirect' do
+    get users_path, {}, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    assert_equal 401, response.status
     assert_nil session[:"user_return_to"]
   end
 

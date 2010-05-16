@@ -7,8 +7,8 @@ module Devise
     #
     #   http://myapp.example.com/?user_token=SECRET
     #
-    # For HTTP, you can pass the token as username. Since some clients may require a password,
-    # you can pass anything and it will simply be ignored.
+    # For HTTP, you can pass the token as username and blank password. Since some clients may require
+    # a password, you can pass "X" as password and it will simply be ignored.
     class TokenAuthenticatable < Authenticatable
       def authenticate!
         resource = mapping.to.find_for_token_authentication(authentication_hash)

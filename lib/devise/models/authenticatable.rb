@@ -44,10 +44,11 @@ module Devise
         self.devise_modules ||= []
       end
 
-      # Check if the current object is valid for authentication. This method and find_for_authentication
-      # are the methods used in a Warden::Strategy to check if a model should be signed in or not.
+      # Check if the current object is valid for authentication. This method and
+      # find_for_authentication are the methods used in a Warden::Strategy to check
+      # if a model should be signed in or not.
       #
-      # However, you should not need to overwrite this method, you should overwrite active? and
+      # However, you should not overwrite this method, you should overwrite active? and
       # inactive_message instead.
       def valid_for_authentication?
         if active?

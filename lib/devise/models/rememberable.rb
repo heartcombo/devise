@@ -86,8 +86,7 @@ module Devise
           record if record && !record.remember_expired?
         end
 
-        Devise::Models.config(self, :remember_for)
-        Devise::Models.config(self, :cookie_domain)
+        Devise::Models.config(self, :remember_for, :cookie_domain)
       end
     end
   end

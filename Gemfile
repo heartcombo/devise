@@ -2,7 +2,7 @@ source "http://gemcutter.org"
 
 # Need to install Rails from source
 gem "rails", :path => "../rails"
-gem "warden", "0.10.3"
+gem "warden", "0.10.5"
 gem "sqlite3-ruby"
 gem "webrat", "0.7"
 gem "mocha", :require => false

@@ -94,9 +94,9 @@ Configure your routes after setting up your model. Open your config/routes.rb fi
 
 This will use your User model to create a set of needed routes (you can see them by running `rake routes`).
 
-Options for configuring your routes include :class_name (to set the class for that route), :path_prefix, :as and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
+Options for configuring your routes include :class_name (to set the class for that route), :path_prefix, :path and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
 
-  devise_for :users, :as => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
+  devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
 
 Be sure to check devise_for documentation for details.
 

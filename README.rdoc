@@ -30,7 +30,11 @@ After you install Devise and add it to your Gemfile, you need to run the generat
 
   rails generate devise_install
 
-And you're ready to go. The generator will install an initializer which describes ALL Devise's configuration options, so don't forget to take a look at it!
+The generator will install an initializer which describes ALL Devise's configuration options and you MUST take a look at it. When you are done, you are ready to add Devise to any of your models using the generator:
+
+  rails generate devise MODEL
+
+Replace MODEL by the class name you want to add devise, like User, Admin, etc. This will create a model (if one does not exist) and configure it with default Devise modules. The generator will also create a migration file (if your ORM support them) and configure your routes. Continue reading this file to understand exactly what the generator produces and how to use it.
 
 == Rails 2.3
 
@@ -65,7 +69,7 @@ Finally, Devise also has several extensions built by the community. Don't forget
 
 == Basic Usage
 
-This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration. You MUST also check out the *Generators* section below to help you start.
+This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration.
 
 Devise must be set up within the model (or models) you want to use. Devise routes must be created inside your config/routes.rb file.
 
@@ -100,7 +104,7 @@ Options for configuring your routes include :class_name (to set the class for th
 
 Be sure to check devise_for documentation for details.
 
-After creating your models and routes, run your migrations, and you are ready to go! But don't stop reading here, we still have a lot to tell you:
+This exactly what the devise generator produces for you: model, routes and migrations. Don't forget to run rake db:migrate and you are ready to go! But don't stop reading here, we still have a lot to tell you.
 
 == Controller filters and helpers
 
@@ -155,20 +159,6 @@ Devise allows you to set up as many roles as you want. For example, you may have
   admin_signed_in?
   current_admin
   admin_session
-
-== Generators
-
-Devise has generators to help you get started:
-
-  rails generate devise_install
-
-This will generate an initializer, with a description of all configuration values.
-
-You can also generate models:
-
-  rails generate devise Model
-
-This will create a model named "Model" configured with default Devise modules and attr_accessible set for default fields. The generator will also create the migration and configure your routes for Devise.
 
 == Model configuration
 

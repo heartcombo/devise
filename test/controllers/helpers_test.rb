@@ -145,6 +145,14 @@ class ControllerAuthenticableTest < ActionController::TestCase
     assert_equal admin_root_path, @controller.after_sign_in_path_for(:admin)
   end
 
+  test 'after update path defaults to root path if none by was specified for the given scope' do
+    assert_equal root_path, @controller.after_update_path_for(:user)
+  end
+
+  test 'after update path defaults to the scoped root path' do
+    assert_equal admin_root_path, @controller.after_update_path_for(:admin)
+  end
+
   test 'after sign out path defaults to the root path' do
     assert_equal root_path, @controller.after_sign_out_path_for(:admin)
     assert_equal root_path, @controller.after_sign_out_path_for(:user)

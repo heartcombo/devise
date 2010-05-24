@@ -19,6 +19,8 @@
   * :activatable is included by default in your models.
   * Allow to set cookie domain for the remember token. (by github.com/mantas)
 	* Added navigational formats to specify when it should return a 302 and when a 401.
+	* Added authenticate(scope) support in routes (by github.com/wildchild)
+	* Added after_update_path_for to registrations controller (by github.com/thedelchop)
 
 * bug fix
   * Fix a bug with STI.

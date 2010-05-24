@@ -106,6 +106,16 @@ module ActionDispatch::Routing
       end
     end
 
+    def authenticate(scope)
+      constraint = lambda do |request|
+        request.env["warden"].authenticate!(:scope => scope)
+      end
+
+      constraints(constraint) do
+        yield
+      end
+    end
+
     protected
 
       def devise_session(mapping, controllers)

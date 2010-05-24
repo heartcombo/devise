@@ -54,6 +54,34 @@ class DatabaseAuthenticationSanityTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
+  test 'not signed in as admin should not be able to access private route restricted to admins' do
+    get private_path
+
+    assert_redirected_to new_admin_session_path
+    assert_not warden.authenticated?(:admin)
+  end
+
+  test 'signed in as user should not be able to access private route restricted to admins' do
+    sign_in_as_user
+    assert warden.authenticated?(:user)
+    assert_not warden.authenticated?(:admin)
+
+    get private_path
+    assert_redirected_to new_admin_session_path
+  end
+
+  test 'signed in as admin should be able to access private route restricted to admins' do
+    sign_in_as_admin
+    assert warden.authenticated?(:admin)
+    assert_not warden.authenticated?(:user)
+
+    get private_path
+
+    assert_response :success
+    assert_template 'home/private'
+    assert_contain 'Private!'
+  end
+
   test 'signed in as user should not be able to access admins actions' do
     sign_in_as_user
     assert warden.authenticated?(:user)

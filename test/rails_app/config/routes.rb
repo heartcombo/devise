@@ -22,4 +22,8 @@ Rails::Application.routes.draw do
   match "/anywhere", :to => "foo#bar", :as => :new_admin_password
 
   root :to => "home#index"
+
+  authenticate(:admin) do
+    match "/private", :to => "home#private", :as => :private
+  end
 end

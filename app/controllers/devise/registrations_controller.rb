@@ -31,8 +31,7 @@ class Devise::RegistrationsController < ApplicationController
   def update
     if resource.update_with_password(params[resource_name])
       set_flash_message :notice, :updated
-      #redirect_to after_sign_in_path_for(self.resource)
-      redirect_to after_update_path_for(self.resource)
+      redirect_to after_update_path_for(resource)
     else
       clean_up_passwords(resource)
       render_with_scope :edit

@@ -5,7 +5,7 @@ Devise.setup do |config|
   # the encrypted password. By default no pepper is used.
   # config.pepper = "rake secret output"
 
-  # Configure how many times you want the password is reencrypted. Default is 10.
+  # Configure how many times you want the password re-encrypted. Default is 10.
   # config.stretches = 10
 
   # Define which will be the encryption algorithm. Supported algorithms are :sha1
@@ -49,7 +49,7 @@ Devise.setup do |config|
 
   # Defines which strategy will be used to unlock an account.
   # :email = Sends an unlock link to the user email
-  # :time  = Reanables login after a certain ammount of time (see :unlock_in below)
+  # :time  = Re-enables login after a certain amount of time (see :unlock_in below)
   # :both  = enables both strategies
   # config.unlock_strategy = :both
 

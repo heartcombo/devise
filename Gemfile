@@ -1,10 +1,10 @@
-source "http://gemcutter.org"
+source "http://rubygems.org"
 
 # Need to install Rails from source
-gem "rails", :path => "../rails"
-gem "warden", "0.10.5"
+gem "rails", "3.0.0.beta4"
+gem "warden", "0.10.7"
 gem "sqlite3-ruby"
-gem "webrat", "0.7"
+gem "webrat", "0.7.0"
 gem "mocha", :require => false
 gem "bcrypt-ruby", :require => "bcrypt"
 

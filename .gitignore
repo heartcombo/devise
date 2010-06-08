@@ -3,6 +3,7 @@
 *~
 coverage/*
 *.sqlite3
+.bundle
 rdoc/*
 pkg
 log

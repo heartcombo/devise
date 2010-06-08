@@ -64,7 +64,7 @@ class LockableTest < ActiveSupport::TestCase
     user.unlock_access!
     assert_nil user.reload.locked_at
     assert_nil user.reload.unlock_token
-    assert 0, user.reload.failed_attempts
+    assert_equal 0, user.reload.failed_attempts
   end
 
   test 'should not unlock an unlocked user' do

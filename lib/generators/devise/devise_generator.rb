@@ -24,13 +24,16 @@ class DeviseGenerator < Rails::Generators::NamedBase
   def invoke_orm_model
     if model_exists?
       say "* Model already exists. Adding Devise behavior."
-    else
+    elsif options[:orm].present?
       invoke "model", [name], :migration => false, :orm => options[:orm]
 
       unless model_exists?
         abort "Tried to invoke the model generator for '#{options[:orm]}' but could not find it.\n" <<
-              "Please create your model by hand before calling `rails g devise #{name}`."
+          "Please create your model by hand before calling `rails g devise #{name}`."
       end
+    else
+      abort "Cannot create a devise model because config.generators.orm is blank.\n" <<
+        "Please create your model by hand or configure your generators orm before calling `rails g devise #{name}`."
     end
   end
 

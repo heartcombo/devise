@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :plural, :path, :controllers, :path_names, :path_prefix
+    attr_reader :singular, :plural, :path, :controllers, :path_names, :path_prefix, :klass
     alias :name :singular
 
     # Loop through all mappings looking for a map that matches with the requested

@@ -91,10 +91,11 @@ module ActionDispatch::Routing
       resources.each do |resource|
         mapping = Devise.add_model(resource, options)
 
-        unless mapping.to.respond_to?(:devise)
-          raise "#{mapping.to.name} does not respond to 'devise' method. This usually means you haven't " <<
-            "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " <<
-            "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
+        begin
+          raise_no_devise_method_error!(mapping.klass) unless mapping.to.respond_to?(:devise)
+        rescue NoMethodError => e
+          raise unless e.message.include?("undefined method `devise'")
+          raise_no_devise_method_error!(mapping.klass)
         end
 
         routes  = mapping.routes
@@ -149,6 +150,12 @@ module ActionDispatch::Routing
           resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => mapping.path_names[:registration],
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end
+      end
+
+      def raise_no_devise_method_error!(klass)
+        raise "#{klass} does not respond to 'devise' method. This usually means you haven't " <<
+          "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " <<
+          "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
       end
   end
 end

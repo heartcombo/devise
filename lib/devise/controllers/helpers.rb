@@ -5,7 +5,7 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
-        helper_method :warden, :signed_in?, :devise_controller?,
+        helper_method :warden, :signed_in?, :devise_controller?, :anybody_signed_in?,
                       *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?", :"#{m}_session"] }.flatten
       end
 

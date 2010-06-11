@@ -22,6 +22,16 @@ Right now it's composed of 11 modules:
 
 == Installation
 
+=== Rails 3 beta 4
+
+To use Devise with Rails 3 beta 4, please use it straight from the git repository, by adding it to your Gemfile:
+
+  gem "devise", :git => "git://github.com/plataformatec/devise.git"
+
+Then follow the same steps as below.
+
+=== Rails 3 beta 3
+
 Devise master branch now supports Rails 3 and is NOT backward compatible. You can use the latest Rails 3 beta gem with Devise latest gem:
 
   gem install devise --version=1.1.rc1
@@ -36,7 +46,7 @@ The generator will install an initializer which describes ALL Devise's configura
 
 Replace MODEL by the class name you want to add devise, like User, Admin, etc. This will create a model (if one does not exist) and configure it with default Devise modules. The generator will also create a migration file (if your ORM support them) and configure your routes. Continue reading this file to understand exactly what the generator produces and how to use it.
 
-== Rails 2.3
+=== Rails 2.3
 
 If you want to use the Rails 2.3.x version, you should do:
 

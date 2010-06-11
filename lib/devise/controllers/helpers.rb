@@ -5,7 +5,7 @@ module Devise
 
       def self.included(base)
         base.class_eval do
-          helper_method :warden, :signed_in?, :devise_controller?,
+          helper_method :warden, :signed_in?, :devise_controller?, :anybody_signed_in?,
                         *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?", :"#{m}_session"] }.flatten
 
           # Use devise default_url_options. We have to declare it here to overwrite

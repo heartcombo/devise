@@ -53,6 +53,13 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.signed_in?(:my_scope)
   end
 
+  test 'proxy anybody_signed_in? to signed_in?' do
+    Devise.mappings.keys.each { |scope| # :user, :admin, :manager
+      @controller.expects(:signed_in?).with(scope)
+    }
+    @controller.anybody_signed_in?
+  end
+
   test 'proxy current_admin to authenticate with admin scope' do
     @mock_warden.expects(:authenticate).with(:scope => :admin)
     @controller.current_admin

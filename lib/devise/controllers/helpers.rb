@@ -29,6 +29,12 @@ module Devise
         warden.authenticate?(:scope => scope)
       end
 
+      # Check if the any scope is signed in session, without running
+      # authentication hooks.
+      def anybody_signed_in?
+        Devise.mappings.keys.any? { |scope| signed_in?(scope) }
+      end
+
       # Sign in an user that already was authenticated. This helper is useful for logging
       # users in after sign up.
       #

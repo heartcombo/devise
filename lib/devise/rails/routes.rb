@@ -92,10 +92,10 @@ module ActionDispatch::Routing
         mapping = Devise.add_model(resource, options)
 
         begin
-          raise_no_devise_method_error!(mapping.klass) unless mapping.to.respond_to?(:devise)
+          raise_no_devise_method_error!(mapping.class_name) unless mapping.to.respond_to?(:devise)
         rescue NoMethodError => e
           raise unless e.message.include?("undefined method `devise'")
-          raise_no_devise_method_error!(mapping.klass)
+          raise_no_devise_method_error!(mapping.class_name)
         end
 
         routes  = mapping.routes

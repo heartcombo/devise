@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :plural, :path, :controllers, :path_names, :path_prefix, :klass
+    attr_reader :singular, :plural, :path, :controllers, :path_names, :path_prefix, :class_name
     alias :name :singular
 
     # Loop through all mappings looking for a map that matches with the requested
@@ -63,8 +63,10 @@ module Devise
 
       @plural   = name.to_sym
       @path     = (options.delete(:path) || name).to_sym
-      @klass    = (options.delete(:class_name) || name.to_s.classify).to_s
       @singular = (options.delete(:singular) || name.to_s.singularize).to_sym
+
+      @class_name = (options.delete(:class_name) || name.to_s.classify).to_s
+      @ref = ActiveSupport::Dependencies.ref(@class_name)
 
       @path_prefix = "/#{options.delete(:path_prefix)}/".squeeze("/")
 
@@ -82,12 +84,8 @@ module Devise
     end
 
     # Gives the class the mapping points to.
-    # Reload mapped class each time when cache_classes is false.
     def to
-      return @to if @to
-      klass = @klass.constantize
-      @to = klass if Rails.configuration.cache_classes
-      klass
+      @ref.get
     end
 
     def strategies

@@ -52,7 +52,7 @@ If you want to use the Rails 2.3.x version, you should do:
 
   gem install devise --version=1.0.7
 
-Or checkout from the v1.0 branch:
+And please check the README at the v1.0 branch since this one is based on Rails 3:
 
   http://github.com/plataformatec/devise/tree/v1.0
 

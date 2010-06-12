@@ -6,6 +6,7 @@
   * Added authenticate(scope) support in routes (by github.com/wildchild)
   * Added after_update_path_for to registrations controller (by github.com/thedelchop)
   * Added anybody_signed_in? helper (by github.com/SSDany)
+  * Allow the mailer object to be replaced through config.mailer = "MyOwnMailer"
 
 * bug fix
   * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)

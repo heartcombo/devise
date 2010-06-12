@@ -51,7 +51,7 @@ module Devise
       # Send confirmation instructions by email
       def send_confirmation_instructions
         generate_confirmation_token if self.confirmation_token.nil?
-        ::Devise::Mailer.confirmation_instructions(self).deliver
+        ::Devise.mailer.confirmation_instructions(self).deliver
       end
 
       # Resend confirmation token. This method does not need to generate a new token.

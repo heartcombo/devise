@@ -1,4 +1,5 @@
 require 'active_support/core_ext/numeric/time'
+require 'active_support/dependencies'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
@@ -160,6 +161,17 @@ module Devise
   def self.setup
     yield self
   end
+
+  # Get the mailer class from the mailer reference object.
+  def self.mailer
+    @@mailer_ref.get
+  end
+
+  # Set the mailer reference object to access the mailer.
+  def self.mailer=(class_name)
+    @@mailer_ref = ActiveSupport::Dependencies.ref(class_name)
+  end
+  self.mailer = "Devise::Mailer"
 
   # Register a model in Devise. You can call this manually if you don't want
   # to use devise routes. Check devise_for in routes to know which options

@@ -1,3 +1,5 @@
+require 'active_support/secure_random'
+
 class DeviseInstallGenerator < Rails::Generators::Base
   desc "Creates a Devise initializer and copy locale files to your application."
 

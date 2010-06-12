@@ -17,23 +17,28 @@ module Devise
     config.before_eager_load { |app| app.reload_routes! }
 
     config.after_initialize do
+      Devise.encryptor ||= begin
+        warn "[WARNING] config.encryptor is not set in your config/initializers/devise.rb. " \
+          "Devise will then set it to :bcrypt. If you were using the previous default " \
+          "encryptor, please add config.encryptor = :sha1 to your configuration file."
+        :bcrypt
+      end
+    end
+
+    config.after_initialize do
       flash = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
 
       translations = begin
-        I18n.available_locales
-        I18n.backend.send(:translations)
+        I18n.t("devise.sessions", :raise => true).keys
       rescue Exception => e # Do not care if something fails
         {}
       end
 
-      translations.each do |locale, translations|
-        keys = flash & (translations[:devise][:sessions].keys) rescue []
+      keys = flash & translations
 
-        if keys.any?
-          ActiveSupport::Deprecation.warn "The following I18n messages in 'devise.sessions' " <<
-            "for locale '#{locale}' are deprecated: #{keys.to_sentence}. Please move them to " <<
-            "'devise.failure' instead."
-        end
+      if keys.any?
+        ActiveSupport::Deprecation.warn "The following I18n messages in 'devise.sessions' " \
+          "are deprecated: #{keys.to_sentence}. Please move them to 'devise.failure' instead."
       end
     end
   end

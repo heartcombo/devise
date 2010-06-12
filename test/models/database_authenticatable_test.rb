@@ -3,8 +3,20 @@ require 'digest/sha1'
 
 class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
-  def encrypt_password(user, pepper=User.pepper, stretches=User.stretches, encryptor=::Devise::Encryptors::Sha1)
+  def encrypt_password(user, pepper=User.pepper, stretches=User.stretches, encryptor=User.encryptor_class)
     encryptor.digest('123456', stretches, user.password_salt, pepper)
+  end
+
+  def swap_with_encryptor(klass, encryptor, options={})
+    klass.instance_variable_set(:@encryptor_class, nil)
+
+    swap klass, options.merge(:encryptor => encryptor) do
+      begin
+        yield
+      ensure
+        klass.instance_variable_set(:@encryptor_class, nil)
+      end
+    end
   end
 
   test 'should respond to password and password confirmation' do
@@ -28,8 +40,10 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should generate a base64 hash using SecureRandom for password salt' do
-    ActiveSupport::SecureRandom.expects(:base64).with(15).returns('friendly_token')
-    assert_equal 'friendly_token', new_user.password_salt
+    swap_with_encryptor User, :sha1 do
+      ActiveSupport::SecureRandom.expects(:base64).with(15).returns('friendly_token')
+      assert_equal 'friendly_token', new_user.password_salt
+    end
   end
 
   test 'should not generate salt if password is blank' do
@@ -71,24 +85,10 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should fallback to devise stretches default configuration' do
-    swap Devise, :stretches => 1 do
-      user = new_user
-      assert_equal encrypt_password(user, nil, 1), user.encrypted_password
-      assert_not_equal encrypt_password(user, nil, 2), user.encrypted_password
-    end
-  end
-
   test 'should respect encryptor configuration' do
-    User.instance_variable_set(:@encryptor_class, nil)
-
-    swap Devise, :encryptor => :sha512 do
-      begin
-        user = create_user
-        assert_equal user.encrypted_password, encrypt_password(user, User.pepper, User.stretches, ::Devise::Encryptors::Sha512)
-      ensure
-        User.instance_variable_set(:@encryptor_class, nil)
-      end
+    swap_with_encryptor User, :sha512 do
+      user = create_user
+      assert_equal user.encrypted_password, encrypt_password(user, User.pepper, User.stretches, ::Devise::Encryptors::Sha512)
     end
   end
 

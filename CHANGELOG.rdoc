@@ -1,4 +1,19 @@
-== 1.1.rc1
+== 1.1.0 (to be released)
+
+* enhancements
+  * Allow to set cookie domain for the remember token. (by github.com/mantas)
+  * Added navigational formats to specify when it should return a 302 and when a 401.
+  * Added authenticate(scope) support in routes (by github.com/wildchild)
+  * Added after_update_path_for to registrations controller (by github.com/thedelchop)
+  * Added anybody_signed_in? helper (by github.com/SSDany)
+
+* bug fix
+  * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)
+
+* deprecations
+  * bcrypt is now the default encryptor
+
+== 1.1.rc
 
 * enhancements
   * Rails 3 compatibility.
@@ -17,10 +32,6 @@
   * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or none. Setting those values to :none means that you want to handle lock and unlocking by yourself.
   * No need to append ?unauthenticated=true in URLs anymore since Flash was moved to a middleware in Rails 3.
   * :activatable is included by default in your models.
-  * Allow to set cookie domain for the remember token. (by github.com/mantas)
-	* Added navigational formats to specify when it should return a 302 and when a 401.
-	* Added authenticate(scope) support in routes (by github.com/wildchild)
-	* Added after_update_path_for to registrations controller (by github.com/thedelchop)
 
 * bug fix
   * Fix a bug with STI.

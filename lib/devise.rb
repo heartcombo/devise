@@ -97,7 +97,7 @@ module Devise
 
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor
-  @@encryptor = :sha1
+  @@encryptor = nil
 
   # Store scopes mappings.
   mattr_accessor :mappings

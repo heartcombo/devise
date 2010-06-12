@@ -26,6 +26,23 @@ module Devise
     end
 
     config.after_initialize do
+      actions = [:confirmation_instructions, :reset_password_instructions, :unlock_instructions]
+
+      translations = begin
+        I18n.t("devise.mailer", :raise => true).map { |k, v| k if v.is_a?(String) }.compact
+      rescue Exception => e # Do not care if something fails
+        {}
+      end
+
+      keys = actions & translations
+
+      keys.each do |key|
+        ActiveSupport::Deprecation.warn "The I18n message 'devise.mailer.#{key}' is deprecated. " \
+          "Please use 'devise.mailer.#{key}.subject' instead."
+      end
+    end
+
+    config.after_initialize do
       flash = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
 
       translations = begin

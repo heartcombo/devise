@@ -31,6 +31,9 @@ en:
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
       unlocked: 'Your account was successfully unlocked. You are now signed in.'
     mailer:
-      confirmation_instructions: 'Confirmation instructions'
-      reset_password_instructions: 'Reset password instructions'
-      unlock_instructions: 'Unlock Instructions'
+      confirmation_instructions:
+        subject: 'Confirmation instructions'
+      reset_password_instructions:
+        subject: 'Reset password instructions'
+      unlock_instructions:
+        subject: 'Unlock Instructions'

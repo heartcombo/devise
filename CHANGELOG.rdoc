@@ -12,6 +12,8 @@
 
 * deprecations
   * bcrypt is now the default encryptor
+  * devise.mailer.confirmations_instructions now should be devise.mailer.confirmations_instructions.subject
+  * devise.mailer.user.confirmations_instructions now should be devise.mailer.confirmations_instructions.user_subject
 
 == 1.1.rc
 

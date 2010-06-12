@@ -1,6 +1,5 @@
 class Devise::Mailer < ::ActionMailer::Base
   include Devise::Controllers::ScopedViews
-
   attr_reader :devise_mapping, :resource
 
   def confirmation_instructions(record)
@@ -17,53 +16,53 @@ class Devise::Mailer < ::ActionMailer::Base
 
   private
 
-    # Configure default email options
-    def setup_mail(record, action)
-      @scope_name     = Devise::Mapping.find_scope!(record)
-      @devise_mapping = Devise.mappings[@scope_name]
-      @resource       = instance_variable_set("@#{@devise_mapping.name}", record)
+  # Configure default email options
+  def setup_mail(record, action)
+    @scope_name     = Devise::Mapping.find_scope!(record)
+    @devise_mapping = Devise.mappings[@scope_name]
+    @resource       = instance_variable_set("@#{@devise_mapping.name}", record)
 
-      template_path = ["devise/mailer"]
-      template_path.unshift "#{@devise_mapping.plural}/mailer" if self.class.scoped_views?
+    template_path = ["devise/mailer"]
+    template_path.unshift "#{@devise_mapping.plural}/mailer" if self.class.scoped_views?
 
-      headers = {
-        :subject => translate(@devise_mapping, action),
-        :from => mailer_sender(@devise_mapping),
-        :to => record.email,
-        :template_path => template_path
-      }
+    headers = {
+      :subject => translate(@devise_mapping, action),
+      :from => mailer_sender(@devise_mapping),
+      :to => record.email,
+      :template_path => template_path
+    }
 
-      headers.merge!(record.headers_for(action)) if record.respond_to?(:headers_for)
-      mail(headers)
+    headers.merge!(record.headers_for(action)) if record.respond_to?(:headers_for)
+    mail(headers)
+  end
+
+  def mailer_sender(mapping)
+    if Devise.mailer_sender.is_a?(Proc)
+      Devise.mailer_sender.call(mapping.name)
+    else
+      Devise.mailer_sender
     end
+  end
 
-    # Fix a bug in Rails 3 beta 3
-    # TODO: Remove me in next release
-    def mail(*) #:nodoc:
-      super
-      @_message["template_path"] = nil
-      @_message
-    end
-
-    def mailer_sender(mapping)
-      if Devise.mailer_sender.is_a?(Proc)
-        Devise.mailer_sender.call(mapping.name)
-      else
-        Devise.mailer_sender
-      end
-    end
-
-    # Setup subject namespaced by model. It means you're able to setup your
-    # messages using specific resource scope, or provide a default one.
-    # Example (i18n locale file):
-    #
-    #   en:
-    #     devise:
-    #       mailer:
-    #         confirmation_instructions: '...'
-    #         user:
-    #           confirmation_instructions: '...'
-    def translate(mapping, key)
-      I18n.t(:"#{mapping.name}.#{key}", :scope => [:devise, :mailer], :default => key)
-    end
+  # Setup a subject doing an I18n lookup. At first, it attemps to set a subject
+  # based on the current mapping:
+  #
+  #   en:
+  #     devise:
+  #       mailer:
+  #         confirmation_instructions:
+  #           user_subject: '...'
+  #
+  # If one does not exist, it fallbacks to ActionMailer default:
+  #
+  #   en:
+  #     devise:
+  #       mailer:
+  #         confirmation_instructions:
+  #           subject: '...'
+  #
+  def translate(mapping, key)
+    I18n.t(:"#{mapping.name}_subject", :scope => [:devise, :mailer, key],
+      :default => [:subject, key.to_s.humanize])
+  end
 end

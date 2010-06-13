@@ -91,12 +91,15 @@ Gem::Specification.new do |s|
      "lib/devise/strategies/token_authenticatable.rb",
      "lib/devise/test_helpers.rb",
      "lib/devise/version.rb",
-     "lib/generators/devise/devise_generator.rb",
-     "lib/generators/devise/templates/migration.rb",
-     "lib/generators/devise_install/devise_install_generator.rb",
-     "lib/generators/devise_install/templates/README",
-     "lib/generators/devise_install/templates/devise.rb",
-     "lib/generators/devise_views/devise_views_generator.rb"
+     "lib/generators/devise/devise/devise_generator.rb",
+     "lib/generators/devise/devise/templates/migration.rb",
+     "lib/generators/devise/install/install_generator.rb",
+     "lib/generators/devise/install/templates/README",
+     "lib/generators/devise/install/templates/devise.rb",
+     "lib/generators/devise/views/views_generator.rb",
+     "lib/generators/devise_generator.rb",
+     "lib/generators/devise_install_generator.rb",
+     "lib/generators/devise_views_generator.rb"
   ]
   s.homepage = %q{http://github.com/plataformatec/devise}
   s.rdoc_options = ["--charset=UTF-8"]

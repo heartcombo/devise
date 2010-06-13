@@ -6,6 +6,7 @@ module Devise
       include Rails::Generators::Migration
 
       source_root File.expand_path("../templates", __FILE__)
+      namespace "devise"
 
       desc "Generates a model with the given NAME (if one does not exist) with devise " <<
            "configuration plus a migration file and devise routes."

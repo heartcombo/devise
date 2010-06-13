@@ -38,7 +38,7 @@ Devise master branch now supports Rails 3 and is NOT backward compatible. You ca
 
 After you install Devise and add it to your Gemfile, you need to run the generator:
 
-  rails generate devise_install
+  rails generate devise:install
 
 The generator will install an initializer which describes ALL Devise's configuration options and you MUST take a look at it. When you are done, you are ready to add Devise to any of your models using the generator:
 
@@ -176,7 +176,7 @@ The devise method in your models also accepts some options to configure its modu
 
   devise :database_authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
 
-Besides :encryptor, you can define :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the devise_install generator described above.
+Besides :encryptor, you can define :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the "devise:install" generator described above.
 
 == Configuring views
 
@@ -184,7 +184,7 @@ We built Devise to help you quickly develop an application that uses authenticat
 
 Since Devise is an engine, all its views are packaged inside the gem. These views will help you get started, but after sometime you may want to change them. If this is the case, you just need to invoke the following generator, and it will copy all views to your application:
 
-  rails generate devise_views
+  rails generate devise:views
 
 However, if you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
 

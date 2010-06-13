@@ -10,11 +10,13 @@
 
 * bug fix
   * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)
+  * Fix a bug where session was timing out on sign out
 
 * deprecations
   * bcrypt is now the default encryptor
   * devise.mailer.confirmations_instructions now should be devise.mailer.confirmations_instructions.subject
   * devise.mailer.user.confirmations_instructions now should be devise.mailer.confirmations_instructions.user_subject
+  * Generators now use Rails 3 syntax (devise:install) instead of devise_install
 
 == 1.1.rc
 

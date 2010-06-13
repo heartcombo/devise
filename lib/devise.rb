@@ -3,6 +3,7 @@ require 'active_support/dependencies'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
+  autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
 

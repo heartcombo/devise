@@ -36,6 +36,18 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:user)
   end
 
+  test 'time out is not triggered on sign out' do
+    user = sign_in_as_user
+    get expire_user_path(user)
+
+    get destroy_user_session_path
+    assert_response :redirect
+    assert_redirected_to root_path
+
+    follow_redirect!
+    assert_contain 'Signed out successfully'
+  end
+
   test 'user configured timeout limit' do
     swap Devise, :timeout_in => 8.minutes do
       user = sign_in_as_user

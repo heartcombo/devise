@@ -5,12 +5,16 @@
 # verify timeout in the following request.
 Warden::Manager.after_set_user do |record, warden, options|
   scope = options[:scope]
+
   if record && record.respond_to?(:timedout?) && warden.authenticated?(scope)
     last_request_at = warden.session(scope)['last_request_at']
 
     if record.timedout?(last_request_at)
-      warden.logout(scope)
-      throw :warden, :scope => scope, :message => :timeout
+      path_checker = Devise::PathChecker.new(warden.env, scope)
+      unless path_checker.signing_out?
+        warden.logout(scope)
+        throw :warden, :scope => scope, :message => :timeout
+      end
     end
 
     warden.session(scope)['last_request_at'] = Time.now.utc

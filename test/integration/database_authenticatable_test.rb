@@ -309,4 +309,13 @@ class AuthenticationTest < ActionController::IntegrationTest
       get '/sign_in'
     end
   end
+
+  # Invalid session
+  test 'invalid session does not cause errors' do
+    get "/"
+    session["warden.user.user.key"] = 170410
+
+    get users_path
+    assert_equal 302, response.status
+  end
 end

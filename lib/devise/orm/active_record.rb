@@ -23,7 +23,7 @@ module Devise
         include Devise::Schema
 
         # Tell how to apply schema methods.
-        def apply_schema(name, type, options={})
+        def apply_devise_schema(name, type, options={})
           column name, type.to_s.downcase.to_sym, options
         end
       end

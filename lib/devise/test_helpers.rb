@@ -40,7 +40,8 @@ module Devise
           Warden::Manager._before_failure.each{ |hook| hook.call(env, result) }
 
           status, headers, body = Devise::FailureApp.call(env).to_a
-          @controller.send :redirect_to, headers["Location"]
+          @controller.send :render, :status => status, :text => body,
+            :content_type => headers["Content-Type"], :location => headers["Location"]
         else
           result
         end

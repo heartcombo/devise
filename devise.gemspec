@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version = "1.1.rc1"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
-  s.authors = ["José Valim", "Carlos Antônio"]
-  s.date = %q{2010-06-12}
+  s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
+  s.date = %q{2010-06-13}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [

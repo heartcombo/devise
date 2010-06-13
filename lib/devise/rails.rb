@@ -31,7 +31,7 @@ module Devise
       translations = begin
         I18n.t("devise.mailer", :raise => true).map { |k, v| k if v.is_a?(String) }.compact
       rescue Exception => e # Do not care if something fails
-        {}
+        []
       end
 
       keys = actions & translations
@@ -48,7 +48,7 @@ module Devise
       translations = begin
         I18n.t("devise.sessions", :raise => true).keys
       rescue Exception => e # Do not care if something fails
-        {}
+        []
       end
 
       keys = flash & translations

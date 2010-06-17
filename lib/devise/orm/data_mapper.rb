@@ -72,7 +72,7 @@ module Devise
             end
           end
         end
-        
+
         def changed?
           dirty?
         end
@@ -84,7 +84,7 @@ module Devise
             super()
           end
         end
-        
+
         def update_attributes(*args)
           update(*args)
         end
@@ -93,7 +93,5 @@ module Devise
   end
 end
 
-DataMapper::Model.class_eval do
-  include Devise::Models
-  include Devise::Orm::DataMapper::Hook
-end
+DataMapper::Model.append_extensions(Devise::Models)
+DataMapper::Model.append_extensions(Devise::Orm::DataMapper::Hook)

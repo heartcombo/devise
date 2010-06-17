@@ -1,6 +1,9 @@
 class User
   include DataMapper::Resource
-  
+
+  extend  Devise::Orm::DataMapper::Schema
+  include Devise::Orm::DataMapper::Compatibility
+
   property :id, Serial
   property :username, String
   

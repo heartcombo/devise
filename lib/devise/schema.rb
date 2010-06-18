@@ -13,6 +13,10 @@ module Devise
     # == Options
     # * :null - When true, allow columns to be null.
     # * :default - Should be set to "" when :null is false.
+    #
+    # == Notes
+    # For Datamapper compatibility, we explicitly hardcode the limit for the
+    # encrypter password field in 128 characters.
     def database_authenticatable(options={})
       null    = options[:null] || false
       default = options[:default] || ""
@@ -22,7 +26,7 @@ module Devise
       end
 
       apply_devise_schema :email,              String, :null => null, :default => default
-      apply_devise_schema :encrypted_password, String, :null => null, :default => default
+      apply_devise_schema :encrypted_password, String, :null => null, :default => default, :limit => 128
       apply_devise_schema :password_salt,      String, :null => null, :default => default
     end      
 

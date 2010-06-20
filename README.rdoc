@@ -74,6 +74,7 @@ And a few example applications:
 
 * Rails 2.3 app using Devise at http://github.com/plataformatec/devise_example
 * Rails 2.3 app using Devise with subdomains at http://github.com/fortuity/subdomain-authentication
+* Rails 3.0 app with Mongoid at http://github.com/fortuity/rails3-mongoid-devise
 
 Finally, Devise also has several extensions built by the community. Don't forget to check them at the end of this README. If you want to write an extension on your own, you should also check Warden (http://github.com/hassox/warden), a Rack Authentication Framework which Devise depends on.
 

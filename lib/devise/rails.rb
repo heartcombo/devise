@@ -25,37 +25,39 @@ module Devise
       end
     end
 
-    config.after_initialize do
-      actions = [:confirmation_instructions, :reset_password_instructions, :unlock_instructions]
+    unless Rails.env.production?
+      config.after_initialize do
+        actions = [:confirmation_instructions, :reset_password_instructions, :unlock_instructions]
 
-      translations = begin
-        I18n.t("devise.mailer", :raise => true).map { |k, v| k if v.is_a?(String) }.compact
-      rescue Exception => e # Do not care if something fails
-        []
+        translations = begin
+          I18n.t("devise.mailer", :raise => true).map { |k, v| k if v.is_a?(String) }.compact
+        rescue Exception => e # Do not care if something fails
+          []
+        end
+
+        keys = actions & translations
+
+        keys.each do |key|
+          ActiveSupport::Deprecation.warn "The I18n message 'devise.mailer.#{key}' is deprecated. " \
+            "Please use 'devise.mailer.#{key}.subject' instead."
+        end
       end
 
-      keys = actions & translations
+      config.after_initialize do
+        flash = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
 
-      keys.each do |key|
-        ActiveSupport::Deprecation.warn "The I18n message 'devise.mailer.#{key}' is deprecated. " \
-          "Please use 'devise.mailer.#{key}.subject' instead."
-      end
-    end
+        translations = begin
+          I18n.t("devise.sessions", :raise => true).keys
+        rescue Exception => e # Do not care if something fails
+          []
+        end
 
-    config.after_initialize do
-      flash = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
+        keys = flash & translations
 
-      translations = begin
-        I18n.t("devise.sessions", :raise => true).keys
-      rescue Exception => e # Do not care if something fails
-        []
-      end
-
-      keys = flash & translations
-
-      if keys.any?
-        ActiveSupport::Deprecation.warn "The following I18n messages in 'devise.sessions' " \
-          "are deprecated: #{keys.to_sentence}. Please move them to 'devise.failure' instead."
+        if keys.any?
+          ActiveSupport::Deprecation.warn "The following I18n messages in 'devise.sessions' " \
+            "are deprecated: #{keys.to_sentence}. Please move them to 'devise.failure' instead."
+        end
       end
     end
   end

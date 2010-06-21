@@ -43,5 +43,10 @@ module Devise
   end
 end
 
-MongoMapper::Plugins::Document::ClassMethods.send(:include, Devise::Models)
-MongoMapper::Plugins::EmbeddedDocument::ClassMethods.send(:include, Devise::Models)
+if MongoMapper::Version >= "0.8.0"
+  MongoMapper::Plugins::Document::ClassMethods.send(:include, Devise::Models)
+  MongoMapper::Plugins::EmbeddedDocument::ClassMethods.send(:include, Devise::Models)
+else
+  MongoMapper::Document::ClassMethods.send(:include, Devise::Models)
+  MongoMapper::EmbeddedDocument::ClassMethods.send(:include, Devise::Models)
+end

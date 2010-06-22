@@ -23,6 +23,7 @@ group :data_mapper do
   gem 'dm-migrations',     '~> 1.0.0', :git => 'git://github.com/datamapper/dm-migrations'
   gem 'dm-sqlite-adapter', '~> 1.0.0', :git => 'git://github.com/datamapper/dm-sqlite-adapter'
   gem 'dm-validations',    '~> 1.0.0', :git => 'git://github.com/datamapper/dm-validations'
+  gem 'dm-serializer',     '~> 1.0.0', :git => 'git://github.com/datamapper/dm-serializer'
   gem 'dm-timestamps',     '~> 1.0.0', :git => 'git://github.com/datamapper/dm-timestamps'
   gem 'dm-rails',          '~> 1.0.0', :git => 'git://github.com/datamapper/dm-rails'
 end

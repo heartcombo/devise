@@ -13,10 +13,6 @@ class User
 
   timestamps :at
   
-  def save!(*args)
-    save
-  end
-  
   def self.create!(*args)
     create(*args)
   end

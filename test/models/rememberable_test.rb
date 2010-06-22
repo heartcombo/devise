@@ -18,19 +18,19 @@ class RememberableTest < ActiveSupport::TestCase
   test 'forget_me should clear remember token and save the record without validating' do
     user = create_user
     user.remember_me!
-    assert user.remember_token?
+    assert_not user.remember_token.nil?
     user.expects(:valid?).never
     user.forget_me!
-    assert_not user.remember_token?
+    assert user.remember_token.nil?
     assert_not user.changed?
   end
 
   test 'forget_me should clear remember_created_at' do
     user = create_user
     user.remember_me!
-    assert user.remember_created_at?
+    assert_not user.remember_created_at.nil?
     user.forget_me!
-    assert_not user.remember_created_at?
+    assert user.remember_created_at.nil?
   end
 
   test 'forget should do nothing if no remember token exists' do

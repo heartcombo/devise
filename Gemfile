@@ -19,9 +19,11 @@ group :mongoid do
 end
 
 group :data_mapper do
-  gem "do_sqlite3", '>= 0.10.1'
-  gem "dm-core", :git => "git://github.com/datamapper/dm-core.git"
-  gem "dm-validations", :git => "git://github.com/datamapper/dm-more.git"
-  gem "dm-timestamps", :git => "git://github.com/datamapper/dm-more.git"
-  gem "dm-rails", :git => "git://github.com/datamapper/dm-rails.git"
+  gem 'dm-core',           '~> 1.0.0', :git => 'git://github.com/datamapper/dm-core'
+  gem 'dm-migrations',     '~> 1.0.0', :git => 'git://github.com/datamapper/dm-migrations'
+  gem 'dm-sqlite-adapter', '~> 1.0.0', :git => 'git://github.com/datamapper/dm-sqlite-adapter'
+  gem 'dm-validations',    '~> 1.0.0', :git => 'git://github.com/datamapper/dm-validations'
+  gem 'dm-serializer',     '~> 1.0.0', :git => 'git://github.com/datamapper/dm-serializer'
+  gem 'dm-timestamps',     '~> 1.0.0', :git => 'git://github.com/datamapper/dm-timestamps'
+  gem 'dm-rails',          '~> 1.0.0', :git => 'git://github.com/datamapper/dm-rails'
 end

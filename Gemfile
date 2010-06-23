@@ -1,7 +1,11 @@
 source "http://rubygems.org"
 
-# Need to install Rails from source
-gem "rails", "3.0.0.beta4"
+if File.exist? File.expand_path('../../rails', __FILE__)
+  gem "rails", :path => "../rails"
+else
+  gem "rails", :git => "git://github.com/rails/rails.git"
+end
+
 gem "warden", "0.10.7"
 gem "sqlite3-ruby"
 gem "webrat", "0.7.0"

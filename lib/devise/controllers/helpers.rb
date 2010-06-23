@@ -175,7 +175,6 @@ module Devise
       # Sign out an user and tries to redirect to the url specified by
       # after_sign_out_path_for.
       def sign_out_and_redirect(resource_or_scope)
-        return sign_out_everybody_and_redirect(resource_or_scope) unless Devise.sign_out_scoped
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         sign_out(scope)
         redirect_to after_sign_out_path_for(scope)

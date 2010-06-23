@@ -1,6 +1,15 @@
 require 'test_helper'
 
 class AuthenticationSanityTest < ActionController::IntegrationTest
+
+  def setup
+    Devise.sign_out_scoped = true
+  end
+
+  def teardown
+    Devise.sign_out_scoped = true
+  end
+
   test 'home should be accessible without sign in' do
     visit '/'
     assert_response :success
@@ -29,7 +38,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
     assert warden.authenticated?(:admin)
   end
 
-  test 'sign out as user should not touch admin authentication' do
+  test 'sign out as user should not touch admin authentication if sign_out_scoped' do
     sign_in_as_user
     sign_in_as_admin
 
@@ -38,13 +47,34 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
     assert warden.authenticated?(:admin)
   end
 
-  test 'sign out as admin should not touch user authentication' do
+  test 'sign out as admin should not touch user authentication if sign_out_scoped' do
     sign_in_as_user
     sign_in_as_admin
 
     get destroy_admin_session_path
     assert_not warden.authenticated?(:admin)
     assert warden.authenticated?(:user)
+  end
+
+  test 'sign out as user should also sign out admin unless sign_out_scoped' do
+    Devise.sign_out_scoped = false
+    sign_in_as_user
+    sign_in_as_admin
+
+    get destroy_user_session_path
+    assert_not warden.authenticated?(:user)
+    assert_not warden.authenticated?(:admin)
+    Devise.sign_out_scoped = true
+  end
+
+  test 'sign out as admin should also sign out user unless sign_out_scoped' do
+    Devise.sign_out_scoped = false
+    sign_in_as_user
+    sign_in_as_admin
+
+    get destroy_admin_session_path
+    assert_not warden.authenticated?(:admin)
+    assert_not warden.authenticated?(:user)
   end
 
   test 'not signed in as admin should not be able to access admins actions' do

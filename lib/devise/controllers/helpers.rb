@@ -64,6 +64,13 @@ module Devise
         warden.logout(scope)
       end
 
+      def sign_out_everybody
+        # Not "warden.logout" since we need to sign_out only devise-defined scopes.
+        Devise.mappings.keys.each { |scope| warden.user(scope) }
+        warden.raw_session.inspect
+        warden.logout(*Devise.mappings.keys)
+      end
+
       # Returns and delete the url stored in the session for the given scope. Useful
       # for giving redirect backs after sign up:
       #
@@ -148,6 +155,10 @@ module Devise
         root_path
       end
 
+      def after_sign_out_everybody_path_for(resource_or_scope)
+        after_sign_out_path_for(resource_or_scope)
+      end
+
       # Sign in an user and tries to redirect first to the stored location and
       # then to the url specified by after_sign_in_path_for.
       #
@@ -166,6 +177,12 @@ module Devise
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         sign_out(scope)
         redirect_to after_sign_out_path_for(scope)
+      end
+
+      def sign_out_everybody_and_redirect(resource_or_scope)
+        scope = Devise::Mapping.find_scope!(resource_or_scope) # just to maintain sign_out paths
+        sign_out_everybody
+        redirect_to after_sign_out_everybody_path_for(scope)
       end
 
       # Define authentication filters and accessor helpers based on mappings.

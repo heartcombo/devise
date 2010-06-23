@@ -126,6 +126,15 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.sign_out(User.new)
   end
 
+  test 'sign out everybody proxy to logout on warden' do
+    Devise.mappings.keys.each { |scope|
+      @mock_warden.expects(:user).with(scope).returns(true)
+    }
+
+    @mock_warden.expects(:logout).with(*Devise.mappings.keys).returns(true)
+    @controller.sign_out_everybody
+  end
+
   test 'stored location for returns the location for a given scope' do
     assert_nil @controller.stored_location_for(:user)
     @controller.session[:"user_return_to"] = "/foo.bar"
@@ -165,6 +174,13 @@ class ControllerAuthenticableTest < ActionController::TestCase
     assert_equal root_path, @controller.after_sign_out_path_for(:user)
   end
 
+  test 'after sign out everybody path defaults to the sign out path' do
+    @controller.expects(:after_sign_out_path_for).with(:admin).returns(:custom_admin_path)
+    @controller.expects(:after_sign_out_path_for).with(:user).returns(:custom_user_path)
+    assert_equal :custom_admin_path, @controller.after_sign_out_everybody_path_for(:admin)
+    assert_equal :custom_user_path, @controller.after_sign_out_everybody_path_for(:user)
+  end
+
   test 'sign in and redirect uses the stored location' do
     user = User.new
     @controller.session[:"user_return_to"] = "/foo.bar"
@@ -196,6 +212,13 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.expects(:redirect_to).with(admin_root_path)
     @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
     @controller.sign_out_and_redirect(:admin)
+  end
+
+  test 'sign out everybody and redirect uses the configured after sign out everybody path' do
+    @controller.expects(:sign_out_everybody).returns(true) # since we're know that it's a proxy
+    @controller.expects(:redirect_to).with(admin_root_path)
+    @controller.instance_eval "def after_sign_out_everybody_path_for(resource); admin_root_path; end"
+    @controller.sign_out_everybody_and_redirect(:admin)
   end
 
   test 'is not a devise controller' do

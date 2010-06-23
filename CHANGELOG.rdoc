@@ -1,15 +1,13 @@
-== 1.1.0 (to be released)
+== 1.1.rc2
 
 * enhancements
   * Allow to set cookie domain for the remember token. (by github.com/mantas)
   * Added navigational formats to specify when it should return a 302 and when a 401.
   * Added authenticate(scope) support in routes (by github.com/wildchild)
   * Added after_update_path_for to registrations controller (by github.com/thedelchop)
-  * Added anybody_signed_in? helper (by github.com/SSDany)
   * Allow the mailer object to be replaced through config.mailer = "MyOwnMailer"
 
 * bug fix
-  * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)
   * Fix a bug where session was timing out on sign out
 
 * deprecations
@@ -21,35 +19,43 @@
 == 1.1.rc
 
 * enhancements
-  * Rails 3 compatibility.
-  * All controllers and views are namespaced, for example: Devise::SessionsController and "devise/sessions".
-  * Devise.orm is deprecated. This reduces the required API to hook your ORM with devise.
-  * Use metal for failure app.
-  * HTML e-mails now have proper formatting.
-  * Allow to give :skip and :controllers in routes.
-  * Move trackable logic to the model.
-  * E-mails now use any template available in the filesystem. Easy to create multipart e-mails.
-  * E-mails asks headers_for in the model to set the proper headers.
-  * Allow to specify haml in devise_views.
-  * Compatibility with Datamapper and Mongoid.
-  * Make config.devise available on config/application.rb.
-  * TokenAuthenticatable now works with HTTP Basic Auth.
-  * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or none. Setting those values to :none means that you want to handle lock and unlocking by yourself.
-  * No need to append ?unauthenticated=true in URLs anymore since Flash was moved to a middleware in Rails 3.
-  * :activatable is included by default in your models.
+  * Rails 3 compatibility
+  * All controllers and views are namespaced, for example: Devise::SessionsController and "devise/sessions"
+  * Devise.orm is deprecated. This reduces the required API to hook your ORM with devise
+  * Use metal for failure app
+  * HTML e-mails now have proper formatting
+  * Allow to give :skip and :controllers in routes
+  * Move trackable logic to the model
+  * E-mails now use any template available in the filesystem. Easy to create multipart e-mails
+  * E-mails asks headers_for in the model to set the proper headers
+  * Allow to specify haml in devise_views
+  * Compatibility with Datamapper and Mongoid
+  * Make config.devise available on config/application.rb
+  * TokenAuthenticatable now works with HTTP Basic Auth
+  * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or none. Setting those values to :none means that you want to handle lock and unlocking by yourself
+  * No need to append ?unauthenticated=true in URLs anymore since Flash was moved to a middleware in Rails 3
+  * :activatable is included by default in your models
 
 * bug fix
-  * Fix a bug with STI.
-  * Do not remove options from Datamapper and MongoMapper in find.
-  * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)
+  * Fix a bug with STI
 
 * deprecations
-  * Rails 3 compatible only.
-  * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new".
-  * Devise.orm is deprecated, just require "devise/orm/YOUR_ORM" instead.
-  * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options.
-  * All messages under devise.sessions, except :signed_in and :signed_out, should be moved to devise.failure.
-  * :as and :scope in routes is deprecated. Use :path and :singular instead.
+  * Rails 3 compatible only
+  * Removed support for MongoMapper
+  * Scoped views are no longer "sessions/users/new". Now use "users/sessions/new"
+  * Devise.orm is deprecated, just require "devise/orm/YOUR_ORM" instead
+  * Devise.default_url_options is deprecated, just modify ApplicationController.default_url_options
+  * All messages under devise.sessions, except :signed_in and :signed_out, should be moved to devise.failure
+  * :as and :scope in routes is deprecated. Use :path and :singular instead
+
+== 1.0.8
+
+* enhancements
+  * Support for latest MongoMapper
+  * Added anybody_signed_in? helper (by github.com/SSDany)
+
+* bug fix
+  * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)
 
 == 1.0.7
 

@@ -1,3 +1,12 @@
+== 1.0.8
+
+* enhancements
+  * Support for latest MongoMapper
+  * Added anybody_signed_in? helper (by github.com/SSDany)
+
+* bug fix
+  * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)
+
 == 1.0.7
 
 * bug fix

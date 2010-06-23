@@ -157,6 +157,9 @@ module Devise
   @@warden_config = nil
   @@warden_config_block = nil
 
+  mattr_accessor :sign_out_scoped
+  @@sign_out_scoped = true
+
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

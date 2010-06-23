@@ -128,25 +128,25 @@ module ActionDispatch::Routing
       end
  
       def devise_password(mapping, controllers)
-        scope mapping.full_path, :as => mapping.name do
+        scope mapping.full_path, :name_prefix => mapping.name do
           resource :password, :only => [:new, :create, :edit, :update], :path => mapping.path_names[:password], :controller => controllers[:passwords]
         end
       end
  
       def devise_confirmation(mapping, controllers)
-        scope mapping.full_path, :as => mapping.name do
+        scope mapping.full_path, :name_prefix => mapping.name do
           resource :confirmation, :only => [:new, :create, :show], :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
         end
       end
  
       def devise_unlock(mapping, controllers)
-        scope mapping.full_path, :as => mapping.name do
+        scope mapping.full_path, :name_prefix => mapping.name do
           resource :unlock, :only => [:new, :create, :show], :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
         end
       end
 
       def devise_registration(mapping, controllers)
-        scope mapping.full_path[1..-1], :as => mapping.name do
+        scope mapping.full_path[1..-1], :name_prefix => mapping.name do
           resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => mapping.path_names[:registration],
                    :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
         end

@@ -23,6 +23,8 @@ module Devise
       class_option :migration, :type => :boolean, :default => orm_has_migration?
 
       def invoke_orm_model
+        return unless behavior == :invoke
+
         if model_exists?
           say "* Model already exists. Adding Devise behavior."
         elsif options[:orm].present?

@@ -18,10 +18,6 @@ class Devise::SessionsController < ApplicationController
   # GET /resource/sign_out
   def destroy
     set_flash_message :notice, :signed_out if signed_in?(resource_name)
-    if Devise.sign_out_scoped
-      sign_out_and_redirect(resource_name)
-    else
-      sign_out_everybody_and_redirect(resource_name)
-    end
+    sign_out_and_redirect(resource_name)
   end
 end

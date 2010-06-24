@@ -3,11 +3,11 @@ require 'test_helper'
 class AuthenticationSanityTest < ActionController::IntegrationTest
 
   def setup
-    Devise.sign_out_scoped = true
+    Devise.sign_out_all_scopes = true
   end
 
   def teardown
-    Devise.sign_out_scoped = true
+    Devise.sign_out_all_scopes = true
   end
 
   test 'home should be accessible without sign in' do
@@ -38,7 +38,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
     assert warden.authenticated?(:admin)
   end
 
-  test 'sign out as user should not touch admin authentication if sign_out_scoped' do
+  test 'sign out as user should not touch admin authentication if sign_out_all_scopes is false' do
     sign_in_as_user
     sign_in_as_admin
 
@@ -47,7 +47,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
     assert warden.authenticated?(:admin)
   end
 
-  test 'sign out as admin should not touch user authentication if sign_out_scoped' do
+  test 'sign out as admin should not touch user authentication if sign_out_all_scopes is false' do
     sign_in_as_user
     sign_in_as_admin
 
@@ -56,19 +56,18 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
-  test 'sign out as user should also sign out admin unless sign_out_scoped' do
-    Devise.sign_out_scoped = false
+  test 'sign out as user should also sign out admin if sign_out_all_scopes is true' do
+    Devise.sign_out_all_scopes = false
     sign_in_as_user
     sign_in_as_admin
 
     get destroy_user_session_path
     assert_not warden.authenticated?(:user)
     assert_not warden.authenticated?(:admin)
-    Devise.sign_out_scoped = true
   end
 
-  test 'sign out as admin should also sign out user unless sign_out_scoped' do
-    Devise.sign_out_scoped = false
+  test 'sign out as admin should also sign out user if sign_out_all_scopes is true' do
+    Devise.sign_out_all_scopes = false
     sign_in_as_user
     sign_in_as_admin
 

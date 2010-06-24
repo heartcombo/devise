@@ -113,10 +113,8 @@ Devise.setup do |config|
 
   # Configure sign_out behavior. 
   # By default sign_out is scoped (i.e. /users/sign_out affects only :user scope).
-  # In case of sign_out_scoped set to false any logout action will sign out all active scopes.
-  # Routes for sign_out links and redirects are same for both cases.
-  # You can use generic override way to reassign them (same as sign_out_path_for).
-  # config.sign_out_scoped = true
+  # In case of sign_out_all_scopes set to true any logout action will sign out all active scopes.
+  # config.sign_out_all_scopes = false
 
   # ==> Navigation configuration
   # Lists the formats that should be treated as navigational. Formats like

@@ -64,6 +64,8 @@ module Devise
         warden.logout(scope)
       end
 
+      # Sign out all active users or scopes. This helper is useful for signing out all roles
+      # in one click.
       def sign_out_everybody
         # Not "warden.logout" since we need to sign_out only devise-defined scopes.
         scopes = Devise.mappings.keys
@@ -156,6 +158,12 @@ module Devise
         root_path
       end
 
+      # Method used by sessions controller to sign out all roles. You can overwrite
+      # it in your ApplicationController to provide a custom hook for a custom
+      # scope. Notice that differently from +after_sign_in_path_for+ this method
+      # receives a symbol with the scope, and not the resource.
+      #
+      # By default is the current sign_out_path_for.
       def after_sign_out_everybody_path_for(resource_or_scope)
         after_sign_out_path_for(resource_or_scope)
       end
@@ -180,6 +188,8 @@ module Devise
         redirect_to after_sign_out_path_for(scope)
       end
 
+      # Sign out all users and tries to redirect to the url specified by
+      # after_sign_out_everybody_path_for.
       def sign_out_everybody_and_redirect(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope) # just to maintain sign_out paths
         sign_out_everybody

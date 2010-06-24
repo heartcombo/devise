@@ -71,7 +71,7 @@ module Devise
         scopes = Devise.mappings.keys
         scopes.each { |scope| warden.user(scope) }
         warden.raw_session.inspect
-        warden.logout(*Devise.mappings.keys)
+        warden.logout(*scopes)
       end
 
       # Returns and delete the url stored in the session for the given scope. Useful

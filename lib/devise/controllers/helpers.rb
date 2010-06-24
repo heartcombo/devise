@@ -175,9 +175,9 @@ module Devise
       def sign_out_and_redirect(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         if Devise.sign_out_all_scopes
-          sign_out(scope)
-        else
           sign_out_all_scopes
+        else
+          sign_out(scope)
         end
         redirect_to after_sign_out_path_for(scope)
       end

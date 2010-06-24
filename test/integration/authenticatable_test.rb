@@ -3,11 +3,11 @@ require 'test_helper'
 class AuthenticationSanityTest < ActionController::IntegrationTest
 
   def setup
-    Devise.sign_out_all_scopes = true
+    Devise.sign_out_all_scopes = false
   end
 
   def teardown
-    Devise.sign_out_all_scopes = true
+    Devise.sign_out_all_scopes = false
   end
 
   test 'home should be accessible without sign in' do
@@ -57,7 +57,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
   end
 
   test 'sign out as user should also sign out admin if sign_out_all_scopes is true' do
-    Devise.sign_out_all_scopes = false
+    Devise.sign_out_all_scopes = true
     sign_in_as_user
     sign_in_as_admin
 
@@ -67,7 +67,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
   end
 
   test 'sign out as admin should also sign out user if sign_out_all_scopes is true' do
-    Devise.sign_out_all_scopes = false
+    Devise.sign_out_all_scopes = true
     sign_in_as_user
     sign_in_as_admin
 

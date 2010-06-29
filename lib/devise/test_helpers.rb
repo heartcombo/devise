@@ -42,6 +42,8 @@ module Devise
           status, headers, body = Devise::FailureApp.call(env).to_a
           @controller.send :render, :status => status, :text => body,
             :content_type => headers["Content-Type"], :location => headers["Location"]
+
+          nil
         else
           result
         end

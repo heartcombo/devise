@@ -10,11 +10,25 @@ class TestHelpersTest < ActionController::TestCase
     assert_equal "You need to sign in or sign up before continuing.", flash[:alert]
   end
 
-  test "redirects if attempting to access a page with a unconfirmed account" do
+  test "redirects if attempting to access a page with an unconfirmed account" do
     swap Devise, :confirm_within => 0 do
-      sign_in create_user
+      user = create_user
+      assert !user.active?
+
+      sign_in user
       get :index
       assert_redirected_to new_user_session_path
+    end
+  end
+
+  test "returns nil if accessing current_user with an unconfirmed account" do
+    swap Devise, :confirm_within => 0 do
+      user = create_user
+      assert !user.active?
+
+      sign_in user
+      get :show, :id => user
+      assert_nil assigns(:current_user)
     end
   end
 

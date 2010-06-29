@@ -1,5 +1,5 @@
 Rails::Application.routes.draw do
-  resources :users, :only => [:index] do
+  resources :users, :only => [:index, :show] do
     get :expire, :on => :member
   end
 

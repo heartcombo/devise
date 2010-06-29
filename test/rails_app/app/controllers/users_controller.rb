@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :except => :show
+  before_filter :authenticate_user!, :except => :accept
   respond_to :html, :xml
 
   def index
@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     respond_with(current_user)
   end
 
-  def show
+  def accept
     @current_user = current_user
   end
 

@@ -27,7 +27,7 @@ class TestHelpersTest < ActionController::TestCase
       assert !user.active?
 
       sign_in user
-      get :show, :id => user
+      get :accept, :id => user
       assert_nil assigns(:current_user)
     end
   end

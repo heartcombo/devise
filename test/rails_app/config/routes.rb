@@ -1,6 +1,7 @@
 Rails::Application.routes.draw do
-  resources :users, :only => [:index, :show] do
+  resources :users, :only => [:index] do
     get :expire, :on => :member
+    get :accept, :on => :member
   end
 
   resources :admins, :only => [:index]

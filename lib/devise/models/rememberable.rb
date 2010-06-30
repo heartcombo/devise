@@ -20,6 +20,10 @@ module Devise
     #                 time for the cookie created to remember the user.
     #                 By default remember_for is 2.weeks.
     #
+    #   remember_across_browsers: if a valid remember token can be re-used
+    #                             between multiple browsers.
+    #                             By default remember_across_browsers is true.
+    #
     # Examples:
     #
     #   User.find(1).remember_me!  # regenerating the token
@@ -38,8 +42,10 @@ module Devise
         attr_accessor :remember_me
       end
 
-      # Generate a new remember token and save the record without validations.
+      # Generate a new remember token and save the record without validations
+      # unless remember_across_browsers is true and the user already has a valid token.
       def remember_me!
+        return if self.class.remember_across_browsers && self.remember_created_at && !self.remember_expired?
         self.remember_token = Devise.friendly_token
         self.remember_created_at = Time.now.utc
         save(:validate => false)
@@ -86,7 +92,7 @@ module Devise
           record if record && !record.remember_expired?
         end
 
-        Devise::Models.config(self, :remember_for, :cookie_domain)
+        Devise::Models.config(self, :remember_for, :remember_across_browsers, :cookie_domain)
       end
     end
   end

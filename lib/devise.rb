@@ -89,6 +89,10 @@ module Devise
   mattr_accessor :remember_for
   @@remember_for = 2.weeks
 
+  # If a valid remember token can be re-used between multiple browsers.
+  mattr_accessor :remember_across_browsers
+  @@remember_across_browsers = true
+
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days

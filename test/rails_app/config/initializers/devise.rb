@@ -29,6 +29,9 @@ Devise.setup do |config|
   # The time the user will be remembered without asking for credentials again.
   # config.remember_for = 2.weeks
 
+  # If a valid remember token can be re-used between multiple browsers.
+  # config.remember_across_browsers = true
+
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again.
   # config.timeout_in = 10.minutes

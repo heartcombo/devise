@@ -140,4 +140,37 @@ class RememberableTest < ActiveSupport::TestCase
       assert_equal token, user.remember_token
     end
   end
+
+  test 'if remember_across_browsers is false, remember_me! should create a new token if no token exists' do
+    swap Devise, :remember_across_browsers => false do
+      user = create_user
+      assert_equal nil, user.remember_token
+      user.remember_me!
+      assert_not_equal nil, user.remember_token
+    end
+  end
+
+  test 'if remember_across_browsers is false, remember_me! should create a new token if a token exists but has expired' do
+    swap Devise, :remember_across_browsers => false, :remember_for => 1.day do
+      user = create_user
+      user.remember_me!
+      user.remember_created_at = 2.days.ago
+      user.save
+      token = user.remember_token
+      user.remember_me!
+      assert_not_equal token, user.remember_token
+    end
+  end
+
+  test 'if remember_across_browsers is false, remember_me! should create a new token if a token exists and has not expired' do
+    swap Devise, :remember_across_browsers => false, :remember_for => 2.days do
+      user = create_user
+      user.remember_me!
+      user.remember_created_at = 1.day.ago
+      user.save
+      token = user.remember_token
+      user.remember_me!
+      assert_not_equal token, user.remember_token
+    end
+  end
 end

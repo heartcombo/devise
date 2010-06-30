@@ -8,13 +8,16 @@ Rails::Application.routes.draw do
 
   devise_for :users
   devise_for :admin, :path => "admin_area", :controllers => { :sessions => "sessions" }, :skip => :passwords
-  devise_for :accounts, :singular => "manager", :path_prefix => ":locale", :class_name => "User",
-    :path_names => {
-      :sign_in => "login", :sign_out => "logout",
-      :password => "secret", :confirmation => "verification",
-      :unlock => "unblock", :sign_up => "register",
-      :registration => "management"
-    }
+
+  scope ":locale" do
+    devise_for :accounts, :singular => "manager", :class_name => "User",
+      :path_names => {
+        :sign_in => "login", :sign_out => "logout",
+        :password => "secret", :confirmation => "verification",
+        :unlock => "unblock", :sign_up => "register",
+        :registration => "management"
+      }
+  end
 
   match "/admin_area/home", :to => "admins#index", :as => :admin_root
   match "/sign_in", :to => "devise/sessions#new"

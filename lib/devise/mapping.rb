@@ -70,6 +70,12 @@ module Devise
 
       @path_prefix = "/#{options.delete(:path_prefix)}/".squeeze("/")
 
+      if @path_prefix =~ /\(.*\)/ && Devise.ignore_optional_segments != true
+        raise ScriptError, "It seems that you are scoping devise_for with an optional segment #{@path_prefix.inspect} " <<
+          "which Devise does not support. Please remove the optional segment or alternatively, if you are *sure* of " <<
+          "what you are doing, you can set config.ignore_optional_segments = true in your devise initializer."
+      end
+
       @controllers = Hash.new { |h,k| h[k] = "devise/#{k}" }
       @controllers.merge!(options.delete(:controllers) || {})
 
@@ -109,11 +115,6 @@ module Devise
     # Return in which position in the path prefix devise should find the as mapping.
     def segment_position
       self.path_prefix.count("/")
-    end
-
-    # Returns the raw path using path_prefix and as.
-    def full_path
-      path_prefix + path.to_s
     end
 
     def authenticatable?

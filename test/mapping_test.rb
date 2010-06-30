@@ -97,11 +97,6 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal 2, Devise.mappings[:manager].segment_position
   end
 
-  test 'path is returned with path prefix and as' do
-    assert_equal '/users', Devise.mappings[:user].full_path
-    assert_equal '/:locale/accounts', Devise.mappings[:manager].full_path
-  end
-
   test 'magic predicates' do
     mapping = Devise.mappings[:user]
     assert mapping.authenticatable?

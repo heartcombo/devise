@@ -149,6 +149,7 @@ module Devise
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
 
+  # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
   @@navigational_formats = [:html]
 
@@ -157,8 +158,13 @@ module Devise
   @@warden_config = nil
   @@warden_config_block = nil
 
+  # When set to true, signing out an user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
   @@sign_out_all_scopes = false
+
+  # When set to true, optional segments in Devise no longer raises an error.
+  mattr_accessor :ignore_optional_segments
+  @@ignore_otional_segments = false
 
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.

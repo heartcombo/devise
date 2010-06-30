@@ -98,10 +98,17 @@ module ActionDispatch::Routing
     #     end
     #   end
     #
+    # Second, since Devise expects routes in the format "user_session_path" to be defined, you cannot
+    # scope to a given route name as below:
+    #
+    #   scope "/special_scope", :as => :special_scope do # THIS WILL FAIL
+    #     devise_for :users
+    #   end
+    #
     # Finally, Devise does not (and cannot) support optional segments, either static or dynamic. That
     # said, the following does not work:
     #
-    #   scope "(/:locale)" do
+    #   scope "(/:locale)" do # THIS WILL FAIL
     #     devise_for :users
     #   end
     #

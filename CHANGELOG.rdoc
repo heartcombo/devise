@@ -1,3 +1,6 @@
+* enhancements
+  * Rememberable module allows user to be remembered across browsers; enabled by default (by github.com/trevorturk)
+
 * bug fix
   * Fix a bug in Devise::TestHelpers where current_user was returning a Response object for non active accounts;
 

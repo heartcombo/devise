@@ -6,7 +6,8 @@
   * :path_prefix option in devise_for is no longer supported
 
 * bug fix
-  * Fix a bug in Devise::TestHelpers where current_user was returning a Response object for non active accounts;
+  * Fix a bug in Devise::TestHelpers where current_user was returning a Response object for non active accounts
+  * Devise should respect script_name and path_info contracts
 
 == 1.1.rc2
 

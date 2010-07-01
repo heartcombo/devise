@@ -292,6 +292,12 @@ class AuthenticationWithScopesTest < ActionController::IntegrationTest
       fill_in "email", "user@test.com"
     end
   end
+
+  test 'registration in xml format' do
+    assert_nothing_raised do
+      post user_registration_path(:format => 'xml', :user => {:email => "test@example.com", :password => "invalid"} )
+    end
+  end
 end
 
 class AuthenticationOthersTest < ActionController::IntegrationTest

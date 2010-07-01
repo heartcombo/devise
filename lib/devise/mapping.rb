@@ -30,6 +30,7 @@ module Devise
     def self.find_by_path(path)
       Devise.mappings.each_value do |mapping|
         route = path.split("/")[mapping.segment_position]
+        route = route.sub(/\.\w+$/, '') unless route.nil?
         return mapping if route && mapping.path == route.to_sym
       end
       nil

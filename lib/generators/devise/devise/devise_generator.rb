@@ -58,7 +58,7 @@ CONTENT
         when "active_record"
           inject_into_class model_path, class_name, devise_class_setup + <<-CONTENT
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation
+  attr_accessible :email, :password, :password_confirmation, :remember_me
 CONTENT
         end
       end

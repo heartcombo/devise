@@ -69,6 +69,10 @@ module Devise
   mattr_accessor :http_authenticatable
   @@http_authenticatable = true
 
+  # If http authentication is used for ajax requests.  True by default.
+  mattr_accessor :http_authenticatable_on_xhr
+  @@http_authenticatable_on_xhr = true
+
   # If params authenticatable is enabled by default.
   mattr_accessor :params_authenticatable
   @@params_authenticatable = true

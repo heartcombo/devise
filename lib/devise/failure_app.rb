@@ -68,7 +68,7 @@ module Devise
     end
 
     def http_auth?
-      !Devise.navigational_formats.include?(request.format.to_sym) || request.xhr?
+      !Devise.navigational_formats.include?(request.format.to_sym) || (request.xhr? && Devise.http_authenticatable_on_xhr)
     end
 
     def http_auth_body

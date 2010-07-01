@@ -285,6 +285,13 @@ class AuthenticationWithScopesTest < ActionController::IntegrationTest
       assert_contain 'Sign in'
     end
   end
+
+  test 'sign in with script name' do
+    assert_nothing_raised do
+      get new_user_session_path, {}, "SCRIPT_NAME" => "/omg"
+      fill_in "email", "user@test.com"
+    end
+  end
 end
 
 class AuthenticationOthersTest < ActionController::IntegrationTest

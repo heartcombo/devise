@@ -8,6 +8,7 @@
 * bug fix
   * Fix a bug in Devise::TestHelpers where current_user was returning a Response object for non active accounts
   * Devise should respect script_name and path_info contracts
+  * Fix a bug when accessing a path with (.:format) (by github.com/klacointe)
 
 == 1.1.rc2
 

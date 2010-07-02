@@ -27,11 +27,15 @@ module Devise
 
     # Loop through all mappings looking for a map that matches with the requested
     # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
-    def self.find_by_path(path)
+    def self.find_by_path(request)
       Devise.mappings.each_value do |mapping|
-        route = path.split("/")[mapping.segment_position]
-        route = route.sub(/\.\w+$/, '') unless route.nil?
-        return mapping if route && mapping.path == route.to_sym
+        route, extra = request.path_info.split("/")[mapping.segment_position, 2]
+        next unless route
+
+        if !extra && (format = request.params[:format])
+          route.sub!(/\.#{format}$/, '')
+        end
+        return mapping if mapping.path == route.to_sym
       end
       nil
     end

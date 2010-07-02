@@ -1,6 +1,12 @@
 require 'test_helper'
 
+class FakeRequest < Struct.new(:path_info, :params)
+end
+
 class MappingTest < ActiveSupport::TestCase
+  def fake_request(path, params={})
+    FakeRequest.new(path, params)
+  end
 
   test 'store options' do
     mapping = Devise.mappings[:user]
@@ -37,12 +43,16 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'find mapping by path' do
-    assert_nil   Devise::Mapping.find_by_path("/foo/bar")
-    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path("/users/session")
+    assert_nil   Devise::Mapping.find_by_path(fake_request("/foo/bar"))
+    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path(fake_request("/users/session"))
   end
 
   test 'find mapping by customized path' do
-    assert_equal Devise.mappings[:admin], Devise::Mapping.find_by_path("/admin_area/session")
+    assert_equal Devise.mappings[:admin], Devise::Mapping.find_by_path(fake_request("/admin_area/session"))
+  end
+
+  test 'find mapping by path strips format' do
+    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path(fake_request("/users.xml", :format => "xml"))
   end
 
   test 'find scope for a given object' do

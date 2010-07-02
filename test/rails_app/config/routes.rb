@@ -1,4 +1,4 @@
-Rails::Application.routes.draw do
+Rails.application.routes.draw do
   resources :users, :only => [:index] do
     get :expire, :on => :member
     get :accept, :on => :member

@@ -11,7 +11,7 @@ module Devise
                                      :desc => "Template engine for the views. Available options are 'erb' and 'haml'."
 
       def copy_views
-        case options[:template_engine]
+        case options[:template_engine].to_s
         when "haml"
           verify_haml_existence
           verify_haml_version

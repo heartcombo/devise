@@ -1,3 +1,5 @@
+== 1.1.0 (to be released)
+
 * enhancements
   * Rememberable module allows user to be remembered across browsers and is enabled by default (by github.com/trevorturk)
   * devise_for can now be used together with scope method in routes but with a few limitations (check the documentation)

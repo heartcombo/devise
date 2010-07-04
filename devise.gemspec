@@ -5,15 +5,16 @@
 
 Gem::Specification.new do |s|
   s.name = %q{devise}
-  s.version = "1.1.rc2"
+  s.version = "1.1.0"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-06-23}
+  s.date = %q{2010-07-04}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
     "CHANGELOG.rdoc",
+     "Gemfile.lock",
      "MIT-LICENSE",
      "README.rdoc",
      "TODO"
@@ -21,6 +22,7 @@ Gem::Specification.new do |s|
   s.files = [
     "CHANGELOG.rdoc",
      "Gemfile",
+     "Gemfile.lock",
      "MIT-LICENSE",
      "README.rdoc",
      "Rakefile",
@@ -77,7 +79,6 @@ Gem::Specification.new do |s|
      "lib/devise/models/validatable.rb",
      "lib/devise/modules.rb",
      "lib/devise/orm/active_record.rb",
-     "lib/devise/orm/data_mapper.rb",
      "lib/devise/orm/mongoid.rb",
      "lib/devise/path_checker.rb",
      "lib/devise/rails.rb",
@@ -91,15 +92,17 @@ Gem::Specification.new do |s|
      "lib/devise/strategies/token_authenticatable.rb",
      "lib/devise/test_helpers.rb",
      "lib/devise/version.rb",
-     "lib/generators/devise/devise/devise_generator.rb",
-     "lib/generators/devise/devise/templates/migration.rb",
-     "lib/generators/devise/install/install_generator.rb",
-     "lib/generators/devise/install/templates/README",
-     "lib/generators/devise/install/templates/devise.rb",
-     "lib/generators/devise/views/views_generator.rb",
-     "lib/generators/devise_generator.rb",
+     "lib/generators/active_record/devise_generator.rb",
+     "lib/generators/active_record/templates/migration.rb",
+     "lib/generators/devise/devise_generator.rb",
+     "lib/generators/devise/install_generator.rb",
+     "lib/generators/devise/orm_helpers.rb",
+     "lib/generators/devise/templates/README",
+     "lib/generators/devise/templates/devise.rb",
+     "lib/generators/devise/views_generator.rb",
      "lib/generators/devise_install_generator.rb",
-     "lib/generators/devise_views_generator.rb"
+     "lib/generators/devise_views_generator.rb",
+     "lib/generators/mongoid/devise_generator.rb"
   ]
   s.homepage = %q{http://github.com/plataformatec/devise}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -139,7 +142,6 @@ Gem::Specification.new do |s|
      "test/models/validatable_test.rb",
      "test/models_test.rb",
      "test/orm/active_record.rb",
-     "test/orm/data_mapper.rb",
      "test/orm/mongoid.rb",
      "test/rails_app/app/active_record/admin.rb",
      "test/rails_app/app/active_record/shim.rb",
@@ -147,11 +149,10 @@ Gem::Specification.new do |s|
      "test/rails_app/app/controllers/admins_controller.rb",
      "test/rails_app/app/controllers/application_controller.rb",
      "test/rails_app/app/controllers/home_controller.rb",
+     "test/rails_app/app/controllers/publisher/registrations_controller.rb",
+     "test/rails_app/app/controllers/publisher/sessions_controller.rb",
      "test/rails_app/app/controllers/sessions_controller.rb",
      "test/rails_app/app/controllers/users_controller.rb",
-     "test/rails_app/app/data_mapper/admin.rb",
-     "test/rails_app/app/data_mapper/shim.rb",
-     "test/rails_app/app/data_mapper/user.rb",
      "test/rails_app/app/helpers/application_helper.rb",
      "test/rails_app/app/mongoid/admin.rb",
      "test/rails_app/app/mongoid/shim.rb",

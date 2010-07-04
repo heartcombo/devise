@@ -38,7 +38,7 @@
   * E-mails now use any template available in the filesystem. Easy to create multipart e-mails
   * E-mails asks headers_for in the model to set the proper headers
   * Allow to specify haml in devise_views
-  * Compatibility with Datamapper and Mongoid
+  * Compatibility with Mongoid
   * Make config.devise available on config/application.rb
   * TokenAuthenticatable now works with HTTP Basic Auth
   * Allow :unlock_strategy to be :none and add :lock_strategy which can be :failed_attempts or none. Setting those values to :none means that you want to handle lock and unlocking by yourself

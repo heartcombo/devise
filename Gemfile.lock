@@ -1,83 +1,4 @@
 GIT
-  remote: git://github.com/datamapper/dm-core
-  revision: 40ff12e
-  specs:
-    dm-core (1.0.0)
-      addressable (~> 2.1)
-      extlib (~> 0.9.15)
-    dm-core (1.0.0)
-      addressable (~> 2.1)
-      extlib (~> 0.9.15)
-
-GIT
-  remote: git://github.com/datamapper/dm-migrations
-  revision: c72ba40
-  specs:
-    dm-migrations (1.0.0)
-      dm-core (~> 1.0.0)
-    dm-migrations (1.0.0)
-      dm-core (~> 1.0.0)
-
-GIT
-  remote: git://github.com/datamapper/dm-rails
-  revision: 8bf64e7
-  specs:
-    dm-rails (1.0.0)
-      actionpack (~> 3.0.0.beta3)
-      activesupport (~> 3.0.0.beta3)
-      dm-active_model (~> 1.0.0)
-      dm-core (~> 1.0.0)
-      railties (~> 3.0.0.beta3)
-    dm-rails (1.0.0)
-      actionpack (~> 3.0.0.beta3)
-      activesupport (~> 3.0.0.beta3)
-      dm-active_model (~> 1.0.0)
-      dm-core (~> 1.0.0)
-      railties (~> 3.0.0.beta3)
-
-GIT
-  remote: git://github.com/datamapper/dm-serializer
-  revision: 1f0f617
-  specs:
-    dm-serializer (1.0.0)
-      dm-core (~> 1.0.0)
-      fastercsv (~> 1.5.3)
-      json_pure (~> 1.4.3)
-    dm-serializer (1.0.0)
-      dm-core (~> 1.0.0)
-      fastercsv (~> 1.5.3)
-      json_pure (~> 1.4.3)
-
-GIT
-  remote: git://github.com/datamapper/dm-sqlite-adapter
-  revision: 2a8562b
-  specs:
-    dm-sqlite-adapter (1.0.0)
-      dm-do-adapter (~> 1.0.0)
-      do_sqlite3 (~> 0.10.2)
-    dm-sqlite-adapter (1.0.0)
-      dm-do-adapter (~> 1.0.0)
-      do_sqlite3 (~> 0.10.2)
-
-GIT
-  remote: git://github.com/datamapper/dm-timestamps
-  revision: 791bad7
-  specs:
-    dm-timestamps (1.0.0)
-      dm-core (~> 1.0.0)
-    dm-timestamps (1.0.0)
-      dm-core (~> 1.0.0)
-
-GIT
-  remote: git://github.com/datamapper/dm-validations
-  revision: c793091
-  specs:
-    dm-validations (1.0.0)
-      dm-core (~> 1.0.0)
-    dm-validations (1.0.0)
-      dm-core (~> 1.0.0)
-
-GIT
   remote: git://github.com/durran/mongoid.git
   revision: 79b4d37
   specs:
@@ -179,8 +100,6 @@ GEM
   specs:
     abstract (1.0.0)
     abstract (1.0.0)
-    addressable (2.1.2)
-    addressable (2.1.2)
     arel (0.4.0)
       activesupport (>= 3.0.0.beta)
     arel (0.4.0)
@@ -195,38 +114,12 @@ GEM
     builder (2.1.2)
     columnize (0.3.1)
     columnize (0.3.1)
-    data_objects (0.10.2)
-      addressable (~> 2.1)
-    data_objects (0.10.2)
-      addressable (~> 2.1)
-    dm-active_model (1.0.0)
-      activemodel (~> 3.0.0.beta3)
-      dm-core (~> 1.0.0)
-    dm-active_model (1.0.0)
-      activemodel (~> 3.0.0.beta3)
-      dm-core (~> 1.0.0)
-    dm-do-adapter (1.0.0)
-      data_objects (~> 0.10.1)
-      dm-core (~> 1.0.0)
-    dm-do-adapter (1.0.0)
-      data_objects (~> 0.10.1)
-      dm-core (~> 1.0.0)
-    do_sqlite3 (0.10.2)
-      data_objects (= 0.10.2)
-    do_sqlite3 (0.10.2)
-      data_objects (= 0.10.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    extlib (0.9.15)
-    extlib (0.9.15)
-    fastercsv (1.5.3)
-    fastercsv (1.5.3)
     i18n (0.4.1)
     i18n (0.4.1)
-    json_pure (1.4.3)
-    json_pure (1.4.3)
     linecache (0.43)
     linecache (0.43)
     mail (2.2.5)
@@ -300,13 +193,6 @@ PLATFORMS
 DEPENDENCIES
   bcrypt-ruby
   bson_ext
-  dm-core (~> 1.0.0)!
-  dm-migrations (~> 1.0.0)!
-  dm-rails (~> 1.0.0)!
-  dm-serializer (~> 1.0.0)!
-  dm-sqlite-adapter (~> 1.0.0)!
-  dm-timestamps (~> 1.0.0)!
-  dm-validations (~> 1.0.0)!
   mocha
   mongo
   mongoid!

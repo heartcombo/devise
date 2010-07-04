@@ -1,7 +1,7 @@
 module Devise
   module Generators
     class ViewsGenerator < Rails::Generators::Base
-      source_root File.expand_path("../../../../../app/views", __FILE__)
+      source_root File.expand_path("../../../../app/views", __FILE__)
       desc "Copies all Devise views to your application."
 
       argument :scope, :required => false, :default => nil,

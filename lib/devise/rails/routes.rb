@@ -98,13 +98,6 @@ module ActionDispatch::Routing
     #     end
     #   end
     #
-    # Second, since Devise expects routes in the format "user_session_path" to be defined, you cannot
-    # scope to a given route name as below:
-    #
-    #   scope "/special_scope", :as => :special_scope do # THIS WILL FAIL
-    #     devise_for :users
-    #   end
-    #
     # Finally, Devise does not (and cannot) support optional segments, either static or dynamic. That
     # said, the following does not work:
     #
@@ -115,12 +108,21 @@ module ActionDispatch::Routing
     def devise_for(*resources)
       options = resources.extract_options!
 
-      if options.key?(:path_prefix)
-        ActiveSupport::Deprecation.warn "Giving :path_prefix to devise_for is deprecated and has no effect. " << 
-          "Please use scope from the new router DSL instead."
+      if as = options.delete(:as)
+        ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
+        options[:path] ||= as
       end
 
-      options[:path_prefix] = @scope[:path]
+      if scope = options.delete(:scope)
+        ActiveSupport::Deprecation.warn ":scope is deprecated, please use :singular instead."
+        options[:singular] ||= scope
+      end
+
+      options[:as]          ||= @scope[:as]     if @scope[:as].present?
+      options[:module]      ||= @scope[:module] if @scope[:module].present?
+      options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?
+      options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
+
       resources.map!(&:to_sym)
 
       resources.each do |resource|
@@ -141,7 +143,7 @@ module ActionDispatch::Routing
         routes  = mapping.routes
         routes -= Array(options.delete(:skip)).map { |s| s.to_s.singularize.to_sym }
 
-        scope mapping.path.to_s, :as => mapping.name do
+        with_devise_scope mapping.fullpath, mapping.name do
           routes.each { |mod| send(:"devise_#{mod}", mapping, mapping.controllers) }
         end
       end
@@ -191,6 +193,14 @@ module ActionDispatch::Routing
       def devise_registration(mapping, controllers)
         resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => mapping.path_names[:registration],
                  :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
+      end
+
+      def with_devise_scope(new_path, new_as)
+        old_as, old_path, old_module = @scope[:as], @scope[:path], @scope[:module]
+        @scope[:as], @scope[:path], @scope[:module] = new_as, new_path, nil
+        yield
+      ensure
+        @scope[:as], @scope[:path], @scope[:module] = old_as, old_path, old_module
       end
 
       def raise_no_devise_method_error!(klass)

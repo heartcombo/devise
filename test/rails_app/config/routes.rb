@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   devise_for :users
   devise_for :admin, :path => "admin_area", :controllers => { :sessions => "sessions" }, :skip => :passwords
 
+  namespace :publisher, :path_names => { :sign_in => "i_don_care", :sign_out => "get_out" } do
+    devise_for :accounts, :class_name => "User", :path_names => { :sign_in => "get_in" }
+  end
+
   scope ":locale" do
     devise_for :accounts, :singular => "manager", :class_name => "User",
       :path_names => {

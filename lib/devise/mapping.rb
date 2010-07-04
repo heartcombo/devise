@@ -56,23 +56,13 @@ module Devise
     end
 
     def initialize(name, options) #:nodoc:
-      if as = options.delete(:as)
-        ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
-        options[:path] ||= as
-      end
-
-      if scope = options.delete(:scope)
-        ActiveSupport::Deprecation.warn ":scope is deprecated, please use :singular instead."
-        options[:singular] ||= scope
-      end
-
-      @plural   = name.to_sym
-      @path     = (options.delete(:path) || name).to_sym
-      @singular = (options.delete(:singular) || name.to_s.singularize).to_sym
+      @plural   = (options[:as] ? "#{options.delete(:as)}_#{name}" : name).to_sym
+      @singular = (options.delete(:singular) || @plural.to_s.singularize).to_sym
 
       @class_name = (options.delete(:class_name) || name.to_s.classify).to_s
       @ref = ActiveSupport::Dependencies.ref(@class_name)
 
+      @path = (options.delete(:path) || name).to_sym
       @path_prefix = "/#{options.delete(:path_prefix)}/".squeeze("/")
 
       if @path_prefix =~ /\(.*\)/ && Devise.ignore_optional_segments != true
@@ -81,7 +71,8 @@ module Devise
           "what you are doing, you can set config.ignore_optional_segments = true in your devise initializer."
       end
 
-      @controllers = Hash.new { |h,k| h[k] = "devise/#{k}" }
+      mod = options.delete(:module) || "devise"
+      @controllers = Hash.new { |h,k| h[k] = "#{mod}/#{k}" }
       @controllers.merge!(options.delete(:controllers) || {})
 
       @path_names  = Hash.new { |h,k| h[k] = k.to_s }
@@ -117,9 +108,14 @@ module Devise
       end
     end
 
-    # Return in which position in the path prefix devise should find the as mapping.
+    # Returns in which position in the path prefix devise should find the as mapping.
     def segment_position
       self.path_prefix.count("/")
+    end
+
+    # Returns fullpath for route generation.
+    def fullpath
+      @path_prefix + @path.to_s
     end
 
     def authenticatable?

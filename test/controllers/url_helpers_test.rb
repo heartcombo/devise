@@ -44,4 +44,15 @@ class RoutesTest < ActionController::TestCase
     assert_path_and_url :confirmation
     assert_path_and_url :confirmation, :new
   end
+
+  test 'should alias unlock to mapped user unlock' do
+    assert_path_and_url :unlock
+    assert_path_and_url :unlock, :new
+  end
+
+  test 'should alias registration to mapped user registration' do
+    assert_path_and_url :registration
+    assert_path_and_url :registration, :new
+    assert_path_and_url :registration, :edit
+  end
 end

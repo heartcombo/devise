@@ -70,6 +70,21 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :controllers => { :sessions => "users/sessions" }
     #
+    #  * :module => the namespace to find controlers. By default, devise will access devise/sessions,
+    #    devise/registrations and so on. If you want to namespace all at once, use module:
+    #
+    #      devise_for :users, :module => "users"
+    #
+    #    Notice that whenever you use namespace in the router DSL, it automatically sets the module.
+    #    So the following setup:
+    #
+    #      namespace :publisher
+    #        devise_for :account
+    #      end
+    #
+    #    Will use publisher/sessions controller instead of devise/sessions controller. You can revert
+    #    this by providing the :module option to devise_for.
+    #
     #  * :skip => tell which controller you want to skip routes from being created:
     #
     #      devise_for :users, :skip => :sessions

@@ -47,8 +47,7 @@ module Devise
         ::Devise::Models.config(self, :token_authentication_key)
 
         def find_for_token_authentication(conditions)
-          conditions[:authentication_token] ||= conditions.delete(token_authentication_key)
-          find_for_authentication(conditions)
+          find_for_authentication(:authentication_token => conditions[token_authentication_key])
         end
 
         def authentication_token

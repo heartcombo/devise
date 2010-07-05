@@ -93,6 +93,10 @@ module Devise
           @encryptor_class ||= ::Devise::Encryptors.const_get(encryptor.to_s.classify)
         end
 
+        # We assume this method already gets the sanitized values from the
+        # DatabaseAuthenticatable strategy. If you are using this method on
+        # your own, be sure to sanitize the conditions hash to only include
+        # the proper fields.
         def find_for_database_authentication(conditions)
           find_for_authentication(conditions)
         end

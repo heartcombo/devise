@@ -22,14 +22,11 @@ class Devise::Mailer < ::ActionMailer::Base
     @devise_mapping = Devise.mappings[@scope_name]
     @resource       = instance_variable_set("@#{@devise_mapping.name}", record)
 
-    template_path = [self.class.mailer_name]
-    template_path.unshift "#{@devise_mapping.plural}/mailer" if self.class.scoped_views?
-
     headers = {
       :subject => translate(@devise_mapping, action),
       :from => mailer_sender(@devise_mapping),
       :to => record.email,
-      :template_path => template_path
+      :template_path => template_paths
     }
 
     headers.merge!(record.headers_for(action)) if record.respond_to?(:headers_for)
@@ -42,6 +39,12 @@ class Devise::Mailer < ::ActionMailer::Base
     else
       Devise.mailer_sender
     end
+  end
+
+  def template_paths
+    template_path = [self.class.mailer_name]
+    template_path.unshift "#{@devise_mapping.plural}/mailer" if self.class.scoped_views?
+    template_path
   end
 
   # Setup a subject doing an I18n lookup. At first, it attemps to set a subject

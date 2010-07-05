@@ -8,7 +8,6 @@ module Devise
       include Devise::Controllers::ScopedViews
 
       included do
-        unloadable
         helper DeviseHelper
 
         helpers = %w(resource scope_name resource_name

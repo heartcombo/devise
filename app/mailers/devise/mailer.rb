@@ -22,7 +22,7 @@ class Devise::Mailer < ::ActionMailer::Base
     @devise_mapping = Devise.mappings[@scope_name]
     @resource       = instance_variable_set("@#{@devise_mapping.name}", record)
 
-    template_path = ["devise/mailer"]
+    template_path = [self.class.mailer_name]
     template_path.unshift "#{@devise_mapping.plural}/mailer" if self.class.scoped_views?
 
     headers = {

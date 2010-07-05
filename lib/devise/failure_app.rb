@@ -47,7 +47,7 @@ module Devise
     def redirect
       store_location!
       flash[:alert] = i18n_message unless flash[:notice]
-      redirect_to send(:"new_#{scope}_session_path")
+      redirect_to redirect_url
     end
 
   protected
@@ -61,6 +61,10 @@ module Devise
       else
         message.to_s
       end
+    end
+
+    def redirect_url
+      send(:"new_#{scope}_session_path")
     end
 
     def http_auth?

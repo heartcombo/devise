@@ -1,17 +1,17 @@
 GIT
   remote: git://github.com/durran/mongoid.git
-  revision: 79b4d37
+  revision: 54e8d67
   specs:
-    mongoid (2.0.0.beta7)
+    mongoid (2.0.0.beta9)
       activemodel (~> 3.0.0.beta)
-      bson (~> 1.0.1)
-      mongo (~> 1.0.1)
+      bson (~> 1.0.3)
+      mongo (~> 1.0.3)
       tzinfo (~> 0.3.22)
       will_paginate (~> 3.0.pre)
-    mongoid (2.0.0.beta7)
+    mongoid (2.0.0.beta9)
       activemodel (~> 3.0.0.beta)
-      bson (~> 1.0.1)
-      mongo (~> 1.0.1)
+      bson (~> 1.0.3)
+      mongo (~> 1.0.3)
       tzinfo (~> 0.3.22)
       will_paginate (~> 3.0.pre)
 

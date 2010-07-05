@@ -14,45 +14,20 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal User.devise_modules, mapping.modules
     assert_equal :users,              mapping.plural
     assert_equal :user,               mapping.singular
-    assert_equal :users,              mapping.path
+    assert_equal "users",             mapping.path
   end
 
   test 'allows path to be given' do
-    assert_equal :admin_area, Devise.mappings[:admin].path
+    assert_equal "admin_area", Devise.mappings[:admin].path
   end
 
   test 'allows custom singular to be given' do
-    assert_equal :accounts, Devise.mappings[:manager].path
-  end
-
-  test 'allows a controller depending on the mapping' do
-    allowed = Devise.mappings[:user].allowed_controllers
-    assert allowed.include?("devise/sessions")
-    assert allowed.include?("devise/confirmations")
-    assert allowed.include?("devise/passwords")
-
-    allowed = Devise.mappings[:admin].allowed_controllers
-    assert allowed.include?("sessions")
-    assert_not allowed.include?("devise/confirmations")
-    assert_not allowed.include?("devise/unlocks")
+    assert_equal "accounts", Devise.mappings[:manager].path
   end
 
   test 'has strategies depending on the model declaration' do
     assert_equal [:rememberable, :token_authenticatable, :database_authenticatable], Devise.mappings[:user].strategies
     assert_equal [:database_authenticatable], Devise.mappings[:admin].strategies
-  end
-
-  test 'find mapping by path' do
-    assert_nil   Devise::Mapping.find_by_path(fake_request("/foo/bar"))
-    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path(fake_request("/users/session"))
-  end
-
-  test 'find mapping by customized path' do
-    assert_equal Devise.mappings[:admin], Devise::Mapping.find_by_path(fake_request("/admin_area/session"))
-  end
-
-  test 'find mapping by path strips format' do
-    assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path(fake_request("/users.xml", :format => "xml"))
   end
 
   test 'find scope for a given object' do
@@ -90,21 +65,6 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal 'verification', mapping.path_names[:confirmation]
     assert_equal 'register',     mapping.path_names[:sign_up]
     assert_equal 'unblock',      mapping.path_names[:unlock]
-  end
-
-  test 'has an empty path as default path prefix' do
-    mapping = Devise.mappings[:user]
-    assert_equal '/', mapping.path_prefix
-  end
-
-  test 'allow path prefix to be configured' do
-    mapping = Devise.mappings[:manager]
-    assert_equal '/:locale/', mapping.path_prefix
-  end
-
-  test 'retrieve as from the proper position' do
-    assert_equal 1, Devise.mappings[:user].segment_position
-    assert_equal 2, Devise.mappings[:manager].segment_position
   end
 
   test 'magic predicates' do

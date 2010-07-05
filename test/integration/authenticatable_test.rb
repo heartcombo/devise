@@ -277,27 +277,6 @@ class AuthenticationWithScopesTest < ActionController::IntegrationTest
       end
     end
   end
-
-  test 'uses the mapping from the default scope if specified' do
-    swap Devise, :use_default_scope => true do
-      get '/sign_in'
-      assert_response :ok
-      assert_contain 'Sign in'
-    end
-  end
-
-  test 'sign in with script name' do
-    assert_nothing_raised do
-      get new_user_session_path, {}, "SCRIPT_NAME" => "/omg"
-      fill_in "email", "user@test.com"
-    end
-  end
-
-  test 'registration in xml format' do
-    assert_nothing_raised do
-      post user_registration_path(:format => 'xml', :user => {:email => "test@example.com", :password => "invalid"} )
-    end
-  end
 end
 
 class AuthenticationOthersTest < ActionController::IntegrationTest
@@ -316,6 +295,19 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   test 'render 404 on roles without mapping' do
     assert_raise AbstractController::ActionNotFound do
       get '/sign_in'
+    end
+  end
+
+  test 'sign in with script name' do
+    assert_nothing_raised do
+      get new_user_session_path, {}, "SCRIPT_NAME" => "/omg"
+      fill_in "email", "user@test.com"
+    end
+  end
+
+  test 'registration in xml format' do
+    assert_nothing_raised do
+      post user_registration_path(:format => 'xml', :user => {:email => "test@example.com", :password => "invalid"} )
     end
   end
 end

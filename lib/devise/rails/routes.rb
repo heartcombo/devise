@@ -97,8 +97,8 @@ module ActionDispatch::Routing
     #     devise_for :users
     #   end
     #
-    # However, since Devise uses the request path to retrieve the current user, this has a few caveats.
-    # First, if you are using a dynamic segment, as below:
+    # However, since Devise uses the request path to retrieve the current user, it has one caveats.
+    # If you are using a dynamic segment, as below:
     #
     #   scope ":locale" do
     #     devise_for :users
@@ -111,13 +111,6 @@ module ActionDispatch::Routing
     #     def self.default_url_options
     #       { :locale => I18n.locale }
     #     end
-    #   end
-    #
-    # Finally, Devise does not (and cannot) support optional segments, either static or dynamic. That
-    # said, the following does not work:
-    #
-    #   scope "(/:locale)" do # THIS WILL FAIL
-    #     devise_for :users
     #   end
     #
     def devise_for(*resources)
@@ -141,7 +134,7 @@ module ActionDispatch::Routing
       resources.map!(&:to_sym)
 
       resources.each do |resource|
-        mapping = Devise.add_model(resource, options)
+        mapping = Devise.add_mapping(resource, options)
 
         begin
           raise_no_devise_method_error!(mapping.class_name) unless mapping.to.respond_to?(:devise)
@@ -158,8 +151,10 @@ module ActionDispatch::Routing
         routes  = mapping.routes
         routes -= Array(options.delete(:skip)).map { |s| s.to_s.singularize.to_sym }
 
-        with_devise_scope mapping.fullpath, mapping.name do
-          routes.each { |mod| send(:"devise_#{mod}", mapping, mapping.controllers) }
+        with_devise_exclusive_scope mapping.fullpath, mapping.name do
+          devise_scope mapping.name do
+            routes.each { |mod| send(:"devise_#{mod}", mapping, mapping.controllers) }
+          end
         end
       end
     end
@@ -180,9 +175,32 @@ module ActionDispatch::Routing
       end
     end
 
+    # Sets the devise scope to be used in the controller. If you have custom routes,
+    # you are required to call this method (also aliased as :as) in order to specify
+    # to which controller it is targetted.
+    #
+    #   as :user do
+    #     get "sign_in", :to => "devise/sessions#new"
+    #   end
+    #
+    # Notice you cannot have two scopes mapping to the same URL. And remember, if
+    # you try to access a devise controller without specifying a scope, it will
+    # raise ActionNotFound error.
+    def devise_scope(scope)
+      constraint = lambda do |request|
+        request.env["devise.mapping"] = Devise.mappings[scope]
+        true
+      end
+
+      constraints(constraint) do
+        yield
+      end
+    end
+    alias :as :devise_scope
+
     protected
 
-      def devise_session(mapping, controllers)
+      def devise_session(mapping, controllers) #:nodoc:
         scope :controller => controllers[:sessions], :as => :session do
           get  :new,     :path => mapping.path_names[:sign_in]
           post :create,  :path => mapping.path_names[:sign_in], :as => ""
@@ -190,27 +208,27 @@ module ActionDispatch::Routing
         end
       end
  
-      def devise_password(mapping, controllers)
+      def devise_password(mapping, controllers) #:nodoc:
         resource :password, :only => [:new, :create, :edit, :update],
           :path => mapping.path_names[:password], :controller => controllers[:passwords]
       end
  
-      def devise_confirmation(mapping, controllers)
+      def devise_confirmation(mapping, controllers) #:nodoc:
         resource :confirmation, :only => [:new, :create, :show],
           :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
       end
  
-      def devise_unlock(mapping, controllers)
+      def devise_unlock(mapping, controllers) #:nodoc:
         resource :unlock, :only => [:new, :create, :show],
           :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
       end
 
-      def devise_registration(mapping, controllers)
+      def devise_registration(mapping, controllers) #:nodoc:
         resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => mapping.path_names[:registration],
                  :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
       end
 
-      def with_devise_scope(new_path, new_as)
+      def with_devise_exclusive_scope(new_path, new_as) #:nodoc:
         old_as, old_path, old_module = @scope[:as], @scope[:path], @scope[:module]
         @scope[:as], @scope[:path], @scope[:module] = new_as, new_path, nil
         yield
@@ -218,7 +236,7 @@ module ActionDispatch::Routing
         @scope[:as], @scope[:path], @scope[:module] = old_as, old_path, old_module
       end
 
-      def raise_no_devise_method_error!(klass)
+      def raise_no_devise_method_error!(klass) #:nodoc:
         raise "#{klass} does not respond to 'devise' method. This usually means you haven't " <<
           "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " <<
           "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"

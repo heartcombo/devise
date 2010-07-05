@@ -137,10 +137,6 @@ module Devise
   mattr_accessor :unlock_in
   @@unlock_in = 1.hour
 
-  # Tell when to use the default scope, if one cannot be found from routes.
-  mattr_accessor :use_default_scope
-  @@use_default_scope = false
-
   # The default scope which is used by warden.
   mattr_accessor :default_scope
   @@default_scope = nil
@@ -166,9 +162,12 @@ module Devise
   mattr_accessor :sign_out_all_scopes
   @@sign_out_all_scopes = false
 
-  # When set to true, optional segments in Devise no longer raises an error.
-  mattr_accessor :ignore_optional_segments
-  @@ignore_otional_segments = false
+  def self.use_default_scope=(*)
+    ActiveSupport::Deprecation.warn "config.use_default_scope is deprecated and removed from Devise. " <<
+      "If you are using non conventional routes in Devise, all you need to do is to pass the devise " <<
+      "scope in the router DSL:\n\n  as :user do\n    get \"sign_in\", :to => \"devise/sessions\"\n  end\n\n" <<
+      "The method :as is also aliased to :devise_scope. Choose the one you prefer.", caller
+  end
 
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
@@ -187,10 +186,8 @@ module Devise
   end
   self.mailer = "Devise::Mailer"
 
-  # Register a model in Devise. You can call this manually if you don't want
-  # to use devise routes. Check devise_for in routes to know which options
-  # are available.
-  def self.add_model(resource, options)
+  # Small method that adds a mapping to Devise.
+  def self.add_mapping(resource, options)
     mapping = Devise::Mapping.new(resource, options)
     self.mappings[mapping.name] = mapping
     self.default_scope ||= mapping.name

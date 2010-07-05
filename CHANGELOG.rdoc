@@ -3,11 +3,15 @@
 * enhancements
   * Rememberable module allows user to be remembered across browsers and is enabled by default (by github.com/trevorturk)
   * devise_for can now be used together with scope method in routes but with a few limitations (check the documentation)
+  * Support :as or :devise_scope in the router to specify controller access scope
 
 * bug fix
   * Fix a bug in Devise::TestHelpers where current_user was returning a Response object for non active accounts
   * Devise should respect script_name and path_info contracts
   * Fix a bug when accessing a path with (.:format) (by github.com/klacointe)
+
+* deprecations
+  * use_default_scope is deprecated and has no effect. Use :as or :devise_scope in the router instead
 
 == 1.1.rc2
 

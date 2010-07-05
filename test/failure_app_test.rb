@@ -100,6 +100,7 @@ class FailureTest < ActiveSupport::TestCase
       env = {
         "action_dispatch.request.parameters" => { :controller => "devise/sessions" },
         "warden.options" => { :recall => "new", :attempted_path => "/users/sign_in" },
+        "devise.mapping" => Devise.mappings[:user],
         "warden" => stub_everything
       }
       call_failure(env)

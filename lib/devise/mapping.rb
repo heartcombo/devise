@@ -22,23 +22,8 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :plural, :path, :controllers, :path_names, :path_prefix, :class_name
+    attr_reader :singular, :plural, :path, :controllers, :path_names, :class_name
     alias :name :singular
-
-    # Loop through all mappings looking for a map that matches with the requested
-    # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
-    def self.find_by_path(request)
-      Devise.mappings.each_value do |mapping|
-        route, extra = request.path_info.split("/")[mapping.segment_position, 2]
-        next unless route
-
-        if !extra && (format = request.params[:format])
-          route.sub!(/\.#{format}$/, '')
-        end
-        return mapping if mapping.path == route.to_sym
-      end
-      nil
-    end
 
     # Receives an object and find a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.
@@ -56,28 +41,22 @@ module Devise
     end
 
     def initialize(name, options) #:nodoc:
-      @plural   = (options[:as] ? "#{options.delete(:as)}_#{name}" : name).to_sym
-      @singular = (options.delete(:singular) || @plural.to_s.singularize).to_sym
+      @plural   = (options[:as] ? "#{options[:as]}_#{name}" : name).to_sym
+      @singular = (options[:singular] || @plural.to_s.singularize).to_sym
 
-      @class_name = (options.delete(:class_name) || name.to_s.classify).to_s
+      @class_name = (options[:class_name] || name.to_s.classify).to_s
       @ref = ActiveSupport::Dependencies.ref(@class_name)
 
-      @path = (options.delete(:path) || name).to_sym
-      @path_prefix = "/#{options.delete(:path_prefix)}/".squeeze("/")
+      @path = (options[:path] || name).to_s
+      @path_prefix = options[:path_prefix]
 
-      if @path_prefix =~ /\(.*\)/ && Devise.ignore_optional_segments != true
-        raise ScriptError, "It seems that you are scoping devise_for with an optional segment #{@path_prefix.inspect} " <<
-          "which Devise does not support. Please remove the optional segment or alternatively, if you are *sure* of " <<
-          "what you are doing, you can set config.ignore_optional_segments = true in your devise initializer."
-      end
-
-      mod = options.delete(:module) || "devise"
+      mod = options[:module] || "devise"
       @controllers = Hash.new { |h,k| h[k] = "#{mod}/#{k}" }
-      @controllers.merge!(options.delete(:controllers) || {})
+      @controllers.merge!(options[:controllers] || {})
 
-      @path_names  = Hash.new { |h,k| h[k] = k.to_s }
+      @path_names = Hash.new { |h,k| h[k] = k.to_s }
       @path_names.merge!(:registration => "")
-      @path_names.merge!(options.delete(:path_names) || {})
+      @path_names.merge!(options[:path_names] || {})
     end
 
     # Return modules for the mapping.
@@ -98,28 +77,12 @@ module Devise
       @routes ||= ROUTES.values_at(*self.modules).compact.uniq
     end
 
-    # Keep a list of allowed controllers for this mapping. It's useful to ensure
-    # that an Admin cannot access the registrations controller unless it has
-    # :registerable in the model.
-    def allowed_controllers
-      @allowed_controllers ||= begin
-        canonical = CONTROLLERS.values_at(*self.modules).compact
-        @controllers.values_at(*canonical)
-      end
-    end
-
-    # Returns in which position in the path prefix devise should find the as mapping.
-    def segment_position
-      self.path_prefix.count("/")
-    end
-
-    # Returns fullpath for route generation.
-    def fullpath
-      @path_prefix + @path.to_s
-    end
-
     def authenticatable?
       @authenticatable ||= self.modules.any? { |m| m.to_s =~ /authenticatable/ }
+    end
+
+    def fullpath
+      "#{@path_prefix}/#{@path}".squeeze("/")
     end
 
     # Create magic predicates for verifying what module is activated by this map.

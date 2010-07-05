@@ -37,11 +37,7 @@ module Devise
 
       # Attempt to find the mapped route for devise based on request path
       def devise_mapping
-        @devise_mapping ||= begin
-          mapping   = Devise::Mapping.find_by_path(request)
-          mapping ||= Devise.mappings[Devise.default_scope] if Devise.use_default_scope
-          mapping
-        end
+        @devise_mapping ||= request.env["devise.mapping"]
       end
 
       # Overwrites devise_controller? to return true
@@ -53,8 +49,7 @@ module Devise
 
       # Checks whether it's a devise mapped resource or not.
       def is_devise_resource? #:nodoc:
-        raise ActionController::UnknownAction unless devise_mapping &&
-          devise_mapping.allowed_controllers.include?(controller_path)
+        raise ActionController::UnknownAction unless devise_mapping
       end
 
       # Sets the resource creating an instance variable

@@ -10,37 +10,28 @@ class HelpersTest < ActionController::TestCase
   def setup
     @mock_warden = OpenStruct.new
     @controller.request.env['warden'] = @mock_warden
+    @controller.request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
-  test 'get resource name from request path' do
-    @request.path = '/users/session'
+  test 'get resource name from env' do
     assert_equal :user, @controller.resource_name
   end
 
-  test 'get resource name from specific request path' do
-    @request.path = '/admin_area/session'
-    assert_equal :admin, @controller.resource_name
-  end
-
-  test 'get resource class from request path' do
-    @request.path = '/users/session'
+  test 'get resource class from env' do
     assert_equal User, @controller.resource_class
   end
 
-  test 'get resource instance variable from request path' do
-    @request.path = '/admin_area/session'
-    @controller.instance_variable_set(:@admin, admin = Admin.new)
+  test 'get resource instance variable from env' do
+    @controller.instance_variable_set(:@user, admin = Admin.new)
     assert_equal admin, @controller.resource
   end
 
-  test 'set resource instance variable from request path' do
-    @request.path = '/admin_area/session'
-
+  test 'set resource instance variable from env' do
     admin = @controller.send(:resource_class).new
     @controller.send(:resource=, admin)
 
     assert_equal admin, @controller.send(:resource)
-    assert_equal admin, @controller.instance_variable_get(:@admin)
+    assert_equal admin, @controller.instance_variable_get(:@user)
   end
 
   test 'resources methods are not controller actions' do

@@ -240,6 +240,16 @@ Devise supports both ActiveRecord (default) and MongoMapper, and has experimenta
 
 Please refer to TODO file.
 
+== Security
+
+Needless to say, security is extremely important to Devise. If you find yourself in a possible security issue with Devise, please go through the following steps, trying to reproduce the bug:
+
+1) Look at the source code a bit to find out whether your assumptions are correct;
+2) If possible, provide a way to reproduce the bug: a small app on Github or a step-by-step to reproduce;
+3) E-mail us or send a Github private message instead of using the normal issues;
+
+Being able to reproduce the bug is the first step to fix it. Thanks for your understanding.
+
 == Maintainers
 
 * José Valim (http://github.com/josevalim)

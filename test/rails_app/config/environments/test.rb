@@ -28,4 +28,6 @@ RailsApp::Application.configure do
   # config.active_record.schema_format = :sql
 
   config.action_dispatch.show_exceptions = false
+
+  config.active_support.deprecation = :stderr
 end

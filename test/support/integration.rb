@@ -57,9 +57,15 @@ class ActionDispatch::IntegrationTest
     assert [301, 302].include?(@integration_session.status),
            "Expected status to be 301 or 302, got #{@integration_session.status}"
 
-    url = prepend_host(url)
-    location = prepend_host(@integration_session.headers["Location"])
-    assert_equal url, location
+    assert_url url, @integration_session.headers["Location"]
+  end
+
+  def assert_current_url(expected)
+    assert_url expected, current_url
+  end
+
+  def assert_url(expected, actual)
+    assert_equal prepend_host(expected), prepend_host(actual)
   end
 
   protected

@@ -16,16 +16,13 @@ class ConfirmationTest < ActionController::IntegrationTest
     fill_in 'email', :with => user.email
     click_button 'Resend confirmation instructions'
 
-    assert_template 'sessions/new'
+    assert_current_url '/users/sign_in'
     assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
   test 'user with invalid confirmation token should not be able to confirm an account' do
     visit_user_confirmation_with_token('invalid_confirmation')
-
-    assert_response :success
-    assert_template 'confirmations/new'
     assert_have_selector '#error_explanation'
     assert_contain /Confirmation token(.*)invalid/
   end
@@ -33,23 +30,33 @@ class ConfirmationTest < ActionController::IntegrationTest
   test 'user with valid confirmation token should be able to confirm an account' do
     user = create_user(:confirm => false)
     assert_not user.confirmed?
-
     visit_user_confirmation_with_token(user.confirmation_token)
 
-    assert_template 'home/index'
     assert_contain 'Your account was successfully confirmed.'
-
+    assert_current_url '/'
     assert user.reload.confirmed?
   end
 
-  test 'user already confirmed user should not be able to confirm the account again' do
+  test 'already confirmed user should not be able to confirm the account again' do
     user = create_user(:confirm => false)
     user.confirmed_at = Time.now
     user.save
     visit_user_confirmation_with_token(user.confirmation_token)
 
-    assert_template 'confirmations/new'
     assert_have_selector '#error_explanation'
+    assert_contain 'already confirmed'
+  end
+
+  test 'already confirmed user should not be able to confirm the account again neither request confirmation' do
+    user = create_user(:confirm => false)
+    user.confirmed_at = Time.now
+    user.save
+
+    visit_user_confirmation_with_token(user.confirmation_token)
+    assert_contain 'already confirmed'
+
+    fill_in 'email', :with => user.email
+    click_button 'Resend confirmation instructions'
     assert_contain 'already confirmed'
   end
 

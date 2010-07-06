@@ -3,11 +3,12 @@ module Devise
     include Rails.application.routes.url_helpers
 
     def initialize(env, scope)
-      @env, @scope = env, scope
+      @current_path = "/#{env["SCRIPT_NAME"]}/#{env["PATH_INFO"]}".squeeze("/")
+      @scope = scope
     end
 
     def signing_out?
-      @env["PATH_INFO"] == send("destroy_#{@scope}_session_path")
+      @current_path == send("destroy_#{@scope}_session_path")
     end
   end
 end

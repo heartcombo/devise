@@ -20,7 +20,7 @@ module Devise
       Devise.encryptor ||= begin
         warn "[WARNING] config.encryptor is not set in your config/initializers/devise.rb. " \
           "Devise will then set it to :bcrypt. If you were using the previous default " \
-          "encryptor, please add config.encryptor = :sha1 to your configuration file."
+          "encryptor, please add config.encryptor = :sha1 to your configuration file." if Devise.mailer_sender
         :bcrypt
       end
     end

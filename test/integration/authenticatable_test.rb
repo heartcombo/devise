@@ -189,7 +189,7 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
     follow_redirect!
     sign_in_as_user :visit => false
 
-    assert_template 'users/index'
+    assert_current_url '/users'
     assert_nil session[:"user_return_to"]
   end
 
@@ -205,7 +205,7 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
     follow_redirect!
     sign_in_as_user :visit => false
 
-    assert_template 'users/index'
+    assert_current_url '/users'
     assert_nil session[:"user_return_to"]
   end
 
@@ -231,7 +231,7 @@ class AuthenticationSessionTest < ActionController::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
-  test 'allows session to be set by a given scope' do
+  test 'allows session to be set for a given scope' do
     sign_in_as_user
     get '/users'
     assert_equal "Cart", @controller.user_session[:cart]
@@ -276,6 +276,18 @@ class AuthenticationWithScopesTest < ActionController::IntegrationTest
         sign_in_as_admin
       end
     end
+  end
+
+  test 'uses the mapping from router' do
+    sign_in_as_user :visit => "/as/sign_in"
+    assert warden.authenticated?(:user)
+    assert_not warden.authenticated?(:admin)
+  end
+
+  test 'uses the mapping from nested devise_for call' do
+    sign_in_as_user :visit => "/devise_for/sign_in"
+    assert warden.authenticated?(:user)
+    assert_not warden.authenticated?(:admin)
   end
 end
 

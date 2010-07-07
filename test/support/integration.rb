@@ -31,7 +31,7 @@ class ActionDispatch::IntegrationTest
 
   def sign_in_as_user(options={}, &block)
     user = create_user(options)
-    get new_user_session_path unless options[:visit] == false
+    visit_with_option options[:visit], new_user_session_path
     fill_in 'email', :with => 'user@test.com'
     fill_in 'password', :with => options[:password] || '123456'
     check 'remember me' if options[:remember_me] == true
@@ -42,7 +42,7 @@ class ActionDispatch::IntegrationTest
 
   def sign_in_as_admin(options={}, &block)
     admin = create_admin(options)
-    get new_admin_session_path unless options[:visit] == false
+    visit_with_option options[:visit], new_admin_session_path
     fill_in 'email', :with => 'admin@test.com'
     fill_in 'password', :with => '123456'
     yield if block_given?
@@ -70,9 +70,19 @@ class ActionDispatch::IntegrationTest
 
   protected
 
+    def visit_with_option(given, default)
+      case given
+      when String
+        visit given
+      when FalseClass
+        # Do nothing
+      else
+        visit default
+      end
+    end
+
     def prepend_host(url)
       url = "http://#{request.host}#{url}" if url[0] == ?/
       url
     end
-
 end

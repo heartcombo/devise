@@ -22,12 +22,8 @@ module Devise
       options = @env['warden.options']
       scope   = options[:scope]
 
-      redirect_path = if mapping = Devise.mappings[scope]
-        "#{mapping.parsed_path}/#{mapping.path_names[:sign_in]}"
-      else
-        "/#{default_url}"
-      end
-      query_string = query_string_for(options)
+      redirect_path = redirect_path_for(scope)
+      query_string  = query_string_for(options)
       store_location!(scope)
 
       headers = {}
@@ -52,6 +48,15 @@ module Devise
       end
 
       Rack::Utils.build_query(params)
+    end
+
+    # Build the path based on current scope.
+    def redirect_path_for(scope)
+      if mapping = Devise.mappings[scope]
+        "#{mapping.parsed_path}/#{mapping.path_names[:sign_in]}"
+      else
+        "/#{default_url}"
+      end
     end
 
     # Stores requested uri to redirect the user after signing in. We cannot use

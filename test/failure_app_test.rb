@@ -77,6 +77,20 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]
     end
 
+    test 'dont return WWW-authenticate on ajax call if http_authenticatable_on_xhr false' do
+      swap Devise, :http_authenticatable_on_xhr => false do
+        call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+        assert_nil @response.second['WWW-Authenticate']
+      end
+    end
+
+    test 'return WWW-authenticate on ajax call if http_authenticatable_on_xhr true' do
+      swap Devise, :http_authenticatable_on_xhr => true do
+        call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+        assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]
+      end
+    end
+    
     test 'uses the proxy failure message as response body' do
       call_failure('formats' => :xml, 'warden' => OpenStruct.new(:message => :invalid))
       assert_match '<error>Invalid email or password.</error>', @response.third.body

@@ -8,7 +8,7 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 ActiveRecord::Schema.define(:version => 1) do
   [:users, :admins, :accounts].each do |table|
     create_table table do |t|
-      t.authenticatable :null => table == :admins
+      t.database_authenticatable :null => table == :admins
 
       if table != :admin
         t.string :username

@@ -1,3 +1,5 @@
+If you're looking for DataMapper support for devise, see http://github.com/jm81/dm-devise
+
 == Devise
 
 Devise is a flexible authentication solution for Rails based on Warden. It:

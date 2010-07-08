@@ -45,7 +45,7 @@ module Devise
 
       # Verifies whether a user is confirmed or not
       def confirmed?
-        persisted? && !confirmed_at.nil?
+        !!confirmed_at
       end
 
       # Send confirmation instructions by email
@@ -75,15 +75,14 @@ module Devise
       # If you don't want confirmation to be sent on create, neither a code
       # to be generated, call skip_confirmation!
       def skip_confirmation!
-        self.confirmed_at  = Time.now
-        @skip_confirmation = true
+        self.confirmed_at = Time.now
       end
 
       protected
 
         # Callback to overwrite if confirmation is required or not.
         def confirmation_required?
-          !@skip_confirmation
+          !confirmed?
         end
 
         # Checks if the confirmation for the user is within the limit time.

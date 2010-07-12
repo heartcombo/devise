@@ -11,6 +11,7 @@
   * Devise should respect script_name and path_info contracts
   * Fix a bug when accessing a path with (.:format) (by github.com/klacointe)
   * Do not add unlock routes unless unlock strategy is email or both
+  * Email should be case insensitive
 
 * deprecations
   * use_default_scope is deprecated and has no effect. Use :as or :devise_scope in the router instead

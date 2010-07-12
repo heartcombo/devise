@@ -23,7 +23,7 @@ class Encryptors < ActiveSupport::TestCase
     test "should have length #{value} for #{key.inspect}" do
       swap Devise, :encryptor => key do
         encryptor = Devise::Encryptors.const_get(key.to_s.classify)
-        assert_equal value, encryptor.digest('a', 4, encryptor.salt, nil).size
+        assert_equal value, encryptor.digest('a', 4, encryptor.salt(4), nil).size
       end
     end
   end

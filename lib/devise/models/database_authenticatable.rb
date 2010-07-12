@@ -37,7 +37,7 @@ module Devise
         @password = new_password
 
         if @password.present?
-          self.password_salt = self.class.encryptor_class.salt
+          self.password_salt = self.class.password_salt
           self.encrypted_password = password_digest(@password)
         end
       end
@@ -91,6 +91,10 @@ module Devise
         # Returns the class for the configured encryptor.
         def encryptor_class
           @encryptor_class ||= ::Devise::Encryptors.const_get(encryptor.to_s.classify)
+        end
+
+        def password_salt
+          self.encryptor_class.salt(self.stretches)
         end
 
         # We assume this method already gets the sanitized values from the

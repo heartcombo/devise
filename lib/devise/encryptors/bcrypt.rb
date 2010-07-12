@@ -11,8 +11,8 @@ module Devise
         ::BCrypt::Engine.hash_secret([password, pepper].join, salt, stretches)
       end
 
-      def self.salt
-        ::BCrypt::Engine.generate_salt
+      def self.salt(stretches)
+        ::BCrypt::Engine.generate_salt(stretches)
       end
     end
   end

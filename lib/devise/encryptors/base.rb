@@ -12,7 +12,7 @@ module Devise
         raise NotImplemented
       end
 
-      def self.salt
+      def self.salt(stretches)
         Devise.friendly_token
       end
     end

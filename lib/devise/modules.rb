@@ -8,7 +8,10 @@ Devise.with_options :model => true do |d|
     s.add_module :rememberable
   end
 
-  # Misc after   
+  # Other authentications
+  d.add_module :oauthable, :controller => :oauth_callbacks, :route => :oauth_callback
+
+  # Misc after
   d.add_module :recoverable,  :controller => :passwords,     :route => :password
   d.add_module :registerable, :controller => :registrations, :route => :registration
   d.add_module :validatable

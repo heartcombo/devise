@@ -231,6 +231,11 @@ module ActionDispatch::Routing
                  :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
       end
 
+      def devise_oauth_callback(mapping, controllers) #:nodoc:
+        get "/oauth/:action/callback", :action => Regexp.union(mapping.to.oauth_providers.map(&:to_s)),
+          :to => controllers[:oauth_callbacks], :as => :outh_callback
+      end
+
       def with_devise_exclusive_scope(new_path, new_as) #:nodoc:
         old_as, old_path, old_module = @scope[:as], @scope[:path], @scope[:module]
         @scope[:as], @scope[:path], @scope[:module] = new_as, new_path, nil

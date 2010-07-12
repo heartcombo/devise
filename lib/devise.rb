@@ -161,14 +161,38 @@ module Devise
   mattr_accessor :navigational_formats
   @@navigational_formats = [:html]
 
+  # When set to true, signing out an user signs out all other scopes.
+  mattr_accessor :sign_out_all_scopes
+  @@sign_out_all_scopes = false
+
+  # Oauth providers
+  mattr_accessor :oauth_providers
+  @@oauth_providers = []
+
+  # PRIVATE CONFIGURATION
+
+  # Oauth configurations.
+  mattr_reader :oauth_configs
+  @@oauth_configs = {}
+
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
   @@warden_config = nil
   @@warden_config_block = nil
 
-  # When set to true, signing out an user signs out all other scopes.
-  mattr_accessor :sign_out_all_scopes
-  @@sign_out_all_scopes = false
+  # Specify an oauth provider.
+  #
+  #   config.oauth :github, APP_ID, APP_SECRET,
+  #     :site              => 'https://github.com/',
+  #     :authorize_path    => '/login/oauth/authorize',
+  #     :access_token_path => '/login/oauth/access_token',
+  #     :scope             =>  %w(user public_repo)
+  #
+  def self.oauth(provider, *args)
+    @@oauth_providers << provider
+    @@oauth_providers.uniq!
+    @@oauth_configs[provider] = Devise::OAuth::Config.new(*args)
+  end
 
   def self.use_default_scope=(*)
     ActiveSupport::Deprecation.warn "config.use_default_scope is deprecated and removed from Devise. " <<
@@ -209,7 +233,6 @@ module Devise
   #   +model+      - String representing the load path to a custom *model* for this module (to autoload.)
   #   +controller+ - Symbol representing the name of an exisiting or custom *controller* for this module.
   #   +route+      - Symbol representing the named *route* helper for this module.
-  #   +flash+      - Symbol representing the *flash messages* used by this helper.
   #   +strategy+   - Symbol representing if this module got a custom *strategy*.
   #
   # All values, except :model, accept also a boolean and will have the same name as the given module
@@ -243,8 +266,8 @@ module Devise
     end
 
     if options[:model]
-      model_path = (options[:model] == true ? "devise/models/#{module_name}" : options[:model])
-      Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, model_path)
+      path = (options[:model] == true ? "devise/models/#{module_name}" : options[:model])
+      Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, path)
     end
 
     Devise::Mapping.add_module module_name

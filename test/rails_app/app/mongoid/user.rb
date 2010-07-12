@@ -6,5 +6,5 @@ class User
 
   devise :database_authenticatable, :confirmable, :lockable, :recoverable,
          :registerable, :rememberable, :timeoutable, :token_authenticatable,
-         :trackable, :validatable
+         :trackable, :validatable, :oauthable, :oauth_providers => [:github, :twitter]
 end

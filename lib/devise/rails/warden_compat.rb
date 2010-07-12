@@ -15,11 +15,18 @@ end
 
 class Warden::SessionSerializer
   def serialize(record)
-    [record.class, record.id]
+    [record.class.name, record.id]
   end
 
   def deserialize(keys)
     klass, id = keys
-    klass.find(:first, :conditions => { :id => id })
+    klass.constantize.find(:first, :conditions => { :id => id })
+  rescue NameError => e
+    if e.message =~ /uninitialized constant #{klass}/
+      Rails.logger.debug "Trying to deserialize invalid class #{klass}"
+      nil
+    else
+      raise
+    end
   end
 end

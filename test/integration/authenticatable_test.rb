@@ -322,4 +322,23 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
       post user_registration_path(:format => 'xml', :user => {:email => "test@example.com", :password => "invalid"} )
     end
   end
+
+  test 'does not explode when invalid user class is stored in session' do
+    klass = User
+    paths = ActiveSupport::Dependencies.autoload_paths.dup
+
+    begin
+      sign_in_as_user
+      assert warden.authenticated?(:user)
+
+      Object.send :remove_const, :User
+      ActiveSupport::Dependencies.autoload_paths.clear
+
+      visit "/users"
+      assert_not warden.authenticated?(:user)
+    ensure
+      Object.const_set(:User, klass)
+      ActiveSupport::Dependencies.autoload_paths.replace(paths)
+    end
+  end
 end

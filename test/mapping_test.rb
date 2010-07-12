@@ -78,8 +78,8 @@ class MappingTest < ActiveSupport::TestCase
     mapping = Devise.mappings[:admin]
     assert mapping.authenticatable?
     assert mapping.recoverable?
+    assert mapping.lockable?
     assert_not mapping.confirmable?
-    assert_not mapping.lockable?
     assert_not mapping.rememberable?
   end
 end

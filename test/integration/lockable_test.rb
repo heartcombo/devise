@@ -37,27 +37,25 @@ class LockTest < ActionController::IntegrationTest
   end
 
   test 'unlocked pages should not be available if email strategy is disabled' do
-    visit "/users/sign_in"
-    click_link "Didn't receive unlock instructions?"
+    visit "/admins/sign_in"
 
-    swap Devise, :unlock_strategy => :time do
-      visit "/users/sign_in"
-
-      assert_raise Webrat::NotFoundError do
-        click_link "Didn't receive unlock instructions?"
-      end
-
-      assert_raise AbstractController::ActionNotFound do
-        visit new_user_unlock_path
-      end
+    assert_raise Webrat::NotFoundError do
+      click_link "Didn't receive unlock instructions?"
     end
+
+    assert_raise NameError do
+      visit new_admin_unlock_path
+    end
+
+    visit "/admins/unlock/new"
+    assert_response :not_found
   end
 
   test 'user with invalid unlock token should not be able to unlock an account' do
     visit_user_unlock_with_token('invalid_token')
 
     assert_response :success
-    assert_template 'unlocks/new'
+    assert_current_url '/users/unlock?unlock_token=invalid_token'
     assert_have_selector '#error_explanation'
     assert_contain /Unlock token(.*)invalid/
   end
@@ -68,7 +66,7 @@ class LockTest < ActionController::IntegrationTest
 
     visit_user_unlock_with_token(user.unlock_token)
 
-    assert_template 'home/index'
+    assert_current_url '/'
     assert_contain 'Your account was successfully unlocked.'
 
     assert_not user.reload.access_locked?

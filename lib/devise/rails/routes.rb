@@ -220,8 +220,10 @@ module ActionDispatch::Routing
       end
  
       def devise_unlock(mapping, controllers) #:nodoc:
-        resource :unlock, :only => [:new, :create, :show],
-          :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
+        if mapping.to.unlock_strategy_enabled?(:email)
+          resource :unlock, :only => [:new, :create, :show],
+            :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
+        end
       end
 
       def devise_registration(mapping, controllers) #:nodoc:

@@ -18,20 +18,12 @@ module Devise
     end
 
     initializer "devise.url_helpers" do
-      ActiveSupport.on_load(:action_controller) do
-        include Devise::Controllers::Helpers
-        include Devise::Controllers::UrlHelpers
-      end
-
-      ActiveSupport.on_load(:action_view) do
-        include Devise::Controllers::UrlHelpers
-      end
+      Devise.include_helpers(Devise::Controllers)
     end
 
     initializer "devise.oauth_url_helpers" do
       if Devise.oauth_providers.any?
-        ActiveSupport.on_load(:action_controller) { include Devise::Oauth::UrlHelpers }
-        ActiveSupport.on_load(:action_view) { include Devise::Oauth::UrlHelpers }
+        Devise.include_helpers(Devise::Oauth)
       end
     end
   end

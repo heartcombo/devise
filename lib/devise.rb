@@ -183,28 +183,14 @@ module Devise
   @@helpers = Set.new
   @@helpers << Devise::Controllers::Helpers
 
+  # Define a set of modules that are called when a provider is added.
+  mattr_reader :oauth_helpers
+  @@oauth_helpers = Set.new
+
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
   @@warden_config = nil
   @@warden_config_block = nil
-
-  # Specify an oauth provider.
-  #
-  #   config.oauth :github, APP_ID, APP_SECRET,
-  #     :site              => 'https://github.com/',
-  #     :authorize_path    => '/login/oauth/authorize',
-  #     :access_token_path => '/login/oauth/access_token',
-  #     :scope             =>  %w(user public_repo)
-  #
-  def self.oauth(provider, *args)
-    @@helpers << Devise::Oauth::UrlHelpers
-
-    @@oauth_providers << provider
-    @@oauth_providers.uniq!
-
-    Devise::Oauth::Helpers.create_action(provider)
-    @@oauth_configs[provider] = Devise::Oauth::Config.new(provider, *args)
-  end
 
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
@@ -302,6 +288,37 @@ module Devise
   #  end
   def self.warden(&block)
     @@warden_config_block = block
+  end
+
+  # Specify an oauth provider.
+  #
+  #   config.oauth :github, APP_ID, APP_SECRET,
+  #     :site              => 'https://github.com/',
+  #     :authorize_path    => '/login/oauth/authorize',
+  #     :access_token_path => '/login/oauth/access_token',
+  #     :scope             =>  %w(user public_repo)
+  #
+  def self.oauth(provider, *args)
+    @@helpers << Devise::Oauth::UrlHelpers
+    @@oauth_helpers << Devise::Oauth::InternalHelpers
+
+    @@oauth_providers << provider
+    @@oauth_providers.uniq!
+
+    @@oauth_helpers.each { |h| h.define_oauth_helpers(provider) }
+    @@oauth_configs[provider] = Devise::Oauth::Config.new(provider, *args)
+  end
+
+  # Include helpers in the given scope to AC and AV.
+  def self.include_helpers(scope)
+    ActiveSupport.on_load(:action_controller) do
+      include scope::Helpers
+      include scope::UrlHelpers
+    end
+
+    ActiveSupport.on_load(:action_view) do
+      include scope::UrlHelpers
+    end
   end
 
   # A method used internally to setup warden manager from the Rails initialize

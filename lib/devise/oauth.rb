@@ -7,8 +7,9 @@ end
 
 module Devise
   module Oauth
-    autoload :Config,     "devise/oauth/config"
-    autoload :Helpers,    "devise/oauth/helpers"
-    autoload :UrlHelpers, "devise/oauth/url_helpers"
+    autoload :Config,          "devise/oauth/config"
+    autoload :Helpers,         "devise/oauth/helpers"
+    autoload :InternalHelpers, "devise/oauth/internal_helpers"
+    autoload :UrlHelpers,      "devise/oauth/url_helpers"
   end
 end

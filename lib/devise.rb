@@ -114,7 +114,7 @@ module Devise
 
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor
-  @@encryptor = nil
+  @@encryptor = :bcrypt
 
   # Tells if devise should apply the schema in ORMs where devise declaration
   # and schema belongs to the same class (as Datamapper and Mongoid).
@@ -204,13 +204,6 @@ module Devise
 
     Devise::Oauth::Helpers.create_action(provider)
     @@oauth_configs[provider] = Devise::Oauth::Config.new(provider, *args)
-  end
-
-  def self.use_default_scope=(*)
-    ActiveSupport::Deprecation.warn "config.use_default_scope is deprecated and removed from Devise. " <<
-      "If you are using non conventional routes in Devise, all you need to do is to pass the devise " <<
-      "scope in the router DSL:\n\n  as :user do\n    get \"sign_in\", :to => \"devise/sessions\"\n  end\n\n" <<
-      "The method :as is also aliased to :devise_scope. Choose the one you prefer.", caller
   end
 
   # Default way to setup Devise. Run rails generate devise_install to create

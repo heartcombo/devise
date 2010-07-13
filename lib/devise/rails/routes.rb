@@ -115,16 +115,6 @@ module ActionDispatch::Routing
     def devise_for(*resources)
       options = resources.extract_options!
 
-      if as = options.delete(:as)
-        ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
-        options[:path] ||= as
-      end
-
-      if scope = options.delete(:scope)
-        ActiveSupport::Deprecation.warn ":scope is deprecated, please use :singular instead."
-        options[:singular] ||= scope
-      end
-
       options[:as]          ||= @scope[:as]     if @scope[:as].present?
       options[:module]      ||= @scope[:module] if @scope[:module].present?
       options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?

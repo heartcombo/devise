@@ -12,15 +12,6 @@ module Devise
     # Force routes to be loaded if we are doing any eager load.
     config.before_eager_load { |app| app.reload_routes! }
 
-    config.after_initialize do
-      Devise.encryptor ||= begin
-        warn "[WARNING] config.encryptor is not set in your config/initializers/devise.rb. " \
-          "Devise will then set it to :bcrypt. If you were using the previous default " \
-          "encryptor, please add config.encryptor = :sha1 to your configuration file." if Devise.mailer_sender
-        :bcrypt
-      end
-    end
-
     initializer "devise.add_filters" do |app|
       app.config.filter_parameters += [:password, :password_confirmation]
       app.config.filter_parameters.uniq
@@ -41,42 +32,6 @@ module Devise
       if Devise.oauth_providers.any?
         ActiveSupport.on_load(:action_controller) { include Devise::Oauth::UrlHelpers }
         ActiveSupport.on_load(:action_view) { include Devise::Oauth::UrlHelpers }
-      end
-    end
-
-    unless Rails.env.production?
-      config.after_initialize do
-        actions = [:confirmation_instructions, :reset_password_instructions, :unlock_instructions]
-
-        translations = begin
-          I18n.t("devise.mailer", :raise => true).map { |k, v| k if v.is_a?(String) }.compact
-        rescue Exception => e # Do not care if something fails
-          []
-        end
-
-        keys = actions & translations
-
-        keys.each do |key|
-          ActiveSupport::Deprecation.warn "The I18n message 'devise.mailer.#{key}' is deprecated. " \
-            "Please use 'devise.mailer.#{key}.subject' instead."
-        end
-      end
-
-      config.after_initialize do
-        flash = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
-
-        translations = begin
-          I18n.t("devise.sessions", :raise => true).keys
-        rescue Exception => e # Do not care if something fails
-          []
-        end
-
-        keys = flash & translations
-
-        if keys.any?
-          ActiveSupport::Deprecation.warn "The following I18n messages in 'devise.sessions' " \
-            "are deprecated: #{keys.to_sentence}. Please move them to 'devise.failure' instead."
-        end
       end
     end
   end

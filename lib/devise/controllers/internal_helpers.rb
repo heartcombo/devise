@@ -70,7 +70,7 @@ module Devise
       # Build a devise resource.
       def build_resource(hash=nil)
         hash ||= params[resource_name] || {}
-        self.resource = resource_class.new(hash)
+        self.resource = resource_class.new_with_session(hash, session)
       end
 
       # Helper for use in before_filters where no authentication is required.
@@ -95,9 +95,11 @@ module Devise
       #
       # Please refer to README or en.yml locale file to check what messages are
       # available.
-      def set_flash_message(key, kind) #:nodoc:
-        flash[key] = I18n.t(:"#{resource_name}.#{kind}", :resource_name => resource_name,
-                            :scope => [:devise, controller_name.to_sym], :default => kind)
+      def set_flash_message(key, kind, options={}) #:nodoc:
+        options[:scope] = "devise.#{controller_name}"
+        options[:default] = Array(options[:default]).unshift(kind)
+        options[:resource_name] = resource_name
+        flash[key] = I18n.t(:"#{resource_name}.#{kind}", options)
       end
 
       def clean_up_passwords(object) #:nodoc:

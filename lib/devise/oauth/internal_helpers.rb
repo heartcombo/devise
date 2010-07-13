@@ -50,12 +50,16 @@ module Devise
         self.resource = resource_class.send(oauth_model_callback, access_token, signed_in_resource)
 
         if resource.persisted?
-          # ADD FLASH MESSAGE
+          set_flash_message :notice, oauth_callback, :default => :default, :kind => oauth_callback.to_s.titleize
           sign_in_and_redirect resource_name, resource, :event => :authentication
         else
-          # STORE STUFF IN SESSION
+          session[oauth_session_scope] = access_token.token
           render_for_oauth
         end
+      end
+
+      def oauth_session_scope
+        "#{resource_name}_#{oauth_callback}_token"
       end
 
       # Overwrite redirect_for_sign_in so it takes uses after_oauth_sign_in_path_for.

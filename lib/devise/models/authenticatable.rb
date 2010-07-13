@@ -79,6 +79,12 @@ module Devise
             http_authenticatable.include?(strategy) : http_authenticatable
         end
 
+        # By default discards all information sent by the session by calling
+        # new with params.
+        def new_with_session(params, session)
+          new(params)
+        end
+
         # Find first record based on conditions given (ie by the sign in form).
         # Overwrite to add customized conditions, create a join, or maybe use a
         # namedscope to filter records while authenticating.

@@ -42,7 +42,7 @@ module Devise
       end
 
       def oauth_model_callback
-        "authentication_for_#{oauth_callback}_oauth"
+        "find_for_#{oauth_callback}_oauth"
       end
 
       def callback_action

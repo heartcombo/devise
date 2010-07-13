@@ -222,7 +222,7 @@ module ActionDispatch::Routing
 
       def devise_oauth_callback(mapping, controllers) #:nodoc:
         get "/oauth/:action/callback", :action => Regexp.union(mapping.to.oauth_providers.map(&:to_s)),
-          :to => controllers[:oauth_callbacks], :as => :outh_callback
+          :to => controllers[:oauth_callbacks], :as => :oauth_callback
       end
 
       def with_devise_exclusive_scope(new_path, new_as) #:nodoc:

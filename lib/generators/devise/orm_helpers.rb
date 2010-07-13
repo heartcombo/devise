@@ -4,7 +4,7 @@ module Devise
       def model_contents
 <<-CONTENT
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
+  # :token_authenticatable, :confirmable, :lockable, :timeoutable and :oauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 

@@ -40,13 +40,15 @@ module Devise
       #
       # Examples:
       #
-      #   sign_in :user, @user    # sign_in(scope, resource)
-      #   sign_in @user           # sign_in(resource)
+      #   sign_in :user, @user                      # sign_in(scope, resource)
+      #   sign_in @user                             # sign_in(resource)
+      #   sign_in @user, :event => :authentication  # sign_in(resource, options)
       #
-      def sign_in(resource_or_scope, resource=nil)
-        scope      = Devise::Mapping.find_scope!(resource_or_scope)
-        resource ||= resource_or_scope
-        warden.set_user(resource, :scope => scope)
+      def sign_in(resource_or_scope, *args)
+        options  = args.extract_options!
+        scope    = Devise::Mapping.find_scope!(resource_or_scope)
+        resource = args.last || resource_or_scope
+        warden.set_user(resource, options.merge!(:scope => scope))
       end
 
       # Sign out a given user or scope. This helper is useful for signing out an user
@@ -159,14 +161,17 @@ module Devise
       end
 
       # Sign in an user and tries to redirect first to the stored location and
-      # then to the url specified by after_sign_in_path_for.
-      #
-      # If just a symbol is given, consider that the user was already signed in
-      # through other means and just perform the redirection.
-      def sign_in_and_redirect(resource_or_scope, resource=nil)
-        scope      = Devise::Mapping.find_scope!(resource_or_scope)
-        resource ||= resource_or_scope
-        sign_in(scope, resource) unless warden.user(scope) == resource
+      # then to the url specified by after_sign_in_path_for. It accepts the same
+      # parameters as the sign_in method.
+      def sign_in_and_redirect(resource_or_scope, *args)
+        options  = args.extract_options!
+        scope    = Devise::Mapping.find_scope!(resource_or_scope)
+        resource = args.last || resource_or_scope
+        sign_in(scope, resource, options) unless warden.user(scope) == resource
+        redirect_for_sign_in(scope, resource)
+      end
+
+      def redirect_for_sign_in(scope, resource) #:nodoc:
         redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
       end
 
@@ -179,6 +184,10 @@ module Devise
         else
           sign_out(scope)
         end
+        redirect_for_sign_out(scope)
+      end
+
+      def redirect_for_sign_out(scope) #:nodoc:
         redirect_to after_sign_out_path_for(scope)
       end
 

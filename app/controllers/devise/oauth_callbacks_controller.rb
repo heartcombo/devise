@@ -1,9 +1,4 @@
 class Devise::OauthCallbacksController < ApplicationController
   include Devise::Controllers::InternalHelpers
-
-  def twitter
-  end
-
-  def github
-  end
+  include Devise::Oauth::Helpers
 end

@@ -11,6 +11,7 @@ gem "sqlite3-ruby"
 gem "webrat", "0.7.0"
 gem "mocha", :require => false
 gem "bcrypt-ruby", :require => "bcrypt"
+gem "oauth2"
 
 if RUBY_VERSION < '1.9'
   gem "ruby-debug", ">= 0.10.3"

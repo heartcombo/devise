@@ -123,6 +123,16 @@ Devise.setup do |config|
   # should add them to the navigational formats lists. Default is [:html]
   # config.navigational_formats = [:html, :iphone]
 
+  # ==> OAuth
+  config.oauth :github, 'APP_ID', 'APP_SECRET',
+    :site              => 'https://github.com/',
+    :authorize_path    => '/login/oauth/authorize',
+    :access_token_path => '/login/oauth/access_token',
+    :scope             => 'user,public_repo'
+
+  config.oauth :twitter, 'APP_ID', 'APP_SECRET',
+    :site              => 'http://twitter.com/'
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below

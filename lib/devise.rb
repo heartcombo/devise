@@ -3,6 +3,7 @@ require 'active_support/dependencies'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
+  autoload :Oauth, 'devise/oauth'
   autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
@@ -35,6 +36,7 @@ module Devise
   CONTROLLERS = ActiveSupport::OrderedHash.new
   ROUTES      = ActiveSupport::OrderedHash.new
   STRATEGIES  = ActiveSupport::OrderedHash.new
+  URL_HELPERS = ActiveSupport::OrderedHash.new
 
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
@@ -191,7 +193,9 @@ module Devise
   def self.oauth(provider, *args)
     @@oauth_providers << provider
     @@oauth_providers.uniq!
-    @@oauth_configs[provider] = Devise::OAuth::Config.new(*args)
+
+    Devise::Oauth::Helpers.create_action(provider)
+    @@oauth_configs[provider] = Devise::Oauth::Config.new(*args)
   end
 
   def self.use_default_scope=(*)
@@ -226,7 +230,7 @@ module Devise
     mapping
   end
 
-  # Make Devise aware of an 3rd party Devise-module. For convenience.
+  # Make Devise aware of an 3rd party Devise-module (like invitable). For convenience.
   #
   # == Options:
   #
@@ -248,21 +252,31 @@ module Devise
     ALL << module_name
     options.assert_valid_keys(:strategy, :model, :controller, :route)
 
-    config = {
-      :strategy => STRATEGIES,
-      :route => ROUTES,
-      :controller => CONTROLLERS
-    }
+    if strategy = options[:strategy]
+      STRATEGIES[module_name] = (strategy == true ? module_name : strategy)
+    end
 
-    config.each do |key, value|
-      next unless options[key]
-      name = (options[key] == true ? module_name : options[key])
+    if controller = options[:controller]
+      CONTROLLERS[module_name] = (controller == true ? module_name : controller)
+    end
 
-      if value.is_a?(Hash)
-        value[module_name] = name
+    if route = options[:route]
+      case route
+      when TrueClass
+        key, value = module_name, []
+      when Symbol
+        key, value = route, []
+      when Hash
+        key, value = route.keys.first, route.values.flatten
       else
-        value << name unless value.include?(name)
+        raise ArgumentError, ":route should be true, a Symbol or a Hash"
       end
+
+      URL_HELPERS[key] ||= []
+      URL_HELPERS[key].concat(value)
+      URL_HELPERS[key].uniq!
+
+      ROUTES[module_name] = key
     end
 
     if options[:model]

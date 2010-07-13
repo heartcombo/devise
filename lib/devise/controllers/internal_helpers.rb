@@ -10,7 +10,7 @@ module Devise
       included do
         helper DeviseHelper
 
-        helpers = %w(resource scope_name resource_name
+        helpers = %w(resource scope_name resource_name signed_in_resource
                      resource_class devise_mapping devise_controller?)
         hide_action *helpers
         helper_method *helpers
@@ -33,6 +33,11 @@ module Devise
       # Proxy to devise map class
       def resource_class
         devise_mapping.to
+      end
+
+      # Returns a signed in resource from session (if one exists)
+      def signed_in_resource
+        warden.authenticate(:scope => resource_name)
       end
 
       # Attempt to find the mapped route for devise based on request path

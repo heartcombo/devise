@@ -1,5 +1,6 @@
 require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
+require 'set'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
@@ -177,6 +178,11 @@ module Devise
   mattr_reader :oauth_configs
   @@oauth_configs = ActiveSupport::OrderedHash.new
 
+  # Define a set of modules that are called when a mapping is added.
+  mattr_reader :helpers
+  @@helpers = Set.new
+  @@helpers << Devise::Controllers::Helpers
+
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
   @@warden_config = nil
@@ -191,6 +197,8 @@ module Devise
   #     :scope             =>  %w(user public_repo)
   #
   def self.oauth(provider, *args)
+    @@helpers << Devise::Oauth::UrlHelpers
+
     @@oauth_providers << provider
     @@oauth_providers.uniq!
 
@@ -225,8 +233,9 @@ module Devise
   # Small method that adds a mapping to Devise.
   def self.add_mapping(resource, options)
     mapping = Devise::Mapping.new(resource, options)
-    self.mappings[mapping.name] = mapping
-    self.default_scope ||= mapping.name
+    @@mappings[mapping.name] = mapping
+    @@default_scope ||= mapping.name
+    @@helpers.each { |h| h.define_helpers(mapping.name) }
     mapping
   end
 

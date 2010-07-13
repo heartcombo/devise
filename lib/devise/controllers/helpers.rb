@@ -9,6 +9,50 @@ module Devise
                       *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?", :"#{m}_session"] }.flatten
       end
 
+      # Define authentication filters and accessor helpers based on mappings.
+      # These filters should be used inside the controllers as before_filters,
+      # so you can control the scope of the user who should be signed in to
+      # access that specific controller/action.
+      # Example:
+      #
+      #   Roles:
+      #     User
+      #     Admin
+      #
+      #   Generated methods:
+      #     authenticate_user!  # Signs user in or redirect
+      #     authenticate_admin! # Signs admin in or redirect
+      #     user_signed_in?     # Checks whether there is an user signed in or not
+      #     admin_signed_in?    # Checks whether there is an admin signed in or not
+      #     current_user        # Current signed in user
+      #     current_admin       # Currend signed in admin
+      #     user_session        # Session data available only to the user scope
+      #     admin_session       # Session data available only to the admin scope
+      #
+      #   Use:
+      #     before_filter :authenticate_user!  # Tell devise to use :user map
+      #     before_filter :authenticate_admin! # Tell devise to use :admin map
+      #
+      def self.define_helpers(mapping) #:nodoc:
+        class_eval <<-METHODS, __FILE__, __LINE__ + 1
+          def authenticate_#{mapping}!
+            warden.authenticate!(:scope => :#{mapping})
+          end
+
+          def #{mapping}_signed_in?
+            warden.authenticate?(:scope => :#{mapping})
+          end
+
+          def current_#{mapping}
+            @current_#{mapping} ||= warden.authenticate(:scope => :#{mapping})
+          end
+
+          def #{mapping}_session
+            current_#{mapping} && warden.session(:#{mapping})
+          end
+        METHODS
+      end
+
       # The main accessor for the warden proxy instance
       def warden
         request.env['warden']
@@ -190,51 +234,6 @@ module Devise
       def redirect_for_sign_out(scope) #:nodoc:
         redirect_to after_sign_out_path_for(scope)
       end
-
-      # Define authentication filters and accessor helpers based on mappings.
-      # These filters should be used inside the controllers as before_filters,
-      # so you can control the scope of the user who should be signed in to
-      # access that specific controller/action.
-      # Example:
-      #
-      #   Roles:
-      #     User
-      #     Admin
-      #
-      #   Generated methods:
-      #     authenticate_user!  # Signs user in or redirect
-      #     authenticate_admin! # Signs admin in or redirect
-      #     user_signed_in?     # Checks whether there is an user signed in or not
-      #     admin_signed_in?    # Checks whether there is an admin signed in or not
-      #     current_user        # Current signed in user
-      #     current_admin       # Currend signed in admin
-      #     user_session        # Session data available only to the user scope
-      #     admin_session       # Session data available only to the admin scope
-      #
-      #   Use:
-      #     before_filter :authenticate_user!  # Tell devise to use :user map
-      #     before_filter :authenticate_admin! # Tell devise to use :admin map
-      #
-      Devise.mappings.each_key do |mapping|
-        class_eval <<-METHODS, __FILE__, __LINE__ + 1
-          def authenticate_#{mapping}!
-            warden.authenticate!(:scope => :#{mapping})
-          end
-
-          def #{mapping}_signed_in?
-            warden.authenticate?(:scope => :#{mapping})
-          end
-
-          def current_#{mapping}
-            @current_#{mapping} ||= warden.authenticate(:scope => :#{mapping})
-          end
-
-          def #{mapping}_session
-            current_#{mapping} && warden.session(:#{mapping})
-          end
-        METHODS
-      end
-
     end
   end
 end

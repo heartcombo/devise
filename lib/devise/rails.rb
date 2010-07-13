@@ -27,8 +27,21 @@ module Devise
     end
 
     initializer "devise.url_helpers" do
-      ActiveSupport.on_load(:action_controller) { include Devise::Controllers::UrlHelpers }
-      ActiveSupport.on_load(:action_view) { include Devise::Controllers::UrlHelpers }
+      ActiveSupport.on_load(:action_controller) do
+        include Devise::Controllers::Helpers
+        include Devise::Controllers::UrlHelpers
+      end
+
+      ActiveSupport.on_load(:action_view) do
+        include Devise::Controllers::UrlHelpers
+      end
+    end
+
+    initializer "devise.oauth_url_helpers" do
+      if Devise.oauth_providers.any?
+        ActiveSupport.on_load(:action_controller) { include Devise::Oauth::UrlHelpers }
+        ActiveSupport.on_load(:action_view) { include Devise::Oauth::UrlHelpers }
+      end
     end
 
     unless Rails.env.production?

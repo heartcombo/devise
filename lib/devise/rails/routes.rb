@@ -5,7 +5,6 @@ module ActionDispatch::Routing
     def finalize_with_devise!
       finalize_without_devise!
       Devise.configure_warden!
-      ActionController::Base.send :include, Devise::Controllers::Helpers
     end
     alias_method_chain :finalize!, :devise
   end

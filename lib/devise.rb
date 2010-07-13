@@ -31,7 +31,7 @@ module Devise
   end
 
   # Constants which holds devise configuration for extensions. Those should
-  # not be modified by the "end user".
+  # not be modified by the "end user" (this is why they are constants).
   ALL         = []
   CONTROLLERS = ActiveSupport::OrderedHash.new
   ROUTES      = ActiveSupport::OrderedHash.new
@@ -115,10 +115,6 @@ module Devise
   mattr_accessor :encryptor
   @@encryptor = nil
 
-  # Store scopes mappings.
-  mattr_accessor :mappings
-  @@mappings = ActiveSupport::OrderedHash.new
-
   # Tells if devise should apply the schema in ORMs where devise declaration
   # and schema belongs to the same class (as Datamapper and Mongoid).
   mattr_accessor :apply_schema
@@ -173,9 +169,13 @@ module Devise
 
   # PRIVATE CONFIGURATION
 
+  # Store scopes mappings.
+  mattr_reader :mappings
+  @@mappings = ActiveSupport::OrderedHash.new
+
   # Oauth configurations.
   mattr_reader :oauth_configs
-  @@oauth_configs = {}
+  @@oauth_configs = ActiveSupport::OrderedHash.new
 
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
@@ -195,7 +195,7 @@ module Devise
     @@oauth_providers.uniq!
 
     Devise::Oauth::Helpers.create_action(provider)
-    @@oauth_configs[provider] = Devise::Oauth::Config.new(*args)
+    @@oauth_configs[provider] = Devise::Oauth::Config.new(provider, *args)
   end
 
   def self.use_default_scope=(*)

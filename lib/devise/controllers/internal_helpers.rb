@@ -54,7 +54,12 @@ module Devise
 
       # Checks whether it's a devise mapped resource or not.
       def is_devise_resource? #:nodoc:
-        raise ActionController::UnknownAction unless devise_mapping
+        unknown_action!("Could not find devise mapping for #{request.fullpath}.") unless devise_mapping
+      end
+
+      def unknown_action!(msg)
+        logger.debug msg
+        raise ActionController::UnknownAction, msg
       end
 
       # Sets the resource creating an instance variable
@@ -90,12 +95,12 @@ module Devise
       #
       # Please refer to README or en.yml locale file to check what messages are
       # available.
-      def set_flash_message(key, kind)
+      def set_flash_message(key, kind) #:nodoc:
         flash[key] = I18n.t(:"#{resource_name}.#{kind}", :resource_name => resource_name,
                             :scope => [:devise, controller_name.to_sym], :default => kind)
       end
 
-      def clean_up_passwords(object)
+      def clean_up_passwords(object) #:nodoc:
         object.clean_up_passwords if object.respond_to?(:clean_up_passwords)
       end
     end

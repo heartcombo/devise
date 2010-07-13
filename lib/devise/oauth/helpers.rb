@@ -9,7 +9,7 @@ module Devise
       end
 
       included do
-        helpers = %w(oauth_callback oauth_config oauth_client)
+        helpers = %w(oauth_callback oauth_config)
         hide_action *helpers
         helper_method *helpers
         before_filter :is_oauth_callback?
@@ -23,15 +23,22 @@ module Devise
         @oauth_client ||= resource_class.oauth_configs[oauth_callback]
       end
 
-      def oauth_client
-        @oauth_client ||= oauth_config.client
-      end
-
     protected
 
       def is_oauth_callback?
-        raise ActionController::UnknownAction unless oauth_config
-        raise ActionController::UnknownAction unless params[:code]
+        unless params[:code]
+          unknown_action! "Skipping OAuth #{outh_callback.inspect} callback because code was not sent."
+        end
+
+        unless oauth_config
+          unknown_action! "Skipping OAuth #{outh_callback.inspect} callback because provider " <<
+            "could not be found in model #{resource_name.inspect}."
+        end
+
+        unless resource_class.respond_to?(oauth_model_callback)
+          raise "#{resource_class.name} does not respond to to OAuth callback #{oauth_model_callback.inspect}. " <<
+            "Check the OAuth section in the README for more information."
+        end
       end
 
       def oauth_model_callback
@@ -39,12 +46,14 @@ module Devise
       end
 
       def callback_action
-        access_token  = oauth_client.web_server.get_access_token(params[:code])
-        self.resource = User.send(oauth_model_callback, access_token, signed_in_resource)
+        access_token  = oauth_config.access_token_by_code(params[:code])
+        self.resource = resource_class.send(oauth_model_callback, access_token, signed_in_resource)
 
         if resource.persisted?
+          # ADD FLASH MESSAGE
           sign_in_and_redirect resource_name, resource, :event => :authentication
         else
+          # STORE STUFF IN SESSION
           render_for_oauth
         end
       end

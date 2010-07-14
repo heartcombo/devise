@@ -133,7 +133,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.instance_eval { def confirmation_required?; false end }
     user.save
     user.send_confirmation_instructions
-    assert_not_nil user.confirmation_token
+    assert_not_nil user.reload.confirmation_token
   end
 
   test 'should not resend email instructions if the user change his email' do

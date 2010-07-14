@@ -50,7 +50,7 @@ module Devise
 
       # Send confirmation instructions by email
       def send_confirmation_instructions
-        generate_confirmation_token if self.confirmation_token.nil?
+        generate_confirmation_token! if self.confirmation_token.nil?
         ::Devise.mailer.confirmation_instructions(self).deliver
       end
 
@@ -125,6 +125,10 @@ module Devise
           self.confirmed_at = nil
           self.confirmation_token = self.class.confirmation_token
           self.confirmation_sent_at = Time.now.utc
+        end
+
+        def generate_confirmation_token!
+          generate_confirmation_token && save(:validate => false)
         end
 
       module ClassMethods

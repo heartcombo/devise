@@ -21,7 +21,7 @@ module Devise
 
       def oauth_callback_url(resource_or_scope, *args)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        send("#{scope}_oauth_callback_path", *args)
+        send("#{scope}_oauth_callback_url", *args)
       end
 
       def oauth_callback_path(resource_or_scope, *args)

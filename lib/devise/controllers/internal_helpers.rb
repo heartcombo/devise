@@ -97,9 +97,9 @@ module Devise
       # available.
       def set_flash_message(key, kind, options={}) #:nodoc:
         options[:scope] = "devise.#{controller_name}"
-        options[:default] = Array(options[:default]).unshift(kind)
+        options[:default] = Array(options[:default]).unshift(kind.to_sym)
         options[:resource_name] = resource_name
-        flash[key] = I18n.t(:"#{resource_name}.#{kind}", options)
+        flash[key] = I18n.t("#{resource_name}.#{kind}", options)
       end
 
       def clean_up_passwords(object) #:nodoc:

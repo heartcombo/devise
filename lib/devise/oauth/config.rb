@@ -16,8 +16,8 @@ module Devise
         client.web_server.authorize_url(options)
       end
 
-      def access_token_by_code(code)
-        client.web_server.get_access_token(code)
+      def access_token_by_code(code, redirect_uri=nil)
+        client.web_server.get_access_token(code, :redirect_uri => redirect_uri)
       end
 
       def access_token_by_token(token)

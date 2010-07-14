@@ -31,7 +31,8 @@ en:
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
       unlocked: 'Your account was successfully unlocked. You are now signed in.'
     oauth_callbacks:
-      default: 'Successfully authorized from %{kind} account.'
+      success: 'Successfully authorized from %{kind} account.'
+      failure: 'Could not authorize you from %{kind} because "%{reason}".'
     mailer:
       confirmation_instructions:
         subject: 'Confirmation instructions'

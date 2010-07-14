@@ -13,6 +13,13 @@ module Devise
         nil
       end
       alias :oauth_provider :oauth_callback
+
+    protected
+
+      def expire_session_data_after_sign_in!
+        super
+        session.keys.grep(/_oauth_token$/).each { |k| session.delete(k) }
+      end
     end
   end
 end

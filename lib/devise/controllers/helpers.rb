@@ -92,6 +92,7 @@ module Devise
         options  = args.extract_options!
         scope    = Devise::Mapping.find_scope!(resource_or_scope)
         resource = args.last || resource_or_scope
+        expire_session_data_after_sign_in!
         warden.set_user(resource, options.merge!(:scope => scope))
       end
 
@@ -233,6 +234,11 @@ module Devise
 
       def redirect_for_sign_out(scope) #:nodoc:
         redirect_to after_sign_out_path_for(scope)
+      end
+
+      # A hook called to expire session data after sign up/in. This is used
+      # by a few extensions, like oauth, to expire tokens stored in session.
+      def expire_session_data_after_sign_in!
       end
     end
   end

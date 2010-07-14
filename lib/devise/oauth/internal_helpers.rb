@@ -73,7 +73,7 @@ module Devise
 
       # The session key to store the token.
       def oauth_session_key #:nodoc:
-        "#{resource_name}_#{oauth_callback}_token"
+        "#{resource_name}_#{oauth_callback}_oauth_token"
       end
 
       # The callback redirect uri. Used to request the access token.

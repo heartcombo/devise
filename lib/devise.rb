@@ -214,7 +214,7 @@ module Devise
     mapping = Devise::Mapping.new(resource, options)
     @@mappings[mapping.name] = mapping
     @@default_scope ||= mapping.name
-    @@helpers.each { |h| h.define_helpers(mapping.name) }
+    @@helpers.each { |h| h.define_helpers(mapping) }
     mapping
   end
 

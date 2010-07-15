@@ -130,8 +130,9 @@ Devise.setup do |config|
     :access_token_path => '/login/oauth/access_token',
     :scope             => 'user,public_repo'
 
-  config.oauth :twitter, 'APP_ID', 'APP_SECRET',
-    :site              => 'http://twitter.com/'
+  config.oauth :facebook, 'APP_ID', 'APP_SECRET',
+    :site              => 'https://graph.facebook.com/',
+    :scope             => %w(email offline_access)
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not (yet) supported by Devise,

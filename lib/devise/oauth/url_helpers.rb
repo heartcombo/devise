@@ -2,10 +2,12 @@ module Devise
   module Oauth
     module UrlHelpers
       def self.define_helpers(mapping)
+        return unless mapping.oauthable?
+
         class_eval <<-URL_HELPERS, __FILE__, __LINE__ + 1
-          def #{mapping}_oauth_authorize_url(provider, options={})
+          def #{mapping.name}_oauth_authorize_url(provider, options={})
             if config = Devise.oauth_configs[provider.to_sym]
-              options[:redirect_uri] ||= #{mapping}_oauth_callback_url(provider.to_s)
+              options[:redirect_uri] ||= #{mapping.name}_oauth_callback_url(provider.to_s)
               config.authorize_url(options)
             else
               raise ArgumentError, "Could not find oauth provider \#{provider.inspect}"

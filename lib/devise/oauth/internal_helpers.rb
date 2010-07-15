@@ -122,7 +122,6 @@ module Devise
           clean_up_passwords(resource)
           render_for_oauth
         else
-          session[oauth_session_key] = access_token.token
           set_oauth_flash_message :alert, :skipped
           redirect_to after_oauth_skipped_path_for(resource_name)
         end

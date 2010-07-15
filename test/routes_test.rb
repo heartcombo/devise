@@ -87,11 +87,11 @@ class DefaultRoutingTest < ActionController::TestCase
   end
 
   test 'map oauth callbacks' do
-    assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'twitter'}, {:path => 'users/oauth/twitter/callback', :method => :get})
+    assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'facebook'}, {:path => 'users/oauth/facebook/callback', :method => :get})
     assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'github'}, {:path => 'users/oauth/github/callback', :method => :get})
 
     assert_raise ActionController::RoutingError do
-      assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'facebook'}, {:path => 'users/oauth/facebook/callback', :method => :get})
+      assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'twitter'}, {:path => 'users/oauth/twitter/callback', :method => :get})
     end
   end
 

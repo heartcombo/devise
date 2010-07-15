@@ -34,6 +34,8 @@ module Devise
       #     before_filter :authenticate_admin! # Tell devise to use :admin map
       #
       def self.define_helpers(mapping) #:nodoc:
+        mapping = mapping.name
+
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
           def authenticate_#{mapping}!
             warden.authenticate!(:scope => :#{mapping})

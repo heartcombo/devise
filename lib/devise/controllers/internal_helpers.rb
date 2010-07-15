@@ -70,7 +70,7 @@ module Devise
       # Build a devise resource.
       def build_resource(hash=nil)
         hash ||= params[resource_name] || {}
-        self.resource = resource_class.new_with_session(hash, session)
+        self.resource = resource_class.new(hash)
       end
 
       # Helper for use in before_filters where no authentication is required.

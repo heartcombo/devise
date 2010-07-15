@@ -47,6 +47,13 @@ class Devise::RegistrationsController < ApplicationController
 
   protected
 
+    # Build a devise resource passing in the session. Useful to move
+    # temporary session data to the newly created user.
+    def build_resource(hash=nil)
+      hash ||= params[resource_name] || {}
+      self.resource = resource_class.new_with_session(hash, session)
+    end
+
     # Authenticates the current scope and gets a copy of the current resource.
     # We need to use a copy because we don't want actions like update changing
     # the current user in place.

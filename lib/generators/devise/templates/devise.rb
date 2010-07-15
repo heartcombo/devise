@@ -35,15 +35,15 @@ Devise.setup do |config|
   # config.http_authentication_realm = "Application"
 
   # ==> Configuration for :database_authenticatable
-  # For bcrypt, this is the cost for hashing the password and defaults to 10. If
-  # using other encryptors, it sets how many times you want the password re-encrypted.
-  config.stretches = 10
-
   # Define which will be the encryption algorithm. Devise also supports encryptors
   # from others authentication tools as :clearance_sha1, :authlogic_sha512 (then
   # you should set stretches above to 20 for default behavior) and :restful_authentication_sha1
   # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
   config.encryptor = :bcrypt
+
+  # For bcrypt, this is the cost for hashing the password and defaults to 10. If
+  # using other encryptors, it sets how many times you want the password re-encrypted.
+  config.stretches = 10
 
   # Setup a pepper to generate the encrypted password.
   config.pepper = <%= ActiveSupport::SecureRandom.hex(64).inspect %>
@@ -126,17 +126,21 @@ Devise.setup do |config|
   # should add them to the navigational formats lists. Default is [:html]
   # config.navigational_formats = [:html, :iphone]
 
+  # ==> OAuth2
+  # Add a new OAuth2 provider. Check the README for more information on setting
+  # up on your models and hooks.
+  # config.oauth :github, 'APP_ID', 'APP_SECRET',
+  #   :site              => 'https://github.com/',
+  #   :authorize_path    => '/login/oauth/authorize',
+  #   :access_token_path => '/login/oauth/access_token',
+  #   :scope             => %w(user public_repo)
+
   # ==> Warden configuration
-  # If you want to use other strategies, that are not (yet) supported by Devise,
-  # you can configure them inside the config.warden block. The example below
-  # allows you to setup OAuth, using http://github.com/roman/warden_oauth
+  # If you want to use other strategies, that are not supported by Devise, or
+  # change the failure app, you can configure them inside the config.warden block.
   #
   # config.warden do |manager|
-  #   manager.oauth(:twitter) do |twitter|
-  #     twitter.consumer_secret = <YOUR CONSUMER SECRET>
-  #     twitter.consumer_key  = <YOUR CONSUMER KEY>
-  #     twitter.options :site => 'http://twitter.com'
-  #   end
-  #   manager.default_strategies(:scope => :user).unshift :twitter_oauth
+  #   manager.failure_app = AnotherApp
+  #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
 end

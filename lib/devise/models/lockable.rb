@@ -7,13 +7,14 @@ module Devise
     # will unlock the user automatically after some configured time (ie 2.hours).
     # It's also possible to setup lockable to use both email and time strategies.
     #
-    # Configuration:
+    # == Options
     #
-    #   maximum_attempts: how many attempts should be accepted before blocking the user.
-    #   lock_strategy: lock the user account by :failed_attempts or :none.
-    #   unlock_strategy: unlock the user account by :time, :email, :both or :none.
-    #   unlock_in: the time you want to lock the user after to lock happens. Only
-    #              available when unlock_strategy is :time or :both.
+    # Lockable adds the following options to devise_for:
+    #
+    #   * +maximum_attempts+: how many attempts should be accepted before blocking the user.
+    #   * +lock_strategy+: lock the user account by :failed_attempts or :none.
+    #   * +unlock_strategy+: unlock the user account by :time, :email, :both or :none.
+    #   * +unlock_in+: the time you want to lock the user after to lock happens. Only available when unlock_strategy is :time or :both.
     #
     module Lockable
       extend  ActiveSupport::Concern

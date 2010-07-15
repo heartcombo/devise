@@ -1,8 +1,9 @@
 module Devise
   module Models
 
-    # Recoverable takes care of reseting the user password and send reset instructions
-    # Examples:
+    # Recoverable takes care of reseting the user password and send reset instructions.
+    #
+    # == Examples
     #
     #   # resets the user password and save the record, true if valid passwords are given, otherwise false
     #   User.find(1).reset_password!('password123', 'password123')
@@ -13,6 +14,7 @@ module Devise
     #
     #   # creates a new token and send it with instructions about how to reset the password
     #   User.find(1).send_reset_password_instructions
+    #
     module Recoverable
       extend ActiveSupport::Concern
 

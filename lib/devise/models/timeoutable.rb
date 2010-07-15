@@ -7,9 +7,16 @@ module Devise
     # will be asked for credentials again, it means, he/she will be redirected
     # to the sign in page.
     #
-    # Configuration:
+    # == Options
     #
-    #   timeout_in: the time you want to timeout the user session without activity.
+    # Timeoutable adds the following options to devise_for:
+    #
+    #   * +timeout_in+: the interval to timeout the user session without activity.
+    #
+    # == Examples
+    #
+    #   user.timedout?(30.minutes.ago)
+    #
     module Timeoutable
       extend ActiveSupport::Concern
 

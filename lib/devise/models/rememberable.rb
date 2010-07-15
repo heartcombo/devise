@@ -11,24 +11,23 @@ module Devise
     # You probably wouldn't use rememberable methods directly, they are used
     # mostly internally for handling the remember token.
     #
-    # Configuration:
+    # == Options
     #
-    #   remember_for: the time you want the user will be remembered without
-    #                 asking for credentials. After this time the user will be
-    #                 blocked and will have to enter his credentials again.
-    #                 This configuration is also used to calculate the expires
-    #                 time for the cookie created to remember the user.
-    #                 2.weeks by default.
+    # Rememberable adds the following options in devise_for:
     #
-    #   remember_across_browsers: if true, a valid remember token can be
-    #                             re-used between multiple browsers.
-    #                             True by default.
+    #   * +remember_for+: the time you want the user will be remembered without
+    #     asking for credentials. After this time the user will be blocked and
+    #     will have to enter his credentials again. This configuration is als
+    #     used to calculate the expires time for the cookie created to remember
+    #     the user. By default remember_for is 2.weeks.
     #
-    #   extend_remember_period: if true, extends the user's remember period
-    #                           when remembered via cookie.
-    #                           False by default.
+    #   * +remember_across_browsers+: if a valid remember token can be re-used
+    #     between multiple browsers. By default remember_across_browsers is true.
     #
-    # Examples:
+    #   * +extend_remember_period+: if true, extends the user's remember period
+    #     when remembered via cookie. False by default.
+    #
+    # == Examples
     #
     #   User.find(1).remember_me!  # regenerating the token
     #   User.find(1).forget_me!    # clearing the token

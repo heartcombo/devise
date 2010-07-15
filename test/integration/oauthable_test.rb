@@ -26,7 +26,7 @@ class OAuthableTest < ActionController::IntegrationTest
 
   test "omg" do
     assert_difference "User.count", 1 do
-      get "/users/sign_up"
+      get "/users/sign_in"
       click_link "Sign in with Facebook"
     end
   end

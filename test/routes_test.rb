@@ -86,6 +86,11 @@ class DefaultRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'devise/registrations', :action => 'destroy'}, {:path => 'users', :method => :delete})
   end
 
+  test 'map cancel user registration' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'cancel'}, {:path => 'users/cancel', :method => :get})
+    assert_named_route "/users/cancel", :cancel_user_registration_path
+  end
+
   test 'map oauth callbacks' do
     assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'facebook'}, {:path => 'users/oauth/facebook/callback', :method => :get})
     assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'github'}, {:path => 'users/oauth/github/callback', :method => :get})
@@ -140,6 +145,11 @@ class CustomizedRoutingTest < ActionController::TestCase
   test 'map account with custom path name for registration' do
     assert_recognizes({:controller => 'devise/registrations', :action => 'new', :locale => 'en'}, '/en/accounts/management/register')
   end
+
+  test 'map account with custom path name for cancel registration' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'cancel', :locale => 'en'}, '/en/accounts/management/giveup')
+  end
+
 end
 
 class ScopedRoutingTest < ActionController::TestCase

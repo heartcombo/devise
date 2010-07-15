@@ -1,5 +1,5 @@
 class Devise::RegistrationsController < ApplicationController
-  prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
+  prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, :only => [:edit, :update, :destroy]
   include Devise::Controllers::InternalHelpers
 
@@ -43,6 +43,14 @@ class Devise::RegistrationsController < ApplicationController
     resource.destroy
     set_flash_message :notice, :destroyed
     sign_out_and_redirect(self.resource)
+  end
+
+  # GET /resource/cancel
+  # Forces the session data which is usually expired after sign
+  # in to be expired now.
+  def cancel
+    expire_session_data_after_sign_in!
+    redirect_to new_registration_path(resource_name)
   end
 
   protected

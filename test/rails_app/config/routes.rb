@@ -39,9 +39,10 @@ Rails.application.routes.draw do
         :sign_in => "login", :sign_out => "logout",
         :password => "secret", :confirmation => "verification",
         :unlock => "unblock", :sign_up => "register",
-        :registration => "management"
+        :registration => "management", :cancel => "giveup"
       }
   end
 
+  match "/set", :to => "home#set"
   root :to => "home#index"
 end

@@ -257,7 +257,7 @@ Do not use such helpers for integration tests such as Cucumber or Webrat. Instea
 
 == OAuth2
 
-Since version 1.2, Devise comes with OAuth support out of the box. To create OAuth support from Github for example, first you need to register your in Github and add it as provider in your devise initializer:
+Since version 1.2, Devise comes with OAuth support out of the box. To create OAuth support from Github for example, first you need to register your app in Github and add it as provider in your devise initializer:
 
   config.oauth :github, 'APP_ID', 'APP_SECRET',
     :site              => 'https://github.com/',
@@ -275,7 +275,7 @@ And add a link to your views/sign up form:
 
   <%= link_to "Sign in as User with Github", user_oauth_authorize_url(:github) %>
 
-This link will send the user straight to Github. After the user authorizes your applications, Github will redirect the user back to your application at "/users/oauth/github/callback". This URL will be handled *internally* and *automatically* by +Devise::OauthCallbacksController#github+ action, which looks like this:
+This link will send the user straight to Github. After the user authorizes your application, Github will redirect the user back to your application at "/users/oauth/github/callback". This URL will be handled *internally* and *automatically* by +Devise::OauthCallbacksController#github+ action, which looks like this:
 
   def github
     access_token = github_config.access_token_by_code(params[:code])
@@ -319,11 +319,11 @@ Our method above has two branches and both of them returns a persisted user. So,
         user:
           github:
             success: 'Hello dear user! Welcome to our app!'
-        
+
         # With medium priority
         github:
           success: 'Hello coder! Welcome to our app!'
-        
+
         # With lower priority
         success: 'Successfully authorized from %{kind} account.'
 

@@ -31,7 +31,7 @@ module Devise
 
       # This method checks three things:
       #
-      #   * If the URL being access is a valid provider for the given scope;
+      #   * If the URL being accessed is a valid provider for the given scope;
       #   * If code or error was streamed back from the server;
       #   * If the resource class implements the required hook;
       #

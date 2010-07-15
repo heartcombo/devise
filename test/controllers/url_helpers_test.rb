@@ -54,5 +54,6 @@ class RoutesTest < ActionController::TestCase
     assert_path_and_url :registration
     assert_path_and_url :registration, :new
     assert_path_and_url :registration, :edit
+    assert_path_and_url :registration, :cancel
   end
 end

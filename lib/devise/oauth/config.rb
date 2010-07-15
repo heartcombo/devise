@@ -24,6 +24,10 @@ module Devise
       def access_token_by_token(token)
         OAuth2::AccessToken.new(client, token)
       end
+
+      def build_connection(&block)
+        client.connection.build(&block)
+      end
     end
   end
 end

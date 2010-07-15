@@ -2,11 +2,12 @@ require 'active_support/core_ext/array/wrap'
 
 module Devise
   module Oauth
+    # A configuration object that holds the OAuth2::Client object
+    # and all configuration values given config.oauth.
     class Config
-      attr_reader :name, :scope, :client
+      attr_reader :scope, :client
 
-      def initialize(name, app_id, app_secret, options)
-        @name   = name
+      def initialize(app_id, app_secret, options)
         @scope  = Array.wrap(options.delete(:scope))
         @client = OAuth2::Client.new(app_id, app_secret, options)
       end

@@ -72,7 +72,7 @@ module Devise
   mattr_accessor :http_authenticatable
   @@http_authenticatable = true
 
-  # If http authentication is used for ajax requests.  True by default.
+  # If http authentication is used for ajax requests. True by default.
   mattr_accessor :http_authenticatable_on_xhr
   @@http_authenticatable_on_xhr = true
 
@@ -306,7 +306,7 @@ module Devise
     @@oauth_providers.uniq!
 
     @@oauth_helpers.each { |h| h.define_oauth_helpers(provider) }
-    @@oauth_configs[provider] = Devise::Oauth::Config.new(provider, *args)
+    @@oauth_configs[provider] = Devise::Oauth::Config.new(*args)
   end
 
   # Include helpers in the given scope to AC and AV.

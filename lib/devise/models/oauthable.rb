@@ -21,8 +21,13 @@ module Devise
         #
         # You can call get, post, put and delete in this object to access Twitter's API.
         def oauth_access_token(provider, token)
-          oauth_configs[provider].access_token(token)
+          oauth_configs[provider].access_token_by_token(token)
         end
+
+        # TODO Implement this method in the future.
+        # def refresh_oauth_token(provider, refresh_token)
+        #   returns access_token
+        # end
 
         Devise::Models.config(self, :oauth_providers)
       end

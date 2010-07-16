@@ -12,7 +12,11 @@ module SharedUser
 
   module ExtendMethods
     def find_for_facebook_oauth(access_token, signed_in_resource=nil)
-      User.create { |u| u.update_with_facebook_oauth(access_token) }
+      data = ActiveSupport::JSON.decode(access_token.get('/me'))
+      user = signed_in_resource || User.find_by_email(data["email"]) || User.new
+      user.update_with_facebook_oauth(access_token, data)
+      user.save
+      user
     end
 
     def new_with_session(params, session)
@@ -25,18 +29,20 @@ module SharedUser
     end
   end
 
-  def update_with_facebook_oauth(access_token)
-    data = ActiveSupport::JSON.decode(access_token.get('/me'))
+  def update_with_facebook_oauth(access_token, data=nil)
+    data ||= ActiveSupport::JSON.decode(access_token.get('/me'))
 
     self.username = data["username"] unless username.present?
     self.email    = data["email"] unless email.present?
-    self.confirmed_at ||= Time.now
 
-    unless password.present?
+    self.confirmed_at ||= Time.now
+    self.facebook_token = access_token.token
+
+    unless encrypted_password.present?
       self.password = Devise.friendly_token
       self.password_confirmation = nil
     end
 
-    yield self if block_given?    
+    yield self if block_given?
   end
 end

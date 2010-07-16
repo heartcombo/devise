@@ -93,7 +93,10 @@ class DefaultRoutingTest < ActionController::TestCase
 
   test 'map oauth callbacks' do
     assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'facebook'}, {:path => 'users/oauth/facebook/callback', :method => :get})
+    assert_named_route "/users/oauth/facebook/callback", :user_oauth_callback_path, :facebook
+
     assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'github'}, {:path => 'users/oauth/github/callback', :method => :get})
+    assert_named_route "/users/oauth/github/callback", :user_oauth_callback_path, :github
 
     assert_raise ActionController::RoutingError do
       assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'twitter'}, {:path => 'users/oauth/twitter/callback', :method => :get})
@@ -102,8 +105,8 @@ class DefaultRoutingTest < ActionController::TestCase
 
   protected
 
-  def assert_named_route(result, name)
-    assert_equal result, @routes.url_helpers.send(name)
+  def assert_named_route(result, *args)
+    assert_equal result, @routes.url_helpers.send(*args)
   end
 end
 

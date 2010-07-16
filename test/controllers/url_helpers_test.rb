@@ -20,7 +20,7 @@ class RoutesTest < ActionController::TestCase
                  send(:"#{prepend_path}user_#{name}_url", :param => 123)
 
     @request.path = nil
-    # With an AR object
+    # With an object
     assert_equal @controller.send(:"#{prepend_path}#{name}_path", User.new),
                  send(:"#{prepend_path}user_#{name}_path")
     assert_equal @controller.send(:"#{prepend_path}#{name}_url", User.new),

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OAuthableTest < ActionController::IntegrationTest
+class OAuthableIntegrationTest < ActionController::IntegrationTest
   FACEBOOK_INFO = {
     :username => 'usertest',
     :email => 'user@test.com'

@@ -4,7 +4,7 @@ module SharedUser
   included do
     devise :database_authenticatable, :confirmable, :lockable, :recoverable,
            :registerable, :rememberable, :timeoutable, :token_authenticatable,
-           :trackable, :validatable, :oauthable, :oauth_providers => [:github, :facebook]
+           :trackable, :validatable, :oauthable
 
     # They need to be included after Devise is called.
     extend ExtendMethods

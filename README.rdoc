@@ -294,7 +294,7 @@ This link will send the user straight to Github. After the user authorizes your 
     end
   end
 
-In other words, Devise does all the work for you but it expects you to implement +find_for_github_oauth+ method in your model that will receive two arguments: the first is an +access_token+ object from OAuth2 library (http://github.com/intridea/oauth2) and the second is the signed in resource which we will ignore for this while. Depending on what this method returns, Devise act in a different way as seen above.
+In other words, Devise does all the work for you but it expects you to implement the +find_for_github_oauth+ method in your model that receives two arguments: the first is an +access_token+ object from OAuth2 library (http://github.com/intridea/oauth2) and the second is the signed in resource which we will ignore for this while. Depending on what this method returns, Devise act in a different way as seen above.
 
 A basic implementation for +find_for_github_oauth+ would be:
 
@@ -310,7 +310,7 @@ A basic implementation for +find_for_github_oauth+ would be:
     end
   end
 
-Our method above has two branches and both of them returns a persisted user. So, if we go back to our github action above, we will see that after returning a persisted record, it will sign in the returned user and redirect to the configured +after_oauth_success_path_for+ with a flash message. This flash message is retrieved from I18n and looks like this:
+First, notice the +access_token+ object allows you to make requests to the provider using get/post/put/delete methods to retrieve user information. Next, our method above has two branches and both of them returns a persisted user. So, if we go back to our github action above, we will see that after returning a persisted record, it will sign in the returned user and redirect to the configured +after_oauth_success_path_for+ with a flash message. This flash message is retrieved from I18n and looks like this:
 
   en:
     devise:
@@ -349,7 +349,7 @@ If you need to interact with Github after sign up, the first step is to create a
     end
   end
 
-Since the access token is stored as string, you can create another access token object to do get/post/put/delete requests like this:
+Since the access token is stored as string in the database, you can create another +access_token+ object to do get/post/put/delete requests like this:
 
   def oauth_github_token
     @oauth_github_token ||= self.class.oauth_access_token(:github, github_token)
@@ -369,7 +369,57 @@ This method is called automatically by Devise::RegistrationsController before bu
 
 === Testing OAuth
 
-Coming soon.
+Devise provides a few helpers to aid testing. Since the +user_oauth_authorize_url(:github)+ link added to our views points to Github, we certainly don't want our integration tests to send users to Github. That said, Devise provides a way to short circuit these url helpers and make them point straight to the oauth callback url with a fake code bypassing Github.
+
+All you need to do is to call the following helpers:
+
+  # Inside our (test|spec)_helper.rb
+  Devise::Oauth.test_mode!
+
+  # Inside our integration tests for Oauth
+  setup { Devise::Oauth.short_circuit_authorizers! }
+  teardown { Devise::Oauth.unshort_circuit_authorizers! }
+
+Since we are now passing a fake code to Devise OAuth callback, if we try to retrieve an access token from Github, it will obviously fail. That said, all following requests to the provider needs to be stubbed. Luckily, Devise provides a method called +Devise::Oauth.stub!+ that yields a block to help us build our stubs. All in all, our integration test would look like this:
+
+  # Inside our (test|spec)_helper.rb
+  Devise::Oauth.test_mode!
+
+  # Inside our integration tests for Oauth
+  ACCESS_TOKEN = {
+    :access_token => "plataformatec"
+  }
+
+  GITHUB_INFO = {
+    :user => {
+      :name  => 'User Example',
+      :email => 'user@example.com'
+    }
+  }
+
+  setup do
+    Devise::Oauth.short_circuit_authorizers!
+    Devise::Oauth.stub!(:github) do |b|
+      b.post('/login/oauth/access_token') { [200, {}, ACCESS_TOKEN.to_json] }
+      b.post('/api/v2/json/user/show') { [200, {}, GITHUB_INFO.to_json] }
+    end
+  end
+
+  teardown do
+    Devise::Oauth.unshort_circuit_authorizers!
+    Devise::Oauth.reset_stubs!
+  end
+
+  test "auth from Github" do
+    assert_difference "User.count", 1 do
+      visit "/users/sign_in"
+      click_link "Sign in with Github"
+    end
+
+    assert_contain "Successfully authorized from Github account."
+  end
+
+Enjoy!
 
 == Migrating from other solutions
 

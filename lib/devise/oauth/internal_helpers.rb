@@ -87,7 +87,7 @@ module Devise
         if error = params[:error] || params[:error_reason]
           # Some providers returns access-denied instead of access_denied.
           error = error.to_s.gsub("-", "_")
-          logger.warn "#{oauth_callback} oauth failed: #{error.inspect}."
+          logger.warn "[Devise] #{oauth_callback} oauth failed: #{error.inspect}."
 
           set_oauth_flash_message :alert, error[0,25], :default => :failure, :reason => error.humanize
           redirect_to after_oauth_failure_path_for(resource_name)
@@ -114,7 +114,7 @@ module Devise
         access_token  = oauth_config.access_token_by_code(params[:code], oauth_redirect_uri)
         self.resource = resource_class.send(oauth_model_callback, access_token, signed_in_resource)
 
-        if resource && resource.persisted?
+        if resource && resource.persisted? && resource.errors.empty?
           set_oauth_flash_message :notice, :success
           sign_in_and_redirect resource_name, resource, :event => :authentication
         elsif resource

@@ -153,13 +153,13 @@ class RegistrationTest < ActionController::IntegrationTest
 
   test 'a user should be able to cancel sign up by deleting data in the session' do
     get "/set"
-    assert_equal "something", @request.session["user_facebook_oauth_token"]
+    assert_equal "something", @request.session["user_provider_oauth_token"]
 
     get "/users/sign_up"
-    assert_equal "something", @request.session["user_facebook_oauth_token"]
+    assert_equal "something", @request.session["user_provider_oauth_token"]
 
     get "/users/cancel"
-    assert_nil @request.session["user_facebook_oauth_token"]
+    assert_nil @request.session["user_provider_oauth_token"]
     assert_redirected_to new_user_registration_path
   end
 end

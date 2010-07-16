@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   end
 
   def set
-    session["user_facebook_oauth_token"] = "something"
+    session["user_provider_oauth_token"] = "something"
     head :ok
   end
 end

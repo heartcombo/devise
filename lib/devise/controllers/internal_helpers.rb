@@ -58,7 +58,7 @@ module Devise
       end
 
       def unknown_action!(msg)
-        logger.debug msg
+        logger.debug "[Devise] #{msg}" if logger
         raise ActionController::UnknownAction, msg
       end
 

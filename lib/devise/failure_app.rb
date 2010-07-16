@@ -27,6 +27,7 @@ module Devise
       elsif warden_options[:recall]
         recall
       else
+        debug!
         redirect
       end
     end
@@ -51,6 +52,11 @@ module Devise
     end
 
   protected
+
+    def debug!
+      return unless Rails.logger.try(:debug?)
+      Rails.logger.debug "[Devise] Could not sign in #{scope}: #{i18n_message.inspect}."
+    end
 
     def i18n_message(default = nil)
       message = warden.message || warden_options[:message] || default || :unauthenticated

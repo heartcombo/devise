@@ -10,6 +10,10 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
       # t.lockable :lock_strategy => :<%= Devise.lock_strategy %>, :unlock_strategy => :<%= Devise.unlock_strategy %>
       # t.token_authenticatable
 
+<% for attribute in attributes -%>
+      t.<%= attribute.type %> :<%= attribute.name %>
+<% end -%>
+
       t.timestamps
     end
 

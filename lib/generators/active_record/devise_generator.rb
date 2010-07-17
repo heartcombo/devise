@@ -4,6 +4,8 @@ require 'generators/devise/orm_helpers'
 module ActiveRecord
   module Generators
     class DeviseGenerator < ActiveRecord::Generators::Base
+      argument :attributes, :type => :array, :default => [], :banner => "field:type field:type"
+
       include Devise::Generators::OrmHelpers
       source_root File.expand_path("../templates", __FILE__)
 

@@ -80,6 +80,7 @@ GEM
       rake
     mongo (1.0.5)
       bson (>= 1.0.4)
+    multi_json (0.0.4)
     nokogiri (1.4.2)
     oauth2 (0.0.10)
       faraday (~> 0.4.1)

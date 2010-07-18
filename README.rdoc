@@ -100,15 +100,9 @@ Configure your routes after setting up your model. Open your config/routes.rb fi
 
   devise_for :users
 
-This will use your User model to create a set of needed routes (you can see them by running `rake routes`).
+This will use your User model to create a set of needed routes (you can see them by running `rake routes`). If you invoked the devise generator, you noticed that this is exactly what the generator produces for us: model, routes and migrations.
 
-Options for configuring your routes include :class_name (to set the class for that route), :path_prefix, :path and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
-
-  devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
-
-Be sure to check devise_for documentation for details.
-
-This exactly what the devise generator produces for you: model, routes and migrations. Don't forget to run rake db:migrate and you are ready to go! But don't stop reading here, we still have a lot to tell you.
+Don't forget to run rake db:migrate and you are ready to go! But don't stop reading here, we still have a lot to tell you.
 
 == Controller filters and helpers
 
@@ -204,6 +198,22 @@ If the customization at the views level is not enough, you can customize each co
 3) And since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
 
 Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
+
+== Configuring routes
+
+Devise also ships with default routes. If you need to customize them, you should probably be able to do it through the devise_for method. It accepts several options like :class_name, :path_prefix and so on, including the possibility to change path names for I18n:
+
+  devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
+
+Be sure to check devise_for documentation for details.
+
+If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is to create your routes normally and wrap them in a +devise_scope+ block in the router:
+
+    devise_scope :user do
+      get "sign_in", :to => "devise/sessions#new"
+    end
+
+This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice +devise_scope+ is also aliased as +as+, feel free to choose the one you prefer.
 
 == I18n
 

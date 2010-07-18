@@ -44,15 +44,16 @@ module Devise
       end
 
       module ClassMethods
-        ::Devise::Models.config(self, :token_authentication_key)
-
         def find_for_token_authentication(conditions)
           find_for_authentication(:authentication_token => conditions[token_authentication_key])
         end
 
+        # Generate a token checking if one does not already exist in the database.
         def authentication_token
-          ::Devise.friendly_token
+          generate_token(:authentication_token)
         end
+
+        ::Devise::Models.config(self, :token_authentication_key)
       end
     end
   end

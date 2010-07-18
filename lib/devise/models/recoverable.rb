@@ -35,7 +35,7 @@ module Devise
 
         # Generates a new random token for reset password
         def generate_reset_password_token
-          self.reset_password_token = Devise.friendly_token
+          self.reset_password_token = self.class.reset_password_token
         end
 
         # Resets the reset password token with and save the record without
@@ -58,6 +58,11 @@ module Devise
           recoverable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
           recoverable.send_reset_password_instructions if recoverable.persisted?
           recoverable
+        end
+
+        # Generate a token checking if one does not already exist in the database.
+        def reset_password_token
+          generate_token(:reset_password_token)
         end
 
         # Attempt to find a user by it's reset_password_token to reset it's

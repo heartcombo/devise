@@ -112,6 +112,14 @@ module Devise
 
           record
         end
+
+        # Generate a token by looping and ensuring does not already exist.
+        def generate_token(column)
+          loop do
+            token = Devise.friendly_token
+            break token unless find(:first, :conditions => { column => token })
+          end
+        end
       end
     end
   end

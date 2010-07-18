@@ -46,7 +46,7 @@ module Devise
       # unless remember_across_browsers is true and the user already has a valid token.
       def remember_me!
         return if self.class.remember_across_browsers && self.remember_created_at && !self.remember_expired?
-        self.remember_token = Devise.friendly_token
+        self.remember_token = self.class.remember_token
         self.remember_created_at = Time.now.utc
         save(:validate => false)
       end
@@ -90,6 +90,11 @@ module Devise
           conditions = { :id => id, :remember_token => remember_token }
           record = find(:first, :conditions => conditions)
           record if record && !record.remember_expired?
+        end
+
+        # Generate a token checking if one does not already exist in the database.
+        def remember_token
+          generate_token(:remember_token)
         end
 
         Devise::Models.config(self, :remember_for, :remember_across_browsers, :cookie_domain)

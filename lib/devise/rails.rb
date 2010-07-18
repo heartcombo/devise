@@ -25,6 +25,11 @@ module Devise
       end
     end
 
+    initializer "devise.add_filters" do |app|
+      app.config.filter_parameters += [:password, :password_confirmation]
+      app.config.filter_parameters.uniq
+    end
+
     unless Rails.env.production?
       config.after_initialize do
         actions = [:confirmation_instructions, :reset_password_instructions, :unlock_instructions]

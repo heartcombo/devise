@@ -42,7 +42,7 @@ module Devise
           end
 
           def #{mapping}_signed_in?
-            warden.authenticate?(:scope => :#{mapping})
+            !!current_#{mapping}
           end
 
           def current_#{mapping}

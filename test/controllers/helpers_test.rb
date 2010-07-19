@@ -46,13 +46,13 @@ class ControllerAuthenticableTest < ActionController::TestCase
   end
 
   test 'proxy user_signed_in? to authenticate? with user scope' do
-    @mock_warden.expects(:authenticate?).with(:scope => :user)
-    @controller.user_signed_in?
+    @mock_warden.expects(:authenticate).with(:scope => :user).returns("user")
+    assert @controller.user_signed_in?
   end
 
   test 'proxy admin_signed_in? to authenticate? with admin scope' do
-    @mock_warden.expects(:authenticate?).with(:scope => :admin)
-    @controller.admin_signed_in?
+    @mock_warden.expects(:authenticate).with(:scope => :admin)
+    assert_not @controller.admin_signed_in?
   end
 
   test 'proxy user_session to session scope in warden' do

@@ -64,6 +64,9 @@ Devise.setup do |config|
   # If a valid remember token can be re-used between multiple browsers.
   # config.remember_across_browsers = true
 
+  # When true, extends remember period when user signs up via cookie.
+  # config.extend_remember_period = true
+
   # ==> Configuration for :validatable
   # Range for password length
   # config.password_length = 6..20

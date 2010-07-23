@@ -97,6 +97,10 @@ module Devise
   mattr_accessor :remember_across_browsers
   @@remember_across_browsers = true
 
+  # Extend remember period everytime the user sign up.
+  mattr_accessor :extend_remember_period
+  @@extend_remember_period = false
+
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days

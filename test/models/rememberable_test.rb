@@ -108,8 +108,50 @@ class RememberableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'if extend_remember_period is false, remember_me! should generate a new timestamp if expired' do
+    swap Devise, :extend_remember_period => false, :remember_for => 5.minutes do
+      user = create_user
+      user.remember_me!
+      assert user.remember_created_at
+
+      user.remember_created_at = old = 10.minutes.ago
+      user.save
+
+      user.remember_me!
+      assert_not_equal old, user.remember_created_at
+    end
+  end
+
+  test 'if extend_remember_period is false, remember_me! should not generate a new timestamp' do
+    swap Devise, :extend_remember_period => false, :remember_for => 1.year do
+      user = create_user
+      user.remember_me!
+      assert user.remember_created_at
+
+      user.remember_created_at = old = 10.minutes.ago
+      user.save
+
+      user.remember_me!
+      assert_equal old, user.remember_created_at
+    end
+  end
+
+  test 'if extend_remember_period is true, remember_me! should always generate a new timestamp' do
+    swap Devise, :extend_remember_period => true, :remember_for => 1.year do
+      user = create_user
+      user.remember_me!
+      assert user.remember_created_at
+
+      user.remember_created_at = old = 10.minutes.ago
+      user.save
+
+      user.remember_me!
+      assert_not_equal old, user.remember_created_at
+    end
+  end
+
   test 'if remember_across_browsers is true, remember_me! should create a new token if no token exists' do
-    swap Devise, :remember_across_browsers => true do
+    swap Devise, :remember_across_browsers => true, :remember_for => 1.year do
       user = create_user
       assert_equal nil, user.remember_token
       user.remember_me!

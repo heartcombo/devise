@@ -45,9 +45,8 @@ module Devise
       # Generate a new remember token and save the record without validations
       # unless remember_across_browsers is true and the user already has a valid token.
       def remember_me!
-        return if self.class.remember_across_browsers && self.remember_created_at && !self.remember_expired?
-        self.remember_token = self.class.remember_token
-        self.remember_created_at = Time.now.utc
+        self.remember_token = self.class.remember_token if generate_remember_token?
+        self.remember_created_at = Time.now.utc if generate_remember_timestamp?
         save(:validate => false)
       end
 
@@ -63,7 +62,7 @@ module Devise
 
       # Remember token should be expired if expiration time not overpass now.
       def remember_expired?
-        remember_expires_at <= Time.now.utc
+        remember_created_at && (remember_expires_at <= Time.now.utc)
       end
 
       # Remember token expires at created time + remember_for configuration
@@ -77,6 +76,20 @@ module Devise
 
       def cookie_domain?
         self.class.cookie_domain != false
+      end
+
+    protected
+
+      # We just don't generate a token if remember across browser is given,
+      # a remember token exists or it was expired.
+      def generate_remember_token? #:nodoc:
+        !(self.class.remember_across_browsers && remember_token) || remember_expired?
+      end
+
+      # We always generate a timestamp if extend_remember_period is true. Besides that,
+      # we generate only if one does not exist or the current one expired.
+      def generate_remember_timestamp? #:nodoc:
+        self.class.extend_remember_period || remember_created_at.nil? || remember_expired?
       end
 
       module ClassMethods
@@ -97,7 +110,8 @@ module Devise
           generate_token(:remember_token)
         end
 
-        Devise::Models.config(self, :remember_for, :remember_across_browsers, :cookie_domain)
+        Devise::Models.config(self, :remember_for, :remember_across_browsers,
+          :extend_remember_period, :cookie_domain)
       end
     end
   end

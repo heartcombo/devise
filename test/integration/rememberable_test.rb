@@ -3,7 +3,6 @@ require 'test_helper'
 class RememberMeTest < ActionController::IntegrationTest
 
   def create_user_and_remember(add_to_token='')
-    Devise.remember_for = 1
     user = create_user
     user.remember_me!
     raw_cookie = User.serialize_into_cookie(user).tap { |a| a.last << add_to_token }
@@ -15,6 +14,16 @@ class RememberMeTest < ActionController::IntegrationTest
     request = ActionDispatch::TestRequest.new
     request.cookie_jar.signed['raw_cookie'] = raw_cookie
     request.cookie_jar['raw_cookie']
+  end
+
+  def signed_cookie(key)
+    controller.send(:cookies).signed[key]
+  end
+
+  def cookie_expires(key)
+    cookie = response.headers["Set-Cookie"].split("\n").grep(/^#{key}/).first
+    cookie.split(";").map(&:strip).grep(/^expires=/)
+    Time.parse($')
   end
 
   test 'do not remember the user if he has not checked remember me option' do
@@ -45,6 +54,34 @@ class RememberMeTest < ActionController::IntegrationTest
     assert_response :success
     assert warden.authenticated?(:user)
     assert warden.user(:user) == user
+  end
+
+  test 'if both extend_remember_period and remember_across_browsers are true, sends the same token with a new expire date' do
+    swap Devise, :remember_across_browsers => true, :extend_remember_period => true, :remember_for => 1.year do
+      user  = create_user_and_remember
+      token = user.remember_token
+
+      user.remember_created_at = old = 10.minutes.ago
+      user.save!
+
+      get users_path
+      assert (cookie_expires("remember_user_token") - 1.year) > (old + 5.minutes)
+      assert_equal token, signed_cookie("remember_user_token").last
+    end
+  end
+
+  test 'if both extend_remember_period and remember_across_browsers are false, sends a new token with old expire date' do
+    swap Devise, :remember_across_browsers => false, :extend_remember_period => false, :remember_for => 1.year do
+      user  = create_user_and_remember
+      token = user.remember_token
+
+      user.remember_created_at = old = 10.minutes.ago
+      user.save!
+
+      get users_path
+      assert (cookie_expires("remember_user_token") - 1.year) < (old + 5.minutes)
+      assert_not_equal token, signed_cookie("remember_user_token").last
+    end
   end
 
   test 'do not remember other scopes' do

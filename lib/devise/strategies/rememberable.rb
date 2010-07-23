@@ -1,4 +1,5 @@
 require 'devise/strategies/base'
+require 'devise/hooks/rememberable'
 
 module Devise
   module Strategies
@@ -7,6 +8,8 @@ module Devise
     # recreate the user from this cookie if it exists. Must be called *before*
     # authenticatable.
     class Rememberable < Devise::Strategies::Base
+      include Devise::Hooks::Rememberable
+
       # A valid strategy for rememberable needs a remember token in the cookies.
       def valid?
         remember_cookie.present?
@@ -27,6 +30,10 @@ module Devise
       end
 
     private
+
+      def remember_me?
+        true
+      end
 
       def remember_key
         "remember_#{scope}_token"

@@ -89,15 +89,15 @@ module Devise
   mattr_accessor :password_length
   @@password_length = 6..20
 
-  # Time interval where the remember me token is valid.
+  # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks
 
-  # If a valid remember token can be re-used between multiple browsers.
+  # If true, a valid remember token can be re-used between multiple browsers.
   mattr_accessor :remember_across_browsers
   @@remember_across_browsers = true
 
-  # Extend remember period everytime the user sign up.
+  # If true, extends the user's remember period when remembered via cookie.
   mattr_accessor :extend_remember_period
   @@extend_remember_period = false
 

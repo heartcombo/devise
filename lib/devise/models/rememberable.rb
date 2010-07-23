@@ -18,11 +18,15 @@ module Devise
     #                 blocked and will have to enter his credentials again.
     #                 This configuration is also used to calculate the expires
     #                 time for the cookie created to remember the user.
-    #                 By default remember_for is 2.weeks.
+    #                 2.weeks by default.
     #
-    #   remember_across_browsers: if a valid remember token can be re-used
-    #                             between multiple browsers.
-    #                             By default remember_across_browsers is true.
+    #   remember_across_browsers: if true, a valid remember token can be
+    #                             re-used between multiple browsers.
+    #                             True by default.
+    #
+    #   extend_remember_period: if true, extends the user's remember period
+    #                           when remembered via cookie.
+    #                           False by default.
     #
     # Examples:
     #
@@ -80,14 +84,14 @@ module Devise
 
     protected
 
-      # We just don't generate a token if remember across browser is given,
-      # a remember token exists or it was expired.
+      # Generate a token unless remember_across_browsers is true and there is
+      # an existing remember_token or the existing remember_token has expried.
       def generate_remember_token? #:nodoc:
         !(self.class.remember_across_browsers && remember_token) || remember_expired?
       end
 
-      # We always generate a timestamp if extend_remember_period is true. Besides that,
-      # we generate only if one does not exist or the current one expired.
+      # Generate a timestamp if extend_remember_period is true, if no remember_token
+      # exists, or if an existing remember token has expired.
       def generate_remember_timestamp? #:nodoc:
         self.class.extend_remember_period || remember_created_at.nil? || remember_expired?
       end

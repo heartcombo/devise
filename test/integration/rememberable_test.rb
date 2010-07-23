@@ -56,6 +56,22 @@ class RememberMeTest < ActionController::IntegrationTest
     assert warden.user(:user) == user
   end
 
+  test 'does not extend remember period through sign in' do
+    swap Devise, :extend_remember_period => true, :remember_for => 1.year do
+      user = create_user
+      user.remember_me!
+
+      user.remember_created_at = old = 10.days.ago
+      user.save
+
+      sign_in_as_user :remember_me => true
+      user.reload
+
+      assert warden.user(:user) == user
+      assert_equal old, user.remember_created_at
+    end
+  end
+
   test 'if both extend_remember_period and remember_across_browsers are true, sends the same token with a new expire date' do
     swap Devise, :remember_across_browsers => true, :extend_remember_period => true, :remember_for => 1.year do
       user  = create_user_and_remember

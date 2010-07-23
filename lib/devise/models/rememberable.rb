@@ -48,9 +48,9 @@ module Devise
 
       # Generate a new remember token and save the record without validations
       # unless remember_across_browsers is true and the user already has a valid token.
-      def remember_me!
+      def remember_me!(extend_period=false)
         self.remember_token = self.class.remember_token if generate_remember_token?
-        self.remember_created_at = Time.now.utc if generate_remember_timestamp?
+        self.remember_created_at = Time.now.utc if generate_remember_timestamp?(extend_period)
         save(:validate => false)
       end
 
@@ -92,8 +92,8 @@ module Devise
 
       # Generate a timestamp if extend_remember_period is true, if no remember_token
       # exists, or if an existing remember token has expired.
-      def generate_remember_timestamp? #:nodoc:
-        self.class.extend_remember_period || remember_created_at.nil? || remember_expired?
+      def generate_remember_timestamp?(extend_period) #:nodoc:
+        extend_period || remember_created_at.nil? || remember_expired?
       end
 
       module ClassMethods

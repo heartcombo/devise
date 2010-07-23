@@ -109,43 +109,43 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'if extend_remember_period is false, remember_me! should generate a new timestamp if expired' do
-    swap Devise, :extend_remember_period => false, :remember_for => 5.minutes do
+    swap Devise, :remember_for => 5.minutes do
       user = create_user
-      user.remember_me!
+      user.remember_me!(false)
       assert user.remember_created_at
 
       user.remember_created_at = old = 10.minutes.ago
       user.save
 
-      user.remember_me!
+      user.remember_me!(false)
       assert_not_equal old, user.remember_created_at
     end
   end
 
   test 'if extend_remember_period is false, remember_me! should not generate a new timestamp' do
-    swap Devise, :extend_remember_period => false, :remember_for => 1.year do
+    swap Devise, :remember_for => 1.year do
       user = create_user
-      user.remember_me!
+      user.remember_me!(false)
       assert user.remember_created_at
 
       user.remember_created_at = old = 10.minutes.ago
       user.save
 
-      user.remember_me!
+      user.remember_me!(false)
       assert_equal old, user.remember_created_at
     end
   end
 
   test 'if extend_remember_period is true, remember_me! should always generate a new timestamp' do
-    swap Devise, :extend_remember_period => true, :remember_for => 1.year do
+    swap Devise, :remember_for => 1.year do
       user = create_user
-      user.remember_me!
+      user.remember_me!(true)
       assert user.remember_created_at
 
       user.remember_created_at = old = 10.minutes.ago
       user.save
 
-      user.remember_me!
+      user.remember_me!(true)
       assert_not_equal old, user.remember_created_at
     end
   end

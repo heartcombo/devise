@@ -58,7 +58,7 @@ class PasswordTest < ActionController::IntegrationTest
     assert_response :success
     assert_template 'passwords/new'
     assert_have_selector 'input[type=text][value=\'invalid.test@test.com\']'
-    assert_contain 'Email not found'
+    assert_contain 'not found'
   end
 
   test 'authenticated user should not be able to visit edit password page' do

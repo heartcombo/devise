@@ -119,6 +119,30 @@ module Devise
 
           record
         end
+        
+        def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
+          attributes = attributes.slice(*required_attributes)
+          attributes.delete_if { |key, value| value.blank? }
+
+          if attributes.size == required_attributes.size
+            record = find(:first, :conditions => attributes)
+          end
+          
+          unless record
+            record = new
+            record.send(:attributes=, attributes, false)
+
+            if attributes.size == required_attributes.size
+              record.errors.add(:base, error)
+            else
+              required_attributes.reject { |k| attributes[k].present? }.each do |attribute|
+                record.errors.add(attribute, :blank)
+              end
+            end
+          end
+
+          record
+        end
 
         # Generate a token by looping and ensuring does not already exist.
         def generate_token(column)

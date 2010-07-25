@@ -175,7 +175,24 @@ class LockableTest < ActiveSupport::TestCase
 
   test 'should add error to new user email if no email was found' do
     unlock_user = User.send_unlock_instructions(:email => "invalid@email.com")
-    assert_equal 'not found', unlock_user.errors[:email].join
+    assert_equal 'not found', unlock_user.errors[:base].join
+  end
+  
+  test 'should find a user to send unlock instructions by authentication_keys' do
+    swap Devise, :authentication_keys => [:username, :email] do
+      user = create_user
+      unlock_user = User.send_unlock_instructions(:email => user.email, :username => user.username)
+      assert_equal unlock_user, user
+    end
+  end
+  
+  test 'should require all authentication_keys' do
+    swap Devise, :authentication_keys => [:username, :email] do
+      user = create_user
+      unlock_user = User.send_unlock_instructions(:email => user.email)
+      assert_not unlock_user.persisted?
+      assert_equal "can't be blank", unlock_user.errors[:username].join
+    end
   end
 
   test 'should not be able to send instructions if the user is not locked' do

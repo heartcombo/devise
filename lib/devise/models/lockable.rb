@@ -132,7 +132,7 @@ module Devise
         # with an email not found error.
         # Options must contain the user email
         def send_unlock_instructions(attributes={})
-         lockable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
+         lockable = find_or_initialize_with_errors(authentication_keys, attributes, :not_found)
          lockable.resend_unlock_token if lockable.persisted?
          lockable
         end

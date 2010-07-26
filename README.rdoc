@@ -265,7 +265,9 @@ Do not use such helpers for integration tests such as Cucumber or Webrat. Instea
 
 == OAuth2
 
-Since version 1.2, Devise comes with OAuth support out of the box. To create OAuth support from Github for example, first you need to register your app in Github and add it as provider in your devise initializer:
+WARNING: THIS REQUIRES DEVISE FROM GIT REPOSITORY.
+
+Devise comes with OAuth support out of the box. To create OAuth support from Github for example, first you need to register your app in Github and add it as provider in your devise initializer:
 
   config.oauth :github, 'APP_ID', 'APP_SECRET',
     :site              => 'https://github.com/',

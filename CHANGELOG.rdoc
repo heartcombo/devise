@@ -2,9 +2,10 @@
 
 * enhancements
   * Rememberable module allows user to be remembered across browsers and is enabled by default (by github.com/trevorturk)
+  * Rememberable module allows you to activate the period the remember me token is extended (by github.com/trevorturk)
   * devise_for can now be used together with scope method in routes but with a few limitations (check the documentation)
-  * Support :as or :devise_scope in the router to specify controller access scope
-  * HTTP Basic Auth can now be disabled/enabled for xhr(ajax) requests using http_authenticatable_on_xhr option. (by github.com/pellja)
+  * Support `as` or `devise_scope` in the router to specify controller access scope
+  * HTTP Basic Auth can now be disabled/enabled for xhr(ajax) requests using http_authenticatable_on_xhr option (by github.com/pellja)
 
 * bug fix
   * Fix a bug in Devise::TestHelpers where current_user was returning a Response object for non active accounts

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{devise}
-  s.version = "1.1.0"
+  s.version = "1.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "TODO",
      "app/controllers/devise/confirmations_controller.rb",
+     "app/controllers/devise/oauth_callbacks_controller.rb",
      "app/controllers/devise/passwords_controller.rb",
      "app/controllers/devise/registrations_controller.rb",
      "app/controllers/devise/sessions_controller.rb",
@@ -70,6 +71,7 @@ Gem::Specification.new do |s|
      "lib/devise/models/confirmable.rb",
      "lib/devise/models/database_authenticatable.rb",
      "lib/devise/models/lockable.rb",
+     "lib/devise/models/oauthable.rb",
      "lib/devise/models/recoverable.rb",
      "lib/devise/models/registerable.rb",
      "lib/devise/models/rememberable.rb",
@@ -78,6 +80,12 @@ Gem::Specification.new do |s|
      "lib/devise/models/trackable.rb",
      "lib/devise/models/validatable.rb",
      "lib/devise/modules.rb",
+     "lib/devise/oauth.rb",
+     "lib/devise/oauth/config.rb",
+     "lib/devise/oauth/helpers.rb",
+     "lib/devise/oauth/internal_helpers.rb",
+     "lib/devise/oauth/test_helpers.rb",
+     "lib/devise/oauth/url_helpers.rb",
      "lib/devise/orm/active_record.rb",
      "lib/devise/orm/mongoid.rb",
      "lib/devise/path_checker.rb",
@@ -100,8 +108,6 @@ Gem::Specification.new do |s|
      "lib/generators/devise/templates/README",
      "lib/generators/devise/templates/devise.rb",
      "lib/generators/devise/views_generator.rb",
-     "lib/generators/devise_install_generator.rb",
-     "lib/generators/devise_views_generator.rb",
      "lib/generators/mongoid/devise_generator.rb"
   ]
   s.homepage = %q{http://github.com/plataformatec/devise}
@@ -121,6 +127,7 @@ Gem::Specification.new do |s|
      "test/integration/database_authenticatable_test.rb",
      "test/integration/http_authenticatable_test.rb",
      "test/integration/lockable_test.rb",
+     "test/integration/oauthable_test.rb",
      "test/integration/recoverable_test.rb",
      "test/integration/registerable_test.rb",
      "test/integration/rememberable_test.rb",
@@ -134,6 +141,7 @@ Gem::Specification.new do |s|
      "test/models/confirmable_test.rb",
      "test/models/database_authenticatable_test.rb",
      "test/models/lockable_test.rb",
+     "test/models/oauthable_test.rb",
      "test/models/recoverable_test.rb",
      "test/models/rememberable_test.rb",
      "test/models/timeoutable_test.rb",
@@ -141,6 +149,8 @@ Gem::Specification.new do |s|
      "test/models/trackable_test.rb",
      "test/models/validatable_test.rb",
      "test/models_test.rb",
+     "test/oauth/config_test.rb",
+     "test/oauth/url_helpers_test.rb",
      "test/orm/active_record.rb",
      "test/orm/mongoid.rb",
      "test/rails_app/app/active_record/admin.rb",
@@ -170,11 +180,12 @@ Gem::Specification.new do |s|
      "test/rails_app/config/routes.rb",
      "test/rails_app/db/migrate/20100401102949_create_tables.rb",
      "test/rails_app/db/schema.rb",
+     "test/rails_app/lib/shared_admin.rb",
+     "test/rails_app/lib/shared_user.rb",
      "test/routes_test.rb",
      "test/support/assertions.rb",
      "test/support/helpers.rb",
      "test/support/integration.rb",
-     "test/support/test_silencer.rb",
      "test/support/webrat/integrations/rails.rb",
      "test/test_helper.rb",
      "test/test_helpers_test.rb"

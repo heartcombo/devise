@@ -7,7 +7,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-Right now it's composed of 12 modules:
+Right now it's composed of 11 modules:
 
 * Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of an user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * Token Authenticatable: signs in an user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
@@ -23,11 +23,9 @@ Right now it's composed of 12 modules:
 
 == Installation
 
-Devise 1.1 supports Rails 3 and is NOT backward compatible. You can use the latest Rails 3 beta gem with Devise latest gem:
+Devise 1.1 supports Rails 3 and is NOT backward compatible. You can use the latest Rails 3 gem with Devise latest gem:
 
-  gem install devise --version=1.1.rc2
-
-If you want to use Rails master (from git repository) you need to use Devise from git repository and vice-versa.
+  gem install devise --version=1.1.0
 
 After you install Devise and add it to your Gemfile, you need to run the generator:
 

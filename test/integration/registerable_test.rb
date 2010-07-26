@@ -65,8 +65,8 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'password confirmation', :with => '123456'
     click_button 'Sign up'
 
-    assert_template 'registrations/new'
-    assert_contain 'Email has already been taken'
+    assert_current_url '/users'
+    assert_contain(/Email .* already .* taken/)
 
     assert_not warden.authenticated?(:user)
   end
@@ -92,7 +92,7 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'current password', :with => '123456'
     click_button 'Update'
 
-    assert_template 'home/index'
+    assert_current_url '/'
     assert_contain 'You updated your account successfully.'
 
     assert_equal "user.new@email.com", User.first.email
@@ -122,7 +122,7 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'current password', :with => '123456'
     click_button 'Update'
 
-    assert_template 'home/index'
+    assert_current_url '/'
     assert_contain 'You updated your account successfully.'
 
     assert User.first.valid_password?('pas123')

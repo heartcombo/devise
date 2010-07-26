@@ -68,7 +68,7 @@ class RememberMeTest < ActionController::IntegrationTest
       user.reload
 
       assert warden.user(:user) == user
-      assert_equal old, user.remember_created_at
+      assert_equal old.to_i, user.remember_created_at.to_i
     end
   end
 

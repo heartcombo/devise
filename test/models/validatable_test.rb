@@ -13,11 +13,11 @@ class ValidatableTest < ActiveSupport::TestCase
 
     user = new_user(:email => '')
     assert user.invalid?
-    assert_not_equal 'has already been taken', user.errors[:email].join
+    assert_no_match(/taken/, user.errors[:email].join)
 
     user.email = existing_user.email
     assert user.invalid?
-    assert_equal 'has already been taken', user.errors[:email].join
+    assert_match(/taken/, user.errors[:email].join)
   end
 
   test 'should require correct email format, allowing blank' do

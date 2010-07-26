@@ -22,16 +22,16 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'get resource instance variable from env' do
-    @controller.instance_variable_set(:@user, admin = Admin.new)
-    assert_equal admin, @controller.resource
+    @controller.instance_variable_set(:@user, user = User.new)
+    assert_equal user, @controller.resource
   end
 
   test 'set resource instance variable from env' do
-    admin = @controller.send(:resource_class).new
-    @controller.send(:resource=, admin)
+    user = @controller.send(:resource_class).new
+    @controller.send(:resource=, user)
 
-    assert_equal admin, @controller.send(:resource)
-    assert_equal admin, @controller.instance_variable_get(:@user)
+    assert_equal user, @controller.send(:resource)
+    assert_equal user, @controller.instance_variable_get(:@user)
   end
 
   test 'resources methods are not controller actions' do
@@ -39,10 +39,14 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'require no authentication tests current mapping' do
-    @controller.expects(:resource_name).returns(:user).twice
     @mock_warden.expects(:authenticated?).with(:user).returns(true)
     @controller.expects(:redirect_to).with(root_path)
     @controller.send :require_no_authentication
+  end
+
+  test 'signed in resource returns signed in resource for current scope' do
+    @mock_warden.expects(:authenticate).with(:scope => :user).returns(User.new)
+    assert_kind_of User, @controller.signed_in_resource
   end
   
   test 'is a devise controller' do

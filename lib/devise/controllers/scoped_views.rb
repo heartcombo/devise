@@ -17,17 +17,15 @@ module Devise
 
       # Render a view for the specified scope. Turned off by default.
       # Accepts just :controller as option.
-      def render_with_scope(action, options={})
-        controller_name = options.delete(:controller) || self.controller_name
-
+      def render_with_scope(action, path=self.controller_path)
         if self.class.scoped_views?
           begin
-            render :template => "#{devise_mapping.plural}/#{controller_name}/#{action}"
+            render :template => "#{devise_mapping.plural}/#{path.split("/").last}/#{action}"
           rescue ActionView::MissingTemplate
-            render :template => "#{controller_path}/#{action}"
+            render :template => "#{path}/#{action}"
           end
         else
-          render :template => "#{controller_path}/#{action}"
+          render :template => "#{path}/#{action}"
         end
       end
     end

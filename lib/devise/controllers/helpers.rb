@@ -9,6 +9,52 @@ module Devise
                       *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?", :"#{m}_session"] }.flatten
       end
 
+      # Define authentication filters and accessor helpers based on mappings.
+      # These filters should be used inside the controllers as before_filters,
+      # so you can control the scope of the user who should be signed in to
+      # access that specific controller/action.
+      # Example:
+      #
+      #   Roles:
+      #     User
+      #     Admin
+      #
+      #   Generated methods:
+      #     authenticate_user!  # Signs user in or redirect
+      #     authenticate_admin! # Signs admin in or redirect
+      #     user_signed_in?     # Checks whether there is an user signed in or not
+      #     admin_signed_in?    # Checks whether there is an admin signed in or not
+      #     current_user        # Current signed in user
+      #     current_admin       # Currend signed in admin
+      #     user_session        # Session data available only to the user scope
+      #     admin_session       # Session data available only to the admin scope
+      #
+      #   Use:
+      #     before_filter :authenticate_user!  # Tell devise to use :user map
+      #     before_filter :authenticate_admin! # Tell devise to use :admin map
+      #
+      def self.define_helpers(mapping) #:nodoc:
+        mapping = mapping.name
+
+        class_eval <<-METHODS, __FILE__, __LINE__ + 1
+          def authenticate_#{mapping}!
+            warden.authenticate!(:scope => :#{mapping})
+          end
+
+          def #{mapping}_signed_in?
+            !!current_#{mapping}
+          end
+
+          def current_#{mapping}
+            @current_#{mapping} ||= warden.authenticate(:scope => :#{mapping})
+          end
+
+          def #{mapping}_session
+            current_#{mapping} && warden.session(:#{mapping})
+          end
+        METHODS
+      end
+
       # The main accessor for the warden proxy instance
       def warden
         request.env['warden']
@@ -40,13 +86,16 @@ module Devise
       #
       # Examples:
       #
-      #   sign_in :user, @user    # sign_in(scope, resource)
-      #   sign_in @user           # sign_in(resource)
+      #   sign_in :user, @user                      # sign_in(scope, resource)
+      #   sign_in @user                             # sign_in(resource)
+      #   sign_in @user, :event => :authentication  # sign_in(resource, options)
       #
-      def sign_in(resource_or_scope, resource=nil)
-        scope      = Devise::Mapping.find_scope!(resource_or_scope)
-        resource ||= resource_or_scope
-        warden.set_user(resource, :scope => scope)
+      def sign_in(resource_or_scope, *args)
+        options  = args.extract_options!
+        scope    = Devise::Mapping.find_scope!(resource_or_scope)
+        resource = args.last || resource_or_scope
+        expire_session_data_after_sign_in!
+        warden.set_user(resource, options.merge!(:scope => scope))
       end
 
       # Sign out a given user or scope. This helper is useful for signing out an user
@@ -159,14 +208,17 @@ module Devise
       end
 
       # Sign in an user and tries to redirect first to the stored location and
-      # then to the url specified by after_sign_in_path_for.
-      #
-      # If just a symbol is given, consider that the user was already signed in
-      # through other means and just perform the redirection.
-      def sign_in_and_redirect(resource_or_scope, resource=nil)
-        scope      = Devise::Mapping.find_scope!(resource_or_scope)
-        resource ||= resource_or_scope
-        sign_in(scope, resource) unless warden.user(scope) == resource
+      # then to the url specified by after_sign_in_path_for. It accepts the same
+      # parameters as the sign_in method.
+      def sign_in_and_redirect(resource_or_scope, *args)
+        options  = args.extract_options!
+        scope    = Devise::Mapping.find_scope!(resource_or_scope)
+        resource = args.last || resource_or_scope
+        sign_in(scope, resource, options) unless warden.user(scope) == resource
+        redirect_for_sign_in(scope, resource)
+      end
+
+      def redirect_for_sign_in(scope, resource) #:nodoc:
         redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
       end
 
@@ -179,53 +231,17 @@ module Devise
         else
           sign_out(scope)
         end
+        redirect_for_sign_out(scope)
+      end
+
+      def redirect_for_sign_out(scope) #:nodoc:
         redirect_to after_sign_out_path_for(scope)
       end
 
-      # Define authentication filters and accessor helpers based on mappings.
-      # These filters should be used inside the controllers as before_filters,
-      # so you can control the scope of the user who should be signed in to
-      # access that specific controller/action.
-      # Example:
-      #
-      #   Roles:
-      #     User
-      #     Admin
-      #
-      #   Generated methods:
-      #     authenticate_user!  # Signs user in or redirect
-      #     authenticate_admin! # Signs admin in or redirect
-      #     user_signed_in?     # Checks whether there is an user signed in or not
-      #     admin_signed_in?    # Checks whether there is an admin signed in or not
-      #     current_user        # Current signed in user
-      #     current_admin       # Currend signed in admin
-      #     user_session        # Session data available only to the user scope
-      #     admin_session       # Session data available only to the admin scope
-      #
-      #   Use:
-      #     before_filter :authenticate_user!  # Tell devise to use :user map
-      #     before_filter :authenticate_admin! # Tell devise to use :admin map
-      #
-      Devise.mappings.each_key do |mapping|
-        class_eval <<-METHODS, __FILE__, __LINE__ + 1
-          def authenticate_#{mapping}!
-            warden.authenticate!(:scope => :#{mapping})
-          end
-
-          def #{mapping}_signed_in?
-            warden.authenticate?(:scope => :#{mapping})
-          end
-
-          def current_#{mapping}
-            @current_#{mapping} ||= warden.authenticate(:scope => :#{mapping})
-          end
-
-          def #{mapping}_session
-            current_#{mapping} && warden.session(:#{mapping})
-          end
-        METHODS
+      # A hook called to expire session data after sign up/in. This is used
+      # by a few extensions, like oauth, to expire tokens stored in session.
+      def expire_session_data_after_sign_in!
       end
-
     end
   end
 end

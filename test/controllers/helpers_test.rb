@@ -1,51 +1,16 @@
 require 'test_helper'
 require 'ostruct'
 
-class MockController < ApplicationController
-  attr_accessor :env
-
-  def request
-    self
-  end
-
-  def path
-    ''
-  end
-
-  def index
-  end
-
-  def host_with_port
-    "test.host:3000"
-  end
-
-  def protocol
-    "http"
-  end
-
-  def script_name
-    ""
-  end
-
-  def symbolized_path_parameters
-    {}
-  end
-end
-
 class ControllerAuthenticableTest < ActionController::TestCase
-  tests MockController
+  tests ApplicationController
 
   def setup
     @mock_warden = OpenStruct.new
-    @controller.env = { 'warden' => @mock_warden }
-  end
-
-  test 'setup warden' do
-    assert_not_nil @controller.warden
+    @controller.request.env['warden'] = @mock_warden
   end
 
   test 'provide access to warden instance' do
-    assert_equal @controller.warden, @controller.env['warden']
+    assert_equal @mock_warden, @controller.warden
   end
 
   test 'proxy signed_in? to authenticated' do
@@ -81,13 +46,13 @@ class ControllerAuthenticableTest < ActionController::TestCase
   end
 
   test 'proxy user_signed_in? to authenticate? with user scope' do
-    @mock_warden.expects(:authenticate?).with(:scope => :user)
-    @controller.user_signed_in?
+    @mock_warden.expects(:authenticate).with(:scope => :user).returns("user")
+    assert @controller.user_signed_in?
   end
 
   test 'proxy admin_signed_in? to authenticate? with admin scope' do
-    @mock_warden.expects(:authenticate?).with(:scope => :admin)
-    @controller.admin_signed_in?
+    @mock_warden.expects(:authenticate).with(:scope => :admin)
+    assert_not @controller.admin_signed_in?
   end
 
   test 'proxy user_session to session scope in warden' do

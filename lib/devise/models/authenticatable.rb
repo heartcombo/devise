@@ -4,18 +4,17 @@ module Devise
   module Models
     # Authenticable module. Holds common settings for authentication.
     #
-    # == Configuration:
+    # == Options
     #
-    # You can overwrite configuration values by setting in globally in Devise,
-    # using devise method or overwriting the respective instance method.
+    # Authenticatable adds the following options to devise_for:
     #
-    #   authentication_keys: parameters used for authentication. By default [:email].
+    #   * +authentication_keys+: parameters used for authentication. By default [:email].
     #
-    #   http_authenticatable: if this model allows http authentication. By default true.
-    #   It also accepts an array specifying the strategies that should allow http.
+    #   * +http_authenticatable+: if this model allows http authentication. By default true.
+    #     It also accepts an array specifying the strategies that should allow http.
     #
-    #   params_authenticatable: if this model allows authentication through request params. By default true.
-    #   It also accepts an array specifying the strategies that should allow params authentication.
+    #   * +params_authenticatable+: if this model allows authentication through request params. By default true.
+    #     It also accepts an array specifying the strategies that should allow params authentication.
     #
     # == Active?
     #

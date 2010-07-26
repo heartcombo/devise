@@ -1,5 +1,5 @@
 class Devise::RegistrationsController < ApplicationController
-  prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
+  prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, :only => [:edit, :update, :destroy]
   include Devise::Controllers::InternalHelpers
 
@@ -45,7 +45,22 @@ class Devise::RegistrationsController < ApplicationController
     sign_out_and_redirect(self.resource)
   end
 
+  # GET /resource/cancel
+  # Forces the session data which is usually expired after sign
+  # in to be expired now.
+  def cancel
+    expire_session_data_after_sign_in!
+    redirect_to new_registration_path(resource_name)
+  end
+
   protected
+
+    # Build a devise resource passing in the session. Useful to move
+    # temporary session data to the newly created user.
+    def build_resource(hash=nil)
+      hash ||= params[resource_name] || {}
+      self.resource = resource_class.new_with_session(hash, session)
+    end
 
     # Authenticates the current scope and gets a copy of the current resource.
     # We need to use a copy because we don't want actions like update changing

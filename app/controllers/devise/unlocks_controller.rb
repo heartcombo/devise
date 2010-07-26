@@ -4,7 +4,7 @@ class Devise::UnlocksController < ApplicationController
 
   # GET /resource/unlock/new
   def new
-    build_resource
+    build_resource({})
     render_with_scope :new
   end
 

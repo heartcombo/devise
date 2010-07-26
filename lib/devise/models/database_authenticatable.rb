@@ -5,21 +5,20 @@ module Devise
     # Authenticable Module, responsible for encrypting password and validating
     # authenticity of a user while signing in.
     #
-    # Configuration:
+    # == Options
     #
-    # You can overwrite configuration values by setting in globally in Devise,
-    # using devise method or overwriting the respective instance method.
+    # DatabaseAuthenticable adds the following options to devise_for:
     #
-    #   pepper: encryption key used for creating encrypted password. Each time
-    #           password changes, it's gonna be encrypted again, and this key
-    #           is added to the password and salt to create a secure hash.
-    #           Always use `rake secret' to generate a new key.
+    #   * +pepper+: encryption key used for creating encrypted password. Each time
+    #     password changes, it's gonna be encrypted again, and this key is added
+    #     to the password and salt to create a secure hash. Always use `rake secret'
+    #     to generate a new key.
     #
-    #   stretches: defines how many times the password will be encrypted.
+    #   * +stretches+: defines how many times the password will be encrypted.
     #
-    #   encryptor: the encryptor going to be used. By default :sha1.
+    #   * +encryptor+: the encryptor going to be used. By default :sha1.
     #
-    # Examples:
+    # == Examples
     #
     #    User.find(1).valid_password?('password123')         # returns true/false
     #

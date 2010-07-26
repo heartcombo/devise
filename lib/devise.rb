@@ -1,8 +1,10 @@
 require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
+require 'set'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
+  autoload :Oauth, 'devise/oauth'
   autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
@@ -30,11 +32,12 @@ module Devise
   end
 
   # Constants which holds devise configuration for extensions. Those should
-  # not be modified by the "end user".
+  # not be modified by the "end user" (this is why they are constants).
   ALL         = []
   CONTROLLERS = ActiveSupport::OrderedHash.new
   ROUTES      = ActiveSupport::OrderedHash.new
   STRATEGIES  = ActiveSupport::OrderedHash.new
+  URL_HELPERS = ActiveSupport::OrderedHash.new
 
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
@@ -69,7 +72,7 @@ module Devise
   mattr_accessor :http_authenticatable
   @@http_authenticatable = true
 
-  # If http authentication is used for ajax requests.  True by default.
+  # If http authentication is used for ajax requests. True by default.
   mattr_accessor :http_authenticatable_on_xhr
   @@http_authenticatable_on_xhr = true
 
@@ -111,11 +114,7 @@ module Devise
 
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor
-  @@encryptor = nil
-
-  # Store scopes mappings.
-  mattr_accessor :mappings
-  @@mappings = ActiveSupport::OrderedHash.new
+  @@encryptor = :bcrypt
 
   # Tells if devise should apply the schema in ORMs where devise declaration
   # and schema belongs to the same class (as Datamapper and Mongoid).
@@ -161,21 +160,37 @@ module Devise
   mattr_accessor :navigational_formats
   @@navigational_formats = [:html]
 
-  # Private methods to interface with Warden.
-  mattr_accessor :warden_config
-  @@warden_config = nil
-  @@warden_config_block = nil
-
   # When set to true, signing out an user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
   @@sign_out_all_scopes = false
 
-  def self.use_default_scope=(*)
-    ActiveSupport::Deprecation.warn "config.use_default_scope is deprecated and removed from Devise. " <<
-      "If you are using non conventional routes in Devise, all you need to do is to pass the devise " <<
-      "scope in the router DSL:\n\n  as :user do\n    get \"sign_in\", :to => \"devise/sessions\"\n  end\n\n" <<
-      "The method :as is also aliased to :devise_scope. Choose the one you prefer.", caller
-  end
+  # Oauth providers
+  mattr_accessor :oauth_providers
+  @@oauth_providers = []
+
+  # PRIVATE CONFIGURATION
+
+  # Store scopes mappings.
+  mattr_reader :mappings
+  @@mappings = ActiveSupport::OrderedHash.new
+
+  # Oauth configurations.
+  mattr_reader :oauth_configs
+  @@oauth_configs = ActiveSupport::OrderedHash.new
+
+  # Define a set of modules that are called when a mapping is added.
+  mattr_reader :helpers
+  @@helpers = Set.new
+  @@helpers << Devise::Controllers::Helpers
+
+  # Define a set of modules that are called when a provider is added.
+  mattr_reader :oauth_helpers
+  @@oauth_helpers = Set.new
+
+  # Private methods to interface with Warden.
+  mattr_accessor :warden_config
+  @@warden_config = nil
+  @@warden_config_block = nil
 
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
@@ -197,19 +212,19 @@ module Devise
   # Small method that adds a mapping to Devise.
   def self.add_mapping(resource, options)
     mapping = Devise::Mapping.new(resource, options)
-    self.mappings[mapping.name] = mapping
-    self.default_scope ||= mapping.name
+    @@mappings[mapping.name] = mapping
+    @@default_scope ||= mapping.name
+    @@helpers.each { |h| h.define_helpers(mapping) }
     mapping
   end
 
-  # Make Devise aware of an 3rd party Devise-module. For convenience.
+  # Make Devise aware of an 3rd party Devise-module (like invitable). For convenience.
   #
   # == Options:
   #
   #   +model+      - String representing the load path to a custom *model* for this module (to autoload.)
   #   +controller+ - Symbol representing the name of an exisiting or custom *controller* for this module.
   #   +route+      - Symbol representing the named *route* helper for this module.
-  #   +flash+      - Symbol representing the *flash messages* used by this helper.
   #   +strategy+   - Symbol representing if this module got a custom *strategy*.
   #
   # All values, except :model, accept also a boolean and will have the same name as the given module
@@ -225,26 +240,36 @@ module Devise
     ALL << module_name
     options.assert_valid_keys(:strategy, :model, :controller, :route)
 
-    config = {
-      :strategy => STRATEGIES,
-      :route => ROUTES,
-      :controller => CONTROLLERS
-    }
+    if strategy = options[:strategy]
+      STRATEGIES[module_name] = (strategy == true ? module_name : strategy)
+    end
 
-    config.each do |key, value|
-      next unless options[key]
-      name = (options[key] == true ? module_name : options[key])
+    if controller = options[:controller]
+      CONTROLLERS[module_name] = (controller == true ? module_name : controller)
+    end
 
-      if value.is_a?(Hash)
-        value[module_name] = name
+    if route = options[:route]
+      case route
+      when TrueClass
+        key, value = module_name, []
+      when Symbol
+        key, value = route, []
+      when Hash
+        key, value = route.keys.first, route.values.flatten
       else
-        value << name unless value.include?(name)
+        raise ArgumentError, ":route should be true, a Symbol or a Hash"
       end
+
+      URL_HELPERS[key] ||= []
+      URL_HELPERS[key].concat(value)
+      URL_HELPERS[key].uniq!
+
+      ROUTES[module_name] = key
     end
 
     if options[:model]
-      model_path = (options[:model] == true ? "devise/models/#{module_name}" : options[:model])
-      Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, model_path)
+      path = (options[:model] == true ? "devise/models/#{module_name}" : options[:model])
+      Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, path)
     end
 
     Devise::Mapping.add_module module_name
@@ -263,6 +288,37 @@ module Devise
   #  end
   def self.warden(&block)
     @@warden_config_block = block
+  end
+
+  # Specify an oauth provider.
+  #
+  #   config.oauth :github, APP_ID, APP_SECRET,
+  #     :site              => 'https://github.com/',
+  #     :authorize_path    => '/login/oauth/authorize',
+  #     :access_token_path => '/login/oauth/access_token',
+  #     :scope             =>  %w(user public_repo)
+  #
+  def self.oauth(provider, *args)
+    @@helpers << Devise::Oauth::UrlHelpers
+    @@oauth_helpers << Devise::Oauth::InternalHelpers
+
+    @@oauth_providers << provider
+    @@oauth_providers.uniq!
+
+    @@oauth_helpers.each { |h| h.define_oauth_helpers(provider) }
+    @@oauth_configs[provider] = Devise::Oauth::Config.new(*args)
+  end
+
+  # Include helpers in the given scope to AC and AV.
+  def self.include_helpers(scope)
+    ActiveSupport.on_load(:action_controller) do
+      include scope::Helpers
+      include scope::UrlHelpers
+    end
+
+    ActiveSupport.on_load(:action_view) do
+      include scope::UrlHelpers
+    end
   end
 
   # A method used internally to setup warden manager from the Rails initialize

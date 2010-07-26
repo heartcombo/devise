@@ -7,10 +7,11 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-Right now it's composed of 11 modules:
+Right now it's composed of 12 modules:
 
 * Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of an user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * Token Authenticatable: signs in an user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
+* Oauthable: adds OAuth2 support;
 * Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
 * Recoverable: resets the user password and sends reset instructions.
 * Registerable: handles signing up users through a registration process, also allowing them to edit and destroy their account.
@@ -99,15 +100,9 @@ Configure your routes after setting up your model. Open your config/routes.rb fi
 
   devise_for :users
 
-This will use your User model to create a set of needed routes (you can see them by running `rake routes`).
+This will use your User model to create a set of needed routes (you can see them by running `rake routes`). If you invoked the devise generator, you noticed that this is exactly what the generator produces for us: model, routes and migrations.
 
-Options for configuring your routes include :class_name (to set the class for that route), :path_prefix, :path and :path_names, where the last two have the same meaning as in common routes. The available :path_names are:
-
-  devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
-
-Be sure to check devise_for documentation for details.
-
-This exactly what the devise generator produces for you: model, routes and migrations. Don't forget to run rake db:migrate and you are ready to go! But don't stop reading here, we still have a lot to tell you.
+Don't forget to run rake db:migrate and you are ready to go! But don't stop reading here, we still have a lot to tell you.
 
 == Controller filters and helpers
 
@@ -179,9 +174,13 @@ Since Devise is an engine, all its views are packaged inside the gem. These view
 
   rails generate devise:views
 
-However, if you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
+If you are using HAML, you will need hpricot installed to convert Devise views to HAML.
 
-After doing so, you will be able to have views based on the role like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will use the default view at "devise/sessions/new".
+If you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
+
+After doing so, you will be able to have views based on the role like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will use the default view at "devise/sessions/new". You can also use the generator to generate scoped views:
+
+  rails generate devise:views users
 
 == Configuring controllers
 
@@ -194,11 +193,27 @@ If the customization at the views level is not enough, you can customize each co
 
 2) Tell the router to use this controller:
 
-    devise_for :admins, :controllers => { :sessions => "admin/sessions" }
+    devise_for :admins, :controllers => { :sessions => "admins/sessions" }
 
 3) And since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
 
 Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
+
+== Configuring routes
+
+Devise also ships with default routes. If you need to customize them, you should probably be able to do it through the devise_for method. It accepts several options like :class_name, :path_prefix and so on, including the possibility to change path names for I18n:
+
+  devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
+
+Be sure to check devise_for documentation for details.
+
+If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is to create your routes normally and wrap them in a +devise_scope+ block in the router:
+
+    devise_scope :user do
+      get "sign_in", :to => "devise/sessions#new"
+    end
+
+This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice +devise_scope+ is also aliased as +as+, feel free to choose the one you prefer.
 
 == I18n
 
@@ -219,15 +234,16 @@ You can also create distinct messages based on the resource you've configured us
         admin:
           signed_in: 'Hello admin!'
 
-The Devise mailer uses the same pattern to create subject messages:
+The Devise mailer uses a similar pattern to create subject messages:
 
   en:
     devise:
       mailer:
-        confirmation_instructions: 'Hello everybody!'
-        user:
-          confirmation_instructions: 'Hello User! Please confirm your email'
-          reset_password_instructions: 'Reset instructions'
+        confirmation_instructions:
+          subject: 'Hello everybody!'
+          user_subject: 'Hello User! Please confirm your email'
+        reset_password_instructions:
+          subject: 'Reset instructions'
 
 Take a look at our locale file to check all available messages.
 
@@ -249,13 +265,179 @@ You can include the Devise Test Helpers in all of your tests by adding the follo
 
 Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (http://wiki.github.com/plataformatec/devise).
 
+== OAuth2
+
+Since version 1.2, Devise comes with OAuth support out of the box. To create OAuth support from Github for example, first you need to register your app in Github and add it as provider in your devise initializer:
+
+  config.oauth :github, 'APP_ID', 'APP_SECRET',
+    :site              => 'https://github.com/',
+    :authorize_path    => '/login/oauth/authorize',
+    :access_token_path => '/login/oauth/access_token',
+    :scope             => %w(user public_repo)
+
+Then, you need to mark your model as oauthable:
+
+  class User < ActiveRecord::Base
+    devise :database_authenticatable, :oauthable
+  end
+
+And add a link to your views/sign up form:
+
+  <%= link_to "Sign in as User with Github", user_oauth_authorize_url(:github) %>
+
+This link will send the user straight to Github. After the user authorizes your application, Github will redirect the user back to your application at "/users/oauth/github/callback". This URL will be handled *internally* and *automatically* by +Devise::OauthCallbacksController#github+ action, which looks like this:
+
+  def github
+    access_token = github_config.access_token_by_code(params[:code])
+    @user = User.find_for_github_oauth(access_token, signed_in_resource)
+
+    if @user && @user.persisted?
+      sign_in @user
+      set_oauth_flash_message :notice, :success
+      redirect_to after_oauth_success_path_for(@user) #=> redirects to user_root_path or root_path
+    elsif @user
+      session[:user_github_oauth_token] = access_token.token
+      render_for_auth #=> renders sign up view by default
+    else
+      set_oauth_flash_message :alert, :skipped
+      redirect_to after_oauth_skipped_path_for(:user) #=> redirects to user_new_session_path
+    end
+  end
+
+In other words, Devise does all the work for you but it expects you to implement the +find_for_github_oauth+ method in your model that receives two arguments: the first is an +access_token+ object from OAuth2 library (http://github.com/intridea/oauth2) and the second is the signed in resource which we will ignore for this while. Depending on what this method returns, Devise act in a different way as seen above.
+
+A basic implementation for +find_for_github_oauth+ would be:
+
+  def self.find_for_github_oauth(access_token, signed_in_resource=nil)
+    # Get the user email info from Github for sign up
+    data = ActiveSupport::JSON.decode(access_token.get('/api/v2/json/user/show'))["user"]
+
+    if user = User.find_by_email(data["email"])
+      user
+    else
+      # Create an user with a stub password.
+      User.create!(:name => user["name"], :email => user["email"], :password => Devise.friendly_token)
+    end
+  end
+
+First, notice the +access_token+ object allows you to make requests to the provider using get/post/put/delete methods to retrieve user information. Next, our method above has two branches and both of them returns a persisted user. So, if we go back to our github action above, we will see that after returning a persisted record, it will sign in the returned user and redirect to the configured +after_oauth_success_path_for+ with a flash message. This flash message is retrieved from I18n and looks like this:
+
+  en:
+    devise:
+      oauth_callbacks:
+        # Higher priority message:
+        user:
+          github:
+            success: 'Hello dear user! Welcome to our app!'
+
+        # With medium priority
+        github:
+          success: 'Hello coder! Welcome to our app!'
+
+        # With lower priority
+        success: 'Successfully authorized from %{kind} account.'
+
+Our basic implementation assumes that all information retrieved from Github is enough for us to create an user, however this may not be true for all providers. That said, Devise allows +find_for_github_oauth+ to have different outcomes. For instance, if it returns a record which was not persisted (usually a new record with errors), it will render the sign up views from the registrations controller and show all error messages. On the other hand, if you decide to return nil from +find_for_github_oauth+, Devise will consider that you decided to skip the authentication and will redirect to +after_oauth_skipped_path_for+ (defaults to the sign in page) with the skipped flash message.
+
+All these methods +after_oauth_skipped_path_for+, +render_for_oauth+ and so on can be customized and overwritten in your application by inheriting from Devise::OauthCallbacksController as we have seen above in the "Configuring controllers" section.
+
+For last but not least, Devise also supports linking accounts. The setup discussed above only uses Github for sign up and assumes that after the user signs up, there will not have any interaction with Github at all. However, this is not true for some applications.
+
+If you need to interact with Github after sign up, the first step is to create a +github_token+ in the database and store in it in the +access_token+ given to +find_for_github_oauth+. You may also want to allow an already signed in user to link his account to a Github account without a need to sign up again. This is where the +signed_in_resource+ we discussed earlier takes place. If +find_for_github_oauth+ receives a signed in resource as parameter, you can link the github account to it like below:
+
+  def self.find_for_github_oauth(access_token, signed_in_resource=nil)
+    data = ActiveSupport::JSON.decode(access_token.get('/api/v2/json/user/show'))["user"]
+
+    # Link the account if an e-mail already exists in the database
+    # or a signed_in_resource, which is already in session was given.
+    if user = signed_in_resource || User.find_by_email(data["email"])
+      user.update_attribute(:github_token, access_token.token)
+      user
+    else
+      User.create!(:name => user["name"], :email => user["email"],
+        :password => Devise.friendly_token){ |u| u.github_token = access_token.token }
+    end
+  end
+
+Since the access token is stored as string in the database, you can create another +access_token+ object to do get/post/put/delete requests like this:
+
+  def oauth_github_token
+    @oauth_github_token ||= self.class.oauth_access_token(:github, github_token)
+  end
+
+Or use a composition pattern through ActiveRecord's composed_of.
+
+For github, the access token never expires. For facebook, you need to ask for offline access to get a token that won't expire. However, some providers like 37 Signals may expire the token and you need to store both access_token and refresh token in your database. This mechanism is not yet supported by Devise by default and you should check OAuth2 documentation for more information.
+
+Finally, notice in cases a resource is returned by +find_for_github_oauth+ but is not persisted, we store the access token in the session before rendering the registrations form. This allows you to recover your token later by overwriting +new_with_session+ class method in your model:
+
+  def self.new_with_session(params, session)
+    super.tap { |u| u.github_token = session[:user_github_oauth_token] }
+  end
+
+This method is called automatically by Devise::RegistrationsController before building/creating a new resource. All oauth tokens in sessions are removed after the user signs in/up.
+
+=== Testing OAuth
+
+Devise provides a few helpers to aid testing. Since the +user_oauth_authorize_url(:github)+ link added to our views points to Github, we certainly don't want our integration tests to send users to Github. That said, Devise provides a way to short circuit these url helpers and make them point straight to the oauth callback url with a fake code bypassing Github.
+
+All you need to do is to call the following helpers:
+
+  # Inside our (test|spec)_helper.rb
+  Devise::Oauth.test_mode!
+
+  # Inside our integration tests for Oauth
+  setup { Devise::Oauth.short_circuit_authorizers! }
+  teardown { Devise::Oauth.unshort_circuit_authorizers! }
+
+Since we are now passing a fake code to Devise OAuth callback, if we try to retrieve an access token from Github, it will obviously fail. That said, all following requests to the provider needs to be stubbed. Luckily, Devise provides a method called +Devise::Oauth.stub!+ that yields a block to help us build our stubs. All in all, our integration test would look like this:
+
+  # Inside our (test|spec)_helper.rb
+  Devise::Oauth.test_mode!
+
+  # Inside our integration tests for Oauth
+  ACCESS_TOKEN = {
+    :access_token => "plataformatec"
+  }
+
+  GITHUB_INFO = {
+    :user => {
+      :name  => 'User Example',
+      :email => 'user@example.com'
+    }
+  }
+
+  setup do
+    Devise::Oauth.short_circuit_authorizers!
+    Devise::Oauth.stub!(:github) do |b|
+      b.post('/login/oauth/access_token') { [200, {}, ACCESS_TOKEN.to_json] }
+      b.post('/api/v2/json/user/show') { [200, {}, GITHUB_INFO.to_json] }
+    end
+  end
+
+  teardown do
+    Devise::Oauth.unshort_circuit_authorizers!
+    Devise::Oauth.reset_stubs!
+  end
+
+  test "auth from Github" do
+    assert_difference "User.count", 1 do
+      visit "/users/sign_in"
+      click_link "Sign in with Github"
+    end
+
+    assert_contain "Successfully authorized from Github account."
+  end
+
+Enjoy!
+
 == Migrating from other solutions
 
 Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of these strategies, set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devise's fields (encrypted_password and password_salt).
 
 == Other ORMs
 
-Devise supports ActiveRecord (by default) and Mongoid. We offer experimental Datamapper support (with the limitation that the Devise test suite does not run completely with Datamapper). To choose other ORM, you just need to configure it in the initializer file.
+Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you just need to require it in the initializer file.
 
 == Extensions
 
@@ -263,32 +445,29 @@ Devise also has extensions created by the community:
 
 * http://github.com/scambra/devise_invitable adds support to Devise for sending invitations by email.
 
-* http://github.com/grimen/devise_facebook_connectable adds support for Facebook Connect authentication, and optionally fetching user info from Facebook in the same step.
-
 * http://github.com/joshk/devise_imapable adds support for imap based authentication, excellent for internal apps when an LDAP server isn't available.
 
 * http://github.com/cschiewek/devise_ldap_authenticatable adds support for LDAP authentication via simple bind.
 
 Please consult their respective documentation for more information and requirements.
 
-== TODO
+== Bugs and Feedback
 
-Please refer to TODO file.
+If you discover any bugs, we would like to know about it. Be sure to include as much relevant information as possible, as Devise and Rails versions. If possible, please try to go through the following steps:
 
-== Security
+1) Look at the source code a bit to find out whether your assumptions are correct. We try to keep it as clean and documented as possible;
 
-Needless to say, security is extremely important to Devise. If you find yourself in a possible security issue with Devise, please go through the following steps, trying to reproduce the bug:
+2) Provide a simple way to reproduce the bug: a small test case to Devise test suite or a simple app on Github;
 
-1) Look at the source code a bit to find out whether your assumptions are correct;
-2) If possible, provide a way to reproduce the bug: a small app on Github or a step-by-step to reproduce;
-3) E-mail us or send a Github private message instead of using the normal issues;
+Our Issues Tracker is available at:
 
-Being able to reproduce the bug is the first step to fix it. Thanks for your understanding.
+http://github.com/plataformatec/devise/issues
 
-== Maintainers
+If you found a security bug, we ask you to *NOT* use the Issues Tracker and instead send us a private message through Github or send an e-mail to the developers.
 
-* José Valim (http://github.com/josevalim)
-* Carlos Antônio da Silva (http://github.com/carlosantoniodasilva)
+Finally, if you have questions or would like to give some feedback, please use the Mailing List instead of Issues Tracker:
+
+http://groups.google.com/group/plataformatec-devise
 
 == Contributors
 
@@ -296,15 +475,12 @@ We have a long list of valued contributors. Check them all at:
 
 http://github.com/plataformatec/devise/contributors
 
-== Bugs and Feedback
+If you want to add new features, let us know in the Issues Tracker! If you want to scratch our itches, feel free to check the TODO file in the repository. :)
 
-If you discover any bugs, please create an issue on GitHub.
+== Maintainers
 
-http://github.com/plataformatec/devise/issues
-
-For support, send an e-mail to the mailing list.
-
-http://groups.google.com/group/plataformatec-devise
+* José Valim (http://github.com/josevalim)
+* Carlos Antônio da Silva (http://github.com/carlosantoniodasilva)
 
 == License
 

@@ -8,12 +8,11 @@ module Devise
     # This module only provides a few helpers to help you manage the token. Creating and resetting
     # the token is your responsibility.
     #
-    # == Configuration:
+    # == Options
     #
-    # You can overwrite configuration values by setting in globally in Devise (+Devise.setup+),
-    # using devise method, or overwriting the respective instance method.
+    # TokenAuthenticable adds the following options to devise_for:
     #
-    # +token_authentication_key+ - Defines name of the authentication token params key. E.g. /users/sign_in?some_key=...
+    #   * +token_authentication_key+: Defines name of the authentication token params key. E.g. /users/sign_in?some_key=...
     #
     module TokenAuthenticatable
       extend ActiveSupport::Concern

@@ -261,7 +261,7 @@ You can include the Devise Test Helpers in all of your tests by adding the follo
     include Devise::TestHelpers
   end
 
-If you're using RSpec and want the helpers automatically included within all `describe` blocks, add a file called spec/support/devise.rb with the following contents:
+If you're using RSpec and want the helpers automatically included within all +describe+ blocks, add a file called spec/support/devise.rb with the following contents:
 
   RSpec.configure do |config|
     config.include Devise::TestHelpers

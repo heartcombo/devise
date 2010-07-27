@@ -112,6 +112,7 @@ GEM
     tzinfo (0.3.22)
     warden (0.10.7)
       rack (>= 1.0.0)
+    weakling (0.0.4-java)
     webrat (0.7.0)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)

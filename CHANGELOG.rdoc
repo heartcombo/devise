@@ -1,6 +1,11 @@
 * enhancements
   * Added OAuth 2 support
 
+== 1.1.1
+
+* bugfix
+  * Fix a small bug where generated locale file was empty on devise:install
+
 == 1.1.0
 
 * enhancements

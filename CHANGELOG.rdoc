@@ -1,4 +1,12 @@
-== 1.1.0 (to be released)
+* enhancements
+  * Added OAuth 2 support
+
+== 1.1.1
+
+* bugfix
+  * Fix a small bug where generated locale file was empty on devise:install
+
+== 1.1.0
 
 * enhancements
   * Rememberable module allows user to be remembered across browsers and is enabled by default (by github.com/trevorturk)

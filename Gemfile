@@ -26,3 +26,4 @@ gem "warden", "0.10.7"
 gem "webrat", "0.7.0"
 gem "mocha", :require => false
 gem "bcrypt-ruby", :require => "bcrypt"
+gem "oauth2"

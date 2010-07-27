@@ -86,10 +86,27 @@ class DefaultRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'devise/registrations', :action => 'destroy'}, {:path => 'users', :method => :delete})
   end
 
+  test 'map cancel user registration' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'cancel'}, {:path => 'users/cancel', :method => :get})
+    assert_named_route "/users/cancel", :cancel_user_registration_path
+  end
+
+  test 'map oauth callbacks' do
+    assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'facebook'}, {:path => 'users/oauth/facebook/callback', :method => :get})
+    assert_named_route "/users/oauth/facebook/callback", :user_oauth_callback_path, :facebook
+
+    assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'github'}, {:path => 'users/oauth/github/callback', :method => :get})
+    assert_named_route "/users/oauth/github/callback", :user_oauth_callback_path, :github
+
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'twitter'}, {:path => 'users/oauth/twitter/callback', :method => :get})
+    end
+  end
+
   protected
 
-  def assert_named_route(result, name)
-    assert_equal result, @routes.url_helpers.send(name)
+  def assert_named_route(result, *args)
+    assert_equal result, @routes.url_helpers.send(*args)
   end
 end
 
@@ -131,6 +148,11 @@ class CustomizedRoutingTest < ActionController::TestCase
   test 'map account with custom path name for registration' do
     assert_recognizes({:controller => 'devise/registrations', :action => 'new', :locale => 'en'}, '/en/accounts/management/register')
   end
+
+  test 'map account with custom path name for cancel registration' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'cancel', :locale => 'en'}, '/en/accounts/management/giveup')
+  end
+
 end
 
 class ScopedRoutingTest < ActionController::TestCase

@@ -1,14 +1,16 @@
 require 'devise/rails/routes'
 require 'devise/rails/warden_compat'
 
-# Include UrlHelpers in ActionController and ActionView as soon as they are loaded.
-ActiveSupport.on_load(:action_controller) { include Devise::Controllers::UrlHelpers }
-ActiveSupport.on_load(:action_view) { include Devise::Controllers::UrlHelpers }
-
 module Devise
   class Engine < ::Rails::Engine
     config.devise = Devise
 
+    # Skip eager load of controllers because it is handled by Devise
+    # to avoid loading unused controllers.
+    config.paths.app.controllers.autoload!
+    config.paths.app.controllers.skip_eager_load!
+
+    # Initialize Warden and copy its configurations.
     config.app_middleware.use Warden::Manager do |config|
       Devise.warden_config = config
     end
@@ -16,54 +18,33 @@ module Devise
     # Force routes to be loaded if we are doing any eager load.
     config.before_eager_load { |app| app.reload_routes! }
 
-    config.after_initialize do
-      Devise.encryptor ||= begin
-        warn "[WARNING] config.encryptor is not set in your config/initializers/devise.rb. " \
-          "Devise will then set it to :bcrypt. If you were using the previous default " \
-          "encryptor, please add config.encryptor = :sha1 to your configuration file." if Devise.mailer_sender
-        :bcrypt
-      end
-    end
-
     initializer "devise.add_filters" do |app|
       app.config.filter_parameters += [:password, :password_confirmation]
       app.config.filter_parameters.uniq
     end
 
-    unless Rails.env.production?
-      config.after_initialize do
-        actions = [:confirmation_instructions, :reset_password_instructions, :unlock_instructions]
+    initializer "devise.url_helpers" do
+      Devise.include_helpers(Devise::Controllers)
+    end
 
-        translations = begin
-          I18n.t("devise.mailer", :raise => true).map { |k, v| k if v.is_a?(String) }.compact
-        rescue Exception => e # Do not care if something fails
-          []
-        end
+    initializer "devise.oauth_url_helpers" do
+      if Devise.oauth_providers.any?
+        Devise.include_helpers(Devise::Oauth)
+      end
+    end
 
-        keys = actions & translations
+    # Check all available mapings and only load related controllers.
+    def eager_load!
+      mappings    = Devise.mappings.values.map(&:modules).flatten.uniq
+      controllers = Devise::CONTROLLERS.values_at(*mappings)
+      path        = paths.app.controllers.to_a.first
+      matcher     = /\A#{Regexp.escape(path)}\/(.*)\.rb\Z/
 
-        keys.each do |key|
-          ActiveSupport::Deprecation.warn "The I18n message 'devise.mailer.#{key}' is deprecated. " \
-            "Please use 'devise.mailer.#{key}.subject' instead."
-        end
+      Dir.glob("#{path}/devise/{#{controllers.join(',')}}_controller.rb").sort.each do |file|
+        require_dependency file.sub(matcher, '\1')
       end
 
-      config.after_initialize do
-        flash = [:unauthenticated, :unconfirmed, :invalid, :invalid_token, :timeout, :inactive, :locked]
-
-        translations = begin
-          I18n.t("devise.sessions", :raise => true).keys
-        rescue Exception => e # Do not care if something fails
-          []
-        end
-
-        keys = flash & translations
-
-        if keys.any?
-          ActiveSupport::Deprecation.warn "The following I18n messages in 'devise.sessions' " \
-            "are deprecated: #{keys.to_sentence}. Please move them to 'devise.failure' instead."
-        end
-      end
+      super
     end
   end
 end

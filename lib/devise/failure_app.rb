@@ -27,6 +27,7 @@ module Devise
       elsif warden_options[:recall]
         recall
       else
+        debug!
         redirect
       end
     end
@@ -51,6 +52,11 @@ module Devise
     end
 
   protected
+
+    def debug!
+      return unless Rails.logger.try(:debug?)
+      Rails.logger.debug "[Devise] Could not sign in #{scope}: #{i18n_message.inspect}."
+    end
 
     def i18n_message(default = nil)
       message = warden.message || warden_options[:message] || default || :unauthenticated
@@ -89,7 +95,7 @@ module Devise
     end
 
     def scope
-      @scope ||= warden_options[:scope]
+      @scope ||= warden_options[:scope] || Devise.default_scope
     end
 
     def attempted_path
@@ -101,7 +107,7 @@ module Devise
     # yet, but we still need to store the uri based on scope, so different scopes
     # would never use the same uri to redirect.
     def store_location!
-      session[:"#{scope}_return_to"] = attempted_path if request.get? && !http_auth?
+      session["#{scope}_return_to"] = attempted_path if request.get? && !http_auth?
     end
   end
 end

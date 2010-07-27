@@ -1,6 +1,10 @@
 module Shim
   extend ::ActiveSupport::Concern
-  include ::Mongoid::Timestamps
+
+  included do
+    include ::Mongoid::Timestamps
+    field :created_at, :type => DateTime
+  end
 
   module ClassMethods
     def last(options={})

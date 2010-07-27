@@ -61,6 +61,7 @@ GEM
     activerecord-jdbcsqlite3-adapter (0.9.7-java)
       activerecord-jdbc-adapter (= 0.9.7)
       jdbc-sqlite3 (>= 3.6.3.054)
+    addressable (2.1.2)
     arel (0.4.0)
       activesupport (>= 3.0.0.beta)
     bcrypt-ruby (2.1.2)
@@ -70,6 +71,9 @@ GEM
     columnize (0.3.1)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    faraday (0.4.6)
+      addressable (>= 2.1.1)
+      rack (>= 1.0.1)
     i18n (0.4.1)
     jdbc-sqlite3 (3.6.3.054)
     linecache (0.43)
@@ -82,9 +86,13 @@ GEM
       rake
     mongo (1.0.5)
       bson (>= 1.0.4)
+    multi_json (0.0.4)
     nokogiri (1.4.2-java)
       weakling (>= 0.0.3)
     nokogiri (1.4.2)
+    oauth2 (0.0.10)
+      faraday (~> 0.4.1)
+      multi_json (>= 0.0.4)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.9)
@@ -104,7 +112,6 @@ GEM
     tzinfo (0.3.22)
     warden (0.10.7)
       rack (>= 1.0.0)
-    weakling (0.0.4-java)
     webrat (0.7.0)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -122,6 +129,7 @@ DEPENDENCIES
   mocha
   mongo
   mongoid!
+  oauth2
   rails!
   ruby-debug (>= 0.10.3)
   sqlite3-ruby

@@ -9,22 +9,22 @@ module Devise
     # it means it won't be able to sign in again without confirming the account
     # again through the email that was sent.
     #
-    # Configuration:
+    # == Options
     #
-    #   confirm_within: the time you want the user will have to confirm it's account
-    #                   without blocking his access. When confirm_within is zero, the
-    #                   user won't be able to sign in without confirming. You can
-    #                   use this to let your user access some features of your
-    #                   application without confirming the account, but blocking it
-    #                   after a certain period (ie 7 days). By default confirm_within is
-    #                   zero, it means users always have to confirm to sign in.
+    # Confirmable adds the following options to devise_for:
     #
-    # Examples:
+    #   * +confirm_within+: the time you want to allow the user to access his account
+    #     before confirming it. After this period, the user access is denied. You can
+    #     use this to let your user access some features of your application without
+    #     confirming the account, but blocking it after a certain period (ie 7 days).
+    #     By default confirm_within is zero, it means users always have to confirm to sign in.
+    #
+    # == Examples
     #
     #   User.find(1).confirm!      # returns true unless it's already confirmed
     #   User.find(1).confirmed?    # true/false
     #   User.find(1).send_confirmation_instructions # manually send instructions
-    #   User.find(1).resend_confirmation! # generates a new token and resent it
+    #
     module Confirmable
       extend ActiveSupport::Concern
 

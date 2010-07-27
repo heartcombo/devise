@@ -1,7 +1,8 @@
-class User < ActiveRecord::Base
-  devise :database_authenticatable, :confirmable, :lockable, :recoverable,
-         :registerable, :rememberable, :timeoutable, :token_authenticatable,
-         :trackable, :validatable
+require 'shared_user'
 
-  attr_accessible :username, :email, :password, :password_confirmation
+class User < ActiveRecord::Base
+  include Shim
+  include SharedUser
+
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me
 end

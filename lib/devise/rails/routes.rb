@@ -5,7 +5,6 @@ module ActionDispatch::Routing
     def finalize_with_devise!
       finalize_without_devise!
       Devise.configure_warden!
-      ActionController::Base.send :include, Devise::Controllers::Helpers
     end
     alias_method_chain :finalize!, :devise
   end
@@ -116,16 +115,6 @@ module ActionDispatch::Routing
     def devise_for(*resources)
       options = resources.extract_options!
 
-      if as = options.delete(:as)
-        ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
-        options[:path] ||= as
-      end
-
-      if scope = options.delete(:scope)
-        ActiveSupport::Deprecation.warn ":scope is deprecated, please use :singular instead."
-        options[:singular] ||= scope
-      end
-
       options[:as]          ||= @scope[:as]     if @scope[:as].present?
       options[:module]      ||= @scope[:module] if @scope[:module].present?
       options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?
@@ -227,8 +216,20 @@ module ActionDispatch::Routing
       end
 
       def devise_registration(mapping, controllers) #:nodoc:
-        resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => mapping.path_names[:registration],
-                 :path_names => { :new => mapping.path_names[:sign_up] }, :controller => controllers[:registrations]
+        path_names = {
+          :new => mapping.path_names[:sign_up],
+          :cancel => mapping.path_names[:cancel]
+        }
+
+        resource :registration, :except => :show, :path => mapping.path_names[:registration],
+                 :path_names => path_names, :controller => controllers[:registrations] do
+          get :cancel
+        end
+      end
+
+      def devise_oauth_callback(mapping, controllers) #:nodoc:
+        get "/oauth/:action/callback", :action => Regexp.union(mapping.to.oauth_providers.map(&:to_s)),
+          :to => controllers[:oauth_callbacks], :as => :oauth_callback
       end
 
       def with_devise_exclusive_scope(new_path, new_as) #:nodoc:

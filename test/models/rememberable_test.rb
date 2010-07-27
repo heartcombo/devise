@@ -118,7 +118,7 @@ class RememberableTest < ActiveSupport::TestCase
       user.save
 
       user.remember_me!(false)
-      assert_not_equal old, user.remember_created_at
+      assert_not_equal old.to_i, user.remember_created_at.to_i
     end
   end
 
@@ -128,11 +128,11 @@ class RememberableTest < ActiveSupport::TestCase
       user.remember_me!(false)
       assert user.remember_created_at
 
-      user.remember_created_at = old = 10.minutes.ago
+      user.remember_created_at = old = 10.minutes.ago.utc
       user.save
 
       user.remember_me!(false)
-      assert_equal old, user.remember_created_at
+      assert_equal old.to_i, user.remember_created_at.to_i
     end
   end
 

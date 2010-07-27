@@ -5,8 +5,7 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
-        helper_method :warden, :signed_in?, :devise_controller?, :anybody_signed_in?,
-                      *Devise.mappings.keys.map { |m| [:"current_#{m}", :"#{m}_signed_in?", :"#{m}_session"] }.flatten
+        helper_method :warden, :signed_in?, :devise_controller?, :anybody_signed_in?
       end
 
       # Define authentication filters and accessor helpers based on mappings.
@@ -53,6 +52,10 @@ module Devise
             current_#{mapping} && warden.session(:#{mapping})
           end
         METHODS
+
+        ActiveSupport.on_load(:action_controller) do
+          helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
+        end
       end
 
       # The main accessor for the warden proxy instance

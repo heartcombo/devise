@@ -9,8 +9,9 @@ GIT
       tzinfo (~> 0.3.22)
       will_paginate (~> 3.0.pre)
 
-PATH
-  remote: /Users/jose/Work/github/rails
+GIT
+  remote: git://github.com/rails/rails.git
+  revision: dd61a81
   specs:
     actionmailer (3.0.0.beta4)
       actionpack (= 3.0.0.beta4)
@@ -56,6 +57,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
+    activerecord-jdbc-adapter (0.9.7-java)
+    activerecord-jdbcsqlite3-adapter (0.9.7-java)
+      activerecord-jdbc-adapter (= 0.9.7)
+      jdbc-sqlite3 (>= 3.6.3.054)
     addressable (2.1.2)
     arel (0.4.0)
       activesupport (>= 3.0.0.beta)
@@ -70,6 +75,7 @@ GEM
       addressable (>= 2.1.1)
       rack (>= 1.0.1)
     i18n (0.4.1)
+    jdbc-sqlite3 (3.6.3.054)
     linecache (0.43)
     mail (2.2.5)
       activesupport (>= 2.3.6)
@@ -81,6 +87,8 @@ GEM
     mongo (1.0.5)
       bson (>= 1.0.4)
     multi_json (0.0.4)
+    nokogiri (1.4.2-java)
+      weakling (>= 0.0.3)
     nokogiri (1.4.2)
     oauth2 (0.0.10)
       faraday (~> 0.4.1)
@@ -104,6 +112,7 @@ GEM
     tzinfo (0.3.22)
     warden (0.10.7)
       rack (>= 1.0.0)
+    weakling (0.0.4-java)
     webrat (0.7.0)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -111,9 +120,11 @@ GEM
     will_paginate (3.0.pre)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
+  activerecord-jdbcsqlite3-adapter
   bcrypt-ruby
   bson_ext
   mocha

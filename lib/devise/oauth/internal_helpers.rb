@@ -9,7 +9,7 @@ module Devise
       end
 
       included do
-        helpers = %w(oauth_config oauth_callback)
+        helpers = %w(oauth_config)
         hide_action *helpers
         helper_method *helpers
         before_filter :valid_oauth_callback?, :oauth_error_happened?
@@ -114,16 +114,13 @@ module Devise
         access_token  = oauth_config.access_token_by_code(params[:code], oauth_redirect_uri)
         self.resource = resource_class.send(oauth_model_callback, access_token, signed_in_resource)
 
-        if resource && resource.persisted? && resource.errors.empty?
+        if resource.persisted? && resource.errors.empty?
           set_oauth_flash_message :notice, :success
           sign_in_and_redirect resource_name, resource, :event => :authentication
-        elsif resource
+        else
           session[oauth_session_key] = access_token.token
           clean_up_passwords(resource)
           render_for_oauth
-        else
-          set_oauth_flash_message :alert, :skipped
-          redirect_to after_oauth_skipped_path_for(resource_name)
         end
       end
 
@@ -169,11 +166,6 @@ module Devise
       # The default hook used by oauth to specify the redirect url for success.
       def after_oauth_success_path_for(resource_or_scope)
         after_sign_in_path_for(resource_or_scope)
-      end
-
-      # The default hook used by oauth to specify the redirect url for skip.
-      def after_oauth_skipped_path_for(scope)
-        new_session_path(scope)
       end
 
       # The default hook used by oauth to specify the redirect url for failure.

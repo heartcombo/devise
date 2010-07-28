@@ -118,21 +118,6 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
     assert_equal "plataformatec", user.reload.facebook_token
   end
 
-  test "[BASIC] setup skipping oauth callback" do
-    stub_github!
-
-    assert_no_difference "User.count" do
-      visit "/users/sign_in"
-      click_link "Sign in with Github"
-    end
-
-    assert_current_url "/users/sign_in"
-    assert_contain "Skipped Oauth authorization for Github."
-
-    assert_not warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
-  end
-
   test "[SESSION CLEANUP] ensures session is cleaned up after sign up" do
     stub_facebook!(2)
 
@@ -204,29 +189,6 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
       visit "/users/sign_in"
       click_link "Sign in with Facebook"
       assert_contain "Welcome facebooker user"
-    end
-  end
-
-  test "[I18N] scopes messages based on oauth callback for skipped" do
-    stub_github!
-
-    store_translations :en, :devise => { :oauth_callbacks => {
-      :github => { :skipped => "Skipped github" } } } do
-      visit "/users/sign_in"
-      click_link "Sign in with Github"
-      assert_contain "Skipped github"
-    end
-  end
-
-  test "[I18N] scopes messages based on oauth callback and resource name for skipped" do
-    stub_github!
-
-    store_translations :en, :devise => { :oauth_callbacks => {
-      :user => { :github => { :skipped => "Skipped github user" } },
-      :github => { :skipped => "Skipped github" } } } do
-      visit "/users/sign_in"
-      click_link "Sign in with Github"
-      assert_contain "Skipped github user"
     end
   end
 

@@ -299,20 +299,17 @@ This link will send the user straight to Github. After the user authorizes your 
     access_token = github_config.access_token_by_code(params[:code])
     @user = User.find_for_github_oauth(access_token, signed_in_resource)
 
-    if @user && @user.persisted?
+    if @user.persisted? && @user.errors.empty?
       sign_in @user
       set_oauth_flash_message :notice, :success
       redirect_to after_oauth_success_path_for(@user) #=> redirects to user_root_path or root_path
-    elsif @user
+    else
       session[:user_github_oauth_token] = access_token.token
       render_for_auth #=> renders sign up view by default
-    else
-      set_oauth_flash_message :alert, :skipped
-      redirect_to after_oauth_skipped_path_for(:user) #=> redirects to user_new_session_path
     end
   end
 
-In other words, Devise does all the work for you but it expects you to implement the +find_for_github_oauth+ method in your model that receives two arguments: the first is an +access_token+ object from OAuth2 library (http://github.com/intridea/oauth2) and the second is the signed in resource which we will ignore for this while. Depending on what this method returns, Devise act in a different way as seen above.
+In other words, Devise does all the work for you but it expects you to implement the +find_for_github_oauth+ method in your model that receives two arguments: the first is an +access_token+ object from OAuth2 library (http://github.com/intridea/oauth2) and the second is the signed in resource, which we will ignore for this while. Depending on what this method returns, Devise will act in a different way.
 
 A basic implementation for +find_for_github_oauth+ would be:
 
@@ -328,7 +325,7 @@ A basic implementation for +find_for_github_oauth+ would be:
     end
   end
 
-First, notice the +access_token+ object allows you to make requests to the provider using get/post/put/delete methods to retrieve user information. Next, our method above has two branches and both of them returns a persisted user. So, if we go back to our github action above, we will see that after returning a persisted record, it will sign in the returned user and redirect to the configured +after_oauth_success_path_for+ with a flash message. This flash message is retrieved from I18n and looks like this:
+First, notice the given +access_token+ object allows you to make requests to the provider using get/post/put/delete methods to retrieve user information. Next, our method above has two branches and both of them returns a persisted user. So, if we go back to our github action above, we will see that after returning a persisted record, it will sign in the returned user and redirect to the configured +after_oauth_success_path_for+ with a flash message. This flash message is retrieved from I18n and looks like this:
 
   en:
     devise:
@@ -345,9 +342,11 @@ First, notice the +access_token+ object allows you to make requests to the provi
         # With lower priority
         success: 'Successfully authorized from %{kind} account.'
 
-Our basic implementation assumes that all information retrieved from Github is enough for us to create an user, however this may not be true for all providers. That said, Devise allows +find_for_github_oauth+ to have different outcomes. For instance, if it returns a record which was not persisted (usually a new record with errors), it will render the sign up views from the registrations controller and show all error messages. On the other hand, if you decide to return nil from +find_for_github_oauth+, Devise will consider that you decided to skip the authentication and will redirect to +after_oauth_skipped_path_for+ (defaults to the sign in page) with the skipped flash message.
+Our basic implementation assumes that all information retrieved from Github is enough for us to create an user, however this may not be true for all providers. That said, Devise allows +find_for_github_oauth+ to return a non persisted or an invalid record and it will render the sign up view from the registrations controller and show all error messages.
 
-All these methods +after_oauth_skipped_path_for+, +render_for_oauth+ and so on can be customized and overwritten in your application by inheriting from Devise::OauthCallbacksController as we have seen above in the "Configuring controllers" section.
+All these methods +after_oauth_success_path_for+, +render_for_oauth+ and so on can be customized and overwritten in your application by inheriting from Devise::OauthCallbacksController as we have seen above in the "Configuring controllers" section.
+
+If you need to provide another path besides signing in the persisted user or showing the signup page for invalid one due to some exceptional scenario, it is recommended that you raise an error from your +find_for_github_oauth+ method and rescue and handle it in the controller using Rails' +rescue_from+ syntax.
 
 For last but not least, Devise also supports linking accounts. The setup discussed above only uses Github for sign up and assumes that after the user signs up, there will not have any interaction with Github at all. However, this is not true for some applications.
 

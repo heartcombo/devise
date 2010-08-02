@@ -209,11 +209,17 @@ Be sure to check devise_for documentation for details.
 
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is to create your routes normally and wrap them in a +devise_scope+ block in the router:
 
-    devise_scope :user do
-      get "sign_in", :to => "devise/sessions#new"
-    end
+  devise_scope :user do
+    get "sign_in", :to => "devise/sessions#new"
+  end
 
-This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice +devise_scope+ is also aliased as +as+, feel free to choose the one you prefer.
+This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice +devise_scope+ is also aliased as +as+ and you can also give a block to +devise_for+, resulting in the same behavior:
+
+  devise_for :users do
+    get "sign_in", :to => "devise/sessions#new"
+  end
+
+Feel free to choose the one you prefer!
 
 == I18n
 

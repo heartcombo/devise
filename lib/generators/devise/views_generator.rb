@@ -7,7 +7,7 @@ module Devise
       argument :scope, :required => false, :default => nil,
                        :desc => "The scope to copy views to"
 
-      class_option :template_engine, :type => :string, :aliases => "-t", :default => "erb",
+      class_option :template_engine, :type => :string, :aliases => "-t",
                                      :desc => "Template engine for the views. Available options are 'erb' and 'haml'."
 
       def copy_views

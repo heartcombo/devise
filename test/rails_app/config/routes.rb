@@ -43,6 +43,12 @@ Rails.application.routes.draw do
       }
   end
 
+  namespace :sign_out_via do
+    devise_for :deletes, :sign_out_via => :delete, :class_name => "User", :controllers => { :sessions => "sessions" }
+    devise_for :posts, :sign_out_via => :post, :class_name => "User", :controllers => { :sessions => "sessions" }
+    devise_for :delete_or_posts, :sign_out_via => [:delete, :post], :class_name => "User", :controllers => { :sessions => "sessions" }
+  end
+
   match "/set", :to => "home#set"
   root :to => "home#index"
 end

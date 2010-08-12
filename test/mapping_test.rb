@@ -21,6 +21,16 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal "admin_area", Devise.mappings[:admin].path
   end
 
+  test 'sign_out_via defaults to :get' do
+    assert_equal :get, Devise.mappings[:user].sign_out_via
+  end
+
+  test 'allows custom sign_out_via to be given' do
+    assert_equal :delete,          Devise.mappings[:sign_out_via_delete].sign_out_via
+    assert_equal :post,            Devise.mappings[:sign_out_via_post].sign_out_via
+    assert_equal [:delete, :post], Devise.mappings[:sign_out_via_delete_or_post].sign_out_via
+  end
+
   test 'allows custom singular to be given' do
     assert_equal "accounts", Devise.mappings[:manager].path
   end

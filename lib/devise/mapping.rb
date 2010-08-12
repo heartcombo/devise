@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :plural, :path, :controllers, :path_names, :class_name
+    attr_reader :singular, :plural, :path, :controllers, :path_names, :class_name, :sign_out_via
     alias :name :singular
 
     # Receives an object and find a scope for it. If a scope cannot be found,
@@ -57,6 +57,8 @@ module Devise
       @path_names = Hash.new { |h,k| h[k] = k.to_s }
       @path_names.merge!(:registration => "")
       @path_names.merge!(options[:path_names] || {})
+
+      @sign_out_via = options[:sign_out_via] || :get
     end
 
     # Return modules for the mapping.

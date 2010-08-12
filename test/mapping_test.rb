@@ -132,6 +132,16 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal({ :requirements => { :extra => 'value' } }, Devise.mappings[:manager].route_options)
   end
 
+  test 'sign_out_via defaults to :get' do
+    assert_equal :get, Devise.mappings[:user].sign_out_via
+  end
+
+  test 'allows custom sign_out_via to be given' do
+    assert_equal :delete, Devise.mappings[:sign_out_via_delete].sign_out_via
+    assert_equal :post,   Devise.mappings[:sign_out_via_post].sign_out_via
+    assert_equal :any,    Devise.mappings[:sign_out_via_anymethod].sign_out_via
+  end
+
   test 'magic predicates' do
     mapping = Devise.mappings[:user]
     assert mapping.authenticatable?

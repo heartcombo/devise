@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :name, :as, :path_names, :path_prefix, :route_options
+    attr_reader :name, :as, :path_names, :path_prefix, :route_options, :sign_out_via
 
     # Loop through all mappings looking for a map that matches with the requested
     # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
@@ -64,6 +64,8 @@ module Devise
 
       @path_names = Hash.new { |h,k| h[k] = k.to_s }
       @path_names.merge!(options.delete(:path_names) || {})
+
+      @sign_out_via = (options.delete(:sign_out_via) || :get)
     end
 
     # Return modules for the mapping.

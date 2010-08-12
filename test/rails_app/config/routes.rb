@@ -12,6 +12,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :admins, :only => :index
   map.root :controller => :home
 
+  map.devise_for :sign_out_via_deletes, :sign_out_via => :delete, :class_name => "User"
+  map.devise_for :sign_out_via_posts, :sign_out_via => :post, :class_name => "User"
+  map.devise_for :sign_out_via_anymethods, :sign_out_via => :any, :class_name => "User"
+
   map.connect '/admin_area/password/new', :controller => "passwords", :action => "new"
   map.admin_root '/admin_area/home', :controller => "admins", :action => "index"
 

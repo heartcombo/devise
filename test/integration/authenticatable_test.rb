@@ -332,3 +332,52 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 end
+
+class AuthenticationSignOutViaTest < ActionController::IntegrationTest
+  def sign_in!(scope)
+    sign_in_as_user(:visit => send("new_#{scope}_session_path"))
+    assert warden.authenticated?(scope)
+  end
+
+  test 'allow sign out via delete when sign_out_via provides only delete' do
+    sign_in!(:sign_out_via_delete)
+    delete destroy_sign_out_via_delete_session_path
+    assert_not warden.authenticated?(:sign_out_via_delete)
+  end
+
+  test 'do not allow sign out via get when sign_out_via provides only delete' do
+    sign_in!(:sign_out_via_delete)
+    get destroy_sign_out_via_delete_session_path
+    assert warden.authenticated?(:sign_out_via_delete)
+  end
+
+  test 'allow sign out via post when sign_out_via provides only post' do
+    sign_in!(:sign_out_via_post)
+    post destroy_sign_out_via_post_session_path
+    assert_not warden.authenticated?(:sign_out_via_post)
+  end
+
+  test 'do not allow sign out via get when sign_out_via provides only post' do
+    sign_in!(:sign_out_via_post)
+    get destroy_sign_out_via_delete_session_path
+    assert warden.authenticated?(:sign_out_via_post)
+  end
+
+  test 'allow sign out via delete when sign_out_via provides delete and post' do
+    sign_in!(:sign_out_via_delete_or_post)
+    delete destroy_sign_out_via_delete_or_post_session_path
+    assert_not warden.authenticated?(:sign_out_via_delete_or_post)
+  end
+
+  test 'allow sign out via post when sign_out_via provides delete and post' do
+    sign_in!(:sign_out_via_delete_or_post)
+    post destroy_sign_out_via_delete_or_post_session_path
+    assert_not warden.authenticated?(:sign_out_via_delete_or_post)
+  end
+
+  test 'do not allow sign out via get when sign_out_via provides delete and post' do
+    sign_in!(:sign_out_via_delete_or_post)
+    get destroy_sign_out_via_delete_or_post_session_path
+    assert warden.authenticated?(:sign_out_via_delete_or_post)
+  end
+end

@@ -153,6 +153,27 @@ class CustomizedRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'devise/registrations', :action => 'cancel', :locale => 'en'}, '/en/accounts/management/giveup')
   end
 
+  test 'map deletes with :sign_out_via option' do
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :delete})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :get})
+    end
+  end
+
+  test 'map posts with :sign_out_via option' do
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :post})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :get})
+    end
+  end
+
+  test 'map delete_or_posts with :sign_out_via option' do
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :post})
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :delete})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :get})
+    end
+  end
 end
 
 class ScopedRoutingTest < ActionController::TestCase

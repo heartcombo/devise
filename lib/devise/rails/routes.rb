@@ -69,6 +69,13 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :controllers => { :sessions => "users/sessions" }
     #
+    #  * :sign_out_via => the HTTP method(s) accepted for the :sign_out action (default: :get),
+    #    if you wish to restrict this to accept only :post or :delete requests you should do:
+    #
+    #      devise_for :users, :sign_out_via => [ :post, :delete ]
+    #
+    #    You need to make sure that your sign_out controls trigger a request with a matching HTTP method.
+    #
     #  * :module => the namespace to find controlers. By default, devise will access devise/sessions,
     #    devise/registrations and so on. If you want to namespace all at once, use module:
     #
@@ -192,9 +199,9 @@ module ActionDispatch::Routing
 
       def devise_session(mapping, controllers) #:nodoc:
         scope :controller => controllers[:sessions], :as => :session do
-          get  :new,     :path => mapping.path_names[:sign_in]
-          post :create,  :path => mapping.path_names[:sign_in], :as => ""
-          get  :destroy, :path => mapping.path_names[:sign_out]
+          get   :new,     :path => mapping.path_names[:sign_in]
+          post  :create,  :path => mapping.path_names[:sign_in], :as => ""
+          match :destroy, :path => mapping.path_names[:sign_out], :via => mapping.sign_out_via
         end
       end
  

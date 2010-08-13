@@ -269,3 +269,53 @@ class AuthenticationTest < ActionController::IntegrationTest
     end
   end
 end
+
+class AuthenticationSignOutViaTest < ActionController::IntegrationTest
+  def sign_in!(scope)
+    visit send("new_#{scope}_session_path")
+    sign_in_as_user(:visit => false)
+    assert warden.authenticated?(scope)
+  end
+
+  test 'allow sign out via delete when sign_out_via provides only delete' do
+    sign_in!(:sign_out_via_delete)
+    delete destroy_sign_out_via_delete_session_path
+    assert_not warden.authenticated?(:sign_out_via_delete)
+  end
+
+  test 'do not allow sign out via get when sign_out_via provides only delete' do
+    sign_in!(:sign_out_via_delete)
+    get destroy_sign_out_via_delete_session_path
+    assert warden.authenticated?(:sign_out_via_delete)
+  end
+
+  test 'allow sign out via post when sign_out_via provides only post' do
+    sign_in!(:sign_out_via_post)
+    post destroy_sign_out_via_post_session_path
+    assert_not warden.authenticated?(:sign_out_via_post)
+  end
+
+  test 'do not allow sign out via get when sign_out_via provides only post' do
+    sign_in!(:sign_out_via_post)
+    get destroy_sign_out_via_delete_session_path
+    assert warden.authenticated?(:sign_out_via_post)
+  end
+
+  test 'allow sign out via delete when sign_out_via provides any method' do
+    sign_in!(:sign_out_via_anymethod)
+    delete destroy_sign_out_via_anymethod_session_path
+    assert_not warden.authenticated?(:sign_out_via_anymethod)
+  end
+
+  test 'allow sign out via post when sign_out_via provides any method' do
+    sign_in!(:sign_out_via_anymethod)
+    post destroy_sign_out_via_anymethod_session_path
+    assert_not warden.authenticated?(:sign_out_via_anymethod)
+  end
+
+  test 'allow sign out via get when sign_out_via provides any method' do
+    sign_in!(:sign_out_via_anymethod)
+    get destroy_sign_out_via_anymethod_session_path
+    assert_not warden.authenticated?(:sign_out_via_anymethod)
+  end
+end

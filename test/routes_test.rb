@@ -107,4 +107,25 @@ class MapRoutingTest < ActionController::TestCase
   test 'map account with custom path name for registration' do
     assert_recognizes({:controller => 'registrations', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/register')
   end
+
+  test 'map deletes with :sign_out_via option' do
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_deletes/sign_out', :method => :delete})
+    assert_raise ActionController::MethodNotAllowed do
+      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_deletes/sign_out', :method => :get})
+    end
+  end
+
+  test 'map posts with :sign_out_via option' do
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_posts/sign_out', :method => :post})
+    assert_raise ActionController::MethodNotAllowed do
+      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_posts/sign_out', :method => :get})
+    end
+  end
+
+  test 'map any methods with :sign_out_via option' do
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_anymethods/sign_out', :method => :get})
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_anymethods/sign_out', :method => :post})
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_anymethods/sign_out', :method => :delete})
+    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_anymethods/sign_out', :method => :put})
+  end
 end

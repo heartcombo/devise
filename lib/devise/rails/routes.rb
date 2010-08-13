@@ -66,6 +66,12 @@ module ActionController::Routing
       #
       #    map.devise_for :users, :path_prefix => "/:locale"
       #
+      #  * :sign_out_via => restirct the HTTP method(s) accepted for the :sign_out action (default: :get), possible values are :post, :get, :put, :delete and :any, e.g. if you wish to restrict this to accept only :delete requests you should do:
+      #
+      #    map.devise_for :users, :sign_out_via => :delete
+      #
+      #    You need to make sure that your sign_out controls trigger a request with a matching HTTP method.
+      #
       #  Any other options will be passed to route definition. If you need conditions for your routes, just map:
       #
       #    map.devise_for :users, :conditions => { :subdomain => /.+/ }
@@ -101,7 +107,9 @@ module ActionController::Routing
           routes.with_options(:controller => 'sessions', :name_prefix => nil) do |session|
             session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
             session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })
-            session.send(:"destroy_#{mapping.name}_session", mapping.path_names[:sign_out], :action => 'destroy', :conditions => { :method => :get })
+            destroy_options = { :action => 'destroy' }
+            destroy_options.merge! :conditions => { :method => mapping.sign_out_via } unless mapping.sign_out_via == :any
+            session.send(:"destroy_#{mapping.name}_session", mapping.path_names[:sign_out], destroy_options)
           end
         end
 

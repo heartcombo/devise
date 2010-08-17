@@ -1,5 +1,3 @@
-If you're looking for DataMapper support for devise, see http://github.com/jm81/dm-devise
-
 == Devise
 
 Devise is a flexible authentication solution for Rails based on Warden. It:
@@ -58,18 +56,14 @@ Devise ecosystem is growing solid day after day. If you just need a walkthrough 
 
 Both links above are for Devise with Rails 3. If you need to use Devise with Rails 2.3, you can always run `gem server` from the command line after you install the gem to access the old documentation.
 
-Another great way to learn Devise are Ryan Bates' screencasts:
-
-* http://railscasts.com/episodes/209-introducing-devise
-* http://railscasts.com/episodes/210-customizing-devise
-
-And a few example applications:
+There are a few example applications out there:
 
 * Rails 2.3 app using Devise at http://github.com/plataformatec/devise_example
 * Rails 2.3 app using Devise with subdomains at http://github.com/fortuity/subdomain-authentication
 * Rails 3.0 app with Mongoid at http://github.com/fortuity/rails3-mongoid-devise
+* Rails 3.0 app using Devise with subdomains at http://github.com/fortuity/rails3-subdomain-devise
 
-Finally, Devise also has several extensions built by the community. Don't forget to check them at the end of this README. If you want to write an extension on your own, you should also check Warden (http://github.com/hassox/warden), a Rack Authentication Framework which Devise depends on.
+Devise also has several extensions built by the community. Don't forget to check them at the end of this README. If you want to write an extension on your own, you should also check Warden (http://github.com/hassox/warden), a Rack Authentication Framework which Devise depends on.
 
 == Basic Usage
 
@@ -461,6 +455,8 @@ Devise also has extensions created by the community:
 * http://github.com/joshk/devise_imapable adds support for imap based authentication, excellent for internal apps when an LDAP server isn't available.
 
 * http://github.com/cschiewek/devise_ldap_authenticatable adds support for LDAP authentication via simple bind.
+
+* http://github.com/jm81/dm-devise Datamapper support for Devise.
 
 Please consult their respective documentation for more information and requirements.
 

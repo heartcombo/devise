@@ -126,6 +126,9 @@ Devise.setup do |config|
   # should add them to the navigational formats lists. Default is [:html]
   # config.navigational_formats = [:html, :iphone]
 
+  # The default HTTP method used to sign out a resource. 
+  # config.sign_out_via = :get
+
   # ==> OAuth2
   # Add a new OAuth2 provider. Check the README for more information on setting
   # up on your models and hooks.

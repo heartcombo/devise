@@ -164,6 +164,10 @@ module Devise
   mattr_accessor :sign_out_all_scopes
   @@sign_out_all_scopes = false
 
+  # The default method used while signing out
+  mattr_accessor :sign_out_via
+  @@sign_out_via = :get
+
   # Oauth providers
   mattr_accessor :oauth_providers
   @@oauth_providers = []

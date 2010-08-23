@@ -58,7 +58,7 @@ module Devise
       @path_names.merge!(:registration => "")
       @path_names.merge!(options[:path_names] || {})
 
-      @sign_out_via = options[:sign_out_via] || :get
+      @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
     end
 
     # Return modules for the mapping.

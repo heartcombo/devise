@@ -1,3 +1,6 @@
+* deprecations
+  * sign_out_all_scopes defaults to true as security measure
+
 * enhancements
   * Added OAuth 2 support
   * sign_out_via is available in the router to configure the method used for sign out (by github.com/martinrehfeld)

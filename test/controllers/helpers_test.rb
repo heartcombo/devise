@@ -19,9 +19,9 @@ class ControllerAuthenticableTest < ActionController::TestCase
   end
 
   test 'proxy anybody_signed_in? to signed_in?' do
-    Devise.mappings.keys.each { |scope| # :user, :admin, :manager
+    Devise.mappings.keys.each do |scope| # :user, :admin, :manager
       @controller.expects(:signed_in?).with(scope)
-    }
+    end
     @controller.anybody_signed_in?
   end
 
@@ -185,12 +185,26 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.sign_in_and_redirect(admin)
   end
 
-  test 'sign out and redirect uses the configured after sign out path' do
-    @mock_warden.expects(:user).with(:admin).returns(true)
-    @mock_warden.expects(:logout).with(:admin).returns(true)
-    @controller.expects(:redirect_to).with(admin_root_path)
-    @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
-    @controller.sign_out_and_redirect(:admin)
+  test 'sign out and redirect uses the configured after sign out path when signing out only the current scope' do
+    swap Devise, :sign_out_all_scopes => false do
+      @mock_warden.expects(:user).with(:admin).returns(true)
+      @mock_warden.expects(:logout).with(:admin).returns(true)
+      @controller.expects(:redirect_to).with(admin_root_path)
+      @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
+      @controller.sign_out_and_redirect(:admin)
+    end
+  end
+
+  test 'sign out and redirect uses the configured after sign out path when signing out all scopes' do
+    swap Devise, :sign_out_all_scopes => true do
+      Devise.mappings.keys.each do |scope| # :user, :admin, :manager
+        @mock_warden.expects(:user).with(scope)
+      end
+      @mock_warden.expects(:logout).returns(true)
+      @controller.expects(:redirect_to).with(admin_root_path)
+      @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
+      @controller.sign_out_and_redirect(:admin)
+    end
   end
 
   test 'is not a devise controller' do

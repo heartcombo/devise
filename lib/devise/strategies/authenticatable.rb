@@ -9,7 +9,7 @@ module Devise
       attr_accessor :authentication_hash, :password
 
       def valid?
-        valid_for_http_auth? || valid_for_params_auth?
+        valid_for_params_auth? || valid_for_http_auth?
       end
 
     private

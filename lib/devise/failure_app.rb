@@ -27,7 +27,6 @@ module Devise
       elsif warden_options[:recall]
         recall
       else
-        debug!
         redirect
       end
     end
@@ -53,11 +52,6 @@ module Devise
 
   protected
 
-    def debug!
-      return unless Rails.logger.try(:debug?)
-      Rails.logger.debug "[Devise] Could not sign in #{scope}: #{i18n_message.inspect}."
-    end
-
     def i18n_message(default = nil)
       message = warden.message || warden_options[:message] || default || :unauthenticated
 
@@ -74,7 +68,7 @@ module Devise
     end
 
     def http_auth?
-      !Devise.navigational_formats.include?(request.format.to_sym) || (request.xhr? && Devise.http_authenticatable_on_xhr)
+      !Devise.navigational_formats.include?(request.format.to_sym) || (Devise.http_authenticatable_on_xhr && request.xhr?)
     end
 
     def http_auth_body

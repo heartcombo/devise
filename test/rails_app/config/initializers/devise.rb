@@ -26,7 +26,7 @@ Devise.setup do |config|
   # config.params_authenticatable = true
 
   # Tell if authentication through HTTP Basic Auth is enabled. True by default.
-  # config.http_authenticatable = true
+  config.http_authenticatable = true
 
   # The realm used in Http Basic Authentication
   # config.http_authentication_realm = "Application"

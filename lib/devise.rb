@@ -70,9 +70,9 @@ module Devise
 
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
-  @@http_authenticatable = true
+  @@http_authenticatable = false
 
-  # If http authentication is used for ajax requests. True by default.
+  # If http headers should be returned for ajax requests. True by default.
   mattr_accessor :http_authenticatable_on_xhr
   @@http_authenticatable_on_xhr = true
 

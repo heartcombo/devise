@@ -1,5 +1,6 @@
 * deprecations
   * sign_out_all_scopes defaults to true as security measure
+  * http authenticatable is disabled by default
 
 * enhancements
   * Added OAuth 2 support

@@ -32,11 +32,11 @@ Devise is based on Warden (http://github.com/hassox/warden), a Rack Authenticati
 
 Install warden gem if you don't have it installed:
 
-  sudo gem install warden
+  gem install warden
 
 Install devise gem:
 
-  sudo gem install devise --version=1.0.7
+  gem install devise --version=1.0.8
 
 Configure warden and devise gems inside your app:
 

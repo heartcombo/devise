@@ -36,6 +36,7 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
+    root_files = FileList["README.rdoc", "MIT-LICENSE", "CHANGELOG.rdoc"]
     s.name = "devise"
     s.version = Devise::VERSION.dup
     s.summary = "Flexible authentication solution for Rails with Warden"
@@ -43,8 +44,8 @@ begin
     s.homepage = "http://github.com/plataformatec/devise"
     s.description = "Flexible authentication solution for Rails with Warden"
     s.authors = ['José Valim', 'Carlos Antônio']
-    s.files =  FileList["[A-Z]*", "{app,config,lib}/**/*"]
-    s.extra_rdoc_files = FileList["[A-Z]*"] - %w(Gemfile Rakefile)
+    s.files =  root_files + FileList["{app,config,lib}/**/*"]
+    s.extra_rdoc_files = root_files
     s.add_dependency("warden", "~> 0.10.7")
     s.add_dependency("bcrypt-ruby", "~> 2.1.2")
   end

@@ -40,6 +40,7 @@ class HelpersTest < ActionController::TestCase
 
   test 'require no authentication tests current mapping' do
     @mock_warden.expects(:authenticated?).with(:user).returns(true)
+    @mock_warden.expects(:user).with(:user).returns(User.new)
     @controller.expects(:redirect_to).with(root_path)
     @controller.send :require_no_authentication
   end

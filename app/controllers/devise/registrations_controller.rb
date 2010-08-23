@@ -47,7 +47,9 @@ class Devise::RegistrationsController < ApplicationController
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
-  # in to be expired now.
+  # in to be expired now. This is useful if the user wants to
+  # cancel oauth signing in/up in the middle of the process,
+  # removing all OAuth session data.
   def cancel
     expire_session_data_after_sign_in!
     redirect_to new_registration_path(resource_name)

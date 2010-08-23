@@ -321,7 +321,7 @@ A basic implementation for +find_for_github_oauth+ would be:
       user
     else
       # Create an user with a stub password.
-      User.create!(:name => user["name"], :email => user["email"], :password => Devise.friendly_token)
+      User.create!(:name => data["name"], :email => data["email"], :password => Devise.friendly_token)
     end
   end
 

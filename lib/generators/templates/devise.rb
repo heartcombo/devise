@@ -26,12 +26,12 @@ Devise.setup do |config|
   # config.params_authenticatable = true
 
   # Tell if authentication through HTTP Basic Auth is enabled. False by default.
-  # config.http_authenticatable = true
+  # config.http_authenticatable = false
 
   # If http headers should be returned for AJAX requests. True by default.
   # config.http_authenticatable_on_xhr = true
 
-  # The realm used in Http Basic Authentication
+  # The realm used in Http Basic Authentication. "Application" by default.
   # config.http_authentication_realm = "Application"
 
   # ==> Configuration for :database_authenticatable
@@ -68,7 +68,7 @@ Devise.setup do |config|
   # config.extend_remember_period = false
 
   # ==> Configuration for :validatable
-  # Range for password length
+  # Range for password length. Default is 6..20.
   # config.password_length = 6..20
 
   # Regex to use to validate the email address
@@ -76,8 +76,8 @@ Devise.setup do |config|
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
-  # time the user will be asked for credentials again.
-  # config.timeout_in = 10.minutes
+  # time the user will be asked for credentials again. Default is 30 minutes.
+  # config.timeout_in = 30.minutes
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -107,16 +107,16 @@ Devise.setup do |config|
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "users/sessions/new". It's turned off by default because it's slower if you
   # are using only default views.
-  # config.scoped_views = true
+  # config.scoped_views = false
 
   # Configure the default scope given to Warden. By default it's the first
-  # devise role declared in your routes.
+  # devise role declared in your routes (usually :user).
   # config.default_scope = :user
 
   # Configure sign_out behavior. 
-  # By default sign_out is scoped (i.e. /users/sign_out affects only :user scope).
-  # In case of sign_out_all_scopes set to true any logout action will sign out all active scopes.
-  # config.sign_out_all_scopes = false
+  # Sign_out action can be scoped (i.e. /users/sign_out affects only :user scope).
+  # The default is true, which menans any logout action will sign out all active scopes.
+  # config.sign_out_all_scopes = true
 
   # ==> Navigation configuration
   # Lists the formats that should be treated as navigational. Formats like
@@ -126,12 +126,12 @@ Devise.setup do |config|
   # should add them to the navigational formats lists. Default is [:html]
   # config.navigational_formats = [:html, :iphone]
 
-  # The default HTTP method used to sign out a resource. 
+  # The default HTTP method used to sign out a resource. Default is :get.
   # config.sign_out_via = :get
 
   # ==> OAuth2
   # Add a new OAuth2 provider. Check the README for more information on setting
-  # up on your models and hooks.
+  # up on your models and hooks. By default this is not set.
   # config.oauth :github, 'APP_ID', 'APP_SECRET',
   #   :site              => 'https://github.com/',
   #   :authorize_path    => '/login/oauth/authorize',

@@ -198,10 +198,10 @@ module ActionDispatch::Routing
     protected
 
       def devise_session(mapping, controllers) #:nodoc:
-        scope :controller => controllers[:sessions], :as => :session do
-          get   :new,     :path => mapping.path_names[:sign_in]
-          post  :create,  :path => mapping.path_names[:sign_in], :as => ""
-          match :destroy, :path => mapping.path_names[:sign_out], :via => mapping.sign_out_via
+        resource :session, :only => [], :controller => controllers[:sessions], :path => "" do
+          get   :new,     :path => mapping.path_names[:sign_in],  :as => "new"
+          post  :create,  :path => mapping.path_names[:sign_in]
+          match :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
         end
       end
  

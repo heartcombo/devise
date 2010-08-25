@@ -10,6 +10,11 @@
   * after_sign_in_path_for always receives a resource
 	* Updated the views generator to respect the rails :template_engine option (by github.com/fredwu)
 
+== 1.1.2
+
+* bugfix
+  * Compatibility with latest Rails routes schema
+
 == 1.1.1
 
 * bugfix

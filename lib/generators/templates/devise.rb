@@ -115,7 +115,7 @@ Devise.setup do |config|
 
   # Configure sign_out behavior. 
   # Sign_out action can be scoped (i.e. /users/sign_out affects only :user scope).
-  # The default is true, which menans any logout action will sign out all active scopes.
+  # The default is true, which means any logout action will sign out all active scopes.
   # config.sign_out_all_scopes = true
 
   # ==> Navigation configuration

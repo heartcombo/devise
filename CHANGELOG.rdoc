@@ -1,3 +1,8 @@
+== 1.1.2
+
+* bugfix
+  * Compatibility with latest Rails routes schema
+
 == 1.1.1
 
 * bugfix

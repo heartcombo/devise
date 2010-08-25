@@ -17,7 +17,7 @@ platforms :ruby do
   end
   group :mongoid do
     gem "mongo"
-    gem "mongoid", :git => "git://github.com/durran/mongoid.git"
+    gem "mongoid", :git => "git://github.com/mongoid/mongoid.git"
     gem "bson_ext"
   end
 end

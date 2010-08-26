@@ -19,7 +19,7 @@ module Devise
     # encrypter password field in 128 characters.
     def database_authenticatable(options={})
       null    = options[:null] || false
-      default = options[:default] || ""
+      default = options.key?(:default) ? options[:default] : ("" if null == false)
 
       if options.delete(:encryptor)
         ActiveSupport::Deprecation.warn ":encryptor as option is deprecated, simply remove it."

@@ -1,11 +1,11 @@
 GIT
-  remote: git://github.com/durran/mongoid.git
-  revision: a5abe21
+  remote: git://github.com/mongoid/mongoid.git
+  revision: f38e3ef
   specs:
-    mongoid (2.0.0.beta9)
-      activemodel (~> 3.0.0.beta)
-      bson (~> 1.0.3)
-      mongo (~> 1.0.3)
+    mongoid (2.0.0.beta.16)
+      activemodel (~> 3.0.0)
+      bson (= 1.0.4)
+      mongo (= 1.0.7)
       tzinfo (~> 0.3.22)
       will_paginate (~> 3.0.pre)
 
@@ -60,7 +60,7 @@ GEM
     activerecord-jdbcsqlite3-adapter (0.9.7-java)
       activerecord-jdbc-adapter (= 0.9.7)
       jdbc-sqlite3 (>= 3.6.3.054)
-    addressable (2.1.2)
+    addressable (2.2.0)
     arel (1.0.0.rc1)
       activesupport (>= 3.0.0.beta)
     bcrypt-ruby (2.1.2)
@@ -83,13 +83,13 @@ GEM
     mime-types (1.16)
     mocha (0.9.8)
       rake
-    mongo (1.0.5)
+    mongo (1.0.7)
       bson (>= 1.0.4)
     multi_json (0.0.4)
-    nokogiri (1.4.2)
-    nokogiri (1.4.2-java)
+    nokogiri (1.4.3.1)
+    nokogiri (1.4.3.1-java)
       weakling (>= 0.0.3)
-    oauth2 (0.0.10)
+    oauth2 (0.0.13)
       faraday (~> 0.4.1)
       multi_json (>= 0.0.4)
     polyglot (0.3.1)
@@ -116,7 +116,7 @@ GEM
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
-    will_paginate (3.0.pre)
+    will_paginate (3.0.pre2)
 
 PLATFORMS
   java

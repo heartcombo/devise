@@ -14,7 +14,7 @@ module Devise
     # encrypter password field in 128 characters.
     def database_authenticatable(options={})
       null    = options[:null] || false
-      default = options[:default] || ""
+      default = options.key?(:default) ? options[:default] : ("" if null == false)
 
       apply_devise_schema :email,              String, :null => null, :default => default
       apply_devise_schema :encrypted_password, String, :null => null, :default => default, :limit => 128

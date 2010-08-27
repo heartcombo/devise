@@ -3,11 +3,7 @@ module Devise
     # Confirmable is responsible to verify if an account is already confirmed to
     # sign in, and to send emails with confirmation instructions.
     # Confirmation instructions are sent to the user email after creating a
-    # record, after updating it's email and also when manually requested by
-    # a new confirmation instruction request.
-    # Whenever the user update it's email, his account is automatically unconfirmed,
-    # it means it won't be able to sign in again without confirming the account
-    # again through the email that was sent.
+    # record or when manually requested by a new confirmation instruction request.
     #
     # == Options
     #

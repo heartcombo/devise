@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "3.0.0.rc2"
+gem "rails", "3.0.0"
 gem "warden", "0.10.7"
 gem "sqlite3-ruby"
 gem "webrat", "0.7.0"

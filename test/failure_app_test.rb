@@ -99,7 +99,7 @@ class FailureTest < ActiveSupport::TestCase
       swap Devise, :http_authenticatable_on_xhr => true do
         call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
         assert_equal 401, @response.first
-        assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]
+        assert_nil @response.second['WWW-Authenticate']
       end
     end
     

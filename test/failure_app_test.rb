@@ -86,6 +86,15 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
 
+    test 'dont return WWW-authenticate on ajax call with formats => json if http_authenticatable_on_xhr false' do
+      swap Devise, :http_authenticatable_on_xhr => false do
+        call_failure('formats' => :json, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+        assert_equal 302, @response.first
+        assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+        assert_nil @response.second['WWW-Authenticate']
+      end
+    end
+
     test 'return WWW-authenticate on ajax call if http_authenticatable_on_xhr true' do
       swap Devise, :http_authenticatable_on_xhr => true do
         call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')

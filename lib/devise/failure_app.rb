@@ -33,7 +33,7 @@ module Devise
 
     def http_auth
       self.status = 401
-      self.headers["WWW-Authenticate"] = %(Basic realm=#{Devise.http_authentication_realm.inspect}) unless request.xhr?
+      self.headers["WWW-Authenticate"] = %(Basic realm=#{Devise.http_authentication_realm.inspect}) if http_auth_header?
       self.content_type = request.format.to_s
       self.response_body = http_auth_body
     end
@@ -67,12 +67,26 @@ module Devise
       send(:"new_#{scope}_session_path")
     end
 
+    # Choose whether we should respond in a http authentication fashion,
+    # including 401 and optional headers.
+    #
+    # This method allows the user to explicitly disable http authentication
+    # on ajax requests in case they want to redirect on failures instead of
+    # handling the errors on their own. This is useful in case your ajax API
+    # is the same as your public API and uses a format like JSON (so you
+    # cannot mark JSON as a navigational format).
     def http_auth?
       if request.xhr?
         Devise.http_authenticatable_on_xhr
       else
         !Devise.navigational_formats.include?(request.format.to_sym)
       end
+    end
+
+    # It does not make sense to send authenticate headers in ajax requests
+    # or if the user disabled them.
+    def http_auth_header?
+      Devise.mappings[scope].to.http_authenticatable && !request.xhr?
     end
 
     def http_auth_body

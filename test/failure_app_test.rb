@@ -17,7 +17,7 @@ class FailureTest < ActiveSupport::TestCase
       'rack.input' => "",
       'warden' => OpenStruct.new(:message => nil)
     }.merge!(env_params)
-    
+
     @response = Devise::FailureApp.call(env).to_a
     @request  = ActionDispatch::Request.new(env)
   end
@@ -72,46 +72,63 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 401, @response.first
     end
 
-    test 'return WWW-authenticate headers' do
+    test 'return WWW-authenticate headers if model allows' do
       call_failure('formats' => :xml)
       assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]
     end
 
-    test 'dont return WWW-authenticate on ajax call if http_authenticatable_on_xhr false' do
-      swap Devise, :http_authenticatable_on_xhr => false do
-        call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
-        assert_equal 302, @response.first
-        assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
-        assert_nil @response.second['WWW-Authenticate']
+    test 'does not return WWW-authenticate headers if model does not allow' do
+      swap Devise, :http_authenticatable => false do
+        call_failure('formats' => :xml)
+        assert_nil @response.second["WWW-Authenticate"]
       end
-    end
-
-    test 'dont return WWW-authenticate on ajax call with formats => json if http_authenticatable_on_xhr false' do
-      swap Devise, :http_authenticatable_on_xhr => false do
-        call_failure('formats' => :json, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
-        assert_equal 302, @response.first
-        assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
-        assert_nil @response.second['WWW-Authenticate']
-      end
-    end
-
-    test 'return WWW-authenticate on ajax call if http_authenticatable_on_xhr true' do
-      swap Devise, :http_authenticatable_on_xhr => true do
-        call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
-        assert_equal 401, @response.first
-        assert_nil @response.second['WWW-Authenticate']
-      end
-    end
-    
-    test 'uses the proxy failure message as response body' do
-      call_failure('formats' => :xml, 'warden' => OpenStruct.new(:message => :invalid))
-      assert_match '<error>Invalid email or password.</error>', @response.third.body
     end
 
     test 'works for any non navigational format' do
       swap Devise, :navigational_formats => [] do
         call_failure('formats' => :html)
         assert_equal 401, @response.first
+      end
+    end
+
+    test 'uses the failure message as response body' do
+      call_failure('formats' => :xml, 'warden' => OpenStruct.new(:message => :invalid))
+      assert_match '<error>Invalid email or password.</error>', @response.third.body
+    end
+
+    context 'on ajax call' do
+      context 'when http_authenticatable_on_xhr is false' do
+        test 'dont return 401 with navigational formats' do
+          swap Devise, :http_authenticatable_on_xhr => false do
+            call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            assert_equal 302, @response.first
+            assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+          end
+        end
+
+        test 'dont return 401 with non navigational formats' do
+          swap Devise, :http_authenticatable_on_xhr => false do
+            call_failure('formats' => :json, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            assert_equal 302, @response.first
+            assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+          end
+        end
+      end
+
+      context 'when http_authenticatable_on_xhr is true' do
+        test 'return 401' do
+          swap Devise, :http_authenticatable_on_xhr => true do
+            call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            assert_equal 401, @response.first
+          end
+        end
+
+        test 'skip WWW-Authenticate header' do
+          swap Devise, :http_authenticatable_on_xhr => true do
+            call_failure('formats' => :html, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            assert_nil @response.second['WWW-Authenticate']
+          end
+        end
       end
     end
   end

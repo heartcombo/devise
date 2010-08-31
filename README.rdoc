@@ -51,7 +51,7 @@ And please check the README at the v1.0 branch since this one is based on Rails 
 
 Devise ecosystem is growing solid day after day. If you just need a walkthrough about setting up Devise, this README will work great. But if you need more documentation and resources, please check both the wiki and rdoc:
 
-* http://rdoc.info/projects/plataformatec/devise
+* http://rubydoc.info/github/plataformatec/devise/master/frames
 * http://wiki.github.com/plataformatec/devise
 
 Both links above are for Devise with Rails 3. If you need to use Devise with Rails 2.3, you can always run `gem server` from the command line after you install the gem to access the old documentation.

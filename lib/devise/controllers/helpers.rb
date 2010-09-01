@@ -24,7 +24,7 @@ module Devise
       #     user_signed_in?     # Checks whether there is an user signed in or not
       #     admin_signed_in?    # Checks whether there is an admin signed in or not
       #     current_user        # Current signed in user
-      #     current_admin       # Currend signed in admin
+      #     current_admin       # Current signed in admin
       #     user_session        # Session data available only to the user scope
       #     admin_session       # Session data available only to the admin scope
       #

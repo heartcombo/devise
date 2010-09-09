@@ -136,7 +136,7 @@ module Devise
         end
 
         def generate_confirmation_token!
-          generate_confirmation_token && save(:validate => false)
+          generate_confirmation_token && save(false)
         end
 
       module ClassMethods

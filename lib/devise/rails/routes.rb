@@ -92,7 +92,7 @@ module ActionDispatch::Routing
     #    this by providing the :module option to devise_for.
     #
     #    Also pay attention that when you use a namespace it will affect all the helpers and methods for controllers
-    #    and views. For example, using the above setup you'll end with following methods: 
+    #    and views. For example, using the above setup you'll end with following methods:
     #    current_publisher_account, authenticate_publisher_account!, pusblisher_account_signed_in, etc.
     #
     #  * :skip => tell which controller you want to skip routes from being created:
@@ -208,17 +208,17 @@ module ActionDispatch::Routing
           match :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
         end
       end
- 
+
       def devise_password(mapping, controllers) #:nodoc:
         resource :password, :only => [:new, :create, :edit, :update],
           :path => mapping.path_names[:password], :controller => controllers[:passwords]
       end
- 
+
       def devise_confirmation(mapping, controllers) #:nodoc:
         resource :confirmation, :only => [:new, :create, :show],
           :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
       end
- 
+
       def devise_unlock(mapping, controllers) #:nodoc:
         if mapping.to.unlock_strategy_enabled?(:email)
           resource :unlock, :only => [:new, :create, :show],

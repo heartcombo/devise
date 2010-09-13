@@ -57,7 +57,8 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
     
     # Sign in with oauth2 token. This is just to test that it isn't misinterpreted as basic authentication
     def add_oauth2_header
-      get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => "OAuth #{ActiveSupport::SecureRandom.base64}"
+      user = create_user
+      get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => "OAuth #{ActiveSupport::Base64.encode64("#{user.email}:123456")}"
     end
 
 end

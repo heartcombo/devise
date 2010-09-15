@@ -196,6 +196,10 @@ module Devise
   @@warden_config = nil
   @@warden_config_block = nil
 
+  # Should the trackable module store ip addresses in the database?
+  mattr_accessor :trackable_stores_ip_addresses
+  @@trackable_stores_ip_addresses = true
+
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

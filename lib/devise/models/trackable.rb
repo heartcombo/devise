@@ -16,7 +16,11 @@ module Devise
         self.last_sign_in_at     = old_current || new_current
         self.current_sign_in_at  = new_current
 
-        old_current, new_current = self.current_sign_in_ip, request.remote_ip
+        old_current, new_current = if Devise.trackable_stores_ip_addresses
+          [ self.current_sign_in_ip, request.remote_ip ]
+        else
+          [ nil, nil ]
+        end
         self.last_sign_in_ip     = old_current || new_current
         self.current_sign_in_ip  = new_current
 

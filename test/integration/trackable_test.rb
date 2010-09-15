@@ -25,6 +25,10 @@ class TrackableHooksTest < ActionController::IntegrationTest
     assert user.current_sign_in_at > user.last_sign_in_at
   end
 
+  test "trackable stores ip addresses by default" do
+    assert_equal true, Devise.trackable_stores_ip_addresses
+  end
+
   test "current and last sign in remote ip are updated on each sign in" do
     user = create_user
     assert_nil user.current_sign_in_ip
@@ -35,6 +39,18 @@ class TrackableHooksTest < ActionController::IntegrationTest
 
     assert_equal "127.0.0.1", user.current_sign_in_ip
     assert_equal "127.0.0.1", user.last_sign_in_ip
+  end
+
+  test "current and last sign in remote ip are zeros if trackable is configured to ignore ip addrs" do
+    Devise.trackable_stores_ip_addresses = false
+    user = create_user
+    sign_in_as_user
+    user.reload
+
+    assert_nil user.current_sign_in_ip
+    assert_nil user.last_sign_in_ip
+
+    Devise.trackable_stores_ip_addresses = true
   end
 
   test "increase sign in count" do

@@ -310,7 +310,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   test 'sign in with script name' do
     assert_nothing_raised do
       get new_user_session_path, {}, "SCRIPT_NAME" => "/omg"
-      fill_in "email", "user@test.com"
+      fill_in "email", :with => "user@test.com"
     end
   end
 

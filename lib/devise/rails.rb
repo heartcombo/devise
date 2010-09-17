@@ -33,7 +33,7 @@ module Devise
       end
     end
 
-    # Check all available mapings and only load related controllers.
+    # Check all available mappings and only load related controllers.
     def eager_load!
       mappings    = Devise.mappings.values.map(&:modules).flatten.uniq
       controllers = Devise::CONTROLLERS.values_at(*mappings)

@@ -98,6 +98,13 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_not user.valid_password?('654321')
   end
 
+  test 'should not validate password when salt is nil' do
+    admin = create_admin
+    admin.password_salt = nil
+    admin.save
+    assert_not admin.valid_password?('123456')
+  end
+
   test 'should respond to current password' do
     assert new_user.respond_to?(:current_password)
   end

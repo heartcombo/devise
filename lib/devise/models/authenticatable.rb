@@ -102,24 +102,10 @@ module Devise
 
         # Find an initialize a record setting an error if it can't be found.
         def find_or_initialize_with_error_by(attribute, value, error=:invalid) #:nodoc:
-          if value.present?
-            conditions = { attribute => value }
-            record = find(:first, :conditions => conditions)
-          end
-
-          unless record
-            record = new
-            if value.present?
-              record.send(:"#{attribute}=", value)
-            else
-              error = :blank
-            end
-            record.errors.add(attribute, error)
-          end
-
-          record
+          find_or_initialize_with_errors([attribute], { attribute => value }, error)
         end
-        
+
+        # Find an initialize a group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
           attributes = attributes.slice(*required_attributes)
           attributes.delete_if { |key, value| value.blank? }
@@ -132,12 +118,8 @@ module Devise
             record = new
             record.send(:attributes=, attributes, false)
 
-            if attributes.size == required_attributes.size
-              record.errors.add(:base, error)
-            else
-              required_attributes.reject { |k| attributes[k].present? }.each do |attribute|
-                record.errors.add(attribute, :blank)
-              end
+            required_attributes.each do |key|
+              record.errors.add(key, attributes[key].present? ? error : :blank)
             end
           end
 

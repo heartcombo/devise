@@ -53,51 +53,33 @@ class TestHelpersTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  test "defined Warden after_authentication callback should be called when sign_in is called" do
-    Warden::Manager.after_authentication do |user, auth, opts|
-      @after_authentication_called = true
-    end
-    user = create_user
-    user.confirm!
+  test "defined Warden after_authentication callback should not be called when sign_in is called" do
+    begin
+      Warden::Manager.after_authentication do |user, auth, opts|
+        flunk "callback was called while it should not"
+      end
 
-    sign_in user
-    assert_equal true, @after_authentication_called
+      user = create_user
+      user.confirm!
+      sign_in user
+    ensure
+      Warden::Manager._after_set_user.pop
+    end
   end
 
-  test "defined Warden before_logout callback should be called when sign_out is called" do
-    Warden::Manager.before_logout do |user, auth, opts|
-      @before_logout_called = true
+  test "defined Warden before_logout callback should not be called when sign_out is called" do
+    begin
+      Warden::Manager.before_logout do |user, auth, opts|
+        flunk "callback was called while it should not"
+      end
+      user = create_user
+      user.confirm!
+
+      sign_in user
+      sign_out user
+    ensure
+      Warden::Manager._before_logout.pop
     end
-    user = create_user
-    user.confirm!
-
-    sign_in user
-    sign_out user
-    assert_equal true, @before_logout_called
-  end
-
-  test "the user parameter in warden after_authentication callbacks should not be nil" do
-    Warden::Manager.after_authentication do |user, auth, opts|
-      assert_not_nil user
-    end
-    user = create_user
-    user.confirm!
-
-    sign_in user
-  end
-
-  # Not sure if the warden manager needs to be reset after the test cases which modify
-  # the callbacks, maybe the original values can just be restored or the warden manager
-  # class definition file can be reloaded.
-  test "the user parameter in warden before_logout callbacks should not be nil" do
-    Warden::Manager.before_logout do |user, auth, opts|
-      assert_not_nil user
-    end
-    user = create_user
-    user.confirm!
-
-    sign_in user
-    sign_out user
   end
 
   test "allows to sign in with different users" do

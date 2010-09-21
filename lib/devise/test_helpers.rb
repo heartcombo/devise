@@ -1,4 +1,11 @@
 module Devise
+  # Devise::TestHelpers provides a facility to test controllers in isolation
+  # when using ActionController::TestCase allowing you to quickly sign_in or
+  # sign_out an user. Do not use Devise::TestHelpers in integration tests.
+  #
+  # Notice you should not test Warden specific behavior (like Warden callbacks)
+  # using Devise::TestHelpers since it is a stub of the actual behavior. Such
+  # callbacks should be tested in your integration suite instead.
   module TestHelpers
     def self.included(base)
       base.class_eval do
@@ -61,6 +68,7 @@ module Devise
     end
 
     # sign_in a given resource by storing its keys in the session.
+    # This method bypass any warden authentication callback.
     #
     # Examples:
     #
@@ -74,6 +82,7 @@ module Devise
     end
 
     # Sign out a given resource or scope by calling logout on Warden.
+    # This method bypass any warden logout callback.
     #
     # Examples:
     #
@@ -83,7 +92,8 @@ module Devise
     def sign_out(resource_or_scope)
       scope = Devise::Mapping.find_scope!(resource_or_scope)
       @controller.instance_variable_set(:"@current_#{scope}", nil)
-      warden.logout(scope)
+      user = warden.instance_variable_get(:@users).delete(scope)
+      warden.session_serializer.delete(scope, user)
     end
 
   end

@@ -6,10 +6,13 @@
   * Added OAuth 2 support
   * sign_out_via is available in the router to configure the method used for sign out (by github.com/martinrehfeld)
   * Improved Ajax requests handling in failure app (by github.com/spastorino)
+  * Add reply-to to e-mail headers by default
 
 * bugfix
   * after_sign_in_path_for always receives a resource
-	* Updated the views generator to respect the rails :template_engine option (by github.com/fredwu)
+  * Updated the views generator to respect the rails :template_engine option (by github.com/fredwu)
+  * Do not execute Warden::Callbacks on Devise::TestHelpers (by github.com/sgronblo)
+  * Check the type of HTTP Authentication before using Basic headers
 
 == 1.1.2
 

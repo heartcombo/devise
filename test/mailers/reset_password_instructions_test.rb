@@ -38,6 +38,10 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
     assert_equal ['test@example.com'], mail.from
   end
 
+  test 'setup reply to as copy from sender' do
+    assert_equal ['test@example.com'], mail.reply_to
+  end
+
   test 'setup subject from I18n' do
     store_translations :en, :devise => { :mailer => { :reset_password_instructions => { :subject => 'Reset instructions' } } } do
       assert_equal 'Reset instructions', mail.subject

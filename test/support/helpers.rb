@@ -37,6 +37,12 @@ class ActiveSupport::TestCase
     User.create!(valid_attributes(attributes))
   end
 
+  def create_admin(attributes={})
+    valid_attributes = valid_attributes(attributes)
+    valid_attributes.delete(:username)
+    Admin.create!(valid_attributes)
+  end
+
   # Execute the block setting the given values and restoring old values after
   # the block is executed.
   def swap(object, new_values)

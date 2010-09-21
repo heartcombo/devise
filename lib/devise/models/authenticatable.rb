@@ -10,6 +10,14 @@ module Devise
     #
     #   * +authentication_keys+: parameters used for authentication. By default [:email].
     #
+    #   * +request_keys+: parameters from the request object used for authentication.
+    #     By specifying a symbol (which should be a request method), it will automatically be
+    #     passed to find_for_authentication method and considered in your model lookup.
+    #
+    #     For instance, if you set :request_keys to [:subdomain], :subdomain will be considered
+    #     as key on authentication. This can also be a hash where the value is a boolean expliciting
+    #     if the value is required or not.
+    #
     #   * +http_authenticatable+: if this model allows http authentication. By default true.
     #     It also accepts an array specifying the strategies that should allow http.
     #
@@ -66,7 +74,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :authentication_keys, :http_authenticatable, :params_authenticatable)
+        Devise::Models.config(self, :authentication_keys, :request_keys, :http_authenticatable, :params_authenticatable)
 
         def params_authenticatable?(strategy)
           params_authenticatable.is_a?(Array) ?

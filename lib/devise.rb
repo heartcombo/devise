@@ -68,6 +68,10 @@ module Devise
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]
 
+  # Request keys used when authenticating an user.
+  mattr_accessor :request_keys
+  @@request_keys = []
+
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
   @@http_authenticatable = false

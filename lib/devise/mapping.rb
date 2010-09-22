@@ -98,7 +98,7 @@ module Devise
 
     # Returns the parsed path taking into account the relative url root and raw path.
     def parsed_path
-      returning (ActionController::Base.relative_url_root.to_s + raw_path) do |path|
+      (ActionController::Base.relative_url_root.to_s + raw_path).tap do |path|
         self.class.default_url_options.each do |key, value|
           path.gsub!(key.inspect, value.to_param)
         end

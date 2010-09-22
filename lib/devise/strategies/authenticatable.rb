@@ -122,10 +122,8 @@ module Devise
       # Returns values from the request object.
       def request_values
         keys = request_keys.respond_to?(:keys) ? request_keys.keys : request_keys
-        keys.inject({}) do |hash, key|
-          hash[key] = self.request.send(key)
-          hash
-        end
+        values = keys.map { |k| self.request.send(k) }
+        Hash[keys.zip(values)]
       end
 
       # Parse authentication keys considering if they should be enforced or not.

@@ -1,3 +1,14 @@
+== 1.1.3
+
+* bugfix
+  * Add reply-to to e-mail headers by default
+  * Updated the views generator to respect the rails :template_engine option (by github.com/fredwu)
+  * Check the type of HTTP Authentication before using Basic headers
+  * Avoid invalid_salt errors by checking salt presence (by github.com/thibaudgg)
+  * Forget user deletes the right cookie before logout, not remembering the user anymore (by github.com/emtrane)
+  * Fix for failed first-ever logins on PostgreSQL where column default is nil (by github.com/bensie)
+  * :default options is now honored in migrations
+
 == 1.1.2
 
 * bugfix

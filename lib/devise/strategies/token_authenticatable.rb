@@ -28,7 +28,7 @@ module Devise
         true
       end
 
-      # Do not use remember_me behavir with token.
+      # Do not use remember_me behavior with token.
       def remember_me?
         false
       end

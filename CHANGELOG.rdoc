@@ -16,6 +16,7 @@
   * Check the type of HTTP Authentication before using Basic headers
   * Password recovery and account unlocking takes into account authentication keys (by github.com/RStankov)
   * Avoid invalid_salt errors by checking salt presence (by github.com/thibaudgg)
+  * Forget user deletes the right cookie before logout, not remembering the user anymore (by github.com/emtrane)
 
 == 1.1.2
 

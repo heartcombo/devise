@@ -100,7 +100,7 @@ GEM
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
-    warden (0.10.7)
+    warden (1.0.0)
       rack (>= 1.0.0)
     weakling (0.0.4-java)
     webrat (0.7.0)
@@ -124,5 +124,5 @@ DEPENDENCIES
   rails (= 3.0.0)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
-  warden (= 0.10.7)
+  warden (= 1.0.0)
   webrat (= 0.7.0)

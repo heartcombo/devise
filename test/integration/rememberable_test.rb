@@ -131,6 +131,7 @@ class RememberMeTest < ActionController::IntegrationTest
     get destroy_user_session_path
     assert_not warden.authenticated?(:user)
     assert_nil user.reload.remember_token
+    assert_nil warden.cookies['remember_user_token']
   end
 
   test 'do not remember the user anymore after forget' do
@@ -140,5 +141,6 @@ class RememberMeTest < ActionController::IntegrationTest
     get destroy_user_session_path
     get users_path
     assert_not warden.authenticated?(:user)
+    assert_nil warden.cookies['remember_user_token']
   end
 end

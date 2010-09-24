@@ -66,7 +66,7 @@ class RegistrationTest < ActionController::IntegrationTest
     click_button 'Sign up'
 
     assert_current_url '/users'
-    assert_contain(/Email .* already .* taken/)
+    assert_contain(/Email.*already.*taken/)
 
     assert_not warden.authenticated?(:user)
   end

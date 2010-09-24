@@ -116,10 +116,11 @@ module Devise
           
           unless record
             record = new
-            record.send(:attributes=, attributes, false)
 
             required_attributes.each do |key|
-              record.errors.add(key, attributes[key].present? ? error : :blank)
+              value = attributes[key]
+              record.send("#{key}=", value)
+              record.errors.add(key, value.present? ? error : :blank)
             end
           end
 

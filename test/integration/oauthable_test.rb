@@ -103,7 +103,8 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
 
     # Create an user and change his e-mail
     user = sign_in_as_user
-    user.update_attribute(:email, "another@test.com")
+    user.email = "another@test.com"
+    user.save!
 
     assert_no_difference "User.count" do
       visit "/"

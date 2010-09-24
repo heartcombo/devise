@@ -12,9 +12,9 @@ platforms :ruby do
     gem "ruby-debug", ">= 0.10.3"
   end
   group :mongoid do
-    gem "mongo"
-    gem "mongoid", :git => "git://github.com/mongoid/mongoid.git"
-    gem "bson_ext"
+    gem "mongo", "1.0.7"
+    gem "mongoid", "2.0.0.beta.18"
+    gem "bson_ext", "1.0.7"
   end
 end
 

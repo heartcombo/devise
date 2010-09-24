@@ -7,7 +7,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-Right now it's composed of 11 modules:
+It's composed of 11 modules:
 
 * Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of an user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
@@ -71,14 +71,6 @@ http://github.com/plataformatec/devise/wiki/Contributing
 
 == Installation
 
-=== Rails 2.3.x
-
-Devise 1.1 supports Rails 3 and is NOT backward compatible. If you want to use the Rails 2.3.x version, see the README in the v1.0 branch:
-
-http://github.com/plataformatec/devise/tree/v1.0
-
-=== Rails 3
-
 You can use the latest Rails 3 gem with the latest Devise gem:
 
   gem install devise
@@ -92,6 +84,8 @@ The generator will install an initializer which describes ALL Devise's configura
   rails generate devise MODEL
 
 Replace MODEL by the class name you want to add devise, like User, Admin, etc. This will create a model (if one does not exist) and configure it with default Devise modules. The generator will also create a migration file (if your ORM support them) and configure your routes. Continue reading this file to understand exactly what the generator produces and how to use it.
+
+Support for Rails 2.3.x can be found by installing Devise 1.0.x from the v1.0 branch.
 
 == Getting started
 
@@ -301,16 +295,16 @@ If you're using RSpec and want the helpers automatically included within all +de
 
 Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (http://wiki.github.com/plataformatec/devise).
 
-=== Other ORMs
-
-Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you just need to require it in the initializer file.
-
 === OAuth2
 
 Devise comes with OAuth support out of the box if you're using Devise from the git repository (for now). You can read more about OAuth2 support in the wiki:
 
 * http://github.com/plataformatec/devise/wiki/OAuth2:-Overview
 * http://github.com/plataformatec/devise/wiki/OAuth2:-Testing
+
+=== Other ORMs
+
+Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you just need to require it in the initializer file.
 
 === Migrating from other solutions
 

@@ -11,6 +11,7 @@
   * Ensure the friendly token does not include "_" or "-" since some e-mails may not autolink it properly (by github.com/rymai)
   * Extracted encryptors into :encryptable for better bcrypt support
   * :rememberable is now able to use salt as token if no remember_token is provided
+  * Store the salt in session and expire the session if the user changes his password
 
 * bugfix
   * after_sign_in_path_for always receives a resource

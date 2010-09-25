@@ -100,6 +100,13 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.sign_in(user)
   end
 
+  test 'sign in accepts bypass as option' do
+    user = User.new
+    @mock_warden.expects(:session_serializer).returns(serializer = mock())
+    serializer.expects(:store).with(user, :user)
+    @controller.sign_in(user, :bypass => true)
+  end
+
   test 'sign out proxy to logout on warden' do
     @mock_warden.expects(:user).with(:user).returns(true)
     @mock_warden.expects(:logout).with(:user).returns(true)

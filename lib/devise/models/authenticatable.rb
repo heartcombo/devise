@@ -73,6 +73,9 @@ module Devise
         :inactive
       end
 
+      def authenticatable_salt
+      end
+
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :http_authenticatable, :params_authenticatable)
 

@@ -98,6 +98,20 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_equal "user.new@email.com", User.first.email
   end
 
+  test 'a signed in user should still be able to use the website after changing his password' do
+    sign_in_as_user
+    get edit_user_registration_path
+
+    fill_in 'password', :with => '12345678'
+    fill_in 'password confirmation', :with => '12345678'
+    fill_in 'current password', :with => '123456'
+    click_button 'Update'
+
+    assert_contain 'You updated your account successfully.'
+    get users_path
+    assert warden.authenticated?(:user)
+  end
+
   test 'a signed in user should not change his current user with invalid password' do
     sign_in_as_user
     get edit_user_registration_path

@@ -87,18 +87,29 @@ module Devise
       # Sign in an user that already was authenticated. This helper is useful for logging
       # users in after sign up.
       #
+      # All options given to sign_in is passed forward to the set_user method in warden.
+      # The only exception is the :bypass option, which bypass warden callbacks and stores
+      # the user straight in session. This option is useful in cases the user is already
+      # signed in, but we want to refresh the credentials in session.
+      #
       # Examples:
       #
       #   sign_in :user, @user                      # sign_in(scope, resource)
       #   sign_in @user                             # sign_in(resource)
       #   sign_in @user, :event => :authentication  # sign_in(resource, options)
-      #
+      #   sign_in @user, :bypass => true            # sign_in(resource, options)
+      # 
       def sign_in(resource_or_scope, *args)
         options  = args.extract_options!
         scope    = Devise::Mapping.find_scope!(resource_or_scope)
         resource = args.last || resource_or_scope
-        expire_session_data_after_sign_in!
-        warden.set_user(resource, options.merge!(:scope => scope))
+
+        if options[:bypass]
+          warden.session_serializer.store(resource, scope)
+        else
+          expire_session_data_after_sign_in!
+          warden.set_user(resource, options.merge!(:scope => scope))
+        end
       end
 
       # Sign out a given user or scope. This helper is useful for signing out an user

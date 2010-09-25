@@ -164,6 +164,10 @@ module Devise
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
 
+  # If true, authentication through token does not store user in session
+  mattr_accessor :stateless_token
+  @@stateless_token = false
+
   # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
   @@navigational_formats = [:html]

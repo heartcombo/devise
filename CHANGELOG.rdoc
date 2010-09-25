@@ -12,6 +12,7 @@
   * Extracted encryptors into :encryptable for better bcrypt support
   * :rememberable is now able to use salt as token if no remember_token is provided
   * Store the salt in session and expire the session if the user changes his password
+  * Allow :stateless_token to be set to true avoiding users to be stored in session through token authentication
 
 * bugfix
   * after_sign_in_path_for always receives a resource

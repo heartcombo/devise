@@ -76,6 +76,10 @@ Devise.setup do |config|
   # If true, extends the user's remember period when remembered via cookie.
   # config.extend_remember_period = false
 
+  # If true, uses the password salt as remember token. This should be turned
+  # to false if you are not using database authenticatable.
+  config.use_salt_as_remember_token = true
+
   # ==> Configuration for :validatable
   # Range for password length. Default is 6..20.
   # config.password_length = 6..20

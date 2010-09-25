@@ -7,7 +7,7 @@ class CreateTables < ActiveRecord::Migration
       t.database_authenticatable :null => false
       t.confirmable
       t.recoverable
-      t.rememberable
+      t.rememberable :use_salt => true
       t.trackable
       t.lockable
       t.token_authenticatable

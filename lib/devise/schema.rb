@@ -39,8 +39,12 @@ module Devise
     end
 
     # Creates remember_token and remember_created_at.
-    def rememberable
-      apply_devise_schema :remember_token,      String
+    #
+    # == Options
+    # * :use_salt - When true, does not create a remember_token and use password_salt instead.
+    def rememberable(options={})
+      use_salt = options.fetch(:use_salt, Devise.use_salt_as_remember_token)
+      apply_devise_schema :remember_token,      String unless use_salt
       apply_devise_schema :remember_created_at, DateTime
     end
 

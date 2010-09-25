@@ -108,6 +108,11 @@ module Devise
   mattr_accessor :extend_remember_period
   @@extend_remember_period = false
 
+  # If true, uses salt as remember token and does not create it in the database.
+  # By default is false for backwards compatibility.
+  mattr_accessor :use_salt_as_remember_token
+  @@use_salt_as_remember_token = false
+
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days

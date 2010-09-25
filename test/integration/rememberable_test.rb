@@ -1,13 +1,20 @@
 require 'test_helper'
 
 class RememberMeTest < ActionController::IntegrationTest
-
   def create_user_and_remember(add_to_token='')
     user = create_user
     user.remember_me!
     raw_cookie = User.serialize_into_cookie(user).tap { |a| a.last << add_to_token }
     cookies['remember_user_token'] = generate_signed_cookie(raw_cookie)
     user
+  end
+
+  def create_admin_and_remember
+    admin = create_admin
+    admin.remember_me!
+    raw_cookie = Admin.serialize_into_cookie(admin)
+    cookies['remember_admin_token'] = generate_signed_cookie(raw_cookie)
+    admin
   end
 
   def generate_signed_cookie(raw_cookie)
@@ -29,13 +36,11 @@ class RememberMeTest < ActionController::IntegrationTest
   test 'do not remember the user if he has not checked remember me option' do
     user = sign_in_as_user
     assert_nil request.cookies["remember_user_cookie"]
-    assert_nil user.reload.remember_token
   end
 
   test 'generate remember token after sign in' do
     user = sign_in_as_user :remember_me => true
     assert request.cookies["remember_user_token"]
-    assert user.reload.remember_token
   end
 
   test 'generate remember token after sign in setting cookie domain' do
@@ -74,29 +79,29 @@ class RememberMeTest < ActionController::IntegrationTest
 
   test 'if both extend_remember_period and remember_across_browsers are true, sends the same token with a new expire date' do
     swap Devise, :remember_across_browsers => true, :extend_remember_period => true, :remember_for => 1.year do
-      user  = create_user_and_remember
-      token = user.remember_token
+      admin = create_admin_and_remember
+      token = admin.remember_token
 
-      user.remember_created_at = old = 10.minutes.ago
-      user.save!
+      admin.remember_created_at = old = 10.minutes.ago
+      admin.save!
 
-      get users_path
-      assert (cookie_expires("remember_user_token") - 1.year) > (old + 5.minutes)
-      assert_equal token, signed_cookie("remember_user_token").last
+      get root_path
+      assert (cookie_expires("remember_admin_token") - 1.year) > (old + 5.minutes)
+      assert_equal token, signed_cookie("remember_admin_token").last
     end
   end
 
   test 'if both extend_remember_period and remember_across_browsers are false, sends a new token with old expire date' do
     swap Devise, :remember_across_browsers => false, :extend_remember_period => false, :remember_for => 1.year do
-      user  = create_user_and_remember
-      token = user.remember_token
+      admin = create_admin_and_remember
+      token = admin.remember_token
 
-      user.remember_created_at = old = 10.minutes.ago
-      user.save!
+      admin.remember_created_at = old = 10.minutes.ago
+      admin.save!
 
-      get users_path
-      assert (cookie_expires("remember_user_token") - 1.year) < (old + 5.minutes)
-      assert_not_equal token, signed_cookie("remember_user_token").last
+      get root_path
+      assert (cookie_expires("remember_admin_token") - 1.year) < (old + 5.minutes)
+      assert_not_equal token, signed_cookie("remember_admin_token").last
     end
   end
 
@@ -124,23 +129,41 @@ class RememberMeTest < ActionController::IntegrationTest
     end
   end
 
-  test 'forget the user before sign out' do
-    user = create_user_and_remember
-    get users_path
-    assert warden.authenticated?(:user)
-    get destroy_user_session_path
-    assert_not warden.authenticated?(:user)
-    assert_nil user.reload.remember_token
-    assert_nil warden.cookies['remember_user_token']
-  end
-
   test 'do not remember the user anymore after forget' do
     user = create_user_and_remember
     get users_path
     assert warden.authenticated?(:user)
+
     get destroy_user_session_path
+    assert_not warden.authenticated?(:user)
+    assert_nil warden.cookies['remember_user_token']
+
     get users_path
     assert_not warden.authenticated?(:user)
     assert_nil warden.cookies['remember_user_token']
+  end
+
+  test 'do not remember the admin anymore after forget' do
+    admin = create_admin_and_remember
+    get root_path
+    assert warden.authenticated?(:admin)
+
+    get destroy_admin_session_path
+    assert_not warden.authenticated?(:admin)
+    assert_nil warden.cookies['remember_admin_token']
+
+    get root_path
+    assert_not warden.authenticated?(:admin)
+    assert_nil warden.cookies['remember_admin_token']
+  end
+
+  test 'changing user password expires remember me token' do
+    user = create_user_and_remember
+    user.password = "another_password"
+    user.password_confirmation = "another_password"
+    user.save!
+
+    get users_path
+    assert_not warden.authenticated?(:user)
   end
 end

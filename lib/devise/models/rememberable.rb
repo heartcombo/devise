@@ -22,7 +22,9 @@ module Devise
     #     the user. By default remember_for is 2.weeks.
     #
     #   * +remember_across_browsers+: if a valid remember token can be re-used
-    #     between multiple browsers. By default remember_across_browsers is true.
+    #     between multiple browsers. By default remember_across_browsers is true
+    #     and cannot be turned off if you are using password salt instead of remember
+    #     token.
     #
     #   * +extend_remember_period+: if true, extends the user's remember period
     #     when remembered via cookie. False by default.
@@ -48,7 +50,7 @@ module Devise
       # Generate a new remember token and save the record without validations
       # unless remember_across_browsers is true and the user already has a valid token.
       def remember_me!(extend_period=false)
-        self.remember_token = self.class.remember_token if generate_remember_token?
+        self.remember_token = self.class.remember_token if respond_to?(:remember_token) && generate_remember_token?
         self.remember_created_at = Time.now.utc if generate_remember_timestamp?(extend_period)
         save(:validate => false)
       end
@@ -56,16 +58,14 @@ module Devise
       # Removes the remember token only if it exists, and save the record
       # without validations.
       def forget_me!
-        if remember_token
-          self.remember_token = nil
-          self.remember_created_at = nil
-          save(:validate => false)
-        end
+        self.remember_token = nil if respond_to?(:remember_token)
+        self.remember_created_at = nil
+        save(:validate => false)
       end
 
       # Remember token should be expired if expiration time not overpass now.
       def remember_expired?
-        remember_created_at && (remember_expires_at <= Time.now.utc)
+        remember_created_at.nil? || (remember_expires_at <= Time.now.utc)
       end
 
       # Remember token expires at created time + remember_for configuration
@@ -79,6 +79,10 @@ module Devise
 
       def cookie_domain?
         self.class.cookie_domain != false
+      end
+
+      def rememberable_value
+        respond_to?(:remember_token) ? self.remember_token : self.password_salt
       end
 
     protected
@@ -98,14 +102,13 @@ module Devise
       module ClassMethods
         # Create the cookie key using the record id and remember_token
         def serialize_into_cookie(record)
-          [record.id, record.remember_token]
+          [record.id, record.rememberable_value]
         end
 
         # Recreate the user based on the stored cookie
         def serialize_from_cookie(id, remember_token)
-          conditions = { :id => id, :remember_token => remember_token }
-          record = find(:first, :conditions => conditions)
-          record if record && !record.remember_expired?
+          record = find(:first, :conditions => { :id => id })
+          record if record && record.rememberable_value == remember_token && !record.remember_expired?
         end
 
         # Generate a token checking if one does not already exist in the database.

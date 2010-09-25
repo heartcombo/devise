@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class Configurable < User
-  devise :database_authenticatable, :confirmable, :rememberable, :timeoutable, :lockable,
+  devise :database_authenticatable, :encryptable, :confirmable, :rememberable, :timeoutable, :lockable,
          :stretches => 15, :pepper => 'abcdef', :confirm_within => 5.days,
          :remember_for => 7.days, :timeout_in => 15.minutes, :unlock_in => 10.days
 end
@@ -26,16 +26,16 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'can cherry pick modules' do
-    assert_include_modules Admin, :database_authenticatable, :registerable, :timeoutable, :recoverable, :lockable, :rememberable
+    assert_include_modules Admin, :database_authenticatable, :registerable, :timeoutable, :recoverable, :lockable, :rememberable, :encryptable
   end
 
   test 'chosen modules are inheritable' do
-    assert_include_modules Inheritable, :database_authenticatable, :registerable, :timeoutable, :recoverable, :lockable, :rememberable
+    assert_include_modules Inheritable, :database_authenticatable, :registerable, :timeoutable, :recoverable, :lockable, :rememberable, :encryptable
   end
 
   test 'order of module inclusion' do
-    correct_module_order   = [:database_authenticatable, :rememberable, :recoverable, :registerable, :lockable, :timeoutable]
-    incorrect_module_order = [:database_authenticatable, :timeoutable, :registerable, :recoverable, :lockable, :rememberable]
+    correct_module_order   = [:database_authenticatable, :rememberable, :encryptable, :recoverable, :registerable, :lockable, :timeoutable]
+    incorrect_module_order = [:database_authenticatable, :timeoutable, :registerable, :recoverable, :lockable, :encryptable, :rememberable]
 
     assert_include_modules Admin, *incorrect_module_order
 

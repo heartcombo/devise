@@ -48,17 +48,12 @@ module Devise
     :sha512 => 128,
     :clearance_sha1 => 40,
     :restful_authentication_sha1 => 40,
-    :authlogic_sha512 => 128,
-    :bcrypt => 60
+    :authlogic_sha512 => 128
   }
 
   # Custom domain for cookies. Not set by default
   mattr_accessor :cookie_domain
   @@cookie_domain = false
-
-  # Used to encrypt password. Please generate one with rake secret.
-  mattr_accessor :pepper
-  @@pepper = nil
 
   # The number of times to encrypt password.
   mattr_accessor :stretches
@@ -121,9 +116,13 @@ module Devise
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes
 
+  # Used to encrypt password. Please generate one with rake secret.
+  mattr_accessor :pepper
+  @@pepper = nil
+
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor
-  @@encryptor = :bcrypt
+  @@encryptor = nil
 
   # Tells if devise should apply the schema in ORMs where devise declaration
   # and schema belongs to the same class (as Datamapper and Mongoid).

@@ -82,7 +82,7 @@ module Devise
       end
 
       def rememberable_value
-        respond_to?(:remember_token) ? self.remember_token : self.password_salt
+        respond_to?(:remember_token) ? self.remember_token : self.authenticatable_salt
       end
 
     protected

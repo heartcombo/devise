@@ -44,18 +44,9 @@ Devise.setup do |config|
   # config.http_authentication_realm = "Application"
 
   # ==> Configuration for :database_authenticatable
-  # Define which will be the encryption algorithm. Devise also supports encryptors
-  # from others authentication tools as :clearance_sha1, :authlogic_sha512 (then
-  # you should set stretches above to 20 for default behavior) and :restful_authentication_sha1
-  # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
-  config.encryptor = :bcrypt
-
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.
   config.stretches = 10
-
-  # Setup a pepper to generate the encrypted password.
-  config.pepper = <%= ActiveSupport::SecureRandom.hex(64).inspect %>
 
   # ==> Configuration for :confirmable
   # The time you want to give your user to confirm his account. During this time
@@ -111,6 +102,17 @@ Devise.setup do |config|
 
   # Time interval to unlock the account if :time is enabled as unlock_strategy.
   # config.unlock_in = 1.hour
+
+  # ==> Configuration for :encryptable
+  # Allow you to use another encryption algorithm besides bcrypt (default). You can use
+  # :sha1, :sha512 or encryptors from others authentication tools as :clearance_sha1,
+  # :authlogic_sha512 (then you should set stretches above to 20 for default behavior)
+  # and :restful_authentication_sha1 (then you should set stretches to 10, and copy
+  # REST_AUTH_SITE_KEY to pepper)
+  # config.encryptor = :sha512
+
+  # Setup a pepper to generate the encrypted password.
+  # config.pepper = <%= ActiveSupport::SecureRandom.hex(64).inspect %>
 
   # ==> Configuration for :token_authenticatable
   # Defines name of the authentication token params key

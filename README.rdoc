@@ -7,7 +7,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-It's composed of 11 modules:
+It's composed of 12 modules:
 
 * Database Authenticatable: encrypts and stores a password in the database to validate the authenticity of an user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * Token Authenticatable: signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
@@ -20,6 +20,7 @@ It's composed of 11 modules:
 * Timeoutable: expires sessions that have no activity in a specified period of time.
 * Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+* Encryptable: allows support of other authentication mechanisms besides Bcrypt (the default).
 
 == Information
 
@@ -152,9 +153,9 @@ Finally, you need to set up default url options for the mailer in each environme
 
 The devise method in your models also accepts some options to configure its modules. For example, you can choose which encryptor to use in database_authenticatable:
 
-  devise :database_authenticatable, :confirmable, :recoverable, :encryptor => :bcrypt
+  devise :database_authenticatable, :confirmable, :recoverable, :stretches => 20
 
-Besides :encryptor, you can define :pepper, :stretches, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the "devise:install" generator described above.
+Besides :stretches, you can define :pepper, :encryptor, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the "devise:install" generator described above.
 
 === Configuring multiple models
 
@@ -308,7 +309,7 @@ Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you jus
 
 === Migrating from other solutions
 
-Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of these strategies, set the desired encryptor in the encryptor initializer config option. You might also need to rename your encrypted password and salt columns to match Devise's fields (encrypted_password and password_salt).
+Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of these strategies, you need set the desired encryptor in the encryptor initializer config option and add :encryptable to your model. You might also need to rename your encrypted password and salt columns to match Devise's fields (encrypted_password and password_salt).
 
 == Additional information
 

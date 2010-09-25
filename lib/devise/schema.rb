@@ -18,8 +18,12 @@ module Devise
 
       apply_devise_schema :email,              String, :null => null, :default => default
       apply_devise_schema :encrypted_password, String, :null => null, :default => default, :limit => 128
-      apply_devise_schema :password_salt,      String, :null => null, :default => default
     end      
+
+    # Creates password salt for encryption support.
+    def encryptable
+      apply_devise_schema :password_salt, String
+    end
 
     # Creates authentication_token.
     def token_authenticatable(options={})

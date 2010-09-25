@@ -33,6 +33,23 @@ module Devise
       end
     end
 
+    initializer "devise.encryptor_check" do
+      case Devise.encryptor
+      when :bcrypt
+        puts "[DEVISE] From version 1.2, there is no need to set your encryptor to bcrypt " <<
+          "since encryptors are only enabled if you include :encryptable in your models. " << 
+          "With this change, we can integrate better with bcrypt and get rid of the " <<
+          "password_salt column (since bcrypt stores the salt with password). " <<
+          "Please comment config.encryptor in your initializer to get rid of this warning."
+      when nil
+        # Nothing to say
+      else
+        puts "[DEVISE] You are using #{Devise.encryptor} as encryptor. From version 1.2, " <<
+          "you need to explicitly add :encryptable to your models in order for this " <<
+          "configuration value to work."
+      end
+    end
+
     # Check all available mappings and only load related controllers.
     def eager_load!
       mappings    = Devise.mappings.values.map(&:modules).flatten.uniq

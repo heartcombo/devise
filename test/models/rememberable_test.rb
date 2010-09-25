@@ -260,12 +260,12 @@ class WithSaltRememberableTest < ActiveSupport::TestCase
   test 'serialize into cookie' do
     user = create_user
     user.remember_me!
-    assert_equal [user.id, user.password_salt], User.serialize_into_cookie(user)
+    assert_equal [user.id, user.authenticatable_salt], User.serialize_into_cookie(user)
   end
 
   test 'serialize from cookie' do
     user = create_user
     user.remember_me!
-    assert_equal user, User.serialize_from_cookie(user.id, user.password_salt)
+    assert_equal user, User.serialize_from_cookie(user.id, user.authenticatable_salt)
   end
 end

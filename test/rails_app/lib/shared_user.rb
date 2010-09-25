@@ -39,7 +39,7 @@ module SharedUser
     self.facebook_token = access_token.token
 
     unless encrypted_password.present?
-      self.password = Devise.friendly_token
+      self.password = Devise.friendly_token[0, 10]
       self.password_confirmation = nil
     end
 

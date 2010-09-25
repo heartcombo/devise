@@ -41,7 +41,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'should generate a base64 hash using SecureRandom for password salt' do
     swap_with_encryptor User, :sha1 do
-      ActiveSupport::SecureRandom.expects(:base64).with(15).returns('friendly_token')
+      ActiveSupport::SecureRandom.expects(:base64).with(44).returns('friendly_token')
       assert_equal 'friendly_token', new_user.password_salt
     end
   end

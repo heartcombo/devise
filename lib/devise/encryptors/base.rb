@@ -13,7 +13,7 @@ module Devise
       end
 
       def self.salt(stretches)
-        Devise.friendly_token
+        Devise.friendly_token[0,20]
       end
     end
   end

@@ -6,9 +6,11 @@
   * Added OAuth 2 support
   * sign_out_via is available in the router to configure the method used for sign out (by github.com/martinrehfeld)
   * Improved Ajax requests handling in failure app (by github.com/spastorino)
-  * Add request_keys to easily use request specific values (like subdomain) in authentication
+  * Added request_keys to easily use request specific values (like subdomain) in authentication
   * Increased the size of friendly_token to 60 characters (reduces the chances of a successful brute attack)
   * Ensure the friendly token does not include "_" or "-" since some e-mails may not autolink it properly (by github.com/rymai)
+  * Extracted encryptors into :encryptable for better bcrypt support
+  * :rememberable is now able to use salt as token if no remember_token is provided
 
 * bugfix
   * after_sign_in_path_for always receives a resource

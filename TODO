@@ -1,5 +1,4 @@
 * Move integration tests to Capybara
 * Better ORM integration
-* Extract activatable models tests from confirmable
 * Add support to automatically refresh the access token for OAuth
 * Add test to generators using the new Rails::Generators::TestCase

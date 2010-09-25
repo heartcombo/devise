@@ -37,7 +37,7 @@ class MappingTest < ActiveSupport::TestCase
 
   test 'has strategies depending on the model declaration' do
     assert_equal [:rememberable, :token_authenticatable, :database_authenticatable], Devise.mappings[:user].strategies
-    assert_equal [:database_authenticatable], Devise.mappings[:admin].strategies
+    assert_equal [:rememberable, :database_authenticatable], Devise.mappings[:admin].strategies
   end
 
   test 'find scope for a given object' do
@@ -90,6 +90,6 @@ class MappingTest < ActiveSupport::TestCase
     assert mapping.recoverable?
     assert mapping.lockable?
     assert_not mapping.confirmable?
-    assert_not mapping.rememberable?
+    assert_not mapping.oauthable?
   end
 end

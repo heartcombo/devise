@@ -136,8 +136,7 @@ class FailureTest < ActiveSupport::TestCase
   context 'With recall' do
     test 'calls the original controller' do
       env = {
-        "action_dispatch.request.parameters" => { :controller => "devise/sessions" },
-        "warden.options" => { :recall => "new", :attempted_path => "/users/sign_in" },
+        "warden.options" => { :recall => "devise/sessions#new", :attempted_path => "/users/sign_in" },
         "devise.mapping" => Devise.mappings[:user],
         "warden" => stub_everything
       }

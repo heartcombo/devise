@@ -1,6 +1,7 @@
 * deprecations
   * sign_out_all_scopes defaults to true as security measure
   * http authenticatable is disabled by default
+  * cookie_domain is deprecated in favor of cookie_options
 
 * enhancements
   * Added OAuth 2 support
@@ -13,6 +14,7 @@
   * :rememberable is now able to use salt as token if no remember_token is provided
   * Store the salt in session and expire the session if the user changes his password
   * Allow :stateless_token to be set to true avoiding users to be stored in session through token authentication
+  * cookie_options uses session_options values by default
 
 * bugfix
   * after_sign_in_path_for always receives a resource

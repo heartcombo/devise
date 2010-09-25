@@ -10,19 +10,21 @@ module Devise
 
         if succeeded? && resource.respond_to?(:remember_me!) && remember_me?
           resource.remember_me!(extend_remember_period?)
-
-          configuration = {
-            :value => resource.class.serialize_into_cookie(resource),
-            :expires => resource.remember_expires_at,
-            :path => "/"
-          }
-
-          configuration[:domain] = resource.cookie_domain if resource.cookie_domain?
-          cookies.signed["remember_#{scope}_token"] = configuration
+          cookies.signed["remember_#{scope}_token"] = cookie_values(resource)
         end
       end
 
     protected
+
+      def cookie_values(resource)
+        options = Rails.configuration.session_options.slice(:path, :domain, :secure)
+        options.merge!(resource.cookie_options)
+        options.merge!(
+          :value => resource.class.serialize_into_cookie(resource),
+          :expires => resource.remember_expires_at
+        )
+        options
+      end
 
       def succeeded?
         @result == :success

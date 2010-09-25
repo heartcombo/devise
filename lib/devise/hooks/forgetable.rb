@@ -5,7 +5,8 @@
 Warden::Manager.before_logout do |record, warden, options|
   if record.respond_to?(:forget_me!)
     record.forget_me! unless record.frozen?
-    cookie_options = record.cookie_domain? ? { :domain => record.cookie_domain } : {}
+    cookie_options = Rails.configuration.session_options.slice(:path, :domain, :secure)
+    cookie_options.merge!(record.cookie_options)
     warden.cookies.delete("remember_#{options[:scope]}_token", cookie_options)
   end
 end

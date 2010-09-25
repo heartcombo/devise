@@ -43,13 +43,23 @@ class RememberMeTest < ActionController::IntegrationTest
     assert request.cookies["remember_user_token"]
   end
 
-  test 'generate remember token after sign in setting cookie domain' do
+  test 'generate remember token after sign in setting cookie options' do
     # We test this by asserting the cookie is not sent after the redirect
     # since we changed the domain. This is the only difference with the
     # previous test.
-    swap User, :cookie_domain => "omg.somewhere.com" do
+    swap Devise, :cookie_options => { :domain => "omg.somewhere.com" } do
       user = sign_in_as_user :remember_me => true
       assert_nil request.cookies["remember_user_token"]
+    end
+  end
+
+  test 'generate remember token after sign in setting session options' do
+    begin
+      Rails.configuration.session_options[:domain] = "omg.somewhere.com"
+      user = sign_in_as_user :remember_me => true
+      assert_nil request.cookies["remember_user_token"]
+    ensure
+      Rails.configuration.session_options.delete(:domain)
     end
   end
 

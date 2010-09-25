@@ -17,7 +17,7 @@ module Devise
     #
     #   * +remember_for+: the time you want the user will be remembered without
     #     asking for credentials. After this time the user will be blocked and
-    #     will have to enter his credentials again. This configuration is als
+    #     will have to enter his credentials again. This configuration is also
     #     used to calculate the expires time for the cookie created to remember
     #     the user. By default remember_for is 2.weeks.
     #
@@ -28,6 +28,8 @@ module Devise
     #
     #   * +extend_remember_period+: if true, extends the user's remember period
     #     when remembered via cookie. False by default.
+    #
+    #   * +cookie_options+: configuration options passed to the created cookie.
     #
     # == Examples
     #
@@ -73,16 +75,12 @@ module Devise
         remember_created_at + self.class.remember_for
       end
 
-      def cookie_domain
-        self.class.cookie_domain
-      end
-
-      def cookie_domain?
-        self.class.cookie_domain != false
-      end
-
       def rememberable_value
         respond_to?(:remember_token) ? self.remember_token : self.authenticatable_salt
+      end
+
+      def cookie_options
+        self.class.cookie_options
       end
 
     protected
@@ -117,7 +115,7 @@ module Devise
         end
 
         Devise::Models.config(self, :remember_for, :remember_across_browsers,
-          :extend_remember_period, :cookie_domain)
+          :extend_remember_period, :cookie_options)
       end
     end
   end

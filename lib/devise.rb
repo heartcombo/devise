@@ -52,8 +52,8 @@ module Devise
   }
 
   # Custom domain for cookies. Not set by default
-  mattr_accessor :cookie_domain
-  @@cookie_domain = false
+  mattr_accessor :cookie_options
+  @@cookie_options = {}
 
   # The number of times to encrypt password.
   mattr_accessor :stretches
@@ -212,6 +212,12 @@ module Devise
   # a fresh initializer with all configuration values.
   def self.setup
     yield self
+  end
+
+  def self.cookie_domain=(value)
+    ActiveSupport::Deprecation.warn "Devise.cookie_domain=(value) is deprecated. "
+      "Please use Devise.cookie_options = { :domain => value } instead."
+    self.cookie_options[:domain] = value
   end
 
   # Get the mailer class from the mailer reference object.

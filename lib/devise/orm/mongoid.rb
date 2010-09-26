@@ -16,7 +16,7 @@ module Devise
         # Tell how to apply schema methods
         def apply_devise_schema(name, type, options={})
           type = Time if type == DateTime
-          field name, { :type => type }.merge(options)
+          field name, { :type => type }.merge!(options)
         end
       end
     end

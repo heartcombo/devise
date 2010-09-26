@@ -24,7 +24,7 @@ module Devise
         attr_accessor :password_confirmation
       end
 
-      # Generators password encryption based on the value given.
+      # Generates password encryption based on the given value.
       def password=(new_password)
         @password = new_password
         self.encrypted_password = password_digest(@password) if @password.present?

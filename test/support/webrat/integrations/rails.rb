@@ -7,6 +7,13 @@ module Webrat
       Rack::Utils.parse_nested_query(params)
     end
   end
+
+  module Logging
+    # Avoid RAILS_DEFAULT_LOGGER deprecation warning
+    def logger # :nodoc:
+      ::Rails.logger
+    end
+  end
 end
 
 module ActionDispatch #:nodoc:

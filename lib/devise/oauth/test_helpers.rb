@@ -4,7 +4,7 @@ module Devise
       def self.short_circuit_authorizers!
         module_eval <<-ALIASES, __FILE__, __LINE__ + 1
           def oauth_authorize_url(scope, provider)
-            oauth_callback_url(scope, provider, :code => "12345")
+            oauth_callback_path(scope, provider, :code => "12345")
           end
         ALIASES
 
@@ -13,7 +13,7 @@ module Devise
 
           module_eval <<-ALIASES, __FILE__, __LINE__ + 1
             def #{m.name}_oauth_authorize_url(provider)
-              #{m.name}_oauth_callback_url(provider, :code => "12345")
+              #{m.name}_oauth_callback_path(provider, :code => "12345")
             end
           ALIASES
         end

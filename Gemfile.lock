@@ -100,7 +100,7 @@ GEM
     tzinfo (0.3.23)
     warden (1.0.0)
       rack (>= 1.0.0)
-    webrat (0.7.0)
+    webrat (0.7.1)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
@@ -122,4 +122,4 @@ DEPENDENCIES
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
   warden (= 1.0.0)
-  webrat (= 0.7.0)
+  webrat (= 0.7.1)

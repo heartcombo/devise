@@ -292,7 +292,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   test 'uses the custom controller with the custom controller view' do
     get '/admin_area/sign_in'
     assert_contain 'Sign in'
-    assert_contain 'Welcome to "sessions" controller!'
+    assert_contain 'Welcome to "admins/sessions" controller!'
     assert_contain 'Welcome to "sessions/new" view!'
   end
 

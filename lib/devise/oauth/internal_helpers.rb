@@ -9,7 +9,7 @@ module Devise
       end
 
       included do
-        helpers = %w(oauth_config)
+        helpers = %w(oauth_callback oauth_provider oauth_config)
         hide_action *helpers
         helper_method *helpers
         before_filter :valid_oauth_callback?, :oauth_error_happened?

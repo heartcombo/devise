@@ -5,15 +5,6 @@ module Devise
     module Helpers
       extend ActiveSupport::Concern
 
-      included do
-        helper_method :oauth_callback
-      end
-
-      def oauth_callback #:nodoc:
-        nil
-      end
-      alias :oauth_provider :oauth_callback
-
     protected
 
       # Overwrite expire_session_data_after_sign_in! so it removes all

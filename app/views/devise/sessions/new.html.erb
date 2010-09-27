@@ -2,7 +2,7 @@
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
   <p><%= f.label :email %><br />
-  <%= f.text_field :email %></p>
+  <%= f.email_field :email %></p>
 
   <p><%= f.label :password %><br />
   <%= f.password_field :password %></p>

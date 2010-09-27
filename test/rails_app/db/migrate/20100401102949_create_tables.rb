@@ -7,7 +7,7 @@ class CreateTables < ActiveRecord::Migration
       t.database_authenticatable :null => false
       t.confirmable
       t.recoverable
-      t.rememberable :use_salt => true
+      t.rememberable
       t.trackable
       t.lockable
       t.token_authenticatable
@@ -17,7 +17,7 @@ class CreateTables < ActiveRecord::Migration
     create_table :admins do |t|
       t.database_authenticatable :null => true
       t.encryptable
-      t.rememberable
+      t.rememberable :use_salt => false
       t.recoverable
       t.lockable
       t.timestamps

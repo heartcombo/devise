@@ -10,7 +10,7 @@ class Devise::SessionsController < ApplicationController
 
   # POST /resource/sign_in
   def create
-    resource = warden.authenticate!(:scope => resource_name, :recall => "devise/#{controller_name}#new")
+    resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#new")
     set_flash_message :notice, :signed_in
     sign_in_and_redirect(resource_name, resource)
   end

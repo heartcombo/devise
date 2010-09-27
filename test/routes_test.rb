@@ -116,7 +116,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map admin with :controllers option' do
-    assert_recognizes({:controller => 'sessions', :action => 'new'}, {:path => 'admin_area/sign_in', :method => :get})
+    assert_recognizes({:controller => 'admins/sessions', :action => 'new'}, {:path => 'admin_area/sign_in', :method => :get})
   end
 
   test 'does not map admin password' do
@@ -154,24 +154,24 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map deletes with :sign_out_via option' do
-    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :delete})
+    assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :delete})
     assert_raise ActionController::RoutingError do
-      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :get})
+      assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :get})
     end
   end
 
   test 'map posts with :sign_out_via option' do
-    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :post})
+    assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :post})
     assert_raise ActionController::RoutingError do
-      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :get})
+      assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :get})
     end
   end
 
   test 'map delete_or_posts with :sign_out_via option' do
-    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :post})
-    assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :delete})
+    assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :post})
+    assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :delete})
     assert_raise ActionController::RoutingError do
-      assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :get})
+      assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :get})
     end
   end
 end

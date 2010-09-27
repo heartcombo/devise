@@ -19,7 +19,7 @@ platforms :ruby do
 end
 
 gem "warden", "1.0.0"
-gem "webrat", "0.7.0"
+gem "webrat", "0.7.1"
 gem "mocha", :require => false
 gem "bcrypt-ruby", :require => "bcrypt"
 gem "oauth2"

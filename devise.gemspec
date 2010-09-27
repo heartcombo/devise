@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-09-25}
+  s.date = %q{2010-09-27}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -151,12 +151,12 @@ Gem::Specification.new do |s|
      "test/rails_app/app/active_record/admin.rb",
      "test/rails_app/app/active_record/shim.rb",
      "test/rails_app/app/active_record/user.rb",
+     "test/rails_app/app/controllers/admins/sessions_controller.rb",
      "test/rails_app/app/controllers/admins_controller.rb",
      "test/rails_app/app/controllers/application_controller.rb",
      "test/rails_app/app/controllers/home_controller.rb",
      "test/rails_app/app/controllers/publisher/registrations_controller.rb",
      "test/rails_app/app/controllers/publisher/sessions_controller.rb",
-     "test/rails_app/app/controllers/sessions_controller.rb",
      "test/rails_app/app/controllers/users_controller.rb",
      "test/rails_app/app/helpers/application_helper.rb",
      "test/rails_app/app/mongoid/admin.rb",

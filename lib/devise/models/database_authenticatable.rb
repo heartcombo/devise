@@ -31,8 +31,8 @@ module Devise
       end
 
       # Verifies whether an incoming_password (ie from sign in) is the user password.
-      def valid_password?(incoming_password)
-        ::BCrypt::Password.new(self.encrypted_password) == incoming_password
+      def valid_password?(password)
+        ::BCrypt::Password.new(self.encrypted_password) == "#{password}#{self.class.pepper}"
       end
 
       # Set password and password confirmation to nil
@@ -75,11 +75,11 @@ module Devise
 
       # Digests the password using bcrypt.
       def password_digest(password)
-        ::BCrypt::Password.create(password, :cost => self.class.stretches).to_s
+        ::BCrypt::Password.create("#{password}#{self.class.pepper}", :cost => self.class.stretches).to_s
       end
 
       module ClassMethods
-        Devise::Models.config(self, :stretches)
+        Devise::Models.config(self, :pepper, :stretches)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on

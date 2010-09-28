@@ -49,7 +49,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :encryptor)
+        Devise::Models.config(self, :encryptor)
 
         # Returns the class for the configured encryptor.
         def encryptor_class

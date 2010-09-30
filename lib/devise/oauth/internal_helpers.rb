@@ -164,8 +164,8 @@ module Devise
       end
 
       # The default hook used by oauth to specify the redirect url for success.
-      def after_oauth_success_path_for(resource_or_scope)
-        after_sign_in_path_for(resource_or_scope)
+      def after_oauth_success_path_for(resource)
+        after_sign_in_path_for(resource)
       end
 
       # The default hook used by oauth to specify the redirect url for failure.

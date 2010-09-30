@@ -181,36 +181,6 @@ module Devise
         respond_to?(home_path, true) ? send(home_path) : root_path
       end
 
-      # The default url to be used after updating a resource. This is used by all Devise
-      # controllers and you can overwrite it in your ApplicationController to
-      # provide a custom hook for a custom resource.
-      #
-      # By default, it first tries to find a resource_root_path, otherwise it
-      # uses the root path. For a user scope, you can define the default url in
-      # the following way:
-      #
-      #   map.user_root '/users', :controller => 'users' # creates user_root_path
-      #
-      #   map.resources :users do |users|
-      #     users.root # creates user_root_path
-      #   end
-      #
-      #
-      # If none of these are defined, root_path is used. However, if this default
-      # is not enough, you can customize it, for example:
-      #
-      #   def after_update_path_for(resource)
-      #     if resource.is_a?(User) && resource.can_publish?
-      #       publisher_url
-      #     else
-      #       super
-      #     end
-      #   end
-      #
-      def after_update_path_for(resource_or_scope)
-        after_sign_in_path_for(resource_or_scope)
-      end
-
       # Method used by sessions controller to sign out an user. You can overwrite
       # it in your ApplicationController to provide a custom hook for a custom
       # scope. Notice that differently from +after_sign_in_path_for+ this method

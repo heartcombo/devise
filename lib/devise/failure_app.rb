@@ -46,7 +46,7 @@ module Devise
 
     def redirect
       store_location!
-      flash[:alert] = i18n_message unless flash[:notice]
+      flash[:alert] = i18n_message
       redirect_to redirect_url
     end
 

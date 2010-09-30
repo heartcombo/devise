@@ -70,8 +70,8 @@ class Devise::RegistrationsController < ApplicationController
       self.resource = resource_class.new_with_session(hash, session)
     end
 
-    # The default hook used by oauth to specify the redirect url for success.
-    # You need to overwrite this method in your own RegistrationsController.
+    # The path used after sign up. You need to overwrite this method
+    # in your own RegistrationsController.
     def after_sign_up_path_for(resource)
       after_sign_in_path_for(resource)
     end

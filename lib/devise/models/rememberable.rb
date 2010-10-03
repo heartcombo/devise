@@ -100,12 +100,12 @@ module Devise
       module ClassMethods
         # Create the cookie key using the record id and remember_token
         def serialize_into_cookie(record)
-          [record.id, record.rememberable_value]
+          [record.to_key, record.rememberable_value]
         end
 
         # Recreate the user based on the stored cookie
         def serialize_from_cookie(id, remember_token)
-          record = find(:first, :conditions => { :id => id })
+          record = find(:first, :conditions => { :id => id.first })
           record if record && record.rememberable_value == remember_token && !record.remember_expired?
         end
 

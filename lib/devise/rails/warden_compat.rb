@@ -15,7 +15,7 @@ end
 
 class Warden::SessionSerializer
   def serialize(record)
-    [record.class.name, record.id, record.authenticatable_salt]
+    [record.class.name, record.to_key, record.authenticatable_salt]
   end
 
   def deserialize(keys)

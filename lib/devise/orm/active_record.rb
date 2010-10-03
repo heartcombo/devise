@@ -30,7 +30,7 @@ module Devise
 
       module Finders
         def devise_find_first_by_identifier(id)
-          find(:first, :conditions => {:id => id})
+          find(:first, :conditions => { primary_key => Array(id).first})
         end
 
         def devise_find_first_with_conditions(conditions)

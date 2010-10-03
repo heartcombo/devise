@@ -153,13 +153,13 @@ class RememberableTest < ActiveSupport::TestCase
   test 'serialize into cookie' do
     admin = create_admin
     admin.remember_me!
-    assert_equal [admin.id, admin.remember_token], Admin.serialize_into_cookie(admin)
+    assert_equal [admin.to_key, admin.remember_token], Admin.serialize_into_cookie(admin)
   end
 
   test 'serialize from cookie' do
     admin = create_admin
     admin.remember_me!
-    assert_equal admin, Admin.serialize_from_cookie(admin.id, admin.remember_token)
+    assert_equal admin, Admin.serialize_from_cookie(admin.to_key, admin.remember_token)
   end
 
   test 'if remember_across_browsers is true, remember_me! should create a new token if no token exists' do
@@ -260,12 +260,12 @@ class WithSaltRememberableTest < ActiveSupport::TestCase
   test 'serialize into cookie' do
     user = create_user
     user.remember_me!
-    assert_equal [user.id, user.authenticatable_salt], User.serialize_into_cookie(user)
+    assert_equal [user.to_key, user.authenticatable_salt], User.serialize_into_cookie(user)
   end
 
   test 'serialize from cookie' do
     user = create_user
     user.remember_me!
-    assert_equal user, User.serialize_from_cookie(user.id, user.authenticatable_salt)
+    assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt)
   end
 end

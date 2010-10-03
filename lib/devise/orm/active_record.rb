@@ -27,10 +27,21 @@ module Devise
           column name, type.to_s.downcase.to_sym, options
         end
       end
+
+      module Finders
+        def devise_find_first_by_identifier(id)
+          find(:first, :conditions => {:id => id})
+        end
+
+        def devise_find_first_with_conditions(conditions)
+          find(:first, :conditions => conditions)
+        end
+      end
     end
   end
 end
 
 ActiveRecord::Base.extend Devise::Models
+ActiveRecord::Base.extend Devise::Orm::ActiveRecord::Finders
 ActiveRecord::ConnectionAdapters::Table.send :include, Devise::Orm::ActiveRecord::Schema
 ActiveRecord::ConnectionAdapters::TableDefinition.send :include, Devise::Orm::ActiveRecord::Schema

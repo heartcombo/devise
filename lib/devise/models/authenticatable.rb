@@ -100,7 +100,7 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
-          find(:first, :conditions => conditions)
+          devise_find_first_with_conditions(conditions)
         end
 
         # Find an initialize a record setting an error if it can't be found.
@@ -114,9 +114,9 @@ module Devise
           attributes.delete_if { |key, value| value.blank? }
 
           if attributes.size == required_attributes.size
-            record = find(:first, :conditions => attributes)
+            record = devise_find_first_with_conditions(attributes)
           end
-          
+
           unless record
             record = new
 
@@ -134,7 +134,7 @@ module Devise
         def generate_token(column)
           loop do
             token = Devise.friendly_token
-            break token unless find(:first, :conditions => { column => token })
+            break token unless devise_find_first_with_conditions(column => token)
           end
         end
       end

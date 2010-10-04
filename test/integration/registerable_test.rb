@@ -51,6 +51,7 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_have_selector '#error_explanation'
     assert_contain "Email is invalid"
     assert_contain "Password doesn't match confirmation"
+    assert_contain "2 errors prohibited"
     assert_nil User.first
 
     assert_not warden.authenticated?(:user)

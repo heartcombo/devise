@@ -54,6 +54,7 @@ module Devise
       def remember_me!(extend_period=false)
         self.remember_token = self.class.remember_token if respond_to?(:remember_token) && generate_remember_token?
         self.remember_created_at = Time.now.utc if generate_remember_timestamp?(extend_period)
+        self.remembered_at = Time.now.utc
         save(:validate => false)
       end
 

@@ -50,6 +50,7 @@ module Devise
       use_salt = options.fetch(:use_salt, Devise.use_salt_as_remember_token)
       apply_devise_schema :remember_token,      String unless use_salt
       apply_devise_schema :remember_created_at, DateTime
+      apply_devise_schema :remembered_at, DateTime
     end
 
     # Creates sign_in_count, current_sign_in_at, last_sign_in_at,

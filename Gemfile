@@ -7,6 +7,12 @@ gem "webrat", "0.7.1"
 gem "mocha", :require => false
 gem "oauth2"
 
+if File.exist?("../orm_adapter")
+  gem "orm_adapter", :path => "../orm_adapter"
+else
+  gem "orm_adapter", :git => "http://github.com/ianwhite/orm_adapter.git"
+end
+
 platforms :jruby do
   gem 'activerecord-jdbcsqlite3-adapter'
 end

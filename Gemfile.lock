@@ -5,6 +5,11 @@ PATH
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.0)
 
+PATH
+  remote: /Users/jose/Work/github/orm_adapter
+  specs:
+    orm_adapter (0.0.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -126,6 +131,7 @@ DEPENDENCIES
   mongo (= 1.0.7)
   mongoid (= 2.0.0.beta.18)
   oauth2
+  orm_adapter!
   rails (= 3.0.0)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby

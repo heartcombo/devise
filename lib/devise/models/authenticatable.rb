@@ -100,7 +100,7 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
-          find(:first, :conditions => conditions)
+          to_adapter.find_first(conditions)
         end
 
         # Find an initialize a record setting an error if it can't be found.
@@ -114,7 +114,7 @@ module Devise
           attributes.delete_if { |key, value| value.blank? }
 
           if attributes.size == required_attributes.size
-            record = find(:first, :conditions => attributes)
+            record = to_adapter.find_first(attributes)
           end
           
           unless record

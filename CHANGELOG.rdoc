@@ -15,6 +15,8 @@
   * Allow :stateless_token to be set to true avoiding users to be stored in session through token authentication
   * cookie_options uses session_options values by default
   * Sign up now check if the user is active or not and redirect him accordingly setting the inactive_signed_up message
+  * Use ActiveModel#to_key instead of #id
+  * sign_out_all_scopes now destroys the whole session
 
 * default behavior changes
   * sign_out_all_scopes defaults to true as security measure

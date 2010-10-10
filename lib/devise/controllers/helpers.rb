@@ -128,13 +128,10 @@ module Devise
       end
 
       # Sign out all active users or scopes. This helper is useful for signing out all roles
-      # in one click.
+      # in one click. This signs out ALL scopes in warden.
       def sign_out_all_scopes
-        # Not "warden.logout" since we need to sign_out only devise-defined scopes.
-        scopes = Devise.mappings.keys
-        scopes.each { |scope| warden.user(scope) }
         warden.raw_session.inspect
-        warden.logout(*scopes)
+        warden.logout
       end
 
       # Returns and delete the url stored in the session for the given scope. Useful

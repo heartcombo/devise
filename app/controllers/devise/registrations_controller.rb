@@ -47,8 +47,8 @@ class Devise::RegistrationsController < ApplicationController
   # DELETE /resource
   def destroy
     resource.destroy
-    set_flash_message :notice, :destroyed
     sign_out_and_redirect(self.resource)
+    set_flash_message :notice, :destroyed
   end
 
   # GET /resource/cancel

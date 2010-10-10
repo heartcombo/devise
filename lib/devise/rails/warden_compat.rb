@@ -4,8 +4,7 @@ module Warden::Mixins::Common
   end
 
   def reset_session!
-    raw_session.inspect # why do I have to inspect it to get it to clear?
-    raw_session.clear
+    request.reset_session
   end
 
   def cookies

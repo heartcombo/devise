@@ -1,3 +1,10 @@
+PATH
+  remote: .
+  specs:
+    devise (1.2.rc)
+      bcrypt-ruby (~> 2.1.2)
+      warden (~> 1.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -112,8 +119,9 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  bcrypt-ruby
+  bcrypt-ruby (~> 2.1.2)
   bson_ext (= 1.0.7)
+  devise!
   mocha
   mongo (= 1.0.7)
   mongoid (= 2.0.0.beta.18)
@@ -121,5 +129,5 @@ DEPENDENCIES
   rails (= 3.0.0)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
-  warden (= 1.0.0)
+  warden (~> 1.0.0)
   webrat (= 0.7.1)

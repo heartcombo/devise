@@ -3,12 +3,8 @@ PATH
   specs:
     devise (1.2.rc)
       bcrypt-ruby (~> 2.1.2)
+      orm_adapter (~> 0.0.2)
       warden (~> 1.0.0)
-
-PATH
-  remote: /Users/jose/Work/github/orm_adapter
-  specs:
-    orm_adapter (0.0.1)
 
 GEM
   remote: http://rubygems.org/
@@ -80,6 +76,7 @@ GEM
     oauth2 (0.0.13)
       faraday (~> 0.4.1)
       multi_json (>= 0.0.4)
+    orm_adapter (0.0.2)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -131,7 +128,7 @@ DEPENDENCIES
   mongo (= 1.0.7)
   mongoid (= 2.0.0.beta.18)
   oauth2
-  orm_adapter!
+  orm_adapter (~> 0.0.2)
   rails (= 3.0.0)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby

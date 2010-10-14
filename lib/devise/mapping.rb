@@ -84,7 +84,7 @@ module Devise
     end
 
     def fullpath
-      "#{@path_prefix}/#{@path}".squeeze("/")
+      "/#{@path_prefix}/#{@path}".squeeze("/")
     end
 
     # Create magic predicates for verifying what module is activated by this map.

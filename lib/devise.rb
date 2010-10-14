@@ -6,6 +6,7 @@ require 'set'
 module Devise
   autoload :FailureApp, 'devise/failure_app'
   autoload :Oauth, 'devise/oauth'
+  autoload :OmniAuth, 'devise/omniauth'
   autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
@@ -180,10 +181,6 @@ module Devise
   mattr_accessor :sign_out_via
   @@sign_out_via = :get
 
-  # Oauth providers
-  mattr_accessor :oauth_providers
-  @@oauth_providers = []
-
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.
@@ -194,14 +191,14 @@ module Devise
   mattr_reader :oauth_configs
   @@oauth_configs = ActiveSupport::OrderedHash.new
 
+  # Omniauth configurations.
+  mattr_reader :omniauth_configs
+  @@omniauth_configs = ActiveSupport::OrderedHash.new
+
   # Define a set of modules that are called when a mapping is added.
   mattr_reader :helpers
   @@helpers = Set.new
   @@helpers << Devise::Controllers::Helpers
-
-  # Define a set of modules that are called when a provider is added.
-  mattr_reader :oauth_helpers
-  @@oauth_helpers = Set.new
 
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
@@ -212,6 +209,14 @@ module Devise
   # a fresh initializer with all configuration values.
   def self.setup
     yield self
+  end
+
+  def self.oauth_providers
+    oauth_configs.keys
+  end
+
+  def self.omniauth_providers
+    omniauth_configs.keys
   end
 
   def self.cookie_domain=(value)
@@ -322,19 +327,23 @@ module Devise
   #
   def self.oauth(provider, *args)
     @@helpers << Devise::Oauth::UrlHelpers
-    @@oauth_helpers << Devise::Oauth::InternalHelpers
-
-    @@oauth_providers << provider
-    @@oauth_providers.uniq!
-
-    @@oauth_helpers.each { |h| h.define_oauth_helpers(provider) }
+    Devise::Oauth::InternalHelpers.define_oauth_helpers(provider)
     @@oauth_configs[provider] = Devise::Oauth::Config.new(*args)
+  end
+
+  # Specify an omniauth provider.
+  #
+  #   config.omniauth :github, APP_ID, APP_SECRET
+  #
+  def self.omniauth(provider, *args)
+    @@helpers << Devise::OmniAuth::UrlHelpers
+    @@omniauth_configs[provider] = Devise::OmniAuth::Config.new(provider, args)
   end
 
   # Include helpers in the given scope to AC and AV.
   def self.include_helpers(scope)
     ActiveSupport.on_load(:action_controller) do
-      include scope::Helpers
+      include scope::Helpers if defined?(scope::Helpers)
       include scope::UrlHelpers
     end
 

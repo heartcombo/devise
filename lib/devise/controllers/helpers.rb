@@ -222,6 +222,7 @@ module Devise
       # A hook called to expire session data after sign up/in. This is used
       # by a few extensions, like oauth, to expire tokens stored in session.
       def expire_session_data_after_sign_in!
+        session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
     end
   end

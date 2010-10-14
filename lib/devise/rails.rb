@@ -29,8 +29,20 @@ module Devise
     end
 
     initializer "devise.oauth_url_helpers" do
-      if Devise.oauth_providers.any?
+      if Devise.oauth_configs.any?
         Devise.include_helpers(Devise::Oauth)
+      end
+    end
+
+    initializer "devise.omniauth" do |app|
+      Devise.omniauth_configs.each do |provider, config|
+        app.middleware.use config.strategy_class, *config.args do |strategy|
+          config.strategy = strategy
+        end
+      end
+
+      if Devise.omniauth_configs.any?
+        Devise.include_helpers(Devise::OmniAuth)
       end
     end
 

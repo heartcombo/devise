@@ -243,6 +243,11 @@ module ActionDispatch::Routing
           :to => controllers[:oauth_callbacks], :as => :oauth_callback
       end
 
+      def devise_omniauth_callback(mapping, controllers) #:nodoc:
+        get "/auth/:action/callback", :action => Regexp.union(mapping.to.omniauth_providers.map(&:to_s)),
+          :to => controllers[:omniauth_callbacks], :as => :omniauth_callback
+      end
+
       def with_devise_exclusive_scope(new_path, new_as) #:nodoc:
         old_as, old_path, old_module = @scope[:as], @scope[:path], @scope[:module]
         @scope[:as], @scope[:path], @scope[:module] = new_as, new_path, nil

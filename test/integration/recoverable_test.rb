@@ -9,9 +9,7 @@ class PasswordTest < ActionController::IntegrationTest
 
   def request_forgot_password(&block)
     visit_new_password_path
-
     assert_response :success
-    assert_template 'passwords/new'
     assert_not warden.authenticated?(:user)
 
     fill_in 'email', :with => 'user@test.com'
@@ -19,15 +17,12 @@ class PasswordTest < ActionController::IntegrationTest
     click_button 'Send me reset password instructions'
   end
 
-  def reset_password(options={}, &block)
-    unless options[:visit] == false
-      visit edit_user_password_path(:reset_password_token => options[:reset_password_token])
-    end
+  def reset_password(options={}, &block)    
+    visit edit_user_password_path(:reset_password_token => options[:reset_password_token]) unless options[:visit] == false
     assert_response :success
-    assert_template 'passwords/edit'
 
-    fill_in 'Password', :with => '987654321'
-    fill_in 'Password confirmation', :with => '987654321'
+    fill_in 'New password', :with => '987654321'
+    fill_in 'Confirm new password', :with => '987654321'
     yield if block_given?
     click_button 'Change my password'
   end
@@ -46,7 +41,7 @@ class PasswordTest < ActionController::IntegrationTest
     create_user
     request_forgot_password
 
-    assert_template 'sessions/new'
+    assert_current_url '/users/sign_in'
     assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
   end
 
@@ -56,16 +51,14 @@ class PasswordTest < ActionController::IntegrationTest
     end
 
     assert_response :success
-    assert_template 'passwords/new'
-    assert_have_selector 'input[type=text][value=\'invalid.test@test.com\']'
+    assert_current_url '/users/password'
+    assert_have_selector "input[type=email][value='invalid.test@test.com']"
     assert_contain 'not found'
   end
 
   test 'authenticated user should not be able to visit edit password page' do
     sign_in_as_user
-
     get edit_user_password_path
-
     assert_response :redirect
     assert_redirected_to root_path
     assert warden.authenticated?(:user)
@@ -76,7 +69,7 @@ class PasswordTest < ActionController::IntegrationTest
     reset_password :reset_password_token => 'invalid_reset_password'
 
     assert_response :success
-    assert_template 'passwords/edit'
+    assert_current_url '/users/password'
     assert_have_selector '#error_explanation'
     assert_contain /Reset password token(.*)invalid/
     assert_not user.reload.valid_password?('987654321')
@@ -86,11 +79,11 @@ class PasswordTest < ActionController::IntegrationTest
     user = create_user
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token do
-      fill_in 'Password confirmation', :with => 'other_password'
+      fill_in 'Confirm new password', :with => 'other_password'
     end
 
     assert_response :success
-    assert_template 'passwords/edit'
+    assert_current_url '/users/password'
     assert_have_selector '#error_explanation'
     assert_contain 'Password doesn\'t match confirmation'
     assert_not user.reload.valid_password?('987654321')
@@ -101,7 +94,7 @@ class PasswordTest < ActionController::IntegrationTest
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token
 
-    assert_template 'home/index'
+    assert_current_url '/'
     assert_contain 'Your password was changed successfully.'
     assert user.reload.valid_password?('987654321')
   end
@@ -110,7 +103,7 @@ class PasswordTest < ActionController::IntegrationTest
     user = create_user
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token do
-      fill_in 'Password confirmation', :with => 'other_password'
+      fill_in 'Confirm new password', :with => 'other_password'
     end
     assert_response :success
     assert_have_selector '#error_explanation'

@@ -1,3 +1,11 @@
+PATH
+  remote: .
+  specs:
+    devise (1.2.rc)
+      bcrypt-ruby (~> 2.1.2)
+      orm_adapter (~> 0.0.2)
+      warden (~> 1.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -32,7 +40,7 @@ GEM
       activemodel (= 3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
-    addressable (2.2.1)
+    addressable (2.1.2)
     arel (1.0.1)
       activesupport (~> 3.0.0)
     bcrypt-ruby (2.1.2)
@@ -42,9 +50,10 @@ GEM
     columnize (0.3.1)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    faraday (0.4.6)
-      addressable (>= 2.1.1)
-      rack (>= 1.0.1)
+    faraday (0.5.0)
+      addressable (~> 2.1.1)
+      multipart-post (~> 1.0.1)
+      rack (~> 1.2.1)
     i18n (0.4.1)
     jdbc-sqlite3 (3.6.3.054)
     linecache (0.43)
@@ -64,10 +73,14 @@ GEM
       tzinfo (~> 0.3.22)
       will_paginate (~> 3.0.pre)
     multi_json (0.0.4)
+    multipart-post (1.0.1)
     nokogiri (1.4.3.1)
-    oauth2 (0.0.13)
-      faraday (~> 0.4.1)
-      multi_json (>= 0.0.4)
+    nokogiri (1.4.3.1-java)
+      weakling (>= 0.0.3)
+    oauth2 (0.1.0)
+      faraday (~> 0.5.0)
+      multi_json (~> 0.0.4)
+    orm_adapter (0.0.2)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -100,6 +113,7 @@ GEM
     tzinfo (0.3.23)
     warden (1.0.0)
       rack (>= 1.0.0)
+    weakling (0.0.4-java)
     webrat (0.7.1)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -112,14 +126,16 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  bcrypt-ruby
+  bcrypt-ruby (~> 2.1.2)
   bson_ext (= 1.0.7)
+  devise!
   mocha
   mongo (= 1.0.7)
   mongoid (= 2.0.0.beta.18)
   oauth2
+  orm_adapter (~> 0.0.2)
   rails (= 3.0.0)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
-  warden (= 1.0.0)
+  warden (~> 1.0.0)
   webrat (= 0.7.1)

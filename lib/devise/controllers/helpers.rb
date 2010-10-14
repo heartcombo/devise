@@ -128,13 +128,10 @@ module Devise
       end
 
       # Sign out all active users or scopes. This helper is useful for signing out all roles
-      # in one click.
+      # in one click. This signs out ALL scopes in warden.
       def sign_out_all_scopes
-        # Not "warden.logout" since we need to sign_out only devise-defined scopes.
-        scopes = Devise.mappings.keys
-        scopes.each { |scope| warden.user(scope) }
         warden.raw_session.inspect
-        warden.logout(*scopes)
+        warden.logout
       end
 
       # Returns and delete the url stored in the session for the given scope. Useful
@@ -179,36 +176,6 @@ module Devise
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         home_path = :"#{scope}_root_path"
         respond_to?(home_path, true) ? send(home_path) : root_path
-      end
-
-      # The default url to be used after updating a resource. This is used by all Devise
-      # controllers and you can overwrite it in your ApplicationController to
-      # provide a custom hook for a custom resource.
-      #
-      # By default, it first tries to find a resource_root_path, otherwise it
-      # uses the root path. For a user scope, you can define the default url in
-      # the following way:
-      #
-      #   map.user_root '/users', :controller => 'users' # creates user_root_path
-      #
-      #   map.resources :users do |users|
-      #     users.root # creates user_root_path
-      #   end
-      #
-      #
-      # If none of these are defined, root_path is used. However, if this default
-      # is not enough, you can customize it, for example:
-      #
-      #   def after_update_path_for(resource)
-      #     if resource.is_a?(User) && resource.can_publish?
-      #       publisher_url
-      #     else
-      #       super
-      #     end
-      #   end
-      #
-      def after_update_path_for(resource_or_scope)
-        after_sign_in_path_for(resource_or_scope)
       end
 
       # Method used by sessions controller to sign out an user. You can overwrite

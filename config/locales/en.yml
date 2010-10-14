@@ -4,6 +4,9 @@ en:
       not_found: "not found"
       already_confirmed: "was already confirmed"
       not_locked: "was not locked"
+      not_saved:
+        one: "1 error prohibited this %{resource} from being saved:"
+        other: "%{count} errors prohibited this %{resource} from being saved:"
 
   devise:
     failure:
@@ -24,7 +27,8 @@ en:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
     registrations:
-      signed_up: 'You have signed up successfully. If enabled, a confirmation was sent to your e-mail.'
+      signed_up: 'Welcome! You have signed up successfully.'
+      inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
       updated: 'You updated your account successfully.'
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
     unlocks:

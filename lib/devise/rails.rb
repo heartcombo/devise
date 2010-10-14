@@ -7,8 +7,9 @@ module Devise
 
     # Skip eager load of controllers because it is handled by Devise
     # to avoid loading unused controllers.
-    config.paths.app.controllers.autoload!
-    config.paths.app.controllers.skip_eager_load!
+    target = paths.is_a?(Hash) ? paths["app/controllers"] : paths.app.controllers
+    target.autoload!
+    target.skip_eager_load!
 
     # Initialize Warden and copy its configurations.
     config.app_middleware.use Warden::Manager do |config|
@@ -45,8 +46,8 @@ module Devise
         # Nothing to say
       else
         puts "[DEVISE] You are using #{Devise.encryptor} as encryptor. From version 1.2, " <<
-          "you need to explicitly add :encryptable to your models in order for this " <<
-          "configuration value to work."
+          "you need to explicitly add `devise :encryptable, :encryptor => #{Devise.encryptor.to_sym}` " <<
+          "to your models and comment the current value in the config/initializers/devise.rb"
       end
     end
 
@@ -54,7 +55,7 @@ module Devise
     def eager_load!
       mappings    = Devise.mappings.values.map(&:modules).flatten.uniq
       controllers = Devise::CONTROLLERS.values_at(*mappings)
-      path        = paths.app.controllers.to_a.first
+      path        = paths.is_a?(Hash) ? paths["app/controllers"].first : paths.app.controllers.first
       matcher     = /\A#{Regexp.escape(path)}\/(.*)\.rb\Z/
 
       Dir.glob("#{path}/devise/{#{controllers.join(',')}}_controller.rb").sort.each do |file|

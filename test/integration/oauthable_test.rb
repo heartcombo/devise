@@ -20,7 +20,7 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
     User.singleton_class.remove_possible_method(:find_for_github_oauth)
   end
 
-  def stub_github!(times=1)
+  def stub_github!
     def User.find_for_github_oauth(*); end
 
     Devise::Oauth.stub!(:github) do |b|
@@ -28,15 +28,12 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
     end
   end
 
-  def stub_facebook!(times=1)
-    # If times != 1, use invalid data
-    data = (times != 1) ? FACEBOOK_INFO.except(:email) : FACEBOOK_INFO
+  def stub_facebook!(valid=true)
+    data = valid ? FACEBOOK_INFO : FACEBOOK_INFO.except(:email)
 
     Devise::Oauth.stub!(:facebook) do |b|
       b.post('/oauth/access_token') { [200, {}, ACCESS_TOKEN.to_json] }
-      times.times {
-        b.get('/me?access_token=plataformatec') { [200, {}, data.to_json] }
-      }
+      b.get('/me?access_token=plataformatec') { [200, {}, data.to_json] }
     end
   end
 
@@ -57,7 +54,7 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
   end
 
   test "[BASIC] setup with not persisted user and follow up" do
-    stub_facebook!(2)
+    stub_facebook!(false)
 
     assert_no_difference "User.count" do
       visit "/users/sign_in"
@@ -120,7 +117,7 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
   end
 
   test "[SESSION CLEANUP] ensures session is cleaned up after sign up" do
-    stub_facebook!(2)
+    stub_facebook!(false)
 
     assert_no_difference "User.count" do
       visit "/users/sign_in"
@@ -140,7 +137,7 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
   end
 
   test "[SESSION CLEANUP] ensures session is cleaned up on cancel" do
-    stub_facebook!(2)
+    stub_facebook!(false)
 
     assert_no_difference "User.count" do
       visit "/users/sign_in"
@@ -156,7 +153,7 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
   end
 
   test "[SESSION CLEANUP] ensures session is cleaned up on sign in" do
-    stub_facebook!(2)
+    stub_facebook!(false)
 
     assert_no_difference "User.count" do
       visit "/users/sign_in"
@@ -221,16 +218,14 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
   end
 
   test "[FAILURE][I18N] uses I18n for custom messages" do
-    store_translations :en, :devise => { :oauth_callbacks => { :access_denied => "Access denied bro" } } do
-      visit "/users/oauth/facebook/callback?error=access_denied"
-      assert_current_url "/users/sign_in"
-      assert_contain "Access denied bro"
-    end
+    visit "/users/oauth/facebook/callback?error=access_denied"
+    assert_current_url "/users/sign_in"
+    assert_contain 'Could not authorize you from Facebook because "Access denied"'
   end
 
   test "[FAILURE][I18N] uses I18n with oauth callback scope for custom messages" do
     store_translations :en, :devise => { :oauth_callbacks => {
-      :facebook => { :access_denied => "Access denied bro" } } } do
+      :facebook => { :failure => "Access denied bro" } } } do
       visit "/users/oauth/facebook/callback?error=access_denied"
       assert_current_url "/users/sign_in"
       assert_contain "Access denied bro"
@@ -239,20 +234,11 @@ class OAuthableIntegrationTest < ActionController::IntegrationTest
 
   test "[FAILURE][I18N] uses I18n with oauth callback scope and resource name for custom messages" do
     store_translations :en, :devise => { :oauth_callbacks => {
-      :user => { :facebook => { :access_denied => "Access denied user" } },
-      :facebook => { :access_denied => "Access denied bro" } } } do
+      :user => { :facebook => { :failure => "Access denied user" } },
+      :facebook => { :failure => "Access denied bro" } } } do
       visit "/users/oauth/facebook/callback?error=access_denied"
       assert_current_url "/users/sign_in"
       assert_contain "Access denied user"
-    end
-  end
-
-  test "[FAILURE][I18N] trim messages to avoid long symbols lookups" do
-    store_translations :en, :devise => { :oauth_callbacks => {
-      :facebook => { ("a"*25) => "Access denied bro" } } } do
-      visit "/users/oauth/facebook/callback?error=#{"a"*100}"
-      assert_current_url "/users/sign_in"
-      assert_contain "Access denied bro"
     end
   end
 end

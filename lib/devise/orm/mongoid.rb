@@ -1,3 +1,5 @@
+require 'orm_adapter/adapters/mongoid'
+
 module Devise
   module Orm
     module Mongoid

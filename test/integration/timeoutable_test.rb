@@ -76,5 +76,14 @@ class SessionTimeoutTest < ActionController::IntegrationTest
       assert_contain 'Session expired!'
     end
   end
-
+  
+  test 'time out not triggered if remembered' do
+    user = sign_in_as_user :remember_me => true
+    get expire_user_path(user)
+    assert_not_nil last_request_at
+    
+    get users_path
+    assert_response :success
+    assert warden.authenticated?(:user)
+  end
 end

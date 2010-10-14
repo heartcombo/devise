@@ -1,3 +1,5 @@
+require 'orm_adapter/adapters/active_record'
+
 module Devise
   module Orm
     # This module contains some helpers and handle schema (migrations):

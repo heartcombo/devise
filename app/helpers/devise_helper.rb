@@ -3,7 +3,9 @@ module DeviseHelper
     return "" if resource.errors.empty?
 
     messages = resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
-    sentence = "#{pluralize(resource.errors.count, "error")} prohibited this #{resource_name} from being saved:"
+    sentence = I18n.t("errors.messages.not_saved",
+                      :count => resource.errors.count,
+                      :resource => resource_name)
 
     html = <<-HTML
     <div id="error_explanation">

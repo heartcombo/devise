@@ -14,8 +14,13 @@ class Devise::RegistrationsController < ApplicationController
     build_resource
 
     if resource.save
-      set_flash_message :notice, :signed_up
-      sign_in_and_redirect(resource_name, resource)
+      if resource.active?
+        set_flash_message :notice, :signed_up
+        sign_in_and_redirect(resource_name, resource)
+      else
+        set_flash_message :notice, :inactive_signed_up, :reason => resource.inactive_message.to_s
+        redirect_to after_inactive_sign_up_path_for(resource)
+      end
     else
       clean_up_passwords(resource)
       render_with_scope :new
@@ -42,8 +47,8 @@ class Devise::RegistrationsController < ApplicationController
   # DELETE /resource
   def destroy
     resource.destroy
-    set_flash_message :notice, :destroyed
     sign_out_and_redirect(self.resource)
+    set_flash_message :notice, :destroyed
   end
 
   # GET /resource/cancel
@@ -65,11 +70,40 @@ class Devise::RegistrationsController < ApplicationController
       self.resource = resource_class.new_with_session(hash, session)
     end
 
+    # The path used after sign up. You need to overwrite this method
+    # in your own RegistrationsController.
+    def after_sign_up_path_for(resource)
+      after_sign_in_path_for(resource)
+    end
+
+    # Overwrite redirect_for_sign_in so it takes uses after_sign_up_path_for.
+    def redirect_for_sign_in(scope, resource) #:nodoc:
+      redirect_to stored_location_for(scope) || after_sign_up_path_for(resource)
+    end
+
+    # The path used after sign up for inactive accounts. You need to overwrite
+    # this method in your own RegistrationsController.
+    def after_inactive_sign_up_path_for(resource)
+      root_path
+    end
+
+    # The default url to be used after updating a resource. You need to overwrite
+    # this method in your own RegistrationsController.
+    def after_update_path_for(resource)
+      if defined?(super)
+        ActiveSupport::Deprecation.warn "Defining after_update_path_for in ApplicationController " <<
+          "is deprecated. Please add a RegistrationsController to your application and define it there."
+        super
+      else
+        after_sign_in_path_for(resource)
+      end
+    end
+
     # Authenticates the current scope and gets a copy of the current resource.
     # We need to use a copy because we don't want actions like update changing
     # the current user in place.
     def authenticate_scope!
       send(:"authenticate_#{resource_name}!")
-      self.resource = resource_class.find(send(:"current_#{resource_name}").id)
+      self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     end
 end

@@ -13,7 +13,7 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'password confirmation', :with => 'new_user123'
     click_button 'Sign up'
 
-    assert_contain 'You have signed up successfully.'
+    assert_contain 'Welcome! You have signed up successfully.'
     assert warden.authenticated?(:admin)
 
     admin = Admin.last :order => "id"
@@ -28,7 +28,7 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'password confirmation', :with => 'new_user123'
     click_button 'Sign up'
 
-    assert_contain 'You have signed up successfully'
+    assert_contain 'You have signed up successfully. However, we could not sign you in because your account is unconfirmed.'
     assert_contain 'Sign in'
     assert_not_contain 'You have to confirm your account before continuing'
 
@@ -51,6 +51,7 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_have_selector '#error_explanation'
     assert_contain "Email is invalid"
     assert_contain "Password doesn't match confirmation"
+    assert_contain "2 errors prohibited"
     assert_nil User.first
 
     assert_not warden.authenticated?(:user)

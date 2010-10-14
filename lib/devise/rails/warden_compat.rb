@@ -4,8 +4,7 @@ module Warden::Mixins::Common
   end
 
   def reset_session!
-    raw_session.inspect # why do I have to inspect it to get it to clear?
-    raw_session.clear
+    request.reset_session
   end
 
   def cookies
@@ -15,20 +14,20 @@ end
 
 class Warden::SessionSerializer
   def serialize(record)
-    [record.class.name, record.id, record.authenticatable_salt]
+    [record.class.name, record.to_key, record.authenticatable_salt]
   end
 
   def deserialize(keys)
     if keys.size == 2
       raise "Devise changed how it stores objects in session. If you are seeing this message, " <<
-        "you can fix it by changing one character in your cookie secret, forcing all previous " <<
-        "cookies to expire, or cleaning up your database sessions if you are using a db store."
+        "you can fix it by changing one character in your cookie secret or cleaning up your " <<
+        "database sessions if you are using a db store."
     end
 
     klass, id, salt = keys
 
     begin
-      record = klass.constantize.find(:first, :conditions => { :id => id })
+      record = klass.constantize.find(:first, :conditions => { :id => id.first })
       record if record && record.authenticatable_salt == salt
     rescue NameError => e
       if e.message =~ /uninitialized constant/

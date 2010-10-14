@@ -1,6 +1,11 @@
 source "http://rubygems.org"
 
+gemspec
+
 gem "rails", "3.0.0"
+gem "webrat", "0.7.1"
+gem "mocha", :require => false
+gem "oauth2"
 
 platforms :jruby do
   gem 'activerecord-jdbcsqlite3-adapter'
@@ -17,9 +22,3 @@ platforms :ruby do
     gem "bson_ext", "1.0.7"
   end
 end
-
-gem "warden", "1.0.0"
-gem "webrat", "0.7.1"
-gem "mocha", :require => false
-gem "bcrypt-ruby", :require => "bcrypt"
-gem "oauth2"

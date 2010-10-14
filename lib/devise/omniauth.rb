@@ -16,6 +16,9 @@ module OmniAuth
   end
 end
 
+# Clean up the default path_prefix. It will be automatically set by Devise.
+OmniAuth.config.path_prefix = nil
+
 module Devise
   module OmniAuth
     autoload :Config,      "devise/omniauth/config"

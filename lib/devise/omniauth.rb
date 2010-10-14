@@ -26,33 +26,8 @@ module Devise
     autoload :TestHelpers, "devise/omniauth/test_helpers"
 
     class << self
-      delegate :short_circuit_authorizers!, :unshort_circuit_authorizers!, :to => "Devise::OmniAuth::TestHelpers"
-
-      def test_mode!
-        Faraday.default_adapter = :test if defined?(Faraday)
-        ActiveSupport.on_load(:action_controller) { include Devise::OmniAuth::TestHelpers }
-        ActiveSupport.on_load(:action_view) { include Devise::OmniAuth::TestHelpers }
-      end
-
-      def stub!(provider, stubs=nil, &block)
-        raise "You either need to pass stubs as a block or as a parameter" unless block_given? || stubs
-
-        config = Devise.omniauth_configs[provider]
-        config.check_if_allow_stubs!
-
-        stubs ||= Faraday::Adapter::Test::Stubs.new(&block)
-        config.build_connection do |b|
-          b.adapter :test, stubs
-        end
-      end
-
-      def reset_stubs!(*providers)
-        target = providers.any? ? Devise.omniauth_configs.slice(*providers) : Devise.omniauth_configs
-        target.each_value do |config|
-          next unless config.allow_stubs?
-          config.build_connection { |b| b.adapter Faraday.default_adapter }
-        end
-      end
+      delegate :short_circuit_authorizers!, :unshort_circuit_authorizers!,
+        :test_mode!, :stub!, :reset_stubs!, :to => "Devise::OmniAuth::TestHelpers"
     end
   end
 end

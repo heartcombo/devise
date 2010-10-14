@@ -148,14 +148,10 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :get.
   # config.sign_out_via = :get
 
-  # ==> OAuth2
-  # Add a new OAuth2 provider. Check the README for more information on setting
-  # up on your models and hooks. By default this is not set.
-  # config.oauth :github, 'APP_ID', 'APP_SECRET',
-  #   :site              => 'https://github.com/',
-  #   :authorize_path    => '/login/oauth/authorize',
-  #   :access_token_path => '/login/oauth/access_token',
-  #   :scope             => %w(user public_repo)
+  # ==> OmniAuth
+  # Add a new OmniAuth provider. Check the wiki for more information on setting
+  # up on your models and hooks.
+  # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

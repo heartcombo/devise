@@ -238,11 +238,6 @@ module ActionDispatch::Routing
         end
       end
 
-      def devise_oauth_callback(mapping, controllers) #:nodoc:
-        get "/oauth/:action/callback", :action => Regexp.union(mapping.to.oauth_providers.map(&:to_s)),
-          :to => controllers[:oauth_callbacks], :as => :oauth_callback
-      end
-
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         path_prefix = "#{mapping.fullpath}/auth"
 

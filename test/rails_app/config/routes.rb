@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :admins, :only => [:index]
 
   # Users scope
-  devise_for :users do
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" } do
     match "/devise_for/sign_in", :to => "devise/sessions#new"
   end
 

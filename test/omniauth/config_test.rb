@@ -1,12 +1,12 @@
 require 'test_helper'
 
-class OauthConfigTest < ActiveSupport::TestCase
+class OmniAuthConfigTest < ActiveSupport::TestCase
   ACCESS_TOKEN = {
     :access_token => "plataformatec"
   }
 
-  setup { @config = Devise.oauth_configs[:facebook] }
-  teardown { Devise::Oauth.reset_stubs! }
+  setup { @config = Devise.omniauth_configs[:facebook] }
+  teardown { Devise::Omniauth.reset_stubs! }
 
   test "stored OAuth2::Client" do
     assert_kind_of OAuth2::Client, @config.client

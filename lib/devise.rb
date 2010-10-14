@@ -5,7 +5,6 @@ require 'set'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
-  autoload :Oauth, 'devise/oauth'
   autoload :OmniAuth, 'devise/omniauth'
   autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'
@@ -187,10 +186,6 @@ module Devise
   mattr_reader :mappings
   @@mappings = ActiveSupport::OrderedHash.new
 
-  # Oauth configurations.
-  mattr_reader :oauth_configs
-  @@oauth_configs = ActiveSupport::OrderedHash.new
-
   # Omniauth configurations.
   mattr_reader :omniauth_configs
   @@omniauth_configs = ActiveSupport::OrderedHash.new
@@ -209,10 +204,6 @@ module Devise
   # a fresh initializer with all configuration values.
   def self.setup
     yield self
-  end
-
-  def self.oauth_providers
-    oauth_configs.keys
   end
 
   def self.omniauth_providers
@@ -315,20 +306,6 @@ module Devise
   #  end
   def self.warden(&block)
     @@warden_config_block = block
-  end
-
-  # Specify an oauth provider.
-  #
-  #   config.oauth :github, APP_ID, APP_SECRET,
-  #     :site              => 'https://github.com/',
-  #     :authorize_path    => '/login/oauth/authorize',
-  #     :access_token_path => '/login/oauth/access_token',
-  #     :scope             =>  %w(user public_repo)
-  #
-  def self.oauth(provider, *args)
-    @@helpers << Devise::Oauth::UrlHelpers
-    Devise::Oauth::InternalHelpers.define_oauth_helpers(provider)
-    @@oauth_configs[provider] = Devise::Oauth::Config.new(*args)
   end
 
   # Specify an omniauth provider.

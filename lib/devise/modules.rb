@@ -11,7 +11,6 @@ Devise.with_options :model => true do |d|
 
   # Other authentications
   d.add_module :encryptable
-  d.add_module :oauthable,    :controller => :oauth_callbacks,     :route => :oauth_callback
   d.add_module :omniauthable, :controller => :omniauth_callbacks,  :route => :omniauth_callback
 
   # Misc after

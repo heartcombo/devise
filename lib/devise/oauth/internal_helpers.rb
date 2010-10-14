@@ -89,7 +89,7 @@ module Devise
           error = error.to_s.gsub("-", "_")
           logger.warn "[Devise] #{oauth_callback} oauth failed: #{error.inspect}."
 
-          set_oauth_flash_message :alert, error[0,25], :default => :failure, :reason => error.humanize
+          set_oauth_flash_message :alert, :failure, :reason => error.humanize
           redirect_to after_oauth_failure_path_for(resource_name)
         end
       end
@@ -153,7 +153,7 @@ module Devise
       #
       def set_oauth_flash_message(key, type, options={})
         options[:kind]    = oauth_callback.to_s.titleize
-        options[:default] = Array(options[:default]).unshift(type.to_sym)
+        options[:default] = type.to_sym
         set_flash_message(key, "#{oauth_callback}.#{type}", options)
       end
 

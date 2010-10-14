@@ -376,7 +376,7 @@ end
 
 class AuthenticationSignOutViaTest < ActionController::IntegrationTest
   def sign_in!(scope)
-    sign_in_as_user(:visit => send("new_#{scope}_session_path"))
+    sign_in_as_admin(:visit => send("new_#{scope}_session_path"))
     assert warden.authenticated?(scope)
   end
 

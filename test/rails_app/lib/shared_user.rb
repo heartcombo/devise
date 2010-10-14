@@ -14,8 +14,8 @@ module SharedUser
     def new_with_session(params, session)
       super.tap do |user|
         if data = session["devise.facebook_data"]
-          user.username = data["nickname"]
-          user.email    = data["email"]
+          user.email = data["email"]
+          user.confirmed_at = Time.now
         end
       end
     end

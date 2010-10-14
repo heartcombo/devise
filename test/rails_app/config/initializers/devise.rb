@@ -149,15 +149,7 @@ Devise.setup do |config|
   # config.sign_out_via = :get
 
   # ==> OmniAuth
-  config.omniauth :github, 'APP_ID', 'APP_SECRET',
-    :site              => 'https://github.com/',
-    :authorize_path    => '/login/oauth/authorize',
-    :access_token_path => '/login/oauth/access_token',
-    :scope             => 'user,public_repo'
-
-  config.omniauth :facebook, 'APP_ID', 'APP_SECRET',
-    :site              => 'https://graph.facebook.com/',
-    :scope             => 'email,offline_access'
+  config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :scope => 'email,offline_access'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

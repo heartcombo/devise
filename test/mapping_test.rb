@@ -90,6 +90,6 @@ class MappingTest < ActiveSupport::TestCase
     assert mapping.recoverable?
     assert mapping.lockable?
     assert_not mapping.confirmable?
-    assert_not mapping.oauthable?
+    assert_not mapping.omniauthable?
   end
 end

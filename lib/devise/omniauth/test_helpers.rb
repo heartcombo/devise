@@ -11,9 +11,11 @@ module Devise
         raise "You either need to pass stubs as a block or as a parameter" unless block_given? || stubs
 
         config = Devise.omniauth_configs[provider]
-        config.check_if_allow_stubs!
+        raise "Could not find configuration for #{provider.to_s} omniauth provider" unless config
 
+        config.check_if_allow_stubs!
         stubs ||= Faraday::Adapter::Test::Stubs.new(&block)
+
         config.build_connection do |b|
           b.adapter :test, stubs
         end

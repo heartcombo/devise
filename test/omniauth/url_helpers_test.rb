@@ -3,45 +3,35 @@ require 'test_helper'
 class OmniAuthRoutesTest < ActionController::TestCase
   tests ApplicationController
 
-  def assert_path_and_url(action, provider)
+  def assert_path(action, provider, with_param=true)
     # Resource param
     assert_equal @controller.send(action, :user, provider),
                  @controller.send("user_#{action}", provider)
 
-    # Default url params
-    assert_equal @controller.send(action, :user, provider, :param => 123),
-                 @controller.send("user_#{action}", provider, :param => 123)
-
     # With an object
-    assert_equal @controller.send(action, User.new, provider, :param => 123),
-                 @controller.send("user_#{action}", provider, :param => 123)
+    assert_equal @controller.send(action, User.new, provider),
+                 @controller.send("user_#{action}", provider)
+
+    if with_param
+      # Default url params
+      assert_equal @controller.send(action, :user, provider, :param => 123),
+                   @controller.send("user_#{action}", provider, :param => 123)
+    end
   end
 
   test 'should alias omniauth_callback to mapped user auth_callback' do
-    assert_path_and_url :omniauth_callback_path, :github
-    assert_path_and_url :omniauth_callback_url,  :github
-    assert_path_and_url :omniauth_callback_path, :facebook
-    assert_path_and_url :omniauth_callback_url,  :facebook
+    assert_path :omniauth_callback_path, :facebook
   end
 
   test 'should alias omniauth_authorize to mapped user auth_authorize' do
-    assert_path_and_url :omniauth_authorize_url, :github
-    assert_path_and_url :omniauth_authorize_url, :facebook
+    assert_path :omniauth_authorize_path, :facebook, false
   end
 
-  test 'should adds scope, provider and redirect_uri to authorize urls' do
-    url = @controller.omniauth_authorize_url(:user, :github) 
-    assert_match "https://github.com/login/omniauth/authorize?", url
-    assert_match "scope=user%2Cpublic_repo", url
-    assert_match "client_id=APP_ID", url
-    assert_match "type=web_server", url
-    assert_match "redirect_uri=http%3A%2F%2Ftest.host%2Fusers%2Fomniauth%2Fgithub%2Fcallback", url
+  test 'should generate authorization path' do
+    assert_match "/users/auth/facebook", @controller.omniauth_authorize_path(:user, :facebook)
 
-    url = @controller.omniauth_authorize_url(:user, :facebook) 
-    assert_match "https://graph.facebook.com/omniauth/authorize?", url
-    assert_match "scope=email%2Coffline_access", url
-    assert_match "client_id=APP_ID", url
-    assert_match "type=web_server", url
-    assert_match "redirect_uri=http%3A%2F%2Ftest.host%2Fusers%2Fomniauth%2Ffacebook%2Fcallback", url
+    assert_raise ArgumentError do
+      @controller.omniauth_authorize_path(:user, :github)
+    end
   end
 end

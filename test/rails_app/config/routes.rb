@@ -30,11 +30,11 @@ Rails.application.routes.draw do
 
   # Other routes for routing_test.rb
   namespace :publisher, :path_names => { :sign_in => "i_dont_care", :sign_out => "get_out" } do
-    devise_for :accounts, :class_name => "User", :path_names => { :sign_in => "get_in" }
+    devise_for :accounts, :class_name => "Admin", :path_names => { :sign_in => "get_in" }
   end
 
   scope ":locale" do
-    devise_for :accounts, :singular => "manager", :class_name => "User",
+    devise_for :accounts, :singular => "manager", :class_name => "Admin",
       :path_names => {
         :sign_in => "login", :sign_out => "logout",
         :password => "secret", :confirmation => "verification",
@@ -44,9 +44,9 @@ Rails.application.routes.draw do
   end
 
   namespace :sign_out_via, :module => "devise" do
-    devise_for :deletes, :sign_out_via => :delete, :class_name => "User"
-    devise_for :posts, :sign_out_via => :post, :class_name => "User"
-    devise_for :delete_or_posts, :sign_out_via => [:delete, :post], :class_name => "User"
+    devise_for :deletes, :sign_out_via => :delete, :class_name => "Admin"
+    devise_for :posts, :sign_out_via => :post, :class_name => "Admin"
+    devise_for :delete_or_posts, :sign_out_via => [:delete, :post], :class_name => "Admin"
   end
 
   match "/set", :to => "home#set"

@@ -27,7 +27,7 @@ class Warden::SessionSerializer
     klass, id, salt = keys
 
     begin
-      record = klass.constantize.find(:first, :conditions => { :id => id.first })
+      record = klass.constantize.to_adapter.find_first({ :id => id.first })
       record if record && record.authenticatable_salt == salt
     rescue NameError => e
       if e.message =~ /uninitialized constant/

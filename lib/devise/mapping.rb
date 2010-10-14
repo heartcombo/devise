@@ -40,6 +40,11 @@ module Devise
       raise "Could not find a valid mapping for #{duck}"
     end
 
+    def self.find_by_path!(path)
+      Devise.mappings.each_value { |m| return m if path.include?(m.fullpath) }
+      raise "Could not find a valid mapping for path #{path}"
+    end
+
     def initialize(name, options) #:nodoc:
       @plural   = (options[:as] ? "#{options[:as]}_#{name}" : name).to_sym
       @singular = (options[:singular] || @plural.to_s.singularize).to_sym

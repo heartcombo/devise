@@ -134,7 +134,7 @@ module Devise
         def generate_token(column)
           loop do
             token = Devise.friendly_token
-            break token unless find(:first, :conditions => { column => token })
+            break token unless to_adapter.find_first({ column => token })
           end
         end
       end

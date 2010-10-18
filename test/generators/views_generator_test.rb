@@ -7,17 +7,31 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
 
   test "Assert all views are properly created with no params" do
     run_generator
-    assert_file "app/views/devise/confirmations/new.html.erb" 
-    assert_file "app/views/devise/mailer/confirmation_instructions.html.erb" 
-    assert_file "app/views/devise/mailer/reset_password_instructions.html.erb" 
-    assert_file "app/views/devise/mailer/unlock_instructions.html.erb" 
-    assert_file "app/views/devise/passwords/edit.html.erb" 
-    assert_file "app/views/devise/passwords/new.html.erb" 
-    assert_file "app/views/devise/registrations/new.html.erb" 
-    assert_file "app/views/devise/registrations/edit.html.erb" 
-    assert_file "app/views/devise/sessions/new.html.erb" 
-    assert_file "app/views/devise/shared/_links.erb" 
-    assert_file "app/views/devise/unlocks/new.html.erb" 
+    assert_files
+  end
+
+  test "Assert all views are properly created with scope param param" do
+    run_generator %w(users)
+    assert_files "users"
+
+    run_generator %w(admins)
+    assert_files "admins"
+  end
+
+  def assert_files(scope = nil, template_engine = nil)
+    scope = "devise" if scope.nil?
+    assert_file "app/views/#{scope}/confirmations/new.html.erb" 
+    assert_file "app/views/#{scope}/mailer/confirmation_instructions.html.erb" 
+    assert_file "app/views/#{scope}/mailer/reset_password_instructions.html.erb" 
+    assert_file "app/views/#{scope}/mailer/unlock_instructions.html.erb" 
+    assert_file "app/views/#{scope}/passwords/edit.html.erb" 
+    assert_file "app/views/#{scope}/passwords/new.html.erb" 
+    assert_file "app/views/#{scope}/registrations/new.html.erb" 
+    assert_file "app/views/#{scope}/registrations/edit.html.erb" 
+    assert_file "app/views/#{scope}/sessions/new.html.erb" 
+    assert_file "app/views/#{scope}/shared/_links.erb" 
+    assert_file "app/views/#{scope}/unlocks/new.html.erb" 
+
   end
 
 end

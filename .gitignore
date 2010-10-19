@@ -7,6 +7,4 @@ coverage/*
 rdoc/*
 pkg
 log
-*.swp
-*.DS_Store
 test/tmp/*

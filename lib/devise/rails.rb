@@ -13,11 +13,6 @@ module Devise
     # Force routes to be loaded if we are doing any eager load.
     config.before_eager_load { |app| app.reload_routes! }
 
-    initializer "devise.add_filters" do |app|
-      app.config.filter_parameters += [:password]
-      app.config.filter_parameters.uniq!
-    end
-
     initializer "devise.url_helpers" do
       Devise.include_helpers(Devise::Controllers)
     end

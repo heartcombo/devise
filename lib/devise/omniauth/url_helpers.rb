@@ -7,7 +7,7 @@ module Devise
         class_eval <<-URL_HELPERS, __FILE__, __LINE__ + 1
           def #{mapping.name}_omniauth_authorize_path(provider)
             if Devise.omniauth_configs[provider.to_sym]
-              "#{mapping.fullpath}/auth/\#{provider}"
+              "/#{mapping.path}/auth/\#{provider}"
             else
               raise ArgumentError, "Could not find omniauth provider \#{provider.inspect}"
             end

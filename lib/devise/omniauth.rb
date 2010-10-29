@@ -27,7 +27,7 @@ end
 OmniAuth.config.path_prefix = nil
 
 OmniAuth.config.on_failure = Proc.new do |env, key|
-  env['devise.mapping'] = Devise::Mapping.find_by_path!(env['PATH_INFO'])
+  env['devise.mapping'] = Devise::Mapping.find_by_path!(env['PATH_INFO'], :path)
   controller_klass = "#{env['devise.mapping'].controllers[:omniauth_callbacks].camelize}Controller"
   controller_klass.constantize.action(:failure).call(env)
 end

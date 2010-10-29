@@ -40,8 +40,8 @@ module Devise
       raise "Could not find a valid mapping for #{duck}"
     end
 
-    def self.find_by_path!(path)
-      Devise.mappings.each_value { |m| return m if path.include?(m.fullpath) }
+    def self.find_by_path!(path, path_type=:fullpath)
+      Devise.mappings.each_value { |m| return m if path.include?(m.send(path_type)) }
       raise "Could not find a valid mapping for path #{path}"
     end
 

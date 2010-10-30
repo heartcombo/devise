@@ -5,9 +5,9 @@ module Devise
         return unless mapping.omniauthable?
 
         class_eval <<-URL_HELPERS, __FILE__, __LINE__ + 1
-          def #{mapping.name}_omniauth_authorize_path(provider)
+          def #{mapping.name}_omniauth_authorize_path(provider, params = {})
             if Devise.omniauth_configs[provider.to_sym]
-              "/#{mapping.path}/auth/\#{provider}"
+              "/#{mapping.path}/auth/\#{provider}?\#{params.to_param}"
             else
               raise ArgumentError, "Could not find omniauth provider \#{provider.inspect}"
             end

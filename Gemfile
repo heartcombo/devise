@@ -6,6 +6,7 @@ gem "rails", "3.0.0"
 gem "webrat", "0.7.1"
 gem "mocha", :require => false
 gem "oa-oauth", :require => "omniauth/oauth"
+gem "oa-openid", :require => "omniauth/openid"
 
 platforms :jruby do
   gem 'activerecord-jdbcsqlite3-adapter'

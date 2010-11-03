@@ -11,6 +11,7 @@ module OmniAuth
     def initialize(app, name, *args)
       @app = app
       @name = name.to_sym
+      @options = args.last.is_a?(Hash) ? args.pop : {}
       yield self if block_given?
     end
 

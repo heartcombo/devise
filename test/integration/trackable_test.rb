@@ -2,6 +2,19 @@ require 'test_helper'
 
 class TrackableHooksTest < ActionController::IntegrationTest
 
+  test "signed_in status is updated after user signed in or signed out" do
+    user = create_user
+    assert_false user.signed_in
+
+    sign_in_as_user
+    user.reload
+    assert_true user.signed_in
+
+    visit destroy_user_session_path
+    user.reload
+    assert_false user.signed_in
+  end
+
   test "current and last sign in timestamps are updated on each sign in" do
     user = create_user
     assert_nil user.current_sign_in_at

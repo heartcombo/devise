@@ -11,12 +11,14 @@ class Devise::SessionsController < ApplicationController
   # POST /resource/sign_in
   def create
     resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#new")
+    current_user.update_attribute(:signed_in => true) if record.respond_to?(signed_in?)
     set_flash_message :notice, :signed_in
     sign_in_and_redirect(resource_name, resource)
   end
 
   # GET /resource/sign_out
   def destroy
+    current_user.update_attribute(:signed_in => false) if record.respond_to?(signed_in?)
     signed_in = signed_in?(resource_name)
     sign_out_and_redirect(resource_name)
     set_flash_message :notice, :signed_out if signed_in

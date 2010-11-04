@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20100401102949) do
     t.datetime "confirmation_sent_at"
     t.string   "reset_password_token"
     t.datetime "remember_created_at"
+    t.boolean  "signed_in"                            :default => false
     t.integer  "sign_in_count",                       :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"

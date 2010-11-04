@@ -1,3 +1,8 @@
+== 1.1.3.1
+
+* enhancements
+  * Added signed_in attribute for trackable user to be able to check if a specific user signed in or out
+
 * deprecations
   * cookie_domain is deprecated in favor of cookie_options
   * after_update_path_for can no longer be defined in ApplicationController

@@ -23,4 +23,28 @@ class Devise::OmniauthCallbacksController < ApplicationController
   def after_omniauth_failure_path_for(scope)
     new_session_path(scope)
   end
+
+  #
+  # Authenticate with the omniauth's data if the provider exist in the model
+  #
+  
+  def method_missing(method_name, *args)
+    if User.omniauth_providers.include? method_name
+      authenticate_omniauth method_name
+    else
+      super method_name, *args
+    end
+  end
+  
+  def authenticate_omniauth(provider_name)
+    user = User.find_for_omniauth( env["omniauth.auth"], current_user )
+    if user.persisted?
+      flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Facebook"
+      sign_in_and_redirect user, :event => :authentication
+    else
+      session["devise.omniauth"] = env["omniauth.auth"]
+      redirect_to new_user_registration_url
+    end
+  end
+
 end

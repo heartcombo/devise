@@ -31,7 +31,7 @@ class Warden::SessionSerializer
       record if record && record.authenticatable_salt == salt
     rescue NameError => e
       if e.message =~ /uninitialized constant/
-        Rails.logger.debug "Trying to deserialize invalid class #{klass}"
+        Rails.logger.debug "[Devise] Trying to deserialize invalid class #{klass}"
         nil
       else
         raise

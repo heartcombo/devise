@@ -48,7 +48,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_blank user.errors[:email]
 
     assert_not user.confirm!
-    assert_equal "was already confirmed", user.errors[:email].join
+    assert_equal "was already confirmed, please try signing in", user.errors[:email].join
   end
 
   test 'should find and confirm an user automatically' do
@@ -76,7 +76,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.save
     confirmed_user = User.confirm_by_token(user.confirmation_token)
     assert confirmed_user.confirmed?
-    assert_equal "was already confirmed", confirmed_user.errors[:email].join
+    assert_equal "was already confirmed, please try signing in", confirmed_user.errors[:email].join
   end
 
   test 'should send confirmation instructions by email' do
@@ -160,7 +160,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.confirm!
     assert_not user.resend_confirmation_token
     assert user.confirmed?
-    assert_equal 'was already confirmed', user.errors[:email].join
+    assert_equal 'was already confirmed, please try signing in', user.errors[:email].join
   end
 
   test 'confirm time should fallback to devise confirm in default configuration' do

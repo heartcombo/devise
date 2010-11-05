@@ -11,7 +11,7 @@ module Devise
           resource.after_database_authentication
           success!(resource)
         else
-          fail(:invalid)
+          fail(I18n.t('devise.failure.invalid'))
         end
       end
     end

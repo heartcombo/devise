@@ -53,7 +53,7 @@ module Devise
   protected
 
     def i18n_message(default = nil)
-      message = warden.message || warden_options[:message] || default || :unauthenticated
+      message = warden.message || warden_options[:message] || default || i18n_message(:unauthenticated)
 
       if message.is_a?(Symbol)
         I18n.t(:"#{scope}.#{message}", :resource_name => scope,

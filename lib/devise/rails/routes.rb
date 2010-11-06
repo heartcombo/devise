@@ -123,6 +123,30 @@ module ActionDispatch::Routing
     #     end
     #   end
     #
+    # ==== Adding custom actions to override controllers
+    # 
+    # You can pass a block to devise_for that will add any routes defined in the block to Devise's 
+    # list of known actions.  This is important if you add a custom action to a controller that 
+    # overrides an out of the box Devise controller.
+    # For example:
+    #
+    #    class RegistrationsController < Devise::RegistrationsController
+    #      def update
+    #         # do something different here
+    #      end
+    #
+    #      def deactivate
+    #        # not a standard action
+    #        # deactivate code here
+    #      end
+    #    end
+    #
+    # In order to get Devise to recognize the deactivate action, your devise_for entry should look like this,
+    #
+    #     devise_for :owners, :controllers => { :registrations => "registrations" } do
+    #       post "deactivate", :to => "registrations#deactivate", :as => "deactivate_registration"
+    #     end
+    #
     def devise_for(*resources)
       options = resources.extract_options!
 

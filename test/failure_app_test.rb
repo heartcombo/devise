@@ -28,6 +28,11 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 302, @response.first
     end
 
+    test 'return 302 status for wildcard requests' do
+      call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
+      assert_equal 302, @response.first
+    end
+
     test 'return to the default redirect location' do
       call_failure
       assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]

@@ -27,6 +27,8 @@
   * after_sign_in_path_for always receives a resource
   * Do not execute Warden::Callbacks on Devise::TestHelpers (by github.com/sgronblo)
   * Password recovery and account unlocking takes into account authentication keys (by github.com/RStankov)
+  * FailureApp now properly handles nil request.format
+  * Fix a bug causing FailureApp to return with HTTP Auth Headers for IE7
 
 == 1.1.3
 

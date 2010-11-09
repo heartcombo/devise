@@ -9,4 +9,8 @@ class HomeController < ApplicationController
     session["devise.foo_bar"] = "something"
     head :ok
   end
+
+  def unauthenticated
+    render :text => "unauthenticated", :status => :unauthorized
+  end
 end

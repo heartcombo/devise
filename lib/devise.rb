@@ -335,6 +335,7 @@ module Devise
     @@warden_configured ||= begin
       warden_config.failure_app   = Devise::FailureApp
       warden_config.default_scope = Devise.default_scope
+      warden_config.intercept_401 = false
 
       Devise.mappings.each_value do |mapping|
         warden_config.scope_defaults mapping.name, :strategies => mapping.strategies

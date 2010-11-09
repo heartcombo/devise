@@ -50,5 +50,6 @@ Rails.application.routes.draw do
   end
 
   match "/set", :to => "home#set"
+  match "/unauthenticated", :to => "home#unauthenticated"
   root :to => "home#index"
 end

@@ -301,6 +301,11 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_equal 404, response.status
   end
 
+  test 'does not intercept Rails 401 responses' do
+    get '/unauthenticated'
+    assert_equal 401, response.status
+  end
+
   test 'render 404 on roles without mapping' do
     assert_raise AbstractController::ActionNotFound do
       get '/sign_in'

@@ -46,7 +46,7 @@ begin
     s.authors = ['José Valim', 'Carlos Antônio']
     s.files =  root_files + FileList["{app,config,lib}/**/*"]
     s.extra_rdoc_files = root_files
-    s.add_dependency("warden", "~> 1.0.0")
+    s.add_dependency("warden", "~> 1.0.2")
     s.add_dependency("orm_adapter", "~> 0.0.2")
     s.add_dependency("bcrypt-ruby", "~> 2.1.2")
   end

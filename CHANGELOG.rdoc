@@ -22,6 +22,7 @@
 * default behavior changes
   * sign_out_all_scopes defaults to true as security measure
   * http authenticatable is disabled by default
+  * Devise does not intercept 401 returned from applications
 
 * bugfix
   * after_sign_in_path_for always receives a resource

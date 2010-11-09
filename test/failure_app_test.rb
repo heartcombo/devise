@@ -77,6 +77,11 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 401, @response.first
     end
 
+    test 'return 401 status for unknown formats' do
+      call_failure 'formats' => []
+      assert_equal 401, @response.first
+    end
+
     test 'return WWW-authenticate headers if model allows' do
       call_failure('formats' => :xml)
       assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]

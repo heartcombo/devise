@@ -79,7 +79,7 @@ module Devise
       if request.xhr?
         Devise.http_authenticatable_on_xhr
       else
-        !Devise.navigational_formats.include?(request.format.to_sym)
+        !(request.format && Devise.navigational_formats.include?(request.format.to_sym))
       end
     end
 
@@ -90,7 +90,8 @@ module Devise
     end
 
     def http_auth_body
-      method = :"to_#{request.format.to_sym}"
+      return i18n_message unless request.format
+      method = "to_#{request.format.to_sym}"
       {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message
     end
 

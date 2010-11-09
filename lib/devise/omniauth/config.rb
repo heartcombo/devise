@@ -15,11 +15,11 @@ module Devise
       end
 
       def check_if_allow_stubs!
-        raise "#{@provider} OmniAuth strategy does not allow stubs, only OAuth2 ones." unless allow_stubs?
+        raise "OmniAuth strategy for #{@provider} does not allow stubs, only OAuth2 ones do." unless allow_stubs?
       end
 
       def allow_stubs?
-        !(defined?(OmniAuth::Strategies::OAuth2) && strategy.is_a?(OmniAuth::Strategies::OAuth2))
+        defined?(::OmniAuth::Strategies::OAuth2) && strategy.is_a?(::OmniAuth::Strategies::OAuth2)
       end
 
       def build_connection(&block)

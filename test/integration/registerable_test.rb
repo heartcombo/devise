@@ -29,7 +29,6 @@ class RegistrationTest < ActionController::IntegrationTest
     click_button 'Sign up'
 
     assert_contain 'You have signed up successfully. However, we could not sign you in because your account is unconfirmed.'
-    assert_contain 'Sign in'
     assert_not_contain 'You have to confirm your account before continuing'
 
     assert_not warden.authenticated?(:user)
@@ -168,13 +167,13 @@ class RegistrationTest < ActionController::IntegrationTest
 
   test 'a user should be able to cancel sign up by deleting data in the session' do
     get "/set"
-    assert_equal "something", @request.session["user_provider_oauth_token"]
+    assert_equal "something", @request.session["devise.foo_bar"]
 
     get "/users/sign_up"
-    assert_equal "something", @request.session["user_provider_oauth_token"]
+    assert_equal "something", @request.session["devise.foo_bar"]
 
     get "/users/cancel"
-    assert_nil @request.session["user_provider_oauth_token"]
+    assert_nil @request.session["devise.foo_bar"]
     assert_redirected_to new_user_registration_path
   end
 end

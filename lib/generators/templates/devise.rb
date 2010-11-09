@@ -141,21 +141,20 @@ Devise.setup do |config|
   # Lists the formats that should be treated as navigational. Formats like
   # :html, should redirect to the sign in page when the user does not have
   # access, but formats like :xml or :json, should return 401.
+  #
   # If you have any extra navigational formats, like :iphone or :mobile, you
-  # should add them to the navigational formats lists. Default is [:html]
-  # config.navigational_formats = [:html, :iphone]
+  # should add them to the navigational formats lists.
+  #
+  # The :"*/*" format below is required to match Internet Explorer requests.
+  # config.navigational_formats = [:"*/*", :html]
 
   # The default HTTP method used to sign out a resource. Default is :get.
   # config.sign_out_via = :get
 
-  # ==> OAuth2
-  # Add a new OAuth2 provider. Check the README for more information on setting
-  # up on your models and hooks. By default this is not set.
-  # config.oauth :github, 'APP_ID', 'APP_SECRET',
-  #   :site              => 'https://github.com/',
-  #   :authorize_path    => '/login/oauth/authorize',
-  #   :access_token_path => '/login/oauth/access_token',
-  #   :scope             => %w(user public_repo)
+  # ==> OmniAuth
+  # Add a new OmniAuth provider. Check the wiki for more information on setting
+  # up on your models and hooks.
+  # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -1,5 +1,1 @@
 Home!
-
-<%- User.oauth_providers.each do |provider| %>
-  <%= link_to "Sign in with #{provider.to_s.titleize}", user_oauth_authorize_url(provider) %><br />
-<% end -%>

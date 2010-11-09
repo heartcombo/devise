@@ -104,10 +104,11 @@ module Devise
         scope    = Devise::Mapping.find_scope!(resource_or_scope)
         resource = args.last || resource_or_scope
 
+        expire_session_data_after_sign_in!
+
         if options[:bypass]
           warden.session_serializer.store(resource, scope)
         else
-          expire_session_data_after_sign_in!
           warden.set_user(resource, options.merge!(:scope => scope))
         end
       end
@@ -195,7 +196,13 @@ module Devise
         options  = args.extract_options!
         scope    = Devise::Mapping.find_scope!(resource_or_scope)
         resource = args.last || resource_or_scope
-        sign_in(scope, resource, options) unless warden.user(scope) == resource
+
+        if warden.user(scope) == resource
+          expire_session_data_after_sign_in!
+        else
+          sign_in(scope, resource, options)
+        end
+
         redirect_for_sign_in(scope, resource)
       end
 
@@ -219,9 +226,10 @@ module Devise
         redirect_to after_sign_out_path_for(scope)
       end
 
-      # A hook called to expire session data after sign up/in. This is used
-      # by a few extensions, like oauth, to expire tokens stored in session.
+      # A hook called to expire session data after sign up/in. All keys
+      # stored under "devise." namespace are removed after sign in.
       def expire_session_data_after_sign_in!
+        session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
     end
   end

@@ -91,15 +91,13 @@ class DefaultRoutingTest < ActionController::TestCase
     assert_named_route "/users/cancel", :cancel_user_registration_path
   end
 
-  test 'map oauth callbacks' do
-    assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'facebook'}, {:path => 'users/oauth/facebook/callback', :method => :get})
-    assert_named_route "/users/oauth/facebook/callback", :user_oauth_callback_path, :facebook
-
-    assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'github'}, {:path => 'users/oauth/github/callback', :method => :get})
-    assert_named_route "/users/oauth/github/callback", :user_oauth_callback_path, :github
+  test 'map omniauth callbacks' do
+    assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'facebook'}, {:path => 'users/auth/facebook/callback', :method => :get})
+    assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'facebook'}, {:path => 'users/auth/facebook/callback', :method => :post})
+    assert_named_route "/users/auth/facebook/callback", :user_omniauth_callback_path, :facebook
 
     assert_raise ActionController::RoutingError do
-      assert_recognizes({:controller => 'devise/oauth_callbacks', :action => 'twitter'}, {:path => 'users/oauth/twitter/callback', :method => :get})
+      assert_recognizes({:controller => 'ysers/omniauth_callbacks', :action => 'twitter'}, {:path => 'users/auth/twitter/callback', :method => :get})
     end
   end
 
@@ -135,14 +133,6 @@ class CustomizedRoutingTest < ActionController::TestCase
 
   test 'map account with custom path name for password' do
     assert_recognizes({:controller => 'devise/passwords', :action => 'new', :locale => 'en'}, '/en/accounts/secret/new')
-  end
-
-  test 'map account with custom path name for confirmation' do
-    assert_recognizes({:controller => 'devise/confirmations', :action => 'new', :locale => 'en'}, '/en/accounts/verification/new')
-  end
-
-  test 'map account with custom path name for unlock' do
-    assert_recognizes({:controller => 'devise/unlocks', :action => 'new', :locale => 'en'}, '/en/accounts/unblock/new')
   end
 
   test 'map account with custom path name for registration' do

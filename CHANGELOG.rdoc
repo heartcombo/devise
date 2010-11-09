@@ -3,7 +3,8 @@
   * after_update_path_for can no longer be defined in ApplicationController
 
 * enhancements
-  * Added OAuth 2 support
+  * Added OmniAuth support
+  * Added ORM adapter to abstract ORM iteraction
   * sign_out_via is available in the router to configure the method used for sign out (by github.com/martinrehfeld)
   * Improved Ajax requests handling in failure app (by github.com/spastorino)
   * Added request_keys to easily use request specific values (like subdomain) in authentication

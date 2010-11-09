@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jos\303\251 Valim", "Carlos Ant\303\264nio"]
-  s.date = %q{2010-10-10}
+  s.date = %q{2010-10-15}
   s.description = %q{Flexible authentication solution for Rails with Warden}
   s.email = %q{contact@plataformatec.com.br}
   s.extra_rdoc_files = [
@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
      "MIT-LICENSE",
      "README.rdoc",
      "app/controllers/devise/confirmations_controller.rb",
-     "app/controllers/devise/oauth_callbacks_controller.rb",
+     "app/controllers/devise/omniauth_callbacks_controller.rb",
      "app/controllers/devise/passwords_controller.rb",
      "app/controllers/devise/registrations_controller.rb",
      "app/controllers/devise/sessions_controller.rb",
@@ -65,7 +65,7 @@ Gem::Specification.new do |s|
      "lib/devise/models/database_authenticatable.rb",
      "lib/devise/models/encryptable.rb",
      "lib/devise/models/lockable.rb",
-     "lib/devise/models/oauthable.rb",
+     "lib/devise/models/omniauthable.rb",
      "lib/devise/models/recoverable.rb",
      "lib/devise/models/registerable.rb",
      "lib/devise/models/rememberable.rb",
@@ -74,12 +74,10 @@ Gem::Specification.new do |s|
      "lib/devise/models/trackable.rb",
      "lib/devise/models/validatable.rb",
      "lib/devise/modules.rb",
-     "lib/devise/oauth.rb",
-     "lib/devise/oauth/config.rb",
-     "lib/devise/oauth/helpers.rb",
-     "lib/devise/oauth/internal_helpers.rb",
-     "lib/devise/oauth/test_helpers.rb",
-     "lib/devise/oauth/url_helpers.rb",
+     "lib/devise/omniauth.rb",
+     "lib/devise/omniauth/config.rb",
+     "lib/devise/omniauth/test_helpers.rb",
+     "lib/devise/omniauth/url_helpers.rb",
      "lib/devise/orm/active_record.rb",
      "lib/devise/orm/mongoid.rb",
      "lib/devise/path_checker.rb",
@@ -121,7 +119,7 @@ Gem::Specification.new do |s|
      "test/integration/database_authenticatable_test.rb",
      "test/integration/http_authenticatable_test.rb",
      "test/integration/lockable_test.rb",
-     "test/integration/oauthable_test.rb",
+     "test/integration/omniauthable_test.rb",
      "test/integration/recoverable_test.rb",
      "test/integration/registerable_test.rb",
      "test/integration/rememberable_test.rb",
@@ -136,7 +134,6 @@ Gem::Specification.new do |s|
      "test/models/database_authenticatable_test.rb",
      "test/models/encryptable_test.rb",
      "test/models/lockable_test.rb",
-     "test/models/oauthable_test.rb",
      "test/models/recoverable_test.rb",
      "test/models/rememberable_test.rb",
      "test/models/timeoutable_test.rb",
@@ -144,8 +141,7 @@ Gem::Specification.new do |s|
      "test/models/trackable_test.rb",
      "test/models/validatable_test.rb",
      "test/models_test.rb",
-     "test/oauth/config_test.rb",
-     "test/oauth/url_helpers_test.rb",
+     "test/omniauth/url_helpers_test.rb",
      "test/orm/active_record.rb",
      "test/orm/mongoid.rb",
      "test/rails_app/app/active_record/admin.rb",
@@ -157,6 +153,7 @@ Gem::Specification.new do |s|
      "test/rails_app/app/controllers/home_controller.rb",
      "test/rails_app/app/controllers/publisher/registrations_controller.rb",
      "test/rails_app/app/controllers/publisher/sessions_controller.rb",
+     "test/rails_app/app/controllers/users/omniauth_callbacks_controller.rb",
      "test/rails_app/app/controllers/users_controller.rb",
      "test/rails_app/app/helpers/application_helper.rb",
      "test/rails_app/app/mongoid/admin.rb",

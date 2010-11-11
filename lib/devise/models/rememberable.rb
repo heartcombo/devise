@@ -76,7 +76,15 @@ module Devise
       end
 
       def rememberable_value
-        respond_to?(:remember_token) ? self.remember_token : self.authenticatable_salt
+        if respond_to?(:remember_token)
+          remember_token
+        elsif respond_to?(:authenticatable_salt) && (salt = authenticatable_salt)
+          salt
+        else
+          raise "The #{self.class.name} class does not respond to remember_token and " <<
+            "authenticatable_salt returns nil. In order to use rememberable, you must " <<
+            "add a remember_token field to your model or ensure a password is always set."
+        end
       end
 
       def cookie_options

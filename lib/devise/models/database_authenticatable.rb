@@ -68,7 +68,7 @@ module Devise
 
       # A reliable way to expose the salt regardless of the implementation.
       def authenticatable_salt
-        self.encrypted_password[0,29]
+        self.encrypted_password[0,29] if self.encrypted_password
       end
 
     protected

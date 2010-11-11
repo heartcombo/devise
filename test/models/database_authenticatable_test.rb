@@ -13,6 +13,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_present user.encrypted_password
   end
 
+  test 'allow authenticatable_salt to work even with nil encrypted password' do
+    user = User.new
+    user.encrypted_password = nil
+    assert_nil user.authenticatable_salt
+  end
+
   test 'should not generate encrypted password if password is blank' do
     assert_blank new_user(:password => nil).encrypted_password
     assert_blank new_user(:password => '').encrypted_password

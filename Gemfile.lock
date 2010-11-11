@@ -4,7 +4,7 @@ PATH
     devise (1.2.rc)
       bcrypt-ruby (~> 2.1.2)
       orm_adapter (~> 0.0.2)
-      warden (~> 1.0.0)
+      warden (~> 1.0.2)
 
 GEM
   remote: http://rubygems.org/
@@ -158,5 +158,5 @@ DEPENDENCIES
   rails
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
-  warden (~> 1.0.0)
+  warden (~> 1.0.2)
   webrat (= 0.7.1)

@@ -119,6 +119,11 @@ class ControllerAuthenticableTest < ActionController::TestCase
     @controller.sign_out(User.new)
   end
 
+  test 'sign out without args proxy to sign out all scopes' do
+    @mock_warden.expects(:logout).with().returns(true)
+    @controller.sign_out
+  end
+
   test 'sign out everybody proxy to logout on warden' do
     @mock_warden.expects(:logout).with().returns(true)
     @controller.sign_out_all_scopes

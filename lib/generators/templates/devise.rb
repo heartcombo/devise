@@ -50,7 +50,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :confirmable
   # The time you want to give your user to confirm his account. During this time
-  # he will be able to access your application without confirming. Default is nil.
+  # he will be able to access your application without confirming. Default is 0.days
   # When confirm_within is zero, the user won't be able to sign in without confirming.
   # You can use this to let your user access some features of your application
   # without confirming the account, but blocking it after a certain period

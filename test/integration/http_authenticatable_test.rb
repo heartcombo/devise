@@ -47,6 +47,16 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
+  test 'sign in should authenticate with really long token' do
+    token = "token_containing_so_many_characters_that_the_base64_encoding_will_wrap"
+    user = create_user
+    user.update_attribute :authentication_token, token
+    get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{token}:x")}"
+    assert_response :success
+    assert_match "<email>user@test.com</email>", response.body
+    assert warden.authenticated?(:user)
+  end
+  
   private
 
     def sign_in_as_new_user_with_http(username="user@test.com", password="123456")

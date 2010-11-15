@@ -139,16 +139,6 @@ You can access the session for this scope:
 
   user_session
 
-Assume your devise model is not called 'user' but 'member' for example. Then the helpers you should use should be:
-
-  before_filter :authenticate_member!
-
-  member_signed_in?
-
-  current_member
-
-  member_session
-
 After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
 
   root :to => "home"
@@ -158,6 +148,16 @@ You can also overwrite after_sign_in_path_for and after_sign_out_path_for to cus
 Finally, you need to set up default url options for the mailer in each environment. Here is the configuration for config/environments/development.rb:
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+Notice that if your devise model is not called "user" but "member", then the helpers you should use are:
+
+  before_filter :authenticate_member!
+
+  member_signed_in?
+
+  current_member
+
+  member_session
 
 === Configuring Models
 

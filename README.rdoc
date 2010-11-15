@@ -140,10 +140,14 @@ You can access the session for this scope:
   user_session
 
 Assume your devise model is not called 'user' but 'member' for example. Then the helpers you should use should be:
-* before_filter :authenticate_member!
-* member_signed_in?
-* current_member
-* member_session
+
+  before_filter :authenticate_member!
+
+  member_signed_in?
+
+  current_member
+
+  member_session
 
 After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
 

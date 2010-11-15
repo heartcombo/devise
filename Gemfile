@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gemspec
 
-gem "rails"
+gem "rails", "3.0.1"
 gem "webrat", "0.7.1"
 gem "mocha", :require => false
 gem "oa-oauth", :require => "omniauth/oauth"

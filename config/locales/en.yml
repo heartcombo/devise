@@ -40,6 +40,8 @@ en:
       success: 'Successfully authorized from %{kind} account.'
       failure: 'Could not authorize you from %{kind} because "%{reason}".'
     mailer:
+      welcome: "Welcome %{email}"
+      confirm: "Confirm my account"
       confirmation_instructions:
         subject: 'Confirmation instructions'
       reset_password_instructions:

@@ -40,8 +40,13 @@ en:
       success: 'Successfully authorized from %{kind} account.'
       failure: 'Could not authorize you from %{kind} because "%{reason}".'
     mailer:
-      welcome: "Welcome %{email}"
+      hello: "Welcome %{email}!"
+      welcome: "Welcome %{email}!"
       confirm: "Confirm my account"
+      change: 'Change my password'
+      someone_requested: 'Someone has requested a link to change your password, and you can do this through the link below.'
+      please_ignore: "If you didn't request this, please ignore this email."
+      password_wont_change: "Your password won't change until you access the link above and create a new one."
       confirmation_instructions:
         subject: 'Confirmation instructions'
       reset_password_instructions:

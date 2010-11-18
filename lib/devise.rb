@@ -67,6 +67,10 @@ module Devise
   mattr_accessor :request_keys
   @@request_keys = []
 
+  # If authentication keys should be case-insensitive by default.
+  mattr_accessor :case_insensitive_keys
+  @@case_insensitive_keys = false
+
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
   @@http_authenticatable = false

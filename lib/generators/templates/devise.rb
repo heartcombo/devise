@@ -15,24 +15,26 @@ Devise.setup do |config|
   require 'devise/orm/<%= options[:orm] %>'
 
   # ==> Configuration for any authentication mechanism
-  # Configure which keys are used when authenticating an user. By default is
+  # Configure which keys are used when authenticating a user. The default is
   # just :email. You can configure it to use [:username, :subdomain], so for
-  # authenticating an user, both parameters are required. Remember that those
+  # authenticating a user, both parameters are required. Remember that those
   # parameters are used only when authenticating and not when retrieving from
   # session. If you need permissions, you should implement that in a before filter.
-  # You can also supply hash where the value is a boolean expliciting if authentication
-  # should be aborted or not if the value is not present. By default is empty.
+  # You can also supply a hash where the value is a boolean determining whether
+  # or not authentication should be aborted when the value is not present.
   # config.authentication_keys = [ :email ]
 
   # Configure parameters from the request object used for authentication. Each entry
-  # given should be a request method and it will automatically be passed to
+  # given should be a request method and it will automatically be passed to the
   # find_for_authentication method and considered in your model lookup. For instance,
   # if you set :request_keys to [:subdomain], :subdomain will be used on authentication.
   # The same considerations mentioned for authentication_keys also apply to request_keys.
   # config.request_keys = []
 
-  # If authentication keys should be case-insensitive. False by default.
-  # config.case_insensitive_keys = false
+  # Configure which authentication keys should be case-insensitive.
+  # These keys will be downcased upon creating or modifying a user and when used
+  # to authenticate or find a user. Default is :email.
+  # config.case_insensitive_keys = [ :email ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # config.params_authenticatable = true

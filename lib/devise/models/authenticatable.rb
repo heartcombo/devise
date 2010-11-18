@@ -100,9 +100,7 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
-          if case_insensitive_keys
-            authentication_keys.each { |k| conditions[k].try(:downcase!) }
-          end
+          case_insensitive_keys.each { |k| attributes[k].try(:downcase!) }
           to_adapter.find_first(conditions)
         end
 
@@ -113,9 +111,7 @@ module Devise
 
         # Find an initialize a group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
-          if case_insensitive_keys
-            authentication_keys.each { |k| attributes[k].try(:downcase!) }
-          end
+          case_insensitive_keys.each { |k| attributes[k].try(:downcase!) }
           
           attributes = attributes.slice(*required_attributes)
           attributes.delete_if { |key, value| value.blank? }

@@ -47,6 +47,9 @@ en:
       someone_requested: 'Someone has requested a link to change your password, and you can do this through the link below.'
       please_ignore: "If you didn't request this, please ignore this email."
       password_wont_change: "Your password won't change until you access the link above and create a new one."
+      locked: 'Your account has been locked due to an excessive amount of unsuccessful sign in attempts.'
+      click_to_unlock: 'Click the link below to unlock your account:'
+      unlock: 'Unlock my account'
       confirmation_instructions:
         subject: 'Confirmation instructions'
       reset_password_instructions:

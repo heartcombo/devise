@@ -68,6 +68,9 @@ class Devise::RegistrationsController < ApplicationController
     # temporary session data to the newly created user.
     def build_resource(hash=nil)
       hash ||= params[resource_name] || {}
+      if Devise.case_insensitive_keys
+        Devise.authentication_keys.each { |k| hash[k].try(:downcase!) }
+      end
       self.resource = resource_class.new_with_session(hash, session)
     end
 

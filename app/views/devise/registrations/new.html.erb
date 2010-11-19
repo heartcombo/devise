@@ -1,4 +1,4 @@
-<h2<%= t("devise.registrations.sign_up") -%></h2>
+<h2><%= t("devise.registrations.sign_up") -%></h2>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
@@ -12,7 +12,7 @@
   <p><%= f.label :password_confirmation %><br />
   <%= f.password_field :password_confirmation %></p>
 
-  <p><%= f.submit "Sign up" %></p>
+  <p><%= f.submit t("devise.registrations.sign_up") %></p>
 <% end %>
 
 <%= render :partial => "devise/shared/links" %>

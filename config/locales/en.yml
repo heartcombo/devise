@@ -21,6 +21,12 @@ en:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:
+      change_your_password: "Change your password"
+      new_password: "New password"
+      confirm_new_password: "Confirm new password"
+      change_my_password: "Change my password"
+      forgot_password?: "Forgot your password?"
+      send_reset_password_instructions: "Send me reset password instructions"
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
     confirmations:
@@ -30,6 +36,14 @@ en:
     registrations:
       sign_up: 'Sign up'
       signed_up: 'Welcome! You have signed up successfully.'
+      edit: "Edit %{resourcename}"
+      leave_blank: "leave blank if you don't want to change it"
+      current_password_label: "we need your current password to confirm your changes"
+      update: 'Update'
+      unhappy: "Unhappy"
+      cancel_my_account: "Cancel my account"
+      confirm: "Are you sure?"
+      back: "Back"
       inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
       updated: 'You updated your account successfully.'
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'

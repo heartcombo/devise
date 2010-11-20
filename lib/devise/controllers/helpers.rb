@@ -145,7 +145,7 @@ module Devise
       #
       def stored_location_for(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        session.delete(:"#{scope}_return_to")
+        session.delete("#{scope}_return_to")
       end
 
       # The default url to be used after signing in. This is used by all Devise
@@ -176,7 +176,7 @@ module Devise
       #
       def after_sign_in_path_for(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        home_path = :"#{scope}_root_path"
+        home_path = "#{scope}_root_path"
         respond_to?(home_path, true) ? send(home_path) : root_path
       end
 

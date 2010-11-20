@@ -178,7 +178,7 @@ module ActionDispatch::Routing
         devise_scope mapping.name do
           yield if block_given?
           with_devise_exclusive_scope mapping.fullpath, mapping.name do
-            routes.each { |mod| send(:"devise_#{mod}", mapping, mapping.controllers) }
+            routes.each { |mod| send("devise_#{mod}", mapping, mapping.controllers) }
           end
         end
       end

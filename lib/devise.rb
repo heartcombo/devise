@@ -59,13 +59,17 @@ module Devise
   mattr_accessor :stretches
   @@stretches = 10
 
-  # Keys used when authenticating an user.
+  # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]
 
-  # Request keys used when authenticating an user.
+  # Request keys used when authenticating a user.
   mattr_accessor :request_keys
   @@request_keys = []
+
+  # Keys that should be case-insensitive.
+  mattr_accessor :case_insensitive_keys
+  @@case_insensitive_keys = [ :email ]
 
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
@@ -327,6 +331,11 @@ module Devise
     ActiveSupport.on_load(:action_view) do
       include scope::UrlHelpers
     end
+  end
+
+  # Returns true if Rails version is bigger than 3.0.x
+  def self.rack_session?
+    Rails::VERSION::STRING[0,3] != "3.0"
   end
 
   # A method used internally to setup warden manager from the Rails initialize

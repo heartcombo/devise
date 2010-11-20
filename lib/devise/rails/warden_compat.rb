@@ -40,3 +40,24 @@ class Warden::SessionSerializer
     end
   end
 end
+
+unless Devise.rack_session?
+  class ActionDispatch::Request
+    def reset_session
+      session.destroy if session && session.respond_to?(:destroy)
+      self.session = {}
+      @env['action_dispatch.request.flash_hash'] = nil
+    end
+  end
+
+  Warden::Manager.after_set_user :event => [:set_user, :authentication] do |record, warden, options|
+    if options[:scope] && warden.authenticated?(options[:scope])
+      request, flash = warden.request, warden.env['action_dispatch.request.flash_hash']
+      backup = request.session.to_hash
+      backup.delete("session_id")
+      request.reset_session
+      warden.env['action_dispatch.request.flash_hash'] = flash
+      request.session.update(backup)
+    end
+  end
+end

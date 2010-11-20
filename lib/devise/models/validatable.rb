@@ -23,7 +23,8 @@ module Devise
 
         base.class_eval do
           validates_presence_of   :email, :if => :email_required?
-          validates_uniqueness_of :email, :scope => authentication_keys[1..-1], :case_sensitive => false, :allow_blank => true
+          validates_uniqueness_of :email, :scope => authentication_keys[1..-1],
+            :case_sensitive => case_insensitive_keys.exclude?(:email), :allow_blank => true
           validates_format_of     :email, :with  => email_regexp, :allow_blank => true
 
           with_options :if => :password_required? do |v|

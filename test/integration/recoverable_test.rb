@@ -27,6 +27,32 @@ class PasswordTest < ActionController::IntegrationTest
     click_button 'Change my password'
   end
 
+  test 'reset password with email of different case should succeed when email is in the list of case insensitive keys' do
+    create_user(:email => 'Foo@Bar.com')
+    
+    request_forgot_password do
+      fill_in 'email', :with => 'foo@bar.com'
+    end
+    
+    assert_current_url '/users/sign_in'
+    assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
+  end
+
+  test 'reset password with email of different case should fail when email is NOT the list of case insensitive keys' do
+    swap Devise, :case_insensitive_keys => [] do
+      create_user(:email => 'Foo@Bar.com')
+      
+      request_forgot_password do
+        fill_in 'email', :with => 'foo@bar.com'
+      end
+      
+      assert_response :success
+      assert_current_url '/users/password'
+      assert_have_selector "input[type=email][value='foo@bar.com']"
+      assert_contain 'not found'
+    end
+  end
+
   test 'authenticated user should not be able to visit forgot password page' do
     sign_in_as_user
     assert warden.authenticated?(:user)

@@ -20,7 +20,7 @@ module Devise
       def render_with_scope(action, path=self.controller_path)
         if self.class.scoped_views?
           begin
-            render :template => "#{devise_mapping.plural}/#{path.split("/").last}/#{action}"
+            render :template => "#{devise_mapping.scoped_path}/#{path.split("/").last}/#{action}"
           rescue ActionView::MissingTemplate
             render :template => "#{path}/#{action}"
           end

@@ -77,7 +77,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :authentication_keys, :request_keys, :http_authenticatable, :params_authenticatable)
+        Devise::Models.config(self, :authentication_keys, :request_keys, :case_insensitive_keys, :http_authenticatable, :params_authenticatable)
 
         def params_authenticatable?(strategy)
           params_authenticatable.is_a?(Array) ?
@@ -100,6 +100,7 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
+          case_insensitive_keys.each { |k| conditions[k].try(:downcase!) }
           to_adapter.find_first(conditions)
         end
 
@@ -110,6 +111,8 @@ module Devise
 
         # Find an initialize a group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
+          case_insensitive_keys.each { |k| attributes[k].try(:downcase!) }
+          
           attributes = attributes.slice(*required_attributes)
           attributes.delete_if { |key, value| value.blank? }
 

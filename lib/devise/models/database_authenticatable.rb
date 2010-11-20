@@ -22,6 +22,7 @@ module Devise
       included do
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
+        before_save :downcase_keys
       end
 
       # Generates password encryption based on the given value.
@@ -73,13 +74,18 @@ module Devise
 
     protected
 
+      # Downcase case-insensitive keys
+      def downcase_keys
+        self.class.case_insensitive_keys.each { |k| self[k].try(:downcase!) }
+      end
+
       # Digests the password using bcrypt.
       def password_digest(password)
         ::BCrypt::Password.create("#{password}#{self.class.pepper}", :cost => self.class.stretches).to_s
       end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :stretches)
+        Devise::Models.config(self, :pepper, :stretches, :case_insensitive_keys)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on

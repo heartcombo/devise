@@ -59,13 +59,17 @@ module Devise
   mattr_accessor :stretches
   @@stretches = 10
 
-  # Keys used when authenticating an user.
+  # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]
 
-  # Request keys used when authenticating an user.
+  # Request keys used when authenticating a user.
   mattr_accessor :request_keys
   @@request_keys = []
+
+  # Keys that should be case-insensitive.
+  mattr_accessor :case_insensitive_keys
+  @@case_insensitive_keys = [ :email ]
 
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable

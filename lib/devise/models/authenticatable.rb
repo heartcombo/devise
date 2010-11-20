@@ -100,7 +100,7 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
-          case_insensitive_keys.each { |k| attributes[k].try(:downcase!) }
+          case_insensitive_keys.each { |k| conditions[k].try(:downcase!) }
           to_adapter.find_first(conditions)
         end
 

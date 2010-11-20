@@ -2,6 +2,16 @@ require 'test_helper'
 require 'digest/sha1'
 
 class DatabaseAuthenticatableTest < ActiveSupport::TestCase
+  test 'should downcase case insensitive keys when saving' do
+    # case_insensitive_keys is set to :email by default.
+    email = 'Foo@Bar.com'
+    user = new_user(:email => email)
+    
+    assert_equal email, user.email
+    user.save!
+    assert_equal email.downcase, user.email
+  end
+  
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)

@@ -1,8 +1,12 @@
+== 1.0.9
+
 * enhancements
   * Extracted redirect path from Devise failure app to a new method, allowing override in custom failure apps
+  * Added sign_out_via
 
 * bug fix
   * Email is now case insensitive
+  * Avoid session fixation attacks
 
 == 1.0.8
 

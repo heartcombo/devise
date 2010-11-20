@@ -85,7 +85,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :stretches, :case_insensitive_keys)
+        Devise::Models.config(self, :pepper, :stretches)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on

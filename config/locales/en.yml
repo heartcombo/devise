@@ -9,6 +9,13 @@ en:
         other: "%{count} errors prohibited this %{resource} from being saved:"
 
   devise:
+    shared:
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+      forgot_password: "Forgot your password?"
+      didnt_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
+      didnt_receive_unlock_instructions: "Didn't receive unlock instructions?"
+      sign_in_with_omniauth: "Sign in with %{provider}"
     failure:
       unauthenticated: 'You need to sign in or sign up before continuing.'
       unconfirmed: 'You have to confirm your account before continuing.'
@@ -18,7 +25,6 @@ en:
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
-      sign_in: "Sign in"
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:
@@ -26,7 +32,6 @@ en:
       new_password: "New password"
       confirm_new_password: "Confirm new password"
       change_my_password: "Change my password"
-      forgot_password?: "Forgot your password?"
       send_reset_password_instructions: "Send me reset password instructions"
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
@@ -35,7 +40,6 @@ en:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
     registrations:
-      sign_up: 'Sign up'
       signed_up: 'Welcome! You have signed up successfully.'
       edit: "Edit %{resourcename}"
       leave_blank: "leave blank if you don't want to change it"

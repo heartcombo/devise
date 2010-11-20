@@ -210,6 +210,17 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_equal "Cart", @controller.user_session[:cart]
   end
 
+  test 'session id is changed on sign in' do
+    get '/users'
+    session_id = request.session[:session_id]
+
+    get '/users'
+    assert_equal session_id, request.session[:session_id]
+
+    sign_in_as_user
+    assert_not_equal session_id, request.session[:session_id]
+  end
+
   test 'renders the scoped view if turned on and view is available' do
     swap Devise, :scoped_views => true do
       assert_raise Webrat::NotFoundError do

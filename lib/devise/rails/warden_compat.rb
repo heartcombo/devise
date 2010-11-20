@@ -23,3 +23,20 @@ class Warden::SessionSerializer
     klass.find(:first, :conditions => { :id => id })
   end
 end
+
+class ActionController::Request
+  def reset_session
+    session.destroy if session && session.respond_to?(:destroy)
+    self.session = {}
+  end
+end
+
+Warden::Manager.after_set_user :event => [:set_user, :authentication] do |record, warden, options|
+  if options[:scope] && warden.authenticated?(options[:scope])
+    request = warden.request
+    backup = request.session.to_hash
+    backup.delete(:session_id)
+    request.reset_session
+    request.session.update(backup)
+  end
+end

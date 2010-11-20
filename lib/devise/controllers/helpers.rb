@@ -66,6 +66,7 @@ module Devise
         scope      = Devise::Mapping.find_scope!(resource_or_scope)
         resource ||= resource_or_scope
         warden.set_user(resource, :scope => scope)
+        @_session = request.session # Recalculate session
       end
 
       # Sign out a given user or scope. This helper is useful for signing out an user
@@ -92,7 +93,8 @@ module Devise
       #
       def stored_location_for(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        session.delete(:"#{scope}.return_to")
+        key = "#{scope}.return_to"
+        session.delete(key) || session.delete(key.to_sym)
       end
 
       # The default url to be used after signing in. This is used by all Devise
@@ -123,7 +125,7 @@ module Devise
       #
       def after_sign_in_path_for(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        home_path = :"#{scope}_root_path"
+        home_path = "#{scope}_root_path"
         respond_to?(home_path, true) ? send(home_path) : root_path
       end
 
@@ -145,7 +147,11 @@ module Devise
       def sign_in_and_redirect(resource_or_scope, resource=nil, skip=false)
         scope      = Devise::Mapping.find_scope!(resource_or_scope)
         resource ||= resource_or_scope
-        sign_in(scope, resource) unless skip
+        if skip
+          @_session = request.session # Recalculate session
+        else
+          sign_in(scope, resource)
+        end
         redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
       end
 

@@ -236,6 +236,17 @@ class AuthenticationSessionTest < ActionController::IntegrationTest
     get '/users'
     assert_equal "Cart", @controller.user_session[:cart]
   end
+
+  test 'session id is changed on sign in' do
+    get '/users'
+    session_id = request.session["session_id"]
+
+    get '/users'
+    assert_equal session_id, request.session["session_id"]
+
+    sign_in_as_user
+    assert_not_equal session_id, request.session["session_id"]
+  end
 end
 
 class AuthenticationWithScopesTest < ActionController::IntegrationTest

@@ -45,7 +45,7 @@ begin
     s.authors = ['José Valim', 'Carlos Antônio']
     s.files =  FileList["[A-Z]*", "{app,config,lib}/**/*"]
     s.extra_rdoc_files = FileList["[A-Z]*"] - %w(Gemfile Rakefile)
-    s.add_dependency("warden", "~> 0.10.7")
+    s.add_dependency("warden", "~> 1.0.2")
     s.add_dependency("bcrypt-ruby", "~> 2.1.2")
   end
 

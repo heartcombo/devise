@@ -183,7 +183,9 @@ module Devise
 
     # Configure default url options to be used within Devise and ActionController.
     def default_url_options(&block)
-      Devise::Mapping.metaclass.send :define_method, :default_url_options, &block
+      who = Devise::Mapping.respond_to?(:singleton_class) ?
+        Devise::Mapping.singleton_class : Devise::Mapping.metaclass
+      who.send :define_method, :default_url_options, &block
     end
 
     # A method used internally to setup warden manager from the Rails initialize

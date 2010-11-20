@@ -31,6 +31,7 @@
   * Password recovery and account unlocking takes into account authentication keys (by github.com/RStankov)
   * FailureApp now properly handles nil request.format
   * Fix a bug causing FailureApp to return with HTTP Auth Headers for IE7
+  * Ensure namespaces has proper scoped views
 
 == 1.1.3
 

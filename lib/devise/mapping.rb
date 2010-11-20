@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :plural, :path, :controllers, :path_names, :class_name, :sign_out_via
+    attr_reader :singular, :scoped_path, :path, :controllers, :path_names, :class_name, :sign_out_via
     alias :name :singular
 
     # Receives an object and find a scope for it. If a scope cannot be found,
@@ -46,8 +46,8 @@ module Devise
     end
 
     def initialize(name, options) #:nodoc:
-      @plural   = (options[:as] ? "#{options[:as]}_#{name}" : name).to_sym
-      @singular = (options[:singular] || @plural.to_s.singularize).to_sym
+      @scoped_path = options[:as] ? "#{options[:as]}/#{name}" : name.to_s
+      @singular = (options[:singular] || @scoped_path.tr('/', '_').singularize).to_sym
 
       @class_name = (options[:class_name] || name.to_s.classify).to_s
       @ref = ActiveSupport::Dependencies.ref(@class_name)

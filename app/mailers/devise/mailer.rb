@@ -60,7 +60,7 @@ class Devise::Mailer < ::ActionMailer::Base
 
   def template_paths
     template_path = [self.class.mailer_name]
-    template_path.unshift "#{@devise_mapping.plural}/mailer" if self.class.scoped_views?
+    template_path.unshift "#{@devise_mapping.scoped_path}/mailer" if self.class.scoped_views?
     template_path
   end
 

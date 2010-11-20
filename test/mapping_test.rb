@@ -12,9 +12,19 @@ class MappingTest < ActiveSupport::TestCase
     mapping = Devise.mappings[:user]
     assert_equal User,                mapping.to
     assert_equal User.devise_modules, mapping.modules
-    assert_equal :users,              mapping.plural
+    assert_equal "users",             mapping.scoped_path
     assert_equal :user,               mapping.singular
     assert_equal "users",             mapping.path
+    assert_equal "/users",            mapping.fullpath
+  end
+
+  test 'store options with namespace' do
+    mapping = Devise.mappings[:publisher_account]
+    assert_equal Admin,                 mapping.to
+    assert_equal "publisher/accounts",  mapping.scoped_path
+    assert_equal :publisher_account,    mapping.singular
+    assert_equal "accounts",            mapping.path
+    assert_equal "/publisher/accounts", mapping.fullpath
   end
 
   test 'allows path to be given' do

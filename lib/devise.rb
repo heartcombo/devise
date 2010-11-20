@@ -333,6 +333,11 @@ module Devise
     end
   end
 
+  # Returns true if Rails version is bigger than 3.0.x
+  def self.rack_session?
+    Rails::VERSION::STRING[0,3] != "3.0"
+  end
+
   # A method used internally to setup warden manager from the Rails initialize
   # block.
   def self.configure_warden! #:nodoc:

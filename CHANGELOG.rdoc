@@ -34,6 +34,11 @@
   * Ensure namespaces has proper scoped views
   * Ensure Devise does not set empty flash messages (by github.com/sxross)
 
+== 1.1.4
+
+* bugfix
+  * Avoid session fixation attacks
+
 == 1.1.3
 
 * bugfix

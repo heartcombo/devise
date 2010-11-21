@@ -49,11 +49,11 @@ class HelpersTest < ActionController::TestCase
     @mock_warden.expects(:authenticate).with(:scope => :user).returns(User.new)
     assert_kind_of User, @controller.signed_in_resource
   end
-  
+
   test 'is a devise controller' do
     assert @controller.devise_controller?
   end
-  
+
   test 'does not issue blank flash messages' do
     MyController.send(:public, :set_flash_message)
     I18n.stubs(:t).returns('   ')
@@ -61,7 +61,7 @@ class HelpersTest < ActionController::TestCase
     assert flash[:notice].nil?
     MyController.send(:protected, :set_flash_message)
   end
-  
+
   test 'issues non-blank flash messages normally' do
     MyController.send(:public, :set_flash_message)
     I18n.stubs(:t).returns('non-blank')

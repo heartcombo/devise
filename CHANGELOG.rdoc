@@ -18,7 +18,7 @@
   * Sign up now check if the user is active or not and redirect him accordingly setting the inactive_signed_up message
   * Use ActiveModel#to_key instead of #id
   * sign_out_all_scopes now destroys the whole session
-  * Added insensitive_case_keys that automatically downcases the given keys, by default downcases only e-mail (by github.com/adahl)
+  * Added case_insensitive_keys that automatically downcases the given keys, by default downcases only e-mail (by github.com/adahl)
 
 * default behavior changes
   * sign_out_all_scopes defaults to true as security measure

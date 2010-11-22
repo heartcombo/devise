@@ -1,5 +1,5 @@
 class Devise::PasswordsController < ApplicationController
-  prepend_before_filter :require_no_authentication
+  prepend_before_filter :require_no_authentication, :only => [:new, :create]
   include Devise::Controllers::InternalHelpers
 
   # GET /resource/password/new
@@ -26,13 +26,23 @@ class Devise::PasswordsController < ApplicationController
     resource.reset_password_token = params[:reset_password_token]
     render_with_scope :edit
   end
-
+  
   # PUT /resource/password
-  def update
-    self.resource = resource_class.reset_password_by_token(params[resource_name])
+  def update    
+    self.resource = signed_in_resource
+    
+    unless resource.nil?
+      resource.reset_password!(params[resource_name][:password], params[resource_name][:password_confirmation])
+    else    
+      self.resource = resource_class.reset_password_by_token(params[resource_name])
+    end
 
     if resource.errors.empty?
       set_flash_message :notice, :updated
+      if user_signed_in?
+        sign_out(resource)
+      end
+      
       sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :edit

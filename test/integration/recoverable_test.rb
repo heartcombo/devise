@@ -82,12 +82,19 @@ class PasswordTest < ActionController::IntegrationTest
     assert_contain 'not found'
   end
 
-  test 'authenticated user should not be able to visit edit password page' do
+  test 'authenticated user should be able to visit edit password page' do
     sign_in_as_user
-    get edit_user_password_path
-    assert_response :redirect
-    assert_redirected_to root_path
+    visit edit_user_password_path
     assert warden.authenticated?(:user)
+    assert_response :success
+    assert_current_url '/users/password/edit'
+  end
+  
+  test 'not authenticated user should be able to visit edit password page' do
+    visit edit_user_password_path
+    assert_response :success
+    assert_current_url '/users/password/edit'
+    assert_not warden.authenticated?(:user)
   end
 
   test 'not authenticated user with invalid reset password token should not be able to change his password' do

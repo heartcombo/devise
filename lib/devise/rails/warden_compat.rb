@@ -31,6 +31,24 @@ class ActionController::Request
   end
 end
 
+# Solve a bug in Rails where Set-Cookie is returning an array.
+class Devise::CookieSanitizer
+  SET_COOKIE = "Set-Cookie".freeze
+
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    response = @app.call(env)
+    headers = response[1]
+    headers[SET_COOKIE] = headers[SET_COOKIE].join("\n") if headers[SET_COOKIE].respond_to?(:join)
+    response
+  end
+end
+
+Rails.configuration.middleware.insert_after ActionController::Failsafe, Devise::CookieSanitizer
+
 Warden::Manager.after_set_user :event => [:set_user, :authentication] do |record, warden, options|
   if options[:scope] && warden.authenticated?(options[:scope])
     request = warden.request

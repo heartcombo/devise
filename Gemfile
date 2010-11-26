@@ -2,8 +2,8 @@ source "http://rubygems.org"
 
 gemspec
 
-gem "rails", "3.0.1"
-gem "webrat", "0.7.1"
+gem "rails", "~> 3.0.0"
+gem "webrat", "0.7.2"
 gem "mocha", :require => false
 gem "oa-oauth", :require => "omniauth/oauth"
 gem "oa-openid", :require => "omniauth/openid"
@@ -17,8 +17,8 @@ platforms :ruby do
   gem "ruby-debug", ">= 0.10.3" if RUBY_VERSION < '1.9'
 
   group :mongoid do
-    gem "mongo", "1.0.7"
-    gem "mongoid", "2.0.0.beta.18"
-    gem "bson_ext", "1.0.7"
+    gem "mongo", "1.1.2"
+    gem "mongoid", "2.0.0.beta.20"
+    gem "bson_ext", "1.1.2"
   end
 end

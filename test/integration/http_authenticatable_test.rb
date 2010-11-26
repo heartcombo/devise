@@ -56,7 +56,7 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
     assert_match "<email>user@test.com</email>", response.body
     assert warden.authenticated?(:user)
   end
-  
+
   private
 
     def sign_in_as_new_user_with_http(username="user@test.com", password="123456")
@@ -64,7 +64,7 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
       get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{username}:#{password}")}"
       user
     end
-    
+
     # Sign in with oauth2 token. This is just to test that it isn't misinterpreted as basic authentication
     def add_oauth2_header
       user = create_user

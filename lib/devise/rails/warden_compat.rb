@@ -44,6 +44,10 @@ unless Devise.rack_session?
     alias_method :regular_writer, :[]= unless method_defined?(:regular_writer)
     alias_method :regular_update, :update unless method_defined?(:regular_update)
 
+    def [](key)
+      super(convert_key(key))
+    end
+
     def []=(key, value)
       regular_writer(convert_key(key), value)
     end
@@ -88,6 +92,7 @@ unless Devise.rack_session?
     def symbolize_keys; to_hash.symbolize_keys end
 
     def to_options!; self end
+    def to_hash; Hash.new.update(self) end
 
     protected
 

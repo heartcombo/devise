@@ -25,8 +25,8 @@ Devise.setup do |config|
   # Tell if authentication through request.params is enabled. True by default.
   # config.params_authenticatable = true
 
-  # Tell if authentication through HTTP Basic Auth is enabled. True by default.
-  # config.http_authenticatable = true
+  # Tell if authentication through HTTP Basic Auth is enabled. False by default.
+  # config.http_authenticatable = false
 
   # Set this to true to use Basic Auth for AJAX requests.  True by default.
   # config.http_authenticatable_on_xhr = true

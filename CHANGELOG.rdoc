@@ -1,3 +1,11 @@
+== 1.1.5
+
+* bugfix
+  * Ensure to convert keys on indifferent hash
+
+* defaults
+  * Set config.http_authenticatable to false to avoid confusion
+
 == 1.1.4
 
 * bugfix

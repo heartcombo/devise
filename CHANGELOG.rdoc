@@ -1,3 +1,6 @@
+* deprecations
+  * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)
+
 == 1.2.rc
 
 * deprecations

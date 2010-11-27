@@ -13,16 +13,16 @@ class ControllerAuthenticableTest < ActionController::TestCase
     assert_equal @mock_warden, @controller.warden
   end
 
-  test 'proxy signed_in? to authenticated' do
+  test 'proxy signed_in?(scope) to authenticate?' do
     @mock_warden.expects(:authenticate?).with(:scope => :my_scope)
     @controller.signed_in?(:my_scope)
   end
-
-  test 'proxy anybody_signed_in? to signed_in?' do
+  
+  test 'proxy signed_in?(nil) to authenticate?' do
     Devise.mappings.keys.each do |scope| # :user, :admin, :manager
       @controller.expects(:signed_in?).with(scope)
     end
-    @controller.anybody_signed_in?
+    @controller.signed_in?
   end
 
   test 'proxy current_user to authenticate with user scope' do

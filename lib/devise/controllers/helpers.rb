@@ -72,16 +72,18 @@ module Devise
         false
       end
 
-      # Check if the given scope is signed in session, without running
-      # authentication hooks.
-      def signed_in?(scope)
-        warden.authenticate?(:scope => scope)
+      # Return true if the given scope is signed in session. If no scope given, return
+      # true if any scope is signed in. Does not run authentication hooks.
+      def signed_in?(scope=nil)
+        [ scope || Devise.mappings.keys ].flatten.any? do |scope| 
+          warden.authenticate?(:scope => scope)
+        end
       end
 
-      # Check if the any scope is signed in session, without running
-      # authentication hooks.
       def anybody_signed_in?
-        Devise.mappings.keys.any? { |scope| signed_in?(scope) }
+        ActiveSupport::Deprecation.warn "Devise#anybody_signed_in? is deprecated. "
+          "Please use Devise#signed_in?(nil) instead."
+        signed_in?
       end
 
       # Sign in an user that already was authenticated. This helper is useful for logging

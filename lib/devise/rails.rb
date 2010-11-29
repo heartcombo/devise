@@ -41,7 +41,7 @@ module Devise
         # Nothing to say
       else
         puts "[DEVISE] You are using #{Devise.encryptor} as encryptor. From version 1.2, " <<
-          "you need to explicitly add `devise :encryptable, :encryptor => #{Devise.encryptor.to_sym}` " <<
+          "you need to explicitly add `devise :encryptable, :encryptor => :#{Devise.encryptor}` " <<
           "to your models and comment the current value in the config/initializers/devise.rb"
       end
     end

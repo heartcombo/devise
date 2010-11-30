@@ -42,7 +42,8 @@ module Devise
       else
         puts "[DEVISE] You are using #{Devise.encryptor} as encryptor. From version 1.2, " <<
           "you need to explicitly add `devise :encryptable, :encryptor => :#{Devise.encryptor}` " <<
-          "to your models and comment the current value in the config/initializers/devise.rb"
+          "to your models and comment the current value in the config/initializers/devise.rb. " <<
+          "You must also add t.encryptable to your existing migrations."
       end
     end
   end

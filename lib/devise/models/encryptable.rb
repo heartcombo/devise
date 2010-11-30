@@ -53,7 +53,14 @@ module Devise
 
         # Returns the class for the configured encryptor.
         def encryptor_class
-          @encryptor_class ||= ::Devise::Encryptors.const_get(encryptor.to_s.classify)
+          @encryptor_class ||= case encryptor
+            when :bcrypt
+              raise "In order to use bcrypt as encryptor, simply remove :encryptable from your devise model"
+            when nil
+              raise "You need to give an :encrytor as option in order to use :encryptable"
+            else
+              ::Devise::Encryptors.const_get(encryptor.to_s.classify)
+          end
         end
 
         def password_salt

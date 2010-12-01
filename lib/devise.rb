@@ -83,7 +83,7 @@ module Devise
 
   # Email regex used to validate email formats. Adapted from authlogic.
   mattr_accessor :email_regexp
-  @@email_regexp = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
+  @@email_regexp = /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/i
 
   # Range validation for password length
   mattr_accessor :password_length

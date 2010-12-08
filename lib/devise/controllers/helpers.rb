@@ -55,6 +55,10 @@ module Devise
 
         ActiveSupport.on_load(:action_controller) do
           helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
+
+          after_filter :unless => :devise_controller? do
+            session["#{mapping}_return_to"] = request.path
+          end
         end
       end
 
@@ -75,7 +79,7 @@ module Devise
       # Return true if the given scope is signed in session. If no scope given, return
       # true if any scope is signed in. Does not run authentication hooks.
       def signed_in?(scope=nil)
-        [ scope || Devise.mappings.keys ].flatten.any? do |scope| 
+        [ scope || Devise.mappings.keys ].flatten.any? do |scope|
           warden.authenticate?(:scope => scope)
         end
       end
@@ -100,7 +104,7 @@ module Devise
       #   sign_in @user                             # sign_in(resource)
       #   sign_in @user, :event => :authentication  # sign_in(resource, options)
       #   sign_in @user, :bypass => true            # sign_in(resource, options)
-      # 
+      #
       def sign_in(resource_or_scope, *args)
         options  = args.extract_options!
         scope    = Devise::Mapping.find_scope!(resource_or_scope)

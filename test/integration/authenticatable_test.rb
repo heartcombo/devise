@@ -168,7 +168,7 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
   test 'redirect to default url if no other was configured' do
     sign_in_as_user
     assert_template 'home/index'
-    assert_nil session[:"user_return_to"]
+    assert_equal root_path, session[:"user_return_to"]
   end
 
   test 'redirect to requested url after sign in' do
@@ -177,10 +177,11 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
     assert_equal users_path, session[:"user_return_to"]
 
     follow_redirect!
-    sign_in_as_user :visit => false
+    get root_path
+    sign_in_as_user
 
-    assert_current_url '/users'
-    assert_nil session[:"user_return_to"]
+    assert_current_url root_path
+    assert_equal root_path, session[:"user_return_to"]
   end
 
   test 'redirect to last requested url overwriting the stored return_to option' do
@@ -196,7 +197,7 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
     sign_in_as_user :visit => false
 
     assert_current_url '/users'
-    assert_nil session[:"user_return_to"]
+    assert_equal users_path, session[:"user_return_to"]
   end
 
   test 'xml http requests does not store urls for redirect' do

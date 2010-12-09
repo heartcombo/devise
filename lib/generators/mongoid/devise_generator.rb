@@ -6,11 +6,11 @@ module Mongoid
       include Devise::Generators::OrmHelpers
 
       def generate_model
-        invoke "mongoid:model", [name] unless model_exists?
+        invoke "mongoid:model", [name] unless model_exists? && behavior == :invoke
       end
 
       def inject_devise_content
-        inject_into_file model_path, model_contents, :after => "include Mongoid::Document\n"
+        inject_into_file model_path, model_contents, :after => "include Mongoid::Document\n" if model_exists?
       end
     end
   end

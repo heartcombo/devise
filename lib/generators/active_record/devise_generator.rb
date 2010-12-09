@@ -10,7 +10,7 @@ module ActiveRecord
       source_root File.expand_path("../templates", __FILE__)
 
       def generate_model
-        invoke "active_record:model", [name], :migration => false unless model_exists?
+        invoke "active_record:model", [name], :migration => false unless model_exists? && behavior == :invoke
       end
 
       def copy_devise_migration
@@ -18,7 +18,7 @@ module ActiveRecord
       end
 
       def inject_devise_content
-        inject_into_class model_path, class_name, model_contents + <<-CONTENT
+        inject_into_class(model_path, class_name, model_contents + <<CONTENT) if model_exists?
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 CONTENT

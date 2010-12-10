@@ -1,4 +1,4 @@
 require "rubygems"
 require "rails/generators/test_case"
-require File.join(File.dirname(__FILE__), "../../lib/generators/devise/install_generator")
-require File.join(File.dirname(__FILE__), "../../lib/generators/devise/views_generator")
+require File.expand_path("../../../lib/generators/devise/install_generator", __FILE__)
+require File.expand_path("../../../lib/generators/devise/views_generator", __FILE__)

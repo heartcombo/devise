@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__),"generators_test_helper.rb")
+require File.expand_path("../generators_test_helper", __FILE__)
 
 class ViewsGeneratorTest < Rails::Generators::TestCase
   tests Devise::Generators::ViewsGenerator
-  destination File.expand_path("../tmp", File.dirname(__FILE__))
+  destination File.expand_path("../../tmp", __FILE__)
   setup :prepare_destination
 
   test "Assert all views are properly created with no params" do
@@ -20,18 +20,16 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
 
   def assert_files(scope = nil, template_engine = nil)
     scope = "devise" if scope.nil?
-    assert_file "app/views/#{scope}/confirmations/new.html.erb" 
-    assert_file "app/views/#{scope}/mailer/confirmation_instructions.html.erb" 
-    assert_file "app/views/#{scope}/mailer/reset_password_instructions.html.erb" 
-    assert_file "app/views/#{scope}/mailer/unlock_instructions.html.erb" 
-    assert_file "app/views/#{scope}/passwords/edit.html.erb" 
-    assert_file "app/views/#{scope}/passwords/new.html.erb" 
-    assert_file "app/views/#{scope}/registrations/new.html.erb" 
-    assert_file "app/views/#{scope}/registrations/edit.html.erb" 
-    assert_file "app/views/#{scope}/sessions/new.html.erb" 
-    assert_file "app/views/#{scope}/shared/_links.erb" 
-    assert_file "app/views/#{scope}/unlocks/new.html.erb" 
-
+    assert_file "app/views/#{scope}/confirmations/new.html.erb"
+    assert_file "app/views/#{scope}/mailer/confirmation_instructions.html.erb"
+    assert_file "app/views/#{scope}/mailer/reset_password_instructions.html.erb"
+    assert_file "app/views/#{scope}/mailer/unlock_instructions.html.erb"
+    assert_file "app/views/#{scope}/passwords/edit.html.erb"
+    assert_file "app/views/#{scope}/passwords/new.html.erb"
+    assert_file "app/views/#{scope}/registrations/new.html.erb"
+    assert_file "app/views/#{scope}/registrations/edit.html.erb"
+    assert_file "app/views/#{scope}/sessions/new.html.erb"
+    assert_file "app/views/#{scope}/shared/_links.erb"
+    assert_file "app/views/#{scope}/unlocks/new.html.erb"
   end
-
 end

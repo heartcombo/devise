@@ -3,8 +3,8 @@ PATH
   specs:
     devise (1.2.rc)
       bcrypt-ruby (~> 2.1.2)
-      orm_adapter (~> 0.0.2)
-      warden (~> 1.0.2)
+      orm_adapter (~> 0.0.3)
+      warden (~> 1.0.3)
 
 GEM
   remote: http://rubygems.org/
@@ -129,7 +129,7 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
-    warden (1.0.2)
+    warden (1.0.3)
       rack (>= 1.0.0)
     weakling (0.0.4-java)
     webrat (0.7.2)
@@ -152,9 +152,9 @@ DEPENDENCIES
   mongoid (= 2.0.0.beta.20)
   oa-oauth
   oa-openid
-  orm_adapter (~> 0.0.2)
+  orm_adapter (~> 0.0.3)
   rails (~> 3.0.0)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
-  warden (~> 1.0.2)
+  warden (~> 1.0.3)
   webrat (= 0.7.2)

@@ -2,6 +2,9 @@ class Devise::RegistrationsController < ApplicationController
   prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, :only => [:edit, :update, :destroy]
   include Devise::Controllers::InternalHelpers
+  include ActiveModel::MassAssignmentSecurity
+
+  attr_accessible :email, :password, :password_confirmation, :current_password
 
   # GET /resource/sign_up
   def new
@@ -35,7 +38,7 @@ class Devise::RegistrationsController < ApplicationController
 
   # PUT /resource
   def update
-    if resource.update_with_password(params[resource_name])
+    if resource.update_with_password(safe_params)
       set_flash_message :notice, :updated
       sign_in resource_name, resource, :bypass => true
       redirect_to after_update_path_for(resource)
@@ -67,7 +70,7 @@ class Devise::RegistrationsController < ApplicationController
     # Build a devise resource passing in the session. Useful to move
     # temporary session data to the newly created user.
     def build_resource(hash=nil)
-      hash ||= params[resource_name] || {}
+      hash ||= safe_params || {}
       self.resource = resource_class.new_with_session(hash, session)
     end
 
@@ -106,5 +109,11 @@ class Devise::RegistrationsController < ApplicationController
     def authenticate_scope!
       send(:"authenticate_#{resource_name}!")
       self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    end
+
+    # Filter params for this resource using ActiveModel::MassAssignmentSecurity
+    # White-listed params are specified in the controller, not the model.
+    def safe_params
+      sanitize_for_mass_assignment(params[resource_name])
     end
 end

@@ -111,7 +111,7 @@ After you choose which modules to use, you need to set up your migrations. Lucki
     t.timestamps
   end
 
-Devise doesn't use _attr_accessible_ or _attr_protected_ inside its modules, so be sure to define attributes as accessible or protected in your model.
+Devise doesn't use _attr_accessible_ or _attr_protected_ inside its modules, but it filters input parameters in its own controllers using {ActiveModel::MassAssignmentSecurity}[http://api.rubyonrails.org/classes/ActiveModel/MassAssignmentSecurity/ClassMethods.html].  It's up to you to filter your params passed to your model, either in your controllers, or using _attr_accessible_ or _attr_protected_.
 
 Configure your routes after setting up your model. Open your config/routes.rb file and add:
 

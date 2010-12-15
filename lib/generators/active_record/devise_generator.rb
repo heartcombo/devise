@@ -18,10 +18,7 @@ module ActiveRecord
       end
 
       def inject_devise_content
-        inject_into_class model_path, class_name, model_contents + <<-CONTENT
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-CONTENT
+        inject_into_class model_path, class_name, model_contents
       end
     end
   end

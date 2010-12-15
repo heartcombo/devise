@@ -78,6 +78,17 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_contain 'You need to sign in or sign up before continuing.'
   end
 
+  test 'a guest cannot set arbitrary attributes on signup' do
+    post user_registration_path, :user => {
+      :email => "test@example.org",
+      :password => "123456",
+      :password_confirmation => "123456",
+      :facebook_token => "owned" }
+    user = User.first
+    assert_equal "test@example.org", user.email
+    assert_nil user.facebook_token
+  end
+
   test 'a signed in user should not be able to access sign up' do
     sign_in_as_user
     get new_user_registration_path
@@ -175,5 +186,18 @@ class RegistrationTest < ActionController::IntegrationTest
     get "/users/cancel"
     assert_nil @request.session["devise.foo_bar"]
     assert_redirected_to new_user_registration_path
+  end
+
+  test 'a signed in user cannot alter arbitrary attributes by posting extra params' do
+    user = sign_in_as_user :password => "123456", :email => "original@example.org"
+
+    put "/users", :user => {
+      :current_password => "123456",
+      :email => "new@example.org",
+      :facebook_token => "owned" }
+
+    user.reload
+    assert_equal "new@example.org", user.email
+    assert_nil user.facebook_token
   end
 end

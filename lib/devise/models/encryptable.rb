@@ -26,7 +26,11 @@ module Devise
 
       # Generates password salt.
       def password=(new_password)
-        self.password_salt = self.class.password_salt if new_password.present?
+        if new_password.present?
+          self.password_salt = self.class.password_salt
+        elsif self.class.password_allow_blank
+          self.password_salt = nil
+        end
         super
       end
 
@@ -45,11 +49,13 @@ module Devise
       def password_digest(password)
         if self.password_salt.present?
           self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)
+        elsif password.blank? && self.class.password_allow_blank
+          ""
         end
       end
 
       module ClassMethods
-        Devise::Models.config(self, :encryptor)
+        Devise::Models.config(self, :encryptor, :password_allow_blank)
 
         # Returns the class for the configured encryptor.
         def encryptor_class

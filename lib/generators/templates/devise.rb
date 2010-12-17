@@ -80,6 +80,9 @@ Devise.setup do |config|
   # Range for password length. Default is 6..20.
   # config.password_length = 6..20
 
+  # Whether to allow blank passwords. Default is false
+  # config.password_allow_blank = false
+
   # Regex to use to validate the email address
   # config.email_regexp = /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/i
 

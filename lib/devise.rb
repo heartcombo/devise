@@ -95,6 +95,10 @@ module Devise
   mattr_accessor :password_length
   @@password_length = 6..20
 
+  # Presence validation for password
+  mattr_accessor :password_allow_blank
+  @@password_allow_blank = false
+
   # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks

@@ -28,12 +28,20 @@ module Devise
       # Generates password encryption based on the given value.
       def password=(new_password)
         @password = new_password
-        self.encrypted_password = password_digest(@password) if @password.present?
+        if @password.present?
+          self.encrypted_password = password_digest(@password)
+        elsif self.class.password_allow_blank
+          self.encrypted_password = ""
+        end
       end
 
       # Verifies whether an incoming_password (ie from sign in) is the user password.
       def valid_password?(password)
-        ::BCrypt::Password.new(self.encrypted_password) == "#{password}#{self.class.pepper}"
+        if password.blank? && self.class.password_allow_blank
+          self.encrypted_password == ""
+        else
+          ::BCrypt::Password.new(self.encrypted_password) == "#{password}#{self.class.pepper}"
+        end
       end
 
       # Set password and password confirmation to nil
@@ -85,7 +93,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :stretches)
+        Devise::Models.config(self, :pepper, :stretches, :password_allow_blank)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on

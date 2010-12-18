@@ -37,8 +37,8 @@ module Devise
 
       # Verifies whether an incoming_password (ie from sign in) is the user password.
       def valid_password?(password)
-        if password.blank? && self.class.password_allow_blank
-          self.encrypted_password == ""
+        if self.encrypted_password.blank? && self.class.password_allow_blank
+          self.encrypted_password == password
         else
           ::BCrypt::Password.new(self.encrypted_password) == "#{password}#{self.class.pepper}"
         end

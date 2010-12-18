@@ -28,7 +28,7 @@ module Devise
           validates_format_of     :email, :with  => email_regexp, :allow_blank => true
 
           with_options :if => :password_required? do |v|
-            v.validates_presence_of     :password unless password_allow_blank
+            v.validates_presence_of     :password, :unless => :password_allow_blank?
             v.validates_confirmation_of :password
             v.validates_length_of       :password, :within => password_length, :allow_blank => true
           end
@@ -55,6 +55,10 @@ module Devise
 
       def email_required?
         true
+      end
+
+      def password_allow_blank?
+        self.class.password_allow_blank
       end
 
       module ClassMethods

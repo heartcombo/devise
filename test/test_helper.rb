@@ -22,3 +22,8 @@ Devise::OmniAuth.test_mode!
 # Add support to load paths so we can overwrite broken webrat setup
 $:.unshift File.expand_path('../support', __FILE__)
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+
+# For generators
+require "rails/generators/test_case"
+require "generators/devise/install_generator"
+require "generators/devise/views_generator"

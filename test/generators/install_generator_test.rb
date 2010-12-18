@@ -1,4 +1,4 @@
-require File.expand_path("../generators_test_helper", __FILE__)
+require "test_helper"
 
 class InstallGeneratorTest < Rails::Generators::TestCase
   tests Devise::Generators::InstallGenerator

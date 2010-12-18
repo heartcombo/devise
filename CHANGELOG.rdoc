@@ -1,3 +1,7 @@
+* bug fix
+  * Fix an issue causing infinite redirects in production
+  * rails g destroy now works properly with devise generators (by github.com/andmej)
+
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)
 

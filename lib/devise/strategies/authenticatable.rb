@@ -91,7 +91,7 @@ module Devise
 
       # Check if password is present and is not equal to "X" (default value for token).
       def valid_password?
-        (Devise.password_allow_blank || password.present?) && password != "X"
+        (mapping.to.password_allow_blank || password.present?) && password != "X"
       end
 
       # Helper to decode credentials from HTTP.

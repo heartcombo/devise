@@ -1,6 +1,8 @@
-require File.expand_path("../generators_test_helper", __FILE__)
+require "test_helper"
 
-if DEVISE_ORM == :mongoid
+if DEVISE_ORM == :mongo_id
+  require "generators/mongo_id/devise_generator"
+
   class MongoidGeneratorTest < Rails::Generators::TestCase
     tests Mongoid::Generators::DeviseGenerator
     destination File.expand_path("../../tmp", __FILE__)

@@ -1,6 +1,8 @@
-require File.expand_path("../generators_test_helper", __FILE__)
+require "test_helper"
 
 if DEVISE_ORM == :active_record
+  require "generators/active_record/devise_generator"
+
   class ActiveRecordGeneratorTest < Rails::Generators::TestCase
     tests ActiveRecord::Generators::DeviseGenerator
     destination File.expand_path("../../tmp", __FILE__)

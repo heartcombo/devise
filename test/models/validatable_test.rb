@@ -40,6 +40,28 @@ class ValidatableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not require password to be set when password_allow_blank is true' do
+    swap Devise, :password_allow_blank => true do
+      user = new_user(:password => '', :password_confirmation => '')
+      assert user.valid?
+    end
+  end
+
+  test 'still accepts passwords when password_allow_blank is true' do
+    swap Devise, :password_allow_blank => true do
+      user = new_user(:password => 'new_password', :password_confirmation => 'new_password')
+      assert user.valid?
+    end
+  end
+
+  test 'still requires confirmation to be set when password allow_blank is true' do
+    swap Devise, :password_allow_blank => true do
+      user = new_user(:password => 'new_password', :password_confirmation => 'blabla')
+      assert user.invalid?
+      assert_equal 'doesn\'t match confirmation', user.errors[:password].join
+    end
+  end
+
   test 'should require password to be set when creating a new record' do
     user = new_user(:password => '', :password_confirmation => '')
     assert user.invalid?

@@ -27,6 +27,8 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = User.new
     user.encrypted_password = nil
     assert_nil user.authenticatable_salt
+    user.encrypted_password = ''
+    assert_equal '', user.authenticatable_salt
   end
 
   test 'should not generate encrypted password if password is blank' do
@@ -48,6 +50,14 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_not user.valid_password?('654321')
   end
 
+  test 'should test for a valid password even if it is blank' do
+    swap Devise, :password_allow_blank => true do
+      user = create_user(:password => '', :password_confirmation => '')
+      assert user.valid_password?('')
+      assert_not user.valid_password?('123456')
+    end
+  end
+
   test 'should respond to current password' do
     assert new_user.respond_to?(:current_password)
   end
@@ -57,6 +67,25 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.update_with_password(:current_password => '123456',
       :password => 'pass321', :password_confirmation => 'pass321')
     assert user.reload.valid_password?('pass321')
+  end
+
+  test 'can update password from blank to something when password_allow_blank is true' do
+    swap Devise, :password_allow_blank => true do
+      user = create_user(:password => '', :password_confirmation => '')
+      assert user.update_with_password(:current_password => '',
+        :password => 'pass321', :password_confirmation => 'pass321')
+      assert user.reload.valid_password?('pass321')
+    end
+  end
+
+  test 'cannot use update_with_password to set blank password even when password_allow_blank is true' do
+    # application author must explicitely use password= to set blank password
+    swap Devise, :password_allow_blank => true do
+      user = create_user
+      assert user.update_with_password(:current_password => '123456',
+        :password => '', :password_confirmation => '')
+      assert_not user.reload.valid_password?('')
+    end
   end
 
   test 'should add an error to current password when it is invalid' do

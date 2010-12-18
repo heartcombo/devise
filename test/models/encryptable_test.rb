@@ -21,6 +21,25 @@ class EncryptableTest < ActiveSupport::TestCase
     assert_present create_admin.password_salt
   end
 
+  test 'should set salt to nil when setting a blank password' do
+    swap Devise, :password_allow_blank => true do
+      admin = create_admin
+      assert_not_nil admin.password_salt
+      admin.password = ''
+      admin.password_confirmation = ''
+      admin.save!
+      assert_nil admin.password_salt
+    end
+  end
+
+  test 'should approve of blank password when password_allow_blank is true' do
+    swap Devise, :password_allow_blank => true do
+      admin = create_admin(:password => '', :password_confirmation => '')
+      assert admin.valid_password?('')
+      assert_not admin.valid_password?('password')
+    end
+  end
+
   test 'should not change password salt when updating' do
     admin = create_admin
     salt = admin.password_salt
@@ -61,5 +80,16 @@ class EncryptableTest < ActiveSupport::TestCase
     admin.password_salt = nil
     admin.save
     assert_not admin.valid_password?('123456')
+    assert_not admin.valid_password?('')
+  end
+
+  test 'should not validate given password when salt is nil, even if password_allow_blank is true' do
+    swap Devise, :password_allow_blank => true do
+      admin = create_admin
+      admin.password_salt = nil
+      admin.save
+      assert_not admin.valid_password?('123456')
+      assert_not admin.valid_password?('')
+    end
   end
 end

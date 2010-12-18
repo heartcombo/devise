@@ -204,6 +204,11 @@ module Devise
   @@warden_config = nil
   @@warden_config_block = nil
 
+  # Store whether the route file was already loaded.
+  mattr_accessor :routes_loaded
+  @@routes_loaded = false
+  @@routes_prepare = []
+
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup
@@ -358,6 +363,25 @@ module Devise
   # Generate a friendly string randomically to be used as token.
   def self.friendly_token
     ActiveSupport::SecureRandom.base64(44).tr('+/=', 'xyz')
+  end
+
+  # Store a block to be executed only after the routes are loaded.
+  # Required on config.cache_classes environment as a class may be
+  # loaded to early and then some configuration wouldn't apply.
+  def self.routes_prepare
+    if Rails.application.config.cache_classes || !routes_loaded
+      @@routes_prepare << Proc.new
+    else
+      yield
+    end
+  end
+
+  # Invoke the stored routes prepare blocks and set routes_loaded to true.
+  def self.call_routes_prepare!
+    while block = @@routes_prepare.shift
+      block.call
+    end
+    @routes_loaded = true
   end
 end
 

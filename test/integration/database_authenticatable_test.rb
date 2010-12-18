@@ -30,6 +30,13 @@ class DatabaseAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
+  test 'sign in should authenticate with blank password if that is allowed' do
+    swap Devise, :password_allow_blank => true do
+      sign_in_as_user(:password => '', :password_confirmation => '')
+      assert warden.authenticated?(:user)
+    end
+  end
+
   test 'sign in with invalid email should return to sign in form with error message' do
     sign_in_as_admin do
       fill_in 'email', :with => 'wrongemail@test.com'

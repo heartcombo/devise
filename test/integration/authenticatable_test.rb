@@ -205,6 +205,13 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
     assert_nil session[:"user_return_to"]
   end
 
+  test 'sign in with xml format returns xml response' do
+    create_user
+    post user_session_path(:format => 'xml', :user => {:email => "user@test.com", :password => '123456'})
+    assert_response :success
+    assert_match /<\?xml version="1.0" encoding="UTF-8"\?>/, response.body
+  end
+
   test 'redirect to configured home path for a given scope after sign in' do
     sign_in_as_admin
     assert_equal "/admin_area/home", @request.path

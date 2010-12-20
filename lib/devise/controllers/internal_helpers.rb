@@ -60,6 +60,11 @@ module Devise
         unknown_action!("Could not find devise mapping for path #{request.fullpath.inspect}") unless devise_mapping
       end
 
+      # Check whether it's navigational format, such as :html or :iphone, or not.
+      def is_navigational_format?
+        Devise.navigational_formats.include?(request.format.to_sym)
+      end
+
       def unknown_action!(msg)
         logger.debug "[Devise] #{msg}" if logger
         raise ActionController::UnknownAction, msg

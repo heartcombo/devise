@@ -44,7 +44,7 @@ module Devise
           env = @controller.request.env
           env["PATH_INFO"] = "/#{result[:action]}"
           env["warden.options"] = result
-          Warden::Manager._before_failure.each{ |hook| hook.call(env, result) }
+          Warden::Manager._before_failure.each{ |hook| hook.first.call(env, result) }
 
           status, headers, body = Devise::FailureApp.call(env).to_a
           @controller.send :render, :status => status, :text => body,

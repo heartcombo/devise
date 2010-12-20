@@ -90,14 +90,30 @@ class ControllerAuthenticableTest < ActionController::TestCase
 
   test 'sign in proxy to set_user on warden' do
     user = User.new
+    @mock_warden.expects(:user).returns(nil)
     @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
     @controller.sign_in(:user, user)
   end
 
   test 'sign in accepts a resource as argument' do
     user = User.new
+    @mock_warden.expects(:user).returns(nil)
     @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
     @controller.sign_in(user)
+  end
+
+  test 'does not sign in again if the user is already in' do
+    user = User.new
+    @mock_warden.expects(:user).returns(user)
+    @mock_warden.expects(:set_user).never
+    @controller.sign_in(user)
+  end
+
+  test 'sign in again when the user is already in only if force is given' do
+    user = User.new
+    @mock_warden.expects(:user).returns(user)
+    @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
+    @controller.sign_in(user, :force => true)
   end
 
   test 'sign in accepts bypass as option' do

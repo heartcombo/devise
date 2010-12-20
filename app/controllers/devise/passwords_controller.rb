@@ -2,6 +2,8 @@ class Devise::PasswordsController < ApplicationController
   prepend_before_filter :require_no_authentication
   include Devise::Controllers::InternalHelpers
 
+  respond_to :html, :xml, :json
+
   # GET /resource/password/new
   def new
     build_resource({})
@@ -13,10 +15,13 @@ class Devise::PasswordsController < ApplicationController
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
 
     if resource.errors.empty?
-      set_flash_message :notice, :send_instructions
-      redirect_to new_session_path(resource_name)
+      set_flash_message(:notice, :send_instructions) if is_navigational_format?
+      respond_with self.resource, :location => new_session_path(resource_name)
     else
-      render_with_scope :new
+      respond_to do |format|
+        format.html { render_with_scope :new }
+        format.any(:xml, :json) { render request.format.to_sym => { :errors => self.resource.errors }, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -32,10 +37,14 @@ class Devise::PasswordsController < ApplicationController
     self.resource = resource_class.reset_password_by_token(params[resource_name])
 
     if resource.errors.empty?
-      set_flash_message :notice, :updated
-      sign_in_and_redirect(resource_name, resource)
+      set_flash_message(:notice, :updated) if is_navigational_format?
+      sign_in(resource_name, resource)
+      respond_with resource, :location => redirect_location(resource_name, resource)
     else
-      render_with_scope :edit
+      respond_to do |format|
+        format.html { render_with_scope :edit }
+        format.any(:xml, :json) { render request.format.to_sym => { :errors => self.resource.errors }, :status => :unprocessable_entity }
+      end
     end
   end
 end

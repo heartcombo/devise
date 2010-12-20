@@ -206,7 +206,11 @@ module Devise
       end
 
       def redirect_for_sign_in(scope, resource) #:nodoc:
-        redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
+        redirect_to redirect_location(scope, resource)
+      end
+
+      def redirect_location(scope, resource) #:nodoc:
+        stored_location_for(scope) || after_sign_in_path_for(resource)
       end
 
       # Sign out an user and tries to redirect to the url specified by

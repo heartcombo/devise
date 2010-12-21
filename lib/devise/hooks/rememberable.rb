@@ -24,7 +24,8 @@ end
 # won't be remembered again.
 # Notice that we forget the user if the record is frozen. This usually means the
 # user was just deleted.
-Warden::Manager.before_logout do |record, warden, scope|
+Warden::Manager.before_logout do |record, warden, options|
+  scope = options[:scope]
   if record.respond_to?(:forget_me!)
     record.forget_me! unless record.frozen?
     warden.response.delete_cookie "remember_#{scope}_token"

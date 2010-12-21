@@ -28,6 +28,6 @@ Warden::Manager.before_logout do |record, warden, options|
   scope = options[:scope]
   if record.respond_to?(:forget_me!)
     record.forget_me! unless record.frozen?
-    warden.response.delete_cookie "remember_#{scope}_token"
+    warden.response.delete_cookie "remember_#{scope}_token", :path => "/"
   end
 end

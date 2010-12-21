@@ -67,5 +67,6 @@ class RememberMeTest < ActionController::IntegrationTest
     get destroy_user_session_path
     get users_path
     assert_not warden.authenticated?(:user)
+    assert_equal cookies['remember_user_token'], ''
   end
 end

@@ -4,8 +4,8 @@
 # in each request and in case the user is using other strategies beside Devise ones.
 Warden::Manager.after_set_user do |record, warden, options|
   if record && record.respond_to?(:active?) && !record.active?
-    scope = options[:scope]
-    warden.logout(scope)
-    throw :warden, :scope => scope, :message => record.inactive_message
+    warden.logout(options[:scope])
+    options.merge!(:message => record.inactive_message)
+    throw :warden, options
   end
 end

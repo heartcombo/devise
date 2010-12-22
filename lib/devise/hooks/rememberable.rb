@@ -14,7 +14,8 @@ module Devise
           configuration = {
             :value => resource.class.serialize_into_cookie(resource),
             :expires => resource.remember_expires_at,
-            :path => "/"
+            :path => "/",
+            :httponly => true
           }
 
           configuration[:domain] = resource.cookie_domain if resource.cookie_domain?

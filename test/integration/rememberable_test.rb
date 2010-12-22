@@ -54,6 +54,7 @@ class RememberMeTest < ActionController::IntegrationTest
     assert_response :success
     assert warden.authenticated?(:user)
     assert warden.user(:user) == user
+    assert_match /remember_user_token[^\n]*HttpOnly\n/, response.headers["Set-Cookie"], "Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie."
   end
 
   test 'does not extend remember period through sign in' do

@@ -28,9 +28,9 @@ class RememberMeTest < ActionController::IntegrationTest
   end
 
   def cookie_expires(key)
-    cookie = response.headers["Set-Cookie"].split("\n").grep(/^#{key}/).first
-    cookie.split(";").map(&:strip).grep(/^expires=/)
-    Time.parse($')
+    cookie  = response.headers["Set-Cookie"].split("\n").grep(/^#{key}/).first
+    expires = cookie.split(";").map(&:strip).grep(/^expires=/).first
+    Time.parse(expires)
   end
 
   test 'do not remember the user if he has not checked remember me option' do

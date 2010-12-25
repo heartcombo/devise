@@ -18,11 +18,14 @@ module Devise
 
       def cookie_values(resource)
         options = Rails.configuration.session_options.slice(:path, :domain, :secure)
+        options[:httponly] = true
+
         options.merge!(resource.cookie_options)
         options.merge!(
           :value => resource.class.serialize_into_cookie(resource),
           :expires => resource.remember_expires_at
         )
+
         options
       end
 

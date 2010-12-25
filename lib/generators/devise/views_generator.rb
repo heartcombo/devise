@@ -1,3 +1,5 @@
+require 'tmpdir'
+
 module Devise
   module Generators
     class ViewsGenerator < Rails::Generators::Base
@@ -63,8 +65,7 @@ module Devise
 
       def create_and_copy_haml_views
         directory haml_tmp_root, "app/views/#{scope || :devise}"
-
-        FileUtils.rm_rf(@haml_tmp_root)
+        FileUtils.rm_rf(haml_tmp_root)
       end
 
       def create_and_copy_slim_views
@@ -73,29 +74,30 @@ module Devise
 
         directory slim_tmp_root, "app/views/#{scope || :devise}"
 
-        FileUtils.rm_rf(@haml_tmp_root)
+        FileUtils.rm_rf(haml_tmp_root)
         FileUtils.rm_rf(slim_tmp_root)
       end
 
     private
 
       def create_haml_views
-        require 'tmpdir'
-        html_root      = "#{self.class.source_root}/devise"
-        @haml_tmp_root = Dir.mktmpdir("devise-haml.")
+        @haml_tmp_root ||= begin
+          html_root     = "#{self.class.source_root}/devise"
+          haml_tmp_root = Dir.mktmpdir("devise-haml.")
 
-        Dir["#{html_root}/**/*"].each do |path|
-          relative_path = path.sub(html_root, "")
-          source_path   = (@haml_tmp_root + relative_path).sub(/erb$/, "haml")
+          Dir["#{html_root}/**/*"].each do |path|
+            relative_path = path.sub(html_root, "")
+            source_path   = (@haml_tmp_root + relative_path).sub(/erb$/, "haml")
 
-          if File.directory?(path)
-            FileUtils.mkdir_p(source_path)
-          else
-            `html2haml -r #{path} #{source_path}`
+            if File.directory?(path)
+              FileUtils.mkdir_p(source_path)
+            else
+              `html2haml -r #{path} #{source_path}`
+            end
           end
-        end
 
-        @haml_tmp_root
+          haml_tmp_root
+        end
       end
 
       alias :haml_tmp_root :create_haml_views

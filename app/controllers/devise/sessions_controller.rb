@@ -2,8 +2,6 @@ class Devise::SessionsController < ApplicationController
   prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
   include Devise::Controllers::InternalHelpers
 
-  respond_to :html, :xml, :json
-
   # GET /resource/sign_in
   def new
     clean_up_passwords(build_resource)

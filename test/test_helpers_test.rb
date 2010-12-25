@@ -81,15 +81,22 @@ class TestHelpersTest < ActionController::TestCase
       Warden::Manager._before_logout.pop
     end
   end
-  
-  test "before_failer call should work" do
-    Warden::Manager.before_failure do |env,opts|
-      # Do nothing
-    end
-    user = create_user
-    user.confirm!
 
-    sign_in user
+  test "before_failure call should work" do
+    begin
+      executed = false
+      Warden::Manager.before_failure do |env,opts|
+        executed = true
+      end
+
+      user = create_user
+      sign_in user
+
+      get :index
+      assert executed
+    ensure
+      Warden::Manager._before_failure.pop
+    end
   end
 
   test "allows to sign in with different users" do

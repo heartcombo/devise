@@ -5,7 +5,6 @@
 Warden::Manager.after_set_user do |record, warden, options|
   if record && record.respond_to?(:active?) && !record.active?
     warden.logout(options[:scope])
-    options.merge!(:message => record.inactive_message)
-    throw :warden, options
+    throw :warden, options.merge(:message => record.inactive_message)
   end
 end

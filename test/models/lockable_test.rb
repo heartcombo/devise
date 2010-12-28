@@ -186,15 +186,6 @@ class LockableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should require all authentication_keys' do
-    swap Devise, :authentication_keys => [:username, :email] do
-      user = create_user
-      unlock_user = User.send_unlock_instructions(:email => user.email)
-      assert_not unlock_user.persisted?
-      assert_equal "can't be blank", unlock_user.errors[:username].join
-    end
-  end
-
   test 'should not be able to send instructions if the user is not locked' do
     user = create_user
     assert_not user.resend_unlock_token

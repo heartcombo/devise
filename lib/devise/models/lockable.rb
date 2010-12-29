@@ -15,6 +15,7 @@ module Devise
     #   * +lock_strategy+: lock the user account by :failed_attempts or :none.
     #   * +unlock_strategy+: unlock the user account by :time, :email, :both or :none.
     #   * +unlock_in+: the time you want to lock the user after to lock happens. Only available when unlock_strategy is :time or :both.
+    #   * +unlock_keys+: the keys you want to use when locking and unlocking an account
     #
     module Lockable
       extend  ActiveSupport::Concern
@@ -161,11 +162,7 @@ module Devise
           Devise.friendly_token
         end
 
-        def unlock_keys
-          [:email]
-        end
-
-        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in)
+        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in, :unlock_keys)
       end
     end
   end

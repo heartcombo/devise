@@ -143,6 +143,10 @@ module Devise
   mattr_accessor :lock_strategy
   @@lock_strategy = :failed_attempts
 
+  # Defines which key will be used when locking and unlocking an account
+  mattr_accessor :unlock_keys
+  @@unlock_keys = [ :email ]
+
   # Defines which strategy can be used to unlock an account.
   # Values: :email, :time, :both
   mattr_accessor :unlock_strategy
@@ -155,6 +159,10 @@ module Devise
   # Time interval to unlock the account if :time is defined as unlock_strategy.
   mattr_accessor :unlock_in
   @@unlock_in = 1.hour
+
+  # Defines which key will be used when recovering the password for an account
+  mattr_accessor :reset_password_keys
+  @@reset_password_keys = [ :email ]
 
   # The default scope which is used by warden.
   mattr_accessor :default_scope

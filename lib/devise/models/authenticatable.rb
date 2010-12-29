@@ -77,7 +77,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :authentication_keys, :request_keys, :case_insensitive_keys, :http_authenticatable, :params_authenticatable)
+        Devise::Models.config(self, :authentication_keys, :request_keys, :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :require_current_password_for_all_changes)
 
         def params_authenticatable?(strategy)
           params_authenticatable.is_a?(Array) ?

@@ -54,6 +54,10 @@ module Devise
 
         result = if valid_password?(current_password)
           update_attributes(params)
+        elsif !self.class.require_current_password_for_all_changes && params[:password].blank?
+          params.delete(:password)
+          params.delete(:password_confirmation)
+          update_attributes(params)
         else
           self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           self.attributes = params

@@ -55,6 +55,11 @@ module Devise
   mattr_accessor :cookie_options
   @@cookie_options = {}
 
+  # Is the user's current password required to change all attributes on the model,
+  # or just when changing the user's password?
+  mattr_accessor :require_current_password_for_all_changes
+  @@require_current_password_for_all_changes = true
+
   # The number of times to encrypt password.
   mattr_accessor :stretches
   @@stretches = 10

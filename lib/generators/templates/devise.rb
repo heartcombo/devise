@@ -48,6 +48,11 @@ Devise.setup do |config|
   # The realm used in Http Basic Authentication. "Application" by default.
   # config.http_authentication_realm = "Application"
 
+  # If false, the signed-in user only needs to supply their current password when
+  # attempting to change their password, as opposed requiring it when changing other
+  # attributes on the model (the default).
+  # config.require_current_password_for_all_changes = false
+
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.

@@ -12,7 +12,7 @@ class Devise::ConfirmationsController < ApplicationController
     self.resource = resource_class.send_confirmation_instructions(params[resource_name])
 
     if resource.errors.empty?
-      set_flash_message :notice, :send_instructions
+      set_flash_message Devise.flash_keys[:success], :send_instructions
       redirect_to new_session_path(resource_name)
     else
       render_with_scope :new
@@ -24,7 +24,7 @@ class Devise::ConfirmationsController < ApplicationController
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
 
     if resource.errors.empty?
-      set_flash_message :notice, :confirmed
+      set_flash_message Devise.flash_keys[:success], :confirmed
       sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :new

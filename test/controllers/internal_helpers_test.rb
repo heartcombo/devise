@@ -57,16 +57,16 @@ class HelpersTest < ActionController::TestCase
   test 'does not issue blank flash messages' do
     MyController.send(:public, :set_flash_message)
     I18n.stubs(:t).returns('   ')
-    @controller.set_flash_message :notice, :send_instructions
-    assert flash[:notice].nil?
+    @controller.set_flash_message Devise.flash_keys[:success], :send_instructions
+    assert flash[Devise.flash_keys[:success]].nil?
     MyController.send(:protected, :set_flash_message)
   end
 
   test 'issues non-blank flash messages normally' do
     MyController.send(:public, :set_flash_message)
     I18n.stubs(:t).returns('non-blank')
-    @controller.set_flash_message :notice, :send_instructions
-    assert flash[:notice] == 'non-blank'
+    @controller.set_flash_message Devise.flash_keys[:success], :send_instructions
+    assert flash[Devise.flash_keys[:success]] == 'non-blank'
     MyController.send(:protected, :set_flash_message)
   end
 end

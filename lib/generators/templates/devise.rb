@@ -164,6 +164,11 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :get.
   # config.sign_out_via = :get
 
+  # ==> Flash key configuration
+  # Configure which keys are used in flash messages.
+  # The defaults are {:success => :notice, :error => :failure}.
+  # config.flash_keys = {:success => :notice, :error => :failure}
+
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.

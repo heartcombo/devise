@@ -233,6 +233,17 @@ module Devise
     self.cookie_options[:domain] = value
   end
 
+  # Keys used in flash messages.
+  def self.flash_keys
+    @@flash_keys
+  end
+
+  # Set keys used in flash messages. Merge with default settings.
+  def self.flash_keys=(keys)
+    @@flash_keys.merge! keys
+  end
+  @@flash_keys = {:success => :notice, :error => :failure}
+
   # Get the mailer class from the mailer reference object.
   def self.mailer
     @@mailer_ref.get

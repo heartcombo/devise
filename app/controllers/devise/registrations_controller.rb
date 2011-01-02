@@ -9,7 +9,7 @@ class Devise::RegistrationsController < ApplicationController
     render_with_scope :new
   end
 
-  # POST /resource/sign_up
+  # POST /resource
   def create
     build_resource
 

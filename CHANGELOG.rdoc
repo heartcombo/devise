@@ -4,7 +4,6 @@
 * bug fix
   * Fix an issue causing infinite redirects in production
   * rails g destroy works properly with devise generators (by github.com/andmej)
-  * recall options is now passed forward by hooks (by github.com/siong1987)
   * before_failure callbacks should work on test helpers (by github.com/twinge)
   * rememberable cookie now is httponly by default (by github.com/JamesFerguson)
 

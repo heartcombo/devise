@@ -13,7 +13,7 @@ Warden::Manager.after_set_user do |record, warden, options|
       path_checker = Devise::PathChecker.new(warden.env, scope)
       unless path_checker.signing_out?
         warden.logout(scope)
-        throw :warden, options.merge(:message => :timeout)
+        throw :warden, :scope => scope, :message => :timeout
       end
     end
 

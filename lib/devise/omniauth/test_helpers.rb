@@ -40,8 +40,8 @@ module Devise
           next unless m.omniauthable?
 
           module_eval <<-ALIASES, __FILE__, __LINE__ + 1
-            def #{m.name}_omniauth_authorize_path(provider)
-              #{m.name}_omniauth_callback_path(provider)
+            def #{m.name}_omniauth_authorize_path(provider, params = {})
+              #{m.name}_omniauth_callback_path(provider, params)
             end
           ALIASES
         end

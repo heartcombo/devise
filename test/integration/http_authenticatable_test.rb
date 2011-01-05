@@ -51,7 +51,7 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
     token = "token_containing_so_many_characters_that_the_base64_encoding_will_wrap"
     user = create_user
     user.update_attribute :authentication_token, token
-    get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{token}:x")}"
+    get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("#{token}:X")}"
     assert_response :success
     assert_match "<email>user@test.com</email>", response.body
     assert warden.authenticated?(:user)

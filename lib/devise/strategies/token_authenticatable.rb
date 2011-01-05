@@ -8,14 +8,19 @@ module Devise
     #   http://myapp.example.com/?user_token=SECRET
     #
     # For HTTP, you can pass the token as username and blank password. Since some clients may require
-    # a password, you can pass "X" as password and it will simply be ignored.
+    # a password, you can pass "X" as either the password or the username.  The non-token field will
+    # be ignored.  For example:
+    #
+    #   curl -umytoken:X http://myurl or curl -uX:mytoken http://myurl
+    #
     class TokenAuthenticatable < Authenticatable
       def store?
         !mapping.to.stateless_token
       end
 
       def authenticate!
-        resource = mapping.to.find_for_token_authentication(authentication_hash)
+        auth=valid_password? ? authentication_hash.merge({authentication_keys.first=>self.password}) : authentication_hash
+        resource = mapping.to.find_for_token_authentication(auth)
 
         if validate(resource)
           resource.after_token_authentication

@@ -2,6 +2,26 @@ require 'test_helper'
 
 class TokenAuthenticationTest < ActionController::IntegrationTest
 
+  test 'authenticate with valid authentication token key and value through http with token in password' do
+    swap Devise, :token_authentication_key => :secret_token do
+      sign_in_as_new_user_with_token :http_auth=>true, :token_in_password=>true
+
+      assert_response :success
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'authenticate with valid authentication token key and value through http without password' do
+    swap Devise, :token_authentication_key => :secret_token do
+      sign_in_as_new_user_with_token :http_auth=>true, :blank_password=>true
+
+      assert_response :success
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
+    end
+  end
+
   test 'authenticate with valid authentication token key and value through params' do
     swap Devise, :token_authentication_key => :secret_token do
       sign_in_as_new_user_with_token
@@ -81,13 +101,20 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     def sign_in_as_new_user_with_token(options = {})
       options[:auth_token_key] ||= Devise.token_authentication_key
       options[:auth_token]     ||= VALID_AUTHENTICATION_TOKEN
-
+      options[:token_in_password] ||= false
+      options[:blank_password]||=false
       user = create_user(options)
       user.authentication_token = VALID_AUTHENTICATION_TOKEN
       user.save
 
       if options[:http_auth]
-        header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
+        if options[:token_in_password]
+          header = "Basic #{ActiveSupport::Base64.encode64("X:#{VALID_AUTHENTICATION_TOKEN}")}"
+        elsif options[:blank_password]                      
+          header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}")}"
+        else
+          header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
+        end
         get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => header
       else
         visit users_path(options[:auth_token_key].to_sym => options[:auth_token])

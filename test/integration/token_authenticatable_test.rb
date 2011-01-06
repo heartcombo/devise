@@ -2,6 +2,16 @@ require 'test_helper'
 
 class TokenAuthenticationTest < ActionController::IntegrationTest
 
+  test 'authenticate with valid authentication token key in username field and custom string in password field' do
+    swap Devise, :token_authentication_key => :secret_token, :non_token_auth_value => 'token' do
+      sign_in_as_new_user_with_token :http_auth=>true, :non_token_auth_value=>'token'
+
+      assert_response :success
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
+    end
+  end
+
   test 'authenticate with valid authentication token key and value through http with token in password' do
     swap Devise, :token_authentication_key => :secret_token do
       sign_in_as_new_user_with_token :http_auth=>true, :token_in_password=>true
@@ -103,17 +113,19 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
       options[:auth_token]     ||= VALID_AUTHENTICATION_TOKEN
       options[:token_in_password] ||= false
       options[:blank_password]||=false
+      options[:non_token_auth_value]||=Devise.non_token_auth_value
+      
       user = create_user(options)
       user.authentication_token = VALID_AUTHENTICATION_TOKEN
       user.save
 
       if options[:http_auth]
         if options[:token_in_password]
-          header = "Basic #{ActiveSupport::Base64.encode64("X:#{VALID_AUTHENTICATION_TOKEN}")}"
+          header = "Basic #{ActiveSupport::Base64.encode64("#{options[:non_token_auth_value]}:#{options[:auth_token]}")}"
         elsif options[:blank_password]                      
-          header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}")}"
+          header = "Basic #{ActiveSupport::Base64.encode64("#{options[:auth_token]}")}"
         else
-          header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
+          header = "Basic #{ActiveSupport::Base64.encode64("#{options[:auth_token]}:#{options[:non_token_auth_value]}")}"
         end
         get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => header
       else

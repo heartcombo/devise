@@ -175,6 +175,10 @@ module Devise
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
+  
+  # Dummy Authentication value when http client requires password in the auth header
+  mattr_accessor :non_token_auth_value
+  @@non_token_auth_value='X'  
 
   # If true, authentication through token does not store user in session
   mattr_accessor :stateless_token

@@ -1,6 +1,6 @@
 require 'devise/strategies/base'
 
-module Devise
+module Devise     
   module Strategies
     # Strategy for signing in a user, based on a authenticatable token. This works for both params
     # and http. For the former, all you need to do is to pass the params in the URL:
@@ -31,6 +31,11 @@ module Devise
       end
 
     private
+      
+      #Password is valid if it is present and not the default http auth value (default 'X')
+      def valid_password?
+        password.present? && password != Devise.non_token_auth_value
+      end
 
       # TokenAuthenticatable request is valid for any controller and any verb.
       def valid_request?

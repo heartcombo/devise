@@ -64,7 +64,12 @@ module Devise
     end
 
     def redirect_url
-      send(:"new_#{scope}_session_path")
+      request_format = request.format.to_sym
+      if request_format == :html
+        send(:"new_#{scope}_session_path")
+      else
+        send(:"new_#{scope}_session_path", :format => request_format)
+      end
     end
 
     # Choose whether we should respond in a http authentication fashion,

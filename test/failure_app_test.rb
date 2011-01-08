@@ -69,6 +69,13 @@ class FailureTest < ActiveSupport::TestCase
         assert_equal 302, @response.first
       end
     end
+    
+    test 'redirects the correct format if it is a non-html format request' do
+      swap Devise, :navigational_formats => [:js] do
+        call_failure('formats' => :js)
+        assert_equal 'http://test.host/users/sign_in.js', @response.second["Location"]
+      end
+    end
   end
 
   context 'For HTTP request' do
@@ -120,7 +127,7 @@ class FailureTest < ActiveSupport::TestCase
           swap Devise, :http_authenticatable_on_xhr => false do
             call_failure('formats' => :json, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
             assert_equal 302, @response.first
-            assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+            assert_equal 'http://test.host/users/sign_in.json', @response.second["Location"]
           end
         end
       end

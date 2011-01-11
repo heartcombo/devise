@@ -20,7 +20,7 @@ module Devise
     #
     # == Options
     #
-    # TokenAuthenticable adds the following options to devise_for:
+    # TokenAuthenticatable adds the following options to devise_for:
     #
     #   * +token_authentication_key+: Defines name of the authentication token params key. E.g. /users/sign_in?some_key=...
     #

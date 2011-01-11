@@ -2,7 +2,7 @@ require 'devise/hooks/activatable'
 
 module Devise
   module Models
-    # Authenticable module. Holds common settings for authentication.
+    # Authenticatable module. Holds common settings for authentication.
     #
     # == Options
     #

@@ -3,7 +3,7 @@ require 'bcrypt'
 
 module Devise
   module Models
-    # Authenticable Module, responsible for encrypting password and validating
+    # Authenticatable Module, responsible for encrypting password and validating
     # authenticity of a user while signing in.
     #
     # == Options

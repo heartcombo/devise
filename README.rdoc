@@ -70,6 +70,10 @@ We hope that you will consider contributing to Devise. Please read this short ov
 
 http://github.com/plataformatec/devise/wiki/Contributing
 
+=== Testing
+
+To run Devise's own test suite, `cd` into Devise's top-level directory and run `bundle install` and `rake`.  For the tests to pass, you will need to have a MongoDB server (version 1.6 or newer) running on your system.
+
 == Installation
 
 You can use the latest Rails 3 gem with the latest Devise gem:

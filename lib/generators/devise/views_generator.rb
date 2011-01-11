@@ -87,7 +87,7 @@ module Devise
 
           Dir["#{html_root}/**/*"].each do |path|
             relative_path = path.sub(html_root, "")
-            source_path   = (@haml_tmp_root + relative_path).sub(/erb$/, "haml")
+            source_path   = (haml_tmp_root + relative_path).sub(/erb$/, "haml")
 
             if File.directory?(path)
               FileUtils.mkdir_p(source_path)

@@ -107,7 +107,7 @@ class Devise::RegistrationsController < ApplicationController
       send(:"authenticate_#{resource_name}!")
       current_resource_meth = :"current_#{resource_name}"
       respond_to?(current_resource_meth) ?
-        return self.resource = resource_class.to_adapter.get!(send(current_resource_meth)).to_key :
+        (self.resource = resource_class.to_adapter.get!(send(current_resource_meth)).to_key) :
         nil
     end
 end

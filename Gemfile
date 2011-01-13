@@ -5,6 +5,7 @@ gemspec
 gem "rails", "~> 3.0.0"
 gem "oa-oauth", :require => "omniauth/oauth"
 gem "oa-openid", :require => "omniauth/openid"
+gem "oa-enterprise", :require => "omniauth/enterprise"
 
 group :test do
   gem "webrat", "0.7.2", :require => false

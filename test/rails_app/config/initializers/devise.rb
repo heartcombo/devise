@@ -159,6 +159,7 @@ Devise.setup do |config|
   # ==> OmniAuth
   config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :scope => 'email,offline_access'
   config.omniauth :open_id
+  config.omniauth :cas, :cas_server => "https://localhost:4443"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

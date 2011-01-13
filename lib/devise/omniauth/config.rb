@@ -11,7 +11,10 @@ module Devise
       end
 
       def strategy_class
-        ::OmniAuth::Strategies.const_get("#{::OmniAuth::Utils.camelize(@provider.to_s)}")
+        name = ::OmniAuth::Utils.camelize(@provider.to_s)
+        ::OmniAuth::Strategies.const_get(name)
+      rescue NameError
+        ::OmniAuth::Strategies.const_get(name.upcase)
       end
 
       def check_if_allow_stubs!

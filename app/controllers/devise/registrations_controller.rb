@@ -105,6 +105,9 @@ class Devise::RegistrationsController < ApplicationController
     # the current user in place.
     def authenticate_scope!
       send(:"authenticate_#{resource_name}!")
-      self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+      current_resource_meth = :"current_#{resource_name}"
+      respond_to?(current_resource_meth) ?
+        return self.resource = resource_class.to_adapter.get!(send(current_resource_meth)).to_key :
+        nil
     end
 end

@@ -47,7 +47,11 @@ module Devise
     def redirect
       store_location!
       flash[:alert] = i18n_message
-      redirect_to redirect_url
+      if (request.format.to_sym == :js)
+        self.response_body = "window.location='#{redirect_url}';"
+      else
+        redirect_to redirect_url
+      end
     end
 
   protected

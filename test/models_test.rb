@@ -49,7 +49,8 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   test 'raise error on invalid module' do
     assert_raise NameError do
-      Configurable.class_eval { devise :doesnotexist }
+      # Mix valid an invalid modules.
+      Configurable.class_eval { devise :database_authenticatable, :doesnotexit }
     end
   end
 

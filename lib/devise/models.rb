@@ -47,9 +47,9 @@ module Devise
     def devise(*modules)
       include Devise::Models::Authenticatable
       options = modules.extract_options!
-      self.devise_modules += modules.map(&:to_sym).uniq.sort do |s1, s2|
-        Devise::ALL.index(s1) <=> Devise::ALL.index(s2) # follow Devise::ALL order
-      end
+      self.devise_modules += modules.map(&:to_sym).uniq.sort_by { |s|
+        Devise::ALL.index(s) || -1  # follow Devise::ALL order
+      }
 
       devise_modules_hook! do
         devise_modules.each { |m| include Devise::Models.const_get(m.to_s.classify) }

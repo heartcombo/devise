@@ -24,7 +24,7 @@ It's composed of 12 modules:
 
 == Information
 
-=== The Devise Wiki
+=== The Devise wiki
 
 The Devise Wiki has lots of additional information about Devise including many "how-to" articles and answers to the most frequently asked questions. Please browse the Wiki after finishing this README:
 
@@ -36,11 +36,11 @@ If you discover a problem with Devise, we would like to know about it. However, 
 
 http://github.com/plataformatec/devise/wiki/Bug-reports
 
-If you found a security bug, do *NOT* use the GitHub Issue tracker. Send private GitHub message or email to the maintainers listed in the bottom of the README.
+If you found a security bug, do *NOT* use the GitHub issue tracker. Send email or a private GitHub message to the maintainers listed at the bottom of the README.
 
-=== Google Group
+=== Mailing list
 
-If you have any questions, comments, or concerns please use the Google Group instead of the GitHub Issues tracker:
+If you have any questions, comments, or concerns, please use the Google Group instead of the GitHub issue tracker:
 
 http://groups.google.com/group/plataformatec-devise
 
@@ -52,7 +52,7 @@ http://rubydoc.info/github/plataformatec/devise/master/frames
 
 If you need to use Devise with Rails 2.3, you can always run `gem server` from the command line after you install the gem to access the old documentation.
 
-=== Example Applications
+=== Example applications
 
 There are a few example applications available on GitHub that demonstrate various features of Devise with different versions of Rails. You can view them here:
 
@@ -70,9 +70,7 @@ We hope that you will consider contributing to Devise. Please read this short ov
 
 http://github.com/plataformatec/devise/wiki/Contributing
 
-=== Testing
-
-To run Devise's own test suite, `cd` into Devise's top-level directory and run `bundle install` and `rake`.  For the tests to pass, you will need to have a MongoDB server (version 1.6 or newer) running on your system.
+You will usually want to write tests for your changes.  To run the test suite, `cd` into Devise's top-level directory and run `bundle install` and `rake`.  For the tests to pass, you will need to have a MongoDB server (version 1.6 or newer) running on your system.
 
 == Installation
 

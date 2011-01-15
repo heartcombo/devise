@@ -63,7 +63,12 @@ module Devise
 
       # Check whether it's navigational format, such as :html or :iphone, or not.
       def is_navigational_format?
-        Devise.navigational_formats.include?(request.format.to_sym)
+        navigational_formats.include?(request.format.to_sym)
+      end
+
+      # Returns real navigational formats which supported by Rails
+      def navigational_formats
+        @navigational_formats ||= Devise.navigational_formats.select{ |format| Mime::EXTENSION_LOOKUP[format.to_s] }
       end
 
       def unknown_action!(msg)

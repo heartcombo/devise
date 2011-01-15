@@ -69,4 +69,11 @@ class HelpersTest < ActionController::TestCase
     assert flash[:notice] == 'non-blank'
     MyController.send(:protected, :set_flash_message)
   end
+
+  test 'navigational_formats not returning a wild card' do
+    MyController.send(:public, :navigational_formats)
+    Devise.navigational_formats = [:"*/*", :html]
+    assert_not @controller.navigational_formats.include?(:"*/*")
+    MyController.send(:protected, :navigational_formats)
+  end
 end

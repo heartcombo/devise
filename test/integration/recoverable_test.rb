@@ -157,4 +157,41 @@ class PasswordTest < ActionController::IntegrationTest
     assert !warden.authenticated?(:user)
   end
 
+  test 'reset password request with valid E-Mail in XML format should return valid response' do
+    create_user
+    post user_password_path(:format => 'xml'), :user => {:email => "user@test.com"}
+    assert_response :success
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+  end
+
+  test 'reset password request with invalid E-Mail in XML format should return valid response' do
+    create_user
+    post user_password_path(:format => 'xml'), :user => {:email => "invalid.test@test.com"}
+    assert_response :unprocessable_entity
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+  end
+
+  test 'change password with valid parameters in XML format should return valid response' do
+    user = create_user
+    request_forgot_password
+    put user_password_path(:format => 'xml'), :user => {:reset_password_token => user.reload.reset_password_token, :password => '987654321', :password_confirmation => '987654321'}
+    assert_response :success
+    assert warden.authenticated?(:user)
+  end
+
+  test 'change password with invalid token in XML format should return invalid response' do
+    user = create_user
+    request_forgot_password
+    put user_password_path(:format => 'xml'), :user => {:reset_password_token => 'invalid.token', :password => '987654321', :password_confirmation => '987654321'}
+    assert_response :unprocessable_entity
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+  end
+
+  test 'change password with invalid new password in XML format should return invalid response' do
+    user = create_user
+    request_forgot_password
+    put user_password_path(:format => 'xml'), :user => {:reset_password_token => user.reload.reset_password_token, :password => '', :password_confirmation => '987654321'}
+    assert_response :unprocessable_entity
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+  end
 end

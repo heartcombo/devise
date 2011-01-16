@@ -15,11 +15,11 @@ class Devise::RegistrationsController < ApplicationController
 
     if resource.save
       if resource.active?
-        set_flash_message :notice, :signed_up if is_navigational_format?
+        set_flash_message :notice, :signed_up
         sign_in(resource_name, resource)
         respond_with resource, :location => redirect_location(resource_name, resource)
       else
-        set_flash_message :notice, :inactive_signed_up, :reason => resource.inactive_message.to_s if is_navigational_format?
+        set_flash_message :notice, :inactive_signed_up, :reason => resource.inactive_message.to_s
         expire_session_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
@@ -39,7 +39,7 @@ class Devise::RegistrationsController < ApplicationController
   # PUT /resource
   def update
     if resource.update_with_password(params[resource_name])
-      set_flash_message :notice, :updated if is_navigational_format?
+      set_flash_message :notice, :updated
       sign_in resource_name, resource, :bypass => true
       respond_with resource, :location => after_update_path_for(resource)
     else
@@ -54,7 +54,7 @@ class Devise::RegistrationsController < ApplicationController
   def destroy
     resource.destroy
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-    set_flash_message :notice, :destroyed if is_navigational_format?
+    set_flash_message :notice, :destroyed
     respond_with(resource) do |format|
       format.any(*navigational_formats) { redirect_to after_sign_out_path_for(resource_name) }
     end

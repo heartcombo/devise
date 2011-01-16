@@ -113,11 +113,13 @@ module Devise
       # Please refer to README or en.yml locale file to check what messages are
       # available.
       def set_flash_message(key, kind, options={}) #:nodoc:
-        options[:scope] = "devise.#{controller_name}"
-        options[:default] = Array(options[:default]).unshift(kind.to_sym)
-        options[:resource_name] = resource_name
-        message = I18n.t("#{resource_name}.#{kind}", options)
-        flash[key] = message if message.present?
+        if is_navigational_format?
+          options[:scope] = "devise.#{controller_name}"
+          options[:default] = Array(options[:default]).unshift(kind.to_sym)
+          options[:resource_name] = resource_name
+          message = I18n.t("#{resource_name}.#{kind}", options)
+          flash[key] = message if message.present?
+        end
       end
 
       def clean_up_passwords(object) #:nodoc:

@@ -13,7 +13,7 @@ class Devise::UnlocksController < ApplicationController
     self.resource = resource_class.send_unlock_instructions(params[resource_name])
 
     if resource.errors.empty?
-      set_flash_message :notice, :send_instructions if is_navigational_format?
+      set_flash_message :notice, :send_instructions
       respond_with resource, :location => new_session_path(resource_name)
     else
       respond_with(resource) do |format|
@@ -27,7 +27,7 @@ class Devise::UnlocksController < ApplicationController
     self.resource = resource_class.unlock_access_by_token(params[:unlock_token])
 
     if resource.errors.empty?
-      set_flash_message :notice, :unlocked if is_navigational_format?
+      set_flash_message :notice, :unlocked
       sign_in(resource_name, resource)
       respond_with(resource) do |format|
         format.any(*navigational_formats) { redirect_to redirect_location(resource_name, resource) }

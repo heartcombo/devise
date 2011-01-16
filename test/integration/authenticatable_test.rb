@@ -205,13 +205,6 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
     assert_nil session[:"user_return_to"]
   end
 
-  test 'sign in with xml format returns xml response' do
-    create_user
-    post user_session_path(:format => 'xml', :user => {:email => "user@test.com", :password => '123456'})
-    assert_response :success
-    assert_match /<\?xml version="1.0" encoding="UTF-8"\?>/, response.body
-  end
-
   test 'redirect to configured home path for a given scope after sign in' do
     sign_in_as_admin
     assert_equal "/admin_area/home", @request.path
@@ -353,6 +346,27 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     sign_in_as_user :visit => "/devise_for/sign_in"
     assert warden.authenticated?(:user)
     assert_not warden.authenticated?(:admin)
+  end
+
+  test 'sign in with xml format returns xml response' do
+    create_user
+    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '123456'}
+    assert_response :success
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+  end
+
+  test 'sign out with xml format returns ok response' do
+    sign_in_as_user
+    get destroy_user_session_path(:format => 'xml')
+    assert_response :ok
+    assert_not warden.authenticated?(:user)
+  end
+
+  test 'sign out with json format returns empty json response' do
+    sign_in_as_user
+    get destroy_user_session_path(:format => 'json')
+    assert_response :ok
+    assert_not warden.authenticated?(:user)
   end
 end
 

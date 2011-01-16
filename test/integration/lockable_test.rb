@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class LockTest < ActionController::IntegrationTest
-  
+
   def visit_user_unlock_with_token(unlock_token)
     visit user_unlock_path(:unlock_token => unlock_token)
   end
@@ -106,4 +106,38 @@ class LockTest < ActionController::IntegrationTest
     end
   end
 
+  test 'user should be able to request a new unlock token via XML request' do
+    user = create_user(:locked => true)
+    ActionMailer::Base.deliveries.clear
+
+    post user_unlock_path(:format => 'xml'), :user => {:email => user.email}
+    assert_response :success
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_equal 1, ActionMailer::Base.deliveries.size
+  end
+
+  test 'unlocked user should not be able to request a unlock token via XML request' do
+    user = create_user(:locked => false)
+    ActionMailer::Base.deliveries.clear
+
+    post user_unlock_path(:format => 'xml'), :user => {:email => user.email}
+    assert_response :unprocessable_entity
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_equal 0, ActionMailer::Base.deliveries.size
+  end
+
+  test 'user with valid unlock token should be able to unlock account via XML request' do
+    user = create_user(:locked => true)
+    assert user.access_locked?
+    get user_unlock_path(:format => 'xml', :unlock_token => user.unlock_token)
+    assert_response :success
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+  end
+
+
+  test 'user with invalid unlock token should not be able to unlock the account via XML request' do
+    get user_unlock_path(:format => 'xml', :unlock_token => 'invalid_token')
+    assert_response :unprocessable_entity
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+  end
 end

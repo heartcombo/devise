@@ -31,10 +31,5 @@ module RailsApp
     config.filter_parameters << :password
 
     config.action_mailer.default_url_options = { :host => "localhost:3000" }
-
-    # This was used to break devise in some situations
-    config.to_prepare do
-      Devise::SessionsController.layout "application"
-    end
   end
 end

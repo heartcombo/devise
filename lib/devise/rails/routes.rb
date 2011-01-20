@@ -4,7 +4,6 @@ module ActionDispatch::Routing
     # need devise_for mappings already declared to create filters and helpers.
     def finalize_with_devise!
       finalize_without_devise!
-      Devise.call_routes_prepare!
       Devise.configure_warden!
     end
     alias_method_chain :finalize!, :devise

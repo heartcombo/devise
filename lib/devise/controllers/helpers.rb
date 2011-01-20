@@ -36,8 +36,8 @@ module Devise
         mapping = mapping.name
 
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
-          def authenticate_#{mapping}!
-            warden.authenticate!(:scope => :#{mapping})
+          def authenticate_#{mapping}!(force = false)
+            warden.authenticate!(:scope => :#{mapping}) if !devise_controller? || force
           end
 
           def #{mapping}_signed_in?

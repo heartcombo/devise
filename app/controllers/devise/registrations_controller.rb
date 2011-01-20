@@ -104,7 +104,7 @@ class Devise::RegistrationsController < ApplicationController
     # We need to use a copy because we don't want actions like update changing
     # the current user in place.
     def authenticate_scope!
-      send(:"authenticate_#{resource_name}!")
+      send(:"authenticate_#{resource_name}!", true)
       self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     end
 end

@@ -17,8 +17,6 @@ module Devise
 
         prepend_before_filter :is_devise_resource?
         respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
-
-        skip_before_filter *Devise.mappings.keys.map { |m| :"authenticate_#{m}!" }
       end
 
       # Gets the actual resource stored in the instance variable

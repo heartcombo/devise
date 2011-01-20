@@ -16,7 +16,7 @@ module Devise
         helper_method *helpers
 
         prepend_before_filter :is_devise_resource?
-        respond_to :all if mimes_for_respond_to.empty?
+        respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
 
         Devise.routes_prepare do
           skip_before_filter *Devise.mappings.keys.map { |m| :"authenticate_#{m}!" }

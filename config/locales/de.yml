@@ -1,0 +1,46 @@
+de:
+  errors:
+    messages:
+      not_found: "nicht gefunden werden konnte"
+      already_confirmed: "bereits bestätigt wurde. Bitte versuchen Sie es erneut"
+      not_locked: "nicht gesperrt"
+      not_saved:
+        one: "1 Fehler verhinderte, dass %{resource} gespeichert werden konnte:"
+        other: "%{count} Fehler verhinderten, dass %{resource} gespeichert werden konnte:"
+
+  devise:
+    failure:
+      unauthenticated: 'Sie müssen sich anmelden oder registrieren, um fortfahren zu können.'
+      unconfirmed: 'Sie müssen Ihren Account bestätigen, befor Sie fortfahren können.'
+      locked: 'Ihr Account ist gesperrt.'
+      invalid: 'Falsche Email-Adresse oder Passwort.'
+      invalid_token: 'Invalider Authentizitäts-Token.'
+      timeout: 'Ihre Session ist ausgelaufen, bitte loggen Sie sich erneut ein.'
+      inactive: 'Ihr Account wurde noch nicht aktivert.'
+    sessions:
+      signed_in: 'Erfolgreich eingeloggt.'
+      signed_out: 'Erfolgreich ausgeloggt.'
+    passwords:
+      send_instructions: 'Sie werden in ein paar Minuten eine Email, mit der Beschreibung, wie Sie das Passwort zurücksetzen können, erhalten.'
+      updated: 'Passwort erfolgreich geändert. Sie sind eingeloggt.'
+    confirmations:
+      send_instructions: 'Sie werden in ein paar Minuten eine Email, mit der Beschreibung, wie Sie ihren Account bestätigen können, erhalten.'
+      confirmed: 'Sie haben Ihren Account erfolgreich bestätigt. Sie sind eingeloggt.'
+    registrations:
+      signed_up: 'Willkommen!. Sie haben sich erfolgreich registriert.'
+      inactive_signed_up: 'Ihre Logindaten sind korrekt, jedoch konnten Sie nicht erfolgreich angemeldet werden, da Ihr Account %{reason}.'
+      updated: 'Accountdaten erfolgreich geändert.'
+      destroyed: 'Auf Wiedersehen! Ihr Account wurde erfolgreich gelöscht. Wir hoffen Sie bald wiederzusehen.'
+    unlocks:
+      send_instructions: 'Sie werden in ein paar Minuten eine Email, mit der Beschreibung, wie Sie ihren Account entsperren können, erhalten.'
+      unlocked: 'Ihr Account wurde erfolgreich entsperrt. Sie sind eingeloggt.'
+    omniauth_callbacks:
+      success: 'Sie wurden erfolgreich durch ihren %{kind}-Account authorisiert.'
+      failure: 'Sie konnten nicht erfolgreich durch %{kind} authorisiert werden, weil "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Bestätigungsanleitung'
+      reset_password_instructions:
+        subject: 'Anleitung, um das Passwort zurückzusetzen'
+      unlock_instructions:
+        subject: 'Entsperrungsanleitung'

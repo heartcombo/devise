@@ -32,7 +32,7 @@ class Devise::PasswordsController < ApplicationController
     self.resource = resource_class.reset_password_by_token(params[resource_name])
 
     if resource.errors.empty?
-      set_flash_message :notice, :updated
+      set_flash_message :success, :updated
       sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :edit

@@ -15,7 +15,7 @@ class Devise::RegistrationsController < ApplicationController
 
     if resource.save
       if resource.active?
-        set_flash_message :notice, :signed_up
+        set_flash_message :success, :signed_up
         sign_in_and_redirect(resource_name, resource)
       else
         set_flash_message :notice, :inactive_signed_up, :reason => resource.inactive_message.to_s
@@ -36,7 +36,7 @@ class Devise::RegistrationsController < ApplicationController
   # PUT /resource
   def update
     if resource.update_with_password(params[resource_name])
-      set_flash_message :notice, :updated
+      set_flash_message :success, :updated
       sign_in resource_name, resource, :bypass => true
       redirect_to after_update_path_for(resource)
     else

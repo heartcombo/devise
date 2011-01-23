@@ -25,7 +25,7 @@ class Devise::UnlocksController < ApplicationController
     self.resource = resource_class.unlock_access_by_token(params[:unlock_token])
 
     if resource.errors.empty?
-      set_flash_message :notice, :unlocked
+      set_flash_message :success, :unlocked
       sign_in_and_redirect(resource_name, resource)
     else
       render_with_scope :new

@@ -10,15 +10,6 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_nil new_user.reset_password_token
   end
 
-  test 'should regenerate reset password token each time' do
-    user = create_user
-    3.times do
-      token = user.reset_password_token
-      user.send_reset_password_instructions
-      assert_not_equal token, user.reset_password_token
-    end
-  end
-
   test 'should never generate the same reset password token for different users' do
     reset_password_tokens = []
     3.times do
@@ -161,4 +152,48 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_not user.valid_password?(old_password)
     assert user.valid_password?('new_password')
   end
+
+  test 'should not reset reset password token during reset_password_within time' do
+    swap Devise, :reset_password_within => 1.hour do
+      user = create_user
+      user.send_reset_password_instructions
+      3.times do
+        token = user.reset_password_token
+        user.send_reset_password_instructions
+        assert_equal token, user.reset_password_token
+      end
+    end
+  end
+
+  test 'should reset reset password token after reset_password_within time' do
+    swap Devise, :reset_password_within => 1.hour do
+      user = create_user
+      user.reset_password_sent_at = 2.days.ago
+      token = user.reset_password_token
+      user.send_reset_password_instructions
+      assert_not_equal token, user.reset_password_token
+    end
+  end
+
+  test 'should not reset password after reset_password_within time' do
+    swap Devise, :reset_password_within => 1.hour do
+      user = create_user
+      old_password = user.password
+      user.send :generate_reset_password_token!
+      user.reset_password_sent_at = 2.days.ago
+      user.save!
+
+      reset_password_user = User.reset_password_by_token(
+        :reset_password_token => user.reset_password_token,
+        :password => 'new_password',
+        :password_confirmation => 'new_password'
+      )
+      user.reload
+
+      assert user.valid_password?(old_password)
+      assert_not user.valid_password?('new_password')
+      assert_equal "is invalid", reset_password_user.errors[:reset_password_token].join
+    end
+  end
+
 end

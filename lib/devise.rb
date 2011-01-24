@@ -171,6 +171,10 @@ module Devise
   mattr_accessor :reset_password_keys
   @@reset_password_keys = [ :email ]
 
+  # Time interval you can reset your password with a reset password key 
+  mattr_accessor :reset_password_within
+  @@reset_password_within = 1.hour
+
   # The default scope which is used by warden.
   mattr_accessor :default_scope
   @@default_scope = nil

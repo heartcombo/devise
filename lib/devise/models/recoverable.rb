@@ -35,8 +35,31 @@ module Devise
 
       # Resets reset password token and send reset password instructions by email
       def send_reset_password_instructions
-        generate_reset_password_token!
+        generate_reset_password_token! if self.confirmation_token.nil? or !reset_password_period_valid?
         ::Devise.mailer.reset_password_instructions(self).deliver
+      end
+
+      # Checks if the reset password token sent is within the limit time.
+      # We do this by calculating if the difference between today and the
+      # sending date does not exceed the confirm in time configured.
+      # reset_password_within is a model configuration, must always be an integer value.
+      #
+      # Example:
+      #
+      #   # reset_password_within = 1.day and reset_password_sent_at = today
+      #   reset_password_period_valid?   # returns true
+      #
+      #   # reset_password_within = 5.days and reset_password_sent_at = 4.days.ago
+      #   reset_password_period_valid?   # returns true
+      #
+      #   # reset_password_within = 5.days and reset_password_sent_at = 5.days.ago
+      #   reset_password_period_valid?   # returns false
+      #
+      #   # reset_password_within = 0.days
+      #   reset_password_period_valid?   # will always return false
+      #
+      def reset_password_period_valid?
+        reset_password_sent_at && reset_password_sent_at.utc >= self.class.reset_password_within.ago
       end
 
       protected
@@ -44,6 +67,7 @@ module Devise
         # Generates a new random token for reset password
         def generate_reset_password_token
           self.reset_password_token = self.class.reset_password_token
+          self.reset_password_sent_at = Time.now.utc
         end
 
         # Resets the reset password token with and save the record without
@@ -55,6 +79,7 @@ module Devise
         # Removes reset_password token
         def clear_reset_password_token
           self.reset_password_token = nil
+          self.reset_password_sent_at = nil
         end
 
       module ClassMethods
@@ -73,18 +98,25 @@ module Devise
           generate_token(:reset_password_token)
         end
 
-        # Attempt to find a user by it's reset_password_token to reset it's
-        # password. If a user is found, reset it's password and automatically
+        # Attempt to find a user by it's reset_password_token to reset its
+        # password. If a user is found and token is still valid, reset its password and automatically
         # try saving the record. If not user is found, returns a new user
         # containing an error in reset_password_token attribute.
         # Attributes must contain reset_password_token, password and confirmation
         def reset_password_by_token(attributes={})
           recoverable = find_or_initialize_with_error_by(:reset_password_token, attributes[:reset_password_token])
-          recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) if recoverable.persisted?
+          if recoverable.persisted?
+            if recoverable.reset_password_period_valid?
+              recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) 
+            else
+              recoverable.errors.add(:reset_password_token, :invalid)
+            end
+          end
           recoverable
         end
 
         Devise::Models.config(self, :reset_password_keys)
+        Devise::Models.config(self, :reset_password_within)
       end
     end
   end

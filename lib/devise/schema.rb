@@ -38,9 +38,10 @@ module Devise
       apply_devise_schema :confirmation_sent_at, DateTime
     end
 
-    # Creates reset_password_token.
+    # Creates reset_password_token and reset_password_sent_at.
     def recoverable
       apply_devise_schema :reset_password_token, String
+      apply_devise_schema :reset_password_sent_at, DateTime
     end
 
     # Creates remember_token and remember_created_at.

@@ -133,7 +133,7 @@ module Devise
         # with an email not found error.
         # Options must contain the user email
         def send_confirmation_instructions(attributes={})
-          confirmable = find_or_initialize_with_error_by(:email, attributes[:email], :not_found)
+          confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)
           confirmable.resend_confirmation_token if confirmable.persisted?
           confirmable
         end
@@ -153,7 +153,7 @@ module Devise
           generate_token(:confirmation_token)
         end
 
-        Devise::Models.config(self, :confirm_within)
+        Devise::Models.config(self, :confirm_within, :confirmation_keys)
       end
     end
   end

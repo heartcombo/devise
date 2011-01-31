@@ -92,7 +92,7 @@ Support for Rails 2.3.x can be found by installing Devise 1.0.x from the v1.0 br
 
 == Starting with Rails?
 
-If you are just starting with Rails, we recommend you to *not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch, today we have two resources:
+If you are building your first Rails application, we recommend you to *not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch, today we have two resources:
 
 * Michael Hartl's online book: http://railstutorial.org/chapters/modeling-and-viewing-users-two#top
 * Ryan Bates' Railscast: http://railscasts.com/episodes/250-authentication-from-scratch

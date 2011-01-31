@@ -90,6 +90,15 @@ Replace MODEL by the class name you want to add devise, like User, Admin, etc. T
 
 Support for Rails 2.3.x can be found by installing Devise 1.0.x from the v1.0 branch.
 
+== Starting with Rails?
+
+If you are just starting with Rails, we recommend you to *not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch, today we have two resources:
+
+* Michael Hartl's online book: http://railstutorial.org/chapters/modeling-and-viewing-users-two#top
+* Ryan Bates' Railscast: http://railscasts.com/episodes/250-authentication-from-scratch
+
+Once you have solidified you understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :)
+
 == Getting started
 
 This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration.

@@ -218,7 +218,7 @@ Devise currently supports generating views for the following template engines (u
 * Haml (http://github.com/nex3/haml)
 * Slim (http://github.com/stonean/slim)
 
-Note: If you are generating Haml or Slim templates, you will need to have a few dependencies such as `hpricot` (for both Haml and Slim) and `haml2slim` (for Slim) installed.
+Note: If you are generating Haml or Slim templates, you will need to have a few dependencies such as `ruby_parser` (for Haml), `hpricot` (for both Haml and Slim) and `haml2slim` (for Slim) installed.
 
 If you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
 

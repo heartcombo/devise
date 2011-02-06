@@ -22,7 +22,7 @@ module Devise
 
       delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, :to => "self.class"
 
-      # Lock an user setting it's locked_at to actual time.
+      # Lock a user setting it's locked_at to actual time.
       def lock_access!
         self.locked_at = Time.now
 
@@ -34,7 +34,7 @@ module Devise
         save(:validate => false)
       end
 
-      # Unlock an user by cleaning locket_at and failed_attempts.
+      # Unlock a user by cleaning locket_at and failed_attempts.
       def unlock_access!
         if_access_locked do
           self.locked_at = nil
@@ -60,7 +60,7 @@ module Devise
       end
 
       # Overwrites active? from Devise::Models::Activatable for locking purposes
-      # by verifying whether an user is active to sign in or not based on locked?
+      # by verifying whether a user is active to sign in or not based on locked?
       def active?
         super && !access_locked?
       end
@@ -72,7 +72,7 @@ module Devise
       end
 
       # Overwrites valid_for_authentication? from Devise::Models::Authenticatable
-      # for verifying whether an user is allowed to sign in or not. If the user
+      # for verifying whether a user is allowed to sign in or not. If the user
       # is locked, it should never be allowed.
       def valid_for_authentication?
         return super unless persisted? && lock_strategy_enabled?(:failed_attempts)

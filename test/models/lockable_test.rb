@@ -55,7 +55,7 @@ class LockableTest < ActiveSupport::TestCase
     assert_not user.active?
   end
 
-  test "should unlock an user by cleaning locked_at, falied_attempts and unlock_token" do
+  test "should unlock a user by cleaning locked_at, falied_attempts and unlock_token" do
     user = create_user
     user.lock_access!
     assert_not_nil user.reload.locked_at
@@ -141,7 +141,7 @@ class LockableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should find and unlock an user automatically' do
+  test 'should find and unlock a user automatically' do
     user = create_user
     user.lock_access!
     locked_user = User.unlock_access_by_token(user.unlock_token)

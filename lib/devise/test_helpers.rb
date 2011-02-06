@@ -1,7 +1,7 @@
 module Devise
   # Devise::TestHelpers provides a facility to test controllers in isolation
   # when using ActionController::TestCase allowing you to quickly sign_in or
-  # sign_out an user. Do not use Devise::TestHelpers in integration tests.
+  # sign_out a user. Do not use Devise::TestHelpers in integration tests.
   #
   # Notice you should not test Warden specific behavior (like Warden callbacks)
   # using Devise::TestHelpers since it is a stub of the actual behavior. Such

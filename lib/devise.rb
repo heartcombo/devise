@@ -116,7 +116,7 @@ module Devise
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days
-  
+
   # Defines which key will be used when confirming an account
   mattr_accessor :confirmation_keys
   @@confirmation_keys = [ :email ]

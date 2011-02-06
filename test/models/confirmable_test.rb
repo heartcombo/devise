@@ -127,7 +127,7 @@ class ConfirmableTest < ActiveSupport::TestCase
       User.send_confirmation_instructions(:email => user.email)
     end
   end
-  
+
   test 'should always have confirmation token when email is sent' do
     user = new_user
     user.instance_eval { def confirmation_required?; false end }
@@ -210,7 +210,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.save
     assert_not user.reload.active?
   end
-  
+
   test 'should be active without confirmation when confirmation is not required' do
     user = create_user
     user.instance_eval { def confirmation_required?; false end }
@@ -218,7 +218,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.save
     assert user.reload.active?
   end
-  
+
   test 'should find a user to send email instructions for the user confirm it\'s email by authentication_keys' do
     swap Devise, :authentication_keys => [:username, :email] do
       user = create_user
@@ -226,13 +226,13 @@ class ConfirmableTest < ActiveSupport::TestCase
       assert_equal confirm_user, user
     end
   end
-  
+
   test 'should require all confirmation_keys' do
-      swap Devise, :confirmation_keys => [:username, :email] do
-          user = create_user
-          confirm_user = User.send_confirmation_instructions(:email => user.email)
-          assert_not confirm_user.persisted?
-          assert_equal "can't be blank", confirm_user.errors[:username].join
-      end
+    swap Devise, :confirmation_keys => [:username, :email] do
+      user = create_user
+      confirm_user = User.send_confirmation_instructions(:email => user.email)
+      assert_not confirm_user.persisted?
+      assert_equal "can't be blank", confirm_user.errors[:username].join
+    end
   end
 end

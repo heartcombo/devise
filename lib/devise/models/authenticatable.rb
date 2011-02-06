@@ -26,7 +26,7 @@ module Devise
     #
     # == Active?
     #
-    # Before authenticating an user and in each request, Devise checks if your model is active by
+    # Before authenticating a user and in each request, Devise checks if your model is active by
     # calling model.active?. This method is overwriten by other devise modules. For instance,
     # :confirmable overwrites .active? to only return true if your model was confirmed.
     #

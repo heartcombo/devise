@@ -15,9 +15,9 @@ Devise.setup do |config|
   require "devise/orm/#{DEVISE_ORM}"
 
   # ==> Configuration for any authentication mechanism
-  # Configure which keys are used when authenticating an user. By default is
+  # Configure which keys are used when authenticating a user. By default is
   # just :email. You can configure it to use [:username, :subdomain], so for
-  # authenticating an user, both parameters are required. Remember that those
+  # authenticating a user, both parameters are required. Remember that those
   # parameters are used only when authenticating and not when retrieving from
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply hash where the value is a boolean expliciting if authentication

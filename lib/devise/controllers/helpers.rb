@@ -21,7 +21,7 @@ module Devise
       #   Generated methods:
       #     authenticate_user!  # Signs user in or redirect
       #     authenticate_admin! # Signs admin in or redirect
-      #     user_signed_in?     # Checks whether there is an user signed in or not
+      #     user_signed_in?     # Checks whether there is a user signed in or not
       #     admin_signed_in?    # Checks whether there is an admin signed in or not
       #     current_user        # Current signed in user
       #     current_admin       # Current signed in admin
@@ -86,7 +86,7 @@ module Devise
         signed_in?
       end
 
-      # Sign in an user that already was authenticated. This helper is useful for logging
+      # Sign in a user that already was authenticated. This helper is useful for logging
       # users in after sign up.
       #
       # All options given to sign_in is passed forward to the set_user method in warden.
@@ -117,7 +117,7 @@ module Devise
         end
       end
 
-      # Sign out a given user or scope. This helper is useful for signing out an user
+      # Sign out a given user or scope. This helper is useful for signing out a user
       # after deleting accounts.
       #
       # Examples:
@@ -184,7 +184,7 @@ module Devise
         respond_to?(home_path, true) ? send(home_path) : root_path
       end
 
-      # Method used by sessions controller to sign out an user. You can overwrite
+      # Method used by sessions controller to sign out a user. You can overwrite
       # it in your ApplicationController to provide a custom hook for a custom
       # scope. Notice that differently from +after_sign_in_path_for+ this method
       # receives a symbol with the scope, and not the resource.
@@ -194,7 +194,7 @@ module Devise
         root_path
       end
 
-      # Sign in an user and tries to redirect first to the stored location and
+      # Sign in a user and tries to redirect first to the stored location and
       # then to the url specified by after_sign_in_path_for. It accepts the same
       # parameters as the sign_in method.
       def sign_in_and_redirect(resource_or_scope, *args)
@@ -209,7 +209,7 @@ module Devise
         stored_location_for(scope) || after_sign_in_path_for(resource)
       end
 
-      # Sign out an user and tries to redirect to the url specified by
+      # Sign out a user and tries to redirect to the url specified by
       # after_sign_out_path_for.
       def sign_out_and_redirect(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)

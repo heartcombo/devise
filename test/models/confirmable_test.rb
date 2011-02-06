@@ -51,7 +51,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal "was already confirmed, please try signing in", user.errors[:email].join
   end
 
-  test 'should find and confirm an user automatically' do
+  test 'should find and confirm a user automatically' do
     user = create_user
     confirmed_user = User.confirm_by_token(user.confirmation_token)
     assert_equal confirmed_user, user

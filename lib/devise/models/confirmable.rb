@@ -56,7 +56,7 @@ module Devise
       end
 
       # Overwrites active? from Devise::Models::Activatable for confirmation
-      # by verifying whether an user is active to sign in or not. If the user
+      # by verifying whether a user is active to sign in or not. If the user
       # is already confirmed, it should never be blocked. Otherwise we need to
       # calculate if the confirm time has not expired for this user.
       def active?

@@ -6,6 +6,7 @@
   * rails g destroy works properly with devise generators (by github.com/andmej)
   * before_failure callbacks should work on test helpers (by github.com/twinge)
   * rememberable cookie now is httponly by default (by github.com/JamesFerguson)
+  * Add missing confirmation_keys (by github.com/JohnPlummer)
 
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)

@@ -3,7 +3,7 @@ module Devise
   # and overwrite the apply_schema method.
   module Schema
 
-    # Creates email, encrypted_password and password_salt.
+    # Creates email when enabled (on by default), encrypted_password and password_salt.
     #
     # == Options
     # * :null - When true, allow columns to be null.
@@ -15,8 +15,10 @@ module Devise
     def database_authenticatable(options={})
       null    = options[:null] || false
       default = options.key?(:default) ? options[:default] : ("" if null == false)
+      include_email =  !self.respond_to?(:authentication_keys) \
+                       || (self.respond_to?(:authentication_keys) && self.authentication_keys.include?(:email))
 
-      apply_devise_schema :email,              String, :null => null, :default => default
+      apply_devise_schema :email,              String, :null => null, :default => default if include_email
       apply_devise_schema :encrypted_password, String, :null => null, :default => default, :limit => 128
     end
 

@@ -76,6 +76,18 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
+  test 'authenticate with valid authentication token key and do not store if stateless and timeoutable are enabled' do
+    swap Devise, :token_authentication_key => :secret_token, :stateless_token => true, :timeout_in => 1.second do
+      user = sign_in_as_new_user_with_token
+      assert warden.authenticated?(:user)
+
+      # TODO: replace sleep
+      sleep 2
+      get_users_path_as_existing_user(user)
+      assert warden.authenticated?(:user)
+    end
+  end
+
   private
 
     def sign_in_as_new_user_with_token(options = {})
@@ -94,6 +106,17 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
       end
 
       user
+    end
+
+    def get_users_path_as_existing_user(user, options = {})
+      options[:auth_token_key] ||= Devise.token_authentication_key
+
+      if options[:http_auth]
+        header = "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
+        get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => header
+      else
+        get users_path(options[:auth_token_key].to_sym => user.authentication_token)
+      end
     end
 
 end

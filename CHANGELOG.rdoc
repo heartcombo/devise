@@ -1,3 +1,10 @@
+== 1.0.10
+
+* bug fix
+  * Use secure compare when comparing passwords
+  * Improve email regexp
+  * Implement handle_unverified_request for Rails 2.3.11
+
 == 1.0.9
 
 * enhancements

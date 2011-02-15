@@ -1,5 +1,6 @@
 * enhancements
   * Make friendly_token 20 chars long
+  * Use secure_compare
 
 * bug fix
   * Fix an issue causing infinite redirects in production
@@ -53,6 +54,20 @@
   * Fix a bug causing FailureApp to return with HTTP Auth Headers for IE7
   * Ensure namespaces has proper scoped views
   * Ensure Devise does not set empty flash messages (by github.com/sxross)
+
+== 1.1.6
+
+* Use a more secure e-mail regexp
+* Implement Rails 3.0.4 handle unverified request
+* Use secure_compare to compare passwords
+
+== 1.1.5
+
+* bugfix
+  * Ensure to convert keys on indifferent hash
+
+* defaults
+  * Set config.http_authenticatable to false to avoid confusion
 
 == 1.1.4
 

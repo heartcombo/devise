@@ -1,5 +1,4 @@
 * enhancements
-  * rails g devise:views supports slim templates (by github.com/fredwu)
   * Make friendly_token 20 chars long
 
 * bug fix
@@ -13,6 +12,7 @@
 
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)
+  * Removed --haml and --slim view templates
 
 == 1.2.rc
 

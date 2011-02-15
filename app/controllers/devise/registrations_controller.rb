@@ -78,8 +78,8 @@ class Devise::RegistrationsController < ApplicationController
     end
 
     # Overwrite redirect_for_sign_in so it takes uses after_sign_up_path_for.
-    def redirect_for_sign_in(scope, resource) #:nodoc:
-      redirect_to stored_location_for(scope) || after_sign_up_path_for(resource)
+    def redirect_location(scope, resource) #:nodoc:
+      stored_location_for(scope) || after_sign_up_path_for(resource)
     end
 
     # The path used after sign up for inactive accounts. You need to overwrite

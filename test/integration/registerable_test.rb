@@ -15,9 +15,25 @@ class RegistrationTest < ActionController::IntegrationTest
 
     assert_contain 'Welcome! You have signed up successfully.'
     assert warden.authenticated?(:admin)
+    assert_current_url "/admin_area/home"
 
     admin = Admin.last :order => "id"
     assert_equal admin.email, 'new_user@test.com'
+  end
+
+  test 'a guest admin should be able to sign in and be redirected to a custom location' do
+    Devise::RegistrationsController.any_instance.stubs(:after_sign_up_path_for).returns("/?custom=1")
+    get new_admin_session_path
+    click_link 'Sign up'
+
+    fill_in 'email', :with => 'new_user@test.com'
+    fill_in 'password', :with => 'new_user123'
+    fill_in 'password confirmation', :with => 'new_user123'
+    click_button 'Sign up'
+
+    assert_contain 'Welcome! You have signed up successfully.'
+    assert warden.authenticated?(:admin)
+    assert_current_url "/?custom=1"
   end
 
   test 'a guest user should be able to sign up successfully and be blocked by confirmation' do
@@ -30,12 +46,26 @@ class RegistrationTest < ActionController::IntegrationTest
 
     assert_contain 'You have signed up successfully. However, we could not sign you in because your account is unconfirmed.'
     assert_not_contain 'You have to confirm your account before continuing'
+    assert_current_url "/"
 
     assert_not warden.authenticated?(:user)
 
     user = User.last :order => "id"
     assert_equal user.email, 'new_user@test.com'
     assert_not user.confirmed?
+  end
+
+  test 'a guest user should be blocked by confirmation and redirected to a custom path' do
+    Devise::RegistrationsController.any_instance.stubs(:after_inactive_sign_up_path_for).returns("/?custom=1")
+    get new_user_registration_path
+
+    fill_in 'email', :with => 'new_user@test.com'
+    fill_in 'password', :with => 'new_user123'
+    fill_in 'password confirmation', :with => 'new_user123'
+    click_button 'Sign up'
+
+    assert_current_url "/?custom=1"
+    assert_not warden.authenticated?(:user)
   end
 
   test 'a guest user cannot sign up with invalid information' do

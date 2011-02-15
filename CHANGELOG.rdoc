@@ -8,7 +8,8 @@
   * rememberable cookie now is httponly by default (by github.com/JamesFerguson)
   * Add missing confirmation_keys (by github.com/JohnPlummer)
   * Ensure after_* hooks are called on RegistrationsController
-  * When using database_authenticatable Devise will now only create an email field when appropriate (if using default authentication_keys or custom authentication_keys with email included) (by github.com)
+  * When using database_authenticatable Devise will now only create an email field when appropriate (if using default authentication_keys or custom authentication_keys with email included)
+  * Ensure stateless token does not trigger timeout (by github.com/pixelauthority)
 
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)

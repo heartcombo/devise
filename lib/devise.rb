@@ -374,6 +374,17 @@ module Devise
   def self.friendly_token
     ActiveSupport::SecureRandom.base64(15).tr('+/=', 'xyz')
   end
+
+  # constant-time comparison algorithm to prevent timing attacks
+  def self.secure_compare(a, b)
+    return false unless a.present? && b.present?
+    return false unless a.bytesize == b.bytesize
+    l = a.unpack "C#{a.bytesize}"
+
+    res = 0
+    b.each_byte { |byte| res |= byte ^ l.shift }
+    res == 0
+  end
 end
 
 require 'warden'

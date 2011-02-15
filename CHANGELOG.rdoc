@@ -10,6 +10,7 @@
   * Ensure after_* hooks are called on RegistrationsController
   * When using database_authenticatable Devise will now only create an email field when appropriate (if using default authentication_keys or custom authentication_keys with email included)
   * Ensure stateless token does not trigger timeout (by github.com/pixelauthority)
+  * Implement handle_unverified_request for Rails 3.0.4 compatibility and improve FailureApp reliance on symbols
 
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)

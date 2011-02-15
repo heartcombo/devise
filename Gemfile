@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 3.0.0"
+gem "rails", "~> 3.0.4"
 
 group :test do
   gem "webrat", "0.7.2", :require => false

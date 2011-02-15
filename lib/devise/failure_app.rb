@@ -68,11 +68,11 @@ module Devise
     end
 
     def http_auth?
-      !Devise.navigational_formats.include?(request.format.to_sym) || (request.xhr? && Devise.http_authenticatable_on_xhr)
+      !Devise.navigational_formats.include?(request_format) || (request.xhr? && Devise.http_authenticatable_on_xhr)
     end
 
     def http_auth_body
-      method = :"to_#{request.format.to_sym}"
+      method = :"to_#{request_format}"
       {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message
     end
 
@@ -102,6 +102,10 @@ module Devise
     # would never use the same uri to redirect.
     def store_location!
       session[:"#{scope}_return_to"] = attempted_path if request.get? && !http_auth?
+    end
+
+    def request_format
+      @request_format ||= request.format.respond_to?(:ref) ? request.format.ref : request.format
     end
   end
 end

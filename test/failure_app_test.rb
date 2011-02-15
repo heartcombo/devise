@@ -13,7 +13,7 @@ class FailureTest < ActiveSupport::TestCase
       'REQUEST_METHOD' => 'GET',
       'warden.options' => { :scope => :user },
       'rack.session' => {},
-      'action_dispatch.request.formats' => Array(env_params.delete('formats') || :html),
+      'action_dispatch.request.formats' => Array(env_params.delete('formats') || Mime::HTML),
       'rack.input' => "",
       'warden' => OpenStruct.new(:message => nil)
     }.merge!(env_params)

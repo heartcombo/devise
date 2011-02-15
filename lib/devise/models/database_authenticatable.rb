@@ -55,7 +55,7 @@ module Devise
 
       # Verifies whether an incoming_password (ie from sign in) is the user password.
       def valid_password?(incoming_password)
-        password_digest(incoming_password) == self.encrypted_password
+        Devise.secure_compare(password_digest(incoming_password), self.encrypted_password)
       end
 
       # Checks if a resource is valid upon authentication.

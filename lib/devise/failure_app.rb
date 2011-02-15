@@ -129,7 +129,7 @@ module Devise
     end
 
     def request_format
-      @request_format ||= request.format.respond_to?(:ref) ? request.format.ref : request.format
+      @request_format ||= request.format.respond_to?(:symbol) ? request.format.symbol : request.format
     end
   end
 end

@@ -1,5 +1,6 @@
 * enhancements
   * rails g devise:views supports slim templates (by github.com/fredwu)
+  * Make friendly_token 20 chars long
 
 * bug fix
   * Fix an issue causing infinite redirects in production
@@ -7,6 +8,8 @@
   * before_failure callbacks should work on test helpers (by github.com/twinge)
   * rememberable cookie now is httponly by default (by github.com/JamesFerguson)
   * Add missing confirmation_keys (by github.com/JohnPlummer)
+  * Ensure after_* hooks are called on RegistrationsController
+  * When using database_authenticatable Devise will now only create an email field when appropriate (if using default authentication_keys or custom authentication_keys with email included) (by github.com)
 
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)

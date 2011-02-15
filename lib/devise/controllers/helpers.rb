@@ -182,6 +182,12 @@ module Devise
         redirect_to after_sign_out_path_for(scope)
       end
 
+      # Override Rails' handle unverified request to sign out all scopes.
+      def handle_unverified_request
+        sign_out_all_scopes
+        super # call the default behaviour which resets the session
+      end
+
       # Define authentication filters and accessor helpers based on mappings.
       # These filters should be used inside the controllers as before_filters,
       # so you can control the scope of the user who should be signed in to

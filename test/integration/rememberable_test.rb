@@ -48,6 +48,16 @@ class RememberMeTest < ActionController::IntegrationTest
     end
   end
 
+  test 'cookies are destroyed on unverified requests' do
+    swap ApplicationController, :allow_forgery_protection => true do
+      user = create_user_and_remember
+      get users_path
+      assert warden.authenticated?(:user)
+      post root_path, :authenticity_token => 'INVALID'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'remember the user before sign in' do
     user = create_user_and_remember
     get users_path

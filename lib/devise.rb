@@ -187,8 +187,9 @@ module Devise
   @@stateless_token = false
 
   # Which formats should be treated as navigational.
+  # We need both :"*/*" and "*/*" to work on different Rails versions.
   mattr_accessor :navigational_formats
-  @@navigational_formats = [:"*/*", :html]
+  @@navigational_formats = [:"*/*", "*/*", :html]
 
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes

@@ -72,6 +72,16 @@ class RememberMeTest < ActionController::IntegrationTest
     assert_match /remember_user_token[^\n]*HttpOnly\n/, response.headers["Set-Cookie"], "Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie."
   end
 
+  test 'cookies are destroyed on unverified requests' do
+    swap ApplicationController, :allow_forgery_protection => true do
+      user = create_user_and_remember
+      get users_path
+      assert warden.authenticated?(:user)
+      post root_path, :authenticity_token => 'INVALID'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'does not extend remember period through sign in' do
     swap Devise, :extend_remember_period => true, :remember_for => 1.year do
       user = create_user

@@ -136,6 +136,7 @@ module Devise
       # Sign out all active users or scopes. This helper is useful for signing out all roles
       # in one click. This signs out ALL scopes in warden.
       def sign_out_all_scopes
+        Devise.mappings.keys.each { |s| warden.user(s) }
         warden.raw_session.inspect
         warden.logout
       end
@@ -221,6 +222,12 @@ module Devise
       # stored under "devise." namespace are removed after sign in.
       def expire_session_data_after_sign_in!
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
+      end
+
+      # Overwrite Rails' handle unverified request to sign out all scopes.
+      def handle_unverified_request
+        sign_out_all_scopes
+        super # call the default behaviour which resets the session
       end
     end
   end

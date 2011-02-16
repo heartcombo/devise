@@ -1,8 +1,14 @@
+== 1.1.7
+
+* bugfix
+  * Fix a backward incompatible change with versions prior to Rails 3.0.4
+
 == 1.1.6
 
-* Use a more secure e-mail regexp
-* Implement Rails 3.0.4 handle unverified request
-* Use secure_compare to compare passwords
+* bugfix
+  * Use a more secure e-mail regexp
+  * Implement Rails 3.0.4 handle unverified request
+  * Use secure_compare to compare passwords
 
 == 1.1.5
 

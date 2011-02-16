@@ -24,7 +24,7 @@ Right now it's composed of 11 modules:
 
 Devise 1.1 supports Rails 3 and is NOT backward compatible. You can use the latest Rails 3 beta gem with Devise latest gem:
 
-  gem install devise --version=1.1.6
+  gem install devise --version=1.1.7
 
 If you want to use Rails master (from git repository) you need to use Devise from git repository and vice-versa.
 
@@ -42,7 +42,7 @@ Replace MODEL by the class name you want to add devise, like User, Admin, etc. T
 
 If you want to use the Rails 2.3.x version, you should do:
 
-  gem install devise --version=1.0.8
+  gem install devise --version=1.0.10
 
 And please check the README at the v1.0 branch since this one is based on Rails 3:
 

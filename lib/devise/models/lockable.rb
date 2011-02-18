@@ -82,6 +82,7 @@ module Devise
           return result
         when TrueClass
           self.failed_attempts = 0
+          save(:validate => false)
         when FalseClass
           # PostgreSQL uses nil as the default value for integer columns set to 0
           self.failed_attempts ||= 0
@@ -89,10 +90,11 @@ module Devise
           if attempts_exceeded?
             lock_access!
             return :locked
+          else
+            save(:validate => false)
           end
         end
 
-        save(:validate => false) if changed?
         result
       end
 

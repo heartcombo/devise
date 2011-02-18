@@ -46,7 +46,7 @@ module Devise
           env["warden.options"] = result
           Warden::Manager._run_callbacks(:before_failure, env, result)
 
-          status, headers, body = Devise::FailureApp.call(env).to_a
+          status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
           @controller.send :render, :status => status, :text => body,
             :content_type => headers["Content-Type"], :location => headers["Location"]
 

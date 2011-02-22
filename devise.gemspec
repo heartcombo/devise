@@ -3,12 +3,12 @@ $:.push File.expand_path("../lib", __FILE__)
 require "devise/version"
 
 Gem::Specification.new do |s|
-  s.name        = "devise"
+  s.name        = "devise-jdguyot"
   s.version     = Devise::VERSION.dup
   s.platform    = Gem::Platform::RUBY  
   s.summary     = "Flexible authentication solution for Rails with Warden"
   s.email       = "contact@plataformatec.com.br"
-  s.homepage    = "http://github.com/plataformatec/devise"
+  s.homepage    = "http://github.com/capitaine-train/devise"
   s.description = "Flexible authentication solution for Rails with Warden"
   s.authors     = ['José Valim', 'Carlos Antônio']
 

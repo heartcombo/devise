@@ -43,9 +43,8 @@ GEM
     addressable (2.2.4)
     arel (2.0.8)
     bcrypt-ruby (2.1.4)
-    bcrypt-ruby (2.1.4-java)
     bson (1.2.1)
-    bson_ext (1.1.2)
+    bson_ext (1.2.1)
     builder (2.1.2)
     columnize (0.3.2)
     erubis (2.6.6)
@@ -146,17 +145,14 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  bcrypt-ruby (~> 2.1.2)
-  bson_ext (= 1.1.2)
+  bson_ext (= 1.2.1)
   devise!
   mocha
   mongo (= 1.1.2)
   mongoid (= 2.0.0.beta.20)
   oa-oauth
   oa-openid
-  orm_adapter (~> 0.0.3)
   rails (~> 3.0.4)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
-  warden (~> 1.0.3)
   webrat (= 0.7.2)

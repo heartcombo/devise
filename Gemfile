@@ -24,6 +24,6 @@ platforms :ruby do
   group :mongoid do
     gem "mongo", "1.1.2"
     gem "mongoid", "2.0.0.beta.20"
-    gem "bson_ext", "1.1.2"
+    gem "bson_ext", "1.2.1"
   end
 end

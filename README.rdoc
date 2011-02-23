@@ -243,6 +243,9 @@ If the customization at the views level is not enough, you can customize each co
 
 Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
 
+Note that deriving from the Devise controllers can be used to override the standard RESTful actions ("new", "edit", "create", "update", "destroy") ONLY. It cannot be used to add custom actions.
+To add custom actions, deriving is not necessary, just add a regular controller and routes entries as for any other controller.
+
 === Configuring routes
 
 Devise also ships with default routes. If you need to customize them, you should probably be able to do it through the devise_for method. It accepts several options like :class_name, :path_prefix and so on, including the possibility to change path names for I18n:

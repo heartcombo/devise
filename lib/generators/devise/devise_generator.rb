@@ -10,7 +10,9 @@ module Devise
       hook_for :orm
 
       def add_devise_routes
-        route "devise_for :#{table_name}"
+        devise_route  = "devise_for :#{plural_name}"
+        devise_route += %Q(, :class_name => "#{class_name}") if class_name.include?("::")
+        route devise_route
       end
     end
   end

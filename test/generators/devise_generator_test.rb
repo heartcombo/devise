@@ -16,6 +16,12 @@ class DeviseGeneratorTest < Rails::Generators::TestCase
     assert_file "config/routes.rb", /devise_for :monsters/
   end
 
+  test "route generation for namespaced model names" do
+    run_generator %w(monster/goblin name:string)
+    match = /devise_for :goblins, :class_name => "Monster::Goblin"/
+    assert_file "config/routes.rb", match
+  end
+
   def copy_routes
     routes = File.expand_path("../../rails_app/config/routes.rb", __FILE__)
     destination = File.join(destination_root, "config")

@@ -1,56 +1,30 @@
 module Devise
   module OmniAuth
     module TestHelpers
+      DEPRECATION_MESSAGE = "Faraday changed the way mocks work in a way incompatible to Devise. Luckily, Omniauth now supports a new test mode, please use it in your tests instead: https://github.com/intridea/omniauth/wiki/Integration-Testing"
+
+      DeprecationError = Class.new(StandardError)
+
+      def self.stub!(*args)
+        raise DeprecationError, DEPRECATION_MESSAGE
+      end
+
+      def self.reset_stubs!(*args)
+        raise DeprecationError, DEPRECATION_MESSAGE
+      end
+
       def self.test_mode!
-        Faraday.default_adapter = :test if defined?(Faraday)
-        ActiveSupport.on_load(:action_controller) { include Devise::OmniAuth::TestHelpers }
-        ActiveSupport.on_load(:action_view) { include Devise::OmniAuth::TestHelpers }
-      end
-
-      def self.stub!(provider, stubs=nil, &block)
-        raise "You either need to pass stubs as a block or as a parameter" unless block_given? || stubs
-
-        config = Devise.omniauth_configs[provider]
-        raise "Could not find configuration for #{provider.to_s} omniauth provider" unless config
-
-        config.check_if_allow_stubs!
-        stubs ||= Faraday::Adapter::Test::Stubs.new(&block)
-
-        config.build_connection do |b|
-          b.adapter :test, stubs
-        end
-      end
-
-      def self.reset_stubs!(*providers)
-        target = providers.any? ? Devise.omniauth_configs.slice(*providers) : Devise.omniauth_configs
-        target.each_value do |config|
-          next unless config.allow_stubs?
-          config.build_connection { |b| b.adapter Faraday.default_adapter }
-        end
+        warn DEPRECATION_MESSAGE
       end
 
       def self.short_circuit_authorizers!
-        module_eval <<-ALIASES, __FILE__, __LINE__ + 1
-          def omniauth_authorize_path(*args)
-            omniauth_callback_path(*args)
-          end
-        ALIASES
-
-        Devise.mappings.each_value do |m|
-          next unless m.omniauthable?
-
-          module_eval <<-ALIASES, __FILE__, __LINE__ + 1
-            def #{m.name}_omniauth_authorize_path(provider, params = {})
-              #{m.name}_omniauth_callback_path(provider, params)
-            end
-          ALIASES
-        end
+        ::OmniAuth.config.test_mode = true
+        warn DEPRECATION_MESSAGE
       end
 
       def self.unshort_circuit_authorizers!
-        module_eval do
-          instance_methods.each { |m| remove_method(m) }
-        end
+        ::OmniAuth.config.test_mode = false
+        warn DEPRECATION_MESSAGE
       end
     end
   end

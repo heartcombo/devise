@@ -9,14 +9,14 @@ class Devise::OmniauthCallbacksController < ApplicationController
   protected
 
   def failed_strategy
-    env["omniauth.failed_strategy"]
+    env["omniauth.error.strategy"]
   end
 
   def failure_message
     exception = env["omniauth.error"]
     error   = exception.error_reason if exception.respond_to?(:error_reason)
     error ||= exception.error        if exception.respond_to?(:error)
-    error ||= env["omniauth.failure_key"]
+    error ||= env["omniauth.error.type"].to_s
     error.to_s.humanize if error
   end
 

@@ -49,7 +49,7 @@ GEM
     columnize (0.3.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    faraday (0.5.5)
+    faraday (0.5.6)
       addressable (~> 2.2.4)
       multipart-post (~> 1.1.0)
       rack (>= 1.1.0, < 2)
@@ -75,16 +75,16 @@ GEM
     nokogiri (1.4.4)
     nokogiri (1.4.4-java)
       weakling (>= 0.0.3)
-    oa-core (0.1.6)
+    oa-core (0.2.0.beta4)
       rack (~> 1.1)
-    oa-oauth (0.1.6)
+    oa-oauth (0.2.0.beta4)
       multi_json (~> 0.0.2)
       nokogiri (~> 1.4.2)
-      oa-core (= 0.1.6)
+      oa-core (= 0.2.0.beta4)
       oauth (~> 0.4.0)
-      oauth2 (~> 0.1.0)
-    oa-openid (0.1.6)
-      oa-core (= 0.1.6)
+      oauth2 (~> 0.1.1)
+    oa-openid (0.2.0.beta4)
+      oa-core (= 0.2.0.beta4)
       rack-openid (~> 1.2.0)
       ruby-openid-apps-discovery
     oauth (0.4.4)
@@ -150,8 +150,8 @@ DEPENDENCIES
   mocha
   mongo (= 1.1.2)
   mongoid (= 2.0.0.beta.20)
-  oa-oauth
-  oa-openid
+  oa-oauth (~> 0.2.0.beta1)
+  oa-openid (~> 0.2.0.beta1)
   rails (~> 3.0.4)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby

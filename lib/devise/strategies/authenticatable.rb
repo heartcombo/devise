@@ -19,11 +19,24 @@ module Devise
         result = resource && resource.valid_for_authentication?(&block)
 
         case result
-        when Symbol, String
+        when String, Symbol
           fail!(result)
+        when TrueClass
+          decorate(resource)
+          true
         else
           result
         end
+      end
+
+      # Get values from params and set in the resource.
+      def decorate(resource)
+        resource.remember_me = remember_me? if resource.respond_to?(:remember_me=)
+      end
+
+      # Should this resource be marked to be remembered?
+      def remember_me?
+        valid_params? && Devise::TRUE_VALUES.include?(params_auth_hash[:remember_me])
       end
 
       # Check if this is strategy is valid for http authentication by:

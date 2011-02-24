@@ -161,7 +161,6 @@ class RememberMeTest < ActionController::IntegrationTest
 
     get users_path
     assert_not warden.authenticated?(:user)
-    assert_nil warden.cookies['remember_user_token']
   end
 
   test 'do not remember the admin anymore after forget' do
@@ -171,11 +170,11 @@ class RememberMeTest < ActionController::IntegrationTest
 
     get destroy_admin_session_path
     assert_not warden.authenticated?(:admin)
+    assert_nil admin.reload.remember_token
     assert_nil warden.cookies['remember_admin_token']
 
     get root_path
     assert_not warden.authenticated?(:admin)
-    assert_nil warden.cookies['remember_admin_token']
   end
 
   test 'changing user password expires remember me token' do

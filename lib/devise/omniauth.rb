@@ -6,7 +6,7 @@ rescue LoadError => e
 end
 
 unless OmniAuth.config.respond_to? :test_mode
-  warn "Devise's OmniAuth testing support is deprecated. You should use Omniauth's own support, please ensure you have 0.2.0.beta version or later installed."
+  raise "You are using an old OmniAuth version, please ensure you have 0.2.0.beta version or later installed."
 end
 
 # Clean up the default path_prefix. It will be automatically set by Devise.

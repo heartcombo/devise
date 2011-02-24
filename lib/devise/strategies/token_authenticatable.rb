@@ -20,7 +20,7 @@ module Devise
         if validate(resource)
           resource.after_token_authentication
           success!(resource)
-        else
+        elsif !halted?
           fail(:invalid_token)
         end
       end

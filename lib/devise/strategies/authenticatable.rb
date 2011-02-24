@@ -21,6 +21,7 @@ module Devise
         case result
         when String, Symbol
           fail!(result)
+          false
         when TrueClass
           decorate(resource)
           true

@@ -10,7 +10,7 @@ module Devise
         if validate(resource){ resource.valid_password?(password) }
           resource.after_database_authentication
           success!(resource)
-        else
+        elsif !halted?
           fail(:invalid)
         end
       end

@@ -29,6 +29,18 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     }
   end
 
+  def stub_action!(name)
+    Users::OmniauthCallbacksController.class_eval do
+      alias_method :__old_facebook, :facebook
+      alias_method :facebook, name
+    end
+    yield
+  ensure
+    Users::OmniauthCallbacksController.class_eval do
+      alias_method :facebook, :__old_facebook
+    end
+  end
+
   test "can access omniauth.auth in the env hash" do
     visit "/users/sign_in"
     click_link "Sign in with Facebook"
@@ -83,6 +95,20 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     assert session["devise.facebook_data"]
     user = sign_in_as_user
     assert !session["devise.facebook_data"]
+  end
+
+  test "sign in and send remember token if configured" do
+    visit "/users/sign_in"
+    click_link "Sign in with Facebook"
+    assert_nil warden.cookies["remember_user_token"]
+
+    stub_action!(:sign_in_facebook) do
+      create_user
+      visit "/users/sign_in"
+      click_link "Sign in with Facebook"
+      assert warden.authenticated?(:user)
+      assert warden.cookies["remember_user_token"]
+    end
   end
 
   # The following two tests are commented because OmniAuth's test

@@ -12,10 +12,15 @@
   * When using database_authenticatable Devise will now only create an email field when appropriate (if using default authentication_keys or custom authentication_keys with email included)
   * Ensure stateless token does not trigger timeout (by github.com/pixelauthority)
   * Implement handle_unverified_request for Rails 3.0.4 compatibility and improve FailureApp reliance on symbols
+  * Consider namespaces while generating routes
+  * Custom failure apps no longer ignored in test mode (by github.com/jaghion)
+  * Do not depend on ActiveModel::Dirty
+  * Manual sign_in now triggers remember token
 
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)
   * Removed --haml and --slim view templates
+  * Devise::OmniAuth helpers were deprecated and removed in favor of Omniauth.config.test_mode
 
 == 1.2.rc
 

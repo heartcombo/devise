@@ -27,7 +27,12 @@ class TokenAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should return nil when authenticating an invalid user by authentication token' do
-    skip 'Currently raises an exception with Mongoid.' if DEVISE_ORM == :mongoid
+    if DEVISE_ORM == :mongoid
+      raise 'There is an incompatibility between Devise and Mongoid'  << 
+            ' that makes this test break. For more information, check' <<
+            ' this issue: https://github.com/mongoid/mongoid/issues/725'
+    end
+
     user = create_user
     user.ensure_authentication_token!
     user.confirm!

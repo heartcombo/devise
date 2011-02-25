@@ -116,7 +116,7 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     visit "/users/sign_in"
     click_link "Sign in with Facebook"
 
-    assert '/q/users/auth/facebook', current_url
+    assert_equal '/q/users/auth/facebook', current_url
   end
 
   # The following two tests are commented because OmniAuth's test

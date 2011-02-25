@@ -44,4 +44,11 @@ class OmniAuthRoutesTest < ActionController::TestCase
     assert_equal "/users/auth/open_id",
                   @controller.omniauth_authorize_path(:user, :open_id)
   end
+
+  test 'should set script name in the path if present' do
+    @request.env['SCRIPT_NAME'] = '/q'
+
+    assert_equal "/q/users/auth/facebook",
+                 @controller.omniauth_authorize_path(:user, :facebook)
+  end
 end

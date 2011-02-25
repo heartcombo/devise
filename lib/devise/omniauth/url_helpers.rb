@@ -7,7 +7,11 @@ module Devise
         class_eval <<-URL_HELPERS, __FILE__, __LINE__ + 1
           def #{mapping.name}_omniauth_authorize_path(provider, params = {})
             if Devise.omniauth_configs[provider.to_sym]
-              "/#{mapping.path}/auth/\#{provider}\#{'?'+params.to_param if params.present?}"
+              script_name = request.env["SCRIPT_NAME"]
+
+              path = "\#{script_name}/#{mapping.path}/auth/\#{provider}\".squeeze("/")
+              path << '?' + params.to_param if params.present?
+              path
             else
               raise ArgumentError, "Could not find omniauth provider \#{provider.inspect}"
             end

@@ -111,6 +111,14 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     end
   end
 
+  test "generates a proper link when SCRIPT_NAME is set" do
+    header 'SCRIPT_NAME', '/q'
+    visit "/users/sign_in"
+    click_link "Sign in with Facebook"
+
+    assert '/q/users/auth/facebook', current_url
+  end
+
   # The following two tests are commented because OmniAuth's test
   # support is not yet able to support failure scenarios.
   #

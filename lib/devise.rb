@@ -378,8 +378,7 @@ module Devise
 
   # constant-time comparison algorithm to prevent timing attacks
   def self.secure_compare(a, b)
-    return false unless a.present? && b.present?
-    return false unless a.bytesize == b.bytesize
+    return false if a.blank? || b.blank? || a.bytesize != b.bytesize
     l = a.unpack "C#{a.bytesize}"
 
     res = 0

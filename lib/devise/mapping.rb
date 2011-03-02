@@ -50,7 +50,6 @@ module Devise
       @singular = (options[:singular] || @scoped_path.tr('/', '_').singularize).to_sym
 
       @class_name = (options[:class_name] || name.to_s.classify).to_s
-      @ref = ActiveSupport::Dependencies.ref(@class_name)
 
       @path = (options[:path] || name).to_s
       @path_prefix = options[:path_prefix]
@@ -73,7 +72,7 @@ module Devise
 
     # Gives the class the mapping points to.
     def to
-      @ref.get
+      @to ||= ActiveSupport::Inflector.constantize(@class_name)
     end
 
     def strategies

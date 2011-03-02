@@ -72,7 +72,7 @@ module Devise
 
     # Gives the class the mapping points to.
     def to
-      @to ||= ActiveSupport::Inflector.constantize(@class_name)
+      ActiveSupport::Inflector.constantize(@class_name)
     end
 
     def strategies

@@ -98,6 +98,10 @@ module Devise
   mattr_accessor :password_length
   @@password_length = 6..20
 
+  # Scopes for validations
+	mattr_accessor :validation_scopes
+	@@validation_scopes = nil
+	
   # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks

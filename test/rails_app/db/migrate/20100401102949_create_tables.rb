@@ -3,6 +3,7 @@ class CreateTables < ActiveRecord::Migration
     create_table :users do |t|
       t.string :username
       t.string :facebook_token
+      t.integer :some_number
 
       t.database_authenticatable :null => false
       t.confirmable

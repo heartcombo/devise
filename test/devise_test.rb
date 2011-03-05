@@ -12,9 +12,10 @@ end
 
 class DeviseTest < ActiveSupport::TestCase
   test 'model options can be configured through Devise' do
-    swap Devise, :confirm_within => 113, :pepper => "foo" do
+    swap Devise, :confirm_within => 113, :pepper => "foo", :validation_scopes => [:account_id] do
       assert_equal 113, Devise.confirm_within
       assert_equal "foo", Devise.pepper
+      assert_equal [:account_id], Devise.validation_scopes
     end
   end
 

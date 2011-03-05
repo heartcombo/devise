@@ -20,6 +20,16 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_match(/taken/, user.errors[:email].join)
   end
 
+  test "should honor validation_scopes when checking uniqueness of email" do
+    existing_user = create_user(:some_number => 15)
+    assert_equal 15, existing_user.some_number
+    user = new_user(:email => existing_user.email, :some_number => 16)
+    assert_equal 16, user.some_number
+    assert user.valid?
+    user.some_number = 15
+    assert user.invalid?
+  end
+
   test 'should require correct email format, allowing blank' do
     user = new_user(:email => '')
     assert user.invalid?

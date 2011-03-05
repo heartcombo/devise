@@ -23,7 +23,7 @@ module Devise
 
         base.class_eval do
           validates_presence_of   :email, :if => :email_required?
-          validates_uniqueness_of :email, :scope => authentication_keys[1..-1],
+          validates_uniqueness_of :email, :scope => validation_scopes || authentication_keys[1..-1],
             :case_sensitive => case_insensitive_keys.exclude?(:email), :allow_blank => true
           validates_format_of     :email, :with  => email_regexp, :allow_blank => true
 
@@ -58,7 +58,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :email_regexp, :password_length)
+        Devise::Models.config(self, :email_regexp, :password_length, :validation_scopes)
       end
     end
   end

@@ -91,7 +91,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_not (user.errors[:password].join =~ /is too long/)
   end
 
-  test 'shuold not be included in objects with invalid API' do
+  test 'should not be included in objects with invalid API' do
     assert_raise RuntimeError do
       Class.new.send :include, Devise::Models::Validatable
     end

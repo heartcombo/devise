@@ -85,6 +85,9 @@ Devise.setup do |config|
 
   # Regex to use to validate the email address
   # config.email_regexp = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
+  
+  # Validation scopes if they are different from authentication_keys[1..-1]
+  config.validation_scopes = [:some_number]
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this

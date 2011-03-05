@@ -1,0 +1,39 @@
+de:
+  errors:
+    messages:
+      not_found: "nicht gefunden"
+      already_confirmed: "ist bereits aktiviert"
+      not_locked: "ist nicht blockiert"
+
+  devise:
+    failure:
+      unauthenticated: 'Sie müssen sich anmelden, um fortzufahren.'
+      unconfirmed: 'Sie müssen Ihren Zugang aktivieren, um fortzufahren.'
+      locked: 'Ihr Zugang ist blockiert.'
+      invalid: 'E-Mail und/oder Passwort fehlerhaft.'
+      invalid_token: 'Ungültiges Authentifizierungs-Token.'
+      timeout: 'Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.'
+      inactive: 'Ihr Zugang wurde noch nicht aktiviert.'
+    sessions:
+      signed_in: 'Erfolgreich angemeldet.'
+      signed_out: 'Erfolgreich abgemeldet.'
+    passwords:
+      send_instructions: 'Sie werden in Kürze eine E-Mail erhalten. Diese erklärt, wie Sie Ihr Passwort zurücksetzen können.'
+      updated: 'Ihr Passwort wurde geändert. Sie sind jetzt angemeldet.'
+    confirmations:
+      send_instructions: 'Sie werden in Kürze eine E-Mail erhalten. Diese erklärt, wie Sie Ihren Zugang aktivieren können.'
+      confirmed: 'Ihr Zugang wurde aktiviert. Sie sind jetzt angemeldet.'
+    registrations:
+      signed_up: 'Sie haben sich erfolgreich registriert. Zum Aktivieren Ihres Zugangs erhalten Sie in Kürze eine E-Mail.'
+      updated: 'Sie haben Ihre Zugangsdaten erfolgreich geändert.'
+      destroyed: 'Leben Sie wohl! Ihr Zugang wurde erfolgreich gelöscht. Wir hoffen netürlich, Sie bald wieder begrüßen zu dürfen.'
+    unlocks:
+      send_instructions: 'Sie werden in Kürze eine E-Mail erhalten. Diese erklärt, wie Sie Ihren Zugang freischalten können.'
+      unlocked: 'Ihr Zugang wurde erfolgreich freigeschaltet. Sie sind jetzt angemeldet.'
+    mailer:
+      confirmation_instructions:
+        subject: 'Bestätigung Ihres Zugangs'
+      reset_password_instructions:
+        subject: 'Zurücksetzen Ihres Passworts'
+      unlock_instructions:
+        subject: 'Freischalten Ihres Zugangs'

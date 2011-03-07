@@ -100,6 +100,12 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
+          #the to_s is here to avoid mongodb injection where 'field => value' becomes 'field => {$ne => value}' thourgh the magic of rails
+          #still this does not prevent the leak if user1.token == '$ne' + user2.token (the chance of that is poor though)
+          #this might not be the best place or the best method, please change
+          conditions.each do |k, v|
+            conditions[k] = v.to_s
+          end
           case_insensitive_keys.each { |k| conditions[k].try(:downcase!) }
           to_adapter.find_first(conditions)
         end

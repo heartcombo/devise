@@ -20,6 +20,14 @@ class RegistrationTest < ActionController::IntegrationTest
     admin = Admin.last :order => "id"
     assert_equal admin.email, 'new_user@test.com'
   end
+  
+  test 'a guest admin should be able to sign in successfully using xml' do
+    post user_registration_path(:format => 'xml', :user => {  :email => "user@test.com", :password => '123456',  :password_comfirmation => '123456'})
+    
+    assert_response :success
+    assert_match /<\?xml version="1.0" encoding="UTF-8"\?>/, response.body
+    assert_equal "user@test.com", User.first.email
+  end
 
   test 'a guest admin should be able to sign in and be redirected to a custom location' do
     Devise::RegistrationsController.any_instance.stubs(:after_sign_up_path_for).returns("/?custom=1")
@@ -101,6 +109,19 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:user)
   end
 
+  test 'a guest should not sign up with email/password that already exists using xml' do
+    post user_registration_path(:format => 'xml', :user => {  :email => "user@test.com", :password => '123456',  :password_comfirmation => '123456'})
+    assert_response :success    
+
+    post user_registration_path(:format => 'xml', :user => {  :email => "user@test.com", :password => '123456',  :password_comfirmation => '123456'})
+    assert_response :unprocessable_entity
+
+    assert_match /<\?xml version="1.0" encoding="UTF-8"\?>/, response.body
+    page = Nokogiri::XML(response.body)
+    assert_equal "Email has already been taken", page.xpath('//errors/error').children.text
+  end
+
+
   test 'a guest should not be able to change account' do
     get edit_user_registration_path
     assert_redirected_to new_user_session_path
@@ -141,7 +162,25 @@ class RegistrationTest < ActionController::IntegrationTest
     get users_path
     assert warden.authenticated?(:user)
   end
+  
+  test 'a signed in user should change his current email using xml' do
+    basic_auth = create_user_with_authentication_token_and_return_basic_auth_string
+    put user_registration_path(:format => 'xml', :user => {  :email => "new_mail@test.com", :current_password => '123456' }), {}, "HTTP_AUTHORIZATION" => basic_auth
 
+    assert_response :success
+    assert_equal "new_mail@test.com", User.first.email
+  end
+
+  test 'a signed in user should not change his current email without password using xml' do
+    basic_auth = create_user_with_authentication_token_and_return_basic_auth_string
+    put user_registration_path(:format => 'xml', :user => {  :email => "new_mail@test.com" }), {}, "HTTP_AUTHORIZATION" => basic_auth
+    page = Nokogiri::XML(response.body)
+    
+    assert_response :unprocessable_entity
+    assert_match /<\?xml version="1.0" encoding="UTF-8"\?>/, response.body
+    assert_equal "Current password can't be blank", page.xpath('//errors/error').children.text
+  end
+  
   test 'a signed in user should not change his current user with invalid password' do
     sign_in_as_user
     get edit_user_registration_path
@@ -206,4 +245,15 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_nil @request.session["devise.foo_bar"]
     assert_redirected_to new_user_registration_path
   end
+  
+  private
+  
+  def create_user_with_authentication_token_and_return_basic_auth_string(options={})
+    user = create_user(options)
+    user.authentication_token = VALID_AUTHENTICATION_TOKEN
+    user.save
+    user
+    "Basic #{ActiveSupport::Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
+  end
+  
 end

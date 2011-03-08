@@ -16,15 +16,20 @@ class Devise::RegistrationsController < ApplicationController
     if resource.save
       if resource.active?
         set_flash_message :notice, :signed_up
-        sign_in_and_redirect(resource_name, resource)
+        sign_in(resource_name, resource)
+        respond_with resource, :location => redirect_location(resource_name, resource)
       else
         set_flash_message :notice, :inactive_signed_up, :reason => resource.inactive_message.to_s
         expire_session_data_after_sign_in!
-        redirect_to after_inactive_sign_up_path_for(resource)
+        respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
     else
       clean_up_passwords(resource)
-      render_with_scope :new
+      respond_to do |format|
+        format.html { render_with_scope :new }
+        format.xml  { render :xml => resource.errors.to_xml, :status => :unprocessable_entity }
+        format.json { render :json => resource.errors.to_json, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -38,10 +43,14 @@ class Devise::RegistrationsController < ApplicationController
     if resource.update_with_password(params[resource_name])
       set_flash_message :notice, :updated
       sign_in resource_name, resource, :bypass => true
-      redirect_to after_update_path_for(resource)
+      respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords(resource)
-      render_with_scope :edit
+      respond_to do |format|
+        format.html { render_with_scope :edit }
+        format.xml  { render :xml => resource.errors.to_xml, :status => :unprocessable_entity }
+        format.json { render :json => resource.errors.to_json, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -78,7 +87,8 @@ class Devise::RegistrationsController < ApplicationController
     end
 
     # Overwrite redirect_for_sign_in so it takes uses after_sign_up_path_for.
-    def redirect_location(scope, resource) #:nodoc:
+    def redirect_location(resource_name, resource) #:nodoc:
+      scope = Devise::Mapping.find_scope!(resource_name)
       stored_location_for(scope) || after_sign_up_path_for(resource)
     end
 

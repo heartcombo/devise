@@ -42,7 +42,10 @@ class Devise::CookieSanitizer
   def call(env)
     response = @app.call(env)
     headers = response[1]
-    headers[SET_COOKIE] = headers[SET_COOKIE].join("\n") if headers[SET_COOKIE].respond_to?(:join)
+    cookies = headers[SET_COOKIE]
+    if cookies.respond_to?(:join)
+      headers[SET_COOKIE] = cookies.join("\n").squeeze("\n")
+    end
     response
   end
 end

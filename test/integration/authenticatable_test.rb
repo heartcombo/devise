@@ -190,6 +190,14 @@ class AuthenticationTest < ActionController::IntegrationTest
     assert_nil session[:"user.return_to"]
   end
 
+  test 'xml http requests does not store urls for redirect' do
+    xhr :get, users_path
+    assert_nil session[:"user.return_to"]
+
+    sign_in_as_user
+    assert_template 'home/index'
+  end
+
   test 'redirect to configured home path for a given scope after sign in' do
     sign_in_as_admin
     assert_equal "/admin_area/home", @request.path

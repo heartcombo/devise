@@ -65,6 +65,31 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
+  test 'authenticate with valid authentication token key and do not store if stateless and timeoutable are enabled' do
+    swap Devise, :token_authentication_key => :secret_token, :stateless_token => true, :timeout_in => (0.1).second do
+      user = sign_in_as_new_user_with_token
+      assert warden.authenticated?(:user)
+
+      # Expiring does not work because we are setting the session value when accessing it
+      sleep 0.3
+
+      get_users_path_as_existing_user(user)
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'should not be subject to injection' do
+    swap Devise, :token_authentication_key => :secret_token do
+      user1 = create_user_with_authentication_token()
+      user2 = create_another_user_with_authentication_token(:auth_token => "ANOTHERTOKEN")
+
+      visit users_path(Devise.token_authentication_key.to_s + '[$ne]' => user1.authentication_token)
+
+      assert warden.user(:user) == nil
+
+    end
+  end
+
   private
 
     def sign_in_as_new_user_with_token(options = {})
@@ -84,5 +109,34 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
 
       user
     end
+
+    def create_user_with_authentication_token(options = {})
+      user = create_user(options)
+      user.authentication_token = options[:auth_token] || VALID_AUTHENTICATION_TOKEN
+      user.save
+      user
+    end
+
+    def create_another_user_with_authentication_token(options = {})
+      @anotheruser ||= begin
+        user = User.create!(
+          :username => 'anotherusertest',
+          :email => options[:email] || 'anotheruser@test.com',
+          :password => options[:password] || '123456',
+          :password_confirmation => options[:password] || '123456',
+          :created_at => Time.now.utc
+        )
+        user.confirm! unless options[:confirm] == false
+        user.lock_access! if options[:locked] == true
+        user.authentication_token = options[:auth_token] || VALID_AUTHENTICATION_TOKEN
+        user.save
+        user
+      end
+    end
+
+    def get_users_path_as_existing_user(user)
+      sign_in_as_new_user_with_token(:user => user)
+    end
+
 
 end

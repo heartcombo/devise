@@ -34,4 +34,26 @@ class TokenAuthenticatableTest < ActiveSupport::TestCase
     assert_nil authenticated_user
   end
 
+  test 'should not be subject to injection' do
+
+    if DEVISE_ORM != :mongoid
+      assert_nil(nil)
+    else
+
+      user1 = create_user
+      user1.ensure_authentication_token!
+      user1.confirm!
+
+      user2 = create_user
+      user2.ensure_authentication_token!
+      user2.confirm!
+
+      #now trick it
+      user = User.find_for_token_authentication(:auth_token => {'$ne' => user1.authentication_token})
+
+      assert_nil user
+    end
+
+  end
+
 end

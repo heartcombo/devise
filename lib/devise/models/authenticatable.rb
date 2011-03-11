@@ -100,12 +100,7 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
-          #the to_s is here to avoid mongodb injection where 'field => value' becomes 'field => {$ne => value}' thourgh the magic of rails
-          #still this does not prevent the leak if user1.token == '$ne' + user2.token (the chance of that is poor though)
-          #this might not be the best place or the best method, please change
-          conditions.each do |k, v|
-            conditions[k] = v.to_s
-          end
+          filter_auth_params(conditions)
           case_insensitive_keys.each { |k| conditions[k].try(:downcase!) }
           to_adapter.find_first(conditions)
         end
@@ -123,7 +118,7 @@ module Devise
           attributes.delete_if { |key, value| value.blank? }
 
           if attributes.size == required_attributes.size
-            record = to_adapter.find_first(attributes)
+            record = to_adapter.find_first(filter_auth_params(attributes))
           end
           
           unless record
@@ -137,6 +132,15 @@ module Devise
           end
 
           record
+        end
+
+        protected
+
+        # Force keys to be string to avoid injection on mongoid related database.
+        def filter_auth_params(conditions)
+          conditions.each do |k, v|
+            conditions[k] = v.to_s
+          end
         end
 
         # Generate a token by looping and ensuring does not already exist.

@@ -92,12 +92,16 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
   test 'should not be subject to injection' do
     swap Devise, :token_authentication_key => :secret_token do
       user1 = create_user_with_authentication_token()
-      user2 = create_another_user_with_authentication_token(:auth_token => "ANOTHERTOKEN")
 
+      # Clean up user cache
+      @user = nil
+
+      user2 = create_user_with_authentication_token(:email => "another@test.com")
+      user2.update_attribute(:authentication_token, "ANOTHERTOKEN")
+
+      assert_not_equal user1, user2
       visit users_path(Devise.token_authentication_key.to_s + '[$ne]' => user1.authentication_token)
-
-      assert warden.user(:user) == nil
-
+      assert_nil warden.user(:user) 
     end
   end
 
@@ -119,28 +123,11 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
       user
     end
 
-    def create_user_with_authentication_token(options = {})
+    def create_user_with_authentication_token(options={})
       user = create_user(options)
-      user.authentication_token = options[:auth_token] || VALID_AUTHENTICATION_TOKEN
+      user.authentication_token = VALID_AUTHENTICATION_TOKEN
       user.save
       user
-    end
-
-    def create_another_user_with_authentication_token(options = {})
-      @anotheruser ||= begin
-        user = User.create!(
-          :username => 'anotherusertest',
-          :email => options[:email] || 'anotheruser@test.com',
-          :password => options[:password] || '123456',
-          :password_confirmation => options[:password] || '123456',
-          :created_at => Time.now.utc
-        )
-        user.confirm! unless options[:confirm] == false
-        user.lock_access! if options[:locked] == true
-        user.authentication_token = options[:auth_token] || VALID_AUTHENTICATION_TOKEN
-        user.save
-        user
-      end
     end
 
     def get_users_path_as_existing_user(user)

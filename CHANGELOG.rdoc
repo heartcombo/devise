@@ -1,3 +1,5 @@
+== 1.2.rc2
+
 * enhancements
   * Make friendly_token 20 chars long
   * Use secure_compare
@@ -19,6 +21,7 @@
   * Be sure to halt strategies on failures
   * Consider SCRIPT_NAME on Omniauth paths
   * Reset failed attempts when lock is expired
+  * Ensure there is no Mongoid injection
 
 * deprecations
   * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)

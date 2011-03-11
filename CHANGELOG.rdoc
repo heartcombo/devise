@@ -1,3 +1,8 @@
+== 1.1.8
+
+* bugfix
+  * Ensure you can't inject Mongoid queries using token authenticatable
+
 == 1.1.7
 
 * bugfix

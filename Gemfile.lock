@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise (1.1.6)
+    devise (1.1.7)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
 
@@ -36,7 +36,7 @@ GEM
       activesupport (= 3.0.4)
     activesupport (3.0.4)
     arel (2.0.8)
-    bcrypt-ruby (2.1.2)
+    bcrypt-ruby (2.1.4)
     bson (1.1.2)
     bson_ext (1.1.2)
     builder (2.1.2)
@@ -91,7 +91,7 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.24)
-    warden (1.0.2)
+    warden (1.0.3)
       rack (>= 1.0.0)
     webrat (0.7.2)
       nokogiri (>= 1.2.0)
@@ -104,7 +104,6 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  bcrypt-ruby (~> 2.1.2)
   bson_ext (= 1.1.2)
   devise!
   mocha
@@ -113,5 +112,4 @@ DEPENDENCIES
   rails (~> 3.0.4)
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
-  warden (~> 1.0.2)
   webrat (= 0.7.2)

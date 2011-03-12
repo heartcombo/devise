@@ -119,24 +119,20 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     assert_equal '/q/users/auth/facebook', current_url
   end
 
-  # The following two tests are commented because OmniAuth's test
-  # support is not yet able to support failure scenarios.
-  #
-  # test "handles callback error parameter according to the specification" do
-  #   visit "/users/auth/facebook/callback?error=access_denied"
-  #   assert_current_url "/users/sign_in"
-  #   assert_contain 'Could not authorize you from Facebook because "Access denied".'
-  # end
+  test "handles callback error parameter according to the specification" do
+    OmniAuth.config.mock_auth[:facebook] = :access_denied
+    visit "/users/auth/facebook/callback?error=access_denied"
+    assert_current_url "/users/sign_in"
+    assert_contain 'Could not authorize you from Facebook because "Access denied".'
+  end
 
-  # test "handles other exceptions from omniauth" do
-  #   Devise::OmniAuth.stub!(:facebook) do |b|
-  #     b.post('/oauth/access_token') { [401, {}, {}.to_json] }
-  #   end
+  test "handles other exceptions from omniauth" do
+    OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
 
-  #   visit "/users/sign_in"
-  #   click_link "Sign in with facebook"
+    visit "/users/sign_in"
+    click_link "Sign in with facebook"
 
-  #   assert_current_url "/users/sign_in"
-  #   assert_contain 'Could not authorize you from Facebook because "Invalid credentials".'
-  # end
+    assert_current_url "/users/sign_in"
+    assert_contain 'Could not authorize you from Facebook because "Invalid credentials".'
+  end
 end

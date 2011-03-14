@@ -264,7 +264,7 @@ module ActionDispatch::Routing
 
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         path, @scope[:path] = @scope[:path], nil
-        path_prefix = "/#{mapping.path}/auth"
+        path_prefix = "/#{mapping.path}/auth".squeeze("/")
 
         if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
           warn "[DEVISE] You can only add :omniauthable behavior to one model."

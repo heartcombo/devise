@@ -78,7 +78,7 @@ module Devise
 
       # Downcase case-insensitive keys
       def downcase_keys
-        self.class.case_insensitive_keys.each { |k| self[k].try(:downcase!) }
+        (self.class.case_insensitive_keys || []).each { |k| self[k].try(:downcase!) }
       end
 
       # Digests the password using bcrypt.

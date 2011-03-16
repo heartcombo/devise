@@ -140,7 +140,7 @@ module Devise
         def filter_auth_params(conditions)
           conditions.each do |k, v|
             conditions[k] = v.to_s
-          end
+          end if conditions.is_a?(Hash)
         end
 
         # Generate a token by looping and ensuring does not already exist.

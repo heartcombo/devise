@@ -212,14 +212,6 @@ Since Devise is an engine, all its views are packaged inside the gem. These view
 
   rails generate devise:views
 
-Devise currently supports generating views for the following template engines (use the `-e` flag for the devise:views generator):
-
-* Erb
-* Haml (http://github.com/nex3/haml)
-* Slim (http://github.com/stonean/slim)
-
-Note: If you are generating Haml or Slim templates, you will need to have a few dependencies such as `ruby_parser` (for Haml), `hpricot` (for both Haml and Slim) and `haml2slim` (for Slim) installed.
-
 If you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
 
 After doing so, you will be able to have views based on the role like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will use the default view at "devise/sessions/new". You can also use the generator to generate scoped views:

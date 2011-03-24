@@ -227,9 +227,11 @@ module Devise
   end
 
   def self.ref(arg)
-    dependencies = ActiveSupport::Dependencies
-    dependencies.respond_to?(:reference) ?
-      dependencies.reference(arg) : dependencies.ref(arg)
+    if defined?(ActiveSupport::Dependencies::ClassCache)
+      ActiveSupport::Dependencies::Reference.store(arg)
+    else
+      ActiveSupport::Dependencies.ref(arg)
+    end
   end
 
   def self.omniauth_providers
@@ -244,7 +246,11 @@ module Devise
 
   # Get the mailer class from the mailer reference object.
   def self.mailer
-    @@mailer_ref.get
+    if defined?(ActiveSupport::Dependencies::ClassCache)
+      @@mailer_ref.get "Devise::Mailer"
+    else
+      @@mailer_ref.get
+    end
   end
 
   # Set the mailer reference object to access the mailer.

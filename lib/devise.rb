@@ -226,6 +226,12 @@ module Devise
     yield self
   end
 
+  def self.ref(arg)
+    dependencies = ActiveSupport::Dependencies
+    dependencies.respond_to?(:reference) ?
+      dependencies.reference(arg) : dependencies.ref(arg)
+  end
+
   def self.omniauth_providers
     omniauth_configs.keys
   end
@@ -243,9 +249,7 @@ module Devise
 
   # Set the mailer reference object to access the mailer.
   def self.mailer=(class_name)
-    @@mailer_ref = ActiveSupport::Dependencies.respond_to?(:reference)
-                    ? ActiveSupport::Dependencies.reference(class_name)
-                    : ActiveSupport::Dependencies.ref(class_name)
+    @@mailer_ref = ref(class_name)
   end
   self.mailer = "Devise::Mailer"
 

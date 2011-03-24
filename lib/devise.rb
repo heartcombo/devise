@@ -243,7 +243,7 @@ module Devise
 
   # Set the mailer reference object to access the mailer.
   def self.mailer=(class_name)
-    @@mailer_ref = ActiveSupport::Dependencies.ref(class_name)
+    @@mailer_ref = ActiveSupport::Dependencies.reference(class_name)
   end
   self.mailer = "Devise::Mailer"
 

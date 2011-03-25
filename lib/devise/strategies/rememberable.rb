@@ -20,7 +20,7 @@ module Devise
 
         if validate(resource)
           success!(resource)
-        else
+        elsif !halted?
           cookies.delete(remember_key)
           pass
         end

@@ -21,6 +21,7 @@ module Devise
         case result
         when Symbol, String
           fail!(result)
+          false
         else
           result
         end

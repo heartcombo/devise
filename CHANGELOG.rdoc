@@ -1,3 +1,8 @@
+== 1.1.9
+
+* bugfix
+  * double check if warden has not halted
+
 == 1.1.8
 
 * bugfix

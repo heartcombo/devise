@@ -47,12 +47,12 @@ class LockableTest < ActiveSupport::TestCase
     assert user.access_locked?
   end
 
-  test "active? should be the opposite of locked?" do
+  test "active_for_authentication? should be the opposite of locked?" do
     user = create_user
     user.confirm!
-    assert user.active?
+    assert user.active_for_authentication?
     user.lock_access!
-    assert_not user.active?
+    assert_not user.active_for_authentication?
   end
 
   test "should unlock a user by cleaning locked_at, falied_attempts and unlock_token" do

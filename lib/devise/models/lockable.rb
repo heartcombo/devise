@@ -57,9 +57,9 @@ module Devise
         if_access_locked { send_unlock_instructions }
       end
 
-      # Overwrites active? from Devise::Models::Activatable for locking purposes
+      # Overwrites active_for_authentication? from Devise::Models::Activatable for locking purposes
       # by verifying whether a user is active to sign in or not based on locked?
-      def active?
+      def active_for_authentication?
         super && !access_locked?
       end
 

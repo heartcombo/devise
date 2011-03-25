@@ -167,10 +167,10 @@ class ConfirmableTest < ActiveSupport::TestCase
     swap Devise, :confirm_within => 1.day do
       user = new_user
       user.confirmation_sent_at = 2.days.ago
-      assert_not user.active?
+      assert_not user.active_for_authentication?
 
       Devise.confirm_within = 3.days
-      assert user.active?
+      assert user.active_for_authentication?
     end
   end
 
@@ -180,35 +180,35 @@ class ConfirmableTest < ActiveSupport::TestCase
       user = create_user
 
       user.confirmation_sent_at = 4.days.ago
-      assert user.active?
+      assert user.active_for_authentication?
 
       user.confirmation_sent_at = 5.days.ago
-      assert_not user.active?
+      assert_not user.active_for_authentication?
     end
   end
 
   test 'should be active when already confirmed' do
     user = create_user
     assert_not user.confirmed?
-    assert_not user.active?
+    assert_not user.active_for_authentication?
 
     user.confirm!
     assert user.confirmed?
-    assert user.active?
+    assert user.active_for_authentication?
   end
 
   test 'should not be active when confirm in is zero' do
     Devise.confirm_within = 0.days
     user = create_user
     user.confirmation_sent_at = Date.today
-    assert_not user.active?
+    assert_not user.active_for_authentication?
   end
 
   test 'should not be active without confirmation' do
     user = create_user
     user.confirmation_sent_at = nil
     user.save
-    assert_not user.reload.active?
+    assert_not user.reload.active_for_authentication?
   end
 
   test 'should be active without confirmation when confirmation is not required' do
@@ -216,7 +216,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.instance_eval { def confirmation_required?; false end }
     user.confirmation_sent_at = nil
     user.save
-    assert user.reload.active?
+    assert user.reload.active_for_authentication?
   end
 
   test 'should find a user to send email instructions for the user confirm it\'s email by authentication_keys' do

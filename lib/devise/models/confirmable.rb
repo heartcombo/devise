@@ -55,11 +55,11 @@ module Devise
         unless_confirmed { send_confirmation_instructions }
       end
 
-      # Overwrites active? from Devise::Models::Activatable for confirmation
+      # Overwrites active_for_authentication? for confirmation
       # by verifying whether a user is active to sign in or not. If the user
       # is already confirmed, it should never be blocked. Otherwise we need to
       # calculate if the confirm time has not expired for this user.
-      def active?
+      def active_for_authentication?
         super && (!confirmation_required? || confirmed? || confirmation_period_valid?)
       end
 

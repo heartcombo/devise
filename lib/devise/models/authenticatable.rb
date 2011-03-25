@@ -24,19 +24,19 @@ module Devise
     #   * +params_authenticatable+: if this model allows authentication through request params. By default true.
     #     It also accepts an array specifying the strategies that should allow params authentication.
     #
-    # == Active?
+    # == active_for_authentication?
     #
     # Before authenticating a user and in each request, Devise checks if your model is active by
-    # calling model.active?. This method is overwriten by other devise modules. For instance,
-    # :confirmable overwrites .active? to only return true if your model was confirmed.
+    # calling model.active_for_authentication?. This method is overwriten by other devise modules. For instance,
+    # :confirmable overwrites .active_for_authentication? to only return true if your model was confirmed.
     #
     # You overwrite this method yourself, but if you do, don't forget to call super:
     #
-    #   def active?
+    #   def active_for_authentication?
     #     super && special_condition_is_valid?
     #   end
     #
-    # Whenever active? returns false, Devise asks the reason why your model is inactive using
+    # Whenever active_for_authentication? returns false, Devise asks the reason why your model is inactive using
     # the inactive_message method. You can overwrite it as well:
     #
     #   def inactive_message
@@ -55,10 +55,10 @@ module Devise
       # find_for_authentication are the methods used in a Warden::Strategy to check
       # if a model should be signed in or not.
       #
-      # However, you should not overwrite this method, you should overwrite active? and
-      # inactive_message instead.
+      # However, you should not overwrite this method, you should overwrite active_for_authentication?
+      # and inactive_message instead.
       def valid_for_authentication?
-        if active?
+        if active_for_authentication?
           block_given? ? yield : true
         else
           inactive_message
@@ -66,7 +66,19 @@ module Devise
       end
 
       def active?
-        true
+        ActiveSupport::Deprecation.warn "[DEVISE] active? is deprecated, please use active_for_authentication? instead.", caller
+        active_for_authentication?
+      end
+
+      def active_for_authentication?
+        my_methods = self.class.instance_methods(false)
+        if my_methods.include?("active?") || my_methods.include?(:active?)
+          ActiveSupport::Deprecation.warn "[DEVISE] Overriding active? is deprecated to avoid conflicts. " \
+            "Please use active_for_authentication? instead.", caller
+          active?
+        else
+          true
+        end
       end
 
       def inactive_message

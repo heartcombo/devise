@@ -14,7 +14,7 @@ class Devise::RegistrationsController < ApplicationController
     build_resource
 
     if resource.save
-      if resource.active?
+      if resource.active_for_authentication?
         set_flash_message :notice, :signed_up
         sign_in_and_redirect(resource_name, resource)
       else

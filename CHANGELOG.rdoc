@@ -1,6 +1,7 @@
 * bug fix
   * Properly ignore path prefix on omniauthable
   * Faster uniqueness queries
+  * Rename active? to active_for_authentication? to avoid conflicts
 
 == 1.2.rc2
 

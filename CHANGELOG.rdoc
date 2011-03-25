@@ -1,3 +1,5 @@
+== 1.2.0
+
 * bug fix
   * Properly ignore path prefix on omniauthable
   * Faster uniqueness queries

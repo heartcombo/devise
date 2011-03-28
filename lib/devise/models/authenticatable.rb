@@ -65,20 +65,8 @@ module Devise
         end
       end
 
-      def active?
-        ActiveSupport::Deprecation.warn "[DEVISE] active? is deprecated, please use active_for_authentication? instead.", caller
-        active_for_authentication?
-      end
-
       def active_for_authentication?
-        my_methods = self.class.instance_methods(false)
-        if my_methods.include?("active?") || my_methods.include?(:active?)
-          ActiveSupport::Deprecation.warn "[DEVISE] Overriding active? is deprecated to avoid conflicts. " \
-            "Please use active_for_authentication? instead.", caller
-          active?
-        else
-          true
-        end
+        true
       end
 
       def inactive_message

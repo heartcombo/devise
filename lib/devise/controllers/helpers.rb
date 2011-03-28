@@ -80,12 +80,6 @@ module Devise
         end
       end
 
-      def anybody_signed_in?
-        ActiveSupport::Deprecation.warn "Devise#anybody_signed_in? is deprecated. "
-          "Please use Devise#signed_in?(nil) instead."
-        signed_in?
-      end
-
       # Sign in a user that already was authenticated. This helper is useful for logging
       # users in after sign up.
       #

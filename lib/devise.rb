@@ -238,12 +238,6 @@ module Devise
     omniauth_configs.keys
   end
 
-  def self.cookie_domain=(value)
-    ActiveSupport::Deprecation.warn "Devise.cookie_domain=(value) is deprecated. "
-      "Please use Devise.cookie_options = { :domain => value } instead."
-    self.cookie_options[:domain] = value
-  end
-
   # Get the mailer class from the mailer reference object.
   def self.mailer
     if defined?(ActiveSupport::Dependencies::ClassCache)

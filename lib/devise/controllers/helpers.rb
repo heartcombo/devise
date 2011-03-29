@@ -189,6 +189,22 @@ module Devise
         root_path
       end
 
+      # The default url to be used after signing up.  This is used by the Devise
+      # RegistrationsController and you can overwite it in your ApplicaitonController to
+      # provide a custom hook for a custom resource.
+      #
+      # By default it uses after_sign_in_path_for(resource)
+      def after_sign_up_path_for(resource) 
+        after_sign_in_path_for(resource) 
+      end 
+ 
+      # The default url to be used after signing up for inactive accounts.  This is used by the Devise
+      # RegistrationsController and you can overwrite it in your ApplicationController to
+      # provide a custom hook for a custom resource.
+      def after_inactive_sign_up_path_for(resource)
+        root_path
+      end
+
       # Sign in a user and tries to redirect first to the stored location and
       # then to the url specified by after_sign_in_path_for. It accepts the same
       # parameters as the sign_in method.

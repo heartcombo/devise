@@ -20,7 +20,7 @@ class Devise::RegistrationsController < ApplicationController
       else
         set_flash_message :notice, :inactive_signed_up, :reason => resource.inactive_message.to_s
         expire_session_data_after_sign_in!
-        redirect_to after_inactive_sign_up_path_for(resource)
+        redirect_to redirect_after_inactive_sign_up_path_for(resource)
       end
     else
       clean_up_passwords(resource)
@@ -73,19 +73,20 @@ class Devise::RegistrationsController < ApplicationController
 
     # The path used after sign up. You need to overwrite this method
     # in your own RegistrationsController.
-    def after_sign_up_path_for(resource)
-      after_sign_in_path_for(resource)
+    def redirect_after_sign_up_path_for(resource)
+      #after_sign_in_path_for(resource)
+      after_sign_up_path_for(resource)
     end
 
     # Overwrite redirect_for_sign_in so it takes uses after_sign_up_path_for.
     def redirect_location(scope, resource) #:nodoc:
-      stored_location_for(scope) || after_sign_up_path_for(resource)
+      stored_location_for(scope) || redirect_after_sign_up_path_for(resource)
     end
 
-    # The path used after sign up for inactive accounts. You need to overwrite
-    # this method in your own RegistrationsController.
-    def after_inactive_sign_up_path_for(resource)
-      root_path
+    # The path used after sign up for inactive accounts. Define after_inactive_sign_up_path_for
+    # in your ApplicationController to override
+    def redirect_after_inactive_sign_up_path_for(resource)
+      after_inactive_sign_up_path_for(resource)
     end
 
     # The default url to be used after updating a resource. You need to overwrite

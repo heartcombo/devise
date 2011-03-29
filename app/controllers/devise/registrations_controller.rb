@@ -74,7 +74,6 @@ class Devise::RegistrationsController < ApplicationController
     # The path used after sign up. You need to overwrite this method
     # in your own RegistrationsController.
     def redirect_after_sign_up_path_for(resource)
-      #after_sign_in_path_for(resource)
       after_sign_up_path_for(resource)
     end
 

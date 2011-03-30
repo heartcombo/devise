@@ -16,9 +16,7 @@ class Devise::PasswordsController < ApplicationController
       set_flash_message(:notice, :send_instructions) if is_navigational_format?
       respond_with resource, :location => new_session_path(resource_name)
     else
-      respond_with(resource) do |format|
-        format.any(*navigational_formats) { render_with_scope :new }
-      end
+      respond_with_navigational(resource){ render_with_scope :new }
     end
   end
 
@@ -38,9 +36,7 @@ class Devise::PasswordsController < ApplicationController
       sign_in(resource_name, resource)
       respond_with resource, :location => redirect_location(resource_name, resource)
     else
-      respond_with(resource) do |format|
-        format.any(*navigational_formats) { render_with_scope :edit }
-      end
+      respond_with_navigational(resource){ render_with_scope :edit }
     end
   end
 end

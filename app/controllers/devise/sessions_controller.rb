@@ -22,12 +22,15 @@ class Devise::SessionsController < ApplicationController
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
     set_flash_message :notice, :signed_out if signed_in
 
-    # We actually need to hard coded this, as Rails default responder doesn't
+    # We actually need to hardcode this, as Rails default responder doesn't
     # support returning empty response on GET request
     respond_to do |format|
       format.any(*navigational_formats) { redirect_to after_sign_out_path_for(resource_name) }
-      format.xml { head :ok }
-      format.json { render :text => '{}', :status => :ok }
+      format.all do
+        method = "to_#{request_format}"
+        text = {}.respond_to?(method) ? {}.send(method) : ""
+        render :text => text, :status => :ok
+      end
     end
   end
 end

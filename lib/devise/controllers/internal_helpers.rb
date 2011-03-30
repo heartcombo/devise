@@ -7,6 +7,19 @@ module Devise
       extend ActiveSupport::Concern
       include Devise::Controllers::ScopedViews
 
+      MIME_REFERENCES = Mime::HTML.respond_to?(:ref)
+
+      # Helper used by FailureApp and Devise controllers to retrieve proper formats.
+      def self.request_format(request)
+        if request.format.respond_to?(:ref)
+          request.format.ref
+        elsif MIME_REFERENCES
+          request.format
+        else # Rails < 3.0.4
+          request.format.to_sym
+        end
+      end
+
       included do
         helper DeviseHelper
 
@@ -52,6 +65,10 @@ module Devise
 
     protected
 
+      def request_format
+        @request_format ||= Devise::Controllers::InternalHelpers.request_format(request)
+      end
+
       # Checks whether it's a devise mapped resource or not.
       def is_devise_resource? #:nodoc:
         unknown_action!("Could not find devise mapping for path #{request.fullpath.inspect}") unless devise_mapping
@@ -59,10 +76,10 @@ module Devise
 
       # Check whether it's navigational format, such as :html or :iphone, or not.
       def is_navigational_format?
-        navigational_formats.include?(request.format.to_sym)
+        Devise.navigational_formats.include?(request_format)
       end
 
-      # Returns real navigational formats which supported by Rails
+      # Returns real navigational formats which are supported by Rails
       def navigational_formats
         @navigational_formats ||= Devise.navigational_formats.select{ |format| Mime::EXTENSION_LOOKUP[format.to_s] }
       end
@@ -118,6 +135,12 @@ module Devise
 
       def clean_up_passwords(object) #:nodoc:
         object.clean_up_passwords if object.respond_to?(:clean_up_passwords)
+      end
+
+      def respond_with_navigational(*args, &block)
+        respond_with(*args) do |format|
+          format.any(*navigational_formats, &block)
+        end
       end
     end
   end

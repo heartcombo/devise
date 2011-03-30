@@ -25,9 +25,7 @@ class Devise::RegistrationsController < ApplicationController
       end
     else
       clean_up_passwords(resource)
-      respond_with(resource) do |format|
-        format.any(*navigational_formats) { render_with_scope :new }
-      end
+      respond_with_navigational(resource) { render_with_scope :new }
     end
   end
 
@@ -44,9 +42,7 @@ class Devise::RegistrationsController < ApplicationController
       respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords(resource)
-      respond_with(resource) do |format|
-        format.any(*navigational_formats) { render_with_scope :edit }
-      end
+      respond_with_navigational(resource){ render_with_scope :edit }
     end
   end
 
@@ -55,9 +51,7 @@ class Devise::RegistrationsController < ApplicationController
     resource.destroy
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
     set_flash_message :notice, :destroyed if is_navigational_format?
-    respond_with(resource) do |format|
-      format.any(*navigational_formats) { redirect_to after_sign_out_path_for(resource_name) }
-    end
+    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
   end
 
   # GET /resource/cancel

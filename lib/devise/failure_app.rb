@@ -128,16 +128,8 @@ module Devise
       session["#{scope}_return_to"] = attempted_path if request.get? && !http_auth?
     end
 
-    MIME_REFERENCES = Mime::HTML.respond_to?(:ref)
-
     def request_format
-      @request_format ||= if request.format.respond_to?(:ref)
-        request.format.ref
-      elsif MIME_REFERENCES
-        request.format
-      else # Rails < 3.0.4
-        request.format.to_sym
-      end
+      @request_format ||= Devise::Controllers::InternalHelpers.request_format(request)
     end
   end
 end

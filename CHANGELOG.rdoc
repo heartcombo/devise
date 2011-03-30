@@ -1,6 +1,12 @@
 * enhancements
   * All controllers can now handle different mime types than html using Responders (by github.com/sikachu)
 
+* bug fix
+  * Fix a bug where configuration options were being included too late
+
+* backward incompatible changes
+  * authentication_keys are no longer considered when creating the e-mail validations, the previous behavior was buggy. You must double check if you were relying on such behavior.
+
 == 1.2.1
 
 * enhancements

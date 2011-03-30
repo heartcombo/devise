@@ -1,3 +1,11 @@
+* enhancements
+  * All controllers can now handle different mime types than html using Responders (by github.com/sikachu)
+
+== 1.2.1
+
+* enhancements
+  * Improve update path messages
+
 == 1.2.0
 
 * bug fix

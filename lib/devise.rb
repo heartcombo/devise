@@ -173,7 +173,7 @@ module Devise
 
   # Time interval you can reset your password with a reset password key 
   mattr_accessor :reset_password_within
-  @@reset_password_within = 1.hour
+  @@reset_password_within = nil
 
   # The default scope which is used by warden.
   mattr_accessor :default_scope

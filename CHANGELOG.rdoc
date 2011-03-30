@@ -1,5 +1,6 @@
 * enhancements
   * All controllers can now handle different mime types than html using Responders (by github.com/sikachu)
+  * Added reset_password_within as configuration option to send the token for recovery (by github.com/jdguyot)
 
 * bug fix
   * Fix a bug where configuration options were being included too late

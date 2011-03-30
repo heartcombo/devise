@@ -35,7 +35,7 @@ module Devise
 
       # Resets reset password token and send reset password instructions by email
       def send_reset_password_instructions
-        generate_reset_password_token! if self.reset_password_token.nil? or !reset_password_period_valid?
+        generate_reset_password_token! if should_generate_token?
         ::Devise.mailer.reset_password_instructions(self).deliver
       end
 
@@ -59,15 +59,20 @@ module Devise
       #   reset_password_period_valid?   # will always return false
       #
       def reset_password_period_valid?
-        reset_password_sent_at && reset_password_sent_at.utc >= self.class.reset_password_within.ago
+        respond_to?(:reset_password_sent_at) && reset_password_sent_at &&
+          reset_password_sent_at.utc >= self.class.reset_password_within.ago
       end
 
       protected
 
+        def should_generate_token?
+          reset_password_token.nil? || !reset_password_period_valid?
+        end
+
         # Generates a new random token for reset password
         def generate_reset_password_token
           self.reset_password_token = self.class.reset_password_token
-          self.reset_password_sent_at = Time.now.utc
+          self.reset_password_sent_at = Time.now.utc if respond_to?(:reset_password_sent_at=)
         end
 
         # Resets the reset password token with and save the record without
@@ -79,7 +84,7 @@ module Devise
         # Removes reset_password token
         def clear_reset_password_token
           self.reset_password_token = nil
-          self.reset_password_sent_at = nil
+          self.reset_password_sent_at = nil if respond_to?(:reset_password_sent_at=)
         end
 
       module ClassMethods
@@ -115,8 +120,7 @@ module Devise
           recoverable
         end
 
-        Devise::Models.config(self, :reset_password_keys)
-        Devise::Models.config(self, :reset_password_within)
+        Devise::Models.config(self, :reset_password_keys, :reset_password_within)
       end
     end
   end

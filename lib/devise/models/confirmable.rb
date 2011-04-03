@@ -27,15 +27,20 @@ module Devise
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
         after_create  :send_confirmation_instructions, :if => :confirmation_required?
+        before_update :prevent_email_change, :if => :prevent_email_change?
+        after_update :send_confirmation_instructions, :if => :email_change_confirmation_required?
       end
 
-      # Confirm a user by setting its confirmed_at to actual time. If the user
-      # is already confirmed, add en error to email field
+      # Confirm a user by setting it's confirmed_at to actual time. If the user
+      # is already confirmed, add en error to email field. If the user is invalid
+      # add errors
       def confirm!
         unless_confirmed do
           self.confirmation_token = nil
           self.confirmed_at = Time.now
-          save(:validate => false)
+          self.email = unconfirmed_email if unconfirmed_email.present?
+          self.unconfirmed_email = nil
+          save
         end
       end
 
@@ -46,6 +51,7 @@ module Devise
 
       # Send confirmation instructions by email
       def send_confirmation_instructions
+        @email_change_confirmation_required = false
         generate_confirmation_token! if self.confirmation_token.nil?
         ::Devise.mailer.confirmation_instructions(self).deliver
       end
@@ -104,10 +110,10 @@ module Devise
           confirmation_sent_at && confirmation_sent_at.utc >= self.class.confirm_within.ago
         end
 
-        # Checks whether the record is confirmed or not, yielding to the block
+        # Checks whether the record is confirmed or not or a new email has been added, yielding to the block
         # if it's already confirmed, otherwise adds an error to email.
         def unless_confirmed
-          unless confirmed?
+          unless confirmed? && unconfirmed_email.blank?
             yield
           else
             self.errors.add(:email, :already_confirmed)
@@ -118,7 +124,6 @@ module Devise
         # Generates a new random token for confirmation, and stores the time
         # this token is being generated
         def generate_confirmation_token
-          self.confirmed_at = nil
           self.confirmation_token = self.class.confirmation_token
           self.confirmation_sent_at = Time.now.utc
         end
@@ -132,13 +137,29 @@ module Devise
           confirm! unless confirmed?
         end
 
+        def prevent_email_change
+          @email_change_confirmation_required = true
+          self.unconfirmed_email = self.email
+          self.email = self.email_was
+        end
+
+        def prevent_email_change?
+          self.class.confirmation_on_email_change && email_changed? && email != unconfirmed_email_was
+        end
+
+        def email_change_confirmation_required?
+          self.class.confirmation_on_email_change && @email_change_confirmation_required
+        end
+
       module ClassMethods
         # Attempt to find a user by its email. If a record is found, send new
-        # confirmation instructions to it. If not user is found, returns a new user
-        # with an email not found error.
+        # confirmation instructions to it. If not, try searching for a user by unconfirmed_email
+        # field. If no user is found, returns a new user with an email not found error.
         # Options must contain the user email
         def send_confirmation_instructions(attributes={})
           confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)
+          temp = find_by_unconfirmed_email(confirmation_keys, attributes, :not_found)
+          confirmable = temp if temp.persisted?
           confirmable.resend_confirmation_token if confirmable.persisted?
           confirmable
         end
@@ -158,7 +179,14 @@ module Devise
           generate_token(:confirmation_token)
         end
 
-        Devise::Models.config(self, :confirm_within, :confirmation_keys)
+        # Find a record for confirmation by unconfirmed email field
+        def find_by_unconfirmed_email(required_attributes, attributes, error=:invalid)
+          confirmation_keys_with_replaced_email = required_attributes.map{ |k| k == :email ? :unconfirmed_email : k }
+          attributes[:unconfirmed_email] = attributes.delete(:email)
+          find_or_initialize_with_errors(confirmation_keys_with_replaced_email, attributes, :not_found)
+        end
+
+        Devise::Models.config(self, :confirm_within, :confirmation_keys, :confirmation_on_email_change)
       end
     end
   end

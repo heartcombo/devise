@@ -177,3 +177,53 @@ class ConfirmationTest < ActionController::IntegrationTest
     end
   end
 end
+
+class ConfirmationOnChangeTest < ConfirmationTest
+  def setup
+    Devise.confirmation_on_email_change = true
+  end
+
+  def teardown
+    Devise.confirmation_on_email_change = false
+  end
+
+  test 'user should be able to request a new confirmation after email changed' do
+    user = create_user(:confirm => true)
+    user.update_attributes(:email => 'new_test@example.com')
+    ActionMailer::Base.deliveries.clear
+
+    visit new_user_session_path
+    click_link "Didn't receive confirmation instructions?"
+
+    fill_in 'email', :with => user.unconfirmed_email
+    click_button 'Resend confirmation instructions'
+
+    assert_current_url '/users/sign_in'
+    assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
+    assert_equal 1, ActionMailer::Base.deliveries.size
+  end
+
+  test 'user with valid confirmation token should be able to confirm email after email changed' do
+    user = create_user(:confirm => true)
+    user.update_attributes(:email => 'new_test@example.com')
+    assert 'new_test@example.com', user.unconfirmed_email
+    visit_user_confirmation_with_token(user.confirmation_token)
+
+    assert_contain 'Your account was successfully confirmed.'
+    assert_current_url '/'
+    assert user.reload.confirmed?
+  end
+
+  test 'user who changed email should get a detailed message about email being not unique' do
+    user = create_user(:confirm => true)
+    user.update_attributes(:email => 'new_test@example.com')
+    assert 'new_test@example.com', user.unconfirmed_email
+
+    @user = nil
+    create_user(:email => 'new_test@example.com', :confirm => true)
+
+    visit_user_confirmation_with_token(user.confirmation_token)
+
+    assert_contain /Email.*already.*taken/
+  end
+end

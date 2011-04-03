@@ -36,6 +36,7 @@ module Devise
       apply_devise_schema :confirmation_token,   String
       apply_devise_schema :confirmed_at,         DateTime
       apply_devise_schema :confirmation_sent_at, DateTime
+      apply_devise_schema :unconfirmed_email,   String
     end
 
     # Creates reset_password_token and reset_password_sent_at.

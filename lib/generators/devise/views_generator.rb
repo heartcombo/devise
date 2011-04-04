@@ -10,7 +10,7 @@ module Devise
                        :desc => "The scope to copy views to"
 
       class_option :template_engine, :type => :string, :aliases => "-t",
-                                     :desc => "Template engine for the views. Available options are 'erb', 'haml' and 'slim'."
+                                     :desc => "Template engine for the views. Available option is only 'erb'."
 
       def copy_views
         template = options[:template_engine].to_s

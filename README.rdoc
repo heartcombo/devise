@@ -152,7 +152,7 @@ You can access the session for this scope:
 
 After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
 
-  root :to => "home"
+  root :to => "home#index"
 
 You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize your redirect hooks.
 

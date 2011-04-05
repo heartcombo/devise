@@ -9,17 +9,11 @@ module Devise
       argument :scope, :required => false, :default => nil,
                        :desc => "The scope to copy views to"
 
-      class_option :template_engine, :type => :string, :aliases => "-t",
-                                     :desc => "Template engine for the views. Available option is only 'erb'."
+      # class_option :template_engine, :type => :string, :aliases => "-t",
+      #                                :desc => "Template engine for the views. Available options are 'erb', 'haml' and 'slim'."
 
       def copy_views
-        template = options[:template_engine].to_s
-        case template
-        when "haml", "slim"
-          warn "#{template} templates have been removed from Devise gem"
-        else
-          directory "devise", "app/views/#{scope || :devise}"
-        end
+        directory "devise", "app/views/#{scope || :devise}"
       end
     end
   end

@@ -272,7 +272,7 @@ module ActionDispatch::Routing
           ::OmniAuth.config.path_prefix = path_prefix
         end
 
-        match "#{path_prefix}/:action/callback", :action => Regexp.union(mapping.to.omniauth_providers.map(&:to_s)),
+        match "#{path_prefix}/:action/callback", :action => Regexp.union(mapping.to.omniauth_providers.map{|p| p.to_s.downcase}),
           :to => controllers[:omniauth_callbacks], :as => :omniauth_callback
       ensure
         @scope[:path] = path

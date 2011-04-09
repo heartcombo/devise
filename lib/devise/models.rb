@@ -58,10 +58,11 @@ module Devise
       devise_modules_hook! do
         devise_modules.each do |m|
           mod = Devise::Models.const_get(m.to_s.classify)
-          include mod
 
           if mod.const_defined?("ClassMethods")
             class_mod = mod.const_get("ClassMethods")
+            extend class_mod
+
             if class_mod.respond_to?(:available_configs)
               available_configs = class_mod.available_configs
               available_configs.each do |config|
@@ -70,6 +71,8 @@ module Devise
               end
             end
           end
+
+          include mod
         end
 
         options.each { |key, value| send(:"#{key}=", value) }

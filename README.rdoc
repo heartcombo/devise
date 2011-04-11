@@ -152,7 +152,7 @@ You can access the session for this scope:
 
 After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
 
-  root :to => "home"
+  root :to => "home#index"
 
 You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize your redirect hooks.
 
@@ -315,12 +315,11 @@ If you're using RSpec and want the helpers automatically included within all +de
 
 Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (http://wiki.github.com/plataformatec/devise).
 
-=== OAuth2
+=== Omniauth
 
-Devise comes with OAuth support out of the box if you're using Devise from the git repository (for now). You can read more about OAuth2 support in the wiki:
+Devise comes with Omniauth support out of the box to authenticate from other providers. You can read more about Omniauth support in the wiki:
 
-* http://github.com/plataformatec/devise/wiki/OAuth2:-Overview
-* http://github.com/plataformatec/devise/wiki/OAuth2:-Testing
+* https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
 
 === Other ORMs
 

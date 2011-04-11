@@ -21,7 +21,7 @@ class Warden::SessionSerializer
   def deserialize(keys)
     if keys.size == 2
       raise "Devise changed how it stores objects in session. If you are seeing this message, " <<
-        "you can fix it by changing one character in your cookie secret or cleaning up your " <<
+        "you can fix it by changing one character in your secret_token or cleaning up your " <<
         "database sessions if you are using a db store."
     end
 

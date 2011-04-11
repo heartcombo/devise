@@ -15,7 +15,7 @@ module Devise
           request.format.ref
         elsif MIME_REFERENCES
           request.format
-        else # Rails < 3.0.4
+        elsif request.format # Rails < 3.0.4
           request.format.to_sym
         end
       end
@@ -71,7 +71,14 @@ module Devise
 
       # Checks whether it's a devise mapped resource or not.
       def is_devise_resource? #:nodoc:
-        unknown_action!("Could not find devise mapping for path #{request.fullpath.inspect}") unless devise_mapping
+        unknown_action! <<-MESSAGE unless devise_mapping
+Could not find devise mapping for path #{request.fullpath.inspect}.
+Maybe you forgot to wrap your route inside the scope block? For example:
+
+    devise_scope :user do
+      match "/some/route" => "some_devise_controller"
+    end
+MESSAGE
       end
 
       # Check whether it's navigational format, such as :html or :iphone, or not.

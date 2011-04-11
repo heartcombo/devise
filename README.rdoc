@@ -315,12 +315,11 @@ If you're using RSpec and want the helpers automatically included within all +de
 
 Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (http://wiki.github.com/plataformatec/devise).
 
-=== OAuth2
+=== Omniauth
 
-Devise comes with OAuth support out of the box. You can read more about OAuth2 support in the wiki:
+Devise comes with Omniauth support out of the box to authenticate from other providers. You can read more about Omniauth support in the wiki:
 
-* http://github.com/plataformatec/devise/wiki/OAuth2:-Overview
-* http://github.com/plataformatec/devise/wiki/OAuth2:-Testing
+* https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
 
 === Other ORMs
 

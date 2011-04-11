@@ -317,7 +317,7 @@ Do not use such helpers for integration tests such as Cucumber or Webrat. Instea
 
 === OAuth2
 
-Devise comes with OAuth support out of the box if you're using Devise from the git repository (for now). You can read more about OAuth2 support in the wiki:
+Devise comes with OAuth support out of the box. You can read more about OAuth2 support in the wiki:
 
 * http://github.com/plataformatec/devise/wiki/OAuth2:-Overview
 * http://github.com/plataformatec/devise/wiki/OAuth2:-Testing

@@ -17,6 +17,12 @@ module Devise
     autoload :Rememberable, 'devise/controllers/rememberable'
     autoload :ScopedViews, 'devise/controllers/scoped_views'
     autoload :UrlHelpers, 'devise/controllers/url_helpers'
+    autoload :ConfirmationsController, 'devise/controllers/confirmations_controller'
+    autoload :OmniauthCallbacksController, 'devise/controllers/omniauth_callbacks_controller'
+    autoload :PasswordsController, 'devise/controllers/passwords_controller'
+    autoload :RegistrationsController, 'devise/controllers/registrations_controller'
+    autoload :SessionsController, 'devise/controllers/sessions_controller'
+    autoload :UnlocksController, 'devise/controllers/unlocks_controller'
   end
 
   module Encryptors

@@ -12,6 +12,7 @@ en:
 
   devise:
     failure:
+      no_authentication_allowed: 'You are attempting to access a resource as an authenticated user when that is not allowed. Please sign out and try again.'
       unauthenticated: 'You need to sign in or sign up before continuing.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'

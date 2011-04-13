@@ -137,7 +137,7 @@ MESSAGE
         options[:default] = Array(options[:default]).unshift(kind.to_sym)
         options[:resource_name] = resource_name
         message = I18n.t("#{resource_name}.#{kind}", options)
-        flash[key] = message if message.present?
+        flash[key] = message.html_safe if message.present?
       end
 
       def clean_up_passwords(object) #:nodoc:

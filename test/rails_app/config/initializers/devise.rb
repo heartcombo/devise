@@ -80,8 +80,8 @@ Devise.setup do |config|
   config.use_salt_as_remember_token = true
 
   # ==> Configuration for :validatable
-  # Range for password length. Default is 6..20.
-  # config.password_length = 6..20
+  # Range for password length. Default is 6..128.
+  # config.password_length = 6..128
 
   # Regex to use to validate the email address
   # config.email_regexp = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i

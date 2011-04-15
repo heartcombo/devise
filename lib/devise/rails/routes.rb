@@ -173,6 +173,9 @@ module ActionDispatch::Routing
         end
 
         routes  = mapping.routes
+        if options.has_key?(:only)
+          routes  = Array(options.delete(:only)).map { |s| s.to_s.singularize.to_sym } & mapping.routes
+        end
         routes -= Array(options.delete(:skip)).map { |s| s.to_s.singularize.to_sym }
 
         devise_scope mapping.name do

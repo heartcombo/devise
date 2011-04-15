@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   end
 
   # Other routes for routing_test.rb
+  devise_for :reader, :class_name => "User", :only => :passwords
+
   namespace :publisher, :path_names => { :sign_in => "i_dont_care", :sign_out => "get_out" } do
     devise_for :accounts, :class_name => "Admin", :path_names => { :sign_in => "get_in" }
   end

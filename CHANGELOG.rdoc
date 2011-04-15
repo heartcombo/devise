@@ -1,9 +1,13 @@
 * enhancements
   * All controllers can now handle different mime types than html using Responders (by github.com/sikachu)
   * Added reset_password_within as configuration option to send the token for recovery (by github.com/jdguyot)
+  * Bump password length to 128 characters (by github.com/k33l0r)
+  * Add :only as option to devise_for (by github.com/timoschilling)
+  * Allow to override path after sending password instructions (by github.com/irohiroki)
 
 * bug fix
   * Fix a bug where configuration options were being included too late
+  * Ensure Devise::TestHelpers can be used to tests Devise internal controllers (by github.com/jwilger)
 
 * backward incompatible changes
   * authentication_keys are no longer considered when creating the e-mail validations, the previous behavior was buggy. You must double check if you were relying on such behavior.

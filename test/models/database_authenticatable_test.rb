@@ -6,12 +6,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     # case_insensitive_keys is set to :email by default.
     email = 'Foo@Bar.com'
     user = new_user(:email => email)
-    
+
     assert_equal email, user.email
     user.save!
     assert_equal email.downcase, user.email
   end
-  
+
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)
@@ -45,6 +45,18 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should test for a valid password' do
     user = create_user
     assert user.valid_password?('123456')
+    assert_not user.valid_password?('654321')
+  end
+
+  test 'should not raise error with an empty password' do
+    user = create_user
+    user.encrypted_password = ''
+    assert_nothing_raised { user.valid_password?('123456') }
+  end
+
+  test 'should be an invalid password if the user has an empty password' do
+    user = create_user
+    user.encrypted_password = ''
     assert_not user.valid_password?('654321')
   end
 

@@ -157,7 +157,8 @@ module Devise
       # becomes simply :database.
       def authenticatable_name
         @authenticatable_name ||=
-          self.class.name.split("::").last.underscore.sub("_authenticatable", "").to_sym
+          ActiveSupport::Inflector.underscore(self.class.name.split("::").last).
+            sub("_authenticatable", "").to_sym
       end
     end
   end

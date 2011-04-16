@@ -317,7 +317,8 @@ module Devise
 
     if options[:model]
       path = (options[:model] == true ? "devise/models/#{module_name}" : options[:model])
-      Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, path)
+      camelized = ActiveSupport::Inflector.camelize(module_name.to_s)
+      Devise::Models.send(:autoload, camelized.to_sym, path)
     end
 
     Devise::Mapping.add_module module_name

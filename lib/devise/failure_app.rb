@@ -101,7 +101,9 @@ module Devise
 
     def recall_app(app)
       controller, action = app.split("#")
-      "#{controller.camelize}Controller".constantize.action(action)
+      controller_name  = ActiveSupport::Inflector.camelize(controller)
+      controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")
+      controller_klass.action(action)
     end
 
     def warden

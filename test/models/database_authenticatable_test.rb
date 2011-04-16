@@ -107,4 +107,10 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.password.blank?
     assert user.password_confirmation.blank?
   end
+
+  test 'downcase_keys with validation' do
+    user = User.create(:email => "HEllO@example.com", :password => "123456")
+    user = User.create(:email => "HEllO@example.com", :password => "123456")
+    assert !user.valid?
+  end
 end

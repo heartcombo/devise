@@ -96,7 +96,13 @@ module Devise
     def http_auth_body
       return i18n_message unless request_format
       method = "to_#{request_format}"
-      {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message
+      if method == "to_xml"
+        { :error => i18n_message }.to_xml(:root => "errors")
+      elsif {}.respond_to?(method)
+        { :error => i18n_message }.send(method)
+      else
+        i18n_message
+      end
     end
 
     def recall_app(app)

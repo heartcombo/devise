@@ -14,6 +14,10 @@ module Devise
     #     use this to let your user access some features of your application without
     #     confirming the account, but blocking it after a certain period (ie 7 days).
     #     By default confirm_within is zero, it means users always have to confirm to sign in.
+    #   * +reconfirmable+: requires any email changes to be confirmed (exctly the same way as
+    #     initial account confirmation) to be applied. Requires additional unconfirmed_email
+    #     db field to be setup (see migrations). Until confirmed new email is stored in
+    #     unconfirmed email column, and copied to email column on successful confirmation.
     #
     # == Examples
     #
@@ -139,11 +143,11 @@ module Devise
         end
 
         def prevent_email_change?
-          self.class.confirmation_on_email_change && email_changed? && email != unconfirmed_email_was
+          self.class.reconfirmable && email_changed? && email != unconfirmed_email_was
         end
 
         def email_change_confirmation_required?
-          self.class.confirmation_on_email_change && @email_change_confirmation_required
+          self.class.reconfirmable && @email_change_confirmation_required
         end
 
       module ClassMethods
@@ -181,7 +185,7 @@ module Devise
           find_or_initialize_with_errors(confirmation_keys_with_replaced_email, attributes, :not_found)
         end
 
-        Devise::Models.config(self, :confirm_within, :confirmation_keys, :confirmation_on_email_change)
+        Devise::Models.config(self, :confirm_within, :confirmation_keys, :reconfirmable)
       end
     end
   end

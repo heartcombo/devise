@@ -259,7 +259,7 @@ Feel free to choose the one you prefer!
 
 === I18n
 
-Devise uses flash messages with I18n with the flash keys :success and :failure. To customize your app, you can set up your locale file:
+Devise uses flash messages with I18n with the flash keys :notice and :alert. To customize your app, you can set up your locale file:
 
   en:
     devise:

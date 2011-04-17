@@ -86,7 +86,12 @@ The generator will install an initializer which describes ALL Devise's configura
 
   rails generate devise MODEL
 
-Replace MODEL by the class name you want to add devise, like User, Admin, etc. This will create a model (if one does not exist) and configure it with default Devise modules. The generator will also create a migration file (if your ORM support them) and configure your routes. Continue reading this file to understand exactly what the generator produces and how to use it.
+Replace MODEL by the class name used for the applications users, 
+It's frequently 'User' but could also be 'Admin' (if say all authenticated users are 'Admins'), etc. 
+This will create a model (if one does not exist) and configure it with default Devise modules. 
+You'll usually then db:migrate as the generator will have created a migration file (if your ORM supports them),  
+The generator will also have configured your routes. 
+Continue reading this file to understand exactly what the generator produces and how to use it.
 
 Support for Rails 2.3.x can be found by installing Devise 1.0.x from the v1.0 branch.
 

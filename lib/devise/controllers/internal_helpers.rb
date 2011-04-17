@@ -6,19 +6,7 @@ module Devise
     module InternalHelpers #:nodoc:
       extend ActiveSupport::Concern
       include Devise::Controllers::ScopedViews
-
-      MIME_REFERENCES = Mime::HTML.respond_to?(:ref)
-
-      # Helper used by FailureApp and Devise controllers to retrieve proper formats.
-      def self.request_format(request)
-        if request.format.respond_to?(:ref)
-          request.format.ref
-        elsif MIME_REFERENCES
-          request.format
-        elsif request.format # Rails < 3.0.4
-          request.format.to_sym
-        end
-      end
+      include Devise::Controllers::SharedHelpers
 
       included do
         helper DeviseHelper
@@ -65,10 +53,6 @@ module Devise
 
     protected
 
-      def request_format
-        @request_format ||= Devise::Controllers::InternalHelpers.request_format(request)
-      end
-
       # Checks whether it's a devise mapped resource or not.
       def is_devise_resource? #:nodoc:
         unknown_action! <<-MESSAGE unless devise_mapping
@@ -79,11 +63,6 @@ Maybe you forgot to wrap your route inside the scope block? For example:
       match "/some/route" => "some_devise_controller"
     end
 MESSAGE
-      end
-
-      # Check whether it's navigational format, such as :html or :iphone, or not.
-      def is_navigational_format?
-        Devise.navigational_formats.include?(request_format)
       end
 
       # Returns real navigational formats which are supported by Rails

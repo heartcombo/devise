@@ -45,6 +45,14 @@ class HelpersTest < ActionController::TestCase
     @controller.send :require_no_authentication
   end
 
+  test 'require no authentication sets a flash message' do
+    @mock_warden.expects(:authenticated?).with(:user).returns(true)
+    @mock_warden.expects(:user).with(:user).returns(User.new)
+    @controller.expects(:redirect_to).with(root_path)
+    @controller.send :require_no_authentication
+    assert flash[:alert] == I18n.t("devise.failure.already_authenticated")
+  end
+
   test 'signed in resource returns signed in resource for current scope' do
     @mock_warden.expects(:authenticate).with(:scope => :user).returns(User.new)
     assert_kind_of User, @controller.signed_in_resource

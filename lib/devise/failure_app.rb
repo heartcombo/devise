@@ -10,6 +10,7 @@ module Devise
     include ActionController::UrlFor
     include ActionController::Redirecting
     include Rails.application.routes.url_helpers
+    include Devise::Controllers::SharedHelpers
 
     delegate :flash, :to => :request
 
@@ -83,7 +84,7 @@ module Devise
       if request.xhr?
         Devise.http_authenticatable_on_xhr
       else
-        !(request_format && Devise.navigational_formats.include?(request_format))
+        !(request_format && is_navigational_format?)
       end
     end
 
@@ -96,12 +97,20 @@ module Devise
     def http_auth_body
       return i18n_message unless request_format
       method = "to_#{request_format}"
-      {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message
+      if method == "to_xml"
+        { :error => i18n_message }.to_xml(:root => "errors")
+      elsif {}.respond_to?(method)
+        { :error => i18n_message }.send(method)
+      else
+        i18n_message
+      end
     end
 
     def recall_app(app)
       controller, action = app.split("#")
-      "#{controller.camelize}Controller".constantize.action(action)
+      controller_name  = ActiveSupport::Inflector.camelize(controller)
+      controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")
+      controller_klass.action(action)
     end
 
     def warden
@@ -126,10 +135,6 @@ module Devise
     # would never use the same uri to redirect.
     def store_location!
       session["#{scope}_return_to"] = attempted_path if request.get? && !http_auth?
-    end
-
-    def request_format
-      @request_format ||= Devise::Controllers::InternalHelpers.request_format(request)
     end
   end
 end

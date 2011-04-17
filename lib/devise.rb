@@ -16,6 +16,7 @@ module Devise
     autoload :InternalHelpers, 'devise/controllers/internal_helpers'
     autoload :Rememberable, 'devise/controllers/rememberable'
     autoload :ScopedViews, 'devise/controllers/scoped_views'
+    autoload :SharedHelpers, 'devise/controllers/shared_helpers'
     autoload :UrlHelpers, 'devise/controllers/url_helpers'
   end
 
@@ -96,7 +97,7 @@ module Devise
 
   # Range validation for password length
   mattr_accessor :password_length
-  @@password_length = 6..20
+  @@password_length = 6..128
 
   # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for
@@ -320,7 +321,8 @@ module Devise
 
     if options[:model]
       path = (options[:model] == true ? "devise/models/#{module_name}" : options[:model])
-      Devise::Models.send(:autoload, module_name.to_s.camelize.to_sym, path)
+      camelized = ActiveSupport::Inflector.camelize(module_name.to_s)
+      Devise::Models.send(:autoload, camelized.to_sym, path)
     end
 
     Devise::Mapping.add_module module_name

@@ -75,10 +75,10 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'is too short (minimum is 6 characters)', user.errors[:password].join
   end
 
-  test 'should require a password with maximum of 20 characters long' do
-    user = new_user(:password => 'x'*21, :password_confirmation => 'x'*21)
+  test 'should require a password with maximum of 128 characters long' do
+    user = new_user(:password => 'x'*129, :password_confirmation => 'x'*129)
     assert user.invalid?
-    assert_equal 'is too long (maximum is 20 characters)', user.errors[:password].join
+    assert_equal 'is too long (maximum is 128 characters)', user.errors[:password].join
   end
 
   test 'should not require password length when it\'s not changed' do

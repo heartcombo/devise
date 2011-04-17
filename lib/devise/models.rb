@@ -51,12 +51,12 @@ module Devise
       include Devise::Models::Authenticatable
       options = modules.extract_options!.dup
 
-      self.devise_modules += modules.map(&:to_sym).uniq.sort_by { |s|
+      selected_modules = modules.map(&:to_sym).uniq.sort_by do |s|
         Devise::ALL.index(s) || -1  # follow Devise::ALL order
-      }
+      end
 
       devise_modules_hook! do
-        devise_modules.each do |m|
+        selected_modules.each do |m|
           mod = Devise::Models.const_get(m.to_s.classify)
 
           if mod.const_defined?("ClassMethods")
@@ -75,6 +75,7 @@ module Devise
           include mod
         end
 
+        self.devise_modules |= selected_modules
         options.each { |key, value| send(:"#{key}=", value) }
       end
     end

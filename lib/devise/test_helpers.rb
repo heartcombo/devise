@@ -13,48 +13,11 @@ module Devise
       end
     end
 
-    # This is a Warden::Proxy customized for functional tests. It's meant to
-    # some of Warden::Manager responsibilities, as retrieving configuration
-    # options and calling the FailureApp.
-    class TestWarden < Warden::Proxy #:nodoc:
-      attr_reader :controller
-
-      def initialize(controller)
-        @controller = controller
-        manager = Warden::Manager.new(nil) do |config|
-          config.merge! Devise.warden_config
-        end
-        super(controller.request.env, manager)
-      end
-
-      def authenticate!(*args)
-        catch_with_redirect { super }
-      end
-
-      def user(*args)
-        catch_with_redirect { super }
-      end
-
-      def catch_with_redirect(&block)
-        result = catch(:warden, &block)
-
-        if result.is_a?(Hash) && !custom_failure? && !@controller.send(:performed?)
-          result[:action] ||= :unauthenticated
-
-          env = @controller.request.env
-          env["PATH_INFO"] = "/#{result[:action]}"
-          env["warden.options"] = result
-          Warden::Manager._run_callbacks(:before_failure, env, result)
-
-          status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
-          @controller.send :render, :status => status, :text => body,
-            :content_type => headers["Content-Type"], :location => headers["Location"]
-
-          nil
-        else
-          result
-        end
-      end
+    # Override process to consider warden.
+    def process(*)
+      result = nil
+      _catch_warden { result = super }
+      result
     end
 
     # We need to setup the environment variables and the response in the controller.
@@ -64,7 +27,12 @@ module Devise
 
     # Quick access to Warden::Proxy.
     def warden #:nodoc:
-      @warden ||= (@request.env['warden'] = TestWarden.new(@controller))
+      @warden ||= begin
+        manager = Warden::Manager.new(nil) do |config|
+          config.merge! Devise.warden_config
+        end
+        @request.env['warden'] = Warden::Proxy.new(@request.env, manager)
+      end
     end
 
     # sign_in a given resource by storing its keys in the session.
@@ -96,5 +64,27 @@ module Devise
       warden.session_serializer.delete(scope, user)
     end
 
+    protected
+
+    def _catch_warden(&block)
+      result = catch(:warden, &block)
+
+      if result.is_a?(Hash) && !warden.custom_failure? && !@controller.send(:performed?)
+        result[:action] ||= :unauthenticated
+
+        env = @controller.request.env
+        env["PATH_INFO"] = "/#{result[:action]}"
+        env["warden.options"] = result
+        Warden::Manager._run_callbacks(:before_failure, env, result)
+
+        status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
+        @controller.send :render, :status => status, :text => body,
+          :content_type => headers["Content-Type"], :location => headers["Location"]
+
+        nil
+      else
+        result
+      end
+    end
   end
 end

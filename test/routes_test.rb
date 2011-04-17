@@ -123,6 +123,13 @@ class CustomizedRoutingTest < ActionController::TestCase
     end
   end
 
+  test 'does only map reader password' do
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, 'reader/sessions/new')
+    end
+    assert_recognizes({:controller => 'devise/passwords', :action => 'new'}, 'reader/password/new')
+  end
+
   test 'map account with custom path name for session sign in' do
     assert_recognizes({:controller => 'devise/sessions', :action => 'new', :locale => 'en'}, '/en/accounts/login')
   end

@@ -99,6 +99,11 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :skip => :sessions
     #
+    #  * :only => the opposite of :skip, tell which controllers only to generate routes to:
+    #
+    #      devise_for :users, :only => :sessions
+    #
+    #
     # ==== Scoping
     #
     # Following Rails 3 routes DSL, you can nest devise_for calls inside a scope:
@@ -173,6 +178,9 @@ module ActionDispatch::Routing
         end
 
         routes  = mapping.routes
+        if options.has_key?(:only)
+          routes  = Array(options.delete(:only)).map { |s| s.to_s.singularize.to_sym } & mapping.routes
+        end
         routes -= Array(options.delete(:skip)).map { |s| s.to_s.singularize.to_sym }
 
         devise_scope mapping.name do

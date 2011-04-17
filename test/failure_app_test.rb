@@ -84,6 +84,18 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 401, @response.first
     end
 
+    test 'return appropriate body for xml' do
+      call_failure('formats' => :xml)
+      result = %(<?xml version="1.0" encoding="UTF-8"?>\n<errors>\n  <error>You need to sign in or sign up before continuing.</error>\n</errors>\n)
+      assert_equal result, @response.last.body
+    end
+
+    test 'return appropriate body for json' do
+      call_failure('formats' => :json)
+      result = %({"error":"You need to sign in or sign up before continuing."})
+      assert_equal result, @response.last.body
+    end
+
     test 'return 401 status for unknown formats' do
       call_failure 'formats' => []
       assert_equal 401, @response.first

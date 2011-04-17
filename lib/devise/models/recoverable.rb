@@ -73,6 +73,7 @@ module Devise
         def generate_reset_password_token
           self.reset_password_token = self.class.reset_password_token
           self.reset_password_sent_at = Time.now.utc if respond_to?(:reset_password_sent_at=)
+          self.reset_password_token
         end
 
         # Resets the reset password token with and save the record without

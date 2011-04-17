@@ -1,3 +1,9 @@
+* enhancements
+  * Improve failure_app responses (by github.com/indirect)
+
+* bug fix
+  * Fix a regression that occurred if reset_password_sent_at is not present (by github.com/stevehodgkiss)
+
 == 1.3.0
 
 * enhancements

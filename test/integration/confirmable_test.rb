@@ -180,11 +180,11 @@ end
 
 class ConfirmationOnChangeTest < ConfirmationTest
   def setup
-    Devise.confirmation_on_email_change = true
+    Devise.reconfirmable = true
   end
 
   def teardown
-    Devise.confirmation_on_email_change = false
+    Devise.reconfirmable = false
   end
 
   test 'user should be able to request a new confirmation after email changed' do

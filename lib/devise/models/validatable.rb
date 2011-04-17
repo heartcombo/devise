@@ -25,6 +25,7 @@ module Devise
           validates_presence_of   :email, :if => :email_required?
           validates_uniqueness_of :email, :case_sensitive => (case_insensitive_keys != false), :allow_blank => true
           validates_format_of     :email, :with  => email_regexp, :allow_blank => true
+          validates_with Devise::Models::Confirmable::ConfirmableValidator
 
           with_options :if => :password_required? do |v|
             v.validates_presence_of     :password

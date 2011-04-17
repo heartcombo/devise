@@ -132,6 +132,12 @@ class ConfirmationTest < ActionController::IntegrationTest
 end
 
 class ConfirmationOnChangeTest < ConfirmationTest
+
+  def create_second_user(options={})
+    @user = nil
+    create_user(options)
+  end
+
   def setup
     Devise.reconfirmable = true
   end
@@ -167,16 +173,19 @@ class ConfirmationOnChangeTest < ConfirmationTest
     assert user.reload.confirmed?
   end
 
-  test 'user who changed email should get a detailed message about email being not unique' do
+  test 'user email should be unique also within unconfirmed_email' do
     user = create_user(:confirm => true)
     user.update_attributes(:email => 'new_test@example.com')
     assert 'new_test@example.com', user.unconfirmed_email
 
-    @user = nil
-    create_user(:email => 'new_test@example.com', :confirm => true)
+    get new_user_registration_path
 
-    visit_user_confirmation_with_token(user.confirmation_token)
+    fill_in 'email', :with => 'new_test@example.com'
+    fill_in 'password', :with => 'new_user123'
+    fill_in 'password confirmation', :with => 'new_user123'
+    click_button 'Sign up'
 
+    assert_have_selector '#error_explanation'
     assert_contain /Email.*already.*taken/
   end
 end

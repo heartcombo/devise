@@ -91,6 +91,18 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_not (user.errors[:password].join =~ /is too long/)
   end
 
+  test 'should check if email is unique in unconfirmed_email column' do
+    swap Devise, :reconfirmable => [:username, :email] do
+      user = create_user
+      user.update_attributes({:email => 'new_test@email.com'})
+      assert 'new_test@email.com', user.unconfirmed_email
+
+      @user = nil
+      user = new_user(:email => 'new_test@email.com')
+      assert user.invalid?
+    end
+  end
+
   test 'shuold not be included in objects with invalid API' do
     assert_raise RuntimeError do
       Class.new.send :include, Devise::Models::Validatable

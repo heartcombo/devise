@@ -28,6 +28,33 @@ module Devise
     module Confirmable
       extend ActiveSupport::Concern
 
+      # email uniqueness validation in unconfirmed_email column, works only if unconfirmed_email is defined on record
+      class ConfirmableValidator < ActiveModel::Validator
+        def validate(record)
+          if unconfirmed_email_defined?(record) && email_exists_in_unconfirmed_emails?(record)
+            record.errors.add(:email, :taken)
+          end
+        end
+
+        protected
+        def unconfirmed_email_defined?(record)
+          record.respond_to?(:unconfirmed_email)
+        end
+
+        def email_exists_in_unconfirmed_emails?(record)
+          query = record.class
+          unless record.new_record?
+            if record.respond_to?(:_id)
+              query = query.where(:_id => {'$ne' => record._id})
+            else
+              query = query.where('id <> ?', record.id)
+            end
+          end
+          query = query.where(:unconfirmed_email => record.email)
+          query.exists?
+        end
+      end
+
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
         after_create  :send_confirmation_instructions, :if => :confirmation_required?
@@ -156,9 +183,10 @@ module Devise
         # If no user is found, returns a new user with an email not found error.
         # Options must contain the user email
         def send_confirmation_instructions(attributes={})
-          confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)
-          temp = find_by_unconfirmed_email(confirmation_keys, attributes, :not_found)
-          confirmable = temp if temp.persisted?
+          confirmable = find_by_unconfirmed_email_with_errors(attributes) if reconfirmable
+          unless confirmable.try(:persisted?)
+            confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)
+          end
           confirmable.resend_confirmation_token if confirmable.persisted?
           confirmable
         end
@@ -179,10 +207,11 @@ module Devise
         end
 
         # Find a record for confirmation by unconfirmed email field
-        def find_by_unconfirmed_email(required_attributes, attributes, error=:invalid)
-          confirmation_keys_with_replaced_email = required_attributes.map{ |k| k == :email ? :unconfirmed_email : k }
-          attributes[:unconfirmed_email] = attributes.delete(:email)
-          find_or_initialize_with_errors(confirmation_keys_with_replaced_email, attributes, :not_found)
+        def find_by_unconfirmed_email_with_errors(attributes = {})
+          unconfirmed_required_attributes = confirmation_keys.map{ |k| k == :email ? :unconfirmed_email : k }
+          unconfirmed_attributes = attributes.symbolize_keys
+          unconfirmed_attributes[:unconfirmed_email] = unconfirmed_attributes.delete(:email)
+          find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)
         end
 
         Devise::Models.config(self, :confirm_within, :confirmation_keys, :reconfirmable)

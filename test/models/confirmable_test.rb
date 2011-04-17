@@ -312,4 +312,12 @@ class ConfirmableOnChangeTest < ConfirmableTest
     assert confirmation_user.errors[:email]
     assert_equal "not found", confirmation_user.errors[:email].join
   end
+
+  test 'should find user with email in unconfirmed_emails' do
+    user = create_user
+    user.unconfirmed_email = "new_test@email.com"
+    assert user.save
+    user = User.find_by_unconfirmed_email_with_errors(:email => "new_test@email.com")
+    assert user.persisted?
+  end
 end

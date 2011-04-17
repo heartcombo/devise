@@ -11,17 +11,6 @@ class Devise::SessionsController < ApplicationController
   # POST /resource/sign_in
   def create
     resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#new")
-
-    # In the running app, the previous line would actually cause this method to
-    # exit by throwing `:warden` if the authentication failed. Unfortunately,
-    # this doesn't happen in the Rails test environment if you have included the
-    # Devise::TestHelpers (see `Devise::TestHelpers::TestWarden#authenticate!`),
-    # which makes it difficult to unit test extensions to this controller. Since
-    # the resource is nil if authentication fails, just short-circuit the method
-    # in that case. This should not affect the running app.
-    
-    return if resource.nil?
-
     set_flash_message(:notice, :signed_in) if is_navigational_format?
     sign_in(resource_name, resource)
     respond_with resource, :location => redirect_location(resource_name, resource)

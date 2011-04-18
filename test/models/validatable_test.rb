@@ -25,7 +25,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert user.invalid?
     assert_not_equal 'is invalid', user.errors[:email].join
 
-    %w(invalid_email_format email@invalid invalid$character@mail.com other@not 123).each do |email|
+    %w(invalid_email_format 123 $$$ \(\) ).each do |email|
       user.email = email
       assert user.invalid?, 'should be invalid with email ' << email
       assert_equal 'is invalid', user.errors[:email].join
@@ -85,7 +85,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user = create_user.reload
     user.password = user.password_confirmation = nil
     assert user.valid?
-  
+
     user.password_confirmation = 'confirmation'
     assert user.invalid?
     assert_not (user.errors[:password].join =~ /is too long/)

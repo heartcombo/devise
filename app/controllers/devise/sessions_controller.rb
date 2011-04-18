@@ -4,8 +4,9 @@ class Devise::SessionsController < ApplicationController
 
   # GET /resource/sign_in
   def new
-    clean_up_passwords(build_resource)
-    render_with_scope :new
+    resource = build_resource
+    clean_up_passwords(resource)
+    respond_with_navigational(resource, stub_options(resource)){ render_with_scope :new }
   end
 
   # POST /resource/sign_in
@@ -32,5 +33,13 @@ class Devise::SessionsController < ApplicationController
         render :text => text, :status => :ok
       end
     end
+  end
+
+  protected
+
+  def stub_options(resource)
+    hash = { :only => resource_class.authentication_keys }
+    hash[:methods] = [:password] if resource.respond_to?(:password)
+    hash
   end
 end

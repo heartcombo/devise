@@ -1,5 +1,6 @@
 * enhancements
   * Improve failure_app responses (by github.com/indirect)
+  * session/new also responds to xml and json now
 
 * bug fix
   * Fix a regression that occurred if reset_password_sent_at is not present (by github.com/stevehodgkiss)

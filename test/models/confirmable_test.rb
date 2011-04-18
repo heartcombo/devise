@@ -111,12 +111,12 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should return a new user if no email was found' do
-    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
+    confirmation_user = User.send_confirmation_instructions(:email => "invalid@example.com")
     assert_not confirmation_user.persisted?
   end
 
   test 'should add error to new user email if no email was found' do
-    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
+    confirmation_user = User.send_confirmation_instructions(:email => "invalid@example.com")
     assert confirmation_user.errors[:email]
     assert_equal "not found", confirmation_user.errors[:email].join
   end

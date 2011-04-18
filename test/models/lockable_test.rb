@@ -163,12 +163,12 @@ class LockableTest < ActiveSupport::TestCase
   end
 
   test 'should return a new user if no email was found' do
-    unlock_user = User.send_unlock_instructions(:email => "invalid@email.com")
+    unlock_user = User.send_unlock_instructions(:email => "invalid@example.com")
     assert_not unlock_user.persisted?
   end
 
   test 'should add error to new user email if no email was found' do
-    unlock_user = User.send_unlock_instructions(:email => "invalid@email.com")
+    unlock_user = User.send_unlock_instructions(:email => "invalid@example.com")
     assert_equal 'not found', unlock_user.errors[:email].join
   end
 

@@ -72,7 +72,7 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should return a new record with errors if user was not found by e-mail' do
-    reset_password_user = User.send_reset_password_instructions(:email => "invalid@email.com")
+    reset_password_user = User.send_reset_password_instructions(:email => "invalid@example.com")
     assert_not reset_password_user.persisted?
     assert_equal "not found", reset_password_user.errors[:email].join
   end

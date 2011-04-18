@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
   def generate_unique_email
     @@email_count ||= 0
     @@email_count += 1
-    "test#{@@email_count}@email.com"
+    "test#{@@email_count}@example.com"
   end
 
   def valid_attributes(attributes={})

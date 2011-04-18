@@ -10,6 +10,7 @@ module Devise
   autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
+  autoload :EmailAddressValidation, 'devise/email'
 
   module Controllers
     autoload :Helpers, 'devise/controllers/helpers'
@@ -91,9 +92,12 @@ module Devise
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"
 
-  # Email regex used to validate email formats. Adapted from authlogic.
+  # Email regex used to validate email formats. Based on RFC 822 and retrieved from
+  # Sixarm email validation gem
+  # (https://github.com/SixArm/sixarm_ruby_email_address_validation).
+  include EmailAddressValidation
   mattr_accessor :email_regexp
-  @@email_regexp = /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/i
+  @@email_regexp = EMAIL_ADDRESS_EXACT_PATTERN
 
   # Range validation for password length
   mattr_accessor :password_length
@@ -172,7 +176,7 @@ module Devise
   mattr_accessor :reset_password_keys
   @@reset_password_keys = [ :email ]
 
-  # Time interval you can reset your password with a reset password key 
+  # Time interval you can reset your password with a reset password key
   mattr_accessor :reset_password_within
   @@reset_password_within = nil
 

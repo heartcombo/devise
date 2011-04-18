@@ -89,8 +89,8 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'should ignore password and its confirmation if they are blank' do
     user = create_user
-    assert user.update_with_password(:current_password => '123456', :email => "new@email.com")
-    assert_equal "new@email.com", user.email
+    assert user.update_with_password(:current_password => '123456', :email => "new@example.com")
+    assert_equal "new@example.com", user.email
   end
 
   test 'should not update password with invalid confirmation' do

@@ -343,7 +343,9 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
 
   test 'sign in stub in json format' do
     get new_user_session_path(:format => 'json')
-    assert_equal "{\"user\":{\"password\":\"\",\"email\":\"\"}}", response.body
+    assert_match '{"user":{', response.body
+    assert_match '"email":""', response.body
+    assert_match '"password":""', response.body
   end
 
   test 'uses the mapping from router' do

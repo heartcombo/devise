@@ -6,6 +6,8 @@ module SharedUser
            :registerable, :rememberable, :timeoutable, :token_authenticatable,
            :trackable, :validatable, :omniauthable
 
+    attr_accessor :other_key
+
     # They need to be included after Devise is called.
     extend ExtendMethods
   end

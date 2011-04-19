@@ -5,8 +5,8 @@ class Devise::RegistrationsController < ApplicationController
 
   # GET /resource/sign_up
   def new
-    build_resource({})
-    render_with_scope :new
+    resource = build_resource({})
+    respond_with_navigational(resource){ render_with_scope :new }
   end
 
   # POST /resource

@@ -348,6 +348,15 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_match '"password":""', response.body
   end
 
+  test 'sign in stub in json with non attribute key' do
+    swap Devise, :authentication_keys => [:other_key] do
+      get new_user_session_path(:format => 'json')
+      assert_match '{"user":{', response.body
+      assert_match '"other_key":null', response.body
+      assert_match '"password":""', response.body
+    end
+  end
+
   test 'uses the mapping from router' do
     sign_in_as_user :visit => "/as/sign_in"
     assert warden.authenticated?(:user)

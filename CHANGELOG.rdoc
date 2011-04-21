@@ -1,3 +1,8 @@
+== 1.3.2
+
+* bug fix
+  * Fix another regression related to reset_password_sent_at (by github.com/alexdreher)
+
 == 1.3.1
 
 * enhancements

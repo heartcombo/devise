@@ -42,6 +42,7 @@ module Devise
       # Checks if the reset password token sent is within the limit time.
       # We do this by calculating if the difference between today and the
       # sending date does not exceed the confirm in time configured.
+      # Returns true if the ressource is not responding to reset_password_sent_at at all.
       # reset_password_within is a model configuration, must always be an integer value.
       #
       # Example:
@@ -59,7 +60,8 @@ module Devise
       #   reset_password_period_valid?   # will always return false
       #
       def reset_password_period_valid?
-        respond_to?(:reset_password_sent_at) && reset_password_sent_at &&
+	return true unless respond_to?(:reset_password_sent_at) 
+	reset_password_sent_at &&
           reset_password_sent_at.utc >= self.class.reset_password_within.ago
       end
 

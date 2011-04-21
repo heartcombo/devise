@@ -204,4 +204,11 @@ class RecoverableTest < ActiveSupport::TestCase
     user.reload
     assert_not_nil user.reset_password_token
   end
+
+  test 'should have valid period if does not respond to reset_password_sent_at' do
+    user = create_user
+    user.stubs(:respond_to?).with(:reset_password_sent_at).returns(false)
+    assert user.reset_password_period_valid?
+  end
+
 end

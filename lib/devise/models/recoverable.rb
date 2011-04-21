@@ -60,9 +60,8 @@ module Devise
       #   reset_password_period_valid?   # will always return false
       #
       def reset_password_period_valid?
-	return true unless respond_to?(:reset_password_sent_at) 
-	reset_password_sent_at &&
-          reset_password_sent_at.utc >= self.class.reset_password_within.ago
+        return true unless respond_to?(:reset_password_sent_at) 
+        reset_password_sent_at && reset_password_sent_at.utc >= self.class.reset_password_within.ago
       end
 
       protected

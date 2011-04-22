@@ -192,7 +192,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
       assert user.valid_password?(old_password)
       assert_not user.valid_password?('new_password')
-      assert_equal "is invalid", reset_password_user.errors[:reset_password_token].join
+      assert_equal "has expired, please request a new one", reset_password_user.errors[:reset_password_token].join
     end
   end
 

@@ -116,7 +116,7 @@ module Devise
             if recoverable.reset_password_period_valid?
               recoverable.reset_password!(attributes[:password], attributes[:password_confirmation]) 
             else
-              recoverable.errors.add(:reset_password_token, :invalid)
+              recoverable.errors.add(:reset_password_token, :expired)
             end
           end
           recoverable

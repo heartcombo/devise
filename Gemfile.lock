@@ -43,8 +43,9 @@ GEM
     addressable (2.2.4)
     arel (2.0.8)
     bcrypt-ruby (2.1.4)
-    bson (1.2.1)
-    bson_ext (1.2.1)
+    bcrypt-ruby (2.1.4-java)
+    bson (1.3.0)
+    bson_ext (1.3.0)
     builder (2.1.2)
     columnize (0.3.2)
     erubis (2.6.6)
@@ -63,11 +64,11 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.16)
     mocha (0.9.12)
-    mongo (1.1.2)
-      bson (>= 1.1.1)
-    mongoid (2.0.0.beta.20)
+    mongo (1.3.0)
+      bson (>= 1.3.0)
+    mongoid (2.0.1)
       activemodel (~> 3.0)
-      mongo (~> 1.1)
+      mongo (~> 1.3)
       tzinfo (~> 0.3.22)
       will_paginate (~> 3.0.pre)
     multi_json (0.0.5)
@@ -145,11 +146,11 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  bson_ext (= 1.2.1)
+  bson_ext (~> 1.3.0)
   devise!
   mocha
-  mongo (= 1.1.2)
-  mongoid (= 2.0.0.beta.20)
+  mongo (~> 1.3.0)
+  mongoid (= 2.0.1)
   oa-oauth (~> 0.2.0)
   oa-openid (~> 0.2.0)
   rails (~> 3.0.4)

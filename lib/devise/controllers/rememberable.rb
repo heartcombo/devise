@@ -29,7 +29,7 @@ module Devise
       # Forgets the given resource by deleting a cookie
       def forget_me(resource)
         scope = Devise::Mapping.find_scope!(resource)
-        resource.forget_me! unless !resource.persisted?
+        resource.forget_me!
         cookies.delete("remember_#{scope}_token", forget_cookie_values(resource))
       end
 

@@ -15,6 +15,14 @@ module SharedRememberableTest
     resource.forget_me!
     assert resource.remember_created_at.nil?
   end
+  
+  test 'forget_me should not try to update resource if it has been destroyed' do
+    resource = create_resource
+    resource.destroy
+    resource.expects(:remember_created_at).never
+    resource.expects(:save).never
+    resource.forget_me!
+  end
 
   test 'remember is expired if not created at timestamp is set' do
     assert create_resource.remember_expired?

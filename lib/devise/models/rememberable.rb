@@ -54,12 +54,16 @@ module Devise
         save(:validate => false)
       end
 
-      # Removes the remember token only if it exists, and save the record
-      # without validations.
+      # If the record has not been destroyed, removes the remember token only if
+      # it exists, and save the record without validations.
+      # Using #destroyed? if present because of Mongoid bug in #persisted? prior
+      # to Mongoid v2.0.1; going forward, this should just use #persisted?
       def forget_me!
-        self.remember_token = nil if respond_to?(:remember_token=)
-        self.remember_created_at = nil
-        save(:validate => false)
+        if (respond_to?(:destroyed?) ? !destroyed? : persisted?) 
+          self.remember_token = nil if respond_to?(:remember_token=)
+          self.remember_created_at = nil
+          save(:validate => false)
+        end
       end
 
       # Remember token should be expired if expiration time not overpass now.

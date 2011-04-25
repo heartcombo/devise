@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   match "/sign_in", :to => "devise/sessions#new"
 
   # Admin scope
-  devise_for :admin, :path => "admin_area", :controllers => { :sessions => "admins/sessions" }, :skip => :passwords
+  devise_for :admin, :path => "admin_area", :controllers => { :sessions => :"admins/sessions" }, :skip => :passwords
 
   match "/admin_area/home", :to => "admins#index", :as => :admin_root
   match "/anywhere", :to => "foo#bar", :as => :new_admin_password

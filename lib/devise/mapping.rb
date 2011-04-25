@@ -58,6 +58,7 @@ module Devise
       mod = options[:module] || "devise"
       @controllers = Hash.new { |h,k| h[k] = "#{mod}/#{k}" }
       @controllers.merge!(options[:controllers] || {})
+      @controllers.each { |k,v| @controllers[k] = v.to_s }
 
       @path_names = Hash.new { |h,k| h[k] = k.to_s }
       @path_names.merge!(:registration => "")

@@ -39,6 +39,11 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
+    test 'return to the default redirect location for wildcard requests' do
+      call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
+      assert_equal 'http://test.host/users/sign_in', @response.second['Location']
+    end
+
     test 'uses the proxy failure message as symbol' do
       call_failure('warden' => OpenStruct.new(:message => :test))
       assert_equal 'test', @request.flash[:alert]

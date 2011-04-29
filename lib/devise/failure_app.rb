@@ -65,13 +65,15 @@ module Devise
     end
 
     def redirect_url
-      if [:html, :"*/*", "*/*"].include? request_format
-      #if is_navigational_format?
-      #if request_format == :html
+      if skip_format?
         send(:"new_#{scope}_session_path")
       else
         send(:"new_#{scope}_session_path", :format => request_format)
       end
+    end
+
+    def skip_format?
+      %w(html */*).include? request_format.to_s
     end
 
     # Choose whether we should respond in a http authentication fashion,

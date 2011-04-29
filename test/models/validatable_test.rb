@@ -91,6 +91,13 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_not (user.errors[:password].join =~ /is too long/)
   end
 
+  test 'should complain about length even if possword is not required' do
+    user = new_user(:password => 'x'*129, :password_confirmation => 'x'*129)
+    user.stubs(:password_required?).returns(false)
+    assert user.invalid?
+    assert_equal 'is too long (maximum is 128 characters)', user.errors[:password].join
+  end
+
   test 'shuold not be included in objects with invalid API' do
     assert_raise RuntimeError do
       Class.new.send :include, Devise::Models::Validatable

@@ -26,11 +26,9 @@ module Devise
           validates_uniqueness_of :email, :case_sensitive => (case_insensitive_keys != false), :allow_blank => true
           validates_format_of     :email, :with  => email_regexp, :allow_blank => true
 
-          with_options :if => :password_required? do |v|
-            v.validates_presence_of     :password
-            v.validates_confirmation_of :password
-            v.validates_length_of       :password, :within => password_length, :allow_blank => true
-          end
+          validates_presence_of     :password, :if => :password_required?
+          validates_confirmation_of :password, :if => :password_required?
+          validates_length_of       :password, :within => password_length, :allow_blank => true
         end
       end
 

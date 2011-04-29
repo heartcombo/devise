@@ -85,6 +85,10 @@ module Devise
       @strategies ||= STRATEGIES.values_at(*self.modules).compact.uniq.reverse
     end
 
+    def no_input_strategies
+      self.strategies & Devise::NO_INPUT
+    end
+
     def routes
       @routes ||= ROUTES.values_at(*self.modules).compact.uniq
     end

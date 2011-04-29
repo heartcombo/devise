@@ -43,6 +43,9 @@ module Devise
   STRATEGIES  = ActiveSupport::OrderedHash.new
   URL_HELPERS = ActiveSupport::OrderedHash.new
 
+  # Strategies that do not require user input.
+  NO_INPUT = []
+
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
@@ -293,12 +296,16 @@ module Devise
     options.assert_valid_keys(:strategy, :model, :controller, :route)
 
     if strategy = options[:strategy]
-      STRATEGIES[module_name] = (strategy == true ? module_name : strategy)
+      strategy = (strategy == true ? module_name : strategy)
+      STRATEGIES[module_name] = strategy
     end
 
     if controller = options[:controller]
-      CONTROLLERS[module_name] = (controller == true ? module_name : controller)
+      controller = (controller == true ? module_name : controller)
+      CONTROLLERS[module_name] = controller
     end
+
+    NO_INPUT << strategy if strategy && controller != :sessions
 
     if route = options[:route]
       case route

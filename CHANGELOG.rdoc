@@ -5,6 +5,11 @@
   * password_required? should not affect length validation
   * User cannot access sign up and similar pages if he is already signed in through a cookie or token
 
+== 1.3.4
+
+* bug fix
+  * Do not add formats if html or "*/*"
+
 == 1.3.3
 
 * bug fix

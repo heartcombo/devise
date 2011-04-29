@@ -65,7 +65,9 @@ module Devise
     end
 
     def redirect_url
-      if request_format == :html
+      if [:html, :"*/*", "*/*"].include? request_format
+      #if is_navigational_format?
+      #if request_format == :html
         send(:"new_#{scope}_session_path")
       else
         send(:"new_#{scope}_session_path", :format => request_format)

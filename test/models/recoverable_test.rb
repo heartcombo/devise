@@ -198,8 +198,13 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should save the model when the reset_password_sent_at doesnt exist' do
     user = create_user
-    user.stubs(:respond_to?).with(:reset_password_sent_at=).returns(false)
-    user.stubs(:respond_to?).with(:headers_for).returns(false)
+    def user.respond_to?(meth, *)
+      if meth == :reset_password_sent_at=
+        false
+      else
+        super
+      end
+    end
     user.send_reset_password_instructions
     user.reload
     assert_not_nil user.reset_password_token
@@ -207,7 +212,13 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should have valid period if does not respond to reset_password_sent_at' do
     user = create_user
-    user.stubs(:respond_to?).with(:reset_password_sent_at).returns(false)
+    def user.respond_to?(meth, *)
+      if meth == :reset_password_sent_at
+        false
+      else
+        super
+      end
+    end
     assert user.reset_password_period_valid?
   end
 

@@ -62,29 +62,20 @@ class TrackableHooksTest < ActionController::IntegrationTest
     end
   end
   
-  test "respect X-Do-Not-Track and DNT headers" do
+  test "do not track if devise.skip_trackable is set" do
     user = create_user
     sign_in_as_user do
-      header "X-Do-Not-Track" , "1"
-      header "DNT" , "0"
+      header 'devise.skip_trackable', '1'
     end
     user.reload
     assert_equal 0, user.sign_in_count
     visit destroy_user_session_path
     
     sign_in_as_user do
-      header "X-Do-Not-Track" , "0"
-      header "DNT" , "1"
-    end
-    user.reload
-    assert_equal 0, user.sign_in_count
-    visit destroy_user_session_path
-    
-    sign_in_as_user do
-      header "X-Do-Not-Track" , "0"
-      header "DNT" , "0"
+      header 'devise.skip_trackable', false
     end
     user.reload
     assert_equal 1, user.sign_in_count
   end
+
 end

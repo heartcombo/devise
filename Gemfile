@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 3.0.4"
+gem "rails", "~> 3.0.7"
 gem "oa-oauth", '~> 0.2.0', :require => "omniauth/oauth"
 gem "oa-openid", '~> 0.2.0', :require => "omniauth/openid"
 

@@ -61,4 +61,30 @@ class TrackableHooksTest < ActionController::IntegrationTest
       assert_nil user.last_sign_in_at
     end
   end
+  
+  test "respect X-Do-Not-Track and DNT headers" do
+    user = create_user
+    sign_in_as_user do
+      header "X-Do-Not-Track" , "1"
+      header "DNT" , "0"
+    end
+    user.reload
+    assert_equal 0, user.sign_in_count
+    visit destroy_user_session_path
+    
+    sign_in_as_user do
+      header "X-Do-Not-Track" , "0"
+      header "DNT" , "1"
+    end
+    user.reload
+    assert_equal 0, user.sign_in_count
+    visit destroy_user_session_path
+    
+    sign_in_as_user do
+      header "X-Do-Not-Track" , "0"
+      header "DNT" , "0"
+    end
+    user.reload
+    assert_equal 1, user.sign_in_count
+  end
 end

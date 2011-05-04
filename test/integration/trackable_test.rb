@@ -61,4 +61,21 @@ class TrackableHooksTest < ActionController::IntegrationTest
       assert_nil user.last_sign_in_at
     end
   end
+  
+  test "do not track if devise.skip_trackable is set" do
+    user = create_user
+    sign_in_as_user do
+      header 'devise.skip_trackable', '1'
+    end
+    user.reload
+    assert_equal 0, user.sign_in_count
+    visit destroy_user_session_path
+    
+    sign_in_as_user do
+      header 'devise.skip_trackable', false
+    end
+    user.reload
+    assert_equal 1, user.sign_in_count
+  end
+
 end

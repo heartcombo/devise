@@ -67,6 +67,17 @@ module Devise
         result
       end
 
+      # Update record attributes without asking for the current password. Never allow to
+      # change the current password
+      def update_without_password(params={})
+        params.delete(:password)
+        params.delete(:password_confirmation)
+
+        result = update_attributes(params)
+        clean_up_passwords
+        result
+      end
+      
       def after_database_authentication
       end
 

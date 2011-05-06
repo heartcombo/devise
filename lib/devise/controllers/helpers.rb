@@ -5,7 +5,7 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
-        helper_method :warden, :signed_in?, :devise_controller?, :anybody_signed_in?
+        helper_method :warden, :signed_in?, :devise_controller?
       end
 
       # Define authentication filters and accessor helpers based on mappings.

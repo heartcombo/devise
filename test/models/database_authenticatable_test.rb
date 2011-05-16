@@ -12,6 +12,23 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal email.downcase, user.email
   end
 
+  test 'find_for_authentication and filter_auth_params should not modify the conditions hash' do
+    FilterAuthUser = Class.new(User) do
+      def self.filter_auth_params(conditions)
+        if conditions.is_a?(Hash) && login = conditions.delete('login')
+          key = login.include?('@') ? :email : :username
+          conditions[key] = login
+        end
+        super(conditions)
+      end
+    end
+
+    conditions = { 'login' => 'foo@bar.com' }
+    FilterAuthUser.find_for_authentication(conditions)
+
+    assert_equal({ 'login' => 'foo@bar.com' }, conditions)
+  end
+
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)

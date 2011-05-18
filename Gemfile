@@ -15,11 +15,14 @@ platforms :jruby do
   gem 'activerecord-jdbcsqlite3-adapter'
 end
 
-platforms :ruby do
+platforms :mri_18 do
   group :test do
-    gem "sqlite3-ruby"
-    gem "ruby-debug", ">= 0.10.3" if RUBY_VERSION < '1.9'
+    gem "ruby-debug", ">= 0.10.3"
   end
+end
+
+platforms :ruby do
+  gem "sqlite3-ruby"
 
   group :mongoid do
     gem "mongo", "~> 1.3.0"

@@ -27,6 +27,8 @@ en:
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
+      paranoid:
+        send_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'

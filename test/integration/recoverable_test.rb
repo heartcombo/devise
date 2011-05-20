@@ -221,21 +221,22 @@ class PasswordTest < ActionController::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
-  test "when in paranoid mode, asking to reset password should display the same message when I send an e-mail that exists and a e-mail that does not exists" do
-    Devise.setup do |config|
-      config.paranoid = true
+  test "when in paranoid mode and with an invalid e-mail, asking to reset a password should display a message that does not indicates that the e-mail does not exists in the database" do
+    swap Devise, :paranoid => true do
+      visit_new_password_path
+      fill_in "email", :with => "arandomemail@test.com"
+      click_button 'Send me reset password instructions'
+      assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
     end
+  end
 
-    user = create_user
-
-    visit_new_password_path
-    fill_in 'email', :with => user.email
-    click_button 'Send me reset password instructions'
-    assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
-
-    visit_new_password_path
-    fill_in "email", :with => "arandomemail@test.com"
-    click_button 'Send me reset password instructions'
-    assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+  test "when in paranoid mode and with a valid e-mail, asking to reset password should display a message that does not indicates that the email exists in the database" do
+    swap Devise, :paranoid => true do
+      user = create_user
+      visit_new_password_path
+      fill_in 'email', :with => user.email
+      click_button 'Send me reset password instructions'
+      assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+    end
   end
 end

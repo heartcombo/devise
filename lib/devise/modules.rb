@@ -24,6 +24,7 @@ Devise.with_options :model => true do |d|
   d.add_module :confirmable,  :controller => :confirmations, :route => { :confirmation => routes }
   d.add_module :lockable,     :controller => :unlocks,       :route => { :unlock => routes }
   d.add_module :timeoutable
+  d.add_module :disableable
 
   # Stats for last, so we make sure the user is really signed in
   d.add_module :trackable

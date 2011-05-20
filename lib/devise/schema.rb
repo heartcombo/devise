@@ -94,6 +94,11 @@ module Devise
       apply_devise_schema :locked_at, DateTime
     end
 
+    # allows the account to be disabled by setting the disabled? flag.
+    def disableable
+      apply_devise_schema :disabled, :boolean
+    end
+
     # Overwrite with specific modification to create your own schema.
     def apply_devise_schema(name, type, options={})
       raise NotImplementedError

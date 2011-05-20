@@ -11,6 +11,7 @@ class CreateTables < ActiveRecord::Migration
       t.trackable
       t.lockable
       t.token_authenticatable
+      t.disableable
       t.timestamps
     end
 
@@ -20,6 +21,7 @@ class CreateTables < ActiveRecord::Migration
       t.rememberable :use_salt => false
       t.recoverable
       t.lockable
+      t.disableable
       t.timestamps
     end
   end

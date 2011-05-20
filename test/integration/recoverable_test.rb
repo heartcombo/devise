@@ -17,7 +17,7 @@ class PasswordTest < ActionController::IntegrationTest
     click_button 'Send me reset password instructions'
   end
 
-  def reset_password(options={}, &block)    
+  def reset_password(options={}, &block)
     visit edit_user_password_path(:reset_password_token => options[:reset_password_token]) unless options[:visit] == false
     assert_response :success
 
@@ -29,11 +29,11 @@ class PasswordTest < ActionController::IntegrationTest
 
   test 'reset password with email of different case should succeed when email is in the list of case insensitive keys' do
     create_user(:email => 'Foo@Bar.com')
-    
+
     request_forgot_password do
       fill_in 'email', :with => 'foo@bar.com'
     end
-    
+
     assert_current_url '/users/sign_in'
     assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
   end
@@ -41,11 +41,11 @@ class PasswordTest < ActionController::IntegrationTest
   test 'reset password with email of different case should fail when email is NOT the list of case insensitive keys' do
     swap Devise, :case_insensitive_keys => [] do
       create_user(:email => 'Foo@Bar.com')
-      
+
       request_forgot_password do
         fill_in 'email', :with => 'foo@bar.com'
       end
-      
+
       assert_response :success
       assert_current_url '/users/password'
       assert_have_selector "input[type=email][value='foo@bar.com']"
@@ -219,5 +219,23 @@ class PasswordTest < ActionController::IntegrationTest
     put user_password_path(:format => 'xml'), :user => {:reset_password_token => user.reload.reset_password_token, :password => '', :password_confirmation => '987654321'}
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+  end
+
+  test "when in paranoid mode, asking to reset password should display the same message when I send an e-mail that exists and a e-mail that does not exists" do
+    Devise.setup do |config|
+      config.paranoid = true
+    end
+
+    user = create_user
+
+    visit_new_password_path
+    fill_in 'email', :with => user.email
+    click_button 'Send me reset password instructions'
+    assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+
+    visit_new_password_path
+    fill_in "email", :with => "arandomemail@test.com"
+    click_button 'Send me reset password instructions'
+    assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
   end
 end

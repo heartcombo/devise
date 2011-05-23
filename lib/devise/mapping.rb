@@ -74,11 +74,7 @@ module Devise
 
     # Gives the class the mapping points to.
     def to
-      if defined?(ActiveSupport::Dependencies::ClassCache)
-        @ref.get @class_name
-      else
-        @ref.get
-      end
+      @ref.get
     end
 
     def strategies

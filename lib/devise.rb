@@ -402,7 +402,11 @@ module Devise
 
   # Generate a friendly string randomically to be used as token.
   def self.friendly_token
-    ActiveSupport::SecureRandom.base64(15).tr('+/=', 'xyz')
+    if defined? ::SecureRandom
+      ::SecureRandom.base64(15).tr('+/=', 'xyz')
+    else
+      ActiveSupport::SecureRandom.base64(15).tr('+/=', 'xyz')
+    end
   end
 
   # constant-time comparison algorithm to prevent timing attacks

@@ -237,9 +237,20 @@ module Devise
     yield self
   end
 
+  class Getter
+    def initialize name
+      @name = name
+    end
+
+    def get
+      ActiveSupport::Dependencies.constantize(@name)
+    end
+  end
+
   def self.ref(arg)
     if defined?(ActiveSupport::Dependencies::ClassCache)
-      ActiveSupport::Dependencies::Reference.store(arg)
+      ActiveSupport::Dependencies::reference(arg)
+      Getter.new(arg)
     else
       ActiveSupport::Dependencies.ref(arg)
     end
@@ -251,11 +262,7 @@ module Devise
 
   # Get the mailer class from the mailer reference object.
   def self.mailer
-    if defined?(ActiveSupport::Dependencies::ClassCache)
-      @@mailer_ref.get "Devise::Mailer"
-    else
-      @@mailer_ref.get
-    end
+    @@mailer_ref.get
   end
 
   # Set the mailer reference object to access the mailer.

@@ -3,6 +3,7 @@ require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
 require 'orm_adapter'
 require 'set'
+require 'securerandom'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
@@ -402,11 +403,7 @@ module Devise
 
   # Generate a friendly string randomically to be used as token.
   def self.friendly_token
-    if defined? ::SecureRandom
-      ::SecureRandom.base64(15).tr('+/=', 'xyz')
-    else
-      ActiveSupport::SecureRandom.base64(15).tr('+/=', 'xyz')
-    end
+    SecureRandom.base64(15).tr('+/=', 'xyz')
   end
 
   # constant-time comparison algorithm to prevent timing attacks

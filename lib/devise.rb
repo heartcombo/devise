@@ -364,7 +364,8 @@ module Devise
   #
   def self.omniauth(provider, *args)
     @@helpers << Devise::OmniAuth::UrlHelpers
-    @@omniauth_configs[provider] = Devise::OmniAuth::Config.new(provider, args)
+    config = Devise::OmniAuth::Config.new(provider, args)
+    @@omniauth_configs[config.strategy_name.to_sym] = config
   end
 
   # Include helpers in the given scope to AC and AV.

@@ -8,7 +8,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'can\'t be blank', user.errors[:email].join
   end
 
-  test 'should require uniqueness of email, allowing blank' do
+  test 'should require uniqueness of email if email has changed, allowing blank' do
     existing_user = create_user
 
     user = new_user(:email => '')
@@ -18,9 +18,12 @@ class ValidatableTest < ActiveSupport::TestCase
     user.email = existing_user.email
     assert user.invalid?
     assert_match(/taken/, user.errors[:email].join)
+
+    user.save(:validate => false)
+    assert user.valid?
   end
 
-  test 'should require correct email format, allowing blank' do
+  test 'should require correct email format if email has changed, allowing blank' do
     user = new_user(:email => '')
     assert user.invalid?
     assert_not_equal 'is invalid', user.errors[:email].join
@@ -30,6 +33,9 @@ class ValidatableTest < ActiveSupport::TestCase
       assert user.invalid?, 'should be invalid with email ' << email
       assert_equal 'is invalid', user.errors[:email].join
     end
+
+    user.save(:validate => false)
+    assert user.valid?
   end
 
   test 'should accept valid emails' do

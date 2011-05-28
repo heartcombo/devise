@@ -18,6 +18,7 @@ end
 platforms :mri_18 do
   group :test do
     gem "ruby-debug", ">= 0.10.3"
+    gem "SystemTimer", :require => false
   end
 end
 
@@ -27,6 +28,12 @@ platforms :ruby do
   group :mongoid do
     gem "mongo", "~> 1.3.0"
     gem "mongoid", "2.0.1"
+    gem "bson_ext", "~> 1.3.0"
+  end
+
+  group :mongo_mapper do
+    gem "mongo", "~> 1.3.0"
+    gem "mongo_mapper", "~> 0.9.0"
     gem "bson_ext", "~> 1.3.0"
   end
 end

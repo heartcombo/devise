@@ -1,4 +1,4 @@
-require 'active_support/secure_random'
+require 'securerandom'
 
 module Devise
   module Generators

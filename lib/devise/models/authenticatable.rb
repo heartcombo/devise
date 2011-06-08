@@ -152,8 +152,13 @@ module Devise
         # Force keys to be string to avoid injection on mongoid related database.
         def filter_auth_params(conditions)
           conditions.each do |k, v|
-            conditions[k] = v.to_s
+            conditions[k] = v.to_s if auth_param_requires_string_conversion?(v)
           end if conditions.is_a?(Hash)
+        end
+        
+        # Determine which values should be transformed to string or passed as-is to the query builder underneath
+        def auth_param_requires_string_conversion?(value)
+          true unless value.is_a?(TrueClass) || value.is_a?(FalseClass) || value.is_a?(Fixnum)
         end
 
         # Generate a token by looping and ensuring does not already exist.

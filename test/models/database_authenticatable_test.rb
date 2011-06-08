@@ -28,6 +28,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
     assert_equal({ 'login' => 'foo@bar.com' }, conditions)
   end
+  
+  test "filter_auth_params should not convert booleans and integer to strings" do
+    conditions = { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
+    conditions = User.__send__(:filter_auth_params, conditions)
+    assert_equal( { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => "1..10" }, conditions)
+  end
 
   test 'should respond to password and password confirmation' do
     user = new_user

@@ -23,10 +23,10 @@ module Devise
       delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, :to => "self.class"
 
       # Lock a user setting it's locked_at to actual time.
-      def lock_access!
+      def lock_access! send_mail = true
         self.locked_at = Time.now
 
-        if unlock_strategy_enabled?(:email)
+        if unlock_strategy_enabled?(:email) && send_mail
           generate_unlock_token
           send_unlock_instructions
         end

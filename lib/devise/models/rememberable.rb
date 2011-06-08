@@ -54,12 +54,14 @@ module Devise
         save(:validate => false)
       end
 
-      # Removes the remember token only if it exists, and save the record
-      # without validations.
+      # If the record is persisted, remove the remember token (but only if
+      # it exists), and save the record without validations.
       def forget_me!
-        self.remember_token = nil if respond_to?(:remember_token=)
-        self.remember_created_at = nil
-        save(:validate => false)
+        if persisted?
+          self.remember_token = nil if respond_to?(:remember_token=)
+          self.remember_created_at = nil
+          save(:validate => false)
+        end
       end
 
       # Remember token should be expired if expiration time not overpass now.

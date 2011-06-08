@@ -23,10 +23,5 @@ module Devise
   module OmniAuth
     autoload :Config,      "devise/omniauth/config"
     autoload :UrlHelpers,  "devise/omniauth/url_helpers"
-
-    class << self
-      delegate :short_circuit_authorizers!, :unshort_circuit_authorizers!,
-        :test_mode!, :stub!, :reset_stubs!, :to => "Devise::OmniAuth::TestHelpers"
-    end
   end
 end

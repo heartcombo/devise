@@ -50,6 +50,11 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal [:rememberable, :database_authenticatable], Devise.mappings[:admin].strategies
   end
 
+  test 'has no input strategies depending on the model declaration' do
+    assert_equal [:rememberable, :token_authenticatable], Devise.mappings[:user].no_input_strategies
+    assert_equal [:rememberable], Devise.mappings[:admin].no_input_strategies
+  end
+
   test 'find scope for a given object' do
     assert_equal :user, Devise::Mapping.find_scope!(User)
     assert_equal :user, Devise::Mapping.find_scope!(:user)

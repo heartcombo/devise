@@ -58,6 +58,7 @@ module Devise
       mod = options[:module] || "devise"
       @controllers = Hash.new { |h,k| h[k] = "#{mod}/#{k}" }
       @controllers.merge!(options[:controllers] || {})
+      @controllers.each { |k,v| @controllers[k] = v.to_s }
 
       @path_names = Hash.new { |h,k| h[k] = k.to_s }
       @path_names.merge!(:registration => "")
@@ -73,15 +74,15 @@ module Devise
 
     # Gives the class the mapping points to.
     def to
-      if defined?(ActiveSupport::Dependencies::ClassCache)
-        @ref.get @class_name
-      else
-        @ref.get
-      end
+      @ref.get
     end
 
     def strategies
       @strategies ||= STRATEGIES.values_at(*self.modules).compact.uniq.reverse
+    end
+
+    def no_input_strategies
+      self.strategies & Devise::NO_INPUT
     end
 
     def routes

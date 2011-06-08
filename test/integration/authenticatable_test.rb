@@ -314,8 +314,9 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   end
 
   test 'render 404 on roles without routes' do
-    get '/admin_area/password/new'
-    assert_equal 404, response.status
+    assert_raise ActionController::RoutingError do
+      get '/admin_area/password/new'
+    end
   end
 
   test 'does not intercept Rails 401 responses' do
@@ -336,9 +337,24 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     end
   end
 
-  test 'registration in xml format works when recognizing path' do
-    assert_nothing_raised do
-      post user_registration_path(:format => 'xml', :user => {:email => "test@example.com", :password => "invalid"} )
+  test 'sign in stub in xml format' do
+    get new_user_session_path(:format => 'xml')
+    assert_equal "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <email></email>\n  <password></password>\n</user>\n", response.body
+  end
+
+  test 'sign in stub in json format' do
+    get new_user_session_path(:format => 'json')
+    assert_match '{"user":{', response.body
+    assert_match '"email":""', response.body
+    assert_match '"password":""', response.body
+  end
+
+  test 'sign in stub in json with non attribute key' do
+    swap Devise, :authentication_keys => [:other_key] do
+      get new_user_session_path(:format => 'json')
+      assert_match '{"user":{', response.body
+      assert_match '"other_key":null', response.body
+      assert_match '"password":""', response.body
     end
   end
 
@@ -431,7 +447,9 @@ class AuthenticationSignOutViaTest < ActionController::IntegrationTest
 
   test 'do not allow sign out via get when sign_out_via provides only delete' do
     sign_in!(:sign_out_via_delete)
-    get destroy_sign_out_via_delete_session_path
+    assert_raise ActionController::RoutingError do
+      get destroy_sign_out_via_delete_session_path
+    end
     assert warden.authenticated?(:sign_out_via_delete)
   end
 
@@ -443,7 +461,9 @@ class AuthenticationSignOutViaTest < ActionController::IntegrationTest
 
   test 'do not allow sign out via get when sign_out_via provides only post' do
     sign_in!(:sign_out_via_post)
-    get destroy_sign_out_via_delete_session_path
+    assert_raise ActionController::RoutingError do
+      get destroy_sign_out_via_delete_session_path
+    end
     assert warden.authenticated?(:sign_out_via_post)
   end
 
@@ -461,7 +481,9 @@ class AuthenticationSignOutViaTest < ActionController::IntegrationTest
 
   test 'do not allow sign out via get when sign_out_via provides delete and post' do
     sign_in!(:sign_out_via_delete_or_post)
-    get destroy_sign_out_via_delete_or_post_session_path
+    assert_raise ActionController::RoutingError do
+      get destroy_sign_out_via_delete_or_post_session_path
+    end
     assert warden.authenticated?(:sign_out_via_delete_or_post)
   end
 end

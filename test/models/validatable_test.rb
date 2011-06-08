@@ -8,7 +8,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'can\'t be blank', user.errors[:email].join
   end
 
-  test 'should require uniqueness of email, allowing blank' do
+  test 'should require uniqueness of email if email has changed, allowing blank' do
     existing_user = create_user
 
     user = new_user(:email => '')
@@ -18,18 +18,24 @@ class ValidatableTest < ActiveSupport::TestCase
     user.email = existing_user.email
     assert user.invalid?
     assert_match(/taken/, user.errors[:email].join)
+
+    user.save(:validate => false)
+    assert user.valid?
   end
 
-  test 'should require correct email format, allowing blank' do
+  test 'should require correct email format if email has changed, allowing blank' do
     user = new_user(:email => '')
     assert user.invalid?
     assert_not_equal 'is invalid', user.errors[:email].join
 
-    %w(invalid_email_format email@invalid invalid$character@mail.com other@not 123).each do |email|
+    %w(invalid_email_format 123 $$$ \(\) ).each do |email|
       user.email = email
       assert user.invalid?, 'should be invalid with email ' << email
       assert_equal 'is invalid', user.errors[:email].join
     end
+
+    user.save(:validate => false)
+    assert user.valid?
   end
 
   test 'should accept valid emails' do
@@ -85,7 +91,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user = create_user.reload
     user.password = user.password_confirmation = nil
     assert user.valid?
-  
+
     user.password_confirmation = 'confirmation'
     assert user.invalid?
     assert_not (user.errors[:password].join =~ /is too long/)
@@ -101,6 +107,13 @@ class ValidatableTest < ActiveSupport::TestCase
       user = new_user(:email => 'new_test@email.com')
       assert user.invalid?
     end
+  end
+
+  test 'should complain about length even if possword is not required' do
+    user = new_user(:password => 'x'*129, :password_confirmation => 'x'*129)
+    user.stubs(:password_required?).returns(false)
+    assert user.invalid?
+    assert_equal 'is too long (maximum is 128 characters)', user.errors[:password].join
   end
 
   test 'shuold not be included in objects with invalid API' do

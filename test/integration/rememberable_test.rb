@@ -69,7 +69,14 @@ class RememberMeTest < ActionController::IntegrationTest
     assert_response :success
     assert warden.authenticated?(:user)
     assert warden.user(:user) == user
-    assert_match /remember_user_token[^\n]*HttpOnly\n/, response.headers["Set-Cookie"], "Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie."
+    assert_match /remember_user_token[^\n]*HttpOnly/, response.headers["Set-Cookie"], "Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie."
+  end
+
+  test 'remember the user before sign up and redirect him to his home' do
+    user = create_user_and_remember
+    get new_user_registration_path
+    assert warden.authenticated?(:user)
+    assert_redirected_to root_path
   end
 
   test 'cookies are destroyed on unverified requests' do

@@ -35,6 +35,10 @@ class OmniAuthRoutesTest < ActionController::TestCase
     end
   end
 
+  test 'should generate authorization path for named open_id omniauth' do
+    assert_match "/users/auth/google", @controller.omniauth_authorize_path(:user, :google)
+  end
+
   test 'should generate authorization path with params' do
     assert_match "/users/auth/open_id?openid_url=http%3A%2F%2Fyahoo.com",
                   @controller.omniauth_authorize_path(:user, :open_id, :openid_url => "http://yahoo.com")

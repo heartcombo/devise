@@ -37,7 +37,7 @@ class LockTest < ActionController::IntegrationTest
   end
 
   test 'unlocked pages should not be available if email strategy is disabled' do
-    visit "/admins/sign_in"
+    visit "/admin_area/sign_in"
 
     assert_raise Webrat::NotFoundError do
       click_link "Didn't receive unlock instructions?"
@@ -47,8 +47,9 @@ class LockTest < ActionController::IntegrationTest
       visit new_admin_unlock_path
     end
 
-    visit "/admins/unlock/new"
-    assert_response :not_found
+    assert_raise ActionController::RoutingError do
+      visit "/admin_area/unlock/new"
+    end
   end
 
   test 'user with invalid unlock token should not be able to unlock an account' do

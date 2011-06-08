@@ -72,7 +72,7 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should return a new record with errors if user was not found by e-mail' do
-    reset_password_user = User.send_reset_password_instructions(:email => "invalid@email.com")
+    reset_password_user = User.send_reset_password_instructions(:email => "invalid@example.com")
     assert_not reset_password_user.persisted?
     assert_equal "not found", reset_password_user.errors[:email].join
   end
@@ -192,16 +192,34 @@ class RecoverableTest < ActiveSupport::TestCase
 
       assert user.valid_password?(old_password)
       assert_not user.valid_password?('new_password')
-      assert_equal "is invalid", reset_password_user.errors[:reset_password_token].join
+      assert_equal "has expired, please request a new one", reset_password_user.errors[:reset_password_token].join
     end
   end
 
   test 'should save the model when the reset_password_sent_at doesnt exist' do
     user = create_user
-    user.stubs(:respond_to?).with(:reset_password_sent_at=).returns(false)
-    user.stubs(:respond_to?).with(:headers_for).returns(false)
+    def user.respond_to?(meth, *)
+      if meth == :reset_password_sent_at=
+        false
+      else
+        super
+      end
+    end
     user.send_reset_password_instructions
     user.reload
     assert_not_nil user.reset_password_token
   end
+
+  test 'should have valid period if does not respond to reset_password_sent_at' do
+    user = create_user
+    def user.respond_to?(meth, *)
+      if meth == :reset_password_sent_at
+        false
+      else
+        super
+      end
+    end
+    assert user.reset_password_period_valid?
+  end
+
 end

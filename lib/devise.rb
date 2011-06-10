@@ -79,6 +79,11 @@ module Devise
   # False by default for backwards compatibility.
   mattr_accessor :case_insensitive_keys
   @@case_insensitive_keys = false
+  
+  # Keys that should have whitespace stripped.
+  # False by default for backwards compatibility.
+  mattr_accessor :strip_whitespace_keys
+  @@strip_whitespace_keys = false
 
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable

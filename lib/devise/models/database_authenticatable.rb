@@ -23,6 +23,7 @@ module Devise
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
         before_validation :downcase_keys
+        before_validation :strip_whitespace
       end
 
       # Generates password encryption based on the given value.
@@ -80,6 +81,10 @@ module Devise
       # Downcase case-insensitive keys
       def downcase_keys
         (self.class.case_insensitive_keys || []).each { |k| self[k].try(:downcase!) }
+      end
+      
+      def strip_whitespace
+        (self.class.strip_whitespace_keys || []).each { |k| self[k].try(:strip!) }
       end
 
       # Digests the password using bcrypt.

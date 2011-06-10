@@ -52,6 +52,32 @@ class PasswordTest < ActionController::IntegrationTest
       assert_contain 'not found'
     end
   end
+  
+  test 'reset password with email with extra whitespace should succeed when email is in the list of strip whitespace keys' do
+    create_user(:email => ' foo@bar.com ')
+    
+    request_forgot_password do
+      fill_in 'email', :with => 'foo@bar.com'
+    end
+    
+    assert_current_url '/users/sign_in'
+    assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
+  end
+
+  test 'reset password with email with extra whitespace should fail when email is NOT the list of strip whitespace keys' do
+    swap Devise, :case_insensitive_keys => [] do
+      create_user(:email => ' foo@bar.com ')
+      
+      request_forgot_password do
+        fill_in 'email', :with => 'foo@bar.com'
+      end
+      
+      assert_response :success
+      assert_current_url '/users/password'
+      assert_have_selector "input[type=email][value='foo@bar.com']"
+      assert_contain 'not found'
+    end
+  end
 
   test 'authenticated user should not be able to visit forgot password page' do
     sign_in_as_user

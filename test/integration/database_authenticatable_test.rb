@@ -34,11 +34,11 @@ class DatabaseAuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'sign in with email including extra spaces should fail when email is NOT the list of strip whitespace keys' do
-    swap Devise, :case_insensitive_keys => [] do
-      create_user(:email => ' foo@bar.com ')
+    swap Devise, :strip_whitespace_keys => [] do
+      create_user(:email => 'foo@bar.com')
       
       sign_in_as_user do
-        fill_in 'email', :with => 'foo@bar.com'
+        fill_in 'email', :with => ' foo@bar.com '
       end
       
       assert_not warden.authenticated?(:user)

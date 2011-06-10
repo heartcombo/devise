@@ -127,7 +127,7 @@ module Devise
         # Find an initialize a group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
           (case_insensitive_keys || []).each { |k| attributes[k].try(:downcase!) }
-          (strip_whitespace_keys || []).each { |k| conditions[k].try(:strip!) }
+          (strip_whitespace_keys || []).each { |k| attributes[k].try(:strip!) }
 
           attributes = attributes.slice(*required_attributes)
           attributes.delete_if { |key, value| value.blank? }

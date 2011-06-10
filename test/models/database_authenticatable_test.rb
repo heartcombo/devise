@@ -11,6 +11,16 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user.save!
     assert_equal email.downcase, user.email
   end
+  
+  test 'should remove whitespace from strip whitespace keys when saving' do
+    # strip_whitespace_keys is set to :email by default.
+    email = ' foo@bar.com '
+    user = new_user(:email => email)
+
+    assert_equal email, user.email
+    user.save!
+    assert_equal email.strip, user.email
+  end
 
   test 'find_for_authentication and filter_auth_params should not modify the conditions hash' do
     FilterAuthUser = Class.new(User) do

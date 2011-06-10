@@ -1,9 +1,12 @@
 * enhancements
   * Improve e-mail regexp (by github.com/rodrigoflores)
+  * Add strip_whitespace_keys and default to e-mail (by github.com/swrobel)
+  * Do not run format and uniqueness validations on e-mail if it hasn't changed (by github.com/Thibaut)
 
 * bug fix
   * password_required? should not affect length validation
   * User cannot access sign up and similar pages if he is already signed in through a cookie or token
+  * Do not convert booleans to strings on finders (by github.com/xavier)
 
 == 1.3.4
 

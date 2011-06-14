@@ -133,6 +133,13 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.reload.valid_password?('123456')
   end
 
+  test 'should update first name and last name without current password' do
+    user = create_user(:first_name => "John", :last_name => "Smith")
+    assert user.update_with_password(:first_name => "Pepe", :last_name => "Perez")
+    assert_equal "Pepe", user.first_name
+    assert_equal "Perez", user.last_name
+  end
+
   test 'should clean up password fields on failure' do
     user = create_user
     assert_not user.update_with_password(:current_password => '123456',

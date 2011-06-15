@@ -24,8 +24,8 @@ module Devise
         attr_accessor :password_confirmation
         before_validation :downcase_keys
         before_validation :strip_whitespace
-        class_attribute :_skip_authentification
-        self._skip_authentification = []
+        class_attribute :_skip_authentication
+        self._skip_authentication = []
       end
 
       # Generates password encryption based on the given value.
@@ -72,7 +72,7 @@ module Devise
       end
 
       def current_password_required?(params={})
-        !(params.keys.collect{|key| key.to_s} - _skip_authentification).empty?
+        !(params.keys.collect{|key| key.to_s} - _skip_authentication).empty?
       end
 
       def after_database_authentication
@@ -110,9 +110,9 @@ module Devise
           find_for_authentication(conditions)
         end
 
-        def skip_authentification_for(*args)
+        def skip_authentication_for(*args)
           args.each do |arg|
-            _skip_authentification << arg.to_s if arg.is_a? Symbol
+            _skip_authentication << arg.to_s if arg.is_a? Symbol
           end
         end
       end

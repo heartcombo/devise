@@ -24,6 +24,8 @@ module Devise
         attr_accessor :password_confirmation
         before_validation :downcase_keys
         before_validation :strip_whitespace
+        class_attribute :_skip_authentication
+        self._skip_authentication = []
       end
 
       # Generates password encryption based on the given value.
@@ -56,7 +58,8 @@ module Devise
           params.delete(:password_confirmation) if params[:password_confirmation].blank?
         end
 
-        result = if valid_password?(current_password)
+        authorized = current_password_required?(params) ? valid_password?(current_password) : true
+        result = if authorized
           update_attributes(params)
         else
           self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
@@ -66,6 +69,10 @@ module Devise
 
         clean_up_passwords
         result
+      end
+
+      def current_password_required?(params={})
+        !(params.keys.collect{|key| key.to_s} - _skip_authentication).empty?
       end
 
       def after_database_authentication
@@ -101,6 +108,12 @@ module Devise
         # the proper fields.
         def find_for_database_authentication(conditions)
           find_for_authentication(conditions)
+        end
+
+        def skip_authentication_for(*args)
+          args.each do |arg|
+            _skip_authentication << arg.to_s if arg.is_a? Symbol
+          end
         end
       end
     end

@@ -15,7 +15,7 @@ module Devise
     def database_authenticatable(options={})
       null    = options[:null] || false
       default = options.key?(:default) ? options[:default] : ("" if null == false)
-      include_email = !respond_to?(:authentication_keys) || self.authentication_keys.include?(:email)
+      include_email = !Devise.authentication_keys || Devise.authentication_keys.include?(:email)
 
       apply_devise_schema :email,              String, :null => null, :default => default if include_email
       apply_devise_schema :encrypted_password, String, :null => null, :default => default, :limit => 128

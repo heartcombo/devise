@@ -103,7 +103,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       :password => 'pass321', :password_confirmation => 'pass321')
     assert user.reload.valid_password?('pass321')
   end
-
+  
   test 'should add an error to current password when it is invalid' do
     user = create_user
     assert_not user.update_with_password(:current_password => 'other',
@@ -139,6 +139,19 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       :password => 'pass321', :password_confirmation => 'other')
     assert user.password.blank?
     assert user.password_confirmation.blank?
+  end
+
+  test 'should update the user without password' do
+    user = create_user
+    user.update_without_password(:email => 'new@example.com')
+    assert_equal 'new@example.com', user.email
+  end
+
+  test 'should not update password without password' do
+    user = create_user
+    user.update_without_password(:password => 'pass321', :password_confirmation => 'pass321')
+    assert !user.reload.valid_password?('pass321')
+    assert user.valid_password?('123456')
   end
 
   test 'downcase_keys with validation' do

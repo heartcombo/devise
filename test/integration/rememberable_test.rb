@@ -20,6 +20,13 @@ class RememberMeTest < ActionController::IntegrationTest
     assert_not_nil user.reload.remember_token
   end
 
+  test 'cookie_options should be applied to cookies' do
+    swap Devise, :cookie_options => { :value => 'dont-do-that' } do
+      user = sign_in_as_user :remember_me => true
+      assert_equal 'dont-do-that', cookies['remember_user_token']
+    end
+  end
+
   test 'remember the user before sign in' do
     user = create_user_and_remember
     get users_path

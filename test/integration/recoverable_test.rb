@@ -226,17 +226,23 @@ class PasswordTest < ActionController::IntegrationTest
       visit_new_password_path
       fill_in "email", :with => "arandomemail@test.com"
       click_button 'Send me reset password instructions'
+
+      assert_not_contain "1 error prohibited this user from being saved:"
+      assert_not_contain "Email not found"
       assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+      assert_current_url "/users/password"
     end
   end
 
-  test "when in paranoid mode and with a valid e-mail, asking to reset password should display a message that does not indicates that the email exists in the database" do
+  test "when in paranoid mode and with a valid e-mail, asking to reset password should display a message that does not indicates that the email exists in the database and redirect to the failure route" do
     swap Devise, :paranoid => true do
       user = create_user
       visit_new_password_path
       fill_in 'email', :with => user.email
       click_button 'Send me reset password instructions'
+
       assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+      assert_current_url "/users/password"
     end
   end
 end

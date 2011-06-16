@@ -12,20 +12,17 @@ class Devise::PasswordsController < ApplicationController
   def create
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
 
-    if resource.errors.empty? || Devise.paranoid
-      set_flash_message(:notice, Devise.paranoid ? :send_paranoid_instructions : :send_instructions) if is_navigational_format?
-
-      #TODO needs refactor
-      if Devise.paranoid
-        if resource.errors.any?
-          resource.errors.clear
-        end
-        respond_with_navigational(resource) { render_with_scope :new }
-      else
-        respond_with resource, :location => new_session_path(resource_name)
-      end
+    if Devise.paranoid
+      set_flash_message(:notice, :send_paranoid_instructions) if is_navigational_format?
+      resource.errors.clear
+      respond_with_navigational(resource) { render_with_scope :new }
     else
-      respond_with_navigational(resource){ render_with_scope :new }
+      if resource.errors.empty?
+        set_flash_message(:notice, :send_instructions) if is_navigational_format?
+        respond_with resource, :location => new_session_path(resource_name)
+      else
+        respond_with_navigational(resource){ render_with_scope :new }
+      end
     end
   end
 

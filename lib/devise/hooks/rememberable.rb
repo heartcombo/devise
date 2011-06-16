@@ -11,11 +11,13 @@ Warden::Manager.prepend_after_authentication do |record, warden, options|
      warden.authenticated?(scope) && record.respond_to?(:remember_me!)
     record.remember_me!
 
-    warden.response.set_cookie "remember_#{scope}_token", {
+    cookie_options = {
       :value => record.class.serialize_into_cookie(record),
       :expires => record.remember_expires_at,
       :path => "/"
-    }
+    }.merge record.cookie_options
+
+    warden.response.set_cookie "remember_#{scope}_token", cookie_options
   end
 end
 

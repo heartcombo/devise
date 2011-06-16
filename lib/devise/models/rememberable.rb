@@ -19,6 +19,9 @@ module Devise
     #                 time for the cookie created to remember the user.
     #                 By default remember_for is 2.weeks.
     #
+    #   cookie_options: configuration options passed to the created cookie.
+    #
+    #
     # Examples:
     #
     #   User.find(1).remember_me!  # regenerating the token
@@ -72,6 +75,10 @@ module Devise
         remember_created_at + self.class.remember_for
       end
 
+      def cookie_options
+        self.class.cookie_options
+      end
+
       module ClassMethods
         # Create the cookie key using the record id and remember_token
         def serialize_into_cookie(record)
@@ -85,7 +92,7 @@ module Devise
           record if record.try(:valid_remember_token?, record_token)
         end
 
-        Devise::Models.config(self, :remember_for)
+        Devise::Models.config(self, :remember_for, :cookie_options)
       end
     end
   end

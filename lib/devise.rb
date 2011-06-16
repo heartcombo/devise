@@ -72,6 +72,10 @@ module Devise
   # Email regex used to validate email formats. Adapted from authlogic.
   EMAIL_REGEX = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
 
+  # Custom domain for cookies. Not set by default
+  mattr_accessor :cookie_options
+  @@cookie_options = {}
+
   # Used to encrypt password. Please generate one with rake secret.
   mattr_accessor :pepper
   @@pepper = nil

@@ -176,6 +176,20 @@ class CustomizedRoutingTest < ActionController::TestCase
       assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :get})
     end
   end
+  
+  test 'map with constraints defined in hash' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://192.168.1.100/headquarters/sign_up', :method => :get})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://10.0.0.100/headquarters/sign_up', :method => :get})
+    end
+  end
+  
+  test 'map with constraints defined in block' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://192.168.1.100/homebase/sign_up', :method => :get})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://10.0.0.100//homebase/sign_up', :method => :get})
+    end
+  end
 end
 
 class ScopedRoutingTest < ActionController::TestCase

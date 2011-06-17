@@ -29,10 +29,10 @@ Rails.application.routes.draw do
   end
   
   # Routes for constraints testing
-  devise_for :admin, :path => "headquarters", :constraints => {:host => /192\.168\.1\.\d\d\d/}
+  devise_for :headquarters_admin, :class_name => "Admin", :path => "headquarters", :constraints => {:host => /192\.168\.1\.\d\d\d/}
   
   constraints(:host => /192\.168\.1\.\d\d\d/) do
-    devise_for :admin, :path => "homebase"
+    devise_for :homebase_admin, :class_name => "Admin", :path => "homebase"
   end
   
   # Other routes for routing_test.rb

@@ -159,6 +159,7 @@ module ActionDispatch::Routing
       options[:module]      ||= @scope[:module] if @scope[:module].present?
       options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?
       options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
+      options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})
 
       resources.map!(&:to_sym)
 
@@ -185,7 +186,7 @@ module ActionDispatch::Routing
 
         devise_scope mapping.name do
           yield if block_given?
-          with_devise_exclusive_scope mapping.fullpath, mapping.name do
+          with_devise_exclusive_scope mapping.fullpath, mapping.name, mapping.constraints do
             routes.each { |mod| send("devise_#{mod}", mapping, mapping.controllers) }
           end
         end
@@ -286,12 +287,12 @@ module ActionDispatch::Routing
         @scope[:path] = path
       end
 
-      def with_devise_exclusive_scope(new_path, new_as) #:nodoc:
-        old_as, old_path, old_module = @scope[:as], @scope[:path], @scope[:module]
-        @scope[:as], @scope[:path], @scope[:module] = new_as, new_path, nil
+      def with_devise_exclusive_scope(new_path, new_as, new_constraints) #:nodoc:
+        old_as, old_path, old_module, old_constraints = @scope[:as], @scope[:path], @scope[:module], @scope[:constraints]
+        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints] = new_as, new_path, nil, new_constraints
         yield
       ensure
-        @scope[:as], @scope[:path], @scope[:module] = old_as, old_path, old_module
+        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints] = old_as, old_path, old_module, old_constraints
       end
 
       def raise_no_devise_method_error!(klass) #:nodoc:

@@ -63,6 +63,9 @@ module Devise
       @path_names = Hash.new { |h,k| h[k] = k.to_s }
       @path_names.merge!(:registration => "")
       @path_names.merge!(options[:path_names] || {})
+      
+      @constraints = Hash.new { |h,k| h[k] = k.to_s }
+      @constraints.merge!(options[:constraints] || {})
 
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
     end
@@ -96,7 +99,11 @@ module Devise
     def fullpath
       "/#{@path_prefix}/#{@path}".squeeze("/")
     end
-
+    
+    def constraints
+      @constraints
+    end
+    
     # Create magic predicates for verifying what module is activated by this map.
     # Example:
     #

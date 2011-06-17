@@ -27,7 +27,14 @@ Rails.application.routes.draw do
   authenticate(:admin) do
     match "/private", :to => "home#private", :as => :private
   end
-
+  
+  # Routes for constraints testing
+  devise_for :admin, :path => "headquarters", :constraints => {:host => /192\.168\.1\.\d\d\d/}
+  
+  constraints(:host => /192\.168\.1\.\d\d\d/) do
+    devise_for :admin, :path => "homebase"
+  end
+  
   # Other routes for routing_test.rb
   devise_for :reader, :class_name => "User", :only => :passwords
 

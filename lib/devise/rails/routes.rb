@@ -209,6 +209,50 @@ module ActionDispatch::Routing
       end
     end
 
+    # Allow you to route based on whether a scope is authenticated. You
+    # can optionally specify which scope.
+    #
+    #   authenticated :admin do
+    #     root :to => 'admin/dashboard#show'
+    #   end
+    #
+    #   authenticated do
+    #     root :to => 'dashboard#show'
+    #   end
+    #
+    #   root :to => 'landing#show'
+    #
+    def authenticated(scope=nil)
+      constraint = lambda do |request|
+        request.env["warden"].authenticate(:scope => scope).present?
+      end
+
+      constraints(constraint) do
+        yield
+      end
+    end
+
+    # Allow you to route based on whether a scope is *not* authenticated.
+    # You can optionally specify which scope.
+    #
+    #   not_authenticated do
+    #     as :user do
+    #       root :to => 'devise/registrations#new'
+    #     end
+    #   end
+    #
+    #   root :to => 'dashboard#show'
+    #
+    def not_authenticated(scope=nil)
+      constraint = lambda do |request|
+        request.env["warden"].authenticate(:scope => scope).blank?
+      end
+
+      constraints(constraint) do
+        yield
+      end
+    end
+
     # Sets the devise scope to be used in the controller. If you have custom routes,
     # you are required to call this method (also aliased as :as) in order to specify
     # to which controller it is targetted.

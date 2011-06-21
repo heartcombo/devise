@@ -30,6 +30,7 @@ en:
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
+      send_paranoid_instructions: 'If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
     registrations:
       signed_up: 'Welcome! You have signed up successfully.'

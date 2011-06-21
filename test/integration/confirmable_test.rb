@@ -129,4 +129,34 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
+
+  test "when in paranoid mode and with a valid e-mail, should not say that the e-mail is valid" do
+    swap Devise, :paranoid => true do
+      user = create_user(:confirm => false)
+      visit new_user_session_path
+
+      click_link "Didn't receive confirmation instructions?"
+      fill_in 'email', :with => user.email
+      click_button 'Resend confirmation instructions'
+
+      assert_contain "If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_current_url "/users/confirmation"
+    end
+  end
+
+  test "when in paranoid mode and with a invalid e-mail, should not say that the e-mail is invalid" do
+    swap Devise, :paranoid => true do
+      visit new_user_session_path
+
+      click_link "Didn't receive confirmation instructions?"
+      fill_in 'email', :with => "idonthavethisemail@gmail.com"
+      click_button 'Resend confirmation instructions'
+
+      assert_not_contain "1 error prohibited this user from being saved:"
+      assert_not_contain "Email not found"
+
+      assert_contain "If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_current_url "/users/confirmation"
+    end
+  end
 end

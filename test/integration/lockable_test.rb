@@ -141,4 +141,54 @@ class LockTest < ActionController::IntegrationTest
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
+
+  test "in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is locked" do
+    swap Devise, :paranoid => true do
+      user = create_user(:locked => true)
+
+      visit new_user_session_path
+      click_link "Didn't receive unlock instructions?"
+
+      fill_in 'email', :with => user.email
+      click_button 'Resend unlock instructions'
+
+      assert_current_url "/users/unlock"
+
+      assert_contain "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+    end
+  end
+
+  test "in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is not locked" do
+    swap Devise, :paranoid => true do
+      user = create_user(:locked => false)
+
+      visit new_user_session_path
+      click_link "Didn't receive unlock instructions?"
+
+      fill_in 'email', :with => user.email
+      click_button 'Resend unlock instructions'
+
+      assert_current_url "/users/unlock"
+
+      assert_contain "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+    end
+  end
+
+  test "in paranoid mode, when trying to unlock an user that does not exists it should not say that it does not exists" do
+    swap Devise, :paranoid => true do
+      visit new_user_session_path
+      click_link "Didn't receive unlock instructions?"
+
+      fill_in 'email', :with => "arandomemail@hotmail.com"
+      click_button 'Resend unlock instructions'
+
+      assert_not_contain "1 error prohibited this user from being saved:"
+      assert_not_contain "Email not found"
+      assert_current_url "/users/unlock"
+
+      assert_contain "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+
+    end
+  end
+
 end

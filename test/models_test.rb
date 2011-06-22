@@ -10,6 +10,10 @@ class WithValidation < Admin
   devise :database_authenticatable, :validatable, :password_length => 2..6
 end
 
+class UserWithValidation < User
+  validates_presence_of :username
+end
+
 class Several < Admin
   devise :validatable
   devise :lockable

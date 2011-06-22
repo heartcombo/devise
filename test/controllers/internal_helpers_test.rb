@@ -45,6 +45,13 @@ class HelpersTest < ActionController::TestCase
     @controller.send :require_no_authentication
   end
 
+  test 'require no authentication skips if no inputs are available' do
+    Devise.mappings[:user].expects(:no_input_strategies).returns([])
+    @mock_warden.expects(:authenticate?).never
+    @controller.expects(:redirect_to).never
+    @controller.send :require_no_authentication
+  end
+
   test 'require no authentication sets a flash message' do
     @mock_warden.expects(:authenticate?).with(:rememberable, :token_authenticatable, :scope => :user).returns(true)
     @mock_warden.expects(:user).with(:user).returns(User.new)

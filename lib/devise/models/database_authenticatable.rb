@@ -59,8 +59,9 @@ module Devise
         result = if valid_password?(current_password)
           update_attributes(params)
         else
-          self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           self.attributes = params
+          self.valid?
+          self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           false
         end
 

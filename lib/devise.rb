@@ -237,7 +237,7 @@ module Devise
   @@warden_config = nil
   @@warden_config_block = nil
 
-  # TODO Write a meaningful description about this attribute
+  # When true, enter in paranoid mode to avoid user enumeration.
   mattr_accessor :paranoid
   @@paranoid = false
 

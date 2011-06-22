@@ -4,7 +4,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 desc 'Default: run tests for all ORMs.'
-task :default => :pre_commit
+task :default => :test
 
 desc 'Run Devise tests for all ORMs.'
 task :pre_commit do

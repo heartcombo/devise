@@ -12,13 +12,14 @@ class Devise::PasswordsController < ApplicationController
   def create
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
 
-    if resource.errors.empty?
+    if successful_and_sane?(resource)
       set_flash_message(:notice, :send_instructions) if is_navigational_format?
-      respond_with resource, :location => after_sending_reset_password_instructions_path_for(resource_name)
+      respond_with resource, :location => new_session_path(resource_name)
     else
       respond_with_navigational(resource){ render_with_scope :new }
     end
   end
+
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
@@ -39,12 +40,12 @@ class Devise::PasswordsController < ApplicationController
       respond_with_navigational(resource){ render_with_scope :edit }
     end
   end
-  
+
   protected
 
     # The path used after sending reset password instructions
     def after_sending_reset_password_instructions_path_for(resource_name)
       new_session_path(resource_name)
     end
-    
+
 end

@@ -237,6 +237,10 @@ module Devise
   @@warden_config = nil
   @@warden_config_block = nil
 
+  # TODO Write a meaningful description about this attribute
+  mattr_accessor :paranoid
+  @@paranoid = false
+
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

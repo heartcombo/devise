@@ -11,7 +11,7 @@ class Devise::ConfirmationsController < ApplicationController
   def create
     self.resource = resource_class.send_confirmation_instructions(params[resource_name])
 
-    if resource.errors.empty?
+    if successful_and_sane?(resource)
       set_flash_message(:notice, :send_instructions) if is_navigational_format?
       respond_with resource, :location => after_resending_confirmation_instructions_path_for(resource_name)
     else

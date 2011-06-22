@@ -99,6 +99,18 @@ MESSAGE
         end
       end
 
+      # Helper for use to validate if an resource is errorless. If we are on paranoid mode, we always should assume it is
+      # and return false.
+      def successful_and_sane?(resource)
+        if Devise.paranoid
+          set_flash_message :notice, :send_paranoid_instructions if is_navigational_format?
+          resource.errors.clear
+          false
+        else
+          resource.errors.empty?
+        end
+      end
+
       # Sets the flash message with :key, using I18n. By default you are able
       # to setup your messages using specific resource scope, and if no one is
       # found we look to default scope.

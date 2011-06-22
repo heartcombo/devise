@@ -101,7 +101,6 @@ MESSAGE
 
       # Helper for use to validate if an resource is errorless. If we are on paranoid mode, we always should assume it is
       # and return false.
-
       def successful_and_sane?(resource)
         if Devise.paranoid
           set_flash_message :notice, :send_paranoid_instructions if is_navigational_format?

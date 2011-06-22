@@ -120,6 +120,15 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_match "can't be blank", user.errors[:current_password].join
   end
 
+  test 'should run validations even when current password is invalid or blank' do
+    user = UserWithValidation.create!(valid_attributes)
+    user.save
+    assert user.persisted?
+    assert_not user.update_with_password(:username => "")
+    assert_match "usertest", user.reload.username
+    assert_match "can't be blank", user.errors[:username].join
+  end
+
   test 'should ignore password and its confirmation if they are blank' do
     user = create_user
     assert user.update_with_password(:current_password => '123456', :email => "new@example.com")

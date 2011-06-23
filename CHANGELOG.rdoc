@@ -1,4 +1,5 @@
 * enhancements
+  * Added authenticated and unauthenticated to the router to route the used based on his status (by github.com/sj26)
   * Improve e-mail regexp (by github.com/rodrigoflores)
   * Add strip_whitespace_keys and default to e-mail (by github.com/swrobel)
   * Do not run format and uniqueness validations on e-mail if it hasn't changed (by github.com/Thibaut)

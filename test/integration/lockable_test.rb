@@ -142,6 +142,13 @@ class LockTest < ActionController::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
+  test "when using json to ask a unlock request, should not return the user" do
+    user = create_user(:locked => true)
+    post  user_unlock_path(:format => "json", :user => {:email => user.email})
+    assert_response :success
+    assert_equal response.body, {}.to_json
+  end
+
   test "in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is locked" do
     swap Devise, :paranoid => true do
       user = create_user(:locked => true)

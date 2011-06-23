@@ -113,7 +113,7 @@ class LockTest < ActionController::IntegrationTest
 
     post user_unlock_path(:format => 'xml'), :user => {:email => user.email}
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_equal response.body, {}.to_xml
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 

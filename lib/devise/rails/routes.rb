@@ -224,7 +224,7 @@ module ActionDispatch::Routing
     #
     def authenticated(scope=nil)
       constraint = lambda do |request|
-        request.env["warden"].authenticated? :scope => scope
+        request.env["warden"].authenticate? :scope => scope
       end
 
       constraints(constraint) do
@@ -245,7 +245,7 @@ module ActionDispatch::Routing
     #
     def unauthenticated(scope=nil)
       constraint = lambda do |request|
-        request.env["warden"].unauthenticated? :scope => scope
+        not request.env["warden"].authenticate? :scope => scope
       end
 
       constraints(constraint) do

@@ -7,6 +7,7 @@ require 'securerandom'
 
 module Devise
   autoload :FailureApp, 'devise/failure_app'
+  autoload :Mailers, 'devise/mailers'
   autoload :OmniAuth, 'devise/omniauth'
   autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'

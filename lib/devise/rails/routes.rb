@@ -129,9 +129,9 @@ module ActionDispatch::Routing
     #   end
     #
     # ==== Adding custom actions to override controllers
-    # 
-    # You can pass a block to devise_for that will add any routes defined in the block to Devise's 
-    # list of known actions.  This is important if you add a custom action to a controller that 
+    #
+    # You can pass a block to devise_for that will add any routes defined in the block to Devise's
+    # list of known actions.  This is important if you add a custom action to a controller that
     # overrides an out of the box Devise controller.
     # For example:
     #
@@ -202,6 +202,50 @@ module ActionDispatch::Routing
     def authenticate(scope)
       constraint = lambda do |request|
         request.env["warden"].authenticate!(:scope => scope)
+      end
+
+      constraints(constraint) do
+        yield
+      end
+    end
+
+    # Allow you to route based on whether a scope is authenticated. You
+    # can optionally specify which scope.
+    #
+    #   authenticated :admin do
+    #     root :to => 'admin/dashboard#show'
+    #   end
+    #
+    #   authenticated do
+    #     root :to => 'dashboard#show'
+    #   end
+    #
+    #   root :to => 'landing#show'
+    #
+    def authenticated(scope=nil)
+      constraint = lambda do |request|
+        request.env["warden"].authenticate? :scope => scope
+      end
+
+      constraints(constraint) do
+        yield
+      end
+    end
+
+    # Allow you to route based on whether a scope is *not* authenticated.
+    # You can optionally specify which scope.
+    #
+    #   unauthenticated do
+    #     as :user do
+    #       root :to => 'devise/registrations#new'
+    #     end
+    #   end
+    #
+    #   root :to => 'dashboard#show'
+    #
+    def unauthenticated(scope=nil)
+      constraint = lambda do |request|
+        not request.env["warden"].authenticate? :scope => scope
       end
 
       constraints(constraint) do

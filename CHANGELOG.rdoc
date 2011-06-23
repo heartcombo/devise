@@ -11,6 +11,7 @@
   * Do not convert booleans to strings on finders (by github.com/xavier)
   * Run validations even if current_password fails (by github.com/crx)
   * Devise now honors routes constraints (by github.com/macmartine)
+  * Do not return the user resource when requesting instructions (by github.com/rodrigoflores)
 
 == 1.3.4
 

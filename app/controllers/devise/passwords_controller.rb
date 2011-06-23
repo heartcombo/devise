@@ -14,12 +14,11 @@ class Devise::PasswordsController < ApplicationController
 
     if successful_and_sane?(resource)
       set_flash_message(:notice, :send_instructions) if is_navigational_format?
-      respond_with {}, :location => after_sending_reset_password_instructions_path_for(resource_name)
+      respond_with({}, :location => after_sending_reset_password_instructions_path_for(resource_name))
     else
       respond_with_navigational(resource){ render_with_scope :new }
     end
   end
-
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit

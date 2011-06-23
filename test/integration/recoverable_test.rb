@@ -221,6 +221,15 @@ class PasswordTest < ActionController::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
+  test "when using json requests to ask a confirmable request, should not return the object" do
+    user = create_user(:confirm => false)
+
+    post user_password_path(:format => :json), :user => { :email => user.email }
+
+    assert_response :success
+    assert_equal response.body, "{}"
+  end
+
   test "when in paranoid mode and with an invalid e-mail, asking to reset a password should display a message that does not indicates that the e-mail does not exists in the database" do
     swap Devise, :paranoid => true do
       visit_new_password_path
@@ -244,14 +253,5 @@ class PasswordTest < ActionController::IntegrationTest
       assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
       assert_current_url "/users/password"
     end
-  end
-
-  test "when using json requests to ask a confirmable request, should not return the object" do
-    user = create_user(:confirm => false)
-
-    post user_password_path(:format => :json), :user => { :email => user.email }
-
-    assert_equal response.code, "201"
-    assert_equal response.body, "{}"
   end
 end

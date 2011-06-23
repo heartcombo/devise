@@ -209,6 +209,13 @@ module Devise
   mattr_accessor :navigational_formats
   @@navigational_formats = [:"*/*", "*/*", :html]
 
+  # Which attributes are excluded by default when calling serializable_hash.
+  # serializable_hash is used by to_json, to_xml etc. You can always override this setting by
+  # passing :except or :only as options. By default, we exclude password-related fields and tokens.
+  mattr_accessor :attributes_excluded_from_serializable_hash
+  @@attributes_excluded_from_serializable_hash = [ :encrypted_password, :authentication_token,
+    :confirmation_token, :reset_password_token, :remember_token, :unlock_token, :password_salt ]
+
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
   @@sign_out_all_scopes = true

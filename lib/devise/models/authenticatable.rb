@@ -76,17 +76,12 @@ module Devise
       def authenticatable_salt
       end
 
-      %w(to_xml to_json).each do |method|
-        class_eval <<-RUBY, __FILE__, __LINE__
-          def #{method}(options={})
-            if self.class.respond_to?(:accessible_attributes)
-              options = { :only => self.class.accessible_attributes.to_a }.merge(options || {})
-              super(options)
-            else
-              super
-            end
-          end
-        RUBY
+      # Override serializable_hash to protect critical devise fields.
+      # The crypted_password as well as salts and tokens are considered critical so they should not
+      # be included in representations such as JSON or XML.
+      def serializable_hash(options = nil)
+        options = { :except => Devise.attributes_excluded_from_serializable_hash }.merge(options || {})
+        super(options)
       end
 
       module ClassMethods

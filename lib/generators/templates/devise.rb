@@ -58,6 +58,12 @@ Devise.setup do |config|
   # Does not affect registerable.
   # config.paranoid = true
 
+  # Configure which attributes are, by default, excluded from hash representations (e.g. to_json).
+  # You can override this on a case by case basis by passing the :except/:only options,
+  #   e.g. user.to_json(:only => :authentication_token)
+  # config.attributes_excluded_from_serializable_hash = [ :encrypted_password, :authentication_token,
+  #   :confirmation_token, :reset_password_token, :remember_token, :unlock_token, :password_salt ]
+
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.

@@ -76,17 +76,13 @@ module Devise
       def authenticatable_salt
       end
 
-      %w(to_xml to_json).each do |method|
-        class_eval <<-RUBY, __FILE__, __LINE__
-          def #{method}(options={})
-            if self.class.respond_to?(:accessible_attributes)
-              options = { :only => self.class.accessible_attributes.to_a }.merge(options || {})
-              super(options)
-            else
-              super
-            end
-          end
-        RUBY
+      def serializable_hash(options={})
+        if self.class.respond_to?(:accessible_attributes)
+          options = { :only => self.class.accessible_attributes.to_a }.merge(options || {})
+          super(options)
+        else
+          super
+        end
       end
 
       module ClassMethods

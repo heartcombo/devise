@@ -1,3 +1,5 @@
+== 1.4.0
+
 * enhancements
   * Added authenticated and unauthenticated to the router to route the used based on his status (by github.com/sj26)
   * Improve e-mail regexp (by github.com/rodrigoflores)

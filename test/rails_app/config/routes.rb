@@ -27,7 +27,19 @@ Rails.application.routes.draw do
   authenticate(:admin) do
     match "/private", :to => "home#private", :as => :private
   end
-  
+
+  authenticated :admin do
+    match "/dashboard", :to => "home#admin_dashboard"
+  end
+
+  authenticated do
+    match "/dashboard", :to => "home#user_dashboard"
+  end
+
+  unauthenticated do
+    match "/join", :to => "home#join"
+  end
+
   # Routes for constraints testing
   devise_for :headquarters_admin, :class_name => "Admin", :path => "headquarters", :constraints => {:host => /192\.168\.1\.\d\d\d/}
   

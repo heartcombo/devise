@@ -1,4 +1,4 @@
-class Devise::PasswordsController < ApplicationController
+class Devise::PasswordsController < DeviseController
   prepend_before_filter :require_no_authentication
   include Devise::Controllers::InternalHelpers
 

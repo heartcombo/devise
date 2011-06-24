@@ -1,4 +1,4 @@
-class Devise::ConfirmationsController < ApplicationController
+class Devise::ConfirmationsController < DeviseController
   include Devise::Controllers::InternalHelpers
 
   # GET /resource/confirmation/new

@@ -161,7 +161,6 @@ module ActionDispatch::Routing
 
       options[:as]          ||= @scope[:as]     if @scope[:as].present?
       options[:module]      ||= @scope[:module] if @scope[:module].present?
-      options[:format]      ||= @scope[:format] if @scope[:format].present?
       options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?
       options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
       options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})

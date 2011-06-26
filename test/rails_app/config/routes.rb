@@ -47,6 +47,10 @@ Rails.application.routes.draw do
     devise_for :homebase_admin, :class_name => "Admin", :path => "homebase"
   end
   
+  # Routes for format=false testing
+  devise_for :htmlonly_admin, :class_name => "Admin", :skip => [:confirmations, :unlocks], :path => "htmlonly_admin", :format => false
+  devise_for :htmlonly_users, :class_name => "User", :only => [:confirmations, :unlocks], :path => "htmlonly_users", :format => false
+  
   # Other routes for routing_test.rb
   devise_for :reader, :class_name => "User", :only => :passwords
 

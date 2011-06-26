@@ -103,6 +103,10 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :only => :sessions
     #
+    #  * :format => include "(.:format)" in the generated routes? true by default, set to false to disable:
+    #
+    #      devise_for :users, :format => false
+    #
     #
     # ==== Scoping
     #
@@ -279,7 +283,9 @@ module ActionDispatch::Routing
     protected
 
       def devise_session(mapping, controllers) #:nodoc:
-        resource :session, :only => [], :controller => controllers[:sessions], :path => "" do
+        roptions = {:only => [], :controller => controllers[:sessions], :path => ""}
+        roptions.merge!({:format => false}) if mapping.format == false
+        resource :session, roptions do
           get   :new,     :path => mapping.path_names[:sign_in],  :as => "new"
           post  :create,  :path => mapping.path_names[:sign_in]
           match :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
@@ -287,19 +293,22 @@ module ActionDispatch::Routing
       end
 
       def devise_password(mapping, controllers) #:nodoc:
-        resource :password, :only => [:new, :create, :edit, :update],
-          :path => mapping.path_names[:password], :controller => controllers[:passwords]
+        roptions = {:only => [:new, :create, :edit, :update], :path => mapping.path_names[:password], :controller => controllers[:passwords]}
+        roptions.merge!({:format => false}) if mapping.format == false
+        resource :password, roptions
       end
 
       def devise_confirmation(mapping, controllers) #:nodoc:
-        resource :confirmation, :only => [:new, :create, :show],
-          :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
+        roptions = {:only => [:new, :create, :show], :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]}
+        roptions.merge!({:format => false}) if mapping.format == false
+        resource :confirmation, roptions
       end
 
       def devise_unlock(mapping, controllers) #:nodoc:
         if mapping.to.unlock_strategy_enabled?(:email)
-          resource :unlock, :only => [:new, :create, :show],
-            :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
+          roptions = {:only => [:new, :create, :show], :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]}
+          roptions.merge!({:format => false}) if mapping.format == false
+          resource :unlock, roptions
         end
       end
 
@@ -309,8 +318,9 @@ module ActionDispatch::Routing
           :cancel => mapping.path_names[:cancel]
         }
 
-        resource :registration, :except => :show, :path => mapping.path_names[:registration],
-                 :path_names => path_names, :controller => controllers[:registrations] do
+        roptions = {:except => :show, :path => mapping.path_names[:registration], :path_names => path_names, :controller => controllers[:registrations]}
+        roptions.merge!({:format => false}) if mapping.format == false
+        resource :registration, roptions do
           get :cancel
         end
       end

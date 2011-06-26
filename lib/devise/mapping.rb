@@ -68,6 +68,7 @@ module Devise
       @constraints.merge!(options[:constraints] || {})
 
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
+      @format = options[:format]
     end
 
     # Return modules for the mapping.
@@ -102,6 +103,10 @@ module Devise
     
     def constraints
       @constraints
+    end
+    
+    def format
+      @format
     end
     
     # Create magic predicates for verifying what module is activated by this map.

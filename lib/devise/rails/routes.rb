@@ -103,6 +103,10 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :only => :sessions
     #
+    #  * :format => include "(.:format)" in the generated routes? true by default, set to false to disable:
+    #
+    #      devise_for :users, :format => false
+    #
     #
     # ==== Scoping
     #
@@ -161,6 +165,8 @@ module ActionDispatch::Routing
       options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
       options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})
       options[:defaults]      = (@scope[:defaults] || {}).merge(options[:defaults] || {})
+
+      @scope[:options]        = (@scope[:options] || {}).merge({:format => false}) if options[:format] == false
 
       resources.map!(&:to_sym)
 

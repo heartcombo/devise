@@ -190,6 +190,41 @@ class CustomizedRoutingTest < ActionController::TestCase
       assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://10.0.0.100//homebase/sign_up', :method => :get})
     end
   end
+  
+  test 'map with format false for sessions' do
+    assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, {:path => '/htmlonly_admin/sign_in', :method => :get})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, {:path => '/htmlonly_admin/sign_in.xml', :method => :get})
+    end
+  end
+  
+  test 'map with format false for passwords' do
+    assert_recognizes({:controller => 'devise/passwords', :action => 'create'}, {:path => '/htmlonly_admin/password', :method => :post})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/passwords', :action => 'create'}, {:path => '/htmlonly_admin/password.xml', :method => :post})
+    end
+  end
+  
+  test 'map with format false for registrations' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => '/htmlonly_admin/sign_up', :method => :get})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => '/htmlonly_admin/sign_up.xml', :method => :get})
+    end
+  end
+  
+  test 'map with format false for confirmations' do
+    assert_recognizes({:controller => 'devise/confirmations', :action => 'show'}, {:path => '/htmlonly_users/confirmation', :method => :get})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/confirmations', :action => 'show'}, {:path => '/htmlonly_users/confirmation.xml', :method => :get})
+    end
+  end
+  
+  test 'map with format false for unlocks' do
+    assert_recognizes({:controller => 'devise/unlocks', :action => 'show'}, {:path => '/htmlonly_users/unlock', :method => :get})
+    assert_raise ActionController::RoutingError do
+      assert_recognizes({:controller => 'devise/unlocks', :action => 'show'}, {:path => '/htmlonly_users/unlock.xml', :method => :get})
+    end
+  end
 end
 
 class ScopedRoutingTest < ActionController::TestCase

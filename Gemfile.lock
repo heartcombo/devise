@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise (1.4.0.dev)
+    devise (1.4.0)
       bcrypt-ruby (~> 2.1.2)
       orm_adapter (~> 0.0.3)
       warden (~> 1.0.3)
@@ -43,7 +43,6 @@ GEM
     addressable (2.2.4)
     arel (2.0.9)
     bcrypt-ruby (2.1.4)
-    bcrypt-ruby (2.1.4-java)
     bson (1.3.0)
     bson_ext (1.3.0)
     builder (2.1.2)
@@ -131,8 +130,8 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.27)
-    warden (1.0.3)
-      rack (>= 1.0.0)
+    warden (1.0.4)
+      rack (>= 1.0)
     weakling (0.0.4-java)
     webrat (0.7.2)
       nokogiri (>= 1.2.0)

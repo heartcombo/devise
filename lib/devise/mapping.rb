@@ -67,6 +67,9 @@ module Devise
       @constraints = Hash.new { |h,k| h[k] = k.to_s }
       @constraints.merge!(options[:constraints] || {})
 
+      @defaults = Hash.new { |h,k| h[k] = k.to_s }
+      @defaults.merge!(options[:defaults] || {})
+
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
     end
 
@@ -102,6 +105,10 @@ module Devise
     
     def constraints
       @constraints
+    end
+    
+    def defaults
+      @defaults
     end
     
     # Create magic predicates for verifying what module is activated by this map.

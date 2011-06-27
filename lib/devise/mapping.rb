@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :scoped_path, :path, :controllers, :path_names, :class_name, :sign_out_via
+    attr_reader :singular, :scoped_path, :path, :controllers, :path_names, :class_name, :sign_out_via, :format
     alias :name :singular
 
     # Receives an object and find a scope for it. If a scope cannot be found,
@@ -67,7 +67,11 @@ module Devise
       @constraints = Hash.new { |h,k| h[k] = k.to_s }
       @constraints.merge!(options[:constraints] || {})
 
+      @defaults = Hash.new { |h,k| h[k] = k.to_s }
+      @defaults.merge!(options[:defaults] || {})
+
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
+      @format = options[:format]
     end
 
     # Return modules for the mapping.
@@ -102,6 +106,10 @@ module Devise
     
     def constraints
       @constraints
+    end
+    
+    def defaults
+      @defaults
     end
     
     # Create magic predicates for verifying what module is activated by this map.

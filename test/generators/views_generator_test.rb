@@ -18,6 +18,16 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_files "admins"
   end
 
+  test "Assert views with simple form" do
+    run_generator %w(-b simple_form_for)
+    assert_files
+    assert_file "app/views/devise/confirmations/new.html.erb", /simple_form_for/
+
+    run_generator %w(users -b simple_form_for)
+    assert_files "users"
+    assert_file "app/views/users/confirmations/new.html.erb", /simple_form_for/
+  end
+
   def assert_files(scope = nil, template_engine = nil)
     scope = "devise" if scope.nil?
     assert_file "app/views/#{scope}/confirmations/new.html.erb"

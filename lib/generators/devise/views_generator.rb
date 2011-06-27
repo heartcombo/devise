@@ -24,7 +24,7 @@ module Devise
       protected
 
       def view_directory(name)
-        directory "devise/#{name}", "#{target_path}/#{name}"
+        directory name.to_s, "#{target_path}/#{name}"
       end
 
       def target_path
@@ -34,8 +34,7 @@ module Devise
 
     class SharedViewsGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
-
-      source_root File.expand_path("../../../../app/views", __FILE__)
+      source_root File.expand_path("../../../../app/views/devise", __FILE__)
       desc "Copies shared Devise views to your application."
 
       # Override copy_views to just copy mailer and shared.
@@ -47,13 +46,13 @@ module Devise
 
     class FormForGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
-      source_root File.expand_path("../../../../app/views", __FILE__)
+      source_root File.expand_path("../../../../app/views/devise", __FILE__)
       desc "Copies default Devise views to your application."
     end
 
     class SimpleFormForGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
-      source_root File.expand_path("../templates", __FILE__)
+      source_root File.expand_path("../simple_form_for", __FILE__)
       desc "Copies simple form enabled views to your application."
     end
 

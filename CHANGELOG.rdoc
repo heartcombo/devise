@@ -1,3 +1,9 @@
+== 1.4.1
+
+* enhancements
+  * Add :defaults and :format support on router
+  * Add simple form generators
+
 == 1.4.0
 
 * enhancements

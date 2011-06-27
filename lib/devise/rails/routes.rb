@@ -107,6 +107,9 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :format => false
     #
+    #  * :constraints => works the same as Rails' contraints
+    #
+    #  * :defaults => works the same as Rails' defaults
     #
     # ==== Scoping
     #
@@ -347,8 +350,8 @@ module ActionDispatch::Routing
       end
 
       def raise_no_devise_method_error!(klass) #:nodoc:
-        raise "#{klass} does not respond to 'devise' method. This usually means you haven't " <<
-          "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " <<
+        raise "#{klass} does not respond to 'devise' method. This usually means you haven't " \
+          "loaded your ORM file or it's being loaded too late. To fix it, be sure to require 'devise/orm/YOUR_ORM' " \
           "inside 'config/initializers/devise.rb' or before your application definition in 'config/application.rb'"
       end
   end

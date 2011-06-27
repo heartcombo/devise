@@ -31,6 +31,10 @@ module Devise
     autoload :Sha1, 'devise/encryptors/sha1'
   end
 
+  module Mailers
+    autoload :Helpers, 'devise/mailers/helpers'
+  end
+
   module Strategies
     autoload :Base, 'devise/strategies/base'
     autoload :Authenticatable, 'devise/strategies/authenticatable'

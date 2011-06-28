@@ -3,6 +3,7 @@
 * enhancements
   * Add :defaults and :format support on router
   * Add simple form generators
+  * Better localization for devise_error_messages! (by github.com/zedtux)
 
 == 1.4.0
 

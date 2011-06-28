@@ -108,7 +108,7 @@ Devise must be set up within the model (or models) you want to use. Devise route
 We're assuming here you want a User model with some Devise modules, as outlined below:
 
   class User < ActiveRecord::Base
-    devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
+    devise :database_authenticatable, :registerable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
   end
 
 After you choose which modules to use, you need to set up your migrations. Luckily, Devise has some helpers to save you from this boring work:
@@ -174,7 +174,7 @@ Notice that if your devise model is not called "user" but "member", then the hel
 
 The devise method in your models also accepts some options to configure its modules. For example, you can choose which encryptor to use in database_authenticatable:
 
-  devise :database_authenticatable, :confirmable, :recoverable, :stretches => 20
+  devise :database_authenticatable, :registerable, :confirmable, :recoverable, :stretches => 20
 
 Besides :stretches, you can define :pepper, :encryptor, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the "devise:install" generator described above.
 

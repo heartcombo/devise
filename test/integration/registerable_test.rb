@@ -211,7 +211,7 @@ class RegistrationTest < ActionController::IntegrationTest
     get new_user_registration_path(:format => 'xml')
     assert_response :success
     assert_match %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>), response.body
-    assert_no_match(/<confirmation_token>/, response.body) if DEVISE_ORM == :active_record
+    assert_no_match(/<confirmation-token/, response.body) if DEVISE_ORM == :active_record
   end
 
   test 'a user with JSON sign up stub' do

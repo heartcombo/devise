@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   resources :users, :only => [:index] do
     get :expire, :on => :member
     get :accept, :on => :member
+
+    authenticate :user do
+      post :exhibit, :on => :member
+    end
   end
 
   resources :admins, :only => [:index]
@@ -76,5 +80,6 @@ Rails.application.routes.draw do
 
   match "/set", :to => "home#set"
   match "/unauthenticated", :to => "home#unauthenticated"
+
   root :to => "home#index"
 end

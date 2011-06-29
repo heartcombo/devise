@@ -218,9 +218,12 @@ module Devise
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
 
-      # Overwrite Rails' handle unverified request to sign out all scopes.
+      # Overwrite Rails' handle unverified request to sign out all scopes,
+      # clear run strategies and remove cached variables.
       def handle_unverified_request
         sign_out_all_scopes
+        warden.clear_strategies_cache!
+        Devise.mappings.each { |_,m| instance_variable_set("@current_#{m.name}", nil) }
         super # call the default behaviour which resets the session
       end
     end

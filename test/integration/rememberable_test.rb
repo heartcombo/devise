@@ -38,6 +38,18 @@ class RememberMeTest < ActionController::IntegrationTest
     assert_nil request.cookies["remember_user_cookie"]
   end
 
+  test 'handles unverified requests gets rid of caches' do
+    swap UsersController, :allow_forgery_protection => true do
+      post exhibit_user_url(1)
+      assert_not warden.authenticated?(:user)
+
+      create_user_and_remember
+      post exhibit_user_url(1)
+      assert_equal "User is not authenticated", response.body
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'generate remember token after sign in' do
     user = sign_in_as_user :remember_me => true
     assert request.cookies["remember_user_token"]

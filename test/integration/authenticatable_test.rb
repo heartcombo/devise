@@ -354,6 +354,20 @@ class AuthenticationWithScopesTest < ActionController::IntegrationTest
 end
 
 class AuthenticationOthersTest < ActionController::IntegrationTest
+  test 'handles unverified requests gets rid of caches' do
+    swap UsersController, :allow_forgery_protection => true do
+      post exhibit_user_url(1)
+      assert_not warden.authenticated?(:user)
+
+      sign_in_as_user
+      assert warden.authenticated?(:user)
+
+      post exhibit_user_url(1)
+      assert_not warden.authenticated?(:user)
+      assert_equal "User is not authenticated", response.body
+    end
+  end
+
   test 'uses the custom controller with the custom controller view' do
     get '/admin_area/sign_in'
     assert_contain 'Sign in'

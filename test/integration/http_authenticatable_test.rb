@@ -1,6 +1,14 @@
 require 'test_helper'
 
 class HttpAuthenticationTest < ActionController::IntegrationTest
+  test 'handles unverified requests gets rid of caches but continues signed in' do
+    swap UsersController, :allow_forgery_protection => true do
+      create_user
+      post exhibit_user_url(1), {}, "HTTP_AUTHORIZATION" => "Basic #{ActiveSupport::Base64.encode64("user@test.com:123456")}"
+      assert warden.authenticated?(:user)
+      assert_equal "User is authenticated", response.body
+    end
+  end
 
   test 'sign in should authenticate with http' do
     sign_in_as_new_user_with_http

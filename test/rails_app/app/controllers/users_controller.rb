@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :except => :accept
+  prepend_before_filter :current_user, :only => :exhibit
+  before_filter :authenticate_user!, :except => [:accept, :exhibit]
   respond_to :html, :xml
 
   def index
@@ -9,6 +10,10 @@ class UsersController < ApplicationController
 
   def accept
     @current_user = current_user
+  end
+
+  def exhibit
+    render :text => current_user ? "User is authenticated" : "User is not authenticated"
   end
 
   def expire

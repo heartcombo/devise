@@ -5,6 +5,9 @@
   * Add simple form generators
   * Better localization for devise_error_messages! (by github.com/zedtux)
 
+* bug fix
+  * Ensure handle_unverified_request clean up any cached signed-in user
+
 == 1.4.0
 
 * enhancements

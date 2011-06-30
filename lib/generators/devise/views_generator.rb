@@ -52,7 +52,7 @@ module Devise
 
     class SimpleFormForGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
-      source_root File.expand_path("../simple_form_for", __FILE__)
+      source_root File.expand_path("../../templates/simple_form_for", __FILE__)
       desc "Copies simple form enabled views to your application."
     end
 

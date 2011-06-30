@@ -9,14 +9,15 @@ module Devise
     class Rememberable < Authenticatable
       # A valid strategy for rememberable needs a remember token in the cookies.
       def valid?
-        cookies.key?(remember_key)
+        @remember_cookie = nil
+        remember_cookie.present?
       end
 
       # To authenticate a user we deserialize the cookie and attempt finding
       # the record in the database. If the attempt fails, we pass to another
       # strategy handle the authentication.
       def authenticate!
-        resource = mapping.to.serialize_from_cookie(*cookies.signed[remember_key])
+        resource = mapping.to.serialize_from_cookie(*remember_cookie)
 
         if validate(resource)
           success!(resource)
@@ -40,6 +41,11 @@ module Devise
       def remember_key
         "remember_#{scope}_token"
       end
+
+      def remember_cookie
+        @remember_cookie ||= cookies.signed[remember_key]
+      end
+
     end
   end
 end

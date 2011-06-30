@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise (1.4.0)
+    devise (1.4.1)
       bcrypt-ruby (~> 2.1.2)
       orm_adapter (~> 0.0.3)
       warden (~> 1.0.3)
@@ -91,7 +91,7 @@ GEM
     oauth2 (0.1.1)
       faraday (~> 0.5.0)
       multi_json (~> 0.0.4)
-    orm_adapter (0.0.4)
+    orm_adapter (0.0.5)
     polyglot (0.3.1)
     rack (1.2.2)
     rack-mount (0.6.14)

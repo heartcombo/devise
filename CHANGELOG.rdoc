@@ -1,3 +1,6 @@
+* bug fix
+  * Improve Rails 3.1 compatibility
+
 == 1.4.1
 
 * enhancements

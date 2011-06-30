@@ -4,7 +4,7 @@
   <%= f.error_notification %>
 
   <div class="inputs">
-    <%= f.input :email, :autofocus => true %>
+    <%= f.input :email, :required => true, :autofocus => true %>
     <%= f.input :password, :hint => "leave it blank if you don't want to change it", :required => false %>
     <%= f.input :password_confirmation, :required => false %>
     <%= f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true %>

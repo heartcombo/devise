@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise (1.4.1)
+    devise (1.4.2)
       bcrypt-ruby (~> 2.1.2)
       orm_adapter (~> 0.0.3)
       warden (~> 1.0.3)

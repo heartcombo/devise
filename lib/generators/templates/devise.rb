@@ -202,3 +202,14 @@ Devise.setup do |config|
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
 end
+
+
+
+if Rails.env.test?
+  class ActionController::TestCase
+    include Devise::TestHelpers
+  end
+end
+
+
+

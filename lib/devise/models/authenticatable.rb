@@ -1,4 +1,5 @@
 require 'devise/hooks/activatable'
+require 'devise/models/serializable'
 
 module Devise
   module Models
@@ -46,6 +47,8 @@ module Devise
     module Authenticatable
       extend ActiveSupport::Concern
 
+      include Devise::Models::Serializable
+
       included do
         class_attribute :devise_modules, :instance_writer => false
         self.devise_modules ||= []
@@ -74,20 +77,6 @@ module Devise
       end
 
       def authenticatable_salt
-      end
-
-      # TODO: to_xml does not call serializable_hash. Hopefully someone will fix this in AR.
-      %w(to_xml serializable_hash).each do |method|
-        class_eval <<-RUBY, __FILE__, __LINE__
-          def #{method}(options={})
-            if self.class.respond_to?(:accessible_attributes)
-              options = { :only => self.class.accessible_attributes.to_a }.merge(options || {})
-              super(options)
-            else
-              super
-            end
-          end
-        RUBY
       end
 
       module ClassMethods

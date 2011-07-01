@@ -236,3 +236,88 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 end
+
+class ConfirmableOnChangeTest < ConfirmableTest
+  def setup
+    Devise.reconfirmable = true
+  end
+
+  def teardown
+    Devise.reconfirmable = false
+  end
+
+  def test_should_not_resend_email_instructions_if_the_user_change_his_email
+    #behaves differently
+  end
+
+  def test_should_not_reset_confirmation_status_or_token_when_updating_email
+    #behaves differently
+  end
+
+  test 'should generate confirmation token after changing email' do
+    user = create_user
+    assert user.confirm!
+    assert_nil user.confirmation_token
+    assert user.update_attributes(:email => 'new_test@example.com')
+    assert_not_nil user.confirmation_token
+  end
+
+  test 'should send confirmation instructions by email after changing email' do
+    user = create_user
+    assert user.confirm!
+    assert_email_sent do
+      assert user.update_attributes(:email => 'new_test@example.com')
+    end
+  end
+
+  test 'should not send confirmation by email after changing password' do
+    user = create_user
+    assert user.confirm!
+    assert_email_not_sent do
+      assert user.update_attributes(:password => 'newpass', :password_confirmation => 'newpass')
+    end
+  end
+
+  test 'should stay confirmed when email is changed' do
+    user = create_user
+    assert user.confirm!
+    assert user.update_attributes(:email => 'new_test@example.com')
+    assert user.confirmed?
+  end
+
+  test 'should update email only when it is confirmed' do
+    user = create_user
+    assert user.confirm!
+    assert user.update_attributes(:email => 'new_test@example.com')
+    assert_not_equal 'new_test@example.com', user.email
+    assert user.confirm!
+    assert_equal 'new_test@example.com', user.email
+  end
+
+  test 'should find a user by send confirmation instructions with unconfirmed_email' do
+    user = create_user
+    assert user.confirm!
+    assert user.update_attributes(:email => 'new_test@example.com')
+    confirmation_user = User.send_confirmation_instructions(:email => user.unconfirmed_email)
+    assert_equal confirmation_user, user
+  end
+
+  test 'should return a new user if no email or unconfirmed_email was found' do
+    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
+    assert_not confirmation_user.persisted?
+  end
+
+  test 'should add error to new user email if no email or unconfirmed_email was found' do
+    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
+    assert confirmation_user.errors[:email]
+    assert_equal "not found", confirmation_user.errors[:email].join
+  end
+
+  test 'should find user with email in unconfirmed_emails' do
+    user = create_user
+    user.unconfirmed_email = "new_test@email.com"
+    assert user.save
+    user = User.find_by_unconfirmed_email_with_errors(:email => "new_test@email.com")
+    assert user.persisted?
+  end
+end

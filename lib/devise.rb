@@ -140,6 +140,9 @@ module Devise
   mattr_accessor :confirmation_keys
   @@confirmation_keys = [ :email ]
 
+  mattr_accessor :reconfirmable
+  @@reconfirmable = false
+
   # Time interval to timeout the user session without activity.
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes

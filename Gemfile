@@ -6,6 +6,8 @@ gem "rails", "~> 3.0.7"
 gem "oa-oauth", '~> 0.2.0', :require => "omniauth/oauth"
 gem "oa-openid", '~> 0.2.0', :require => "omniauth/openid"
 
+gem "rdoc"
+
 group :test do
   gem "webrat", "0.7.2", :require => false
   gem "mocha", :require => false

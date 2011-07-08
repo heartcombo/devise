@@ -37,6 +37,15 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert user.reload.confirmed?
   end
 
+  test 'user should be redirected to a custom path after confirmation' do
+    Devise::ConfirmationsController.any_instance.stubs(:after_confirmation_path_for).returns("/?custom=1")
+
+    user = create_user(:confirm => false)
+    visit_user_confirmation_with_token(user.confirmation_token)
+
+    assert_current_url "/?custom=1"
+  end
+
   test 'already confirmed user should not be able to confirm the account again' do
     user = create_user(:confirm => false)
     user.confirmed_at = Time.now

@@ -97,7 +97,7 @@ If you are building your first Rails application, we recommend you to *not* use 
 * Michael Hartl's online book: http://railstutorial.org/chapters/modeling-and-viewing-users-two#top
 * Ryan Bates' Railscast: http://railscasts.com/episodes/250-authentication-from-scratch
 
-Once you have solidified you understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :)
+Once you have solidified your understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :)
 
 == Getting started
 

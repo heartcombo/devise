@@ -245,6 +245,14 @@ class RegistrationTest < ActionController::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
+  test 'a user sign up with duplicate information in XML format should return invalid response' do
+    user = sign_in_as_user
+
+    post user_registration_path(:format => 'xml'), :user => user.attributes
+    assert_response :unprocessable_entity
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+  end
+
   test 'a user update information with valid data in XML format should return valid response' do
     user = sign_in_as_user
     put user_registration_path(:format => 'xml'), :user => { :current_password => '123456', :email => 'user.new@test.com' }

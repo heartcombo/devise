@@ -38,25 +38,25 @@ class HelpersTest < ActionController::TestCase
     assert @controller.class.action_methods.empty?
   end
 
-  test 'require no authentication tests current mapping' do
+  test 'redirect if already authenticated tests current mapping' do
     @mock_warden.expects(:authenticate?).with(:rememberable, :token_authenticatable, :scope => :user).returns(true)
     @mock_warden.expects(:user).with(:user).returns(User.new)
     @controller.expects(:redirect_to).with(root_path)
-    @controller.send :require_no_authentication
+    @controller.send :redirect_if_already_authenticated
   end
 
-  test 'require no authentication skips if no inputs are available' do
+  test 'redirect if already authenticated skips if no inputs are available' do
     Devise.mappings[:user].expects(:no_input_strategies).returns([])
     @mock_warden.expects(:authenticate?).never
     @controller.expects(:redirect_to).never
-    @controller.send :require_no_authentication
+    @controller.send :redirect_if_already_authenticated
   end
 
-  test 'require no authentication sets a flash message' do
+  test 'redirect if already authenticated sets a flash message' do
     @mock_warden.expects(:authenticate?).with(:rememberable, :token_authenticatable, :scope => :user).returns(true)
     @mock_warden.expects(:user).with(:user).returns(User.new)
     @controller.expects(:redirect_to).with(root_path)
-    @controller.send :require_no_authentication
+    @controller.send :redirect_if_already_authenticated
     assert flash[:alert] == I18n.t("devise.failure.already_authenticated")
   end
 

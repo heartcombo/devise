@@ -8,7 +8,7 @@ module Devise
     # * current_sign_in_at - A tiemstamp updated when the user signs in
     # * last_sign_in_at    - Holds the timestamp of the previous sign in
     # * current_sign_in_ip - The remote ip updated when the user sign in
-    # * last_sign_in_at    - Holds the remote ip of the previous sign in
+    # * last_sign_in_ip    - Holds the remote ip of the previous sign in
     #
     module Trackable
       def update_tracked_fields!(request)

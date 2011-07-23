@@ -13,6 +13,17 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
+  test 'authenticate with valid authentication token key and value through params, when params with the same key as scope exist' do
+    swap Devise, :token_authentication_key => :secret_token do
+      user = create_user_with_authentication_token
+      post exhibit_user_path(user), Devise.token_authentication_key => user.authentication_token, :user => { :some => "data" }
+
+      assert_response :success
+      assert_contain 'User is authenticated'
+      assert warden.authenticated?(:user)
+    end
+  end
+
   test 'authenticate with valid authentication token key but does not store if stateless' do
     swap Devise, :token_authentication_key => :secret_token, :stateless_token => true do
       sign_in_as_new_user_with_token

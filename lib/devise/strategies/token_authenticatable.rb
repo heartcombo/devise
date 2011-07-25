@@ -39,9 +39,11 @@ module Devise
 
       # Try both scoped and non scoped keys.
       def params_auth_hash
-        token_authentication_key = authentication_keys.first
-        return params if params[scope].kind_of?(Hash) && !params[scope].has_key?(token_authentication_key) && params.has_key?(token_authentication_key)
-        params[scope] || params
+        if params[scope].kind_of?(Hash) && params[scope].has_key?(authentication_keys.first)
+          params[scope]
+        else
+          params
+        end
       end
 
       # Overwrite authentication keys to use token_authentication_key.

@@ -91,6 +91,8 @@ MESSAGE
       # Example:
       #   before_filter :require_no_authentication, :only => :new
       def require_no_authentication
+        return unless is_navigational_format?
+
         no_input = devise_mapping.no_input_strategies
         args = no_input.dup.push :scope => resource_name
         if no_input.present? && warden.authenticate?(*args)

@@ -39,7 +39,11 @@ module Devise
 
       # Try both scoped and non scoped keys.
       def params_auth_hash
-        params[scope] || params
+        if params[scope].kind_of?(Hash) && params[scope].has_key?(authentication_keys.first)
+          params[scope]
+        else
+          params
+        end
       end
 
       # Overwrite authentication keys to use token_authentication_key.

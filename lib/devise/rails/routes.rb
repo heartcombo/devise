@@ -319,7 +319,7 @@ module ActionDispatch::Routing
           :cancel => mapping.path_names[:cancel]
         }
 
-        resource :registration, :except => :show, :path => mapping.path_names[:registration],
+        resource :registration, :only => :new, :create, :edit, :update, :destroy, :path => mapping.path_names[:registration],
                  :path_names => path_names, :controller => controllers[:registrations] do
           get :cancel
         end

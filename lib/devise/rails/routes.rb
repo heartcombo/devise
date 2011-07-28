@@ -274,6 +274,17 @@ module ActionDispatch::Routing
     # Notice you cannot have two scopes mapping to the same URL. And remember, if
     # you try to access a devise controller without specifying a scope, it will
     # raise ActionNotFound error.
+    #
+    # Also be aware of that 'devise_scope' and 'as' use the singular form of the
+    # noun where other devise route commands expect the plural form. This would be a
+    # good and working example.
+    #
+    #  devise_scope :user do
+    #    match "/some/route" => "some_devise_controller"
+    #  end
+    #  devise_for :users
+    #
+    # Notice and be aware of the differences above between :user and :users
     def devise_scope(scope)
       constraint = lambda do |request|
         request.env["devise.mapping"] = Devise.mappings[scope]

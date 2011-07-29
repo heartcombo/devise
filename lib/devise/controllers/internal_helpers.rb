@@ -62,6 +62,16 @@ Maybe you forgot to wrap your route inside the scope block? For example:
     devise_scope :user do
       match "/some/route" => "some_devise_controller"
     end
+
+Also remember that devise_scope uses the singular form of the noun versus other
+devise routing commands. So the above command would work with the following devise_for
+
+    devise_scope :user do
+      match "/some/route" => "some_devise_controller"
+    end
+    devise_for :users
+
+Be careful to notice this difference between :user and :users.
 MESSAGE
       end
 

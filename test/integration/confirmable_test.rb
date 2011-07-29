@@ -69,7 +69,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert_contain 'already confirmed'
   end
 
-  test 'sign in user automatically after confirming it\'s email' do
+  test 'sign in user automatically after confirming its email' do
     user = create_user(:confirm => false)
     visit_user_confirmation_with_token(user.confirmation_token)
 

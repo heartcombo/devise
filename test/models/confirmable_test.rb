@@ -121,7 +121,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal "not found", confirmation_user.errors[:email].join
   end
 
-  test 'should send email instructions for the user confirm it\'s email' do
+  test 'should send email instructions for the user confirm its email' do
     user = create_user
     assert_email_sent do
       User.send_confirmation_instructions(:email => user.email)
@@ -219,7 +219,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert user.reload.active_for_authentication?
   end
 
-  test 'should find a user to send email instructions for the user confirm it\'s email by authentication_keys' do
+  test 'should find a user to send email instructions for the user confirm its email by authentication_keys' do
     swap Devise, :authentication_keys => [:username, :email] do
       user = create_user
       confirm_user = User.send_confirmation_instructions(:email => user.email, :username => user.username)

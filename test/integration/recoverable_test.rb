@@ -166,7 +166,7 @@ class PasswordTest < ActionController::IntegrationTest
     assert user.reload.valid_password?('987654321')
   end
 
-  test 'sign in user automatically after changing it\'s password' do
+  test 'sign in user automatically after changing its password' do
     user = create_user
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token
@@ -174,7 +174,7 @@ class PasswordTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
-  test 'does not sign in user automatically after changing it\'s password if it\'s not active' do
+  test 'does not sign in user automatically after changing its password if its not active' do
     user = create_user(:confirm => false)
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token

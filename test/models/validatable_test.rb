@@ -87,7 +87,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'is too long (maximum is 128 characters)', user.errors[:password].join
   end
 
-  test 'should not require password length when it\'s not changed' do
+  test 'should not require password length when its not changed' do
     user = create_user.reload
     user.password = user.password_confirmation = nil
     assert user.valid?

@@ -127,6 +127,11 @@ module Devise
           generate_confirmation_token && save(:validate => false)
         end
 
+        def after_password_reset
+          super
+          confirm! unless confirmed?
+        end
+
       module ClassMethods
         # Attempt to find a user by it's email. If a record is found, send new
         # confirmation instructions to it. If not user is found, returns a new user

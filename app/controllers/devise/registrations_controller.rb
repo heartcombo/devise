@@ -19,7 +19,7 @@ class Devise::RegistrationsController < ApplicationController
         sign_in(resource_name, resource)
         respond_with resource, :location => redirect_location(resource_name, resource)
       else
-        set_flash_message :notice, :inactive_signed_up, :reason => I18n.t("devise.registrations.reasons." << resource.inactive_message.to_s) if is_navigational_format?
+        set_flash_message :notice, :inactive_signed_up, :reason => inactive_reason(resource) if is_navigational_format?
         expire_session_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
@@ -84,8 +84,14 @@ class Devise::RegistrationsController < ApplicationController
     end
 
     # Overwrite redirect_for_sign_in so it takes uses after_sign_up_path_for.
-    def redirect_location(scope, resource) #:nodoc:
+    def redirect_location(scope, resource)
       stored_location_for(scope) || after_sign_up_path_for(resource)
+    end
+
+    # Returns the inactive reason translated.
+    def inactive_reason(resource)
+      reason = resource.inactive_message.to_s
+      I18n.t("devise.registrations.reasons.#{reason}", :default => reason)
     end
 
     # The path used after sign up for inactive accounts. You need to overwrite

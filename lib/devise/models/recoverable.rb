@@ -31,7 +31,7 @@ module Devise
         self.password_confirmation = new_password_confirmation
         if valid?
           clear_reset_password_token
-          confirm! if respond_to?(:confirmed?) && !confirmed?
+          after_password_reset
         end
 
         save
@@ -91,6 +91,9 @@ module Devise
         def clear_reset_password_token
           self.reset_password_token = nil
           self.reset_password_sent_at = nil if respond_to?(:reset_password_sent_at=)
+        end
+
+        def after_password_reset
         end
 
       module ClassMethods

@@ -106,7 +106,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     user = User.new
     @mock_warden.expects(:user).returns(user)
     @mock_warden.expects(:set_user).never
-    @controller.sign_in(user)
+    assert @controller.sign_in(user)
   end
 
   test 'sign in again when the user is already in only if force is given' do

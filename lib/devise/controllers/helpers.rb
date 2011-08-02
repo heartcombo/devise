@@ -218,6 +218,14 @@ module Devise
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
 
+      # Helper for use in before_filters where no authentication is required.
+      #
+      # Example:
+      #   before_filter :require_no_authentication, :only => :new
+      def require_no_authentication
+        redirect_if_already_authenticated
+      end
+
       # Overwrite Rails' handle unverified request to sign out all scopes,
       # clear run strategies and remove cached variables.
       def handle_unverified_request

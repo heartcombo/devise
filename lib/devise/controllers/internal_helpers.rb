@@ -86,11 +86,12 @@ MESSAGE
         self.resource = resource_class.new(hash)
       end
 
-      # Helper for use in before_filters where no authentication is required.
+      # The default behavior used by require_no_authentication
+      # Redirects if an authentication is active
       #
-      # Example:
-      #   before_filter :require_no_authentication, :only => :new
-      def require_no_authentication
+      # See also:
+      #   Devise::Helpers#require_no_authentication
+      def redirect_if_already_authenticated
         no_input = devise_mapping.no_input_strategies
         args = no_input.dup.push :scope => resource_name
         if no_input.present? && warden.authenticate?(*args)

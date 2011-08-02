@@ -106,6 +106,7 @@ module Devise
           warden.session_serializer.store(resource, scope)
         elsif warden.user(scope) == resource && !options.delete(:force)
           # Do nothing. User already signed in and we are not forcing it.
+          true
         else
           warden.set_user(resource, options.merge!(:scope => scope))
         end

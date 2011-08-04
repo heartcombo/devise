@@ -69,6 +69,10 @@ class RegistrationTest < ActionController::IntegrationTest
   end
 
   test 'a guest user cannot sign up with invalid information' do
+    # Dirty tracking behavior prevents email validations from being applied:
+    #    https://github.com/mongoid/mongoid/issues/756
+    (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
+
     get new_user_registration_path
 
     fill_in 'email', :with => 'invalid_email'
@@ -87,6 +91,10 @@ class RegistrationTest < ActionController::IntegrationTest
   end
 
   test 'a guest should not sign up with email/password that already exists' do
+    # Dirty tracking behavior prevents email validations from being applied:
+    #    https://github.com/mongoid/mongoid/issues/756
+    (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
+
     user = create_user
     get new_user_registration_path
 

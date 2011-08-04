@@ -1,7 +1,7 @@
 require "test_helper"
 
-if DEVISE_ORM == :mongo_id
-  require "generators/mongo_id/devise_generator"
+if DEVISE_ORM == :mongoid
+  require "generators/mongoid/devise_generator"
 
   class MongoidGeneratorTest < Rails::Generators::TestCase
     tests Mongoid::Generators::DeviseGenerator
@@ -20,3 +20,4 @@ if DEVISE_ORM == :mongo_id
     end
   end
 end
+

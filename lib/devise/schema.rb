@@ -3,11 +3,12 @@ module Devise
   # and overwrite the apply_schema method.
   module Schema
 
-    # Creates email when enabled (on by default), encrypted_password and password_salt.
+    # Creates encrypted_password, and email when it is used as an authentication
+    # key (default).
     #
     # == Options
     # * :null - When true, allow columns to be null.
-    # * :default - Should be set to "" when :null is false.
+    # * :default - Set to "" when :null is false, unless overridden.
     #
     # == Notes
     # For Datamapper compatibility, we explicitly hardcode the limit for the
@@ -21,7 +22,8 @@ module Devise
       apply_devise_schema :encrypted_password, String, :null => null, :default => default, :limit => 128
     end
 
-    # Creates password salt for encryption support.
+    # Creates password salt for encryption support when using encryptors other
+    # than the database_authenticable default of bcrypt.
     def encryptable
       apply_devise_schema :password_salt, String
     end

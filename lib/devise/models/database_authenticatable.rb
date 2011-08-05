@@ -10,6 +10,9 @@ module Devise
     #
     # DatabaseAuthenticable adds the following options to devise_for:
     #
+    #   * +pepper+: a random string used to provide a more secure hash. Use
+    #     `rake secret` to generate new keys.
+    #
     #   * +stretches+: the cost given to bcrypt.
     #
     # == Examples

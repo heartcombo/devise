@@ -219,14 +219,14 @@ class RegistrationTest < ActionController::IntegrationTest
     get new_user_registration_path(:format => 'xml')
     assert_response :success
     assert_match %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>), response.body
-    assert_no_match(/<confirmation-token/, response.body) if DEVISE_ORM == :active_record
+    assert_no_match(/<confirmation-token/, response.body)
   end
 
   test 'a user with JSON sign up stub' do
     get new_user_registration_path(:format => 'json')
     assert_response :success
     assert_match %({"user":), response.body
-    assert_no_match(/"confirmation_token"/, response.body) if DEVISE_ORM == :active_record
+    assert_no_match(/"confirmation_token"/, response.body)
   end
 
   test 'an admin sign up with valid information in XML format should return valid response' do

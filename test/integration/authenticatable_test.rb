@@ -454,6 +454,23 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   end
 end
 
+class AuthenticationKeysTest < ActionController::IntegrationTest
+  test 'missing authentication keys cause authentication to abort' do
+    swap Devise, :authentication_keys => [:subdomain] do
+      sign_in_as_user
+      assert_contain "Invalid email or password."
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  test 'missing authentication keys cause authentication to abort unless marked as not required' do
+    swap Devise, :authentication_keys => { :email => true, :subdomain => false } do
+      sign_in_as_user
+      assert warden.authenticated?(:user)
+    end
+  end
+end
+
 class AuthenticationRequestKeysTest < ActionController::IntegrationTest
   test 'request keys are used on authentication' do
     host! 'foo.bar.baz'

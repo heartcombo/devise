@@ -205,11 +205,15 @@ module ActionDispatch::Routing
 
     # Allow you to add authentication request from the router:
     #
-    #   authenticate(:user) do
+    #   authenticate do
     #     resources :post
     #   end
     #
-    def authenticate(scope)
+    #   authenticate(:admin) do
+    #     resources :users
+    #   end
+    #
+    def authenticate(scope=nil)
       constraint = lambda do |request|
         request.env["warden"].authenticate!(:scope => scope)
       end

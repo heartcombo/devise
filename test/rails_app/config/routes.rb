@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     get :expire, :on => :member
     get :accept, :on => :member
 
-    authenticate :user do
+    authenticate do
       post :exhibit, :on => :member
     end
   end

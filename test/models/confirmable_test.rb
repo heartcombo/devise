@@ -80,8 +80,8 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should send confirmation instructions by email' do
-    assert_email_sent do
-      create_user
+    assert_email_sent "mynewuser@example.com" do
+      create_user :email => "mynewuser@example.com"
     end
   end
 
@@ -123,7 +123,7 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should send email instructions for the user confirm its email' do
     user = create_user
-    assert_email_sent do
+    assert_email_sent user.email do
       User.send_confirmation_instructions(:email => user.email)
     end
   end
@@ -265,7 +265,7 @@ class ConfirmableOnChangeTest < ConfirmableTest
   test 'should send confirmation instructions by email after changing email' do
     user = create_user
     assert user.confirm!
-    assert_email_sent do
+    assert_email_sent "new_test@example.com" do
       assert user.update_attributes(:email => 'new_test@example.com')
     end
   end

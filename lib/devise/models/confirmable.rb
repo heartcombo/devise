@@ -42,23 +42,17 @@ module Devise
         end
 
         def email_exists_in_unconfirmed_emails?(record)
-          query = record.class
-          unless record.new_record?
-            if record.respond_to?(:_id)
-              query = query.where(:_id => {'$ne' => record._id})
-            else
-              query = query.where('id <> ?', record.id)
-            end
-          end
-          query = query.where(:unconfirmed_email => record.email)
-          query.exists?
+          count = record.class.where(:unconfirmed_email => record.email).count
+          expected_count = record.new_record? ? 0 : 1
+
+          count > expected_count
         end
       end
 
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
         after_create  :send_confirmation_instructions, :if => :confirmation_required?
-        before_update :prevent_email_change, :if => :prevent_email_change?
+        before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
         after_update :send_confirmation_instructions, :if => :email_change_confirmation_required?
       end
 
@@ -109,6 +103,14 @@ module Devise
       # to be generated, call skip_confirmation!
       def skip_confirmation!
         self.confirmed_at = Time.now
+      end
+
+      def headers_for(action)
+        if action == :confirmation_instructions && respond_to?(:unconfirmed_email)
+          { :to => unconfirmed_email.present? ? unconfirmed_email : email }
+        else
+          {}
+        end
       end
 
       protected
@@ -168,13 +170,13 @@ module Devise
           confirm! unless confirmed?
         end
 
-        def prevent_email_change
+        def postpone_email_change_until_confirmation
           @email_change_confirmation_required = true
           self.unconfirmed_email = self.email
           self.email = self.email_was
         end
 
-        def prevent_email_change?
+        def postpone_email_change?
           self.class.reconfirmable && email_changed? && email != unconfirmed_email_was
         end
 

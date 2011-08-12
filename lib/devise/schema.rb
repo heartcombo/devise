@@ -38,6 +38,10 @@ module Devise
       apply_devise_schema :confirmation_token,   String
       apply_devise_schema :confirmed_at,         DateTime
       apply_devise_schema :confirmation_sent_at, DateTime
+    end
+
+    # Creates unconfirmed_email
+    def reconfirmable
       apply_devise_schema :unconfirmed_email,    String
     end
 

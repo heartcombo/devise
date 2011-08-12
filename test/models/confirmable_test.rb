@@ -237,12 +237,14 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 end
 
-class ConfirmableOnChangeTest < ConfirmableTest
+class ReconfirmableTest < ConfirmableTest
   def setup
+    add_unconfirmed_email_column
     Devise.reconfirmable = true
   end
 
   def teardown
+    remove_unconfirmed_email_column
     Devise.reconfirmable = false
   end
 

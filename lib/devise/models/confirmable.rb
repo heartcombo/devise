@@ -63,8 +63,12 @@ module Devise
         unless_confirmed do
           self.confirmation_token = nil
           self.confirmed_at = Time.now
-          self.email = unconfirmed_email if unconfirmed_email.present?
-          self.unconfirmed_email = nil
+
+          if Devise.reconfirmable
+            self.email = unconfirmed_email if unconfirmed_email.present?
+            self.unconfirmed_email = nil
+          end
+
           save
         end
       end
@@ -146,7 +150,7 @@ module Devise
         # Checks whether the record is confirmed or not or a new email has been added, yielding to the block
         # if it's already confirmed, otherwise adds an error to email.
         def unless_confirmed
-          unless confirmed? && unconfirmed_email.blank?
+          unless confirmed? && (Devise.reconfirmable ? unconfirmed_email.blank? : true)
             yield
           else
             self.errors.add(:email, :already_confirmed)

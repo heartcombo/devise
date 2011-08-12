@@ -106,6 +106,8 @@ class ValidatableTest < ActiveSupport::TestCase
   end
 
   test 'should check if email is unique in unconfirmed_email column' do
+    add_unconfirmed_email_column
+
     swap Devise, :reconfirmable => [:username, :email] do
       user = create_user
       user.update_attributes({:email => 'new_test@email.com'})
@@ -115,6 +117,8 @@ class ValidatableTest < ActiveSupport::TestCase
       user = new_user(:email => 'new_test@email.com')
       assert user.invalid?
     end
+
+    remove_unconfirmed_email_column
   end
 
   test 'shuold not be included in objects with invalid API' do

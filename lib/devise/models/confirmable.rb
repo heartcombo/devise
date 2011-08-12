@@ -14,10 +14,11 @@ module Devise
     #     use this to let your user access some features of your application without
     #     confirming the account, but blocking it after a certain period (ie 7 days).
     #     By default confirm_within is zero, it means users always have to confirm to sign in.
-    #   * +reconfirmable+: requires any email changes to be confirmed (exctly the same way as
+    #   * +reconfirmable+: requires any email changes to be confirmed (exactly the same way as
     #     initial account confirmation) to be applied. Requires additional unconfirmed_email
-    #     db field to be setup (see migrations). Until confirmed new email is stored in
-    #     unconfirmed email column, and copied to email column on successful confirmation.
+    #     db field to be setup (t.reconfirmable in migrations). Until confirmed new email is
+    #     stored in unconfirmed email column, and copied to email column on successful
+    #     confirmation.
     #
     # == Examples
     #
@@ -64,12 +65,13 @@ module Devise
           self.confirmation_token = nil
           self.confirmed_at = Time.now
 
-          if Devise.reconfirmable
+          if self.class.reconfirmable
             self.email = unconfirmed_email if unconfirmed_email.present?
             self.unconfirmed_email = nil
+            save
+          else
+            save(:validate => false)
           end
-
-          save
         end
       end
 
@@ -150,7 +152,7 @@ module Devise
         # Checks whether the record is confirmed or not or a new email has been added, yielding to the block
         # if it's already confirmed, otherwise adds an error to email.
         def unless_confirmed
-          unless confirmed? && (Devise.reconfirmable ? unconfirmed_email.blank? : true)
+          unless confirmed? && (self.class.reconfirmable ? unconfirmed_email.blank? : true)
             yield
           else
             self.errors.add(:email, :already_confirmed)

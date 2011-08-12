@@ -66,6 +66,7 @@ module Devise
           self.confirmed_at = Time.now
 
           if self.class.reconfirmable
+            @bypass_postpone = true
             self.email = unconfirmed_email if unconfirmed_email.present?
             self.unconfirmed_email = nil
             save
@@ -183,7 +184,9 @@ module Devise
         end
 
         def postpone_email_change?
-          self.class.reconfirmable && email_changed? && email != unconfirmed_email_was
+          postpone = self.class.reconfirmable && email_changed? && !@bypass_postpone
+          @bypass_postpone = nil
+          postpone
         end
 
         def email_change_confirmation_required?

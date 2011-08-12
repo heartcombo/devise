@@ -296,6 +296,15 @@ class ReconfirmableTest < ConfirmableTest
     assert_equal 'new_test@example.com', user.email
   end
 
+  test 'should not allow user to get past confirmation email by resubmitting their new address' do
+    user = create_user
+    assert user.confirm!
+    assert user.update_attributes(:email => 'new_test@example.com')
+    assert_not_equal 'new_test@example.com', user.email
+    assert user.update_attributes(:email => 'new_test@example.com')
+    assert_not_equal 'new_test@example.com', user.email
+  end
+
   test 'should find a user by send confirmation instructions with unconfirmed_email' do
     user = create_user
     assert user.confirm!

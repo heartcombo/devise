@@ -3,7 +3,7 @@ module Devise
     # Handles blocking a user access after a certain number of attempts.
     # Lockable accepts two different strategies to unlock a user after it's
     # blocked: email and time. The former will send an email to the user when
-    # the lock happens, containing a link to unlock it's account. The second
+    # the lock happens, containing a link to unlock its account. The second
     # will unlock the user automatically after some configured time (ie 2.hours).
     # It's also possible to setup lockable to use both email and time strategies.
     #
@@ -22,7 +22,7 @@ module Devise
 
       delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, :to => "self.class"
 
-      # Lock a user setting it's locked_at to actual time.
+      # Lock a user setting its locked_at to actual time.
       def lock_access!
         self.locked_at = Time.now
 
@@ -132,7 +132,7 @@ module Devise
         end
 
       module ClassMethods
-        # Attempt to find a user by it's email. If a record is found, send new
+        # Attempt to find a user by its email. If a record is found, send new
         # unlock instructions to it. If not user is found, returns a new user
         # with an email not found error.
         # Options must contain the user email
@@ -142,7 +142,7 @@ module Devise
          lockable
         end
 
-        # Find a user by it's unlock token and try to unlock it.
+        # Find a user by its unlock token and try to unlock it.
         # If no user is found, returns a new user with an error.
         # If the user is not locked, creates an error for the user
         # Options must have the unlock_token

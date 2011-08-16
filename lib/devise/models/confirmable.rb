@@ -29,7 +29,7 @@ module Devise
         after_create  :send_confirmation_instructions, :if => :confirmation_required?
       end
 
-      # Confirm a user by setting it's confirmed_at to actual time. If the user
+      # Confirm a user by setting its confirmed_at to actual time. If the user
       # is already confirmed, add en error to email field
       def confirm!
         unless_confirmed do
@@ -133,7 +133,7 @@ module Devise
         end
 
       module ClassMethods
-        # Attempt to find a user by it's email. If a record is found, send new
+        # Attempt to find a user by its email. If a record is found, send new
         # confirmation instructions to it. If not user is found, returns a new user
         # with an email not found error.
         # Options must contain the user email
@@ -143,7 +143,7 @@ module Devise
           confirmable
         end
 
-        # Find a user by it's confirmation token and try to confirm it.
+        # Find a user by its confirmation token and try to confirm it.
         # If no user is found, returns a new user with an error.
         # If the user is already confirmed, create an error for the user
         # Options must have the confirmation_token

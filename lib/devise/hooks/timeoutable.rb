@@ -1,7 +1,7 @@
 # Each time a record is set we check whether its session has already timed out
 # or not, based on last request time. If so, the record is logged out and
 # redirected to the sign in page. Also, each time the request comes and the
-# record is set, we set the last request time inside it's scoped session to
+# record is set, we set the last request time inside its scoped session to
 # verify timeout in the following request.
 Warden::Manager.after_set_user do |record, warden, options|
   scope = options[:scope]

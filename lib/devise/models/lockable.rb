@@ -9,7 +9,7 @@ module Devise
     #
     # == Options
     #
-    # Lockable adds the following options to devise_for:
+    # Lockable adds the following options to +devise+:
     #
     #   * +maximum_attempts+: how many attempts should be accepted before blocking the user.
     #   * +lock_strategy+: lock the user account by :failed_attempts or :none.

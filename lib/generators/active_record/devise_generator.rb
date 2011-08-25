@@ -14,7 +14,11 @@ module ActiveRecord
       end
 
       def copy_devise_migration
-        migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
+        unless model_exists?
+          migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
+        else
+          migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"
+        end
       end
 
       def inject_devise_content

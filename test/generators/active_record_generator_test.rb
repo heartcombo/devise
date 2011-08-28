@@ -13,6 +13,13 @@ if DEVISE_ORM == :active_record
       assert_file "app/models/monster.rb", /devise/, /attr_accessible (:[a-z_]+(, )?)+/
       assert_migration "db/migrate/devise_create_monsters.rb"
     end
+    
+    test "update model migration when model exists" do
+      run_generator %w(monster)
+      assert_file "app/models/monster.rb"
+      run_generator %w(monster)
+      assert_migration "db/migrate/add_devise_to_monsters.rb"
+    end
   
     test "all files are properly deleted" do
       run_generator %w(monster)

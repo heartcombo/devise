@@ -9,10 +9,6 @@ module ActiveRecord
       include Devise::Generators::OrmHelpers
       source_root File.expand_path("../templates", __FILE__)
 
-      def generate_model
-        invoke "active_record:model", [name], :migration => false unless model_exists? && behavior == :invoke
-      end
-
       def copy_devise_migration
         unless model_exists?
           migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
@@ -21,6 +17,10 @@ module ActiveRecord
         end
       end
 
+      def generate_model
+        invoke "active_record:model", [name], :migration => false unless model_exists? && behavior == :invoke
+      end
+      
       def inject_devise_content
         inject_into_class(model_path, class_name, model_contents + <<CONTENT) if model_exists?
   # Setup accessible (or protected) attributes for your model

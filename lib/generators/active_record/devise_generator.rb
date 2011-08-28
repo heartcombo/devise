@@ -10,7 +10,9 @@ module ActiveRecord
       source_root File.expand_path("../templates", __FILE__)
 
       def copy_devise_migration
-        unless model_exists?
+        exists = model_exists?
+        exists = !exists if behavior == :revoke
+        unless exists
           migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
         else
           migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"

@@ -1,5 +1,9 @@
 * bug fix
   * Properly deprecate setup_mail
+  * Fix encoding issues with email regexp
+
+* deprecations
+  * Loosened the used email regexp to simply assert the existent of "@". If someone relies on a more strict regexp, they may use https://github.com/SixArm/sixarm_ruby_email_address_validation
 
 == 1.4.2
 

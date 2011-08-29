@@ -11,7 +11,6 @@ module Devise
   autoload :PathChecker, 'devise/path_checker'
   autoload :Schema, 'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
-  autoload :Email, 'devise/email'
 
   module Controllers
     autoload :Helpers, 'devise/controllers/helpers'
@@ -105,11 +104,11 @@ module Devise
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"
 
-  # Email regex used to validate email formats. Based on RFC 822 and
-  # retrieved from Sixarm email validation gem
-  # (https://github.com/SixArm/sixarm_ruby_email_address_validation).
+  # Email regex used to validate email formats. It simply asserts that
+  # an one (and only one) @ exists in the given string. This is mainly
+  # to give user feedback and not to assert the e-mail validity.
   mattr_accessor :email_regexp
-  @@email_regexp = Devise::Email::EXACT_PATTERN
+  @@email_regexp = /\A[^@]+@[^@]+\z/
 
   # Range validation for password length
   mattr_accessor :password_length

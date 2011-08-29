@@ -1,6 +1,7 @@
 require 'rails/generators/active_record'
 require 'generators/devise/orm_helpers'
 
+
 module ActiveRecord
   module Generators
     class DeviseGenerator < ActiveRecord::Generators::Base
@@ -11,11 +12,18 @@ module ActiveRecord
 
       def copy_devise_migration
         exists = model_exists?
-        exists = !exists if behavior == :revoke
-        unless exists
-          migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
+        unless behavior == :revoke
+          unless exists
+            migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
+          else
+            migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"
+          end
         else
-          migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"
+          if migration_exists?(table_name)
+            migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"
+          else
+            migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
+          end
         end
       end
 

@@ -23,6 +23,12 @@ if DEVISE_ORM == :active_record
   
     test "all files are properly deleted" do
       run_generator %w(monster)
+      run_generator %w(monster)
+      assert_migration "db/migrate/devise_create_monsters.rb"
+      assert_migration "db/migrate/add_devise_to_monsters.rb"
+      run_generator %w(monster), :behavior => :revoke
+      assert_no_migration "db/migrate/add_devise_to_monsters.rb"
+      assert_migration "db/migrate/devise_create_monsters.rb"
       run_generator %w(monster), :behavior => :revoke
       assert_no_file "app/models/monster.rb"
       assert_no_migration "db/migrate/devise_create_monsters.rb"

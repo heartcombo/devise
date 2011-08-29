@@ -82,6 +82,15 @@ module Devise
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys, :case_insensitive_keys, :http_authenticatable, :params_authenticatable)
 
+        def serialize_into_session(record)
+          [record.to_key, record.authenticatable_salt]
+        end
+
+        def serialize_from_session(key, salt)
+          record = to_adapter.get(key)
+          record if record && record.authenticatable_salt == salt
+        end
+
         def params_authenticatable?(strategy)
           params_authenticatable.is_a?(Array) ?
             params_authenticatable.include?(strategy) : params_authenticatable

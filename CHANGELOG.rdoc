@@ -1,3 +1,6 @@
+* enhancements
+  * Use serialize_into_session and serialize_from_session in Warden serialize to improve extensibility
+
 * bug fix
   * Properly deprecate setup_mail
   * Fix encoding issues with email regexp

@@ -5,6 +5,7 @@ module ActionDispatch::Routing
     def finalize_with_devise!
       finalize_without_devise!
       Devise.configure_warden!
+      Devise.regenerate_helpers!
     end
     alias_method_chain :finalize!, :devise
   end
@@ -188,11 +189,7 @@ module ActionDispatch::Routing
           raise_no_devise_method_error!(mapping.class_name)
         end
 
-        routes  = mapping.routes
-        if options.has_key?(:only)
-          routes  = Array(options.delete(:only)).map { |s| s.to_s.singularize.to_sym } & mapping.routes
-        end
-        routes -= Array(options.delete(:skip)).map { |s| s.to_s.singularize.to_sym }
+        routes  = mapping.used_routes
 
         devise_scope mapping.name do
           yield if block_given?

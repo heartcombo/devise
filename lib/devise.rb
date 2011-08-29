@@ -397,6 +397,12 @@ module Devise
     Rails::VERSION::STRING[0,3] != "3.0"
   end
 
+  # Renegeres url helpers considering Devise.mapping
+  def self.regenerate_helpers!
+    Devise::Controllers::UrlHelpers.remove_helpers!
+    Devise::Controllers::UrlHelpers.generate_helpers!
+  end
+
   # A method used internally to setup warden manager from the Rails initialize
   # block.
   def self.configure_warden! #:nodoc:

@@ -18,22 +18,31 @@ module Devise
     #
     # Those helpers are added to your ApplicationController.
     module UrlHelpers
-
-      Devise::URL_HELPERS.each do |module_name, actions|
-        [:path, :url].each do |path_or_url|
-          actions.each do |action|
-            action = action ? "#{action}_" : ""
-
-            class_eval <<-URL_HELPERS, __FILE__, __LINE__ + 1
-              def #{action}#{module_name}_#{path_or_url}(resource_or_scope, *args)
-                scope = Devise::Mapping.find_scope!(resource_or_scope)
-                send("#{action}\#{scope}_#{module_name}_#{path_or_url}", *args)
-              end
-            URL_HELPERS
-          end
+      def self.remove_helpers!
+        self.instance_methods.map(&:to_s).grep(/_(url|path)$/).each do |method|
+          remove_method method
         end
       end
 
+      def self.generate_helpers!
+        mappings = Devise.mappings.values.map(&:used_routes).flatten.uniq
+        routes = Devise::URL_HELPERS.slice(*mappings)
+
+        routes.each do |module_name, actions|
+          [:path, :url].each do |path_or_url|
+            actions.each do |action|
+              action = action ? "#{action}_" : ""
+
+              class_eval <<-URL_HELPERS, __FILE__, __LINE__ + 1
+                def #{action}#{module_name}_#{path_or_url}(resource_or_scope, *args)
+                  scope = Devise::Mapping.find_scope!(resource_or_scope)
+                  send("#{action}\#{scope}_#{module_name}_#{path_or_url}", *args)
+                end
+              URL_HELPERS
+            end
+          end
+        end
+      end
     end
   end
 end

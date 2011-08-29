@@ -22,7 +22,8 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :scoped_path, :path, :controllers, :path_names, :class_name, :sign_out_via, :format
+    attr_reader :singular, :scoped_path, :path, :controllers, :path_names,
+                :class_name, :sign_out_via, :format, :used_routes
     alias :name :singular
 
     # Receives an object and find a scope for it. If a scope cannot be found,
@@ -72,6 +73,12 @@ module Devise
 
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
       @format = options[:format]
+
+      @used_routes = self.routes
+      if options.has_key?(:only)
+        @used_routes = Array(options.delete(:only)).map { |s| s.to_s.singularize.to_sym } & @used_routes
+      end
+      @used_routes -= Array(options.delete(:skip)).map { |s| s.to_s.singularize.to_sym }
     end
 
     # Return modules for the mapping.

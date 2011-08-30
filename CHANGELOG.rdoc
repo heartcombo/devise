@@ -1,4 +1,7 @@
+== 1.4.3
+
 * enhancements
+  * Improve Rails 3.1 compatibility
   * Use serialize_into_session and serialize_from_session in Warden serialize to improve extensibility
 
 * bug fix
@@ -14,7 +17,6 @@
 == 1.4.2
 
 * bug fix
-  * Improve Rails 3.1 compatibility
   * Provide a more robust behavior to serializers and add :force_except option
 
 == 1.4.1

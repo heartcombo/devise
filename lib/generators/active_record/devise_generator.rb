@@ -11,19 +11,10 @@ module ActiveRecord
       source_root File.expand_path("../templates", __FILE__)
 
       def copy_devise_migration
-        exists = model_exists?
-        unless behavior == :revoke
-          unless exists
-            migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
-          else
-            migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"
-          end
+        if (behavior == :invoke && model_exists?) || (behavior == :revoke && migration_exists?(table_name))
+          migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"
         else
-          if migration_exists?(table_name)
-            migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}"
-          else
-            migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
-          end
+          migration_template "migration.rb", "db/migrate/devise_create_#{table_name}"
         end
       end
 

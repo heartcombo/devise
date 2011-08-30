@@ -2,6 +2,7 @@
   * Use serialize_into_session and serialize_from_session in Warden serialize to improve extensibility
 
 * bug fix
+  * Generator properly generates a change_table migration if a model already exists
   * Properly deprecate setup_mail
   * Fix encoding issues with email regexp
   * Only generate helpers for the used mappings

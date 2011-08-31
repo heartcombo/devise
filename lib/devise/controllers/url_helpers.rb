@@ -25,7 +25,7 @@ module Devise
       end
 
       def self.generate_helpers!
-        mappings = Devise.mappings.values.map(&:used_routes).flatten.uniq
+        mappings = Devise.mappings.values.map(&:used_helpers).flatten.uniq
         routes = Devise::URL_HELPERS.slice(*mappings)
 
         routes.each do |module_name, actions|

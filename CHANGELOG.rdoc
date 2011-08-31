@@ -1,3 +1,6 @@
+* bug fix
+  * Do not always skip helpers, instead provide :skip_helpers as option to trigger it manually
+
 == 1.4.3
 
 * enhancements

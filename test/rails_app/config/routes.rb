@@ -52,8 +52,8 @@ Rails.application.routes.draw do
   end
   
   # Routes for format=false testing
-  devise_for :htmlonly_admin, :class_name => "Admin", :skip => [:confirmations, :unlocks], :path => "htmlonly_admin", :format => false
-  devise_for :htmlonly_users, :class_name => "User", :only => [:confirmations, :unlocks], :path => "htmlonly_users", :format => false
+  devise_for :htmlonly_admin, :class_name => "Admin", :skip => [:confirmations, :unlocks], :path => "htmlonly_admin", :format => false, :skip_helpers => [:confirmations, :unlocks]
+  devise_for :htmlonly_users, :class_name => "User", :only => [:confirmations, :unlocks], :path => "htmlonly_users", :format => false, :skip_helpers => true
   
   # Other routes for routing_test.rb
   devise_for :reader, :class_name => "User", :only => :passwords

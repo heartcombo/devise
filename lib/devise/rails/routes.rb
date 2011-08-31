@@ -104,6 +104,14 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :only => :sessions
     #
+    #  * :skip_helpers => skip generating Devise url helpers like new_session_path(@user).
+    #    This is useful to avoid conflicts with previous routes and is false by default.
+    #    It accepts true as option, meaning it will skip all the helpers for the controllers
+    #    given in :skip but it also accepts specific helpers to be skipped:
+    #
+    #      devise_for :users, :skip => [:registrations, :confirmations], :skip_helpers => true
+    #      devise_for :users, :skip_helpers => [:registrations, :confirmations]
+    #
     #  * :format => include "(.:format)" in the generated routes? true by default, set to false to disable:
     #
     #      devise_for :users, :format => false

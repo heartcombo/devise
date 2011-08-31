@@ -147,7 +147,7 @@ class PasswordTest < ActionController::IntegrationTest
     reset_password :reset_password_token => user.reload.reset_password_token
 
     assert_current_url '/'
-    assert_contain 'Your password was changed successfully.'
+    assert_contain 'Your password was changed successfully. You are now signed in.'
     assert user.reload.valid_password?('987654321')
   end
 
@@ -179,6 +179,8 @@ class PasswordTest < ActionController::IntegrationTest
     request_forgot_password
     reset_password :reset_password_token => user.reload.reset_password_token
 
+    assert_contain 'Your password was changed successfully.'
+    assert_not_contain 'You are now signed in.'
     assert_equal new_user_session_path, @request.path
     assert !warden.authenticated?(:user)
   end

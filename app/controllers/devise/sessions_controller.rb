@@ -1,5 +1,5 @@
 class Devise::SessionsController < ApplicationController
-  prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
+  prepend_before_filter :require_no_authentication, :only => [ :new, :create ], :if => :deauth?
   include Devise::Controllers::InternalHelpers
 
   # GET /resource/sign_in
@@ -43,5 +43,10 @@ class Devise::SessionsController < ApplicationController
     methods << :password if resource.respond_to?(:password)
     { :methods => methods, :only => [:password] }
   end
+  
+  def deauth?
+    request.format.html?
+  end
+  
 end
 

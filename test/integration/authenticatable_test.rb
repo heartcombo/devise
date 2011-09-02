@@ -401,14 +401,14 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
 
   test 'sign in stub in xml format' do
     get new_user_session_path(:format => 'xml')
-    assert_equal "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <email></email>\n  <password></password>\n</user>\n", response.body
+    assert_equal "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <email></email>\n  <password nil=\"true\"></password>\n</user>\n", response.body
   end
 
   test 'sign in stub in json format' do
     get new_user_session_path(:format => 'json')
     assert_match '{"user":{', response.body
     assert_match '"email":""', response.body
-    assert_match '"password":""', response.body
+    assert_match '"password":null', response.body
   end
 
   test 'sign in stub in json with non attribute key' do
@@ -416,7 +416,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
       get new_user_session_path(:format => 'json')
       assert_match '{"user":{', response.body
       assert_match '"other_key":null', response.body
-      assert_match '"password":""', response.body
+      assert_match '"password":null', response.body
     end
   end
 

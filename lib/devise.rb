@@ -397,7 +397,7 @@ module Devise
     Rails::VERSION::STRING[0,3] != "3.0"
   end
 
-  # Renegeres url helpers considering Devise.mapping
+  # Regenerates url helpers considering Devise.mapping
   def self.regenerate_helpers!
     Devise::Controllers::UrlHelpers.remove_helpers!
     Devise::Controllers::UrlHelpers.generate_helpers!

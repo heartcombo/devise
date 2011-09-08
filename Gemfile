@@ -14,7 +14,9 @@ group :test do
 end
 
 platforms :jruby do
+  gem 'activerecord-jdbc-adapter', :git => 'https://github.com/nicksieger/activerecord-jdbc-adapter.git'
   gem 'activerecord-jdbcsqlite3-adapter'
+  gem 'jruby-openssl'
 end
 
 platforms :mri_18 do

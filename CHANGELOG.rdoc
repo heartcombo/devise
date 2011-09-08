@@ -1,3 +1,11 @@
+== 1.4.5.dev
+
+* bug fix
+  * Failure app tries the root path if a session one does not exist
+  * No need to finalize Devise helpers all the time (by github.com/bradleypriest)
+  * Reset password shows proper message if user is not active
+  * `clean_up_passwords` sets the accessors to nil to skip validations
+
 == 1.4.4
 
 * bug fix

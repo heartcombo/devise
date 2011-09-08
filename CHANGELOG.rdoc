@@ -1,4 +1,4 @@
-== 1.4.5.dev
+== 1.4.5
 
 * bug fix
   * Failure app tries the root path if a session one does not exist

@@ -399,8 +399,11 @@ module Devise
 
   # Regenerates url helpers considering Devise.mapping
   def self.regenerate_helpers!
-    Devise::Controllers::UrlHelpers.remove_helpers!
-    Devise::Controllers::UrlHelpers.generate_helpers!
+    @@helpers_generated ||= begin
+      Devise::Controllers::UrlHelpers.remove_helpers!
+      Devise::Controllers::UrlHelpers.generate_helpers!
+      true
+    end
   end
 
   # A method used internally to setup warden manager from the Rails initialize

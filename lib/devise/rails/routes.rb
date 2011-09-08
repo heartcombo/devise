@@ -4,8 +4,12 @@ module ActionDispatch::Routing
     # need devise_for mappings already declared to create filters and helpers.
     def finalize_with_devise!
       finalize_without_devise!
-      Devise.configure_warden!
-      Devise.regenerate_helpers!
+
+      @devise_finalized ||= begin
+        Devise.configure_warden!
+        Devise.regenerate_helpers!
+        true
+      end
     end
     alias_method_chain :finalize!, :devise
   end
@@ -169,6 +173,7 @@ module ActionDispatch::Routing
     #     end
     #
     def devise_for(*resources)
+      @devise_finalized = false
       options = resources.extract_options!
 
       options[:as]          ||= @scope[:as]     if @scope[:as].present?

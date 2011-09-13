@@ -21,19 +21,28 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
   test "Assert views with simple form" do
     run_generator %w(-b simple_form_for)
     assert_files
-    assert_file "app/views/devise/confirmations/new.html.erb", /simple_form_for/
+    assert_file "app/views/devise/confirmations/new.html.erb", :template_engine => /simple_form_for/
 
     run_generator %w(users -b simple_form_for)
     assert_files "users"
-    assert_file "app/views/users/confirmations/new.html.erb", /simple_form_for/
+    assert_file "app/views/users/confirmations/new.html.erb", :template_engine => /simple_form_for/
   end
 
-  def assert_files(scope = nil, template_engine = nil)
+  test "Assert views with markerb" do
+    run_generator %w(-m markerb)
+    assert_files nil, :mail_template_engine => "markerb"
+  end
+
+  def assert_files(scope = nil, options={})
     scope = "devise" if scope.nil?
+    default_template = "html.erb"
+    template_engine = options[:template_engine] || default_template
+    mail_template_engine = options[:mail_template_engine] || default_template
+
     assert_file "app/views/#{scope}/confirmations/new.html.erb"
-    assert_file "app/views/#{scope}/mailer/confirmation_instructions.html.erb"
-    assert_file "app/views/#{scope}/mailer/reset_password_instructions.html.erb"
-    assert_file "app/views/#{scope}/mailer/unlock_instructions.html.erb"
+    assert_file "app/views/#{scope}/mailer/confirmation_instructions.#{mail_template_engine}"
+    assert_file "app/views/#{scope}/mailer/reset_password_instructions.#{mail_template_engine}"
+    assert_file "app/views/#{scope}/mailer/unlock_instructions.#{mail_template_engine}"
     assert_file "app/views/#{scope}/passwords/edit.html.erb"
     assert_file "app/views/#{scope}/passwords/new.html.erb"
     assert_file "app/views/#{scope}/registrations/new.html.erb"

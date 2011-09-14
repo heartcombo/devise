@@ -1,3 +1,11 @@
+== 1.4.6
+
+* enhancements
+  * Allow devise_for :skip => :all
+  * Allow options to be passed to authenticate_user!
+  * Allow --skip-routes to devise generator
+  * Add allow_params_authentication! to make it explicit when params authentication is allowed in a controller
+
 == 1.4.5
 
 * bug fix

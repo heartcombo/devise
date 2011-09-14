@@ -22,6 +22,12 @@ class DeviseGeneratorTest < Rails::Generators::TestCase
     assert_file "config/routes.rb", match
   end
 
+  test "route generation with skip routes" do
+    run_generator %w(monster name:string --skip-routes)
+    match = /devise_for :monsters, :skip => :all/
+    assert_file "config/routes.rb", match
+  end
+
   def copy_routes
     routes = File.expand_path("../../rails_app/config/routes.rb", __FILE__)
     destination = File.join(destination_root, "config")

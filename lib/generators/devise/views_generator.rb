@@ -55,14 +55,23 @@ module Devise
       desc "Copies simple form enabled views to your application."
     end
 
-    class MailViewsGenerator < Rails::Generators::Base #:nodoc:
+    class ErbGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
-      source_root File.expand_path("../../../../app/views/devise/mailer", __FILE__)
-      desc "Copies Devise mail views to your application."
-      class_option :mail_template_engine, :default => :erb, :aliases => "-m"
+      source_root File.expand_path("../../../../app/views/devise", __FILE__)
+      desc "Copies Devise mail erb views to your application."
 
       def copy_views
-        view_directory options[:mail_template_engine], target_path
+        view_directory :mailer
+      end
+    end
+
+    class MarkerbGenerator < Rails::Generators::Base #:nodoc:
+      include ViewPathTemplates
+      source_root File.expand_path("../../templates", __FILE__)
+      desc "Copies Devise mail markerb views to your application."
+
+      def copy_views
+        view_directory :markerb, target_path
       end
 
       def target_path
@@ -77,10 +86,13 @@ module Devise
                        :desc => "The scope to copy views to"
 
       invoke SharedViewsGenerator
-      invoke MailViewsGenerator
       hook_for :form_builder, :aliases => "-b",
                               :desc => "Form builder to be used",
                               :default => defined?(SimpleForm) ? "simple_form_for" : "form_for"
+
+      hook_for :mail_template_engine, :aliases => "-m",
+                                      :desc => "Mail template to be used",
+                                      :default => :erb
     end
   end
 end

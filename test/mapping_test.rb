@@ -31,6 +31,10 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal "admin_area", Devise.mappings[:admin].path
   end
 
+  test 'allows to skip all routes' do
+    assert_equal [], Devise.mappings[:skip_admin].used_routes
+  end
+
   test 'sign_out_via defaults to :get' do
     assert_equal :get, Devise.mappings[:user].sign_out_via
   end

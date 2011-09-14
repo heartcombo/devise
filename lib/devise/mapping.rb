@@ -78,6 +78,8 @@ module Devise
 
       if options.has_key?(:only)
         @used_routes = self.routes & Array(options[:only]).map(&singularizer)
+      elsif options[:skip] == :all
+        @used_routes = []
       else
         @used_routes = self.routes - Array(options[:skip]).map(&singularizer)
       end

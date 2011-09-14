@@ -77,6 +77,26 @@ module Devise
       def target_path
         "app/views/#{scope || :devise}/mailer"
       end
+
+      def inject_makerb_content
+        if gemfile_exists?
+          append_file gemfile_path, gemfile_content
+        else
+          create_file gemfile_path, gemfile_content
+        end
+      end
+
+      def gemfile_path
+        @gemfile_path ||= File.join("Gemfile")
+      end
+
+      def gemfile_exists?
+        File.exists?(File.join(destination_root, gemfile_path))
+      end
+
+      def gemfile_content
+        'gem "markerb"'
+      end
     end
 
     class ViewsGenerator < Rails::Generators::Base

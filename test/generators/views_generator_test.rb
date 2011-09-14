@@ -33,6 +33,17 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_files nil, :mail_template_engine => "markerb"
   end
 
+  test "Assert Gemfile got gem markerb injected" do
+    File.open(File.join(destination_root, "Gemfile"), 'w') {|f| f.write("gem 'rails'") }
+    run_generator %w(--markerb)
+    assert_file "Gemfile", /gem \"markerb\"/
+  end
+
+  test "Assert Gemfile got created with markerb if no gemfile" do
+    run_generator %w(--markerb)
+    assert_file "Gemfile", /gem \"markerb\"/
+  end
+
   def assert_files(scope = nil, options={})
     scope = "devise" if scope.nil?
     default_template = "html.erb"

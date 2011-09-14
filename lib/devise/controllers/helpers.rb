@@ -36,8 +36,14 @@ module Devise
         mapping = mapping.name
 
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
-          def authenticate_#{mapping}!(force = false)
-            warden.authenticate!(:scope => :#{mapping}) if !devise_controller? || force
+          def authenticate_#{mapping}!(opts={})
+            if !opts.is_a?(Hash)
+              opts = { :force => opts }
+              ActiveSupport::Deprecation.warn "Passing a boolean to authenticate_#{mapping}! " \
+                "is deprecated, please use :force => \#{opts[:force]} instead", caller
+            end
+            opts[:scope] = :#{mapping}
+            warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
           end
 
           def #{mapping}_signed_in?
@@ -70,6 +76,11 @@ module Devise
       #   before_filter :my_filter, :unless => { |c| c.devise_controller? }
       def devise_controller?
         false
+      end
+
+      # Tell warden that params authentication is allowed for that specific page.
+      def allow_params_authentication!
+        request.env["devise.allow_params_authentication"] = true
       end
 
       # Return true if the given scope is signed in session. If no scope given, return

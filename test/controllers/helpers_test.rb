@@ -45,6 +45,11 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     @controller.authenticate_user!
   end
 
+  test 'proxy authenticate_user! options to authenticate with user scope' do
+    @mock_warden.expects(:authenticate!).with(:scope => :user, :recall => "foo")
+    @controller.authenticate_user!(:recall => "foo")
+  end
+
   test 'proxy authenticate_admin! to authenticate with admin scope' do
     @mock_warden.expects(:authenticate!).with(:scope => :admin)
     @controller.authenticate_admin!

@@ -85,17 +85,7 @@ module Devise
 
       # By default, a request is valid  if the controller is allowed and the VERB is POST.
       def valid_request?
-        valid_controller? && valid_verb?
-      end
-
-      # Check if the controller is the one registered for authentication.
-      def valid_controller?
-        mapping.controllers[:sessions] == params[:controller]
-      end
-
-      # Check if it was a POST request.
-      def valid_verb?
-        request.post?
+        env["devise.allow_params_authentication"]
       end
 
       # If the request is valid, finally check if params_auth_hash returns a hash.

@@ -90,9 +90,9 @@ module Devise
                               :desc => "Form builder to be used",
                               :default => defined?(SimpleForm) ? "simple_form_for" : "form_for"
 
-      hook_for :mail_template_engine, :aliases => "-m",
-                                      :desc => "Mail template to be used",
-                                      :default => :erb
+      hook_for :markerb,  :desc => "Generate markerb instead of erb mail views",
+                          :default => :erb,
+                          :type => :boolean
     end
   end
 end

@@ -29,7 +29,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
   end
 
   test "Assert views with markerb" do
-    run_generator %w(-m markerb)
+    run_generator %w(--markerb)
     assert_files nil, :mail_template_engine => "markerb"
   end
 

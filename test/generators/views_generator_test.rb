@@ -34,14 +34,26 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
   end
 
   test "Assert Gemfile got gem markerb injected" do
-    File.open(File.join(destination_root, "Gemfile"), 'w') {|f| f.write("gem 'rails'") }
+    create_gemfile("gem 'rails'")
     run_generator %w(--markerb)
-    assert_file "Gemfile", /gem \"markerb\"/
+    assert_file "Gemfile", /gem 'markerb'/
+    assert_file "Gemfile", /gem 'rails'/
+  end
+
+  test "Assert Gemfile got gem markerb injected only if it does not exist" do
+    gemfile = create_gemfile("gem 'markerb'")
+    run_generator %w(--markerb)
+    assert_equal 1, gemfile.scan("gem 'markerb'").length
   end
 
   test "Assert Gemfile got created with markerb if no gemfile" do
     run_generator %w(--markerb)
-    assert_file "Gemfile", /gem \"markerb\"/
+    assert_file "Gemfile", /gem 'markerb'/
+  end
+
+  def create_gemfile(content=nil)
+    File.open(File.join(destination_root, "Gemfile"), 'w') {|f| f.write(content) }
+    File.read(File.join(destination_root, "Gemfile"))
   end
 
   def assert_files(scope = nil, options={})

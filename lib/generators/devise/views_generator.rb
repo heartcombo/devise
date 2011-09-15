@@ -79,23 +79,31 @@ module Devise
       end
 
       def inject_makerb_content
-        if gemfile_exists?
-          append_file gemfile_path, gemfile_content
+        if gemfile
+          append_file gemfile_path, gemfile_content unless gemfile =~ gemfile_content_regexp
         else
           create_file gemfile_path, gemfile_content
         end
       end
 
       def gemfile_path
-        @gemfile_path ||= File.join("Gemfile")
-      end
-
-      def gemfile_exists?
-        File.exists?(File.join(destination_root, gemfile_path))
+        @gemfile_path ||= File.join(destination_root, "Gemfile")
       end
 
       def gemfile_content
-        'gem "markerb"'
+        "gem 'markerb'"
+      end
+
+      def gemfile_content_regexp
+        /gem ['|"]markerb['|"]/
+      end
+
+      def gemfile
+        begin
+          File.read(gemfile_path)
+        rescue
+          nil
+        end
       end
     end
 

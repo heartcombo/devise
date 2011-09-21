@@ -72,12 +72,11 @@ Devise.setup do |config|
   # config.pepper = <%= SecureRandom.hex(64).inspect %>
 
   # ==> Configuration for :confirmable
-  # The time you want to give your user to confirm his account. During this time
-  # he will be able to access your application without confirming. Default is 0.days
-  # When confirm_within is zero, the user won't be able to sign in without confirming.
-  # You can use this to let your user access some features of your application
-  # without confirming the account, but blocking it after a certain period
-  # (ie 2 days).
+  # A period that the user is allowed to access the website even without
+  # confirming his account. For instance, if set to 2.days, the user will be
+  # able to access the website for two days without confirming his account,
+  # access will be blocked just in the third day. Default is 0.days, meaning
+  # the user cannot access the website without confirming his account.
   # config.confirm_within = 2.days
 
   # Defines which key will be used when confirming an account

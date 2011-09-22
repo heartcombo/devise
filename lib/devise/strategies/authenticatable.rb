@@ -85,7 +85,17 @@ module Devise
 
       # By default, a request is valid  if the controller is allowed and the VERB is POST.
       def valid_request?
-        env["devise.allow_params_authentication"]
+        if env["devise.allow_params_authentication"]
+          true
+        elsif request.post? && mapping.controllers[:sessions] == params[:controller]
+          ActiveSupport::Deprecation.warn "It seems that you are using a custom SessionsController. " \
+            "In order for it to work from Devise 1.4.6 forward, you need to add the following:" \
+            "\n\n  prepend_before_filter :allow_params_authentication!, :only => :create\n\n" \
+            "This will ensure your controller can authenticate from params for the create action.", caller
+          true
+        else
+          false
+        end
       end
 
       # If the request is valid, finally check if params_auth_hash returns a hash.

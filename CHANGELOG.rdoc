@@ -1,3 +1,8 @@
+== 1.4.7
+
+* bug fix
+  * Fix backward incompatible change from 1.4.6 for those using custom controllers
+
 == 1.4.6
 
 * enhancements

@@ -11,7 +11,7 @@ module Devise
     end
 
     # Force routes to be loaded if we are doing any eager load.
-    config.before_eager_load { |app| app.reload_routes! }
+    config.before_eager_load { |app| app.reload_routes! unless ENV["RAILS_ASSETS_PRECOMPILE"] }
 
     initializer "devise.url_helpers" do
       Devise.include_helpers(Devise::Controllers)

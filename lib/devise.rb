@@ -220,6 +220,10 @@ module Devise
   mattr_accessor :sign_out_via
   @@sign_out_via = :get
 
+  # When set to true, user last and current IP addresses will be stored
+  mattr_accessor :track_ip
+  @@track_ip = true
+
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.

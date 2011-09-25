@@ -77,5 +77,16 @@ class TrackableHooksTest < ActionController::IntegrationTest
     user.reload
     assert_equal 1, user.sign_in_count
   end
+  
+  test "do not store user ip address if track_ip is false" do
+    swap Devise, :track_ip => false do
+      user = create_user
+      sign_in_as_user
+      
+      user.reload
+      assert_nil user.current_sign_in_ip
+      assert_nil user.last_sign_in_ip
+    end
+  end
 
 end

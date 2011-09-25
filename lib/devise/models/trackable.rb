@@ -11,19 +11,27 @@ module Devise
     # * last_sign_in_ip    - Holds the remote ip of the previous sign in
     #
     module Trackable
+      extend ActiveSupport::Concern
+
       def update_tracked_fields!(request)
         old_current, new_current = self.current_sign_in_at, Time.now
         self.last_sign_in_at     = old_current || new_current
         self.current_sign_in_at  = new_current
 
-        old_current, new_current = self.current_sign_in_ip, request.remote_ip
-        self.last_sign_in_ip     = old_current || new_current
-        self.current_sign_in_ip  = new_current
+        if self.class.track_ip
+          old_current, new_current = self.current_sign_in_ip, request.remote_ip
+          self.last_sign_in_ip     = old_current || new_current
+          self.current_sign_in_ip  = new_current
+        end
 
         self.sign_in_count ||= 0
         self.sign_in_count += 1
 
         save(:validate => false)
+      end
+
+      module ClassMethods
+        Devise::Models.config(self, :track_ip)
       end
     end
   end

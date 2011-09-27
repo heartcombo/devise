@@ -18,7 +18,7 @@ class Devise::SessionsController < ApplicationController
     respond_with resource, :location => redirect_location(resource_name, resource)
   end
 
-  # GET /resource/sign_out
+  # DELETE /resource/sign_out
   def destroy
     signed_in = signed_in?(resource_name)
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)

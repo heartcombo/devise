@@ -439,6 +439,22 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
+  test 'sign in with xml format is idempotent' do
+    get new_user_session_path(:format => 'xml')
+    assert_response :success
+
+    create_user
+    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '123456'}
+    assert_response :success
+
+    get new_user_session_path(:format => 'xml')
+    assert_response :success
+
+    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '123456'}
+    assert_response :success
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+  end
+
   test 'sign out with xml format returns ok response' do
     sign_in_as_user
     get destroy_user_session_path(:format => 'xml')

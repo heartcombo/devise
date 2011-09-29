@@ -17,17 +17,6 @@ module Devise
       Devise.include_helpers(Devise::Controllers)
     end
 
-    initializer "devise.auth_keys" do
-      if Devise.authentication_keys.size > 1
-        puts "[DEVISE] You are configuring Devise to use more than one authentication key. " \
-          "In previous versions, we automatically added #{Devise.authentication_keys[1..-1].inspect} " \
-          "as scope to your e-mail validation, but this was changed now. If you were relying in such " \
-          "behavior, you should remove :validatable from your models and add the validations manually. " \
-          "To get rid of this warning, you can comment config.authentication_keys in your initializer " \
-          "and pass the current values as key to the devise call in your model."
-      end
-    end
-
     initializer "devise.omniauth" do |app|
       Devise.omniauth_configs.each do |provider, config|
         app.middleware.use config.strategy_class, *config.args do |strategy|

@@ -354,7 +354,7 @@ module ActionDispatch::Routing
         path_prefix = "/#{mapping.path}/auth".squeeze("/")
 
         if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
-          warn "[DEVISE] You can only add :omniauthable behavior to one model."
+          raise "You can only add :omniauthable behavior to one Devise model"
         else
           ::OmniAuth.config.path_prefix = path_prefix
         end

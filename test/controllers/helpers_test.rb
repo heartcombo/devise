@@ -208,17 +208,6 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     @controller.sign_in_and_redirect(admin)
   end
 
-  test 'redirect_location returns the stored location if set' do
-    user = User.new
-    @controller.session[:"user_return_to"] = "/foo.bar"
-    assert_equal '/foo.bar', @controller.redirect_location('user', user)
-  end
-
-  test 'redirect_location returns the after sign in path by default' do
-    user = User.new
-    assert_equal @controller.after_sign_in_path_for(:user), @controller.redirect_location('user', user)
-  end
-
   test 'sign out and redirect uses the configured after sign out path when signing out only the current scope' do
     swap Devise, :sign_out_all_scopes => false do
       @mock_warden.expects(:user).with(:admin).returns(true)

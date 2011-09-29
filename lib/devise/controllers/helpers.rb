@@ -44,11 +44,6 @@ module Devise
 
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
           def authenticate_#{mapping}!(opts={})
-            if !opts.is_a?(Hash)
-              opts = { :force => opts }
-              ActiveSupport::Deprecation.warn "Passing a boolean to authenticate_#{mapping}! " \
-                "is deprecated, please use :force => \#{opts[:force]} instead", caller
-            end
             opts[:scope] = :#{mapping}
             warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
           end

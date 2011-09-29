@@ -10,11 +10,6 @@ module Devise
 
       protected
 
-      def setup_mail(*args)
-        ActiveSupport::Deprecation.warn "setup_mail is deprecated, please use devise_mail instead", caller
-        devise_mail(*args)
-      end
-
       # Configure default email options
       def devise_mail(record, action)
         initialize_from_record(record)

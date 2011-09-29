@@ -4,6 +4,10 @@
   * Allow idempotent API requests
   * Fix bug where logs did not show 401 as status code
 
+* deprecation
+  * redirect_location is deprecated, please use after_sign_in_path_for
+  * after_sign_in_path_for now redirects to session[scope_return_to] if any value is stored in it
+
 == 1.4.7
 
 * bug fix

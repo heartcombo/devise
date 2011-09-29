@@ -8,6 +8,13 @@ module Devise
         helper_method :warden, :signed_in?, :devise_controller?
       end
 
+      module ClassMethods
+        def log_process_action(payload)
+          payload[:status] ||= 401 unless payload[:exception]
+          super
+        end
+      end
+
       # Define authentication filters and accessor helpers based on mappings.
       # These filters should be used inside the controllers as before_filters,
       # so you can control the scope of the user who should be signed in to

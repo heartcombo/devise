@@ -28,32 +28,22 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/users/confirmations/new.html.erb", :template_engine => /simple_form_for/
   end
 
+  test "Assert views with simple form if defined" do
+    run_generator
+    assert_files nil, :template_engine => /simple_form_for/
+    assert_file "app/views/devise/confirmations/new.html.erb", :template_engine => /simple_form_for/
+  end
+
   test "Assert views with markerb" do
     run_generator %w(--markerb)
     assert_files nil, :mail_template_engine => "markerb"
   end
 
-  test "Assert Gemfile got gem markerb injected" do
-    create_gemfile("gem 'rails'")
-    run_generator %w(--markerb)
-    assert_file "Gemfile", /gem 'markerb'/
-    assert_file "Gemfile", /gem 'rails'/
-  end
-
-  test "Assert Gemfile got gem markerb injected only if it does not exist" do
-    gemfile = create_gemfile("gem 'markerb'")
-    run_generator %w(--markerb)
-    assert_equal 1, gemfile.scan("gem 'markerb'").length
-  end
-
-  test "Assert Gemfile got created with markerb if no gemfile" do
-    run_generator %w(--markerb)
-    assert_file "Gemfile", /gem 'markerb'/
-  end
-
-  def create_gemfile(content=nil)
-    File.open(File.join(destination_root, "Gemfile"), 'w') {|f| f.write(content) }
-    File.read(File.join(destination_root, "Gemfile"))
+  test "Assert views with markerb by if Markerb is defined" do
+    class Markerb ;; end
+    run_generator
+    pending "Doesn't work: defined?(Markerb) returns nil in Devise::Generators::ViewsGenerator"
+    # assert_files nil, :mail_template_engine => "markerb"
   end
 
   def assert_files(scope = nil, options={})

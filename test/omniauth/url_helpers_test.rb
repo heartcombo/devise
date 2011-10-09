@@ -28,31 +28,31 @@ class OmniAuthRoutesTest < ActionController::TestCase
   end
 
   test 'should generate authorization path' do
-    assert_match "/users/auth/facebook", @controller.omniauth_authorize_path(:user, :facebook)
+    assert_match "/users/auth/facebook", @controller.send(:omniauth_authorize_path, :user, :facebook)
 
     assert_raise ArgumentError do
-      @controller.omniauth_authorize_path(:user, :github)
+      @controller.send :omniauth_authorize_path, :user, :github
     end
   end
 
   test 'should generate authorization path for named open_id omniauth' do
-    assert_match "/users/auth/google", @controller.omniauth_authorize_path(:user, :google)
+    assert_match "/users/auth/google", @controller.send(:omniauth_authorize_path, :user, :google)
   end
 
   test 'should generate authorization path with params' do
     assert_match "/users/auth/open_id?openid_url=http%3A%2F%2Fyahoo.com",
-                  @controller.omniauth_authorize_path(:user, :open_id, :openid_url => "http://yahoo.com")
+                  @controller.send(:omniauth_authorize_path, :user, :open_id, :openid_url => "http://yahoo.com")
   end
 
   test 'should not add a "?" if no param was sent' do
     assert_equal "/users/auth/open_id",
-                  @controller.omniauth_authorize_path(:user, :open_id)
+                  @controller.send(:omniauth_authorize_path, :user, :open_id)
   end
 
   test 'should set script name in the path if present' do
     @request.env['SCRIPT_NAME'] = '/q'
 
     assert_equal "/q/users/auth/facebook",
-                 @controller.omniauth_authorize_path(:user, :facebook)
+                 @controller.send(:omniauth_authorize_path, :user, :facebook)
   end
 end

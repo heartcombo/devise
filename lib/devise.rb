@@ -382,13 +382,10 @@ module Devise
 
   # Include helpers in the given scope to AC and AV.
   def self.include_helpers(scope)
+    Rails.application.routes.url_helpers.send :include, scope::UrlHelpers
+
     ActiveSupport.on_load(:action_controller) do
       include scope::Helpers if defined?(scope::Helpers)
-      include scope::UrlHelpers
-    end
-
-    ActiveSupport.on_load(:action_view) do
-      include scope::UrlHelpers
     end
   end
 

@@ -27,7 +27,7 @@ class Devise::UnlocksController < ApplicationController
     if resource.errors.empty?
       set_flash_message :notice, :unlocked if is_navigational_format?
       sign_in(resource_name, resource)
-      respond_with_navigational(resource){ redirect_to redirect_location(resource_name, resource) }
+      respond_with_navigational(resource){ redirect_to after_sign_in_path_for(resource) }
     else
       respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render_with_scope :new }
     end

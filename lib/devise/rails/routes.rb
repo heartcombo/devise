@@ -4,8 +4,12 @@ module ActionDispatch::Routing
     # need devise_for mappings already declared to create filters and helpers.
     def finalize_with_devise!
       finalize_without_devise!
-      Devise.configure_warden!
-      Devise.regenerate_helpers!
+
+      @devise_finalized ||= begin
+        Devise.configure_warden!
+        Devise.regenerate_helpers!
+        true
+      end
     end
     alias_method_chain :finalize!, :devise
   end
@@ -104,6 +108,14 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :only => :sessions
     #
+    #  * :skip_helpers => skip generating Devise url helpers like new_session_path(@user).
+    #    This is useful to avoid conflicts with previous routes and is false by default.
+    #    It accepts true as option, meaning it will skip all the helpers for the controllers
+    #    given in :skip but it also accepts specific helpers to be skipped:
+    #
+    #      devise_for :users, :skip => [:registrations, :confirmations], :skip_helpers => true
+    #      devise_for :users, :skip_helpers => [:registrations, :confirmations]
+    #
     #  * :format => include "(.:format)" in the generated routes? true by default, set to false to disable:
     #
     #      devise_for :users, :format => false
@@ -161,6 +173,7 @@ module ActionDispatch::Routing
     #     end
     #
     def devise_for(*resources)
+      @devise_finalized = false
       options = resources.extract_options!
 
       options[:as]          ||= @scope[:as]     if @scope[:as].present?
@@ -169,7 +182,6 @@ module ActionDispatch::Routing
       options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
       options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})
       options[:defaults]      = (@scope[:defaults] || {}).merge(options[:defaults] || {})
-
       @scope[:options]        = (@scope[:options] || {}).merge({:format => false}) if options[:format] == false
 
       resources.map!(&:to_sym)
@@ -342,7 +354,7 @@ module ActionDispatch::Routing
         path_prefix = "/#{mapping.path}/auth".squeeze("/")
 
         if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
-          warn "[DEVISE] You can only add :omniauthable behavior to one model."
+          raise "You can only add :omniauthable behavior to one Devise model"
         else
           ::OmniAuth.config.path_prefix = path_prefix
         end

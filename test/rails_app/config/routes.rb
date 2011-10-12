@@ -50,10 +50,12 @@ Rails.application.routes.draw do
   constraints(:host => /192\.168\.1\.\d\d\d/) do
     devise_for :homebase_admin, :class_name => "Admin", :path => "homebase"
   end
+
+  devise_for :skip_admin, :class_name => "Admin", :skip => :all
   
   # Routes for format=false testing
-  devise_for :htmlonly_admin, :class_name => "Admin", :skip => [:confirmations, :unlocks], :path => "htmlonly_admin", :format => false
-  devise_for :htmlonly_users, :class_name => "User", :only => [:confirmations, :unlocks], :path => "htmlonly_users", :format => false
+  devise_for :htmlonly_admin, :class_name => "Admin", :skip => [:confirmations, :unlocks], :path => "htmlonly_admin", :format => false, :skip_helpers => [:confirmations, :unlocks]
+  devise_for :htmlonly_users, :class_name => "User", :only => [:confirmations, :unlocks], :path => "htmlonly_users", :format => false, :skip_helpers => true
   
   # Other routes for routing_test.rb
   devise_for :reader, :class_name => "User", :only => :passwords

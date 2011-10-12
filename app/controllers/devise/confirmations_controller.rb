@@ -41,7 +41,7 @@ class Devise::ConfirmationsController < ApplicationController
 
     # The path used after confirmation.
     def after_confirmation_path_for(resource_name, resource)
-      redirect_location(resource_name, resource)
+      after_sign_in_path_for(resource)
     end
 
 end

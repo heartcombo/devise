@@ -1,3 +1,47 @@
+== 1.5.0.dev
+
+* bug fix
+  * Allow idempotent API requests
+  * Fix bug where logs did not show 401 as status code
+
+* deprecation
+  * redirect_location is deprecated, please use after_sign_in_path_for
+  * after_sign_in_path_for now redirects to session[scope_return_to] if any value is stored in it
+
+== 1.4.8
+
+* enhancements
+  * Add docs for assets pipeline and Heroku
+
+* bug fix
+  * confirmation_url was not being set under some circumstances
+
+== 1.4.7
+
+* bug fix
+  * Fix backward incompatible change from 1.4.6 for those using custom controllers
+
+== 1.4.6
+
+* enhancements
+  * Allow devise_for :skip => :all
+  * Allow options to be passed to authenticate_user!
+  * Allow --skip-routes to devise generator
+  * Add allow_params_authentication! to make it explicit when params authentication is allowed in a controller
+
+== 1.4.5
+
+* bug fix
+  * Failure app tries the root path if a session one does not exist
+  * No need to finalize Devise helpers all the time (by github.com/bradleypriest)
+  * Reset password shows proper message if user is not active
+  * `clean_up_passwords` sets the accessors to nil to skip validations
+
+== 1.4.4
+
+* bug fix
+  * Do not always skip helpers, instead provide :skip_helpers as option to trigger it manually
+
 == 1.4.3
 
 * enhancements

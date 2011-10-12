@@ -329,6 +329,16 @@ Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you jus
 
 Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of these strategies, you need set the desired encryptor in the encryptor initializer config option and add :encryptable to your model. You might also need to rename your encrypted password and salt columns to match Devise's fields (encrypted_password and password_salt).
 
+== Troubleshooting
+
+=== Heroku
+
+Using devise on Heroku with Ruby on Rails 3.1 requires setting:
+
+  config.assets.initialize_on_precompile = false
+
+Read more about the potential issues at http://guides.rubyonrails.org/asset_pipeline.html
+
 == Additional information
 
 === Warden

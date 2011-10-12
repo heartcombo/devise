@@ -2,6 +2,10 @@ require 'test_helper'
 require 'ostruct'
 
 class FailureTest < ActiveSupport::TestCase
+  class RootFailureApp < Devise::FailureApp
+    undef_method :new_user_session_path
+  end
+
   def self.context(name, &block)
     instance_eval(&block)
   end
@@ -18,30 +22,29 @@ class FailureTest < ActiveSupport::TestCase
       'warden' => OpenStruct.new(:message => nil)
     }.merge!(env_params)
 
-    @response = Devise::FailureApp.call(env).to_a
+    @response = (env.delete(:app) || Devise::FailureApp).call(env).to_a
     @request  = ActionDispatch::Request.new(env)
   end
 
   context 'When redirecting' do
-    test 'return 302 status' do
-      call_failure
-      assert_equal 302, @response.first
-    end
-
-    test 'return 302 status for wildcard requests' do
-      call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
-      assert_equal 302, @response.first
-    end
-
     test 'return to the default redirect location' do
       call_failure
+      assert_equal 302, @response.first
       assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
     test 'return to the default redirect location for wildcard requests' do
       call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
+      assert_equal 302, @response.first
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
+    end
+
+    test 'return to the root path if no session path is available' do
+      call_failure :app => RootFailureApp
+      assert_equal 302, @response.first
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://test.host/', @response.second['Location']
     end
 
     test 'uses the proxy failure message as symbol' do
@@ -74,7 +77,7 @@ class FailureTest < ActiveSupport::TestCase
         assert_equal 302, @response.first
       end
     end
-    
+
     test 'redirects the correct format if it is a non-html format request' do
       swap Devise, :navigational_formats => [:js] do
         call_failure('formats' => :js)
@@ -178,7 +181,7 @@ class FailureTest < ActiveSupport::TestCase
       assert @response.third.body.include?('<h2>Sign in</h2>')
       assert @response.third.body.include?('Invalid email or password.')
     end
-    
+
     test 'calls the original controller if not confirmed email' do
       env = {
         "warden.options" => { :recall => "devise/sessions#new", :attempted_path => "/users/sign_in", :message => :unconfirmed },
@@ -187,9 +190,9 @@ class FailureTest < ActiveSupport::TestCase
       }
       call_failure(env)
       assert @response.third.body.include?('<h2>Sign in</h2>')
-      assert @response.third.body.include?('You have to confirm your account before continuing.')     
+      assert @response.third.body.include?('You have to confirm your account before continuing.')
     end
-    
+
     test 'calls the original controller if inactive account' do
       env = {
         "warden.options" => { :recall => "devise/sessions#new", :attempted_path => "/users/sign_in", :message => :inactive },
@@ -198,7 +201,7 @@ class FailureTest < ActiveSupport::TestCase
       }
       call_failure(env)
       assert @response.third.body.include?('<h2>Sign in</h2>')
-      assert @response.third.body.include?('Your account was not activated yet.')     
+      assert @response.third.body.include?('Your account was not activated yet.')
     end
   end
 end

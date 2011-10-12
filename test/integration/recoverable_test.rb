@@ -208,6 +208,15 @@ class PasswordTest < ActionController::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
+  test 'reset password request with invalid E-Mail in XML format should return empty and valid response' do
+    swap Devise, :paranoid => true do
+      create_user
+      post user_password_path(:format => 'xml'), :user => {:email => "invalid@test.com"}
+      assert_response :success
+      assert_equal response.body, { }.to_xml
+    end
+  end
+
   test 'change password with valid parameters in XML format should return valid response' do
     user = create_user
     request_forgot_password
@@ -250,7 +259,7 @@ class PasswordTest < ActionController::IntegrationTest
       assert_not_contain "1 error prohibited this user from being saved:"
       assert_not_contain "Email not found"
       assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
-      assert_current_url "/users/password"
+      assert_current_url "/users/sign_in"
     end
   end
 
@@ -262,7 +271,7 @@ class PasswordTest < ActionController::IntegrationTest
       click_button 'Send me reset password instructions'
 
       assert_contain "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
-      assert_current_url "/users/password"
+      assert_current_url "/users/sign_in"
     end
   end
 end

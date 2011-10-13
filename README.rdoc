@@ -28,13 +28,13 @@ It's comprised of 12 modules:
 
 The Devise Wiki has lots of additional information about Devise including many "how-to" articles and answers to the most frequently asked questions. Please browse the Wiki after finishing this README:
 
-http://wiki.github.com/plataformatec/devise
+https://wiki.github.com/plataformatec/devise
 
 === Bug reports
 
 If you discover a problem with Devise, we would like to know about it. However, we ask that you please review these guidelines before submitting a bug report:
 
-http://github.com/plataformatec/devise/wiki/Bug-reports
+https://github.com/plataformatec/devise/wiki/Bug-reports
 
 If you found a security bug, do *NOT* use the GitHub issue tracker. Send email or a private GitHub message to the maintainers listed at the bottom of the README.
 
@@ -42,7 +42,7 @@ If you found a security bug, do *NOT* use the GitHub issue tracker. Send email o
 
 If you have any questions, comments, or concerns, please use the Google Group instead of the GitHub issue tracker:
 
-http://groups.google.com/group/plataformatec-devise
+https://groups.google.com/group/plataformatec-devise
 
 === RDocs
 
@@ -56,19 +56,19 @@ If you need to use Devise with Rails 2.3, you can always run `gem server` from t
 
 There are a few example applications available on GitHub that demonstrate various features of Devise with different versions of Rails. You can view them here:
 
-http://github.com/plataformatec/devise/wiki/Example-Applications
+https://github.com/plataformatec/devise/wiki/Example-Applications
 
 === Extensions
 
 Our community has created a number of extensions that add functionality above and beyond what is included with Devise. You can view a list of available extensions and add your own here:
 
-http://github.com/plataformatec/devise/wiki/Extensions
+https://github.com/plataformatec/devise/wiki/Extensions
 
 === Contributing
 
 We hope that you will consider contributing to Devise. Please read this short overview for some information about how to get started:
 
-http://github.com/plataformatec/devise/wiki/Contributing
+https://github.com/plataformatec/devise/wiki/Contributing
 
 You will usually want to write tests for your changes.  To run the test suite, `cd` into Devise's top-level directory and run `bundle install` and `rake`.  For the tests to pass, you will need to have a MongoDB server (version 1.6 or newer) running on your system.
 
@@ -289,7 +289,7 @@ The Devise mailer uses a similar pattern to create subject messages:
 
 Take a look at our locale file to check all available messages. You may also be interested in one of the many translations that are available on our wiki:
 
-http://github.com/plataformatec/devise/wiki/I18n
+https://github.com/plataformatec/devise/wiki/I18n
 
 === Test helpers
 
@@ -313,7 +313,7 @@ If you're using RSpec and want the helpers automatically included within all +de
     config.include Devise::TestHelpers, :type => :controller
   end
 
-Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (http://wiki.github.com/plataformatec/devise).
+Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (https://wiki.github.com/plataformatec/devise).
 
 === Omniauth
 
@@ -345,18 +345,18 @@ Read more about the potential issues at http://guides.rubyonrails.org/asset_pipe
 
 Devise is based on Warden, which is a general Rack authentication framework created by Daniel Neighman. We encourage you to read more about Warden here:
 
-http://github.com/hassox/warden
+https://github.com/hassox/warden
 
 === Contributors
 
 We have a long list of valued contributors. Check them all at:
 
-http://github.com/plataformatec/devise/contributors
+https://github.com/plataformatec/devise/contributors
 
 === Maintainers
 
-* José Valim (http://github.com/josevalim)
-* Carlos Antônio da Silva (http://github.com/carlosantoniodasilva)
+* José Valim (https://github.com/josevalim)
+* Carlos Antônio da Silva (https://github.com/carlosantoniodasilva)
 
 == License
 

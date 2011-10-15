@@ -3,6 +3,7 @@
 * bug fix
   * Allow idempotent API requests
   * Fix bug where logs did not show 401 as status code
+  * Change paranoid settings to behave as success instead of as failure
 
 * deprecation
   * redirect_location is deprecated, please use after_sign_in_path_for

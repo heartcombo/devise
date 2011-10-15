@@ -101,29 +101,20 @@ MESSAGE
         end
       end
 
-      # Helper for use to validate if an resource is errorless. If we are on paranoid mode, we always should assume it is
-      # and return false.
-      def successful_and_sane?(resource)
-        if Devise.paranoid
-          set_flash_message :notice, :send_paranoid_instructions if is_navigational_format?
-          resource.errors.clear
-          false
-        else
-          resource.errors.empty?
-        end
-      end
-      
-      # Helper for use after calling send_*_instructions methods on a resource. If we are in paranoid mode, we always
-      # act as if the resource was valid and instructions were sent.
+      # Helper for use after calling send_*_instructions methods on a resource.
+      # If we are in paranoid mode, we always act as if the resource was valid
+      # and instructions were sent.
       def successfully_sent?(resource)
         notice = if Devise.paranoid
+          resource.errors.clear
           :send_paranoid_instructions
-        elsif  resource.errors.empty?
+        elsif resource.errors.empty?
           :send_instructions
         end
-        
-        notice.present?.tap do |success| 
-          set_flash_message :notice, notice if success && is_navigational_format?
+
+        if notice
+          set_flash_message :notice, notice if is_navigational_format?
+          true
         end
       end
 

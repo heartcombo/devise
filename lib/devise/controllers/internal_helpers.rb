@@ -117,6 +117,20 @@ MESSAGE
           true
         end
       end
+      
+      # Helper for use after calling send_*_instructions methods on a resource. If we are in paranoid mode, we always
+      # act as if the resource was valid and instructions were sent.
+      def successfully_sent?(resource)
+        notice = if Devise.paranoid
+          :send_paranoid_instructions
+        elsif  resource.errors.empty?
+          :send_instructions
+        end
+        
+        notice.present?.tap do |success| 
+          set_flash_message :notice, notice if success && is_navigational_format?
+        end
+      end
 
       # Sets the flash message with :key, using I18n. By default you are able
       # to setup your messages using specific resource scope, and if no one is

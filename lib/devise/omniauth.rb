@@ -1,12 +1,13 @@
 begin
-  require "omniauth/core"
+  require "omniauth"
+  require 'omniauth/version'
 rescue LoadError => e
-  warn "Could not load 'omniauth/core'. Please ensure you have the oa-core gem installed and listed in your Gemfile."
+  warn "Could not load 'omniauth'. Please ensure you have the omniauth gem >= 1.0.0 installed and listed in your Gemfile."
   raise
 end
 
-unless OmniAuth.config.respond_to? :test_mode
-  raise "You are using an old OmniAuth version, please ensure you have 0.2.0.beta version or later installed."
+unless OmniAuth::VERSION =~ /^1\./
+  raise "You are using an old OmniAuth version, please ensure you have 1.0.0.pr2 version or later installed."
 end
 
 # Clean up the default path_prefix. It will be automatically set by Devise.

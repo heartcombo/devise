@@ -96,10 +96,10 @@ class DefaultRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'facebook'}, {:path => 'users/auth/facebook/callback', :method => :post})
     assert_named_route "/users/auth/facebook/callback", :user_omniauth_callback_path, :facebook
 
-    # named open_id
-    assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'githubber'}, {:path => 'users/auth/githubber/callback', :method => :get})
-    assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'githubber'}, {:path => 'users/auth/githubber/callback', :method => :post})
-    assert_named_route "/users/auth/githubber/callback", :user_omniauth_callback_path, :githubber
+    # named strategy
+    assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'other_facebook'}, {:path => 'users/auth/other_facebook/callback', :method => :get})
+    assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'other_facebook'}, {:path => 'users/auth/other_facebook/callback', :method => :post})
+    assert_named_route "/users/auth/other_facebook/callback", :user_omniauth_callback_path, :other_facebook
 
     assert_raise ActionController::RoutingError do
       assert_recognizes({:controller => 'ysers/omniauth_callbacks', :action => 'twitter'}, {:path => 'users/auth/twitter/callback', :method => :get})

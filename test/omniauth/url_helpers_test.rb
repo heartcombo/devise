@@ -36,17 +36,17 @@ class OmniAuthRoutesTest < ActionController::TestCase
   end
 
   test 'should generate authorization path for named omniauth' do
-    assert_match "/users/auth/githubber", @controller.send(:omniauth_authorize_path, :user, :githubber)
+    assert_match "/users/auth/other_facebook", @controller.send(:omniauth_authorize_path, :user, :other_facebook)
   end
 
   test 'should generate authorization path with params' do
-    assert_match "/users/auth/githubber?openid_url=http%3A%2F%2Fyahoo.com",
-                  @controller.send(:omniauth_authorize_path, :user, :githubber, :openid_url => "http://yahoo.com")
+    assert_match "/users/auth/other_facebook?openid_url=http%3A%2F%2Fyahoo.com",
+                  @controller.send(:omniauth_authorize_path, :user, :other_facebook, :openid_url => "http://yahoo.com")
   end
 
   test 'should not add a "?" if no param was sent' do
-    assert_equal "/users/auth/githubber",
-                  @controller.send(:omniauth_authorize_path, :user, :githubber)
+    assert_equal "/users/auth/other_facebook",
+                  @controller.send(:omniauth_authorize_path, :user, :other_facebook)
   end
 
   test 'should set script name in the path if present' do

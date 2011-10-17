@@ -179,7 +179,7 @@ Devise.setup do |config|
 
   # ==> OmniAuth
   config.omniauth :facebook, 'APP_ID', 'APP_SECRET'
-  config.omniauth :github, 'APP_ID', 'APP_SECRET', :name => 'githubber'
+  config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :name => 'other_facebook'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -10,7 +10,7 @@ module Devise
       # Gererates a default password digest based on salt, pepper and the
       # incoming password.
       def self.digest(password, stretches, salt, pepper)
-        digest = [password, salt].flatten.join('')
+        digest = [password, salt].flatten.join('/')
         stretches.times { digest = Digest::SHA512.hexdigest(digest) }
         digest
       end

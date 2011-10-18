@@ -35,7 +35,7 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'resources methods are not controller actions' do
-    assert @controller.class.action_methods.empty?, "Expected empty, got #{@controller.class.action_methods.inspect}"
+    assert @controller.class.action_methods.empty?
   end
 
   test 'require no authentication tests current mapping' do

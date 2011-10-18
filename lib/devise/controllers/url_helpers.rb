@@ -41,7 +41,6 @@ module Devise
                   scope = Devise::Mapping.find_scope!(resource_or_scope)
                   send("#{action}\#{scope}_#{module_name}_#{path_or_url}", *args)
                 end
-                protected :#{method}
               URL_HELPERS
             end
           end

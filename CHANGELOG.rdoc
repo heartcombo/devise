@@ -9,6 +9,11 @@
   * redirect_location is deprecated, please use after_sign_in_path_for
   * after_sign_in_path_for now redirects to session[scope_return_to] if any value is stored in it
 
+== 1.4.9
+
+* bug fix
+  * url helpers were not being set under some circumstances
+
 == 1.4.8
 
 * enhancements

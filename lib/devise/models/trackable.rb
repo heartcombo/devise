@@ -16,7 +16,7 @@ module Devise
         self.last_sign_in_at     = old_current || new_current
         self.current_sign_in_at  = new_current
 
-        old_current, new_current = self.current_sign_in_ip, request.remote_ip
+        old_current, new_current = self.current_sign_in_ip, env['HTTP_X_REAL_IP'] || request.remote_ip
         self.last_sign_in_ip     = old_current || new_current
         self.current_sign_in_ip  = new_current
 

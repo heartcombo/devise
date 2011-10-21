@@ -188,7 +188,7 @@ module Devise
       # if this default is not enough, you can customize it, for example:
       #
       #   def after_sign_in_path_for(resource)
-      #     store_location_for(resource) ||
+      #     stored_location_for(resource) ||
       #       if resource.is_a?(User) && resource.can_publish?
       #         publisher_url
       #       else

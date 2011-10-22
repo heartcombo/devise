@@ -36,6 +36,17 @@ class TrackableHooksTest < ActionController::IntegrationTest
     assert_equal "127.0.0.1", user.current_sign_in_ip
     assert_equal "127.0.0.1", user.last_sign_in_ip
   end
+  
+  test "current remote ip returns original ip behind a non transparent proxy" do
+    user = create_user
+    
+    arbitrary_ip = '192.168.1.69'
+    sign_in_as_user do
+      header 'HTTP_X_FORWARDED_FOR', arbitrary_ip
+    end
+    user.reload
+    assert_equal arbitrary_ip, user.current_sign_in_ip
+  end
 
   test "increase sign in count" do
     user = create_user

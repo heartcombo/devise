@@ -16,6 +16,15 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     assert_not_equal old_last_request, last_request_at
   end
 
+  test 'set last request at in user session after each request is skipped if tracking is disabled' do
+    sign_in_as_user
+    old_last_request = last_request_at
+    assert_not_nil last_request_at
+
+    get users_path, {}, 'devise.skip_trackable' => true
+    assert_equal old_last_request, last_request_at
+  end
+
   test 'not time out user session before default limit time' do
     sign_in_as_user
     assert_response :success

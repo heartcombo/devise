@@ -17,6 +17,8 @@ Warden::Manager.after_set_user do |record, warden, options|
       end
     end
 
-    warden.session(scope)['last_request_at'] = Time.now.utc
+    unless warden.request.env['devise.skip_trackable']
+      warden.session(scope)['last_request_at'] = Time.now.utc
+    end
   end
 end

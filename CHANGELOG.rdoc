@@ -1,5 +1,8 @@
 == 1.5.0.dev
 
+* enhancements
+  * Timeoutable also skips tracking if skip_trackable is given
+
 * bug fix
   * Allow idempotent API requests
   * Fix bug where logs did not show 401 as status code

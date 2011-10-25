@@ -73,7 +73,17 @@ module Devise
       end
 
       # Updates record attributes without asking for the current password.
-      # Never allows to change the current password
+      # Never allows to change the current password. If you are using this
+      # method, you should probably override this method to protect other
+      # attributes you would not like to be updated without a password.
+      #
+      # Example:
+      #
+      #   def update_without_password(params={})
+      #     params.delete(:email)
+      #     super(params)
+      #   end
+      #
       def update_without_password(params={})
         params.delete(:password)
         params.delete(:password_confirmation)

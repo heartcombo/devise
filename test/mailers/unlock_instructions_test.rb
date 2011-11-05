@@ -8,6 +8,11 @@ class UnlockInstructionsTest < ActionMailer::TestCase
     Devise.mailer_sender = 'test@example.com'
   end
 
+  def teardown
+    Devise.mailer = 'Devise::Mailer'
+    Devise.mailer_sender = 'please-change-me@config-initializers-devise.com'
+  end
+
   def user
     @user ||= begin
       user = create_user

@@ -36,13 +36,19 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_current_url "/?custom=1"
   end
 
-  test 'a guest user should be able to sign up successfully and be blocked by confirmation' do
+  def user_sign_up
+    ActionMailer::Base.deliveries.clear
+
     get new_user_registration_path
 
     fill_in 'email', :with => 'new_user@test.com'
     fill_in 'password', :with => 'new_user123'
     fill_in 'password confirmation', :with => 'new_user123'
     click_button 'Sign up'
+  end
+
+  test 'a guest user should be able to sign up successfully and be blocked by confirmation' do
+    user_sign_up
 
     assert_contain 'You have signed up successfully. However, we could not sign you in because your account is unconfirmed.'
     assert_not_contain 'You have to confirm your account before continuing'
@@ -53,6 +59,17 @@ class RegistrationTest < ActionController::IntegrationTest
     user = User.last :order => "id"
     assert_equal user.email, 'new_user@test.com'
     assert_not user.confirmed?
+  end
+
+  test 'a guest user should receive the confirmation instructions from the default mailer' do
+    user_sign_up
+    assert_equal ['please-change-me@config-initializers-devise.com'], ActionMailer::Base.deliveries.first.from
+  end
+
+  test 'a guest user should receive the confirmation instructions from a custom mailer' do
+    User.any_instance.stubs(:devise_mailer).returns(Users::Mailer)
+    user_sign_up
+    assert_equal ['custom@example.com'], ActionMailer::Base.deliveries.first.from
   end
 
   test 'a guest user should be blocked by confirmation and redirected to a custom path' do

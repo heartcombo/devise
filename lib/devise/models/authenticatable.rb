@@ -79,6 +79,10 @@ module Devise
       def authenticatable_salt
       end
 
+      def devise_mailer
+        Devise.mailer
+      end
+
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys, :case_insensitive_keys, :http_authenticatable, :params_authenticatable)
 
@@ -156,7 +160,7 @@ module Devise
             conditions[k] = v.to_s if auth_param_requires_string_conversion?(v)
           end if conditions.is_a?(Hash)
         end
-        
+
         # Determine which values should be transformed to string or passed as-is to the query builder underneath
         def auth_param_requires_string_conversion?(value)
           true unless value.is_a?(TrueClass) || value.is_a?(FalseClass) || value.is_a?(Fixnum)

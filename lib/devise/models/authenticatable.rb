@@ -27,7 +27,7 @@ module Devise
     #
     # == active_for_authentication?
     #
-    # Before authenticating a user and in each request, Devise checks if your model is active by
+    # After authenticating a user and in each request, Devise checks if your model is active by
     # calling model.active_for_authentication?. This method is overwriten by other devise modules. For instance,
     # :confirmable overwrites .active_for_authentication? to only return true if your model was confirmed.
     #
@@ -61,12 +61,7 @@ module Devise
       # However, you should not overwrite this method, you should overwrite active_for_authentication?
       # and inactive_message instead.
       def valid_for_authentication?
-        authenticated = block_given? ? yield : true
-        if authenticated
-          active_for_authentication? || inactive_message
-        else
-          authenticated
-        end
+        block_given? ? yield : true
       end
 
       def active_for_authentication?

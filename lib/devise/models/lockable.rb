@@ -79,12 +79,10 @@ module Devise
         # if the user can login or not (wrong password, etc)
         unlock_access! if lock_expired?
 
-        case (result = super)
-        when Symbol
-          return result
-        when TrueClass
+        if super
           self.failed_attempts = 0
           save(:validate => false)
+          true
         else
           self.failed_attempts ||= 0
           self.failed_attempts += 1
@@ -94,9 +92,8 @@ module Devise
           else
             save(:validate => false)
           end
+          false
         end
-
-        result
       end
 
       protected

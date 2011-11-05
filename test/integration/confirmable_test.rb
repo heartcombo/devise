@@ -93,6 +93,17 @@ class ConfirmationTest < ActionController::IntegrationTest
     end
   end
 
+  test 'not confirmed user should not see confirmation message if invalid credentials are given' do
+    swap Devise, :confirm_within => 0.days do
+      sign_in_as_user(:confirm => false) do
+        fill_in 'password', :with => 'invalid'
+      end
+
+      assert_contain 'Invalid email or password'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'not confirmed user but configured with some days to confirm should be able to sign in' do
     swap Devise, :confirm_within => 1.day do
       sign_in_as_user(:confirm => false)

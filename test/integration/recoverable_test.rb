@@ -38,6 +38,16 @@ class PasswordTest < ActionController::IntegrationTest
     assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
   end
 
+  test 'reset password with email should send an email from a custom mailer' do
+    create_user(:email => 'Foo@Bar.com')
+
+    User.any_instance.stubs(:devise_mailer).returns(Users::Mailer)
+    request_forgot_password do
+      fill_in 'email', :with => 'foo@bar.com'
+    end
+    assert_equal ['custom@example.com'], ActionMailer::Base.deliveries.last.from
+  end
+
   test 'reset password with email of different case should fail when email is NOT the list of case insensitive keys' do
     swap Devise, :case_insensitive_keys => [] do
       create_user(:email => 'Foo@Bar.com')

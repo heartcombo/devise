@@ -6,4 +6,5 @@ module SharedAdmin
            :timeoutable, :recoverable, :rememberable, :lockable,
            :unlock_strategy => :time
   end
+
 end

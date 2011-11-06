@@ -6,7 +6,7 @@ class LockTest < ActionController::IntegrationTest
     visit user_unlock_path(:unlock_token => unlock_token)
   end
 
-  test 'user should be able to request a new unlock token' do
+  def send_unlock_request
     user = create_user(:locked => true)
     ActionMailer::Base.deliveries.clear
 
@@ -15,10 +15,23 @@ class LockTest < ActionController::IntegrationTest
 
     fill_in 'email', :with => user.email
     click_button 'Resend unlock instructions'
+  end
+
+  test 'user should be able to request a new unlock token' do
+    send_unlock_request
 
     assert_template 'sessions/new'
     assert_contain 'You will receive an email with instructions about how to unlock your account in a few minutes'
     assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_equal ['please-change-me@config-initializers-devise.com'], ActionMailer::Base.deliveries.first.from
+  end
+
+  test 'user should receive the instructions from a custom mailer' do
+    User.any_instance.stubs(:devise_mailer).returns(Users::Mailer)
+
+    send_unlock_request
+
+    assert_equal ['custom@example.com'], ActionMailer::Base.deliveries.first.from
   end
 
   test 'unlocked user should not be able to request a unlock token' do

@@ -6,7 +6,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     visit user_confirmation_path(:confirmation_token => confirmation_token)
   end
 
-  test 'user should be able to request a new confirmation' do
+  def resend_confirmation
     user = create_user(:confirm => false)
     ActionMailer::Base.deliveries.clear
 
@@ -15,10 +15,23 @@ class ConfirmationTest < ActionController::IntegrationTest
 
     fill_in 'email', :with => user.email
     click_button 'Resend confirmation instructions'
+  end
+
+  test 'user should be able to request a new confirmation' do
+    resend_confirmation
 
     assert_current_url '/users/sign_in'
     assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
     assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_equal ['please-change-me@config-initializers-devise.com'], ActionMailer::Base.deliveries.first.from
+  end
+
+  test 'user should receive a confirmation from a custom mailer' do
+    User.any_instance.stubs(:devise_mailer).returns(Users::Mailer)
+
+    resend_confirmation
+
+    assert_equal ['custom@example.com'], ActionMailer::Base.deliveries.first.from
   end
 
   test 'user with invalid confirmation token should not be able to confirm an account' do

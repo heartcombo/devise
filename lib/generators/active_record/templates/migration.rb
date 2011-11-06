@@ -1,5 +1,9 @@
 class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
+<% if ::Rails::VERSION::MAJOR == 3 && ::Rails::VERSION::MINOR >= 1 -%>
+  def change
+<% else -%>
   def self.up
+<% end -%>
     create_table(:<%= table_name %>) do |t|
       t.database_authenticatable :null => false
       t.recoverable
@@ -11,7 +15,7 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
       # t.lockable :lock_strategy => :<%= Devise.lock_strategy %>, :unlock_strategy => :<%= Devise.unlock_strategy %>
       # t.token_authenticatable
 
-<% for attribute in attributes -%>
+<% attributes.each do |attribute| -%>
       t.<%= attribute.type %> :<%= attribute.name %>
 <% end -%>
 
@@ -25,7 +29,9 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
     # add_index :<%= table_name %>, :authentication_token, :unique => true
   end
 
+<% unless ::Rails::VERSION::MAJOR == 3 && ::Rails::VERSION::MINOR >= 1 -%>
   def self.down
     drop_table :<%= table_name %>
   end
+<% end -%>
 end

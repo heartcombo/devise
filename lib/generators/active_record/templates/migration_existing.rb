@@ -5,13 +5,13 @@ class AddDeviseTo<%= table_name.camelize %> < ActiveRecord::Migration
       t.recoverable
       t.rememberable
       t.trackable
-    
+
       # t.encryptable
       # t.confirmable
       # t.lockable :lock_strategy => :<%= Devise.lock_strategy %>, :unlock_strategy => :<%= Devise.unlock_strategy %>
       # t.token_authenticatable
 
-<% for attribute in attributes -%>
+<% attributes.each do |attribute| -%>
       t.<%= attribute.type %> :<%= attribute.name %>
 <% end -%>
 
@@ -29,6 +29,6 @@ class AddDeviseTo<%= table_name.camelize %> < ActiveRecord::Migration
   def self.down
     # By default, we don't want to make any assumption about how to roll back a migration when your
     # model already existed. Please edit below which fields you would like to remove in this migration.
-    raise ActiveRecord::IrreversibleMigration   
+    raise ActiveRecord::IrreversibleMigration
   end
 end

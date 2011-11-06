@@ -1,6 +1,6 @@
 class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
 <% if ::Rails::VERSION::MAJOR == 3 && ::Rails::VERSION::MINOR >= 1 -%>
-  def self.change
+  def change
 <% else -%>
   def self.up
 <% end -%>

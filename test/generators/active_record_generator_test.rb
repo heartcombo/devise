@@ -20,7 +20,7 @@ if DEVISE_ORM == :active_record
       with_rails_version :MAJOR => 3, :MINOR => 1 do
         run_generator %w(monster)
         assert_file "app/models/monster.rb", /devise/, /attr_accessible (:[a-z_]+(, )?)+/
-        assert_migration "db/migrate/devise_create_monsters.rb", /def self\.change/
+        assert_migration "db/migrate/devise_create_monsters.rb", /def change/
       end
     end
 

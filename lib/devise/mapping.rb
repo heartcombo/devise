@@ -23,7 +23,9 @@ module Devise
   #
   class Mapping #:nodoc:
     attr_reader :singular, :scoped_path, :path, :controllers, :path_names,
-                :class_name, :sign_out_via, :format, :used_routes, :used_helpers
+                :class_name, :sign_out_via, :format, :used_routes, :used_helpers,
+                :constraints, :defaults, :failure_app
+
     alias :name :singular
 
     # Receives an object and find a scope for it. If a scope cannot be found,
@@ -51,46 +53,21 @@ module Devise
       @singular = (options[:singular] || @scoped_path.tr('/', '_').singularize).to_sym
 
       @class_name = (options[:class_name] || name.to_s.classify).to_s
-      @ref = Devise.ref(@class_name)
+      @klass = Devise.ref(@class_name)
 
       @path = (options[:path] || name).to_s
       @path_prefix = options[:path_prefix]
 
-      mod = options[:module] || "devise"
-      @controllers = Hash.new { |h,k| h[k] = "#{mod}/#{k}" }
-      @controllers.merge!(options[:controllers] || {})
-      @controllers.each { |k,v| @controllers[k] = v.to_s }
-
-      @path_names = Hash.new { |h,k| h[k] = k.to_s }
-      @path_names.merge!(:registration => "")
-      @path_names.merge!(options[:path_names] || {})
-      
-      @constraints = Hash.new { |h,k| h[k] = k.to_s }
-      @constraints.merge!(options[:constraints] || {})
-
-      @defaults = Hash.new { |h,k| h[k] = k.to_s }
-      @defaults.merge!(options[:defaults] || {})
-
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
       @format = options[:format]
 
-      singularizer = lambda { |s| s.to_s.singularize.to_sym }
-
-      if options.has_key?(:only)
-        @used_routes = self.routes & Array(options[:only]).map(&singularizer)
-      elsif options[:skip] == :all
-        @used_routes = []
-      else
-        @used_routes = self.routes - Array(options[:skip]).map(&singularizer)
-      end
-
-      if options[:skip_helpers] == true
-        @used_helpers = @used_routes
-      elsif skip = options[:skip_helpers]
-        @used_helpers = self.routes - Array(skip).map(&singularizer)
-      else
-        @used_helpers = self.routes
-      end
+      default_failure_app(options)
+      default_controllers(options)
+      default_path_names(options)
+      default_constraints(options)
+      default_defaults(options)
+      default_used_route(options)
+      default_used_helpers(options)
     end
 
     # Return modules for the mapping.
@@ -100,7 +77,7 @@ module Devise
 
     # Gives the class the mapping points to.
     def to
-      @ref.get
+      @klass.get
     end
 
     def strategies
@@ -122,15 +99,11 @@ module Devise
     def fullpath
       "/#{@path_prefix}/#{@path}".squeeze("/")
     end
-    
-    def constraints
-      @constraints
+
+    def failure_app
+      Devise::FailureApp
     end
-    
-    def defaults
-      @defaults
-    end
-    
+
     # Create magic predicates for verifying what module is activated by this map.
     # Example:
     #
@@ -144,6 +117,63 @@ module Devise
           self.modules.include?(:#{m})
         end
       METHOD
+    end
+
+    private
+
+    def default_failure_app(options)
+      @failure_app = options[:failure_app] || Devise::FailureApp
+      if @failure_app.is_a?(String)
+        ref = Devise.ref(@failure_app)
+        @failure_app = lambda { |env| ref.get.call(env) }
+      end
+    end
+
+    def default_controllers(options)
+      mod = options[:module] || "devise"
+      @controllers = Hash.new { |h,k| h[k] = "#{mod}/#{k}" }
+      @controllers.merge!(options[:controllers]) if options[:controllers]
+      @controllers.each { |k,v| @controllers[k] = v.to_s }
+    end
+
+    def default_path_names(options)
+      @path_names = Hash.new { |h,k| h[k] = k.to_s }
+      @path_names[:registration] = ""
+      @path_names.merge!(options[:path_names]) if options[:path_names]
+    end
+
+    def default_constraints(options)
+      @constraints = Hash.new
+      @constraints.merge!(options[:constraints]) if options[:constraints]
+    end
+
+    def default_defaults(options)
+      @defaults = Hash.new
+      @defaults.merge!(options[:defaults]) if options[:defaults]
+    end
+
+    def default_used_route(options)
+      singularizer = lambda { |s| s.to_s.singularize.to_sym }
+
+      if options.has_key?(:only)
+        @used_routes = self.routes & Array(options[:only]).map(&singularizer)
+      elsif options[:skip] == :all
+        @used_routes = []
+      else
+        @used_routes = self.routes - Array(options[:skip]).map(&singularizer)
+      end
+    end
+
+    def default_used_helpers(options)
+      singularizer = lambda { |s| s.to_s.singularize.to_sym }
+
+      if options[:skip_helpers] == true
+        @used_helpers = @used_routes
+      elsif skip = options[:skip_helpers]
+        @used_helpers = self.routes - Array(skip).map(&singularizer)
+      else
+        @used_helpers = self.routes
+      end
     end
   end
 end

@@ -1,5 +1,3 @@
-require 'omniauth-contrib'
-
 # Use this hook to configure devise mailer, warden hooks and so forth. The first
 # four configuration values can also be set straight in your models.
 Devise.setup do |config|
@@ -178,8 +176,9 @@ Devise.setup do |config|
   # config.sign_out_via = :get
 
   # ==> OmniAuth
-  config.omniauth :facebook, 'APP_ID', 'APP_SECRET'
-  config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :name => 'other_facebook'
+  config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :scope => 'email,offline_access'
+  config.omniauth :openid
+  config.omniauth :openid, :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

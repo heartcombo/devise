@@ -202,9 +202,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
   end
 
   test 'scope uses custom failure app' do
-    app = lambda { |env| [404, {"Content-Type" => "text/plain"}, ["Oops, not found"]] }
-    Devise.mappings[:admin].expects(:failure_app).returns(app)
-    get admins_path
+    put "/en/accounts/management"
     assert_equal "Oops, not found", response.body
     assert_equal 404, response.status
   end

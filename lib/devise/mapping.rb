@@ -100,10 +100,6 @@ module Devise
       "/#{@path_prefix}/#{@path}".squeeze("/")
     end
 
-    def failure_app
-      Devise::FailureApp
-    end
-
     # Create magic predicates for verifying what module is activated by this map.
     # Example:
     #

@@ -49,23 +49,23 @@ module ActionDispatch::Routing
     #
     # You can configure your routes with some options:
     #
-    #  * :class_name => setup a different class to be looked up by devise,
-    #                   if it cannot be correctly find by the route name.
+    #  * :class_name => setup a different class to be looked up by devise, if it cannot be
+    #    properly found by the route name.
     #
     #      devise_for :users, :class_name => 'Account'
     #
     #  * :path => allows you to setup path name that will be used, as rails routes does.
-    #             The following route configuration would setup your route as /accounts instead of /users:
+    #    The following route configuration would setup your route as /accounts instead of /users:
     #
     #      devise_for :users, :path => 'accounts'
     #
-    #  * :singular => setup the singular name for the given resource. This is used as the instance variable name in
-    #                 controller, as the name in routes and the scope given to warden.
+    #  * :singular => setup the singular name for the given resource. This is used as the instance variable
+    #    name in controller, as the name in routes and the scope given to warden.
     #
     #      devise_for :users, :singular => :user
     #
     #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :sign_up,
-    #                   :password, :confirmation, :unlock.
+    #    :password, :confirmation, :unlock.
     #
     #      devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification' }
     #
@@ -73,6 +73,9 @@ module ActionDispatch::Routing
     #    However, if you want them to point to custom controller, you should do:
     #
     #      devise_for :users, :controllers => { :sessions => "users/sessions" }
+    #
+    #  * :failure_app => a rack app which is invoked whenever there is a failure. Strings representing a given
+    #    are also allowed as parameter.
     #
     #  * :sign_out_via => the HTTP method(s) accepted for the :sign_out action (default: :get),
     #    if you wish to restrict this to accept only :post or :delete requests you should do:

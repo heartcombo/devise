@@ -131,7 +131,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
     end
   end
 
-  test 'signed in user should not see join page' do
+  test 'signed in user should not see unauthenticated page' do
     sign_in_as_user
     assert warden.authenticated?(:user)
     assert_not warden.authenticated?(:admin)
@@ -141,7 +141,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
     end
   end
 
-  test 'not signed in should see join page' do
+  test 'not signed in users should see unautheticated page' do
     get join_path
 
     assert_response :success
@@ -199,6 +199,14 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
 
     get root_path
     assert_not_contain 'Signed out successfully'
+  end
+
+  test 'scope uses custom failure app' do
+    app = lambda { |env| [404, {"Content-Type" => "text/plain"}, ["Oops, not found"]] }
+    Devise.mappings[:admin].expects(:failure_app).returns(app)
+    get admins_path
+    assert_equal "Oops, not found", response.body
+    assert_equal 404, response.status
   end
 end
 
@@ -312,7 +320,7 @@ class AuthenticationSessionTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationWithScopesTest < ActionController::IntegrationTest
+class AuthenticationWithScopedViewsTest < ActionController::IntegrationTest
   test 'renders the scoped view if turned on and view is available' do
     swap Devise, :scoped_views => true do
       assert_raise Webrat::NotFoundError do

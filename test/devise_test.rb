@@ -25,7 +25,7 @@ class DeviseTest < ActiveSupport::TestCase
   end
 
   test 'stores warden configuration' do
-    assert_equal Devise::FailureApp, Devise.warden_config.failure_app
+    assert_kind_of Devise::Delegator, Devise.warden_config.failure_app
     assert_equal :user, Devise.warden_config.default_scope
   end
 

@@ -6,10 +6,11 @@ require 'set'
 require 'securerandom'
 
 module Devise
-  autoload :FailureApp, 'devise/failure_app'
-  autoload :OmniAuth, 'devise/omniauth'
+  autoload :Delegator,   'devise/delegator'
+  autoload :FailureApp,  'devise/failure_app'
+  autoload :OmniAuth,    'devise/omniauth'
   autoload :PathChecker, 'devise/path_checker'
-  autoload :Schema, 'devise/schema'
+  autoload :Schema,      'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
 
   module Controllers
@@ -407,7 +408,7 @@ module Devise
   # block.
   def self.configure_warden! #:nodoc:
     @@warden_configured ||= begin
-      warden_config.failure_app   = Devise::FailureApp
+      warden_config.failure_app   = Devise::Delegator.new
       warden_config.default_scope = Devise.default_scope
       warden_config.intercept_401 = false
 

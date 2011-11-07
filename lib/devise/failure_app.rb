@@ -15,7 +15,8 @@ module Devise
     delegate :flash, :to => :request
 
     def self.call(env)
-      action(:respond).call(env)
+      @respond ||= action(:respond)
+      @respond.call(env)
     end
 
     def self.default_url_options(*args)

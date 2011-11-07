@@ -3,8 +3,9 @@ source "http://rubygems.org"
 gemspec
 
 gem "rails", "~> 3.1.0"
-gem "oa-oauth", '~> 0.2.0', :require => "omniauth/oauth"
-gem "oa-openid", '~> 0.2.0', :require => "omniauth/openid"
+gem 'omniauth', '~> 1.0.0.pr2'
+gem 'omniauth-contrib', :git => 'http://github.com/intridea/omniauth-contrib.git' #'~> 1.0.0.pr2'
+gem 'omniauth-oauth2'
 
 gem "rdoc"
 

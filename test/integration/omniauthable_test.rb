@@ -12,14 +12,6 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
 
   setup do
     OmniAuth.config.test_mode = true
-    stub_facebook!
-  end
-
-  teardown do
-    OmniAuth.config.test_mode = false
-  end
-
-  def stub_facebook!
     OmniAuth.config.mock_auth[:facebook] = {
       "uid" => '12345',
       "provider" => 'facebook',
@@ -27,6 +19,10 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
       "credentials" => {"token" => 'plataformatec'},
       "extra" => {"user_hash" => FACEBOOK_INFO}
     }
+  end
+
+  teardown do
+    OmniAuth.config.test_mode = false
   end
 
   def stub_action!(name)
@@ -128,7 +124,7 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
 
     visit "/users/sign_in"
-    click_link "Sign in with facebook"
+    click_link "Sign in with Facebook"
 
     assert_current_url "/users/sign_in"
     assert_contain 'Could not authorize you from Facebook because "Invalid credentials".'

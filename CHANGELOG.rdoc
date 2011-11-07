@@ -2,6 +2,9 @@
 
 * enhancements
   * Timeoutable also skips tracking if skip_trackable is given
+  * devise_for now accepts :failure_app as an option
+  * Models can select the proper mailer via devise_mailer method (by github.com/locomotivecms)
+  * Migration generator now uses the change method (by github.com/nashby)
 
 * bug fix
   * Allow idempotent API requests

@@ -9,7 +9,7 @@ module Devise
     # the initializer to simulate the default behavior.
     class RestfulAuthenticationSha1 < Base
 
-      # Gererates a default password digest based on salt, pepper and the
+      # Generates a default password digest based on salt, pepper and the
       # incoming password.
       def self.digest(password, stretches, salt, pepper)
         digest = pepper

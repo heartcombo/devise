@@ -5,7 +5,7 @@ module Devise
     # = Sha1
     # Uses the Sha1 hash algorithm to encrypt passwords.
     class Sha1 < Base
-      # Gererates a default password digest based on stretches, salt, pepper and the
+      # Generates a default password digest based on stretches, salt, pepper and the
       # incoming password.
       def self.digest(password, stretches, salt, pepper)
         digest = pepper

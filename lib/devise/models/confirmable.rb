@@ -34,7 +34,7 @@ module Devise
       def confirm!
         unless_confirmed do
           self.confirmation_token = nil
-          self.confirmed_at = Time.now
+          self.confirmed_at = Time.now.utc
           save(:validate => false)
         end
       end
@@ -71,7 +71,7 @@ module Devise
       # If you don't want confirmation to be sent on create, neither a code
       # to be generated, call skip_confirmation!
       def skip_confirmation!
-        self.confirmed_at = Time.now
+        self.confirmed_at = Time.now.utc
       end
 
       protected

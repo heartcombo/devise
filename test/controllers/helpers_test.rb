@@ -114,15 +114,6 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     assert @controller.sign_in(user)
   end
 
-  test 'sign in clears up any signed in user' do
-    @controller.instance_variable_set(:@current_user, :example)
-    user = User.new
-    @mock_warden.expects(:user).returns(user)
-    @mock_warden.expects(:set_user).never
-    @controller.sign_in(user)
-    assert_equal nil, @controller.instance_variable_get(:@current_user)
-  end
-
   test 'sign in again when the user is already in only if force is given' do
     user = User.new
     @mock_warden.expects(:user).returns(user)
@@ -142,8 +133,10 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     @mock_warden.expects(:user).times(Devise.mappings.size)
     @mock_warden.expects(:logout).with().returns(true)
     @controller.instance_variable_set(:@current_user, user)
+    @controller.instance_variable_set(:@current_admin, user)
     @controller.sign_out
     assert_equal nil, @controller.instance_variable_get(:@current_user)
+    assert_equal nil, @controller.instance_variable_get(:@current_admin)
   end
 
   test 'sign out clears up any signed in user by scope' do

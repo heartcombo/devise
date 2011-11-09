@@ -20,7 +20,7 @@ class Devise::RegistrationsController < ApplicationController
         respond_with resource, :location => after_sign_up_path_for(resource)
       else
         set_flash_message :notice, :inactive_signed_up, :reason => inactive_reason(resource) if is_navigational_format?
-        expire_devise_cached_data!
+        expire_session_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
     else
@@ -64,7 +64,7 @@ class Devise::RegistrationsController < ApplicationController
   # cancel oauth signing in/up in the middle of the process,
   # removing all OAuth session data.
   def cancel
-    expire_devise_cached_data!
+    expire_session_data_after_sign_in!
     redirect_to new_registration_path(resource_name)
   end
 

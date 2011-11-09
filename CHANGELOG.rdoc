@@ -11,12 +11,11 @@
   * Fix bug where logs did not show 401 as status code
   * Change paranoid settings to behave as success instead of as failure
   * Fix bug where activation messages were shown first than the credentials error message
-  * Be sure to expire cached devise data after sign in
+  * Instance variables are expired after sign out
 
 * deprecation
   * redirect_location is deprecated, please use after_sign_in_path_for
   * after_sign_in_path_for now redirects to session[scope_return_to] if any value is stored in it
-  * expire_session_data_after_sign_in! is deprecated in favor of expire_devise_cached_data!
 
 == 1.4.9
 

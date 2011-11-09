@@ -113,7 +113,7 @@ module Devise
         scope    = Devise::Mapping.find_scope!(resource_or_scope)
         resource = args.last || resource_or_scope
 
-        expire_devise_cached_data!
+        expire_session_data_after_sign_in!
 
         if options[:bypass]
           warden.session_serializer.store(resource, scope)
@@ -139,7 +139,7 @@ module Devise
         warden.user(scope) # Without loading user here, before_logout hook is not called
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope)
-        @current_user = nil
+        instance_variable_set(:"@current_#{scope}", nil)
       end
 
       # Sign out all active users or scopes. This helper is useful for signing out all roles
@@ -148,7 +148,7 @@ module Devise
         Devise.mappings.keys.each { |s| warden.user(s) }
         warden.raw_session.inspect
         warden.logout
-        @current_user = nil
+        expire_devise_cached_variables!
       end
 
       # Returns and delete the url stored in the session for the given scope. Useful
@@ -229,8 +229,7 @@ module Devise
       end
 
       def expire_session_data_after_sign_in!
-        ActiveSupport::Deprecation.warn "expire_session_data_after_sign_in! is deprecated. Please use expire_devise_cached_data! instead which also clears up cached instance variables.", caller
-        expire_devise_cached_data!
+        session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
 
       # Sign out a user and tries to redirect to the url specified by
@@ -248,12 +247,6 @@ module Devise
         warden.clear_strategies_cache!
         expire_devise_cached_variables!
         super # call the default behaviour which resets the session
-      end
-
-      # A hook called to expire data after sign in.
-      def expire_devise_cached_data!
-        session.keys.grep(/^devise\./).each { |k| session.delete(k) }
-        expire_devise_cached_variables!
       end
 
       private

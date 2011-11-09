@@ -139,6 +139,7 @@ module Devise
         warden.user(scope) # Without loading user here, before_logout hook is not called
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope)
+        @current_user = nil
       end
 
       # Sign out all active users or scopes. This helper is useful for signing out all roles
@@ -147,6 +148,7 @@ module Devise
         Devise.mappings.keys.each { |s| warden.user(s) }
         warden.raw_session.inspect
         warden.logout
+        @current_user = nil
       end
 
       # Returns and delete the url stored in the session for the given scope. Useful

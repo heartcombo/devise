@@ -12,7 +12,7 @@ module Devise
     #
     module Trackable
       def update_tracked_fields!(request)
-        old_current, new_current = self.current_sign_in_at, Time.now
+        old_current, new_current = self.current_sign_in_at, Time.now.utc
         self.last_sign_in_at     = old_current || new_current
         self.current_sign_in_at  = new_current
 

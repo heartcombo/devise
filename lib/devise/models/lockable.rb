@@ -24,7 +24,7 @@ module Devise
 
       # Lock a user setting its locked_at to actual time.
       def lock_access!
-        self.locked_at = Time.now
+        self.locked_at = Time.now.utc
 
         if unlock_strategy_enabled?(:email)
           generate_unlock_token

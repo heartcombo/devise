@@ -23,8 +23,8 @@ module Devise
 
       protected
 
-      def view_directory(name)
-        directory name.to_s, "#{target_path}/#{name}"
+      def view_directory(name, _target_path = nil)
+        directory name.to_s, _target_path || "#{target_path}/#{name}"
       end
 
       def target_path
@@ -39,7 +39,6 @@ module Devise
 
       # Override copy_views to just copy mailer and shared.
       def copy_views
-        view_directory :mailer
         view_directory :shared
       end
     end
@@ -56,6 +55,30 @@ module Devise
       desc "Copies simple form enabled views to your application."
     end
 
+    class ErbGenerator < Rails::Generators::Base #:nodoc:
+      include ViewPathTemplates
+      source_root File.expand_path("../../../../app/views/devise", __FILE__)
+      desc "Copies Devise mail erb views to your application."
+
+      def copy_views
+        view_directory :mailer
+      end
+    end
+
+    class MarkerbGenerator < Rails::Generators::Base #:nodoc:
+      include ViewPathTemplates
+      source_root File.expand_path("../../templates", __FILE__)
+      desc "Copies Devise mail markerb views to your application."
+
+      def copy_views
+        view_directory :markerb, target_path
+      end
+
+      def target_path
+        "app/views/#{scope || :devise}/mailer"
+      end
+    end
+
     class ViewsGenerator < Rails::Generators::Base
       desc "Copies Devise views to your application."
 
@@ -63,10 +86,13 @@ module Devise
                        :desc => "The scope to copy views to"
 
       invoke SharedViewsGenerator
-
       hook_for :form_builder, :aliases => "-b",
                               :desc => "Form builder to be used",
                               :default => defined?(SimpleForm) ? "simple_form_for" : "form_for"
+
+      hook_for :markerb,  :desc => "Generate markerb instead of erb mail views",
+                          :default => defined?(Markerb) ? :markerb : :erb,
+                          :type => :boolean
     end
   end
 end

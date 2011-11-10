@@ -6,7 +6,7 @@
   * Models can select the proper mailer via devise_mailer method (by github.com/locomotivecms)
   * Migration generator now uses the change method (by github.com/nashby)
   * Support to markerb templates on the mailer generator (by github.com/sbounmy)
-  * Support for Omniauth 1.0 (older versions are no longer supported) (by github.com/TamiasSibiricus) 
+  * Support for Omniauth 1.0 (older versions are no longer supported) (by github.com/TamiasSibiricus)
 
 * bug fix
   * Allow idempotent API requests

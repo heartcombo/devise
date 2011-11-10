@@ -112,10 +112,11 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
-          conditions = filter_auth_params(conditions.dup)
-          (case_insensitive_keys || []).each { |k| conditions[k].try(:downcase!) }
-          (strip_whitespace_keys || []).each { |k| conditions[k].try(:strip!) }
-          to_adapter.find_first(conditions)
+          find_first_by_auth_conditions(conditions)
+        end
+
+        def find_first_by_auth_conditions(conditions)
+          to_adapter.find_first devise_param_filter.filter(conditions)
         end
 
         # Find an initialize a record setting an error if it can't be found.
@@ -125,14 +126,11 @@ module Devise
 
         # Find an initialize a group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
-          (case_insensitive_keys || []).each { |k| attributes[k].try(:downcase!) }
-          (strip_whitespace_keys || []).each { |k| attributes[k].try(:strip!) }
-
           attributes = attributes.slice(*required_attributes)
           attributes.delete_if { |key, value| value.blank? }
 
           if attributes.size == required_attributes.size
-            record = to_adapter.find_first(filter_auth_params(attributes))
+            record = find_first_by_auth_conditions(attributes)
           end
 
           unless record
@@ -150,16 +148,8 @@ module Devise
 
         protected
 
-        # Force keys to be string to avoid injection on mongoid related database.
-        def filter_auth_params(conditions)
-          conditions.each do |k, v|
-            conditions[k] = v.to_s if auth_param_requires_string_conversion?(v)
-          end if conditions.is_a?(Hash)
-        end
-
-        # Determine which values should be transformed to string or passed as-is to the query builder underneath
-        def auth_param_requires_string_conversion?(value)
-          true unless value.is_a?(TrueClass) || value.is_a?(FalseClass) || value.is_a?(Fixnum)
+        def devise_param_filter
+          @devise_param_filter ||= Devise::ParamFilter.new(case_insensitive_keys, strip_whitespace_keys)
         end
 
         # Generate a token by looping and ensuring does not already exist.

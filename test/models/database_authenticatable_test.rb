@@ -22,26 +22,9 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal email.strip, user.email
   end
 
-  test 'find_for_authentication and filter_auth_params should not modify the conditions hash' do
-    FilterAuthUser = Class.new(User) do
-      def self.filter_auth_params(conditions)
-        if conditions.is_a?(Hash) && login = conditions.delete('login')
-          key = login.include?('@') ? :email : :username
-          conditions[key] = login
-        end
-        super(conditions)
-      end
-    end
-
-    conditions = { 'login' => 'foo@bar.com' }
-    FilterAuthUser.find_for_authentication(conditions)
-
-    assert_equal({ 'login' => 'foo@bar.com' }, conditions)
-  end
-  
-  test "filter_auth_params should not convert booleans and integer to strings" do
+  test "param filter should not convert booleans and integer to strings" do
     conditions = { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
-    conditions = User.__send__(:filter_auth_params, conditions)
+    conditions = Devise::ParamFilter.new([], []).filter(conditions)
     assert_equal( { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => "1..10" }, conditions)
   end
 

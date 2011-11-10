@@ -21,17 +21,11 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
   test "Assert views with simple form" do
     run_generator %w(-b simple_form_for)
     assert_files
-    assert_file "app/views/devise/confirmations/new.html.erb", :template_engine => /simple_form_for/
+    assert_file "app/views/devise/confirmations/new.html.erb", /simple_form_for/
 
     run_generator %w(users -b simple_form_for)
     assert_files "users"
-    assert_file "app/views/users/confirmations/new.html.erb", :template_engine => /simple_form_for/
-  end
-
-  test "Assert views with simple form if defined" do
-    run_generator
-    assert_files nil, :template_engine => /simple_form_for/
-    assert_file "app/views/devise/confirmations/new.html.erb", :template_engine => /simple_form_for/
+    assert_file "app/views/users/confirmations/new.html.erb", /simple_form_for/
   end
 
   test "Assert views with markerb" do
@@ -39,18 +33,9 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_files nil, :mail_template_engine => "markerb"
   end
 
-  test "Assert views with markerb by if Markerb is defined" do
-    class Markerb ;; end
-    run_generator
-    pending "Doesn't work: defined?(Markerb) returns nil in Devise::Generators::ViewsGenerator"
-    # assert_files nil, :mail_template_engine => "markerb"
-  end
-
   def assert_files(scope = nil, options={})
     scope = "devise" if scope.nil?
-    default_template = "html.erb"
-    template_engine = options[:template_engine] || default_template
-    mail_template_engine = options[:mail_template_engine] || default_template
+    mail_template_engine = options[:mail_template_engine] || "html.erb"
 
     assert_file "app/views/#{scope}/confirmations/new.html.erb"
     assert_file "app/views/#{scope}/mailer/confirmation_instructions.#{mail_template_engine}"

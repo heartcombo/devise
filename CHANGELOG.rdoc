@@ -5,6 +5,7 @@
   * devise_for now accepts :failure_app as an option
   * Models can select the proper mailer via devise_mailer method (by github.com/locomotivecms)
   * Migration generator now uses the change method (by github.com/nashby)
+  * Support to markerb templates on the mailer generator (by github.com/sbounmy)
 
 * bug fix
   * Allow idempotent API requests

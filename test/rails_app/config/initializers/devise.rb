@@ -177,8 +177,8 @@ Devise.setup do |config|
 
   # ==> OmniAuth
   config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :scope => 'email,offline_access'
-  config.omniauth :open_id
-  config.omniauth :open_id, :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
+  config.omniauth :openid
+  config.omniauth :openid, :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

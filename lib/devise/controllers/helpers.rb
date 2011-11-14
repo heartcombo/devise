@@ -207,9 +207,10 @@ module Devise
       # scope. Notice that differently from +after_sign_in_path_for+ this method
       # receives a symbol with the scope, and not the resource.
       #
-      # By default is the root_path.
+      # By default, it first tries to find a valid resource_return_to key in the
+      # session, then it fallbacks to root_path.
       def after_sign_out_path_for(resource_or_scope)
-        root_path
+        stored_location_for(resource_or_scope) || root_path
       end
 
       # Sign in a user and tries to redirect first to the stored location and
@@ -236,8 +237,9 @@ module Devise
       # after_sign_out_path_for.
       def sign_out_and_redirect(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
+        redirect_path = after_sign_out_path_for(scope)
         Devise.sign_out_all_scopes ? sign_out : sign_out(scope)
-        redirect_to after_sign_out_path_for(scope)
+        redirect_to redirect_path
       end
 
       # Overwrite Rails' handle unverified request to sign out all scopes,

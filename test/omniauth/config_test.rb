@@ -56,6 +56,7 @@ class OmniAuthConfigTest < ActiveSupport::TestCase
 
   test 'raise readable error when attempt to load strategy fail' do
     config = Devise::OmniAuth::Config.new :my_new_strategy, [{}]
-    assert_raise(LoadError) { config.strategy_class }
+    exception = assert_raise(LoadError) { config.strategy_class }
+    assert_match /Could not load 'my_new_strategy' strategy/, exception.message
   end
 end

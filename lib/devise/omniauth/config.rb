@@ -36,6 +36,8 @@ module Devise
           require "omniauth-#{provider}"
         end
         find_strategy || autoload_strategy
+      rescue LoadError
+        raise LoadError, "Could not load '#{provider}' strategy. Please ensure you have the gem 'omniauth-#{provider}' listed in your Gemfile cf https://github.com/intridea/omniauth/wiki/List-of-Strategies"
       end
 
       def autoload_strategy
@@ -43,4 +45,4 @@ module Devise
       end
     end
   end
-end     
+end

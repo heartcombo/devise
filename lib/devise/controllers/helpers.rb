@@ -207,10 +207,9 @@ module Devise
       # scope. Notice that differently from +after_sign_in_path_for+ this method
       # receives a symbol with the scope, and not the resource.
       #
-      # By default, it first tries to find a valid resource_return_to key in the
-      # session, then it fallbacks to root_path.
+      # By default it is the root_path.
       def after_sign_out_path_for(resource_or_scope)
-        stored_location_for(resource_or_scope) || root_path
+        root_path
       end
 
       # Sign in a user and tries to redirect first to the stored location and

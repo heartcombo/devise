@@ -248,16 +248,6 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     end
   end
 
-  test 'sign out and redirect uses the stored location when signing out' do
-    swap Devise, :sign_out_all_scopes => true do
-      @mock_warden.expects(:user).times(Devise.mappings.size)
-      @mock_warden.expects(:logout).with().returns(true)
-      @controller.expects(:redirect_to).with("/foo.bar")
-      @controller.session[:"admin_return_to"] = "/foo.bar"
-      @controller.sign_out_and_redirect(:admin)
-    end
-  end
-
   test 'is not a devise controller' do
     assert_not @controller.devise_controller?
   end

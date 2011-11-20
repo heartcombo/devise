@@ -28,7 +28,7 @@ module Devise
       end
 
       def require_strategy
-        if [:facebook, :github, :twitter, :google_oauth2].include?(provider.to_sym)
+        if [:facebook, :github, :twitter].include?(provider.to_sym)
           require "omniauth/strategies/#{provider}"
         elsif options[:require]
           require options[:require]

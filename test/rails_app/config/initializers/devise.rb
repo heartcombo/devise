@@ -179,7 +179,7 @@ Devise.setup do |config|
   config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :scope => 'email,offline_access'
   config.omniauth :openid
   config.omniauth :openid, :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
-  config.omniauth :google_oauth2, 'APP_ID', 'APP_SECRET', :scope => 'https://www.googleapis.com/auth/userinfo.email'
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

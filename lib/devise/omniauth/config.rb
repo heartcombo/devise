@@ -1,23 +1,28 @@
 module Devise
   module OmniAuth
+    class StrategyNotFound < NameError
+      def initialize(strategy)
+        @strategy = strategy
+        super("Could not find a strategy with name `#{strategy}'. " \
+          "Please ensure it is required or explicitly set it using the :klass option.")
+      end
+    end
+
     class Config
       attr_accessor :strategy
-      attr_reader :args, :options, :provider
+      attr_reader :args, :options, :provider, :strategy_name
 
       def initialize(provider, args)
-        @provider = provider
-        @args     = args
-        @strategy = nil
-        @options = @args.last.is_a?(Hash) ? @args.last : {}
-      end
-
-      # open_id strategy can have configurable name
-      def strategy_name
-        options[:name] || @provider
+        @provider       = provider
+        @args           = args
+        @options        = @args.last.is_a?(Hash) ? @args.last : {}
+        @strategy       = nil
+        @strategy_name  = options[:name] || @provider
+        @strategy_class = options.delete(:strategy_class)
       end
 
       def strategy_class
-        find_strategy || require_strategy
+        @strategy_class ||= find_strategy || autoload_strategy
       end
 
       def find_strategy
@@ -27,20 +32,14 @@ module Devise
         end
       end
 
-      def require_strategy
-        if [:facebook, :github, :twitter].include?(provider.to_sym)
-          require "omniauth/strategies/#{provider}"
-        elsif options[:require]
-          require options[:require]
-        else
-          require "omniauth-#{provider}"
-        end
-        find_strategy || autoload_strategy
-      end
-
       def autoload_strategy
-        ::OmniAuth::Strategies.const_get(::OmniAuth::Utils.camelize(provider.to_s))
+        name = ::OmniAuth::Utils.camelize(provider.to_s)
+        if ::OmniAuth::Strategies.const_defined?(name)
+          ::OmniAuth::Strategies.const_get(name)
+        else
+          raise StrategyNotFound, name
+        end
       end
     end
   end
-end     
+end

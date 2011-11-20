@@ -1,6 +1,6 @@
 begin
   require "omniauth"
-  require 'omniauth/version'
+  require "omniauth/version"
 rescue LoadError => e
   warn "Could not load 'omniauth'. Please ensure you have the omniauth gem >= 1.0.0 installed and listed in your Gemfile."
   raise

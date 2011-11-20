@@ -1,3 +1,8 @@
+== 1.5.1
+
+* bug fix
+  * Devise should not attempt to load OmniAuth strategies. Strategies should be loaded before hand by the developer or explicitly given to Devise.
+
 == 1.5.0
 
 * enhancements

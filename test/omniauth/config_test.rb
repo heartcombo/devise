@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class OmniAuthConfigTest < ActiveSupport::TestCase
-  setup do
-    $: << File.dirname(__FILE__)
+  class MyStrategy
+    include OmniAuth::Strategy
   end
 
   test 'strategy_name returns provider if no options given' do
@@ -42,15 +42,16 @@ class OmniAuthConfigTest < ActiveSupport::TestCase
     assert_equal UnNamedTestStrategy, config.strategy_class
   end
 
-  test 'attempts to load an as-yet not loaded plugin' do
-    config = Devise::OmniAuth::Config.new :my_strategy, [{}]
-    config_class = config.strategy_class
-    assert_equal MyStrategy, config_class
+  test 'raises an error if strategy cannot be found' do
+    config = Devise::OmniAuth::Config.new :my_other_strategy, [{}]
+    assert_raise Devise::OmniAuth::StrategyNotFound do
+      config.strategy_class
+    end
   end
 
   test 'allows the user to define a custom require path' do
-    config = Devise::OmniAuth::Config.new :my_other_strategy, [{:require => 'my_other_strategy'}]
+    config = Devise::OmniAuth::Config.new :my_strategy, [{:strategy_class => MyStrategy}]
     config_class = config.strategy_class
-    assert_equal MyOtherStrategy, config_class
+    assert_equal MyStrategy, config_class
   end
 end

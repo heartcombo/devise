@@ -6,7 +6,7 @@ rescue LoadError => e
   raise
 end
 
-unless OmniAuth::VERSION =~ /^1\./
+unless OmniAuth.const_defined?(:VERSION) and OmniAuth::VERSION =~ /^1\./
   raise "You are using an old OmniAuth version, please ensure you have 1.0.0.pr2 version or later installed."
 end
 

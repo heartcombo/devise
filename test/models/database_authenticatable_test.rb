@@ -87,6 +87,13 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.reload.valid_password?('pass321')
   end
   
+  test 'should update password with valid current password and :as option' do
+    user = create_user
+    assert user.update_with_password(:current_password => '123456',
+      :password => 'pass321', :password_confirmation => 'pass321', :as => :admin)
+    assert user.reload.valid_password?('pass321')
+  end
+  
   test 'should add an error to current password when it is invalid' do
     user = create_user
     assert_not user.update_with_password(:current_password => 'other',
@@ -136,6 +143,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should update the user without password' do
     user = create_user
     user.update_without_password(:email => 'new@example.com')
+    assert_equal 'new@example.com', user.email
+  end
+  
+  test 'should update the user without password with :as option' do
+    user = create_user
+    user.update_without_password(:email => 'new@example.com', :as => :admin)
     assert_equal 'new@example.com', user.email
   end
 

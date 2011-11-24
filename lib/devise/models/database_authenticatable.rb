@@ -51,7 +51,8 @@ module Devise
       # Update record attributes when :current_password matches, otherwise returns
       # error on :current_password. It also automatically rejects :password and
       # :password_confirmation if they are blank.
-      def update_with_password(params={})
+      def update_with_password(params, *options)
+        as = options.first[:as] rescue nil
         current_password = params.delete(:current_password)
 
         if params[:password].blank?
@@ -60,7 +61,7 @@ module Devise
         end
 
         result = if valid_password?(current_password)
-          update_attributes(params)
+          update_attributes(params, :as => as)
         else
           self.attributes = params
           self.valid?
@@ -84,11 +85,13 @@ module Devise
       #     super(params)
       #   end
       #
-      def update_without_password(params={})
+      def update_without_password(params, *options)
+        as = options.first[:as] rescue nil
+        
         params.delete(:password)
         params.delete(:password_confirmation)
 
-        result = update_attributes(params)
+        result = update_attributes(params, :as => as)
         clean_up_passwords
         result
       end

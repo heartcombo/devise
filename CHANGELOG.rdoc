@@ -2,6 +2,7 @@
 
 * enhancements
   * Add support for rails 3.1 new mass assignment conventions (by github.com/kirs)
+  * timeout_in option can be a Proc object (by github.com/lest)
 
 * bug fix
   * OmniAuth error message now shows the proper option (:strategy_class instead of :klass)

@@ -72,7 +72,7 @@ We hope that you will consider contributing to Devise. Please read this short ov
 
 https://github.com/plataformatec/devise/wiki/Contributing
 
-You will usually want to write tests for your changes.  To run the test suite, `cd` into Devise's top-level directory and run `bundle install` and `rake`.  For the tests to pass, you will need to have a MongoDB server (version 1.6 or newer) running on your system.
+You will usually want to write tests for your changes.  To run the test suite, `cd` into Devise's top-level directory and run `bundle install` and `rake`.  For the tests to pass, you will need to have a MongoDB server (version 2.0 or newer) running on your system.
 
 == Installation
 

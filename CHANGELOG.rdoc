@@ -1,3 +1,11 @@
+== 1.5.2 (dev)
+
+* enhancements
+  * Add support for rails 3.1 new mass assignment conventions (by github.com/kirs)
+
+* bug fix
+  * OmniAuth error message now shows the proper option (:strategy_class instead of :klass)
+
 == 1.5.1
 
 * bug fix

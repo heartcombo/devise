@@ -52,7 +52,6 @@ module Devise
       # error on :current_password. It also automatically rejects :password and
       # :password_confirmation if they are blank.
       def update_with_password(params, *options)
-        as = options.first[:as] rescue nil
         current_password = params.delete(:current_password)
 
         if params[:password].blank?
@@ -61,7 +60,7 @@ module Devise
         end
 
         result = if valid_password?(current_password)
-          update_attributes(params, :as => as)
+          update_attributes(params, *options)
         else
           self.attributes = params
           self.valid?
@@ -86,16 +85,14 @@ module Devise
       #   end
       #
       def update_without_password(params, *options)
-        as = options.first[:as] rescue nil
-        
         params.delete(:password)
         params.delete(:password_confirmation)
 
-        result = update_attributes(params, :as => as)
+        result = update_attributes(params, *options)
         clean_up_passwords
         result
       end
-      
+
       def after_database_authentication
       end
 
@@ -110,7 +107,7 @@ module Devise
       def downcase_keys
         (self.class.case_insensitive_keys || []).each { |k| self[k].try(:downcase!) }
       end
-      
+
       def strip_whitespace
         (self.class.strip_whitespace_keys || []).each { |k| self[k].try(:strip!) }
       end

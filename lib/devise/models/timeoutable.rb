@@ -24,10 +24,11 @@ module Devise
       def timedout?(last_access)
         return false if remember_exists_and_not_expired?
 
-        timeout_in = self.class.timeout_in
-        timeout_in = timeout_in.call(self) if timeout_in.respond_to?(:call)
-
         !timeout_in.nil? && last_access && last_access <= timeout_in.ago
+      end
+
+      def timeout_in
+        self.class.timeout_in
       end
 
       private

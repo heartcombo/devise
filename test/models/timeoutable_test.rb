@@ -14,24 +14,18 @@ class TimeoutableTest < ActiveSupport::TestCase
     assert_not new_user.timedout?(nil)
   end
 
-  test 'should accept timeout_in proc and provide user as argument' do
+  test 'should use timeout_in method' do
     user = new_user
+    user.instance_eval { def timeout_in; 10.minutes end }
 
-    timeout_in = proc do |obj|
-      assert_equal user, obj
-      10.minutes
-    end
-
-    swap Devise, :timeout_in => timeout_in do
-      assert user.timedout?(12.minutes.ago)
-      assert_not user.timedout?(8.minutes.ago)
-    end
+    assert user.timedout?(12.minutes.ago)
+    assert_not user.timedout?(8.minutes.ago)
   end
 
-  test 'should not be expired when timeout_in proc returns nil' do
-    swap Devise, :timeout_in => proc { nil } do
-      assert_not new_user.timedout?(10.hours.ago)
-    end
+  test 'should not be expired when timeout_in method returns nil' do
+    user = new_user
+    user.instance_eval { def timeout_in; nil end }
+    assert_not user.timedout?(10.hours.ago)
   end
 
   test 'fallback to Devise config option' do

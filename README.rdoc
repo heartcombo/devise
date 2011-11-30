@@ -359,6 +359,7 @@ https://github.com/plataformatec/devise/contributors
 
 * José Valim (https://github.com/josevalim)
 * Carlos Antônio da Silva (https://github.com/carlosantoniodasilva)
+* Rodrigo Flores (https://github.com/rodrigoflores)
 
 == License
 

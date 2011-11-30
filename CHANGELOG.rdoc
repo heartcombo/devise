@@ -1,4 +1,4 @@
-== 1.5.2 (dev)
+== 1.5.2
 
 * enhancements
   * Add support for rails 3.1 new mass assignment conventions (by github.com/kirs)

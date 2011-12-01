@@ -19,7 +19,7 @@ class CreateTables < ActiveRecord::Migration
       t.encryptable
       t.rememberable :use_salt => false
       t.recoverable
-      t.lockable
+      t.lockable :lock_strategy => :none, :unlock_strateagy => :time
       t.timestamps
     end
   end

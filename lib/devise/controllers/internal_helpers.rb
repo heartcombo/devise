@@ -83,6 +83,7 @@ MESSAGE
       # Build a devise resource.
       def build_resource(hash=nil)
         hash ||= params[resource_name] || {}
+        hash = {} unless hash.is_a?(Hash)
         self.resource = resource_class.new(hash)
       end
 

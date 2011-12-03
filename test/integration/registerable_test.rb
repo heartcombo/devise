@@ -144,7 +144,6 @@ class RegistrationTest < ActionController::IntegrationTest
     get edit_user_registration_path
 
     fill_in 'email', :with => 'user.new@example.com'
-    fill_in 'current password', :with => '123456'
     click_button 'Update'
 
     assert_current_url '/'

@@ -3,7 +3,7 @@ module SharedAdmin
 
   included do
     devise :database_authenticatable, :encryptable, :registerable,
-           :timeoutable, :recoverable, :rememberable, :lockable,
+           :timeoutable, :recoverable, :lockable,
            :unlock_strategy => :time, :lock_strategy => :none
   end
 

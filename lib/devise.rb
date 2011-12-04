@@ -84,7 +84,7 @@ module Devise
   # False by default for backwards compatibility.
   mattr_accessor :case_insensitive_keys
   @@case_insensitive_keys = false
-  
+
   # Keys that should have whitespace stripped.
   # False by default for backwards compatibility.
   mattr_accessor :strip_whitespace_keys
@@ -120,27 +120,20 @@ module Devise
   mattr_accessor :remember_for
   @@remember_for = 2.weeks
 
-  # If true, a valid remember token can be re-used between multiple browsers.
-  mattr_accessor :remember_across_browsers
-  @@remember_across_browsers = true
-
   # If true, extends the user's remember period when remembered via cookie.
   mattr_accessor :extend_remember_period
   @@extend_remember_period = false
-
-  # If true, uses salt as remember token and does not create it in the database.
-  # By default is false for backwards compatibility.
-  mattr_accessor :use_salt_as_remember_token
-  @@use_salt_as_remember_token = false
 
   # Time interval you can access your account before confirming your account.
   mattr_accessor :confirm_within
   @@confirm_within = 0.days
 
-  # Defines which key will be used when confirming an account
+  # Defines which key will be used when confirming an account.
   mattr_accessor :confirmation_keys
   @@confirmation_keys = [ :email ]
 
+  # Defines if email should be reconfirmable.
+  # False by default for backwards compatibility.
   mattr_accessor :reconfirmable
   @@reconfirmable = false
 
@@ -155,11 +148,6 @@ module Devise
   # Used to define the password encryption algorithm.
   mattr_accessor :encryptor
   @@encryptor = nil
-
-  # Tells if devise should apply the schema in ORMs where devise declaration
-  # and schema belongs to the same class (as Datamapper and Mongoid).
-  mattr_accessor :apply_schema
-  @@apply_schema = true
 
   # Scoped views. Since it relies on fallbacks to render default views, it's
   # turned off by default.
@@ -193,6 +181,7 @@ module Devise
   @@reset_password_keys = [ :email ]
 
   # Time interval you can reset your password with a reset password key
+  # Nil by default for backwards compatibility.
   mattr_accessor :reset_password_within
   @@reset_password_within = nil
 
@@ -224,6 +213,22 @@ module Devise
   # The default method used while signing out
   mattr_accessor :sign_out_via
   @@sign_out_via = :get
+
+  # DEPRECATED CONFIG
+
+  # If true, uses salt as remember token and does not create it in the database.
+  # By default is false for backwards compatibility.
+  mattr_accessor :use_salt_as_remember_token
+  @@use_salt_as_remember_token = false
+
+  # Tells if devise should apply the schema in ORMs where devise declaration
+  # and schema belongs to the same class (as Datamapper and Mongoid).
+  mattr_accessor :apply_schema
+  @@apply_schema = true
+
+  def self.remember_across_browsers=(value)
+    puts "\n[DEVISE] Devise.remember_across_browsers is deprecated and has no effect. Please remove it."
+  end
 
   # PRIVATE CONFIGURATION
 

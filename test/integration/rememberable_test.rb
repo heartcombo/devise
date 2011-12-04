@@ -9,14 +9,6 @@ class RememberMeTest < ActionController::IntegrationTest
     user
   end
 
-  def create_admin_and_remember
-    admin = create_admin
-    admin.remember_me!
-    raw_cookie = Admin.serialize_into_cookie(admin)
-    cookies['remember_admin_token'] = generate_signed_cookie(raw_cookie)
-    admin
-  end
-
   def generate_signed_cookie(raw_cookie)
     request = ActionDispatch::TestRequest.new
     request.cookie_jar.signed['raw_cookie'] = raw_cookie
@@ -117,34 +109,6 @@ class RememberMeTest < ActionController::IntegrationTest
     end
   end
 
-  test 'if both extend_remember_period and remember_across_browsers are true, sends the same token with a new expire date' do
-    swap Devise, :remember_across_browsers => true, :extend_remember_period => true, :remember_for => 1.year do
-      admin = create_admin_and_remember
-      token = admin.remember_token
-
-      admin.remember_created_at = old = 10.minutes.ago
-      admin.save!
-
-      get root_path
-      assert (cookie_expires("remember_admin_token") - 1.year) > (old + 5.minutes)
-      assert_equal token, signed_cookie("remember_admin_token").last
-    end
-  end
-
-  test 'if both extend_remember_period and remember_across_browsers are false, sends a new token with old expire date' do
-    swap Devise, :remember_across_browsers => false, :extend_remember_period => false, :remember_for => 1.year do
-      admin = create_admin_and_remember
-      token = admin.remember_token
-
-      admin.remember_created_at = old = 10.minutes.ago
-      admin.save!
-
-      get root_path
-      assert (cookie_expires("remember_admin_token") - 1.year) < (old + 5.minutes)
-      assert_not_equal token, signed_cookie("remember_admin_token").last
-    end
-  end
-
   test 'do not remember other scopes' do
     user = create_user_and_remember
     get root_path
@@ -180,20 +144,6 @@ class RememberMeTest < ActionController::IntegrationTest
 
     get users_path
     assert_not warden.authenticated?(:user)
-  end
-
-  test 'do not remember the admin anymore after forget' do
-    admin = create_admin_and_remember
-    get root_path
-    assert warden.authenticated?(:admin)
-
-    get destroy_admin_session_path
-    assert_not warden.authenticated?(:admin)
-    assert_nil admin.reload.remember_token
-    assert_nil warden.cookies['remember_admin_token']
-
-    get root_path
-    assert_not warden.authenticated?(:admin)
   end
 
   test 'changing user password expires remember me token' do

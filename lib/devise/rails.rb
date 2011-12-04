@@ -41,5 +41,32 @@ module Devise
         end
       end
     end
+
+    initializer "devise.deprecations" do
+      if Devise.case_insensitive_keys == false
+        puts "\n[DEVISE] Devise.case_insensitive_keys is false and is no longer " \
+          "supported. If you want to continue running on this mode, please ensure " \
+          "you are not using validatable in your models and set this value to an empty array."
+      end
+
+      if Devise.apply_schema && defined?(Mongoid)
+        puts "\n[DEVISE] Devise.apply_schema is true. This means Devise was " \
+          "automatically configuring your DB. This no longer happens. You should " \
+          "set this options to false and manually set the fields used by Devise."
+      end
+
+      # TODO: Deprecate the true value of this option as well
+      if Devise.use_salt_as_remember_token == false
+        puts "\n[DEVISE] Devise.use_salt_as_remember_token is false and is no longer " \
+          "supported. Devise will use part of salt as remember token and the remember " \
+          "token column can be removed from your models."
+      end
+
+      if Devise.reset_password_within.nil?
+        puts "\n[DEVISE] Devise.reset_password_within is nil. Please set this value to " \
+          "an interval (for example, 6.hours) and add a reset_password_sent_at field to " \
+          "your Devise models (if they don't have one already)."
+      end
+    end
   end
 end

@@ -195,31 +195,4 @@ class RecoverableTest < ActiveSupport::TestCase
       assert_equal "has expired, please request a new one", reset_password_user.errors[:reset_password_token].join
     end
   end
-
-  test 'should save the model when the reset_password_sent_at doesnt exist' do
-    user = create_user
-    def user.respond_to?(meth, *)
-      if meth == :reset_password_sent_at=
-        false
-      else
-        super
-      end
-    end
-    user.send_reset_password_instructions
-    user.reload
-    assert_not_nil user.reset_password_token
-  end
-
-  test 'should have valid period if does not respond to reset_password_sent_at' do
-    user = create_user
-    def user.respond_to?(meth, *)
-      if meth == :reset_password_sent_at
-        false
-      else
-        super
-      end
-    end
-    assert user.reset_password_period_valid?
-  end
-
 end

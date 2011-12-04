@@ -67,7 +67,7 @@ module Devise
       # Send confirmation instructions by email
       def send_confirmation_instructions
         @reconfirmation_required = false
-        generate_confirmation_token! if self.confirmation_token.nil?
+        generate_confirmation_token! if self.confirmation_token.blank?
         self.devise_mailer.confirmation_instructions(self).deliver
       end
 
@@ -96,11 +96,11 @@ module Devise
       end
 
       def headers_for(action)
-        if action == :confirmation_instructions && respond_to?(:unconfirmed_email)
-          { :to => unconfirmed_email.present? ? unconfirmed_email : email }
-        else
-          {}
+        headers = super
+        if action == :confirmation_instructions && pending_reconfirmation?
+          headers[:to] = unconfirmed_email
         end
+        headers
       end
 
       protected

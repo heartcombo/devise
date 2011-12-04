@@ -33,7 +33,7 @@ module Devise
       private
 
       def remember_exists_and_not_expired?
-        return false unless respond_to?(:remember_expired?)
+        return false unless respond_to?(:remember_created_at)
         remember_created_at && !remember_expired?
       end
 

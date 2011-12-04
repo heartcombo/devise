@@ -1,4 +1,4 @@
-== 1.6.0 (unreleased)
+== 2.0.0 (unreleased)
 
 * enhancements
   * Add support for e-mail reconfirmation on change (by github.com/Mandaryn and github.com/heimidal)

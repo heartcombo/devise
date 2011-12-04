@@ -1,7 +1,46 @@
 require 'test_helper'
 
-module SharedRememberableTest
-  extend ActiveSupport::Testing::Declarative
+class RememberableTest < ActiveSupport::TestCase
+  def resource_class
+    User
+  end
+
+  def create_resource
+    create_user
+  end
+
+  test 'remember_me should not generate a new token if using salt' do
+    user = create_user
+    user.expects(:valid?).never
+    user.remember_me!
+  end
+
+  test 'forget_me should not clear remember token if using salt' do
+    user = create_user
+    user.remember_me!
+    user.expects(:valid?).never
+    user.forget_me!
+  end
+
+  test 'serialize into cookie' do
+    user = create_user
+    user.remember_me!
+    assert_equal [user.to_key, user.authenticatable_salt], User.serialize_into_cookie(user)
+  end
+
+  test 'serialize from cookie' do
+    user = create_user
+    user.remember_me!
+    assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt)
+  end
+
+  test 'raises a RuntimeError if authenticatable_salt is nil' do
+    user = User.new
+    user.encrypted_password = nil
+    assert_raise RuntimeError do
+      user.rememberable_value
+    end
+  end
 
   test 'should respond to remember_me attribute' do
     assert resource_class.new.respond_to?(:remember_me)
@@ -124,164 +163,6 @@ module SharedRememberableTest
 
       resource.remember_me!(true)
       assert_not_equal old, resource.remember_created_at
-    end
-  end
-end
-
-class RememberableTest < ActiveSupport::TestCase
-  include SharedRememberableTest
-
-  def resource_class
-    Admin
-  end
-
-  def create_resource
-    create_admin
-  end
-
-  test 'remember_me should generate a new token and save the record without validating' do
-    admin = create_admin
-    admin.expects(:valid?).never
-    token = admin.remember_token
-    admin.remember_me!
-    assert_not_equal token, admin.remember_token
-    assert_not admin.changed?
-  end
-
-  test 'forget_me should clear remember token and save the record without validating' do
-    admin = create_admin
-    admin.remember_me!
-    assert_not admin.remember_token.nil?
-    admin.expects(:valid?).never
-    admin.forget_me!
-    assert admin.remember_token.nil?
-    assert_not admin.changed?
-  end
-
-  test 'serialize into cookie' do
-    admin = create_admin
-    admin.remember_me!
-    assert_equal [admin.to_key, admin.remember_token], Admin.serialize_into_cookie(admin)
-  end
-
-  test 'serialize from cookie' do
-    admin = create_admin
-    admin.remember_me!
-    assert_equal admin, Admin.serialize_from_cookie(admin.to_key, admin.remember_token)
-  end
-
-  test 'if remember_across_browsers is true, remember_me! should create a new token if no token exists' do
-    swap Devise, :remember_across_browsers => true, :remember_for => 1.year do
-      admin = create_admin
-      assert_equal nil, admin.remember_token
-      admin.remember_me!
-      assert_not_equal nil, admin.remember_token
-    end
-  end
-
-  test 'if remember_across_browsers is true, remember_me! should create a new token if a token exists but has expired' do
-    swap Devise, :remember_across_browsers => true, :remember_for => 1.day do
-      admin = create_admin
-      admin.remember_me!
-      admin.remember_created_at = 2.days.ago
-      admin.save
-      token = admin.remember_token
-      admin.remember_me!
-      assert_not_equal token, admin.remember_token
-    end
-  end
-
-  test 'if remember_across_browsers is true, remember_me! should not create a new token if a token exists and has not expired' do
-    swap Devise, :remember_across_browsers => true, :remember_for => 2.days do
-      admin = create_admin
-      admin.remember_me!
-      admin.remember_created_at = 1.day.ago
-      admin.save
-      token = admin.remember_token
-      admin.remember_me!
-      assert_equal token, admin.remember_token
-    end
-  end
-
-  test 'if remember_across_browsers is false, remember_me! should create a new token if no token exists' do
-    swap Devise, :remember_across_browsers => false do
-      admin = create_admin
-      assert_equal nil, admin.remember_token
-      admin.remember_me!
-      assert_not_equal nil, admin.remember_token
-    end
-  end
-
-  test 'if remember_across_browsers is false, remember_me! should create a new token if a token exists but has expired' do
-    swap Devise, :remember_across_browsers => false, :remember_for => 1.day do
-      admin = create_admin
-      admin.remember_me!
-      admin.remember_created_at = 2.days.ago
-      admin.save
-      token = admin.remember_token
-      admin.remember_me!
-      assert_not_equal token, admin.remember_token
-    end
-  end
-
-  test 'if remember_across_browsers is false, remember_me! should create a new token if a token exists and has not expired' do
-    swap Devise, :remember_across_browsers => false, :remember_for => 2.days do
-      admin = create_admin
-      admin.remember_me!
-      admin.remember_created_at = 1.day.ago
-      admin.save
-      token = admin.remember_token
-      admin.remember_me!
-      assert_not_equal token, admin.remember_token
-    end
-  end
-end
-
-class WithSaltRememberableTest < ActiveSupport::TestCase
-  include SharedRememberableTest
-
-  setup do
-    assert_not User.new.respond_to?(:remember_token)
-  end
-
-  def resource_class
-    User
-  end
-
-  def create_resource
-    create_user
-  end
-
-  test 'remember_me should not generate a new token if using salt' do
-    user = create_user
-    user.expects(:valid?).never
-    user.remember_me!
-  end
-
-  test 'forget_me should not clear remember token if using salt' do
-    user = create_user
-    user.remember_me!
-    user.expects(:valid?).never
-    user.forget_me!
-  end
-
-  test 'serialize into cookie' do
-    user = create_user
-    user.remember_me!
-    assert_equal [user.to_key, user.authenticatable_salt], User.serialize_into_cookie(user)
-  end
-
-  test 'serialize from cookie' do
-    user = create_user
-    user.remember_me!
-    assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt)
-  end
-
-  test 'raises a RuntimeError if authenticatable_salt is nil' do
-    user = User.new
-    user.encrypted_password = nil
-    assert_raise RuntimeError do
-      user.rememberable_value
     end
   end
 end

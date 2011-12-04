@@ -52,6 +52,9 @@ module Devise
       included do
         class_attribute :devise_modules, :instance_writer => false
         self.devise_modules ||= []
+
+        before_validation :downcase_keys
+        before_validation :strip_whitespace
       end
 
       # Check if the current object is valid for authentication. This method and
@@ -79,8 +82,21 @@ module Devise
         Devise.mailer
       end
 
+      def headers_for(name)
+        {}
+      end
+
+      def downcase_keys
+        (self.class.case_insensitive_keys || []).each { |k| self[k].try(:downcase!) }
+      end
+
+      def strip_whitespace
+        (self.class.strip_whitespace_keys || []).each { |k| self[k].try(:strip!) }
+      end
+
       module ClassMethods
-        Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys, :case_insensitive_keys, :http_authenticatable, :params_authenticatable)
+        Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
+          :case_insensitive_keys, :http_authenticatable, :params_authenticatable)
 
         def serialize_into_session(record)
           [record.to_key, record.authenticatable_salt]

@@ -1,7 +1,12 @@
+== 1.6.0 (unreleased)
+
+* enhancements
+  * Add support for e-mail reconfirmation on change (by github.com/Mandaryn and github.com/heimidal)
+
 == 1.5.2
 
 * enhancements
-  * Add support for rails 3.1 new mass assignment conventions (by github.com/kirs)
+  * Add support for Rails 3.1 new mass assignment conventions (by github.com/kirs)
   * Add timeout_in method to Timeoutable, it can be overriden in a model (by github.com/lest)
 
 * bug fix

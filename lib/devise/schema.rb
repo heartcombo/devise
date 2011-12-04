@@ -40,6 +40,11 @@ module Devise
       apply_devise_schema :confirmation_sent_at, DateTime
     end
 
+    # Creates unconfirmed_email
+    def reconfirmable
+      apply_devise_schema :unconfirmed_email,    String
+    end
+
     # Creates reset_password_token and reset_password_sent_at.
     #
     # == Options

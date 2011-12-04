@@ -291,3 +291,45 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_equal User.count, 0
   end
 end
+
+class ReconfirmableRegistrationTest < ActionController::IntegrationTest
+  def setup
+    add_unconfirmed_email_column
+    Devise.reconfirmable = true
+  end
+
+  def teardown
+    remove_unconfirmed_email_column
+    Devise.reconfirmable = false
+  end
+
+  test 'a signed in user should see a more appropriate flash message when editing his account if reconfirmable is enabled' do
+    sign_in_as_user
+    get edit_user_registration_path
+
+    fill_in 'email', :with => 'user.new@example.com'
+    fill_in 'current password', :with => '123456'
+    click_button 'Update'
+
+    assert_current_url '/'
+    assert_contain 'You updated your account successfully, but we need to verify your new email address. Please check your email and click on the confirm link to finalize your new email address.'
+
+    assert_equal "user.new@example.com", User.first.unconfirmed_email
+  end
+
+  test 'A signed in user should not see a reconfirmation message if they did not change their password' do
+    sign_in_as_user
+    get edit_user_registration_path
+
+    fill_in 'password', :with => 'pas123'
+    fill_in 'password confirmation', :with => 'pas123'
+    fill_in 'current password', :with => '123456'
+    click_button 'Update'
+
+    assert_current_url '/'
+    assert_contain 'You updated your account successfully.'
+
+    assert User.first.valid_password?('pas123')
+  end
+end
+

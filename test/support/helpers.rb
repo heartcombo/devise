@@ -84,4 +84,26 @@ class ActiveSupport::TestCase
       end
     end
   end
+
+  # TODO: Get rid of this in favor of a real model with unconfirmed
+  def add_unconfirmed_email_column
+    if DEVISE_ORM == :active_record
+      ActiveRecord::Base.connection.add_column(:users, :unconfirmed_email, :string)
+      User.reset_column_information
+    elsif DEVISE_ORM == :mongoid
+      User.field(:unconfirmed_email, :type => String)
+    end
+  end
+
+  # TODO: Get rid of this in favor of a real model with unconfirmed
+  def remove_unconfirmed_email_column
+    if DEVISE_ORM == :active_record
+      ActiveRecord::Base.connection.remove_column(:users, :unconfirmed_email)
+      User.reset_column_information
+    elsif DEVISE_ORM == :mongoid
+      User.fields.delete(:unconfirmed_email)
+      User.send(:undefine_attribute_methods)
+      User.send(:define_attribute_methods, User.fields.keys)
+    end
+  end
 end

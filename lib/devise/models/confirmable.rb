@@ -33,7 +33,7 @@ module Devise
         before_create :generate_confirmation_token, :if => :confirmation_required?
         after_create  :send_confirmation_instructions, :if => :confirmation_required?
         before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
-        after_update :send_confirmation_instructions, :if => :email_change_confirmation_required?
+        after_update :send_confirmation_instructions, :if => :reconfirmation_required?
       end
 
       # Confirm a user by setting it's confirmed_at to actual time. If the user
@@ -66,7 +66,7 @@ module Devise
 
       # Send confirmation instructions by email
       def send_confirmation_instructions
-        @email_change_confirmation_required = false
+        @reconfirmation_required = false
         generate_confirmation_token! if self.confirmation_token.nil?
         self.devise_mailer.confirmation_instructions(self).deliver
       end
@@ -136,7 +136,7 @@ module Devise
         # Checks whether the record is confirmed or not or a new email has been added, yielding to the block
         # if it's already confirmed, otherwise adds an error to email.
         def unless_confirmed
-          unless confirmed? && (self.class.reconfirmable ? unconfirmed_email.blank? : true)
+          unless confirmed? && !pending_reconfirmation?
             yield
           else
             self.errors.add(:email, :already_confirmed)
@@ -161,7 +161,7 @@ module Devise
         end
 
         def postpone_email_change_until_confirmation
-          @email_change_confirmation_required = true
+          @reconfirmation_required = true
           self.unconfirmed_email = self.email
           self.email = self.email_was
         end
@@ -172,8 +172,8 @@ module Devise
           postpone
         end
 
-        def email_change_confirmation_required?
-          self.class.reconfirmable && @email_change_confirmation_required
+        def reconfirmation_required?
+          self.class.reconfirmable && @reconfirmation_required
         end
 
       module ClassMethods

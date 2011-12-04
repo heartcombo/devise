@@ -222,17 +222,17 @@ class ConfirmationOnChangeTest < ConfirmationTest
   test 'user should be able to request a new confirmation after email changed' do
     user = create_user(:confirm => true)
     user.update_attributes(:email => 'new_test@example.com')
-    ActionMailer::Base.deliveries.clear
 
     visit new_user_session_path
     click_link "Didn't receive confirmation instructions?"
 
     fill_in 'email', :with => user.unconfirmed_email
-    click_button 'Resend confirmation instructions'
+    assert_difference "ActionMailer::Base.deliveries.size" do
+      click_button 'Resend confirmation instructions'
+    end
 
     assert_current_url '/users/sign_in'
     assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
-    assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
   test 'user with valid confirmation token should be able to confirm email after email changed' do
@@ -244,6 +244,7 @@ class ConfirmationOnChangeTest < ConfirmationTest
     assert_contain 'Your account was successfully confirmed.'
     assert_current_url '/'
     assert user.reload.confirmed?
+    assert_not user.reload.pending_reconfirmation?
   end
 
   test 'user email should be unique also within unconfirmed_email' do
@@ -251,14 +252,11 @@ class ConfirmationOnChangeTest < ConfirmationTest
     user.update_attributes(:email => 'new_test@example.com')
     assert 'new_test@example.com', user.unconfirmed_email
 
-    get new_user_registration_path
+    create_second_user(:email => "new_test@example.com")
 
-    fill_in 'email', :with => 'new_test@example.com'
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user123'
-    click_button 'Sign up'
-
+    visit_user_confirmation_with_token(user.confirmation_token)
     assert_have_selector '#error_explanation'
     assert_contain /Email.*already.*taken/
+    assert user.reload.pending_reconfirmation?
   end
 end

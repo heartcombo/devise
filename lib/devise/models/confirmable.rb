@@ -29,27 +29,6 @@ module Devise
     module Confirmable
       extend ActiveSupport::Concern
 
-      # email uniqueness validation in unconfirmed_email column, works only if unconfirmed_email is defined on record
-      class ConfirmableValidator < ActiveModel::Validator
-        def validate(record)
-          if unconfirmed_email_defined?(record) && email_exists_in_unconfirmed_emails?(record)
-            record.errors.add(:email, :taken)
-          end
-        end
-
-        protected
-        def unconfirmed_email_defined?(record)
-          record.respond_to?(:unconfirmed_email)
-        end
-
-        def email_exists_in_unconfirmed_emails?(record)
-          count = record.class.where(:unconfirmed_email => record.email).count
-          expected_count = record.new_record? ? 0 : 1
-
-          count > expected_count
-        end
-      end
-
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
         after_create  :send_confirmation_instructions, :if => :confirmation_required?
@@ -79,6 +58,10 @@ module Devise
       # Verifies whether a user is confirmed or not
       def confirmed?
         !!confirmed_at
+      end
+
+      def pending_reconfirmation?
+        self.class.reconfirmable && unconfirmed_email.present?
       end
 
       # Send confirmation instructions by email
@@ -224,7 +207,7 @@ module Devise
 
         # Find a record for confirmation by unconfirmed email field
         def find_by_unconfirmed_email_with_errors(attributes = {})
-          unconfirmed_required_attributes = confirmation_keys.map{ |k| k == :email ? :unconfirmed_email : k }
+          unconfirmed_required_attributes = confirmation_keys.map { |k| k == :email ? :unconfirmed_email : k }
           unconfirmed_attributes = attributes.symbolize_keys
           unconfirmed_attributes[:unconfirmed_email] = unconfirmed_attributes.delete(:email)
           find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)

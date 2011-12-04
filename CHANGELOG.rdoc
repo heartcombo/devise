@@ -3,6 +3,12 @@
 * enhancements
   * Add support for e-mail reconfirmation on change (by github.com/Mandaryn and github.com/heimidal)
 
+* deprecation
+  * Devise.apply_schema is deprecated
+  * Usage of rememberable with remember_token is deprecated
+  * Usage of recoverable without reset_password_sent_at is deprecated
+  * Usage of remember_across_browsers is deprecated
+
 == 1.5.2
 
 * enhancements

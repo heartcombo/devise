@@ -6,8 +6,8 @@ class Admin
   include SharedAdmin
 
   ## Database authenticatable
-  field :email,              :type => String, :null => false, :default => ""
-  field :encrypted_password, :type => String, :null => false, :default => ""
+  field :email,              :type => String, :null => true
+  field :encrypted_password, :type => String, :null => true
 
   ## Recoverable
   field :reset_password_token,   :type => String

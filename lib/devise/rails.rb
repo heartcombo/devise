@@ -52,7 +52,8 @@ module Devise
       if Devise.apply_schema && defined?(Mongoid)
         puts "\n[DEVISE] Devise.apply_schema is true. This means Devise was " \
           "automatically configuring your DB. This no longer happens. You should " \
-          "set this options to false and manually set the fields used by Devise."
+          "set Devise.apply_schema to false and manually set the fields used by Devise as shown here: " \
+          "https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0-migration-schema-style"
       end
 
       # TODO: Deprecate the true value of this option as well

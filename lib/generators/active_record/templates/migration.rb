@@ -5,15 +5,7 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
   def self.up
 <% end -%>
     create_table(:<%= table_name %>) do |t|
-      t.database_authenticatable :null => false
-      t.recoverable
-      t.rememberable
-      t.trackable
-
-      # t.encryptable
-      # t.confirmable
-      # t.lockable :lock_strategy => :<%= Devise.lock_strategy %>, :unlock_strategy => :<%= Devise.unlock_strategy %>
-      # t.token_authenticatable
+<%= migration_data -%>
 
 <% attributes.each do |attribute| -%>
       t.<%= attribute.type %> :<%= attribute.name %>

@@ -20,7 +20,7 @@ module ActiveRecord
       def generate_model
         invoke "active_record:model", [name], :migration => false unless model_exists? && behavior == :invoke
       end
-      
+
       def inject_devise_content
         inject_into_class(model_path, class_name, model_contents + <<CONTENT) if model_exists?
   # Setup accessible (or protected) attributes for your model
@@ -42,7 +42,7 @@ CONTENT
       t.datetime :remember_created_at
 
       ## Trackable
-      t.integer  :sign_in_count
+      t.integer  :sign_in_count, :default => 0
       t.datetime :current_sign_in_at
       t.datetime :last_sign_in_at
       t.string   :current_sign_in_ip

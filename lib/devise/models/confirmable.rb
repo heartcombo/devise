@@ -37,7 +37,7 @@ module Devise
       end
 
       # Confirm a user by setting it's confirmed_at to actual time. If the user
-      # is already confirmed, add en error to email field. If the user is invalid
+      # is already confirmed, add an error to email field. If the user is invalid
       # add errors
       def confirm!
         unless_confirmed do

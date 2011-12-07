@@ -1,3 +1,6 @@
+* bug fix
+  * Ensure delegator converts scope to symbol (by github.com/dmitriy-kiriyenko)
+
 == 1.5.2
 
 * enhancements

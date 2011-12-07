@@ -312,7 +312,7 @@ class ReconfirmableRegistrationTest < ActionController::IntegrationTest
     click_button 'Update'
 
     assert_current_url '/'
-    assert_contain 'You updated your account successfully, but we need to verify your new email address. Please check your email and click on the confirm link to finalize your new email address.'
+    assert_contain 'but we need to verify your new email address'
 
     assert_equal "user.new@example.com", User.first.unconfirmed_email
   end

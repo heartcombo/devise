@@ -80,16 +80,16 @@ class LockTest < ActionController::IntegrationTest
 
     visit_user_unlock_with_token(user.unlock_token)
 
-    assert_current_url '/'
+    assert_current_url "/users/sign_in"
     assert_contain 'Your account was successfully unlocked.'
 
     assert_not user.reload.access_locked?
   end
 
-  test "sign in user automatically after unlocking its account" do
+  test "redirect user to sign in page after unlocking its account" do
     user = create_user(:locked => true)
     visit_user_unlock_with_token(user.unlock_token)
-    assert warden.authenticated?(:user)
+    assert_not warden.authenticated?(:user)
   end
 
   test "user should not be able to sign in when locked" do

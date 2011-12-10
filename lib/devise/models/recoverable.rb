@@ -40,7 +40,7 @@ module Devise
 
       # Resets reset password token and send reset password instructions by email
       def send_reset_password_instructions
-        generate_reset_password_token! if should_generate_token?
+        generate_reset_password_token! if should_generate_reset_token?
         self.devise_mailer.reset_password_instructions(self).deliver
       end
 
@@ -70,7 +70,7 @@ module Devise
 
       protected
 
-        def should_generate_token?
+        def should_generate_reset_token?
           reset_password_token.nil? || !reset_password_period_valid?
         end
 

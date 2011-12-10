@@ -2,6 +2,7 @@
 
 * enhancements
   * Add support for e-mail reconfirmation on change (by github.com/Mandaryn and github.com/heimidal)
+  * Redirect users to sign in page after unlock (by github.com/nashby)
 
 * deprecation
   * Devise.apply_schema is deprecated

@@ -6,7 +6,11 @@ module Devise
     # parameters both from params or from http authorization headers. See database_authenticatable
     # for an example.
     class Authenticatable < Base
-      attr_accessor :authentication_hash, :password
+      attr_accessor :authentication_hash, :authentication_type, :password
+
+      def store?
+        !mapping.to.skip_session_storage.include?(authentication_type)
+      end
 
       def valid?
         valid_for_params_auth? || valid_for_http_auth?
@@ -47,7 +51,7 @@ module Devise
       #   * If all authentication keys are present;
       #
       def valid_for_http_auth?
-        http_authenticatable? && request.authorization && with_authentication_hash(http_auth_hash)
+        http_authenticatable? && request.authorization && with_authentication_hash(:http_auth, http_auth_hash)
       end
 
       # Check if this is strategy is valid for params authentication by:
@@ -58,8 +62,8 @@ module Devise
       #   * If all authentication keys are present;
       #
       def valid_for_params_auth?
-        params_authenticatable? && valid_request? &&
-          valid_params? && with_authentication_hash(params_auth_hash)
+        params_authenticatable? && valid_params_request? &&
+          valid_params? && with_authentication_hash(:params_auth, params_auth_hash)
       end
 
       # Check if the model accepts this strategy as http authenticatable.
@@ -83,8 +87,8 @@ module Devise
         Hash[*keys.zip(decode_credentials).flatten]
       end
 
-      # By default, a request is valid  if the controller is allowed and the VERB is POST.
-      def valid_request?
+      # By default, a request is valid if the controller set the proper env variable.
+      def valid_params_request?
         !!env["devise.allow_params_authentication"]
       end
 
@@ -105,8 +109,8 @@ module Devise
       end
 
       # Sets the authentication hash and the password from params_auth_hash or http_auth_hash.
-      def with_authentication_hash(auth_values)
-        self.authentication_hash = {}
+      def with_authentication_hash(auth_type, auth_values)
+        self.authentication_hash, self.authentication_type = {}, auth_type
         self.password = auth_values[:password]
 
         parse_authentication_key_values(auth_values, authentication_keys) &&

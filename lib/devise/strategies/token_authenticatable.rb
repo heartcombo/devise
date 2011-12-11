@@ -11,7 +11,7 @@ module Devise
     # a password, you can pass "X" as password and it will simply be ignored.
     class TokenAuthenticatable < Authenticatable
       def store?
-        !mapping.to.stateless_token
+        super && !mapping.to.skip_session_storage.include?(:token_auth)
       end
 
       def authenticate!
@@ -27,8 +27,8 @@ module Devise
 
     private
 
-      # TokenAuthenticatable request is valid for any controller and any verb.
-      def valid_request?
+      # Token Authenticatable can be authenticated with params in any controller and any verb.
+      def valid_params_request?
         true
       end
 

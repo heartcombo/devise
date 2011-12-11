@@ -25,6 +25,11 @@ module Devise
     #   * +params_authenticatable+: if this model allows authentication through request params. By default true.
     #     It also accepts an array specifying the strategies that should allow params authentication.
     #
+    #   * +skip_session_storage+: By default Devise will store the user in session.
+    #     You can skip storage for http and token auth by appending values to array:
+    #     :skip_session_storage => [:token_auth] or :skip_session_storage => [:http_auth, :token_auth],
+    #     by default is set to :skip_session_storage => [:http_auth].
+    #
     # == active_for_authentication?
     #
     # After authenticating a user and in each request, Devise checks if your model is active by
@@ -96,7 +101,7 @@ module Devise
 
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
-          :case_insensitive_keys, :http_authenticatable, :params_authenticatable)
+          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage)
 
         def serialize_into_session(record)
           [record.to_key, record.authenticatable_salt]

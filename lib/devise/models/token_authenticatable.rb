@@ -24,9 +24,6 @@ module Devise
     #
     #   * +token_authentication_key+: Defines name of the authentication token params key. E.g. /users/sign_in?some_key=...
     #
-    #   * +stateless_token+: By default, when you sign up with a token, Devise will store the user in session
-    #     as any other authentication strategy. You can set stateless_token to true to avoid this.
-    #
     module TokenAuthenticatable
       extend ActiveSupport::Concern
 
@@ -65,7 +62,7 @@ module Devise
           generate_token(:authentication_token)
         end
 
-        ::Devise::Models.config(self, :token_authentication_key, :stateless_token)
+        ::Devise::Models.config(self, :token_authentication_key)
       end
     end
   end

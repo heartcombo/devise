@@ -197,9 +197,9 @@ module Devise
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
 
-  # If true, authentication through token does not store user in session
-  mattr_accessor :stateless_token
-  @@stateless_token = false
+  # Skip session storage for the following strategies
+  mattr_accessor :skip_session_storage
+  @@skip_session_storage = []
 
   # Which formats should be treated as navigational.
   # We need both :"*/*" and "*/*" to work on different Rails versions.
@@ -232,6 +232,13 @@ module Devise
 
   def self.confirm_within=(value)
     puts "\n[DEVISE] Devise.confirm_within= is deprecated. Please set Devise.allow_unconfirmed_access_for= instead."
+    Devise.allow_unconfirmed_access_for = value
+  end
+
+  def self.stateless_token=(value)
+    puts "\n[DEVISE] Devise.stateless_token= is deprecated. Please append :token_auth to Devise.skip_session_storage " \
+      "instead, for example: Devise.skip_session_storage << :token_auth"
+    Devise.skip_session_storage << :token_auth
   end
 
   # PRIVATE CONFIGURATION

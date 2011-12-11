@@ -12,9 +12,24 @@ class HttpAuthenticationTest < ActionController::IntegrationTest
 
   test 'sign in should authenticate with http' do
     sign_in_as_new_user_with_http
-    assert_response :success
+    assert_response 200
     assert_match '<email>user@test.com</email>', response.body
     assert warden.authenticated?(:user)
+
+    get users_path(:format => :xml)
+    assert_response 200
+  end
+
+  test 'sign in should authenticate with http but not emit a cookie if skipping session storage' do
+    swap Devise, :skip_session_storage => [:http_auth] do
+      sign_in_as_new_user_with_http
+      assert_response 200
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
+
+      get users_path(:format => :xml)
+      assert_response 401
+    end
   end
 
   test 'returns a custom response with www-authenticate header on failures' do

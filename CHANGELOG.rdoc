@@ -6,11 +6,12 @@
 
 * deprecation
   * Devise.apply_schema is deprecated
-  * Usage of remember_across_browsers was deprecated
-  * Usage of confirm_within was deprecated in favor allow_unconfirmed_access_for
+  * Usage of Devise.remember_across_browsers was deprecated
+  * Usage of Devise.confirm_within was deprecated in favor Devise.allow_unconfirmed_access_for
   * Usage of rememberable with remember_token was removed
   * Usage of recoverable without reset_password_sent_at was removed
-  * Usage of case_insensitive_keys equals to false was removed
+  * Usage of Devise.case_insensitive_keys equals to false was removed
+  * Usage of Devise.stateless_token= is deprecated in favor of appending :token_auth to Devise.skip_session_storage
 
 == 1.5.2
 

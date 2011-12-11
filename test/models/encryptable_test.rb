@@ -31,7 +31,7 @@ class EncryptableTest < ActiveSupport::TestCase
 
   test 'should generate a base64 hash using SecureRandom for password salt' do
     swap_with_encryptor Admin, :sha1 do
-      SecureRandom.expects(:base64).with(15).returns('01lI')
+      SecureRandom.expects(:base64).with(15).returns('01lI').twice
       salt = create_admin.password_salt
       assert_not_equal '01lI', salt
       assert_equal 4, salt.size

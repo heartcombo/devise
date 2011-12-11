@@ -13,7 +13,7 @@ class RegistrationTest < ActionController::IntegrationTest
     fill_in 'password confirmation', :with => 'new_user123'
     click_button 'Sign up'
 
-    assert_contain 'Welcome! You have signed up successfully.'
+    assert_contain 'You have signed up successfully'
     assert warden.authenticated?(:admin)
     assert_current_url "/admin_area/home"
 
@@ -317,7 +317,7 @@ class ReconfirmableRegistrationTest < ActionController::IntegrationTest
     assert_equal "user.new@example.com", User.first.unconfirmed_email
   end
 
-  test 'A signed in user should not see a reconfirmation message if they did not change their password' do
+  test 'a signed in user should not see a reconfirmation message if they did not change their password' do
     sign_in_as_user
     get edit_user_registration_path
 

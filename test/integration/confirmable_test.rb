@@ -202,61 +202,54 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 end
 
-class ConfirmationOnChangeTest < ConfirmationTest
-
-  def create_second_user(options={})
-    @user = nil
-    create_user(options)
+class ConfirmationOnChangeTest < ActionController::IntegrationTest
+  def create_second_admin(options={})
+    @admin = nil
+    create_admin(options)
   end
 
-  def setup
-    add_unconfirmed_email_column
-    Devise.reconfirmable = true
+  def visit_admin_confirmation_with_token(confirmation_token)
+    visit admin_confirmation_path(:confirmation_token => confirmation_token)
   end
 
-  def teardown
-    remove_unconfirmed_email_column
-    Devise.reconfirmable = false
-  end
+  test 'admin should be able to request a new confirmation after email changed' do
+    admin = create_admin
+    admin.update_attributes(:email => 'new_test@example.com')
 
-  test 'user should be able to request a new confirmation after email changed' do
-    user = create_user(:confirm => true)
-    user.update_attributes(:email => 'new_test@example.com')
-
-    visit new_user_session_path
+    visit new_admin_session_path
     click_link "Didn't receive confirmation instructions?"
 
-    fill_in 'email', :with => user.unconfirmed_email
+    fill_in 'email', :with => admin.unconfirmed_email
     assert_difference "ActionMailer::Base.deliveries.size" do
       click_button 'Resend confirmation instructions'
     end
 
-    assert_current_url '/users/sign_in'
+    assert_current_url '/admin_area/sign_in'
     assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
   end
 
-  test 'user with valid confirmation token should be able to confirm email after email changed' do
-    user = create_user(:confirm => true)
-    user.update_attributes(:email => 'new_test@example.com')
-    assert 'new_test@example.com', user.unconfirmed_email
-    visit_user_confirmation_with_token(user.confirmation_token)
+  test 'admin with valid confirmation token should be able to confirm email after email changed' do
+    admin = create_admin
+    admin.update_attributes(:email => 'new_test@example.com')
+    assert_equal 'new_test@example.com', admin.unconfirmed_email
+    visit_admin_confirmation_with_token(admin.confirmation_token)
 
     assert_contain 'Your account was successfully confirmed.'
-    assert_current_url '/'
-    assert user.reload.confirmed?
-    assert_not user.reload.pending_reconfirmation?
+    assert_current_url '/admin_area/home'
+    assert admin.reload.confirmed?
+    assert_not admin.reload.pending_reconfirmation?
   end
 
-  test 'user email should be unique also within unconfirmed_email' do
-    user = create_user(:confirm => true)
-    user.update_attributes(:email => 'new_test@example.com')
-    assert 'new_test@example.com', user.unconfirmed_email
+  test 'admin email should be unique also within unconfirmed_email' do
+    admin = create_admin
+    admin.update_attributes(:email => 'new_admin_test@example.com')
+    assert_equal 'new_admin_test@example.com', admin.unconfirmed_email
 
-    create_second_user(:email => "new_test@example.com")
+    create_second_admin(:email => "new_admin_test@example.com")
 
-    visit_user_confirmation_with_token(user.confirmation_token)
+    visit_admin_confirmation_with_token(admin.confirmation_token)
     assert_have_selector '#error_explanation'
     assert_contain /Email.*already.*taken/
-    assert user.reload.pending_reconfirmation?
+    assert admin.reload.pending_reconfirmation?
   end
 end

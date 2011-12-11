@@ -237,98 +237,80 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 end
 
-class ReconfirmableTest < ConfirmableTest
-  def setup
-    add_unconfirmed_email_column
-    Devise.reconfirmable = true
-  end
-
-  def teardown
-    remove_unconfirmed_email_column
-    Devise.reconfirmable = false
-  end
-
-  def test_should_not_resend_email_instructions_if_the_user_change_his_email
-    #behaves differently
-  end
-
-  def test_should_not_reset_confirmation_status_or_token_when_updating_email
-    #behaves differently
-  end
-
+class ReconfirmableTest < ActiveSupport::TestCase
   test 'should generate confirmation token after changing email' do
-    user = create_user
-    assert user.confirm!
-    assert_nil user.confirmation_token
-    assert user.update_attributes(:email => 'new_test@example.com')
-    assert_not_nil user.confirmation_token
+    admin = create_admin
+    assert admin.confirm!
+    assert_nil admin.confirmation_token
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    assert_not_nil admin.confirmation_token
   end
 
   test 'should send confirmation instructions by email after changing email' do
-    user = create_user
-    assert user.confirm!
+    admin = create_admin
+    assert admin.confirm!
     assert_email_sent "new_test@example.com" do
-      assert user.update_attributes(:email => 'new_test@example.com')
+      assert admin.update_attributes(:email => 'new_test@example.com')
     end
   end
 
   test 'should not send confirmation by email after changing password' do
-    user = create_user
-    assert user.confirm!
+    admin = create_admin
+    assert admin.confirm!
     assert_email_not_sent do
-      assert user.update_attributes(:password => 'newpass', :password_confirmation => 'newpass')
+      assert admin.update_attributes(:password => 'newpass', :password_confirmation => 'newpass')
     end
   end
 
   test 'should stay confirmed when email is changed' do
-    user = create_user
-    assert user.confirm!
-    assert user.update_attributes(:email => 'new_test@example.com')
-    assert user.confirmed?
+    admin = create_admin
+    assert admin.confirm!
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    assert admin.confirmed?
   end
 
   test 'should update email only when it is confirmed' do
-    user = create_user
-    assert user.confirm!
-    assert user.update_attributes(:email => 'new_test@example.com')
-    assert_not_equal 'new_test@example.com', user.email
-    assert user.confirm!
-    assert_equal 'new_test@example.com', user.email
+    admin = create_admin
+    assert admin.confirm!
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    assert_not_equal 'new_test@example.com', admin.email
+    assert admin.confirm!
+    assert_equal 'new_test@example.com', admin.email
   end
 
-  test 'should not allow user to get past confirmation email by resubmitting their new address' do
-    user = create_user
-    assert user.confirm!
-    assert user.update_attributes(:email => 'new_test@example.com')
-    assert_not_equal 'new_test@example.com', user.email
-    assert user.update_attributes(:email => 'new_test@example.com')
-    assert_not_equal 'new_test@example.com', user.email
+  test 'should not allow admin to get past confirmation email by resubmitting their new address' do
+    admin = create_admin
+    assert admin.confirm!
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    assert_not_equal 'new_test@example.com', admin.email
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    assert_not_equal 'new_test@example.com', admin.email
   end
 
-  test 'should find a user by send confirmation instructions with unconfirmed_email' do
-    user = create_user
-    assert user.confirm!
-    assert user.update_attributes(:email => 'new_test@example.com')
-    confirmation_user = User.send_confirmation_instructions(:email => user.unconfirmed_email)
-    assert_equal confirmation_user, user
+  test 'should find a admin by send confirmation instructions with unconfirmed_email' do
+    admin = create_admin
+    assert admin.confirm!
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    confirmation_admin = Admin.send_confirmation_instructions(:email => admin.unconfirmed_email)
+    assert_equal confirmation_admin, admin
   end
 
-  test 'should return a new user if no email or unconfirmed_email was found' do
-    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
-    assert_not confirmation_user.persisted?
+  test 'should return a new admin if no email or unconfirmed_email was found' do
+    confirmation_admin = Admin.send_confirmation_instructions(:email => "invalid@email.com")
+    assert_not confirmation_admin.persisted?
   end
 
-  test 'should add error to new user email if no email or unconfirmed_email was found' do
-    confirmation_user = User.send_confirmation_instructions(:email => "invalid@email.com")
-    assert confirmation_user.errors[:email]
-    assert_equal "not found", confirmation_user.errors[:email].join
+  test 'should add error to new admin email if no email or unconfirmed_email was found' do
+    confirmation_admin = Admin.send_confirmation_instructions(:email => "invalid@email.com")
+    assert confirmation_admin.errors[:email]
+    assert_equal "not found", confirmation_admin.errors[:email].join
   end
 
-  test 'should find user with email in unconfirmed_emails' do
-    user = create_user
-    user.unconfirmed_email = "new_test@email.com"
-    assert user.save
-    user = User.find_by_unconfirmed_email_with_errors(:email => "new_test@email.com")
-    assert user.persisted?
+  test 'should find admin with email in unconfirmed_emails' do
+    admin = create_admin
+    admin.unconfirmed_email = "new_test@email.com"
+    assert admin.save
+    admin = Admin.find_by_unconfirmed_email_with_errors(:email => "new_test@email.com")
+    assert admin.persisted?
   end
 end

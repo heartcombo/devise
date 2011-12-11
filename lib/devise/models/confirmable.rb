@@ -9,11 +9,11 @@ module Devise
     #
     # Confirmable adds the following options to devise_for:
     #
-    #   * +confirm_within+: the time you want to allow the user to access his account
+    #   * +allow_unconfirmed_access_for+: the time you want to allow the user to access his account
     #     before confirming it. After this period, the user access is denied. You can
     #     use this to let your user access some features of your application without
     #     confirming the account, but blocking it after a certain period (ie 7 days).
-    #     By default confirm_within is zero, it means users always have to confirm to sign in.
+    #     By default allow_unconfirmed_access_for is zero, it means users always have to confirm to sign in.
     #   * +reconfirmable+: requires any email changes to be confirmed (exactly the same way as
     #     initial account confirmation) to be applied. Requires additional unconfirmed_email
     #     db field to be setup (t.reconfirmable in migrations). Until confirmed new email is
@@ -117,20 +117,20 @@ module Devise
         #
         # Example:
         #
-        #   # confirm_within = 1.day and confirmation_sent_at = today
+        #   # allow_unconfirmed_access_for = 1.day and confirmation_sent_at = today
         #   confirmation_period_valid?   # returns true
         #
-        #   # confirm_within = 5.days and confirmation_sent_at = 4.days.ago
+        #   # allow_unconfirmed_access_for = 5.days and confirmation_sent_at = 4.days.ago
         #   confirmation_period_valid?   # returns true
         #
-        #   # confirm_within = 5.days and confirmation_sent_at = 5.days.ago
+        #   # allow_unconfirmed_access_for = 5.days and confirmation_sent_at = 5.days.ago
         #   confirmation_period_valid?   # returns false
         #
-        #   # confirm_within = 0.days
+        #   # allow_unconfirmed_access_for = 0.days
         #   confirmation_period_valid?   # will always return false
         #
         def confirmation_period_valid?
-          confirmation_sent_at && confirmation_sent_at.utc >= self.class.confirm_within.ago
+          confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
         end
 
         # Checks whether the record is confirmed or not or a new email has been added, yielding to the block
@@ -213,7 +213,7 @@ module Devise
           find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)
         end
 
-        Devise::Models.config(self, :confirm_within, :confirmation_keys, :reconfirmable)
+        Devise::Models.config(self, :allow_unconfirmed_access_for, :confirmation_keys, :reconfirmable)
       end
     end
   end

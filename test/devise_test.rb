@@ -12,8 +12,8 @@ end
 
 class DeviseTest < ActiveSupport::TestCase
   test 'model options can be configured through Devise' do
-    swap Devise, :confirm_within => 113, :pepper => "foo" do
-      assert_equal 113, Devise.confirm_within
+    swap Devise, :allow_unconfirmed_access_for => 113, :pepper => "foo" do
+      assert_equal 113, Devise.allow_unconfirmed_access_for
       assert_equal "foo", Devise.pepper
     end
   end

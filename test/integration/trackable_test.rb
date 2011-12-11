@@ -63,7 +63,7 @@ class TrackableHooksTest < ActionController::IntegrationTest
   end
 
   test "does not update anything if user has signed out along the way" do
-    swap Devise, :confirm_within => 0 do
+    swap Devise, :allow_unconfirmed_access_for => 0 do
       user = create_user(:confirm => false)
       sign_in_as_user
 

@@ -125,8 +125,8 @@ module Devise
   @@extend_remember_period = false
 
   # Time interval you can access your account before confirming your account.
-  mattr_accessor :confirm_within
-  @@confirm_within = 0.days
+  mattr_accessor :allow_unconfirmed_access_for
+  @@allow_unconfirmed_access_for = 0.days
 
   # Defines which key will be used when confirming an account.
   mattr_accessor :confirmation_keys
@@ -228,6 +228,10 @@ module Devise
 
   def self.remember_across_browsers=(value)
     puts "\n[DEVISE] Devise.remember_across_browsers is deprecated and has no effect. Please remove it."
+  end
+
+  def self.confirm_within=(value)
+    puts "\n[DEVISE] Devise.confirm_within= is deprecated. Please set Devise.allow_unconfirmed_access_for= instead."
   end
 
   # PRIVATE CONFIGURATION
@@ -369,7 +373,7 @@ module Devise
   # initialization.
   #
   #  Devise.initialize do |config|
-  #    config.confirm_within = 2.days
+  #    config.allow_unconfirmed_access_for = 2.days
   #
   #    config.warden do |manager|
   #      # Configure warden to use other strategies, like oauth.

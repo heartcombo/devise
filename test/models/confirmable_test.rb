@@ -164,19 +164,19 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'confirm time should fallback to devise confirm in default configuration' do
-    swap Devise, :confirm_within => 1.day do
+    swap Devise, :allow_unconfirmed_access_for => 1.day do
       user = new_user
       user.confirmation_sent_at = 2.days.ago
       assert_not user.active_for_authentication?
 
-      Devise.confirm_within = 3.days
+      Devise.allow_unconfirmed_access_for = 3.days
       assert user.active_for_authentication?
     end
   end
 
   test 'should be active when confirmation sent at is not overpast' do
-    swap Devise, :confirm_within => 5.days do
-      Devise.confirm_within = 5.days
+    swap Devise, :allow_unconfirmed_access_for => 5.days do
+      Devise.allow_unconfirmed_access_for = 5.days
       user = create_user
 
       user.confirmation_sent_at = 4.days.ago
@@ -198,7 +198,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should not be active when confirm in is zero' do
-    Devise.confirm_within = 0.days
+    Devise.allow_unconfirmed_access_for = 0.days
     user = create_user
     user.confirmation_sent_at = Date.today
     assert_not user.active_for_authentication?

@@ -6,15 +6,17 @@
 
 * deprecation
   * Devise.apply_schema is deprecated
-  * Usage of rememberable with remember_token is deprecated
-  * Usage of recoverable without reset_password_sent_at is deprecated
-  * Usage of remember_across_browsers is deprecated
+  * Usage of remember_across_browsers was deprecated
+  * Usage of confirm_within was deprecated in favor allow_unconfirmed_access_for
+  * Usage of rememberable with remember_token was removed
+  * Usage of recoverable without reset_password_sent_at was removed
+  * Usage of case_insensitive_keys equals to false was removed
 
 == 1.5.2
 
 * enhancements
   * Add support for Rails 3.1 new mass assignment conventions (by github.com/kirs)
-  * Add timeout_in method to Timeoutable, it can be overriden in a model (by github.com/lest)
+  * Add timeout_in method to Timeoutable, it can be overridden in a model (by github.com/lest)
 
 * bug fix
   * OmniAuth error message now shows the proper option (:strategy_class instead of :klass)

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Configurable < User
   devise :database_authenticatable, :encryptable, :confirmable, :rememberable, :timeoutable, :lockable,
-         :stretches => 15, :pepper => 'abcdef', :confirm_within => 5.days,
+         :stretches => 15, :pepper => 'abcdef', :allow_unconfirmed_access_for => 5.days,
          :remember_for => 7.days, :timeout_in => 15.minutes, :unlock_in => 10.days
 end
 
@@ -87,8 +87,8 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal 'abcdef', Configurable.pepper
   end
 
-  test 'set a default value for confirm_within' do
-    assert_equal 5.days, Configurable.confirm_within
+  test 'set a default value for allow_unconfirmed_access_for' do
+    assert_equal 5.days, Configurable.allow_unconfirmed_access_for
   end
 
   test 'set a default value for remember_for' do

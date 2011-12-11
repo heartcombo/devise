@@ -98,7 +98,7 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 
   test 'not confirmed user with setup to block without confirmation should not be able to sign in' do
-    swap Devise, :confirm_within => 0.days do
+    swap Devise, :allow_unconfirmed_access_for => 0.days do
       sign_in_as_user(:confirm => false)
 
       assert_contain 'You have to confirm your account before continuing'
@@ -107,7 +107,7 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 
   test 'not confirmed user should not see confirmation message if invalid credentials are given' do
-    swap Devise, :confirm_within => 0.days do
+    swap Devise, :allow_unconfirmed_access_for => 0.days do
       sign_in_as_user(:confirm => false) do
         fill_in 'password', :with => 'invalid'
       end
@@ -118,7 +118,7 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 
   test 'not confirmed user but configured with some days to confirm should be able to sign in' do
-    swap Devise, :confirm_within => 1.day do
+    swap Devise, :allow_unconfirmed_access_for => 1.day do
       sign_in_as_user(:confirm => false)
 
       assert_response :success

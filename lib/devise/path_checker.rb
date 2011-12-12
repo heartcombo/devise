@@ -12,7 +12,8 @@ module Devise
     end
 
     def signing_out?
-      @current_path == send("destroy_#{@scope}_session_path")
+      route = "destroy_#{@scope}_session_path"
+      respond_to?(route) && @current_path == send(route)
     end
   end
 end

@@ -225,6 +225,10 @@ class CustomizedRoutingTest < ActionController::TestCase
       assert_recognizes({:controller => 'devise/unlocks', :action => 'show'}, {:path => '/htmlonly_users/unlock.xml', :method => :get})
     end
   end
+
+  test 'map with format false is not permanent' do
+    assert_equal "/set.xml", @routes.url_helpers.set_path(:xml)
+  end
 end
 
 class ScopedRoutingTest < ActionController::TestCase

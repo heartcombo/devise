@@ -185,7 +185,7 @@ module ActionDispatch::Routing
       options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
       options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})
       options[:defaults]      = (@scope[:defaults] || {}).merge(options[:defaults] || {})
-      @scope[:options]        = (@scope[:options] || {}).merge({:format => false}) if options[:format] == false
+      options[:options]       = (@scope[:options] || {}).merge({:format => false}) if options[:format] == false
 
       resources.map!(&:to_sym)
 
@@ -208,7 +208,7 @@ module ActionDispatch::Routing
 
         devise_scope mapping.name do
           yield if block_given?
-          with_devise_exclusive_scope mapping.fullpath, mapping.name, mapping.constraints, mapping.defaults do
+          with_devise_exclusive_scope mapping.fullpath, mapping.name, options do
             routes.each { |mod| send("devise_#{mod}", mapping, mapping.controllers) }
           end
         end
@@ -368,12 +368,15 @@ module ActionDispatch::Routing
         @scope[:path] = path
       end
 
-      def with_devise_exclusive_scope(new_path, new_as, new_constraints, new_defaults) #:nodoc:
-        old_as, old_path, old_module, old_constraints, old_defaults = @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults]
-        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults] = new_as, new_path, nil, new_constraints, new_defaults
+      def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
+        old_as, old_path, old_module, old_constraints, old_defaults, old_options = 
+          *@scope.values_at(:as, :path, :module, :constraints, :defaults, :options)
+        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults], @scope[:options] =
+          new_as, new_path, nil, *options.values_at(:constraints, :defaults, :options)
         yield
       ensure
-        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults] = old_as, old_path, old_module, old_constraints, old_defaults
+        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults], @scope[:options] = 
+          old_as, old_path, old_module, old_constraints, old_defaults, old_options
       end
 
       def raise_no_devise_method_error!(klass) #:nodoc:

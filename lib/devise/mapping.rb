@@ -23,8 +23,7 @@ module Devise
   #
   class Mapping #:nodoc:
     attr_reader :singular, :scoped_path, :path, :controllers, :path_names,
-                :class_name, :sign_out_via, :format, :used_routes, :used_helpers,
-                :constraints, :defaults, :failure_app
+                :class_name, :sign_out_via, :format, :used_routes, :used_helpers, :failure_app
 
     alias :name :singular
 
@@ -64,8 +63,6 @@ module Devise
       default_failure_app(options)
       default_controllers(options)
       default_path_names(options)
-      default_constraints(options)
-      default_defaults(options)
       default_used_route(options)
       default_used_helpers(options)
     end

@@ -20,8 +20,8 @@ module Devise
       end
 
       # Remembers the given resource by setting up a cookie
-      def remember_me(resource)
-        scope = Devise::Mapping.find_scope!(resource)
+      def remember_me(resource, options = {})
+        scope = options[:scope] || Devise::Mapping.find_scope!(resource)
         resource.remember_me!(resource.extend_remember_period)
         cookies.signed["remember_#{scope}_token"] = remember_cookie_values(resource)
       end

@@ -1,6 +1,6 @@
 == Devise
 
-{<img src="https://secure.travis-ci.org/plataformatec/devise.png" />}[http://travis-ci.org/plataformatec/devise] {<img src="https://gemnasium.com/plataformatec/devise.png?travis" />}[https://gemnasium.com/plataformatec/devise.png]
+{<img src="https://secure.travis-ci.org/plataformatec/devise.png" />}[http://travis-ci.org/plataformatec/devise] {<img src="https://gemnasium.com/plataformatec/devise.png?travis" />}[https://gemnasium.com/plataformatec/devise]
 
 Devise is a flexible authentication solution for Rails based on Warden. It:
 

@@ -28,6 +28,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal( { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => "1..10" }, conditions)
   end
 
+  test "param filter should not convert regular expressions to strings" do
+    conditions = { "regexp" => /expression/ }
+    conditions = Devise::ParamFilter.new([], []).filter(conditions)
+    assert_equal( { "regexp" => /expression/ }, conditions)
+  end
+
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)

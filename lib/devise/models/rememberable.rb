@@ -69,12 +69,12 @@ module Devise
       end
 
       def rememberable_value
-        if respond_to?(:authenticatable_salt) && (salt = authenticatable_salt)
+        if salt = authenticatable_salt
           salt
         else
-          raise "The #{self.class.name} class does not respond to remember_token and " <<
-            "authenticatable_salt returns nil. In order to use rememberable, you must " <<
-            "add a remember_token field to your model or ensure a password is always set."
+          raise "authenticable_salt returned nil for the #{self.class.name} model. " \
+            "In order to use rememberable, you must ensure a password is always set " \
+            "or implement rememberable_value in your model with your own logic."
         end
       end
 

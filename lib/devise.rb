@@ -227,16 +227,16 @@ module Devise
   @@apply_schema = true
 
   def self.remember_across_browsers=(value)
-    puts "\n[DEVISE] Devise.remember_across_browsers is deprecated and has no effect. Please remove it."
+    warn "\n[DEVISE] Devise.remember_across_browsers is deprecated and has no effect. Please remove it."
   end
 
   def self.confirm_within=(value)
-    puts "\n[DEVISE] Devise.confirm_within= is deprecated. Please set Devise.allow_unconfirmed_access_for= instead."
+    warn "\n[DEVISE] Devise.confirm_within= is deprecated. Please set Devise.allow_unconfirmed_access_for= instead."
     Devise.allow_unconfirmed_access_for = value
   end
 
   def self.stateless_token=(value)
-    puts "\n[DEVISE] Devise.stateless_token= is deprecated. Please append :token_auth to Devise.skip_session_storage " \
+    warn "\n[DEVISE] Devise.stateless_token= is deprecated. Please append :token_auth to Devise.skip_session_storage " \
       "instead, for example: Devise.skip_session_storage << :token_auth"
     Devise.skip_session_storage << :token_auth
   end

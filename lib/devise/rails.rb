@@ -44,14 +44,14 @@ module Devise
 
     initializer "devise.deprecations" do
       if Devise.case_insensitive_keys == false
-        puts "\n[DEVISE] Devise.case_insensitive_keys is false which is no longer " \
+        warn "\n[DEVISE] Devise.case_insensitive_keys is false which is no longer " \
           "supported. If you want to continue running on this mode, please ensure " \
           "you are not using validatable (you can copy the validations directly to your model) " \
           "and set case_insensitive_keys to an empty array."
       end
 
       if Devise.apply_schema && defined?(Mongoid)
-        puts "\n[DEVISE] Devise.apply_schema is true. This means Devise was " \
+        warn "\n[DEVISE] Devise.apply_schema is true. This means Devise was " \
           "automatically configuring your DB. This no longer happens. You should " \
           "set Devise.apply_schema to false and manually set the fields used by Devise as shown here: " \
           "https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0-migration-schema-style"
@@ -59,13 +59,13 @@ module Devise
 
       # TODO: Deprecate the true value of this option as well
       if Devise.use_salt_as_remember_token == false
-        puts "\n[DEVISE] Devise.use_salt_as_remember_token is false which is no longer " \
+        warn "\n[DEVISE] Devise.use_salt_as_remember_token is false which is no longer " \
           "supported. Devise now only uses the salt as remember token and the remember_token " \
           "column can be removed from your models."
       end
 
       if Devise.reset_password_within.nil?
-        puts "\n[DEVISE] Devise.reset_password_within is nil. Please set this value to " \
+        warn "\n[DEVISE] Devise.reset_password_within is nil. Please set this value to " \
           "an interval (for example, 6.hours) and add a reset_password_sent_at field to " \
           "your Devise models (if they don't have one already)."
       end

@@ -27,9 +27,9 @@ module Devise
         # Tell how to apply schema methods.
         def apply_devise_schema(name, type, options={})
           @__devise_warning_raised ||= begin
-            ActiveSupport::Deprecation.warn "You are using t.database_authenticatable and others in your migration " \
-              "and this feature is deprecated. Please simply use Rails helpers instead as mentioned here: " \
-              "https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0-migration-schema-style"
+            $stderr.puts "\n[DEVISE] You are using t.database_authenticatable and others in your migration " \
+              "and this feature is deprecated. Please simply use Rails helpers instead as mentioned here:\n" \
+              "https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0-migration-schema-style\n\n"
             true
           end
           column name, type.to_s.downcase.to_sym, options

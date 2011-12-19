@@ -1,3 +1,5 @@
+== 1.5.3
+
 * bug fix
   * Ensure delegator converts scope to symbol (by github.com/dmitriy-kiriyenko)
   * Ensure passing :format => false to devise_for is not permanent

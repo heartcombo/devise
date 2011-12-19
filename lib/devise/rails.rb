@@ -44,9 +44,10 @@ module Devise
 
     initializer "devise.deprecations" do
       if Devise.case_insensitive_keys == false
-        puts "\n[DEVISE] Devise.case_insensitive_keys is false and is no longer " \
+        puts "\n[DEVISE] Devise.case_insensitive_keys is false which is no longer " \
           "supported. If you want to continue running on this mode, please ensure " \
-          "you are not using validatable in your models and set this value to an empty array."
+          "you are not using validatable (you can copy the validations directly to your model) " \
+          "and set case_insensitive_keys to an empty array."
       end
 
       if Devise.apply_schema && defined?(Mongoid)
@@ -58,9 +59,9 @@ module Devise
 
       # TODO: Deprecate the true value of this option as well
       if Devise.use_salt_as_remember_token == false
-        puts "\n[DEVISE] Devise.use_salt_as_remember_token is false and is no longer " \
-          "supported. Devise will use part of salt as remember token and the remember " \
-          "token column can be removed from your models."
+        puts "\n[DEVISE] Devise.use_salt_as_remember_token is false which is no longer " \
+          "supported. Devise now only uses the salt as remember token and the remember_token " \
+          "column can be removed from your models."
       end
 
       if Devise.reset_password_within.nil?

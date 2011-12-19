@@ -1,5 +1,7 @@
 == 2.0.0 (unreleased)
 
+Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+
 * enhancements
   * Add support for e-mail reconfirmation on change (by github.com/Mandaryn and github.com/heimidal)
   * Redirect users to sign in page after unlock (by github.com/nashby)
@@ -13,6 +15,13 @@
   * Usage of recoverable without reset_password_sent_at was removed
   * Usage of Devise.case_insensitive_keys equals to false was removed
   * Usage of Devise.stateless_token= is deprecated in favor of appending :token_auth to Devise.skip_session_storage
+
+== 1.5.3
+
+* bug fix
+  * Ensure delegator converts scope to symbol (by github.com/dmitriy-kiriyenko)
+  * Ensure passing :format => false to devise_for is not permanent
+  * Ensure path checker does not check invalid routes
 
 == 1.5.2
 

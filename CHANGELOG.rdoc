@@ -6,6 +6,7 @@
 
 * deprecation
   * Devise.apply_schema is deprecated
+  * Devise migration helpers are deprecated
   * Usage of Devise.remember_across_browsers was deprecated
   * Usage of Devise.confirm_within was deprecated in favor Devise.allow_unconfirmed_access_for
   * Usage of rememberable with remember_token was removed

@@ -43,31 +43,33 @@ module Devise
     end
 
     initializer "devise.deprecations" do
-      if Devise.case_insensitive_keys == false
-        warn "\n[DEVISE] Devise.case_insensitive_keys is false which is no longer " \
-          "supported. If you want to continue running on this mode, please ensure " \
-          "you are not using validatable (you can copy the validations directly to your model) " \
-          "and set case_insensitive_keys to an empty array."
-      end
+      unless defined?(Rails::Generators)
+        if Devise.case_insensitive_keys == false
+          warn "\n[DEVISE] Devise.case_insensitive_keys is false which is no longer " \
+            "supported. If you want to continue running on this mode, please ensure " \
+            "you are not using validatable (you can copy the validations directly to your model) " \
+            "and set case_insensitive_keys to an empty array.\n"
+        end
 
-      if Devise.apply_schema && defined?(Mongoid)
-        warn "\n[DEVISE] Devise.apply_schema is true. This means Devise was " \
-          "automatically configuring your DB. This no longer happens. You should " \
-          "set Devise.apply_schema to false and manually set the fields used by Devise as shown here: " \
-          "https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0-migration-schema-style"
-      end
+        if Devise.apply_schema && defined?(Mongoid)
+          warn "\n[DEVISE] Devise.apply_schema is true. This means Devise was " \
+            "automatically configuring your DB. This no longer happens. You should " \
+            "set Devise.apply_schema to false and manually set the fields used by Devise as shown here: " \
+            "https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0-migration-schema-style\n"
+        end
 
-      # TODO: Deprecate the true value of this option as well
-      if Devise.use_salt_as_remember_token == false
-        warn "\n[DEVISE] Devise.use_salt_as_remember_token is false which is no longer " \
-          "supported. Devise now only uses the salt as remember token and the remember_token " \
-          "column can be removed from your models."
-      end
+        # TODO: Deprecate the true value of this option as well
+        if Devise.use_salt_as_remember_token == false
+          warn "\n[DEVISE] Devise.use_salt_as_remember_token is false which is no longer " \
+            "supported. Devise now only uses the salt as remember token and the remember_token " \
+            "column can be removed from your models.\n"
+        end
 
-      if Devise.reset_password_within.nil?
-        warn "\n[DEVISE] Devise.reset_password_within is nil. Please set this value to " \
-          "an interval (for example, 6.hours) and add a reset_password_sent_at field to " \
-          "your Devise models (if they don't have one already)."
+        if Devise.reset_password_within.nil?
+          warn "\n[DEVISE] Devise.reset_password_within is nil. Please set this value to " \
+            "an interval (for example, 6.hours) and add a reset_password_sent_at field to " \
+            "your Devise models (if they don't have one already).\n"
+        end
       end
     end
   end

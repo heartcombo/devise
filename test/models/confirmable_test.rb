@@ -238,6 +238,12 @@ class ConfirmableTest < ActiveSupport::TestCase
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase
+  test 'should not worry about validations on confirm even with reconfirmable' do
+    admin = create_admin
+    admin.reset_password_token = "a"
+    assert admin.confirm!
+  end
+
   test 'should generate confirmation token after changing email' do
     admin = create_admin
     assert admin.confirm!

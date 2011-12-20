@@ -40,15 +40,17 @@ module Devise
       # is already confirmed, add an error to email field. If the user is invalid
       # add errors
       def confirm!
-        unless_confirmed do
+        pending_any_confirmation do
           self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
-          if self.class.reconfirmable
+          if self.class.reconfirmable && unconfirmed_email.present?
             @bypass_postpone = true
-            self.email = unconfirmed_email if unconfirmed_email.present?
+            self.email = unconfirmed_email
             self.unconfirmed_email = nil
-            save
+
+            # We need to validate in such cases to enforce e-mail uniqueness
+            save(:validate => true)
           else
             save(:validate => false)
           end
@@ -73,7 +75,7 @@ module Devise
 
       # Resend confirmation token. This method does not need to generate a new token.
       def resend_confirmation_token
-        unless_confirmed { send_confirmation_instructions }
+        pending_any_confirmation { send_confirmation_instructions }
       end
 
       # Overwrites active_for_authentication? for confirmation
@@ -133,10 +135,9 @@ module Devise
           confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
         end
 
-        # Checks whether the record is confirmed or not or a new email has been added, yielding to the block
-        # if it's already confirmed, otherwise adds an error to email.
-        def unless_confirmed
-          unless confirmed? && !pending_reconfirmation?
+        # Checks whether the record requires any confirmation.
+        def pending_any_confirmation
+          if !confirmed? || pending_reconfirmation?
             yield
           else
             self.errors.add(:email, :already_confirmed)

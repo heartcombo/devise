@@ -48,7 +48,6 @@ module Devise
     # for a complete description on those values.
     #
     def devise(*modules)
-      include Devise::Models::Authenticatable
       options = modules.extract_options!.dup
 
       selected_modules = modules.map(&:to_sym).uniq.sort_by do |s|
@@ -56,6 +55,7 @@ module Devise
       end
 
       devise_modules_hook! do
+        include Devise::Models::Authenticatable
         selected_modules.each do |m|
           mod = Devise::Models.const_get(m.to_s.classify)
 

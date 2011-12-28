@@ -36,7 +36,7 @@ class CreateTables < ActiveRecord::Migration
       t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
 
-      # Token authenticatable
+      ## Token authenticatable
       t.string :authentication_token
 
       t.timestamps

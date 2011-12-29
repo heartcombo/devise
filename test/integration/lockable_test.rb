@@ -92,13 +92,6 @@ class LockTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:user)
   end
 
-  test "user should not be able to sign in when locked" do
-    user = sign_in_as_user(:locked => true)
-    assert_template 'sessions/new'
-    assert_contain 'Your account is locked.'
-    assert_not warden.authenticated?(:user)
-  end
-
   test "user should not send a new e-mail if already locked" do
     user = create_user(:locked => true)
     user.failed_attempts = User.maximum_attempts + 1
@@ -113,10 +106,29 @@ class LockTest < ActionController::IntegrationTest
 
   test 'error message is configurable by resource name' do
     store_translations :en, :devise => {
-      :failure => { :user => { :locked => "You are locked!" } }
+        :failure => {:user => {:locked => "You are locked!"}}
     } do
-      user = sign_in_as_user(:locked => true)
-      assert_contain 'You are locked!'
+
+      user = create_user(:locked => true)
+      user.failed_attempts = User.maximum_attempts + 1
+      user.save!
+
+      sign_in_as_user(:password => "invalid")
+      assert_contain "You are locked!"
+    end
+  end
+
+  test "user should not be able to sign in when locked" do
+    store_translations :en, :devise => {
+        :failure => {:user => {:locked => "You are locked!"}}
+    } do
+
+      user = create_user(:locked => true)
+      user.failed_attempts = User.maximum_attempts + 1
+      user.save!
+
+      sign_in_as_user(:password => "123456")
+      assert_contain "You are locked!"
     end
   end
 
@@ -157,7 +169,7 @@ class LockTest < ActionController::IntegrationTest
 
   test "when using json to ask a unlock request, should not return the user" do
     user = create_user(:locked => true)
-    post  user_unlock_path(:format => "json", :user => {:email => user.email})
+    post user_unlock_path(:format => "json", :user => {:email => user.email})
     assert_response :success
     assert_equal response.body, {}.to_json
   end

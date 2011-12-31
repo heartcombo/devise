@@ -68,7 +68,9 @@ module Devise
 
       # Send confirmation instructions by email
       def send_confirmation_instructions
+        self.confirmation_token = nil if reconfirmation_required?
         @reconfirmation_required = false
+
         generate_confirmation_token! if self.confirmation_token.blank?
         self.devise_mailer.confirmation_instructions(self).deliver
       end

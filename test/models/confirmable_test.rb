@@ -252,6 +252,15 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_not_nil admin.confirmation_token
   end
 
+  test 'should regenerate confirmation token after changing email' do
+    admin = create_admin
+    assert admin.confirm!
+    assert admin.update_attributes(:email => 'old_test@example.com')
+    token = admin.confirmation_token
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    assert_not_equal token, admin.confirmation_token
+  end
+
   test 'should send confirmation instructions by email after changing email' do
     admin = create_admin
     assert admin.confirm!

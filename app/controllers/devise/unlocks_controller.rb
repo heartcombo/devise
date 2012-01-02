@@ -1,6 +1,5 @@
 class Devise::UnlocksController < DeviseController
   prepend_before_filter :require_no_authentication
-  include Devise::Controllers::InternalHelpers
 
   # GET /resource/unlock/new
   def new

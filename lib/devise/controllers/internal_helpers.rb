@@ -16,7 +16,7 @@ module Devise
         hide_action *helpers
         helper_method *helpers
 
-        prepend_before_filter :is_devise_resource?
+        prepend_before_filter :assert_is_devise_resource!
         respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
       end
 
@@ -54,7 +54,7 @@ module Devise
     protected
 
       # Checks whether it's a devise mapped resource or not.
-      def is_devise_resource? #:nodoc:
+      def assert_is_devise_resource! #:nodoc:
         unknown_action! <<-MESSAGE unless devise_mapping
 Could not find devise mapping for path #{request.fullpath.inspect}.
 Maybe you forgot to wrap your route inside the scope block? For example:
@@ -91,6 +91,7 @@ MESSAGE
       # Example:
       #   before_filter :require_no_authentication, :only => :new
       def require_no_authentication
+        assert_is_devise_resource!
         return unless is_navigational_format?
         no_input = devise_mapping.no_input_strategies
 

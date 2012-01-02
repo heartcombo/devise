@@ -1,6 +1,4 @@
 class Devise::ConfirmationsController < DeviseController
-  include Devise::Controllers::InternalHelpers
-
   # GET /resource/confirmation/new
   def new
     build_resource({})

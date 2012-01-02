@@ -1,6 +1,5 @@
 class Devise::PasswordsController < DeviseController
   prepend_before_filter :require_no_authentication
-  include Devise::Controllers::InternalHelpers
 
   # GET /resource/password/new
   def new

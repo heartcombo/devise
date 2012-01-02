@@ -4,6 +4,7 @@ PATH
     devise (2.0.0.rc)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
+      railties (~> 3.1)
       warden (~> 1.1)
 
 GEM

@@ -19,7 +19,6 @@ module Devise
     autoload :InternalHelpers, 'devise/controllers/internal_helpers'
     autoload :Rememberable, 'devise/controllers/rememberable'
     autoload :ScopedViews, 'devise/controllers/scoped_views'
-    autoload :SharedHelpers, 'devise/controllers/shared_helpers'
     autoload :UrlHelpers, 'devise/controllers/url_helpers'
   end
 
@@ -202,9 +201,8 @@ module Devise
   @@skip_session_storage = []
 
   # Which formats should be treated as navigational.
-  # We need both :"*/*" and "*/*" to work on different Rails versions.
   mattr_accessor :navigational_formats
-  @@navigational_formats = [:"*/*", "*/*", :html]
+  @@navigational_formats = ["*/*", :html]
 
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
@@ -215,7 +213,8 @@ module Devise
   @@sign_out_via = :get
 
   # The parent controller all Devise controllers inherits from.
-  # Defaults to ApplicationController.
+  # Defaults to ApplicationController. This should be set early
+  # in the initialization process and should be set to a string.
   mattr_accessor :parent_controller
   @@parent_controller = "ApplicationController"
 

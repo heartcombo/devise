@@ -6,7 +6,6 @@ module Devise
     module InternalHelpers #:nodoc:
       extend ActiveSupport::Concern
       include Devise::Controllers::ScopedViews
-      include Devise::Controllers::SharedHelpers
 
       included do
         helper DeviseHelper
@@ -156,6 +155,14 @@ MESSAGE
         respond_with(*args) do |format|
           format.any(*navigational_formats, &block)
         end
+      end
+
+      def request_format
+        @request_format ||= request.format.try(:ref)
+      end
+
+      def is_navigational_format?
+        Devise.navigational_formats.include?(request.format.try(:ref))
       end
     end
   end

@@ -10,7 +10,6 @@ module Devise
     include ActionController::UrlFor
     include ActionController::Redirecting
     include Rails.application.routes.url_helpers
-    include Devise::Controllers::SharedHelpers
 
     delegate :flash, :to => :request
 
@@ -148,6 +147,14 @@ module Devise
     # would never use the same uri to redirect.
     def store_location!
       session["#{scope}_return_to"] = attempted_path if request.get? && !http_auth?
+    end
+
+    def is_navigational_format?
+      Devise.navigational_formats.include?(request_format)
+    end
+
+    def request_format
+      @request_format ||= request.format.try(:ref)
     end
   end
 end

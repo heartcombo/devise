@@ -1,18 +1,18 @@
 == 2.0.0.rc2
 
 * bug fix
-  * Fix incorrect message for locked account (by github.com/jigyasa)
-  * Regenerate confirmation token on reconfirmation (by github.com/nashby)
-  * Allow alternate ORMs to run compatibility setup code before Authenticatable is included (by github.com/jm81)
+  * Fix incorrect message for locked account (by @jigyasa)
+  * Regenerate confirmation token on reconfirmation (by @nashby)
+  * Allow alternate ORMs to run compatibility setup code before Authenticatable is included (by @jm81)
   * Do not run validations unless on reconfirmable branch
 
 == 2.0.0.rc
 
-Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 * enhancements
-  * Add support for e-mail reconfirmation on change (by github.com/Mandaryn and github.com/heimidal)
-  * Redirect users to sign in page after unlock (by github.com/nashby)
+  * Add support for e-mail reconfirmation on change (by @Mandaryn and @heimidal)
+  * Redirect users to sign in page after unlock (by @nashby)
 
 * deprecation
   * Devise.apply_schema is deprecated
@@ -27,15 +27,15 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 1.5.3
 
 * bug fix
-  * Ensure delegator converts scope to symbol (by github.com/dmitriy-kiriyenko)
+  * Ensure delegator converts scope to symbol (by @dmitriy-kiriyenko)
   * Ensure passing :format => false to devise_for is not permanent
   * Ensure path checker does not check invalid routes
 
 == 1.5.2
 
 * enhancements
-  * Add support for Rails 3.1 new mass assignment conventions (by github.com/kirs)
-  * Add timeout_in method to Timeoutable, it can be overridden in a model (by github.com/lest)
+  * Add support for Rails 3.1 new mass assignment conventions (by @kirs)
+  * Add timeout_in method to Timeoutable, it can be overridden in a model (by @lest)
 
 * bug fix
   * OmniAuth error message now shows the proper option (:strategy_class instead of :klass)
@@ -50,10 +50,10 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * enhancements
   * Timeoutable also skips tracking if skip_trackable is given
   * devise_for now accepts :failure_app as an option
-  * Models can select the proper mailer via devise_mailer method (by github.com/locomotivecms)
-  * Migration generator now uses the change method (by github.com/nashby)
-  * Support to markerb templates on the mailer generator (by github.com/sbounmy)
-  * Support for Omniauth 1.0 (older versions are no longer supported) (by github.com/TamiasSibiricus)
+  * Models can select the proper mailer via devise_mailer method (by @locomotivecms)
+  * Migration generator now uses the change method (by @nashby)
+  * Support to markerb templates on the mailer generator (by @sbounmy)
+  * Support for Omniauth 1.0 (older versions are no longer supported) (by @TamiasSibiricus)
 
 * bug fix
   * Allow idempotent API requests
@@ -96,7 +96,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * bug fix
   * Failure app tries the root path if a session one does not exist
-  * No need to finalize Devise helpers all the time (by github.com/bradleypriest)
+  * No need to finalize Devise helpers all the time (by @bradleypriest)
   * Reset password shows proper message if user is not active
   * `clean_up_passwords` sets the accessors to nil to skip validations
 
@@ -119,7 +119,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Wrap :action constraints in the proper hash
 
 * deprecations
-  * Loosened the used email regexp to simply assert the existent of "@". If someone relies on a more strict regexp, they may use https://github.com/SixArm/sixarm_ruby_email_address_validation
+  * Loosened the used email regexp to simply assert the existent of "@". If someone relies on a more strict regexp, they may use https://@SixArm/sixarm_ruby_email_address_validation
 
 == 1.4.2
 
@@ -131,7 +131,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * enhancements
   * Add :defaults and :format support on router
   * Add simple form generators
-  * Better localization for devise_error_messages! (by github.com/zedtux)
+  * Better localization for devise_error_messages! (by @zedtux)
 
 * bug fix
   * Ensure to_xml is properly white listened
@@ -140,20 +140,20 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 1.4.0
 
 * enhancements
-  * Added authenticated and unauthenticated to the router to route the used based on his status (by github.com/sj26)
-  * Improve e-mail regexp (by github.com/rodrigoflores)
-  * Add strip_whitespace_keys and default to e-mail (by github.com/swrobel)
-  * Do not run format and uniqueness validations on e-mail if it hasn't changed (by github.com/Thibaut)
-  * Added update_without_password to update models but not allowing the password to change (by github.com/fschwahn)
-  * Added config.paranoid, check the generator for more information (by github.com/rodrigoflores)
+  * Added authenticated and unauthenticated to the router to route the used based on his status (by @sj26)
+  * Improve e-mail regexp (by @rodrigoflores)
+  * Add strip_whitespace_keys and default to e-mail (by @swrobel)
+  * Do not run format and uniqueness validations on e-mail if it hasn't changed (by @Thibaut)
+  * Added update_without_password to update models but not allowing the password to change (by @fschwahn)
+  * Added config.paranoid, check the generator for more information (by @rodrigoflores)
 
 * bug fix
   * password_required? should not affect length validation
   * User cannot access sign up and similar pages if he is already signed in through a cookie or token
-  * Do not convert booleans to strings on finders (by github.com/xavier)
-  * Run validations even if current_password fails (by github.com/crx)
-  * Devise now honors routes constraints (by github.com/macmartine)
-  * Do not return the user resource when requesting instructions (by github.com/rodrigoflores)
+  * Do not convert booleans to strings on finders (by @xavier)
+  * Run validations even if current_password fails (by @crx)
+  * Devise now honors routes constraints (by @macmartine)
+  * Do not return the user resource when requesting instructions (by @rodrigoflores)
 
 == 1.3.4
 
@@ -168,31 +168,31 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 1.3.2
 
 * bug fix
-  * Fix another regression related to reset_password_sent_at (by github.com/alexdreher)
+  * Fix another regression related to reset_password_sent_at (by @alexdreher)
 
 == 1.3.1
 
 * enhancements
-  * Improve failure_app responses (by github.com/indirect)
+  * Improve failure_app responses (by @indirect)
   * sessions/new and registrations/new also respond to xml and json now
 
 * bug fix
-  * Fix a regression that occurred if reset_password_sent_at is not present (by github.com/stevehodgkiss)
+  * Fix a regression that occurred if reset_password_sent_at is not present (by @stevehodgkiss)
 
 == 1.3.0
 
 * enhancements
-  * All controllers can now handle different mime types than html using Responders (by github.com/sikachu)
-  * Added reset_password_within as configuration option to send the token for recovery (by github.com/jdguyot)
-  * Bump password length to 128 characters (by github.com/k33l0r)
-  * Add :only as option to devise_for (by github.com/timoschilling)
-  * Allow to override path after sending password instructions (by github.com/irohiroki)
-  * require_no_authentication has its own flash message (by github.com/jackdempsey)
+  * All controllers can now handle different mime types than html using Responders (by @sikachu)
+  * Added reset_password_within as configuration option to send the token for recovery (by @jdguyot)
+  * Bump password length to 128 characters (by @k33l0r)
+  * Add :only as option to devise_for (by @timoschilling)
+  * Allow to override path after sending password instructions (by @irohiroki)
+  * require_no_authentication has its own flash message (by @jackdempsey)
 
 * bug fix
   * Fix a bug where configuration options were being included too late
-  * Ensure Devise::TestHelpers can be used to tests Devise internal controllers (by github.com/jwilger)
-  * valid_password? should not choke on empty passwords (by github.com/mikel)
+  * Ensure Devise::TestHelpers can be used to tests Devise internal controllers (by @jwilger)
+  * valid_password? should not choke on empty passwords (by @mikel)
   * Calling devise more than once does not include previously added modules anymore
   * downcase_keys before validation
 
@@ -219,16 +219,16 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * bug fix
   * Fix an issue causing infinite redirects in production
-  * rails g destroy works properly with devise generators (by github.com/andmej)
-  * before_failure callbacks should work on test helpers (by github.com/twinge)
-  * rememberable cookie now is httponly by default (by github.com/JamesFerguson)
-  * Add missing confirmation_keys (by github.com/JohnPlummer)
+  * rails g destroy works properly with devise generators (by @andmej)
+  * before_failure callbacks should work on test helpers (by @twinge)
+  * rememberable cookie now is httponly by default (by @JamesFerguson)
+  * Add missing confirmation_keys (by @JohnPlummer)
   * Ensure after_* hooks are called on RegistrationsController
   * When using database_authenticatable Devise will now only create an email field when appropriate (if using default authentication_keys or custom authentication_keys with email included)
-  * Ensure stateless token does not trigger timeout (by github.com/pixelauthority)
+  * Ensure stateless token does not trigger timeout (by @pixelauthority)
   * Implement handle_unverified_request for Rails 3.0.4 compatibility and improve FailureApp reliance on symbols
   * Consider namespaces while generating routes
-  * Custom failure apps no longer ignored in test mode (by github.com/jaghion)
+  * Custom failure apps no longer ignored in test mode (by @jaghion)
   * Do not depend on ActiveModel::Dirty
   * Manual sign_in now triggers remember token
   * Be sure to halt strategies on failures
@@ -237,7 +237,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Ensure there is no Mongoid injection
 
 * deprecations
-  * Deprecated anybody_signed_in? in favor of signed_in? (by github.com/gavinhughes)
+  * Deprecated anybody_signed_in? in favor of signed_in? (by @gavinhughes)
   * Removed --haml and --slim view templates
   * Devise::OmniAuth helpers were deprecated and removed in favor of Omniauth.config.test_mode
 
@@ -250,11 +250,11 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * enhancements
   * Added OmniAuth support
   * Added ORM adapter to abstract ORM iteraction
-  * sign_out_via is available in the router to configure the method used for sign out (by github.com/martinrehfeld)
-  * Improved Ajax requests handling in failure app (by github.com/spastorino)
+  * sign_out_via is available in the router to configure the method used for sign out (by @martinrehfeld)
+  * Improved Ajax requests handling in failure app (by @spastorino)
   * Added request_keys to easily use request specific values (like subdomain) in authentication
   * Increased the size of friendly_token to 60 characters (reduces the chances of a successful brute attack)
-  * Ensure the friendly token does not include "_" or "-" since some e-mails may not autolink it properly (by github.com/rymai)
+  * Ensure the friendly token does not include "_" or "-" since some e-mails may not autolink it properly (by @rymai)
   * Extracted encryptors into :encryptable for better bcrypt support
   * :rememberable is now able to use salt as token if no remember_token is provided
   * Store the salt in session and expire the session if the user changes his password
@@ -263,7 +263,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Sign up now check if the user is active or not and redirect him accordingly setting the inactive_signed_up message
   * Use ActiveModel#to_key instead of #id
   * sign_out_all_scopes now destroys the whole session
-  * Added case_insensitive_keys that automatically downcases the given keys, by default downcases only e-mail (by github.com/adahl)
+  * Added case_insensitive_keys that automatically downcases the given keys, by default downcases only e-mail (by @adahl)
 
 * default behavior changes
   * sign_out_all_scopes defaults to true as security measure
@@ -272,12 +272,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * bugfix
   * after_sign_in_path_for always receives a resource
-  * Do not execute Warden::Callbacks on Devise::TestHelpers (by github.com/sgronblo)
-  * Allow password recovery and account unlocking to change used keys (by github.com/RStankov)
+  * Do not execute Warden::Callbacks on Devise::TestHelpers (by @sgronblo)
+  * Allow password recovery and account unlocking to change used keys (by @RStankov)
   * FailureApp now properly handles nil request.format
   * Fix a bug causing FailureApp to return with HTTP Auth Headers for IE7
   * Ensure namespaces has proper scoped views
-  * Ensure Devise does not set empty flash messages (by github.com/sxross)
+  * Ensure Devise does not set empty flash messages (by @sxross)
 
 == 1.1.6
 
@@ -302,11 +302,11 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * bugfix
   * Add reply-to to e-mail headers by default
-  * Updated the views generator to respect the rails :template_engine option (by github.com/fredwu)
+  * Updated the views generator to respect the rails :template_engine option (by @fredwu)
   * Check the type of HTTP Authentication before using Basic headers
-  * Avoid invalid_salt errors by checking salt presence (by github.com/thibaudgg)
-  * Forget user deletes the right cookie before logout, not remembering the user anymore (by github.com/emtrane)
-  * Fix for failed first-ever logins on PostgreSQL where column default is nil (by github.com/bensie)
+  * Avoid invalid_salt errors by checking salt presence (by @thibaudgg)
+  * Forget user deletes the right cookie before logout, not remembering the user anymore (by @emtrane)
+  * Fix for failed first-ever logins on PostgreSQL where column default is nil (by @bensie)
   * :default options is now honored in migrations
 
 == 1.1.2
@@ -322,16 +322,16 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 1.1.0
 
 * enhancements
-  * Rememberable module allows user to be remembered across browsers and is enabled by default (by github.com/trevorturk)
-  * Rememberable module allows you to activate the period the remember me token is extended (by github.com/trevorturk)
+  * Rememberable module allows user to be remembered across browsers and is enabled by default (by @trevorturk)
+  * Rememberable module allows you to activate the period the remember me token is extended (by @trevorturk)
   * devise_for can now be used together with scope method in routes but with a few limitations (check the documentation)
   * Support `as` or `devise_scope` in the router to specify controller access scope
-  * HTTP Basic Auth can now be disabled/enabled for xhr(ajax) requests using http_authenticatable_on_xhr option (by github.com/pellja)
+  * HTTP Basic Auth can now be disabled/enabled for xhr(ajax) requests using http_authenticatable_on_xhr option (by @pellja)
 
 * bug fix
   * Fix a bug in Devise::TestHelpers where current_user was returning a Response object for non active accounts
   * Devise should respect script_name and path_info contracts
-  * Fix a bug when accessing a path with (.:format) (by github.com/klacointe)
+  * Fix a bug when accessing a path with (.:format) (by @klacointe)
   * Do not add unlock routes unless unlock strategy is email or both
   * Email should be case insensitive
   * Store classes as string in session, to avoid serialization and stale data issues
@@ -342,10 +342,10 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 1.1.rc2
 
 * enhancements
-  * Allow to set cookie domain for the remember token. (by github.com/mantas)
+  * Allow to set cookie domain for the remember token. (by @mantas)
   * Added navigational formats to specify when it should return a 302 and when a 401.
-  * Added authenticate(scope) support in routes (by github.com/wildchild)
-  * Added after_update_path_for to registrations controller (by github.com/thedelchop)
+  * Added authenticate(scope) support in routes (by @wildchild)
+  * Added after_update_path_for to registrations controller (by @thedelchop)
   * Allow the mailer object to be replaced through config.mailer = "MyOwnMailer"
 
 * bug fix
@@ -393,10 +393,10 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * enhancements
   * Support for latest MongoMapper
-  * Added anybody_signed_in? helper (by github.com/SSDany)
+  * Added anybody_signed_in? helper (by @SSDany)
 
 * bug fix
-  * confirmation_required? is properly honored on active? calls. (by github.com/paulrosania)
+  * confirmation_required? is properly honored on active? calls. (by @paulrosania)
 
 == 1.0.7
 
@@ -437,7 +437,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 1.0.2
 
 * enhancements
-  * Allows you set mailer content type (by github.com/glennr)
+  * Allows you set mailer content type (by @glennr)
 
 * bug fix
   * Uses the same content type as request on http authenticatable 401 responses
@@ -470,12 +470,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * enhancements
   * Added gemspec to repo
-  * Added token authenticatable (by github.com/grimen)
+  * Added token authenticatable (by @grimen)
 
 == 0.9.1
 
 * bug fix
-  * Allow bigger salt size (by github.com/jgeiger)
+  * Allow bigger salt size (by @jgeiger)
   * Fix relative url root
 
 == 0.9.0
@@ -485,11 +485,11 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * :success and :failure flash messages are now :notice and :alert
 
 * enhancements
-  * Added devise lockable (by github.com/mhfs)
+  * Added devise lockable (by @mhfs)
   * Warden 0.9.0 compatibility
   * Mongomapper 0.6.10 compatibility
-  * Added Devise.add_module as hooks for extensions (by github.com/grimen)
-  * Ruby 1.9.1 compatibility (by github.com/grimen)
+  * Added Devise.add_module as hooks for extensions (by @grimen)
+  * Ruby 1.9.1 compatibility (by @grimen)
 
 * bug fix
   * Accept path prefix not starting with slash
@@ -498,10 +498,10 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 0.8.2
 
 * enhancements
-  * Allow Devise.mailer_sender to be a proc (by github.com/grimen)
+  * Allow Devise.mailer_sender to be a proc (by @grimen)
 
 * bug fix
-  * Fix bug with passenger, update is required to anyone deploying on passenger (by github.com/dvdpalm)
+  * Fix bug with passenger, update is required to anyone deploying on passenger (by @dvdpalm)
 
 == 0.8.1
 
@@ -518,11 +518,11 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * enhancements
   * Warden 0.8.0 compatibility
   * Add an easy for map.connect "sign_in", :controller => "sessions", :action => "new" to work
-  * Added :bcrypt encryptor (by github.com/capotej)
+  * Added :bcrypt encryptor (by @capotej)
 
 * bug fix
   * sign_in_count is also increased when user signs in via password change, confirmation, etc..
-  * More DataMapper compatibility (by github.com/lancecarlson)
+  * More DataMapper compatibility (by @lancecarlson)
 
 * deprecation
   * Removed DeviseMailer.sender
@@ -562,7 +562,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 0.7.1
 
 * enhancements
-  * Small enhancements for other plugins compatibility (by github.com/grimen)
+  * Small enhancements for other plugins compatibility (by @grimen)
 
 == 0.7.0
 
@@ -656,9 +656,9 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Fixed a bug where remember me module was not working properly
 
 * enhancements
-  * Moved encryption strategy into the Encryptors module to allow several algorithms (by github.com/mhfs)
-  * Implemented encryptors for Clearance, Authlogic and Restful-Authentication (by github.com/mhfs)
-  * Added support for MongoMapper (by github.com/shingara)
+  * Moved encryption strategy into the Encryptors module to allow several algorithms (by @mhfs)
+  * Implemented encryptors for Clearance, Authlogic and Restful-Authentication (by @mhfs)
+  * Added support for MongoMapper (by @shingara)
 
 == 0.4.3
 

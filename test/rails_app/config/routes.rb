@@ -64,14 +64,14 @@ Rails.application.routes.draw do
     devise_for :accounts, :class_name => "Admin", :path_names => { :sign_in => "get_in" }
   end
 
-  scope ":locale" do
+  scope ":locale", :module => :invalid do
     devise_for :accounts, :singular => "manager", :class_name => "Admin",
       :path_names => {
         :sign_in => "login", :sign_out => "logout",
         :password => "secret", :confirmation => "verification",
         :unlock => "unblock", :sign_up => "register",
         :registration => "management", :cancel => "giveup"
-      }, :failure_app => lambda { |env| [404, {"Content-Type" => "text/plain"}, ["Oops, not found"]] }
+      }, :failure_app => lambda { |env| [404, {"Content-Type" => "text/plain"}, ["Oops, not found"]] }, :module => :devise
   end
 
   namespace :sign_out_via, :module => "devise" do

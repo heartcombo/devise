@@ -214,6 +214,11 @@ module Devise
   mattr_accessor :sign_out_via
   @@sign_out_via = :get
 
+  # The parent controller all Devise controllers inherits from.
+  # Defaults to ApplicationController.
+  mattr_accessor :parent_controller
+  @@parent_controller = "ApplicationController"
+
   # DEPRECATED CONFIG
 
   # If true, uses salt as remember token and does not create it in the database.

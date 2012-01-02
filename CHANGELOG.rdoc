@@ -8,6 +8,10 @@ Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
   * Allow alternate ORMs to run compatibility setup code before Authenticatable is included (by @jm81)
   * Do not run validations unless on reconfirmable branch
 
+* enhancements
+  * allow parent controller to be customizable
+  * inherit from the same Devise parent controller (by @sj26)
+
 == 2.0.0.rc
 
 * enhancements

@@ -1,6 +1,6 @@
 == 2.0.0.rc2
 
-Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 * bug fix
   * Fix incorrect message for locked account (by @jigyasa)
@@ -128,7 +128,7 @@ Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
   * Wrap :action constraints in the proper hash
 
 * deprecations
-  * Loosened the used email regexp to simply assert the existent of "@". If someone relies on a more strict regexp, they may use https://@SixArm/sixarm_ruby_email_address_validation
+  * Loosened the used email regexp to simply assert the existent of "@". If someone relies on a more strict regexp, they may use https://github.com/SixArm/sixarm_ruby_email_address_validation
 
 == 1.4.2
 

@@ -67,21 +67,4 @@ class ActiveSupport::TestCase
       end
     end
   end
-
-  def with_rails_version(constants)
-    saved_constants = {}
-
-    constants.each do |constant, val|
-      saved_constants[constant] = ::Rails::VERSION.const_get constant
-      Kernel::silence_warnings { ::Rails::VERSION.const_set(constant, val) }
-    end
-
-    begin
-      yield
-    ensure
-      constants.each do |constant, val|
-        Kernel::silence_warnings { ::Rails::VERSION.const_set(constant, saved_constants[constant]) }
-      end
-    end
-  end
 end

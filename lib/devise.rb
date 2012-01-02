@@ -418,11 +418,6 @@ module Devise
     end
   end
 
-  # Returns true if Rails version is bigger than 3.0.x
-  def self.rack_session?
-    Rails::VERSION::STRING[0,3] != "3.0"
-  end
-
   # Regenerates url helpers considering Devise.mapping
   def self.regenerate_helpers!
     Devise::Controllers::UrlHelpers.remove_helpers!

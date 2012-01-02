@@ -8,20 +8,10 @@ if DEVISE_ORM == :active_record
     destination File.expand_path("../../tmp", __FILE__)
     setup :prepare_destination
 
-    test "all files are properly created" do
-      with_rails_version :MAJOR => 3, :MINOR => 0 do
-        run_generator %w(monster)
-        assert_file "app/models/monster.rb", /devise/, /attr_accessible (:[a-z_]+(, )?)+/
-        assert_migration "db/migrate/devise_create_monsters.rb", /def self\.up/
-      end
-    end
-
     test "all files are properly created with rails31 migration syntax" do
-      with_rails_version :MAJOR => 3, :MINOR => 1 do
-        run_generator %w(monster)
-        assert_file "app/models/monster.rb", /devise/, /attr_accessible (:[a-z_]+(, )?)+/
-        assert_migration "db/migrate/devise_create_monsters.rb", /def change/
-      end
+      run_generator %w(monster)
+      assert_file "app/models/monster.rb", /devise/, /attr_accessible (:[a-z_]+(, )?)+/
+      assert_migration "db/migrate/devise_create_monsters.rb", /def change/
     end
 
     test "update model migration when model exists" do

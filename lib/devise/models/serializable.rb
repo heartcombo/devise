@@ -9,8 +9,11 @@ module Devise
     module Serializable
       extend ActiveSupport::Concern
 
-      # TODO: to_xml does not call serializable_hash. Hopefully someone will fix this in AR.
-      %w(to_xml serializable_hash).each do |method|
+      array = %w(serializable_hash)
+      # to_xml does not call serializable_hash on 3.1
+      array << "to_xml" if Rails::VERSION::STRING[0,3] == "3.1"
+
+      array.each do |method|
         class_eval <<-RUBY, __FILE__, __LINE__
           def #{method}(options=nil)
             options ||= {}

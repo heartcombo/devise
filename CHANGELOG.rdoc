@@ -14,6 +14,7 @@ Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 * deprecation
   * Move devise/shared/_links.erb to devise/_links.erb
+  * Devise only supports Rails 3.1 forward
 
 == 2.0.0.rc
 

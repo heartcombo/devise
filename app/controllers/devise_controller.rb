@@ -132,7 +132,7 @@ MESSAGE
   #
   # Please refer to README or en.yml locale file to check what messages are
   # available.
-  def set_flash_message(key, kind, options={}) #:nodoc:
+  def set_flash_message(key, kind, options={})
     options[:scope] = "devise.#{controller_name}"
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
@@ -140,7 +140,7 @@ MESSAGE
     flash[key] = message if message.present?
   end
 
-  def clean_up_passwords(object) #:nodoc:
+  def clean_up_passwords(object)
     object.clean_up_passwords if object.respond_to?(:clean_up_passwords)
   end
 
@@ -159,7 +159,7 @@ MESSAGE
   end
 
   # Override prefixes to consider the scoped view.
-  def _prefixes
+  def _prefixes #:nodoc:
     @_prefixes ||= if self.class.scoped_views?
       super.unshift("#{devise_mapping.scoped_path}/#{controller_name}")
     else

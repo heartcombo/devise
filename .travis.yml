@@ -2,9 +2,9 @@ script: "bundle exec rake test"
 rvm:
   - 1.8.7
   - 1.9.2
+  - 1.9.3
   - ree
-  - rbx
-  - rbx-2.0
+  - rbx-18mode
 notifications:
   recipients:
     - jose.valim@plataformatec.com.br

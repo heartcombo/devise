@@ -168,7 +168,13 @@ module Devise
       def signed_in_root_path(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         home_path = "#{scope}_root_path"
-        respond_to?(home_path, true) ? send(home_path) : root_path
+        if respond_to?(home_path, true)
+          send(home_path)
+        elsif respond_to?(:root_path)
+          root_path
+        else
+          "/"
+        end
       end
 
       # The default url to be used after signing in. This is used by all Devise
@@ -209,7 +215,7 @@ module Devise
       #
       # By default it is the root_path.
       def after_sign_out_path_for(resource_or_scope)
-        root_path
+        respond_to?(:root_path) ? root_path : "/"
       end
 
       # Sign in a user and tries to redirect first to the stored location and

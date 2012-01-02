@@ -75,8 +75,10 @@ module Devise
 
       if respond_to?(route)
         send(route, opts)
-      else
+      elsif respond_to?(:root_path)
         root_path(opts)
+      else
+        "/"
       end
     end
 

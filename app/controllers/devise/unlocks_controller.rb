@@ -4,7 +4,6 @@ class Devise::UnlocksController < DeviseController
   # GET /resource/unlock/new
   def new
     build_resource({})
-    render :new
   end
 
   # POST /resource/unlock
@@ -14,7 +13,7 @@ class Devise::UnlocksController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, :location => new_session_path(resource_name))
     else
-      respond_with_navigational(resource){ render :new }
+      respond_with(resource)
     end
   end
 

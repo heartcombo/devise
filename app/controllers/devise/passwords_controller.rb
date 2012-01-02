@@ -4,7 +4,6 @@ class Devise::PasswordsController < DeviseController
   # GET /resource/password/new
   def new
     build_resource({})
-    render :new
   end
 
   # POST /resource/password
@@ -14,7 +13,7 @@ class Devise::PasswordsController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, :location => after_sending_reset_password_instructions_path_for(resource_name))
     else
-      respond_with_navigational(resource){ render :new }
+      respond_with(resource)
     end
   end
 
@@ -22,7 +21,6 @@ class Devise::PasswordsController < DeviseController
   def edit
     self.resource = resource_class.new
     resource.reset_password_token = params[:reset_password_token]
-    render :edit
   end
 
   # PUT /resource/password
@@ -35,7 +33,7 @@ class Devise::PasswordsController < DeviseController
       sign_in(resource_name, resource)
       respond_with resource, :location => after_sign_in_path_for(resource)
     else
-      respond_with_navigational(resource){ render :edit }
+      respond_with resource
     end
   end
 

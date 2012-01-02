@@ -5,7 +5,7 @@ class Devise::RegistrationsController < DeviseController
   # GET /resource/sign_up
   def new
     resource = build_resource({})
-    respond_with_navigational(resource){ render :new }
+    respond_with resource
   end
 
   # POST /resource
@@ -23,8 +23,8 @@ class Devise::RegistrationsController < DeviseController
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
     else
-      clean_up_passwords(resource)
-      respond_with_navigational(resource) { render :new }
+      clean_up_passwords resource
+      respond_with resource
     end
   end
 
@@ -49,8 +49,8 @@ class Devise::RegistrationsController < DeviseController
       sign_in resource_name, resource, :bypass => true
       respond_with resource, :location => after_update_path_for(resource)
     else
-      clean_up_passwords(resource)
-      respond_with_navigational(resource){ render :edit }
+      clean_up_passwords resource
+      respond_with resource
     end
   end
 

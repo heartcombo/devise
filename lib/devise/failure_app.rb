@@ -20,7 +20,11 @@ module Devise
     end
 
     def self.default_url_options(*args)
-      ApplicationController.default_url_options(*args)
+      if defined?(ApplicationController)
+        ApplicationController.default_url_options(*args)
+      else
+        {}
+      end
     end
 
     def respond

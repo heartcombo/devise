@@ -2,7 +2,7 @@ class Devise::ConfirmationsController < DeviseController
   # GET /resource/confirmation/new
   def new
     build_resource({})
-    render_with_scope :new
+    render :new
   end
 
   # POST /resource/confirmation
@@ -12,7 +12,7 @@ class Devise::ConfirmationsController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, :location => after_resending_confirmation_instructions_path_for(resource_name))
     else
-      respond_with_navigational(resource){ render_with_scope :new }
+      respond_with_navigational(resource){ render :new }
     end
   end
 
@@ -25,7 +25,7 @@ class Devise::ConfirmationsController < DeviseController
       sign_in(resource_name, resource)
       respond_with_navigational(resource){ redirect_to after_confirmation_path_for(resource_name, resource) }
     else
-      respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render_with_scope :new }
+      respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render :new }
     end
   end
 

@@ -5,7 +5,7 @@ class Devise::RegistrationsController < DeviseController
   # GET /resource/sign_up
   def new
     resource = build_resource({})
-    respond_with_navigational(resource){ render_with_scope :new }
+    respond_with_navigational(resource){ render :new }
   end
 
   # POST /resource
@@ -24,13 +24,13 @@ class Devise::RegistrationsController < DeviseController
       end
     else
       clean_up_passwords(resource)
-      respond_with_navigational(resource) { render_with_scope :new }
+      respond_with_navigational(resource) { render :new }
     end
   end
 
   # GET /resource/edit
   def edit
-    render_with_scope :edit
+    render :edit
   end
 
   # PUT /resource
@@ -50,7 +50,7 @@ class Devise::RegistrationsController < DeviseController
       respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords(resource)
-      respond_with_navigational(resource){ render_with_scope :edit }
+      respond_with_navigational(resource){ render :edit }
     end
   end
 

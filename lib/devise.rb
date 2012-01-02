@@ -16,7 +16,6 @@ module Devise
 
   module Controllers
     autoload :Helpers, 'devise/controllers/helpers'
-    autoload :InternalHelpers, 'devise/controllers/internal_helpers'
     autoload :Rememberable, 'devise/controllers/rememberable'
     autoload :ScopedViews, 'devise/controllers/scoped_views'
     autoload :UrlHelpers, 'devise/controllers/url_helpers'

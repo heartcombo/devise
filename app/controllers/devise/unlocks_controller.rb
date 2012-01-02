@@ -4,7 +4,7 @@ class Devise::UnlocksController < DeviseController
   # GET /resource/unlock/new
   def new
     build_resource({})
-    render_with_scope :new
+    render :new
   end
 
   # POST /resource/unlock
@@ -14,7 +14,7 @@ class Devise::UnlocksController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, :location => new_session_path(resource_name))
     else
-      respond_with_navigational(resource){ render_with_scope :new }
+      respond_with_navigational(resource){ render :new }
     end
   end
 
@@ -26,7 +26,7 @@ class Devise::UnlocksController < DeviseController
       set_flash_message :notice, :unlocked if is_navigational_format?
       respond_with_navigational(resource){ redirect_to new_session_path(resource) }
     else
-      respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render_with_scope :new }
+      respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render :new }
     end
   end
 end

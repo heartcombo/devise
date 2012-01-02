@@ -334,7 +334,7 @@ module Devise
   #
   def self.add_module(module_name, options = {})
     ALL << module_name
-    options.assert_valid_keys(:strategy, :model, :controller, :route)
+    options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input)
 
     if strategy = options[:strategy]
       strategy = (strategy == true ? module_name : strategy)
@@ -346,7 +346,7 @@ module Devise
       CONTROLLERS[module_name] = controller
     end
 
-    NO_INPUT << strategy if strategy && controller != :sessions
+    NO_INPUT << strategy if options[:no_input]
 
     if route = options[:route]
       case route

@@ -92,7 +92,7 @@ module ActionDispatch::Routing
     #    Notice that whenever you use namespace in the router DSL, it automatically sets the module.
     #    So the following setup:
     #
-    #      namespace :publisher
+    #      namespace :publisher do
     #        devise_for :account
     #      end
     #
@@ -369,13 +369,13 @@ module ActionDispatch::Routing
       end
 
       def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
-        old_as, old_path, old_module, old_constraints, old_defaults, old_options = 
+        old_as, old_path, old_module, old_constraints, old_defaults, old_options =
           *@scope.values_at(:as, :path, :module, :constraints, :defaults, :options)
         @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults], @scope[:options] =
           new_as, new_path, nil, *options.values_at(:constraints, :defaults, :options)
         yield
       ensure
-        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults], @scope[:options] = 
+        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults], @scope[:options] =
           old_as, old_path, old_module, old_constraints, old_defaults, old_options
       end
 

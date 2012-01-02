@@ -217,6 +217,12 @@ module Devise
   mattr_accessor :parent_controller
   @@parent_controller = "ApplicationController"
 
+  # The router Devise should use to generate routes. Defaults
+  # to :main_app. Should be overriden by engines in order
+  # to provide custom routes.
+  mattr_accessor :router_name
+  @@router_name = :main_app
+
   # DEPRECATED CONFIG
 
   # If true, uses salt as remember token and does not create it in the database.

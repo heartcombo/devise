@@ -1,5 +1,7 @@
 == 2.0.0.rc2
 
+Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+
 * bug fix
   * Fix incorrect message for locked account (by @jigyasa)
   * Regenerate confirmation token on reconfirmation (by @nashby)
@@ -7,8 +9,6 @@
   * Do not run validations unless on reconfirmable branch
 
 == 2.0.0.rc
-
-Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 * enhancements
   * Add support for e-mail reconfirmation on change (by @Mandaryn and @heimidal)

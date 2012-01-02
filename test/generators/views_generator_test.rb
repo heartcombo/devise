@@ -46,7 +46,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/registrations/new.html.erb"
     assert_file "app/views/#{scope}/registrations/edit.html.erb"
     assert_file "app/views/#{scope}/sessions/new.html.erb"
-    assert_file "app/views/#{scope}/shared/_links.erb"
     assert_file "app/views/#{scope}/unlocks/new.html.erb"
+    assert_file "app/views/#{scope}/_links.erb"
   end
 end

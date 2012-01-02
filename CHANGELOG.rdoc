@@ -9,8 +9,11 @@ Notes: https://@plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
   * Do not run validations unless on reconfirmable branch
 
 * enhancements
-  * allow parent controller to be customizable
-  * inherit from the same Devise parent controller (by @sj26)
+  * Allow parent controller to be customizable
+  * Inherit from the same Devise parent controller (by @sj26)
+
+* deprecation
+  * Move devise/shared/_links.erb to devise/_links.erb
 
 == 2.0.0.rc
 

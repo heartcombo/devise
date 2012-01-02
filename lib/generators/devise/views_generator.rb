@@ -32,17 +32,6 @@ module Devise
       end
     end
 
-    class SharedViewsGenerator < Rails::Generators::Base #:nodoc:
-      include ViewPathTemplates
-      source_root File.expand_path("../../../../app/views/devise", __FILE__)
-      desc "Copies shared Devise views to your application."
-
-      # Override copy_views to just copy mailer and shared.
-      def copy_views
-        view_directory :shared
-      end
-    end
-
     class FormForGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
       source_root File.expand_path("../../../../app/views/devise", __FILE__)
@@ -80,12 +69,15 @@ module Devise
     end
 
     class ViewsGenerator < Rails::Generators::Base
+      include ViewPathTemplates
+
+      source_root File.expand_path("../../../../app/views/devise", __FILE__)
       desc "Copies Devise views to your application."
 
-      argument :scope, :required => false, :default => nil,
-                       :desc => "The scope to copy views to"
+      def copy_views
+        copy_file "_links.erb", "#{target_path}/_links.erb"
+      end
 
-      invoke SharedViewsGenerator
       hook_for :form_builder, :aliases => "-b",
                               :desc => "Form builder to be used",
                               :default => defined?(SimpleForm) ? "simple_form_for" : "form_for"

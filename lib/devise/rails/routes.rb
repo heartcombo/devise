@@ -84,8 +84,9 @@ module ActionDispatch::Routing
     #
     #    You need to make sure that your sign_out controls trigger a request with a matching HTTP method.
     #
-    #  * :module => the namespace to find controlers. By default, devise will access devise/sessions,
-    #    devise/registrations and so on. If you want to namespace all at once, use module:
+    #  * :module => the namespace to find controllers (default: "devise", thus
+    #    accessing devise/sessions, devise/registrations, and so on). If you want
+    #    to namespace all at once, use module:
     #
     #      devise_for :users, :module => "users"
     #
@@ -135,15 +136,15 @@ module ActionDispatch::Routing
     #     devise_for :users
     #   end
     #
-    # However, since Devise uses the request path to retrieve the current user, it has one caveats.
-    # If you are using a dynamic segment, as below:
+    # However, since Devise uses the request path to retrieve the current user,
+    # this has one caveat: If you are using a dynamic segment, like so ...
     #
     #   scope ":locale" do
     #     devise_for :users
     #   end
     #
-    # You are required to configure default_url_options in your ApplicationController class level, so
-    # Devise can pick it:
+    # you are required to configure default_url_options in your
+    # ApplicationController class, so Devise can pick it:
     #
     #   class ApplicationController < ActionController::Base
     #     def self.default_url_options

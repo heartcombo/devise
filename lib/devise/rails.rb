@@ -42,6 +42,15 @@ module Devise
       end
     end
 
+    initializer "devise.fix_routes_proxy_missing_respond_to_bug" do
+      # We can get rid of this once we support Rails > 3.2
+      ActionDispatch::Routing::RoutesProxy.class_eval do
+        def respond_to?(method, include_private = false)
+          super || routes.url_helpers.respond_to?(method)
+        end
+      end
+    end
+
     initializer "devise.deprecations" do
       unless defined?(Rails::Generators)
         if Devise.case_insensitive_keys == false

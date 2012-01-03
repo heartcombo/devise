@@ -9,7 +9,9 @@ module Devise
     include ActionController::RackDelegation
     include ActionController::UrlFor
     include ActionController::Redirecting
+
     include Rails.application.routes.url_helpers
+    include Rails.application.routes.mounted_helpers
 
     delegate :flash, :to => :request
 
@@ -73,8 +75,10 @@ module Devise
       route = :"new_#{scope}_session_path"
       opts[:format] = request_format unless skip_format?
 
-      if respond_to?(route)
-        send(route, opts)
+      context = send(Devise.router_name)
+
+      if context.respond_to?(route)
+        context.send(route, opts)
       elsif respond_to?(:root_path)
         root_path(opts)
       else

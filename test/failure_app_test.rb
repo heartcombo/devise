@@ -3,7 +3,9 @@ require 'ostruct'
 
 class FailureTest < ActiveSupport::TestCase
   class RootFailureApp < Devise::FailureApp
-    undef_method :new_user_session_path
+    def fake_app
+      Object.new
+    end
   end
 
   def self.context(name, &block)
@@ -41,10 +43,12 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'return to the root path if no session path is available' do
-      call_failure :app => RootFailureApp
-      assert_equal 302, @response.first
-      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
-      assert_equal 'http://test.host/', @response.second['Location']
+      swap Devise, :router_name => :fake_app do
+        call_failure :app => RootFailureApp
+        assert_equal 302, @response.first
+        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+        assert_equal 'http://test.host/', @response.second['Location']
+      end
     end
 
     test 'uses the proxy failure message as symbol' do

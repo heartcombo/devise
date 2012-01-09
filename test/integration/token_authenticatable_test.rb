@@ -112,7 +112,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
 
       assert_not_equal user1, user2
       visit users_path(Devise.token_authentication_key.to_s + '[$ne]' => user1.authentication_token)
-      assert_nil warden.user(:user) 
+      assert_nil warden.user(:user)
     end
   end
 

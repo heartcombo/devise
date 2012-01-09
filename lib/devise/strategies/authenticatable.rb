@@ -105,7 +105,7 @@ module Devise
       # Helper to decode credentials from HTTP.
       def decode_credentials
         return [] unless request.authorization && request.authorization =~ /^Basic (.*)/m
-        ActiveSupport::Base64.decode64($1).split(/:/, 2)
+        Base64.decode64($1).split(/:/, 2)
       end
 
       # Sets the authentication hash and the password from params_auth_hash or http_auth_hash.

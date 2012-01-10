@@ -40,7 +40,7 @@ class TrackableHooksTest < ActionController::IntegrationTest
   test "current remote ip returns original ip behind a non transparent proxy" do
     user = create_user
 
-    arbitrary_ip = '192.168.1.69'
+    arbitrary_ip = '200.121.1.69'
     sign_in_as_user do
       header 'HTTP_X_FORWARDED_FOR', arbitrary_ip
     end

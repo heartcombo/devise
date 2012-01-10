@@ -4,7 +4,6 @@ rvm:
   - 1.9.2
   - 1.9.3
   - ree
-  - rbx-18mode
 gemfile:
   - gemfiles/Gemfile.rails-3.1.x
   - Gemfile

@@ -407,7 +407,10 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
 
   test 'sign in stub in xml format' do
     get new_user_session_path(:format => 'xml')
-    assert_equal "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <email></email>\n  <password nil=\"true\"></password>\n</user>\n", response.body
+    assert_match '<?xml version="1.0" encoding="UTF-8"?>', response.body
+    assert_match /<user>.*<\/user>/m, response.body
+    assert_match '<email></email>', response.body
+    assert_match '<password nil="true"></password>', response.body
   end
 
   test 'sign in stub in json format' do

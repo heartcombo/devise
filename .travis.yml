@@ -7,7 +7,7 @@ rvm:
   - rbx-18mode
 gemfile:
   - gemfiles/Gemfile.rails-3.1.x
-  - gemfiles/Gemfile.rails-3.2.x
+  - Gemfile
 notifications:
   recipients:
     - jose.valim@plataformatec.com.br

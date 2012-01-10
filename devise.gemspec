@@ -14,9 +14,8 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "devise"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = Dir["CHANGELOG.rdoc", "MIT-LICENSE", "README.rdoc", "app/**/*", "config/**/*", "lib/**/*"]
+  s.test_files    = Dir["test/**/*"]
   s.require_paths = ["lib"]
 
   s.add_dependency("warden", "~> 1.1")

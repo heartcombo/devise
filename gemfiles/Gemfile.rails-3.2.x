@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gemspec
+gem "devise", :path => ".."
 
 gem "rails", ">= 3.2.0.rc", "< 4.0"
 gem "omniauth", "~> 1.0.0"

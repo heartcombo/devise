@@ -50,7 +50,7 @@ class RegistrationTest < ActionController::IntegrationTest
   test 'a guest user should be able to sign up successfully and be blocked by confirmation' do
     user_sign_up
 
-    assert_contain 'You have signed up successfully. However, we could not sign you in because your account is unconfirmed.'
+    assert_contain 'A message with a confirmation link has been sent to your email address. Please open the link to activate your account.'
     assert_not_contain 'You have to confirm your account before continuing'
     assert_current_url "/"
 

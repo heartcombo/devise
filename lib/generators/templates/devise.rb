@@ -47,13 +47,13 @@ Devise.setup do |config|
 
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
-  # given stratragies, for example, `config.params_authenticatable = [:database]` will
+  # given strategies, for example, `config.params_authenticatable = [:database]` will
   # enable it only for database (email + password) authentication.
   # config.params_authenticatable = true
 
   # Tell if authentication through HTTP Basic Auth is enabled. False by default.
   # It can be set to an array that will enable http authentication only for the
-  # given stratragies, for example, `config.http_authenticatable = [:token]` will
+  # given strategies, for example, `config.http_authenticatable = [:token]` will
   # enable it only for token authentication.
   # config.http_authenticatable = false
 

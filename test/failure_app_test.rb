@@ -52,8 +52,8 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'uses the proxy failure message as symbol' do
-      call_failure('warden' => OpenStruct.new(:message => :test))
-      assert_equal 'test', @request.flash[:alert]
+      call_failure('warden' => OpenStruct.new(:message => :invalid))
+      assert_equal 'Invalid email or password.', @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 

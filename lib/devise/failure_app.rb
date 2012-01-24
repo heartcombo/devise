@@ -64,7 +64,7 @@ module Devise
 
       if message.is_a?(Symbol)
         I18n.t(:"#{scope}.#{message}", :resource_name => scope,
-               :scope => "devise.failure", :default => [message, message.to_s])
+               :scope => "devise.failure", :default => [message])
       else
         message.to_s
       end

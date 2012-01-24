@@ -80,6 +80,18 @@ module Devise
             "your Devise models (if they don't have one already).\n"
         end
       end
+
+      config.after_initialize do
+        if I18n.t(:"devise.registrations.reasons", :default => {}).present?
+          warn "\n[DEVISE] devise.registrations.reasons in yml files is deprecated, " \
+            "please use devise.registrations.signed_up_but_REASON instead.\n"
+        end
+
+        if I18n.t(:"devise.registrations.inactive_signed_up", :default => "").present?
+          warn "\n[DEVISE] devise.registrations.inactive_signed_up in yml files is deprecated, " \
+            "please use devise.registrations.signed_up_but_inactive instead.\n"
+        end
+      end
     end
   end
 end

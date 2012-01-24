@@ -18,6 +18,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Move devise/shared/_links.erb to devise/_links.erb
   * Devise only supports Rails 3.1 forward
   * Deprecated support for nested devise_for blocks
+  * Deprecated support to devise.registrations.reasons and devise.registrations.inactive_signed_up in favor of devise.registrations.signed_up_but_*
 
 == 2.0.0.rc
 

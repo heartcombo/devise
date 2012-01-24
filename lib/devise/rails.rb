@@ -82,14 +82,23 @@ module Devise
       end
 
       config.after_initialize do
+        example = <<-YAML
+en:
+  devise:
+    registrations:
+      signed_up_but_unconfirmed: 'A message with a confirmation link has been sent to your email address. Please open the link to activate your account.'
+      signed_up_but_inactive: 'You have signed up successfully. However, we could not sign you in because your account is not yet activated.'
+      signed_up_but_locked: 'You have signed up successfully. However, we could not sign you in because your account is locked.'
+        YAML
+
         if I18n.t(:"devise.registrations.reasons", :default => {}).present?
           warn "\n[DEVISE] devise.registrations.reasons in yml files is deprecated, " \
-            "please use devise.registrations.signed_up_but_REASON instead.\n"
+            "please use devise.registrations.signed_up_but_REASON instead. The default values are:\n\n#{example}\n"
         end
 
         if I18n.t(:"devise.registrations.inactive_signed_up", :default => "").present?
           warn "\n[DEVISE] devise.registrations.inactive_signed_up in yml files is deprecated, " \
-            "please use devise.registrations.signed_up_but_inactive instead.\n"
+            "please use devise.registrations.signed_up_but_REASON instead. The default values are:\n\n#{example}\n"
         end
       end
     end

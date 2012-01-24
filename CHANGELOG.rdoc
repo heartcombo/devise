@@ -16,6 +16,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * deprecation
   * Move devise/shared/_links.erb to devise/_links.erb
   * Devise only supports Rails 3.1 forward
+  * Deprecated support for nested devise_for blocks
 
 == 2.0.0.rc
 

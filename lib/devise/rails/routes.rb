@@ -208,7 +208,12 @@ module ActionDispatch::Routing
         routes  = mapping.used_routes
 
         devise_scope mapping.name do
-          yield if block_given?
+          if block_given?
+            ActiveSupport::Deprecation.warn "Passing a block to devise_for is deprecated. " \
+              "Please call devise_scope :#{mapping.name} do ... end with the block instead", caller
+            yield
+          end
+
           with_devise_exclusive_scope mapping.fullpath, mapping.name, options do
             routes.each { |mod| send("devise_#{mod}", mapping, mapping.controllers) }
           end

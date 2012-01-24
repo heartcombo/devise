@@ -435,12 +435,6 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
-  test 'uses the mapping from nested devise_for call' do
-    sign_in_as_user :visit => "/devise_for/sign_in"
-    assert warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
-  end
-
   test 'sign in with xml format returns xml response' do
     create_user
     post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '123456'}

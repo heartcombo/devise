@@ -53,14 +53,19 @@ module Devise
 
     def redirect
       store_location!
-      flash[:alert] = i18n_message
+      if flash[:timedout] && flash[:alert]
+        flash.keep(:timedout)
+        flash.keep(:alert)
+      else
+        flash[:alert] = i18n_message
+      end
       redirect_to redirect_url
     end
 
   protected
 
     def i18n_message(default = nil)
-      message = warden.message || warden_options[:message] || default || :unauthenticated
+      message = warden_message || default || :unauthenticated
 
       if message.is_a?(Symbol)
         I18n.t(:"#{scope}.#{message}", :resource_name => scope,
@@ -71,6 +76,15 @@ module Devise
     end
 
     def redirect_url
+      if warden_message == :timeout
+        flash[:timedout] = true
+        attempted_path || scope_path
+      else
+        scope_path
+      end
+    end
+
+    def scope_path
       opts  = {}
       route = :"new_#{scope}_session_path"
       opts[:format] = request_format unless skip_format?
@@ -137,6 +151,10 @@ module Devise
 
     def warden_options
       env['warden.options']
+    end
+
+    def warden_message
+      @message ||= warden.message || warden_options[:message]
     end
 
     def scope

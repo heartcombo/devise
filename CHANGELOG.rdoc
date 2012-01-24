@@ -9,6 +9,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Do not run validations unless on reconfirmable branch
 
 * enhancements
+  * Redirect to the previous URL on timeout
   * Inherit from the same Devise parent controller (by @sj26)
   * Allow parent_controller to be customizable via Devise.parent_controller, useful for engines
   * Allow router_name to be customizable via Devise.router_name, useful for engines

@@ -64,7 +64,7 @@ MESSAGE
 
   def unknown_action!(msg)
     logger.debug "[Devise] #{msg}" if logger
-    raise ActionController::UnknownAction, msg
+    raise AbstractController::ActionNotFound, msg
   end
 
   # Sets the resource creating an instance variable

@@ -1,4 +1,4 @@
-*IMPORTANT:* Devise 2.0.0.rc is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0-migration-schema-style
+*IMPORTANT:* Devise 2.0.0.rc is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 == Devise
 

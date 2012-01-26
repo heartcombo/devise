@@ -1,40 +1,29 @@
-== 2.0.0.rc2
+== 2.0.0
 
 Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
-
-* bug fix
-  * Fix incorrect message for locked account (by @jigyasa)
-  * Regenerate confirmation token on reconfirmation (by @nashby)
-  * Allow alternate ORMs to run compatibility setup code before Authenticatable is included (by @jm81)
-  * Do not run validations unless on reconfirmable branch
-
-* enhancements
-  * Redirect to the previous URL on timeout
-  * Inherit from the same Devise parent controller (by @sj26)
-  * Allow parent_controller to be customizable via Devise.parent_controller, useful for engines
-  * Allow router_name to be customizable via Devise.router_name, useful for engines
-
-* deprecation
-  * Move devise/shared/_links.erb to devise/_links.erb
-  * Devise only supports Rails 3.1 forward
-  * Deprecated support for nested devise_for blocks
-  * Deprecated support to devise.registrations.reasons and devise.registrations.inactive_signed_up in favor of devise.registrations.signed_up_but_*
-
-== 2.0.0.rc
 
 * enhancements
   * Add support for e-mail reconfirmation on change (by @Mandaryn and @heimidal)
   * Redirect users to sign in page after unlock (by @nashby)
+  * Redirect to the previous URL on timeout
+  * Inherit from the same Devise parent controller (by @sj26)
+  * Allow parent_controller to be customizable via Devise.parent_controller, useful for engines
+  * Allow router_name to be customizable via Devise.router_name, useful for engines
+  * Allow alternate ORMs to run compatibility setup code before Authenticatable is included (by @jm81)
 
 * deprecation
-  * Devise.apply_schema is deprecated
-  * Devise migration helpers are deprecated
+  * Devise now only supports Rails 3.1 forward
+  * Devise.confirm_within was deprecated in favor Devise.allow_unconfirmed_access_for
+  * Devise.stateless_token= is deprecated in favor of appending :token_auth to Devise.skip_session_storage
+  * Usage of Devise.apply_schema is deprecated
+  * Usage of Devise migration helpers are deprecated
   * Usage of Devise.remember_across_browsers was deprecated
-  * Usage of Devise.confirm_within was deprecated in favor Devise.allow_unconfirmed_access_for
   * Usage of rememberable with remember_token was removed
   * Usage of recoverable without reset_password_sent_at was removed
   * Usage of Devise.case_insensitive_keys equals to false was removed
-  * Usage of Devise.stateless_token= is deprecated in favor of appending :token_auth to Devise.skip_session_storage
+  * Move devise/shared/_links.erb to devise/_links.erb
+  * Deprecated support of nested devise_for blocks
+  * Deprecated support to devise.registrations.reasons and devise.registrations.inactive_signed_up in favor of devise.registrations.signed_up_but_*
 
 == 1.5.3
 

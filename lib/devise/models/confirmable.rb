@@ -31,9 +31,9 @@ module Devise
 
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
-        after_create  :send_confirmation_instructions, :if => :confirmation_required?
         before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
         after_update :send_confirmation_instructions, :if => :reconfirmation_required?
+        after_commit  :send_confirmation_instructions, :if => :confirmation_required?
       end
 
       # Confirm a user by setting it's confirmed_at to actual time. If the user

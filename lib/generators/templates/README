@@ -8,7 +8,7 @@ Some setup you must do manually if you haven't yet:
 
        config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
-     In production host should be the actual host of your application.
+     In production, :host should be set to the actual host of your application.
 
   2. Ensure you have defined root_url to *something* in your config/routes.rb.
      For example:

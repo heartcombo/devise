@@ -55,9 +55,14 @@ module Devise
       unless defined?(Rails::Generators)
         if Devise.case_insensitive_keys == false
           warn "\n[DEVISE] Devise.case_insensitive_keys is false which is no longer " \
-            "supported. If you want to continue running on this mode, please ensure " \
-            "you are not using validatable (you can copy the validations directly to your model) " \
-            "and set case_insensitive_keys to an empty array.\n"
+            "supported. Recent Devise versions automatically downcase the e-mail before " \
+            "saving it to the database but your app isn't using this feature. You can solve " \
+            "this issue by either:\n\n" \
+            "1) Setting config.case_insensitive_keys = [:email] in your Devise initializer and " \
+            "running a migration that will downcase all emails already in the database;\n\n" \
+            "2) Setting config.case_insensitive_keys = [] (so nothing will be downcased) and " \
+            "making sure you are not using Devise :validatable (since validatable assumes case" \
+            "insensitivity)\n"
         end
 
         if Devise.apply_schema && defined?(Mongoid)

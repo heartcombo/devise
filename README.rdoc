@@ -54,7 +54,7 @@ You can view the Devise documentation in RDoc format here:
 
 http://rubydoc.info/github/plataformatec/devise/master/frames
 
-If you need to use Devise with Rails 2.3, you can always run `gem server` from the command line after you install the gem to access the old documentation.
+If you need to use Devise with Rails 2.3, you can always run "gem server" from the command line after you install the gem to access the old documentation.
 
 === Example applications
 
@@ -74,25 +74,7 @@ We hope that you will consider contributing to Devise. Please read this short ov
 
 https://github.com/plataformatec/devise/wiki/Contributing
 
-You will usually want to write tests for your changes.  To run the test suite, `cd` into Devise's top-level directory and run `bundle install` and `rake`.  For the tests to pass, you will need to have a MongoDB server (version 2.0 or newer) running on your system.
-
-== Installation
-
-You can use the latest Rails 3 gem with the latest Devise gem:
-
-  gem install devise
-
-After you install Devise and add it to your Gemfile, you need to run the generator:
-
-  rails generate devise:install
-
-The generator will install an initializer which describes ALL Devise's configuration options and you MUST take a look at it. When you are done, you are ready to add Devise to any of your models using the generator:
-
-  rails generate devise MODEL
-
-Replace MODEL by the class name used for the applications users, it's frequently 'User' but could also be 'Admin'. This will create a model (if one does not exist) and configure it with default Devise modules. Next, you'll usually run db:migrate as the generator will have created a migration file (if your ORM supports them). This generator also configures your config/routes.rb file, continue reading this file to understand exactly what the generator produces and how to use it. Finally, if your server was already running, then restart it as Rails doesn't automatically load methods from a new gem.
-
-Support for Rails 2.3.x can be found by installing Devise 1.0.x from the v1.0 branch.
+You will usually want to write tests for your changes.  To run the test suite, go into Devise's top-level directory and run "bundle install" and "rake".  For the tests to pass, you will need to have a MongoDB server (version 2.0 or newer) running on your system.
 
 == Starting with Rails?
 
@@ -105,36 +87,19 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 == Getting started
 
-This is a walkthrough with all steps you need to setup a devise resource, including model, migration, route files, and optional configuration.
+Devise 2.0 works with Rails 3.1 onwards. You can install it with:
 
-Devise must be set up within the model (or models) you want to use. Devise routes must be created inside your config/routes.rb file.
+  gem install devise
 
-We're assuming here you want a User model with some Devise modules, as outlined below:
+After you install Devise and add it to your Gemfile, you need to run the generator:
 
-  class User < ActiveRecord::Base
-    devise :database_authenticatable, :registerable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
-  end
+  rails generate devise:install
 
-After you choose which modules to use, you need to set up your migrations. Luckily, Devise has some helpers to save you from this boring work:
+The generator will install an initializer which describes ALL Devise's configuration options and you MUST take a look at it. When you are done, you are ready to add Devise to any of your models using the generator:
 
-  create_table :users do |t|
-    t.database_authenticatable
-    t.confirmable
-    t.recoverable
-    t.rememberable
-    t.trackable
-    t.timestamps
-  end
+  rails generate devise MODEL
 
-Devise doesn't use _attr_accessible_ or _attr_protected_ inside its modules, so be sure to define attributes as accessible or protected in your model.
-
-Configure your routes after setting up your model. Open your config/routes.rb file and add:
-
-  devise_for :users
-
-This will use your User model to create a set of needed routes (you can see them by running `rake routes`). If you invoked the devise generator, you noticed that this is exactly what the generator produces for us: model, routes and migrations.
-
-Don't forget to run rake db:migrate and you are ready to go! But don't stop reading here, we still have a lot to tell you.
+Replace MODEL by the class name used for the applications users, it's frequently 'User' but could also be 'Admin'. This will create a model (if one does not exist) and configure it with default Devise modules. Next, you'll usually run "rake db:migrate" as the generator will have created a migration file (if your ORM supports them). This generator also configures your config/routes.rb file to point to Devise controller.
 
 === Controller filters and helpers
 
@@ -154,13 +119,13 @@ You can access the session for this scope:
 
   user_session
 
-After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use user_root_path if it exists, otherwise default root_path will be used. This means that you need to set the root inside your routes:
+After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use +user_root_path+ if it exists, otherwise default +root_path+ will be used. This means that you need to set the root inside your routes:
 
   root :to => "home#index"
 
-You can also overwrite after_sign_in_path_for and after_sign_out_path_for to customize your redirect hooks.
+You can also overwrite +after_sign_in_path_for+ and +after_sign_out_path_for+ to customize your redirect hooks.
 
-Finally, you need to set up default url options for the mailer in each environment. Here is the configuration for config/environments/development.rb:
+Finally, you need to set up default url options for the mailer in each environment. Here is the configuration for "config/environments/development.rb":
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
@@ -176,7 +141,7 @@ Notice that if your devise model is not called "user" but "member", then the hel
 
 === Configuring Models
 
-The devise method in your models also accepts some options to configure its modules. For example, you can choose which encryptor to use in database_authenticatable:
+The devise method in your models also accepts some options to configure its modules. For example, you can choose the cost of the encryption algorithm with:
 
   devise :database_authenticatable, :registerable, :confirmable, :recoverable, :stretches => 20
 
@@ -184,18 +149,17 @@ Besides :stretches, you can define :pepper, :encryptor, :confirm_within, :rememb
 
 === Configuring multiple models
 
-Devise allows you to set up as many roles as you want. For example, you may have a User model and also want an Admin model with just authentication, trackable, lockable and timeoutable features and no confirmation or password-recovery features. Just follow these steps:
+Devise allows you to set up as many roles as you want. For example, you may have a User model and also want an Admin model with just authentication and timeoutable features. If so, just follow these steps:
 
   # Create a migration with the required fields
   create_table :admins do |t|
-    t.database_authenticatable
-    t.lockable
-    t.trackable
+    t.string :email
+    t.string :encrypted_password
     t.timestamps
   end
 
   # Inside your Admin model
-  devise :database_authenticatable, :trackable, :timeoutable, :lockable
+  devise :database_authenticatable, :timeoutable
 
   # Inside your routes
   devise_for :admins
@@ -207,6 +171,8 @@ Devise allows you to set up as many roles as you want. For example, you may have
   admin_signed_in?
   current_admin
   admin_session
+
+On the other hand, you can simply run the generator!
 
 === Configuring views
 
@@ -245,7 +211,7 @@ Devise also ships with default routes. If you need to customize them, you should
 
   devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
 
-Be sure to check devise_for documentation for details.
+Be sure to check +devise_for+ documentation for details.
 
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is to create your routes normally and wrap them in a +devise_scope+ block in the router:
 

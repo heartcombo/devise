@@ -210,7 +210,9 @@ module ActionDispatch::Routing
         devise_scope mapping.name do
           if block_given?
             ActiveSupport::Deprecation.warn "Passing a block to devise_for is deprecated. " \
-              "Please call devise_scope :#{mapping.name} do ... end with the block instead", caller
+              "Please remove the block from devise_for (only the block, the call to " \
+              "devise_for must still exist) and call devise_scope :#{mapping.name} do ... end " \
+              "with the block instead", caller
             yield
           end
 

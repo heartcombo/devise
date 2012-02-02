@@ -12,6 +12,7 @@ group :test do
   gem "omniauth-openid", "~> 1.0.1"
   gem "webrat", "0.7.2", :require => false
   gem "mocha", :require => false
+  gem "database_cleaner"
 
   platforms :mri_18 do
     gem "ruby-debug", ">= 0.10.3"

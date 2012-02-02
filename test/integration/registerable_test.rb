@@ -1,6 +1,18 @@
 require 'test_helper'
-
+require 'database_cleaner'
+DatabaseCleaner.strategy = :truncation
+  
 class RegistrationTest < ActionController::IntegrationTest
+
+  self.use_transactional_fixtures = false
+  
+  def setup
+    DatabaseCleaner.start
+  end
+
+  def teardown
+    DatabaseCleaner.clean
+  end
 
   test 'a guest admin should be able to sign in successfully' do
     get new_admin_session_path

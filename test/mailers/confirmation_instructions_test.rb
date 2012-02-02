@@ -1,14 +1,20 @@
 require 'test_helper'
-
+require 'database_cleaner'
+DatabaseCleaner.strategy = :truncation
+  
 class ConfirmationInstructionsTest < ActionMailer::TestCase
+
+  self.use_transactional_fixtures = false
 
   def setup
     setup_mailer
+    DatabaseCleaner.start
     Devise.mailer = 'Devise::Mailer'
     Devise.mailer_sender = 'test@example.com'
   end
 
   def teardown
+    DatabaseCleaner.clean
     Devise.mailer = 'Devise::Mailer'
     Devise.mailer_sender = 'please-change-me@config-initializers-devise.com'
   end

@@ -31,7 +31,7 @@ module Devise
 
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
-        after_create  :send_confirmation_instructions, :if => :confirmation_required?
+        after_create  :send_on_create_confirmation_instructions, :if => :confirmation_required?
         before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
         after_update :send_confirmation_instructions, :if => :reconfirmation_required?
       end
@@ -108,6 +108,13 @@ module Devise
       end
 
       protected
+
+        # A callback method used to deliver confirmation
+        # instructions on creation. This can be overriden
+        # in models to map to a nice sign up e-mail.
+        def send_on_create_confirmation_instructions
+          self.devise_mailer.confirmation_instructions(self).deliver
+        end
 
         # Callback to overwrite if confirmation is required or not.
         def confirmation_required?

@@ -13,6 +13,13 @@ module Devise
         public_task :copy_views
       end
 
+      # TODO: Add this to Rails itslef
+      module ClassMethods
+        def hide!
+          Rails::Generators.subclasses.delete(self)
+        end
+      end
+
       def copy_views
         view_directory :confirmations
         view_directory :passwords
@@ -36,18 +43,21 @@ module Devise
       include ViewPathTemplates
       source_root File.expand_path("../../../../app/views/devise", __FILE__)
       desc "Copies default Devise views to your application."
+      hide!
     end
 
     class SimpleFormForGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
       source_root File.expand_path("../../templates/simple_form_for", __FILE__)
       desc "Copies simple form enabled views to your application."
+      hide!
     end
 
     class ErbGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
       source_root File.expand_path("../../../../app/views/devise", __FILE__)
       desc "Copies Devise mail erb views to your application."
+      hide!
 
       def copy_views
         view_directory :mailer
@@ -58,6 +68,7 @@ module Devise
       include ViewPathTemplates
       source_root File.expand_path("../../templates", __FILE__)
       desc "Copies Devise mail markerb views to your application."
+      hide!
 
       def copy_views
         view_directory :markerb, target_path

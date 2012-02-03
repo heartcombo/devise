@@ -1,9 +1,18 @@
 require 'test_helper'
+require 'database_cleaner'
+DatabaseCleaner.strategy = :truncation
 
 class ConfirmableTest < ActiveSupport::TestCase
 
+  self.use_transactional_fixtures = false
+  
   def setup
     setup_mailer
+    DatabaseCleaner.start
+  end
+
+  def teardown
+    DatabaseCleaner.clean
   end
 
   test 'should generate confirmation token after creating a record' do

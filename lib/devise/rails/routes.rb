@@ -365,7 +365,10 @@ module ActionDispatch::Routing
         path_prefix = "/#{mapping.path}/auth".squeeze("/")
 
         if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
-          raise "You can only add :omniauthable behavior to one Devise model"
+          raise "Wrong OmniAuth configuration. If you are getting this exception, it means that either:\n\n" \
+            "1) You are manually setting OmniAuth.config.path_prefix and it doesn't match the Devise one\n" \
+            "2) You are setting :omniauthable in more than one model\n" \
+            "3) You changed your Devise routes/OmniAuth setting and haven't restarted your server"
         else
           ::OmniAuth.config.path_prefix = path_prefix
         end

@@ -2,6 +2,8 @@
 
 ## Devise
 
+INFO: This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
+
 [![Build Status](https://secure.travis-ci.org/plataformatec/devise.png)](http://travis-ci.org/plataformatec/devise)
 
 Devise is a flexible authentication solution for Rails based on Warden. It:

@@ -16,7 +16,7 @@ module Devise
       # TODO: Add this to Rails itslef
       module ClassMethods
         def hide!
-          Rails::Generators.subclasses.delete(self)
+          Rails::Generators.hide_namespace self.namespace
         end
       end
 

@@ -1,3 +1,5 @@
+require "active_support/core_ext/object/try"
+
 module ActionDispatch::Routing
   class RouteSet #:nodoc:
     # Ensure Devise modules are included only after loading routes, because we
@@ -6,6 +8,14 @@ module ActionDispatch::Routing
       finalize_without_devise!
 
       @devise_finalized ||= begin
+        if Devise.router_name.nil? && self != Rails.application.try(:routes)
+          warn "[Devise] We have detected that you are using devise_for inside engine routes. " \
+            "In this case, you probably want to set Devise.router_name = MOUNT_POINT, where "   \
+            "MOUNT_POINT is a symbol representing where this engine will be mounted at. For "   \
+            "now, Devise will default the mount point to :main_app."
+        end
+
+        Devise.router_name ||= :main_app
         Devise.configure_warden!
         Devise.regenerate_helpers!
         true

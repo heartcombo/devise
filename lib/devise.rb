@@ -221,7 +221,7 @@ module Devise
   # to :main_app. Should be overriden by engines in order
   # to provide custom routes.
   mattr_accessor :router_name
-  @@router_name = :main_app
+  @@router_name = nil
 
   # DEPRECATED CONFIG
 

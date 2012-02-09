@@ -1,6 +1,15 @@
-== 2.0.0
+== 2.0.1
 
 Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+
+* enhancements
+  * Improved error messages on deprecation warnings
+  * Hide Devise's internal generators from `rails g` command
+
+* bug fix
+  * Removed tmp and log files from gem
+
+== 2.0.0
 
 * enhancements
   * Add support for e-mail reconfirmation on change (by @Mandaryn and @heimidal)

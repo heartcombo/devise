@@ -15,9 +15,8 @@ module Devise
 
     # Override process to consider warden.
     def process(*)
-      result = nil
-      _catch_warden { result = super }
-      result
+      # Make sure we always return @response, a la ActionController::TestCase::Behaviour#process, even if warden interrupts
+      _catch_warden { super } || @response
     end
 
     # We need to setup the environment variables and the response in the controller.
@@ -66,6 +65,8 @@ module Devise
 
     protected
 
+    # Catch warden continuations and handle like the middleware would.
+    # Returns nil when interrupted, otherwise the normal result of the block.
     def _catch_warden(&block)
       result = catch(:warden, &block)
 

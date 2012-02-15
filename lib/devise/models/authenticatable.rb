@@ -51,6 +51,11 @@ module Devise
     module Authenticatable
       extend ActiveSupport::Concern
 
+      BLACKLIST_FOR_SERIALIZATION = [:encrypted_password, :reset_password_token, :reset_password_sent_at,
+        :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip,
+        :last_sign_in_ip, :password_salt, :confirmation_token, :confirmed_at, :confirmation_sent_at,
+        :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at, :authentication_token]
+
       included do
         class_attribute :devise_modules, :instance_writer => false
         self.devise_modules ||= []
@@ -114,10 +119,7 @@ module Devise
             if options[:force_except]
               options[:except].concat Array(options[:force_except])
             else
-              options[:except].concat [:encrypted_password, :reset_password_token, :reset_password_send_at,
-                :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip,
-                :last_sign_in_ip, :password_salt, :confirmation_token, :confirmed_at, :confirmation_sent_at,
-                :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at, :authentication_token]
+              options[:except].concat BLACKLIST_FOR_SERIALIZATION
             end
             super(options)
           end

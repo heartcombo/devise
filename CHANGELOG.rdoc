@@ -1,6 +1,18 @@
-== 2.0.1
+== 2.0.2
 
 Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+
+* enhancements
+  * Add devise_i18n_options to customize I18n message
+
+* bug fix
+  * Ensure Devise.available_router_name defaults to :main_app
+  * Set autocomplete to off for password on edit forms
+  * Better error messages in case a trackable model can't be saved
+  * Show a warning in case someone gives a pluralized name to devise generator
+  * Fix test behavior for rspec subject requests (by @sj26)
+
+== 2.0.1
 
 * enhancements
   * Improved error messages on deprecation warnings

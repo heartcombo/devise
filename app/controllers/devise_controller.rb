@@ -131,6 +131,7 @@ MESSAGE
     options[:scope] = "devise.#{controller_name}"
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
+    options = devise_i18n_options(options) if respond_to?(:devise_i18n_options, true)
     message = I18n.t("#{resource_name}.#{kind}", options)
     flash[key] = message if message.present?
   end
@@ -155,7 +156,7 @@ MESSAGE
 
   # Override prefixes to consider the scoped view.
   def _prefixes #:nodoc:
-    @_prefixes ||= if self.class.scoped_views?
+    @_prefixes ||= if self.class.scoped_views? && devise_mapping
       super.unshift("#{devise_mapping.scoped_path}/#{controller_name}")
     else
       super

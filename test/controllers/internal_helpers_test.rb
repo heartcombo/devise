@@ -71,19 +71,21 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'does not issue blank flash messages' do
-    MyController.send(:public, :set_flash_message)
     I18n.stubs(:t).returns('   ')
-    @controller.set_flash_message :notice, :send_instructions
+    @controller.send :set_flash_message, :notice, :send_instructions
     assert flash[:notice].nil?
-    MyController.send(:protected, :set_flash_message)
   end
 
   test 'issues non-blank flash messages normally' do
-    MyController.send(:public, :set_flash_message)
     I18n.stubs(:t).returns('non-blank')
-    @controller.set_flash_message :notice, :send_instructions
-    assert flash[:notice] == 'non-blank'
-    MyController.send(:protected, :set_flash_message)
+    @controller.send :set_flash_message, :notice, :send_instructions
+    assert_equal 'non-blank', flash[:notice]
+  end
+
+  test 'uses custom i18n options' do
+    @controller.stubs(:devise_i18n_options).returns(:default => "devise custom options")
+    @controller.send :set_flash_message, :notice, :invalid_i18n_messagesend_instructions
+    assert_equal 'devise custom options', flash[:notice]
   end
 
   test 'navigational_formats not returning a wild card' do

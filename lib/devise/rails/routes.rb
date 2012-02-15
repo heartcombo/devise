@@ -8,7 +8,7 @@ module ActionDispatch::Routing
       finalize_without_devise!
 
       @devise_finalized ||= begin
-        if Devise.router_name.nil? && self != Rails.application.try(:routes)
+        if Devise.router_name.nil? && Rails.application && self != Rails.application.routes
           warn "[DEVISE] We have detected that you are using devise_for inside engine routes. " \
             "In this case, you probably want to set Devise.router_name = MOUNT_POINT, where "   \
             "MOUNT_POINT is a symbol representing where this engine will be mounted at. For "   \

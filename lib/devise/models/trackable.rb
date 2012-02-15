@@ -23,7 +23,8 @@ module Devise
         self.sign_in_count ||= 0
         self.sign_in_count += 1
 
-        save(:validate => false)
+        save(:validate => false) or raise "Devise trackable could not save #{inspect}." \
+          "Please make sure a model using trackable can be saved at sign in."
       end
     end
   end

@@ -5,7 +5,7 @@ class DeviseController < Devise.parent_controller.constantize
   helper DeviseHelper
 
   helpers = %w(resource scope_name resource_name signed_in_resource
-               resource_class devise_mapping devise_controller?)
+               resource_class devise_mapping)
   hide_action *helpers
   helper_method *helpers
 
@@ -36,11 +36,6 @@ class DeviseController < Devise.parent_controller.constantize
   # Attempt to find the mapped route for devise based on request path
   def devise_mapping
     @devise_mapping ||= request.env["devise.mapping"]
-  end
-
-  # Overwrites devise_controller? to return true
-  def devise_controller?
-    true
   end
 
   protected

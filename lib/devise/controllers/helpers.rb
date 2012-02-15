@@ -75,9 +75,9 @@ module Devise
       # the controllers defined inside devise. Useful if you want to apply a before
       # filter to all controllers, except the ones in devise:
       #
-      #   before_filter :my_filter, :unless => { |c| c.devise_controller? }
+      #   before_filter :my_filter, :unless => :devise_controller?
       def devise_controller?
-        false
+        is_a?(DeviseController)
       end
 
       # Tell warden that params authentication is allowed for that specific page.

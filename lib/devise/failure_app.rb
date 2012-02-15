@@ -89,7 +89,7 @@ module Devise
       route = :"new_#{scope}_session_path"
       opts[:format] = request_format unless skip_format?
 
-      context = send(Devise.router_name)
+      context = send(Devise.available_router_name)
 
       if context.respond_to?(route)
         context.send(route, opts)

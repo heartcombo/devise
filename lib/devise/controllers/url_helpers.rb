@@ -60,7 +60,7 @@ module Devise
       private
 
       def _devise_route_context
-        @_devise_route_context ||= send(Devise.router_name)
+        @_devise_route_context ||= send(Devise.available_router_name)
       end
     end
   end

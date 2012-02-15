@@ -299,6 +299,10 @@ module Devise
     end
   end
 
+  def self.available_router_name
+    router_name || :main_app
+  end
+
   def self.omniauth_providers
     omniauth_configs.keys
   end

@@ -136,7 +136,7 @@ module Devise
       def sign_out(resource_or_scope=nil)
         return sign_out_all_scopes unless resource_or_scope
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        warden.user(scope) # Without loading user here, before_logout hook is not called
+        warden.user(:scope => scope, :run_callbacks => false) # Without loading user here, before_logout hook is not called
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope)
         instance_variable_set(:"@current_#{scope}", nil)

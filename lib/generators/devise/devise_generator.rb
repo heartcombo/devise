@@ -1,6 +1,8 @@
 module Devise
   module Generators
     class DeviseGenerator < Rails::Generators::NamedBase
+      include Rails::Generators::ResourceHelpers
+
       namespace "devise"
       source_root File.expand_path("../templates", __FILE__)
 

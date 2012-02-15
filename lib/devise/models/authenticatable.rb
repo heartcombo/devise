@@ -1,5 +1,4 @@
 require 'devise/hooks/activatable'
-require 'devise/models/serializable'
 
 module Devise
   module Models
@@ -52,8 +51,6 @@ module Devise
     module Authenticatable
       extend ActiveSupport::Concern
 
-      include Devise::Models::Serializable
-
       included do
         class_attribute :devise_modules, :instance_writer => false
         self.devise_modules ||= []
@@ -97,6 +94,34 @@ module Devise
 
       def strip_whitespace
         (self.class.strip_whitespace_keys || []).each { |k| self[k].try(:strip!) }
+      end
+
+      array = %w(serializable_hash)
+      # to_xml does not call serializable_hash on 3.1
+      array << "to_xml" if Rails::VERSION::STRING[0,3] == "3.1"
+
+      array.each do |method|
+        class_eval <<-RUBY, __FILE__, __LINE__
+          # Redefine to_xml and serializable_hash in models for more ecure defaults.
+          # By default, it removes from the serializable model all attributes that
+          # are *not* accessible. You can remove this default by using :force_except
+          # and passing a new list of attributes you want to exempt. All attributes
+          # given to :except will simply add names to exempt to Devise internal list.
+          def #{method}(options=nil)
+            options ||= {}
+            options[:except] = Array(options[:except])
+
+            if options[:force_except]
+              options[:except].concat Array(options[:force_except])
+            else
+              options[:except].concat [:encrypted_password, :reset_password_token, :reset_password_send_at,
+                :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip,
+                :last_sign_in_ip, :password_salt, :confirmation_token, :confirmed_at, :confirmation_sent_at,
+                :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at, :authentication_token]
+            end
+            super(options)
+          end
+        RUBY
       end
 
       module ClassMethods

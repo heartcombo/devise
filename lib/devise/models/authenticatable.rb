@@ -102,7 +102,7 @@ module Devise
 
       array.each do |method|
         class_eval <<-RUBY, __FILE__, __LINE__
-          # Redefine to_xml and serializable_hash in models for more ecure defaults.
+          # Redefine to_xml and serializable_hash in models for more secure defaults.
           # By default, it removes from the serializable model all attributes that
           # are *not* accessible. You can remove this default by using :force_except
           # and passing a new list of attributes you want to exempt. All attributes

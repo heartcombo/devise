@@ -65,7 +65,7 @@ module Devise
             "insensitivity)\n"
         end
 
-        if Devise.apply_schema && defined?(Mongoid)
+        if Devise.apply_schema && !defined?(Mongoid)
           warn "\n[DEVISE] Devise.apply_schema is true. This means Devise was " \
             "automatically configuring your DB. This no longer happens. You should " \
             "set Devise.apply_schema to false and manually set the fields used by Devise as shown here: " \

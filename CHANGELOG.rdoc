@@ -1,3 +1,5 @@
+== 2.0.3
+
 * bug fix
   * Ensure warning is not shown by mistake on apps with mounted engines
   * Fixes related to remember_token and rememberable_options

@@ -141,7 +141,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
 
   test 'sign out clears up any signed in user by scope' do
     user = User.new
-    @mock_warden.expects(:user).with(:user).returns(user)
+    @mock_warden.expects(:user).with(:scope => :user, :run_callbacks => false).returns(user)
     @mock_warden.expects(:logout).with(:user).returns(true)
     @controller.instance_variable_set(:@current_user, user)
     @controller.sign_out(:user)
@@ -149,13 +149,13 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
   
   test 'sign out proxy to logout on warden' do
-    @mock_warden.expects(:user).with(:user).returns(true)
+    @mock_warden.expects(:user).with(:scope => :user, :run_callbacks => false).returns(true)
     @mock_warden.expects(:logout).with(:user).returns(true)
     @controller.sign_out(:user)
   end
 
   test 'sign out accepts a resource as argument' do
-    @mock_warden.expects(:user).with(:user).returns(true)
+    @mock_warden.expects(:user).with(:scope => :user, :run_callbacks => false).returns(true)
     @mock_warden.expects(:logout).with(:user).returns(true)
     @controller.sign_out(User.new)
   end
@@ -230,7 +230,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
 
   test 'sign out and redirect uses the configured after sign out path when signing out only the current scope' do
     swap Devise, :sign_out_all_scopes => false do
-      @mock_warden.expects(:user).with(:admin).returns(true)
+      @mock_warden.expects(:user).with(:scope => :admin, :run_callbacks => false).returns(true)
       @mock_warden.expects(:logout).with(:admin).returns(true)
       @controller.expects(:redirect_to).with(admin_root_path)
       @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"

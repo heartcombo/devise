@@ -87,6 +87,8 @@ module Devise
       end
 
       config.after_initialize do
+        Devise.configure_warden!
+
         example = <<-YAML
 en:
   devise:

@@ -6,7 +6,6 @@ gem "rails", "~> 3.1.0"
 gem "omniauth", "~> 1.0.0"
 gem "omniauth-oauth2", "~> 1.0.0"
 gem "rdoc"
-gem "warden", :git => "https://github.com/hassox/warden.git"
 
 group :test do
   gem "omniauth-facebook"

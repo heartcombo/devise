@@ -10,11 +10,8 @@ Warden::Manager.after_set_user do |record, warden, options|
     last_request_at = warden.session(scope)['last_request_at']
 
     if record.timedout?(last_request_at)
-      path_checker = Devise::PathChecker.new(warden.env, scope)
-      unless path_checker.signing_out?
-        warden.logout(scope)
-        throw :warden, :scope => scope, :message => :timeout
-      end
+      warden.logout(scope)
+      throw :warden, :scope => scope, :message => :timeout
     end
 
     unless warden.request.env['devise.skip_trackable']

@@ -36,7 +36,7 @@ module Devise
       protected
 
       def forget_cookie_values(resource)
-        Devise::Controllers::Rememberable.cookie_values.merge!(resource.cookie_options)
+        Devise::Controllers::Rememberable.cookie_values.merge!(resource.rememberable_options)
       end
 
       def remember_cookie_values(resource)

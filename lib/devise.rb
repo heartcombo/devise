@@ -63,8 +63,8 @@ module Devise
   }
 
   # Custom domain for cookies. Not set by default
-  mattr_accessor :cookie_options
-  @@cookie_options = {}
+  mattr_accessor :rememberable_options
+  @@rememberable_options = {}
 
   # The number of times to encrypt password.
   mattr_accessor :stretches
@@ -242,6 +242,11 @@ module Devise
   def self.confirm_within=(value)
     warn "\n[DEVISE] Devise.confirm_within= is deprecated. Please set Devise.allow_unconfirmed_access_for= instead.\n"
     Devise.allow_unconfirmed_access_for = value
+  end
+
+  def self.cookie_options=(value)
+    warn "\n[DEVISE] Devise.cookie_options= is deprecated. Please set Devise.rememberable_options= instead.\n"
+    Devise.rememberable_options = value
   end
 
   def self.stateless_token=(value)

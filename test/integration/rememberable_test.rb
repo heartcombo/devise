@@ -51,7 +51,7 @@ class RememberMeTest < ActionController::IntegrationTest
     # We test this by asserting the cookie is not sent after the redirect
     # since we changed the domain. This is the only difference with the
     # previous test.
-    swap Devise, :cookie_options => { :domain => "omg.somewhere.com" } do
+    swap Devise, :rememberable_options => { :domain => "omg.somewhere.com" } do
       user = sign_in_as_user :remember_me => true
       assert_nil request.cookies["remember_user_token"]
     end

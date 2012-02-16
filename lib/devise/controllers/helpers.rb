@@ -155,8 +155,7 @@ module Devise
         warden.logout
         expire_devise_cached_variables!
         
-        return false if users.compact.empty? # No need to log out if there isn't any logged in users
-        true
+        users.any?
       end
 
       # Returns and delete the url stored in the session for the given scope. Useful

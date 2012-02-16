@@ -10,7 +10,6 @@ module Devise
   autoload :FailureApp,  'devise/failure_app'
   autoload :OmniAuth,    'devise/omniauth'
   autoload :ParamFilter, 'devise/param_filter'
-  autoload :PathChecker, 'devise/path_checker'
   autoload :Schema,      'devise/schema'
   autoload :TestHelpers, 'devise/test_helpers'
 

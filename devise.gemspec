@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- test/*`.split("\n")
   s.require_paths = ["lib"]
 
-  s.add_dependency("warden", "~> 1.1")
   s.add_dependency("orm_adapter", "~> 0.0.3")
   s.add_dependency("bcrypt-ruby", "~> 3.0")
   s.add_dependency("railties", "~> 3.1")

@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/hassox/warden.git
+  revision: 16da284a6d15888ec16c6ea1290dd34f12adf672
+  specs:
+    warden (1.1.0)
+      rack (>= 1.0)
+
 PATH
   remote: .
   specs:
@@ -5,7 +12,6 @@ PATH
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
       railties (~> 3.1)
-      warden (~> 1.1)
 
 GEM
   remote: http://rubygems.org/
@@ -137,8 +143,6 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.31)
-    warden (1.1.0)
-      rack (>= 1.0)
     webrat (0.7.2)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -164,4 +168,5 @@ DEPENDENCIES
   rdoc
   ruby-debug (>= 0.10.3)
   sqlite3-ruby
+  warden!
   webrat (= 0.7.2)

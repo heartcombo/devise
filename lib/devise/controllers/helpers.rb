@@ -136,19 +136,25 @@ module Devise
       def sign_out(resource_or_scope=nil)
         return sign_out_all_scopes unless resource_or_scope
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        warden.user(:scope => scope, :run_callbacks => false) # Without loading user here, before_logout hook is not called
+        return false unless warden.user(:scope => scope, :run_callbacks => false) # Without loading user here, before_logout hook is not called
+
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope)
         instance_variable_set(:"@current_#{scope}", nil)
+        true
       end
 
       # Sign out all active users or scopes. This helper is useful for signing out all roles
       # in one click. This signs out ALL scopes in warden.
       def sign_out_all_scopes
-        Devise.mappings.keys.each { |s| warden.user(:scope => s, :run_callbacks => false) }
+        users = Devise.mappings.keys.map { |s| warden.user(:scope => s, :run_callbacks => false) }
+
         warden.raw_session.inspect
         warden.logout
         expire_devise_cached_variables!
+
+        return false if users.compact.empty?
+        true
       end
 
       # Returns and delete the url stored in the session for the given scope. Useful

@@ -19,10 +19,9 @@ class Devise::SessionsController < DeviseController
 
   # DELETE /resource/sign_out
   def destroy
-    signed_in = signed_in?(resource_name)
     redirect_path = after_sign_out_path_for(resource_name)
-    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-    set_flash_message :notice, :signed_out if signed_in
+    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+    set_flash_message :notice, :signed_out if signed_out
 
     # We actually need to hardcode this as Rails default responder doesn't
     # support returning empty response on GET request

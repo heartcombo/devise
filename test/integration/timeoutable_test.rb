@@ -50,10 +50,12 @@ class SessionTimeoutTest < ActionController::IntegrationTest
     get expire_user_path(user)
 
     get destroy_user_session_path
+
     assert_response :redirect
     assert_redirected_to root_path
 
     follow_redirect!
+
     assert_contain 'Signed out successfully'
   end
 

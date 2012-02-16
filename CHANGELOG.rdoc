@@ -1,3 +1,8 @@
+* bug fix
+  * Ensure warning is not shown by mistake on apps with mounted engines
+  * Fixes related to remember_token and rememberable_options
+  * Ensure serializable_hash does not depend on accessible attributes
+
 == 2.0.2
 
 Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0

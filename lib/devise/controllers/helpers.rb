@@ -126,7 +126,8 @@ module Devise
       end
 
       # Sign out a given user or scope. This helper is useful for signing out a user
-      # after deleting accounts.
+      # after deleting accounts. Returns true if there was a logout and false if there is no user logged in
+      # on the referred scope
       #
       # Examples:
       #
@@ -136,7 +137,7 @@ module Devise
       def sign_out(resource_or_scope=nil)
         return sign_out_all_scopes unless resource_or_scope
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        return false unless warden.user(:scope => scope, :run_callbacks => false) # Without loading user here, before_logout hook is not called
+        return false unless warden.user(:scope => scope, :run_callbacks => false) # If there is no
 
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope)
@@ -145,15 +146,16 @@ module Devise
       end
 
       # Sign out all active users or scopes. This helper is useful for signing out all roles
-      # in one click. This signs out ALL scopes in warden.
+      # in one click. This signs out ALL scopes in warden. Returns true if there was at least one logout
+      # and false if there was no user logged in on all scopes.
       def sign_out_all_scopes
         users = Devise.mappings.keys.map { |s| warden.user(:scope => s, :run_callbacks => false) }
 
         warden.raw_session.inspect
         warden.logout
         expire_devise_cached_variables!
-
-        return false if users.compact.empty?
+        
+        return false if users.compact.empty? # No need to log out if there isn't any logged in users
         true
       end
 

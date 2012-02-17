@@ -1,10 +1,14 @@
-== 2.0.3
+== 2.0.4
 
 * bug fix
   * Ensure warning is not shown by mistake on apps with mounted engines
   * Fixes related to remember_token and rememberable_options
   * Ensure serializable_hash does not depend on accessible attributes
   * Ensure that timeout callback does not run on sign out action
+
+== 2.0.3
+
+* skipped
 
 == 2.0.2
 

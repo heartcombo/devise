@@ -31,7 +31,7 @@ module Devise
         extend self
 
         def required_fields
-          [:encrypted_password, :email]
+          [:encrypted_password] + Devise.authentication_keys
         end
       end
 

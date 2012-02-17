@@ -79,7 +79,7 @@ module Devise
             if class_mod.respond_to?(:available_configs)
               available_configs = class_mod.available_configs
               available_configs.each do |config|
-                next unless options.key?(config)                
+                next unless options.key?(config)
                 send(:"#{config}=", options.delete(config))
               end
             end

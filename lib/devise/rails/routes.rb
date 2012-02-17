@@ -7,11 +7,8 @@ module ActionDispatch::Routing
     def finalize_with_devise!
       result = finalize_without_devise!
 
-      # If @devise_finalized was defined, it means devise_for was invoked
-      # in this router, so we proceed to generate devise helpers unless
-      # they were already defined (which then @devise_finalizd would be true).
-      if defined?(@devise_finalized) && !@devise_finalized
-        if Devise.router_name.nil? && self != Rails.application.try(:routes)
+      @devise_finalized ||= begin
+        if Devise.router_name.nil? && defined?(@devise_finalized) && self != Rails.application.try(:routes)
           warn "[DEVISE] We have detected that you are using devise_for inside engine routes. " \
             "In this case, you probably want to set Devise.router_name = MOUNT_POINT, where "   \
             "MOUNT_POINT is a symbol representing where this engine will be mounted at. For "   \
@@ -19,8 +16,9 @@ module ActionDispatch::Routing
             " to :main_app as well in case you want to keep the current behavior."
         end
 
+        Devise.configure_warden!
         Devise.regenerate_helpers!
-        @devise_finalized = true
+        true
       end
 
       result

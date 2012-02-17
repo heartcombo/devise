@@ -24,6 +24,14 @@ module Devise
         attr_accessor :password_confirmation
       end
 
+      module ModuleMethods
+        extend self
+
+        def required_fields
+          [:password_salt]
+        end
+      end
+
       # Generates password salt.
       def password=(new_password)
         self.password_salt = self.class.password_salt if new_password.present?

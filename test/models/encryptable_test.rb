@@ -64,4 +64,10 @@ class EncryptableTest < ActiveSupport::TestCase
     admin.save
     assert_not admin.valid_password?('123456')
   end
+
+  test 'required_fields should contain the fields that Devise uses' do
+    assert_equal Devise::Models::Encryptable::ModuleMethods.required_fields, [
+      :password_salt
+    ]
+  end
 end

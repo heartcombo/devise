@@ -1,4 +1,11 @@
-== 2.0.3
+== 2.0.4
+
+Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+
+* bug fix
+  * Fix a regression that caused Warden to be initialized too late
+
+== 2.0.3 (yanked)
 
 * bug fix
   * Ensure warning is not shown by mistake on apps with mounted engines
@@ -7,8 +14,6 @@
   * Ensure that timeout callback does not run on sign out action
 
 == 2.0.2
-
-Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 * enhancements
   * Add devise_i18n_options to customize I18n message
@@ -114,7 +119,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Fix backward incompatible change from 1.4.6 for those using custom controllers
 
-== 1.4.6
+== 1.4.6 (yanked)
 
 * enhancements
   * Allow devise_for :skip => :all

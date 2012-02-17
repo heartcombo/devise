@@ -128,6 +128,10 @@ class CustomizedRoutingTest < ActionController::TestCase
     end
   end
 
+  test 'subdomain admin' do
+    assert_recognizes({"host"=>"sub.example.com", :controller => 'devise/sessions', :action => 'new'}, {:host => "sub.example.com", :path => '/sub_admin/sign_in', :method => :get})
+  end
+
   test 'does only map reader password' do
     assert_raise ActionController::RoutingError do
       assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, 'reader/sessions/new')

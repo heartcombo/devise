@@ -27,6 +27,14 @@ module Devise
         attr_accessor :password_confirmation
       end
 
+      module ModuleMethods
+        extend self
+
+        def required_fields
+          [:encrypted_password, :email]
+        end
+      end
+
       # Generates password encryption based on the given value.
       def password=(new_password)
         @password = new_password

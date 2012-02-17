@@ -328,4 +328,12 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin = Admin.find_by_unconfirmed_email_with_errors(:email => "new_test@email.com")
     assert admin.persisted?
   end
+
+  test 'required_fields should contain the fields that Devise uses' do
+    assert_equal Devise::Models::Confirmable::ModuleMethods.required_fields.sort, [
+      :confirmation_sent_at,
+      :confirmation_token,
+      :confirmed_at
+    ]
+  end
 end

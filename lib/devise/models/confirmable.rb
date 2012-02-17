@@ -36,6 +36,14 @@ module Devise
         after_update :send_confirmation_instructions, :if => :reconfirmation_required?
       end
 
+      module ModuleMethods
+        extend self
+
+        def required_fields
+          [:confirmation_token, :confirmed_at, :confirmation_sent_at]
+        end
+      end
+
       # Confirm a user by setting it's confirmed_at to actual time. If the user
       # is already confirmed, add an error to email field. If the user is invalid
       # add errors

@@ -200,7 +200,8 @@ module ActionDispatch::Routing
       options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
       options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})
       options[:defaults]      = (@scope[:defaults] || {}).merge(options[:defaults] || {})
-      options[:options]       = (@scope[:options] || {}).merge({:format => false}) if options[:format] == false
+      options[:options]       = @scope[:options] || {}
+      options[:options][:format] = false if options[:format] == false
 
       resources.map!(&:to_sym)
 

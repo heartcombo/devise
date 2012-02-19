@@ -116,7 +116,8 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
 
   test "handles callback error parameter according to the specification" do
     OmniAuth.config.mock_auth[:facebook] = :access_denied
-    visit "/users/auth/facebook/callback?error=access_denied"
+    visit "/users/sign_in"
+    click_link "Sign in with Facebook"
     assert_current_url "/users/sign_in"
     assert_contain 'Could not authorize you from Facebook because "Access denied".'
   end

@@ -11,12 +11,8 @@ module Devise
     # * last_sign_in_ip    - Holds the remote ip of the previous sign in
     #
     module Trackable
-      module ModuleMethods
-        extend self
-
-        def required_fields
-          [:current_sign_in_at, :current_sign_in_ip, :last_sign_in_at, :last_sign_in_ip, :sign_in_count]
-        end
+      def self.required_fields(klass)
+        [:current_sign_in_at, :current_sign_in_ip, :last_sign_in_at, :last_sign_in_ip, :sign_in_count]
       end
 
       def update_tracked_fields!(request)

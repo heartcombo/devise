@@ -66,7 +66,7 @@ class EncryptableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_equal Devise::Models::Encryptable::ModuleMethods.required_fields, [
+    assert_equal Devise::Models::Encryptable.required_fields(User), [
       :password_salt
     ]
   end

@@ -27,12 +27,8 @@ module Devise
         attr_accessor :password_confirmation
       end
 
-      module ModuleMethods
-        extend self
-
-        def required_fields
-          [:encrypted_password] + Devise.authentication_keys
-        end
+      def self.required_fields(klass)
+        [:encrypted_password] + klass.authentication_keys
       end
 
       # Generates password encryption based on the given value.

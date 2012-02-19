@@ -36,12 +36,8 @@ module Devise
         after_update :send_confirmation_instructions, :if => :reconfirmation_required?
       end
 
-      module ModuleMethods
-        extend self
-
-        def required_fields
-          [:confirmation_token, :confirmed_at, :confirmation_sent_at]
-        end
+      def self.required_fields(klass)
+        [:confirmation_token, :confirmed_at, :confirmation_sent_at]
       end
 
       # Confirm a user by setting it's confirmed_at to actual time. If the user

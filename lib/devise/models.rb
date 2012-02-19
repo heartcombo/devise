@@ -46,8 +46,8 @@ module Devise
       klass.devise_modules.each do |mod|
         instance = klass.new
 
-        const_get(mod.to_s.classify)::ModuleMethods.required_fields.each do |field|
-          raise Devise::Models::MissingAttribute unless instance.respond_to?(field)
+        const_get(mod.to_s.classify).required_fields(klass).each do |field|
+          fail Devise::Models::MissingAttribute unless instance.respond_to?(field)
         end
       end
     end

@@ -48,7 +48,7 @@ class TokenAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_equal Devise::Models::TokenAuthenticatable::ModuleMethods.required_fields.sort, [
+    assert_equal Devise::Models::TokenAuthenticatable.required_fields(User).sort, [
       :authentication_token
     ]
   end

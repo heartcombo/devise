@@ -113,7 +113,7 @@ class CheckFieldsTest < ActiveSupport::TestCase
     Player = Class.new do
       extend Devise::Models
 
-      def self.before_validation(x)
+      def self.before_validation(instance)
       end
 
       devise :database_authenticatable

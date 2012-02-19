@@ -27,12 +27,8 @@ module Devise
     module TokenAuthenticatable
       extend ActiveSupport::Concern
 
-      module ModuleMethods
-        extend self
-
-        def required_fields
-          [:authentication_token]
-        end
+      def self.required_fields(klass)
+        [:authentication_token]
       end
 
       # Generate new authentication token (a.k.a. "single access token").

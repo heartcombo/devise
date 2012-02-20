@@ -1,4 +1,4 @@
-*IMPORTANT:* Devise 2.0.0 is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+*IMPORTANT:* Devise 2.0 is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 ## Devise
 
@@ -257,15 +257,7 @@ devise_scope :user do
 end
 ```
 
-This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice +devise_scope+ is also aliased as +as+ and you can also give a block to +devise_for+, resulting in the same behavior:
-
-```ruby
-devise_for :users do
-  get "sign_in", :to => "devise/sessions#new"
-end
-```
-
-Feel free to choose the one you prefer!
+This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice +devise_scope+ is also aliased as +as+ in your router.
 
 ### I18n
 

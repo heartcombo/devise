@@ -24,4 +24,12 @@ class ActiveSupport::TestCase
   def assert_email_not_sent(&block)
     assert_no_difference('ActionMailer::Base.deliveries.size') { yield }
   end
+
+  def assert_same_content(expected, result)
+    assert expected.size == result.size
+    expected.each do |element|
+      result.index(element)
+      assert !element.nil?
+    end
+  end
 end

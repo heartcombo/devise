@@ -172,7 +172,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'required_fiels should be encryptable_password and the email field by default' do
-    assert_equal Devise::Models::DatabaseAuthenticatable.required_fields(User).sort, [
+    assert_same_content Devise::Models::DatabaseAuthenticatable.required_fields(User).sort, [
       :email,
       :encrypted_password
     ]
@@ -180,7 +180,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'required_fields should be encryptable_password and the login when the login is on authentication_keys' do
     swap Devise, :authentication_keys => [:login] do
-      assert_equal Devise::Models::DatabaseAuthenticatable.required_fields(User).sort, [
+      assert_same_content Devise::Models::DatabaseAuthenticatable.required_fields(User).sort, [
         :encrypted_password,
         :login
       ]

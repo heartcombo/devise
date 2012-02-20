@@ -237,7 +237,7 @@ class LockableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_same_content Devise::Models::Lockable.required_fields(User).sort, [
+    assert_same_content Devise::Models::Lockable.required_fields(User), [
       :failed_attempts,
       :unlock_at,
       :unlock_token

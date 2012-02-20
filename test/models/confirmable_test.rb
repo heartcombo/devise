@@ -330,7 +330,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_same_content Devise::Models::Confirmable.required_fields(User).sort, [
+    assert_same_content Devise::Models::Confirmable.required_fields(User), [
       :confirmation_sent_at,
       :confirmation_token,
       :confirmed_at

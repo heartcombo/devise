@@ -155,4 +155,11 @@ class RememberMeTest < ActionController::IntegrationTest
     get users_path
     assert_not warden.authenticated?(:user)
   end
+
+  test 'required_fields should contain the fields that Devise uses' do
+    assert_equal Devise::Models::Rememberable.required_fields(User), [
+      :remember_created_at,
+      :remember_token
+    ]
+  end
 end

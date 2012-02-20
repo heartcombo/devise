@@ -48,7 +48,7 @@ module Devise
         if default_params[:from].present?
           default_params[:from]
         elsif Devise.mailer_sender.is_a?(Proc)
-          Devise.mailer_sender.call(mapping.name)
+          Devise.mailer_sender.call(mapping.name, @resource)
         else
           Devise.mailer_sender
         end

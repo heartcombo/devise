@@ -26,10 +26,10 @@ class ActiveSupport::TestCase
   end
 
   def assert_same_content(expected, result)
-    assert expected.size == result.size
+    assert expected.size == result.size, "the arrays doesn't have the same content"
     expected.each do |element|
       result.index(element)
-      assert !element.nil?
+      assert !element.nil?, "the arrays doesn't have the same content"
     end
   end
 end

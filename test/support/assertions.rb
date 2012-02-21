@@ -32,4 +32,12 @@ class ActiveSupport::TestCase
       assert !element.nil?, "the arrays doesn't have the same content"
     end
   end
+
+  def assert_raise_with_message(exception_klass, message)
+    exception = assert_raise exception_klass do
+      yield
+    end
+
+    assert_equal exception.message, message, "The expected message was #{message} but your exception throwed #{exception.message}"
+  end
 end

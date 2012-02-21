@@ -43,12 +43,18 @@ module Devise
     end
 
     def self.check_fields!(klass)
+      failed_attributes = []
+
       klass.devise_modules.each do |mod|
         instance = klass.new
 
         const_get(mod.to_s.classify).required_fields(klass).each do |field|
-          fail Devise::Models::MissingAttribute unless instance.respond_to?(field)
+          failed_attributes << field unless instance.respond_to?(field)
         end
+      end
+
+      if failed_attributes.any?
+        fail Devise::Models::MissingAttribute, "The following attributes are missing on your model: #{failed_attributes.join(", ")}"
       end
     end
 

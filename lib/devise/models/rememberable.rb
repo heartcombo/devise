@@ -24,7 +24,7 @@ module Devise
     #   * +extend_remember_period+: if true, extends the user's remember period
     #     when remembered via cookie. False by default.
     #
-    #   * +cookie_options+: configuration options passed to the created cookie.
+    #   * +rememberable_options+: configuration options passed to the created cookie.
     #
     # == Examples
     #

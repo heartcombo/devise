@@ -41,6 +41,10 @@ module Devise
 
       attr_accessor :remember_me, :extend_remember_period
 
+      def self.required_fields(klass)
+        [:remember_created_at, :remember_token]
+      end
+
       # Generate a new remember token and save the record without validations
       # unless remember_across_browsers is true and the user already has a valid token.
       def remember_me!(extend_period=false)

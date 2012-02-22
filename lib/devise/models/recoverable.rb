@@ -24,6 +24,10 @@ module Devise
     module Recoverable
       extend ActiveSupport::Concern
 
+      def self.required_fields(klass)
+        [:reset_password_sent_at, :reset_password_token]
+      end
+
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.
       def reset_password!(new_password, new_password_confirmation)

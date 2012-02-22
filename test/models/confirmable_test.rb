@@ -342,7 +342,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
       :confirmation_sent_at,
       :confirmation_token,
       :confirmed_at,
-      :unconfirmable_email
+      :unconfirmed_email
     ]
   end
 end

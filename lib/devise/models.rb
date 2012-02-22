@@ -1,6 +1,13 @@
 module Devise
   module Models
     class MissingAttribute < StandardError
+      def initialize(attributes)
+        @attributes = attributes
+      end
+
+      def message
+        "The following attribute(s) is (are) missing on your model: #{@attributes.join(", ")}"
+      end
     end
 
     # Creates configuration values for Devise and for the given module.
@@ -54,7 +61,7 @@ module Devise
       end
 
       if failed_attributes.any?
-        fail Devise::Models::MissingAttribute, "The following attributes are missing on your model: #{failed_attributes.join(", ")}"
+        fail Devise::Models::MissingAttribute.new(failed_attributes)
       end
     end
 

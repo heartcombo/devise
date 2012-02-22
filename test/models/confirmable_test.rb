@@ -336,4 +336,13 @@ class ReconfirmableTest < ActiveSupport::TestCase
       :confirmed_at
     ]
   end
+
+  test 'required_fields should also contain unconfirmable when reconfirmable_email is true' do
+    assert_same_content Devise::Models::Confirmable.required_fields(Admin), [
+      :confirmation_sent_at,
+      :confirmation_token,
+      :confirmed_at,
+      :unconfirmable_email
+    ]
+  end
 end

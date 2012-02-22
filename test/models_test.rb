@@ -107,3 +107,54 @@ class ActiveRecordTest < ActiveSupport::TestCase
     Admin.create!
   end
 end
+
+class CheckFieldsTest < ActiveSupport::TestCase
+  test 'checks if the class respond_to the required fields' do
+    Player = Class.new do
+      extend Devise::Models
+
+      def self.before_validation(instance)
+      end
+
+      devise :database_authenticatable
+
+      attr_accessor :encrypted_password, :email
+    end
+
+    assert_nothing_raised Devise::Models::MissingAttribute do
+      Devise::Models.check_fields!(Player)
+    end
+  end
+
+  test 'raises Devise::Models::MissingAtrribute and shows the missing attribute if the class doesn\'t respond_to one of the attributes' do
+    Clown = Class.new do
+      extend Devise::Models
+
+      def self.before_validation(instance)
+      end
+
+      devise :database_authenticatable
+
+      attr_accessor :encrypted_password
+    end
+
+    assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: email" do
+      Devise::Models.check_fields!(Clown)
+    end
+  end
+
+  test 'raises Devise::Models::MissingAtrribute with all the missing attributes if there is more than one' do
+    Magician = Class.new do
+      extend Devise::Models
+
+      def self.before_validation(instance)
+      end
+
+      devise :database_authenticatable
+    end
+
+    exception = assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: encrypted_password, email" do
+      Devise::Models.check_fields!(Magician)
+    end
+  end
+end

@@ -54,7 +54,7 @@ class RememberableTest < ActiveSupport::TestCase
     resource.forget_me!
     assert resource.remember_created_at.nil?
   end
-  
+
   test 'forget_me should not try to update resource if it has been destroyed' do
     resource = create_resource
     resource.destroy
@@ -164,5 +164,12 @@ class RememberableTest < ActiveSupport::TestCase
       resource.remember_me!(true)
       assert_not_equal old, resource.remember_created_at
     end
+  end
+
+  test 'should have the required_fiels array' do
+    assert_same_content Devise::Models::Rememberable.required_fields(User), [
+      :remember_created_at,
+      :remember_token
+    ]
   end
 end

@@ -24,4 +24,20 @@ class ActiveSupport::TestCase
   def assert_email_not_sent(&block)
     assert_no_difference('ActionMailer::Base.deliveries.size') { yield }
   end
+
+  def assert_same_content(expected, result)
+    assert expected.size == result.size, "the arrays doesn't have the same content"
+    expected.each do |element|
+      result.index(element)
+      assert !element.nil?, "the arrays doesn't have the same content"
+    end
+  end
+
+  def assert_raise_with_message(exception_klass, message)
+    exception = assert_raise exception_klass do
+      yield
+    end
+
+    assert_equal exception.message, message, "The expected message was #{message} but your exception throwed #{exception.message}"
+  end
 end

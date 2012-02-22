@@ -195,4 +195,11 @@ class RecoverableTest < ActiveSupport::TestCase
       assert_equal "has expired, please request a new one", reset_password_user.errors[:reset_password_token].join
     end
   end
+
+  test 'required_fields should contain the fields that Devise uses' do
+    assert_same_content Devise::Models::Recoverable.required_fields(User), [
+      :reset_password_sent_at,
+      :reset_password_token
+    ]
+  end
 end

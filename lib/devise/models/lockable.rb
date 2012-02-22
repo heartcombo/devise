@@ -22,6 +22,10 @@ module Devise
 
       delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, :to => "self.class"
 
+      def self.required_fields(klass)
+        [:failed_attempts, :unlock_at, :unlock_token]
+      end
+
       # Lock a user setting its locked_at to actual time.
       def lock_access!
         self.locked_at = Time.now.utc

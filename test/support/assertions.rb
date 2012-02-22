@@ -25,11 +25,10 @@ class ActiveSupport::TestCase
     assert_no_difference('ActionMailer::Base.deliveries.size') { yield }
   end
 
-  def assert_same_content(expected, result)
-    assert expected.size == result.size, "the arrays doesn't have the same content"
+  def assert_same_content(result, expected)
+    assert expected.size == result.size, "the arrays doesn't have the same size"
     expected.each do |element|
-      result.index(element)
-      assert !element.nil?, "the arrays doesn't have the same content"
+      assert result.include?(element), "The array doesn't include '#{element}'."
     end
   end
 

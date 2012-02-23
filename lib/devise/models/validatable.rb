@@ -17,6 +17,10 @@ module Devise
       VALIDATIONS = [ :validates_presence_of, :validates_uniqueness_of, :validates_format_of,
                       :validates_confirmation_of, :validates_length_of ].freeze
 
+      def self.required_fields(klass)
+        []
+      end
+
       def self.included(base)
         base.extend ClassMethods
         assert_validations_api!(base)

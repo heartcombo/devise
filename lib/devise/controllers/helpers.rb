@@ -208,7 +208,7 @@ module Devise
       #       if resource.is_a?(User) && resource.can_publish?
       #         publisher_url
       #       else
-      #         signed_in_root_path(resource)
+      #         super
       #       end
       #   end
       #

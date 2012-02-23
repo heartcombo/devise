@@ -109,6 +109,8 @@ rails generate devise MODEL
 
 Replace MODEL by the class name used for the applications users, it's frequently 'User' but could also be 'Admin'. This will create a model (if one does not exist) and configure it with default Devise modules. Next, you'll usually run "rake db:migrate" as the generator will have created a migration file (if your ORM supports them). This generator also configures your config/routes.rb file to point to Devise controller.
 
+Note that you should re-start your app here if you've already started it. Otherwise you'll run into strange errors like users being unable to login and the route helpers being undefined.
+
 ### Controller filters and helpers
 
 Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_filter:

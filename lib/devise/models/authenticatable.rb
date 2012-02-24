@@ -64,6 +64,10 @@ module Devise
         before_validation :strip_whitespace
       end
 
+      def self.required_fields(klass)
+        []
+      end
+
       # Check if the current object is valid for authentication. This method and
       # find_for_authentication are the methods used in a Warden::Strategy to check
       # if a model should be signed in or not.

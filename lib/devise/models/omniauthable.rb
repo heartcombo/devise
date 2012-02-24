@@ -15,6 +15,10 @@ module Devise
     module Omniauthable
       extend ActiveSupport::Concern
 
+      def self.required_fields(klass)
+        []
+      end
+
       module ClassMethods
         Devise::Models.config(self, :omniauth_providers)
       end

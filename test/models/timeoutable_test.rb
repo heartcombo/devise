@@ -39,4 +39,8 @@ class TimeoutableTest < ActiveSupport::TestCase
       assert user.timedout?(6.minutes.ago)
     end
   end
+
+  test 'required_fields should contain the fields that Devise uses' do
+    assert_same_content Devise::Models::Timeoutable.required_fields(User), []
+  end
 end

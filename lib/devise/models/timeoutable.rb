@@ -20,6 +20,10 @@ module Devise
     module Timeoutable
       extend ActiveSupport::Concern
 
+      def self.required_fields(klass)
+        []
+      end
+
       # Checks whether the user session has expired based on configured time.
       def timedout?(last_access)
         return false if remember_exists_and_not_expired?

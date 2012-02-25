@@ -413,7 +413,6 @@ module Devise
   #   config.omniauth :github, APP_ID, APP_SECRET
   #
   def self.omniauth(provider, *args)
-    @@helpers << Devise::OmniAuth::UrlHelpers
     config = Devise::OmniAuth::Config.new(provider, args)
     @@omniauth_configs[config.strategy_name.to_sym] = config
   end

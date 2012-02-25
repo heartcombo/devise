@@ -1,4 +1,6 @@
 class Devise::OmniauthCallbacksController < DeviseController
+  after_filter :clean_session
+
   def failure
     set_flash_message :alert, :failure, :kind => failed_strategy.name.to_s.humanize, :reason => failure_message
     redirect_to after_omniauth_failure_path_for(resource_name)
@@ -20,5 +22,9 @@ class Devise::OmniauthCallbacksController < DeviseController
 
   def after_omniauth_failure_path_for(scope)
     new_session_path(scope)
+  end
+
+  def clean_session
+    session.delete(:omni_devise_mapping)
   end
 end

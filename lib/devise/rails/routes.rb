@@ -373,21 +373,28 @@ module ActionDispatch::Routing
         end
       end
 
+      class OmniauthCallbackMatcher
+        def initialize(mapping)
+          @mapping = mapping
+        end
+        def matches?(request)
+          request.session[:omni_devise_mapping] == @mapping.name
+        end
+      end
+
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         path, @scope[:path] = @scope[:path], nil
         path_prefix = "/#{mapping.path}/auth".squeeze("/")
 
-        if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
-          raise "Wrong OmniAuth configuration. If you are getting this exception, it means that either:\n\n" \
-            "1) You are manually setting OmniAuth.config.path_prefix and it doesn't match the Devise one\n" \
-            "2) You are setting :omniauthable in more than one model\n" \
-            "3) You changed your Devise routes/OmniAuth setting and haven't restarted your server"
-        else
-          ::OmniAuth.config.path_prefix = path_prefix
+        available_provides = Regexp.union(mapping.to.omniauth_providers.map(&:to_s))
+        constraints(:provider => available_provides) do
+          match "#{path_prefix}/:provider", :to => "#{controllers[:omniauth_authorize]}#show", :as => :omniauth_authorize
         end
-
-        match "#{path_prefix}/:action/callback", :constraints => { :action => Regexp.union(mapping.to.omniauth_providers.map(&:to_s)) },
-          :to => controllers[:omniauth_callbacks], :as => :omniauth_callback
+        constraints(:action => available_provides) do
+          constraints(OmniauthCallbackMatcher.new(mapping)) do
+            match "#{::OmniAuth.config.path_prefix}/:action/callback", :to => controllers[:omniauth_callbacks], :as => :omniauth_callback
+          end
+        end
       ensure
         @scope[:path] = path
       end

@@ -10,14 +10,18 @@ unless OmniAuth::VERSION =~ /^1\./
   raise "You are using an old OmniAuth version, please ensure you have 1.0.0.pr2 version or later installed."
 end
 
-# Clean up the default path_prefix. It will be automatically set by Devise.
-OmniAuth.config.path_prefix = nil
+original_omniauth_failure_app = OmniAuth.config.on_failure
 
 OmniAuth.config.on_failure = Proc.new do |env|
-  env['devise.mapping'] = Devise::Mapping.find_by_path!(env['PATH_INFO'], :path)
-  controller_name  = ActiveSupport::Inflector.camelize(env['devise.mapping'].controllers[:omniauth_callbacks])
-  controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")
-  controller_klass.action(:failure).call(env)
+  req = Rack::Request.new(env)
+  if req.session[:omni_devise_mapping]
+    env['devise.mapping'] = Devise.mappings[req.session[:omni_devise_mapping]]
+    controller_name  = ActiveSupport::Inflector.camelize(env['devise.mapping'].controllers[:omniauth_callbacks])
+    controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")
+    controller_klass.action(:failure).call(env)
+  else
+    original_omniauth_failure_app.call(env)
+  end
 end
 
 module Devise

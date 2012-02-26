@@ -63,6 +63,10 @@ module Devise
 
         ActiveSupport.on_load(:action_controller) do
           helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
+
+          after_filter :unless => :devise_controller? do
+            session["#{mapping}_return_to"] = request.path
+          end
         end
       end
 

@@ -87,6 +87,9 @@ Devise.setup do |config|
   # Setup a pepper to generate the encrypted password.
   # config.pepper = <%= SecureRandom.hex(64).inspect %>
 
+  # Setup a pepper to generate the encrypted password.
+  # config.pepper = <%= ActiveSupport::SecureRandom.hex(64).inspect %>
+
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
   # confirming his account. For instance, if set to 2.days, the user will be

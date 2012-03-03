@@ -43,6 +43,7 @@ module Devise
       include ViewPathTemplates
       source_root File.expand_path("../../../../app/views/devise", __FILE__)
       desc "Copies shared Devise views to your application."
+      hide!
 
       # Override copy_views to just copy mailer and shared.
       def copy_views

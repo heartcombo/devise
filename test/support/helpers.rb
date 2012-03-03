@@ -67,4 +67,25 @@ class ActiveSupport::TestCase
       end
     end
   end
+
+  def swap_module_method_existence(klass, method)
+    klass.module_eval %Q[
+      class << self
+        alias #{method}_referenced #{method}
+        undef #{method}
+      end
+    ]
+
+    begin
+      yield if block_given?
+    ensure
+
+      klass.module_eval %Q[
+        class << self
+          alias #{method} #{method}_referenced
+          undef #{method}_referenced
+        end
+      ]
+    end
+  end
 end

@@ -157,4 +157,23 @@ class CheckFieldsTest < ActiveSupport::TestCase
       Devise::Models.check_fields!(Magician)
     end
   end
+
+  test "doesn't raise a NoMethodError exception when the module doesn't have a required_field(klass) class method" do
+     driver = Class.new do
+      extend Devise::Models
+
+      def self.before_validation(instance)
+      end
+
+      attr_accessor :encrypted_password, :email
+
+      devise :database_authenticatable
+    end
+
+    swap_module_method_existence Devise::Models::DatabaseAuthenticatable, :required_fields do
+      assert_deprecated do
+        Devise::Models.check_fields!(driver)
+      end
+    end
+  end
 end

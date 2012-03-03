@@ -7,6 +7,10 @@
   * Ensure after sign in hook is not called without a resource
   * fixed a term: now on Omniauth related flash messages, we say that we're authenticating from an omniauth provider instead of authorizing.
 
+# deprecation
+  * All devise modules should have a required_fields(klass) module method to help
+  gathering missing attributes.
+
 == 2.0.4
 
 Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0

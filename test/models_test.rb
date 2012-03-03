@@ -108,6 +108,27 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 end
 
+def swap_module_method_existence(klass, method)
+  klass.module_eval %Q[
+    class << self
+      alias #{method}_referenced #{method}
+      undef #{method}
+    end
+  ]
+
+  begin
+    yield if block_given?
+  ensure
+
+    klass.module_eval %Q[
+      class << self
+        alias #{method} #{method}_referenced
+        undef #{method}_referenced
+      end
+    ]
+  end
+end
+
 class CheckFieldsTest < ActiveSupport::TestCase
   test 'checks if the class respond_to the required fields' do
     Player = Class.new do
@@ -155,6 +176,23 @@ class CheckFieldsTest < ActiveSupport::TestCase
 
     exception = assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: encrypted_password, email" do
       Devise::Models.check_fields!(Magician)
+    end
+  end
+
+  test "doesn't raises a NoMethodError exception when the module doesn't have a required_field(klass) class method" do
+     Driver = Class.new do
+      extend Devise::Models
+
+      def self.before_validation(instance)
+      end
+
+      devise :database_authenticatable
+    end
+
+    swap_module_method_existence Devise::Models::DatabaseAuthenticatable, :required_fields do
+      assert_deprecated "DEPRECATION WARNING: The module database_authenticatable doesn't implement self.required_fields(klass). Devise uses required_fields to warn developers of any missing fields in their models. Please implement database_authenticatable.required_fields(klass) that returns an array of symbols with the required fields." do
+        Devise::Models.check_fields!(Driver)
+      end
     end
   end
 end

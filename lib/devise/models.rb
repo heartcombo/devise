@@ -55,8 +55,12 @@ module Devise
       klass.devise_modules.each do |mod|
         instance = klass.new
 
-        const_get(mod.to_s.classify).required_fields(klass).each do |field|
-          failed_attributes << field unless instance.respond_to?(field)
+        if const_get(mod.to_s.classify).respond_to?(:required_fields)
+          const_get(mod.to_s.classify).required_fields(klass).each do |field|
+            failed_attributes << field unless instance.respond_to?(field)
+          end
+        else
+          ActiveSupport::Deprecation.warn "The module #{mod} doesn't implement self.required_fields(klass). Devise uses required_fields to warn developers of any missing fields in their models. Please implement #{mod}.required_fields(klass) that returns an array of symbols with the required fields."
         end
       end
 

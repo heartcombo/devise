@@ -118,7 +118,7 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     OmniAuth.config.mock_auth[:facebook] = :access_denied
     visit "/users/auth/facebook/callback?error=access_denied"
     assert_current_url "/users/sign_in"
-    assert_contain 'Could not authorize you from Facebook because "Access denied".'
+    assert_contain 'Could not authenticate you from Facebook because "Access denied".'
   end
 
   test "handles other exceptions from omniauth" do
@@ -128,6 +128,6 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     click_link "Sign in with Facebook"
 
     assert_current_url "/users/sign_in"
-    assert_contain 'Could not authorize you from Facebook because "Invalid credentials".'
+    assert_contain 'Could not authenticate you from Facebook because "Invalid credentials".'
   end
 end

@@ -1,7 +1,10 @@
-== trunk
+== 2.0.5.dev
 
 * enhancements
   * Added check_fields! method on Devise::Models to check if the model includes the fields that Devise uses.
+
+* bug fix
+  * Ensure after sign in hook is not called without a resource
 
 == 2.0.4
 

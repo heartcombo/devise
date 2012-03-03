@@ -165,6 +165,8 @@ class CheckFieldsTest < ActiveSupport::TestCase
       def self.before_validation(instance)
       end
 
+      attr_accessor :encrypted_password, :email
+
       devise :database_authenticatable
     end
 

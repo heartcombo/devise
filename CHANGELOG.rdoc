@@ -1,5 +1,9 @@
 == 2.0.5.dev
 
+* bug fix
+  * fixed a term: now on Omniauth related flash messages, we say that we're authenticating from an omniauth
+  provider instead of authorizing. 
+
 * enhancements
   * Added check_fields! method on Devise::Models to check if the model includes the fields that Devise uses.
 

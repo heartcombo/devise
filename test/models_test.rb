@@ -158,8 +158,8 @@ class CheckFieldsTest < ActiveSupport::TestCase
     end
   end
 
-  test "doesn't raises a NoMethodError exception when the module doesn't have a required_field(klass) class method" do
-     Driver = Class.new do
+  test "doesn't raise a NoMethodError exception when the module doesn't have a required_field(klass) class method" do
+     driver = Class.new do
       extend Devise::Models
 
       def self.before_validation(instance)
@@ -171,8 +171,8 @@ class CheckFieldsTest < ActiveSupport::TestCase
     end
 
     swap_module_method_existence Devise::Models::DatabaseAuthenticatable, :required_fields do
-      assert_deprecated "DEPRECATION WARNING: The module database_authenticatable doesn't implement self.required_fields(klass). Devise uses required_fields to warn developers of any missing fields in their models. Please implement database_authenticatable.required_fields(klass) that returns an array of symbols with the required fields." do
-        Devise::Models.check_fields!(Driver)
+      assert_deprecated do
+        Devise::Models.check_fields!(driver)
       end
     end
   end

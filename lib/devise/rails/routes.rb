@@ -184,7 +184,7 @@ module ActionDispatch::Routing
     #
     # In order to get Devise to recognize the deactivate action, your devise_for entry should look like this,
     #
-    #     devise_for :owners, :controllers => { :registrations => "registrations" } do
+    #     devise_scope :owner do
     #       post "deactivate", :to => "registrations#deactivate", :as => "deactivate_registration"
     #     end
     #

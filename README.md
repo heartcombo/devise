@@ -137,13 +137,13 @@ You can access the session for this scope:
 user_session
 ```
 
-After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use +user_root_path+ if it exists, otherwise default +root_path+ will be used. This means that you need to set the root inside your routes:
+After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use `user_root_path` if it exists, otherwise default `root_path` will be used. This means that you need to set the root inside your routes:
 
 ```ruby
 root :to => "home#index"
 ```
 
-You can also overwrite +after_sign_in_path_for+ and +after_sign_out_path_for+ to customize your redirect hooks.
+You can also overwrite `after_sign_in_path_for` and `after_sign_out_path_for` to customize your redirect hooks.
 
 Finally, you need to set up default url options for the mailer in each environment. Here is the configuration for "config/environments/development.rb":
 
@@ -249,9 +249,9 @@ Devise also ships with default routes. If you need to customize them, you should
 devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
 ```
 
-Be sure to check +devise_for+ documentation for details.
+Be sure to check `devise_for` documentation for details.
 
-If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is to create your routes normally and wrap them in a +devise_scope+ block in the router:
+If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is to create your routes normally and wrap them in a `devise_scope` block in the router:
 
 ```ruby
 devise_scope :user do
@@ -259,7 +259,7 @@ devise_scope :user do
 end
 ```
 
-This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice +devise_scope+ is also aliased as +as+ in your router.
+This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice `devise_scope` is also aliased as `as` in your router.
 
 ### I18n
 
@@ -321,7 +321,7 @@ class ActionController::TestCase
 end
 ```
 
-If you're using RSpec and want the helpers automatically included within all +describe+ blocks, add a file called spec/support/devise.rb with the following contents:
+If you're using RSpec and want the helpers automatically included within all `describe` blocks, add a file called spec/support/devise.rb with the following contents:
 
 ```ruby
 RSpec.configure do |config|

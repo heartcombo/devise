@@ -15,6 +15,10 @@ module Devise
       def self.salt(stretches)
         Devise.friendly_token[0,20]
       end
+
+      def compare(encrypted_password, password, salt, stretches, pepper)
+        Devise.secure_compare(encrypted_password, digest(password, salt, stretches, pepper))
+      end
     end
   end
 end

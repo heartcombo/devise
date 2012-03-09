@@ -1,13 +1,13 @@
 module Devise
   module Encryptors
     class BCrypt < Base
-      def self.digest(password, salt, stretches, pepper)
+      def self.digest(password, stretches, salt, pepper)
         ::BCrypt::Engine.hash_secret("#{password}#{pepper}",salt, stretches)
       end
 
-      def compare(encrypted_password, password, salt, stretches, pepper)
+      def self.compare(encrypted_password, password, stretches, salt, pepper)
         salt = ::BCrypt::Password.new(encrypted_password).salt
-        Devise.secure_compare(encrypted_password, digest(password, salt, stretches, pepper))
+        Devise.secure_compare(encrypted_password, digest(password, stretches, salt, pepper))
       end
     end
   end

@@ -1,21 +1,22 @@
-== 2.0.5.dev
+== 2.1.0.dev
 
 * enhancements
-  * Added check_fields! method on Devise::Models to check if the model includes the fields that Devise uses.
+  * Add check_fields! method on Devise::Models to check if the model includes the fields that Devise uses
+  * Add `skip_reconfirmation!` to skip reconfirmation
 
 * bug fix
   * Ensure after sign in hook is not called without a resource
-  * fixed a term: now on Omniauth related flash messages, we say that we're authenticating from an omniauth provider instead of authorizing.
+  * Fix a term: now on Omniauth related flash messages, we say that we're authenticating from an omniauth provider instead of authorizing
 
 * deprecation
-  * All devise modules should have a required_fields(klass) module method to help gathering missing attributes.
+  * All devise modules should have a required_fields(klass) module method to help gathering missing attributes
 
 == 2.0.4
 
 Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
 * bug fix
-  * Fix when :host is used with devise_for @mreinsch
+  * Fix when :host is used with devise_for  (by @mreinsch)
   * Fix a regression that caused Warden to be initialized too late
 
 == 2.0.3 (yanked)

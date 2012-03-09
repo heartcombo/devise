@@ -5,7 +5,7 @@ module Devise
         ::BCrypt::Engine.hash_secret("#{password}#{pepper}",salt, stretches)
       end
 
-      def compare(encrypted_password, password, stretches, pepper)
+      def compare(encrypted_password, password, salt, stretches, pepper)
         salt = ::BCrypt::Password.new(encrypted_password).salt
         Devise.secure_compare(encrypted_password, digest(password, salt, stretches, pepper))
       end

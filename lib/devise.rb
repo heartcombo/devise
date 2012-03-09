@@ -23,6 +23,7 @@ module Devise
   module Encryptors
     autoload :Base, 'devise/encryptors/base'
     autoload :AuthlogicSha512, 'devise/encryptors/authlogic_sha512'
+    autoload :BCrypt, 'devise/encryptors/bcrypt'
     autoload :ClearanceSha1, 'devise/encryptors/clearance_sha1'
     autoload :RestfulAuthenticationSha1, 'devise/encryptors/restful_authentication_sha1'
     autoload :Sha512, 'devise/encryptors/sha512'

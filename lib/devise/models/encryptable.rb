@@ -40,7 +40,7 @@ module Devise
 
       # Verifies whether an incoming_password (ie from sign in) is the user password.
       def valid_password?(incoming_password)
-        Devise.secure_compare(password_digest(incoming_password), self.encrypted_password)
+        self.class.encryptor_class.compare(self.encrypted_password,incoming_password, self.class.stretches, self.password_salt, self.class.pepper)
       end
 
     protected

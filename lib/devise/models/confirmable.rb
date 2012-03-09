@@ -54,7 +54,7 @@ module Devise
           self.confirmed_at = Time.now.utc
 
           if self.class.reconfirmable && unconfirmed_email.present?
-            @bypass_postpone = true
+            skip_reconfirmation!
             self.email = unconfirmed_email
             self.unconfirmed_email = nil
 
@@ -106,6 +106,12 @@ module Devise
       # to be generated, call skip_confirmation!
       def skip_confirmation!
         self.confirmed_at = Time.now.utc
+      end
+
+      # If you don't want reconfirmation to be sent, neither a code
+      # to be generated, call skip_reconfirmation!
+      def skip_reconfirmation!
+        @bypass_postpone = true
       end
 
       def headers_for(action)

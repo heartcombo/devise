@@ -252,6 +252,15 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_not_nil admin.confirmation_token
   end
 
+  test 'should not generate confirmation token if skipping reconfirmation after changing email' do
+    admin = create_admin
+    assert admin.confirm!
+    admin.skip_reconfirmation!
+    assert admin.update_attributes(:email => 'new_test@example.com')
+    assert_nil admin.confirmation_token
+  end
+
+
   test 'should regenerate confirmation token after changing email' do
     admin = create_admin
     assert admin.confirm!

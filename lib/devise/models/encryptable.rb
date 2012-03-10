@@ -2,7 +2,8 @@ require 'devise/strategies/database_authenticatable'
 
 module Devise
   module Models
-    # Encryptable Module adds support to several encryptors.
+    # Encryptable module adds support to several encryptors wrapping
+    # them in a salt and pepper mechanism to increase security.
     #
     # == Options
     #
@@ -28,28 +29,31 @@ module Devise
         [:password_salt]
       end
 
-      # Generates password salt.
+      # Generates password salt when setting the password.
       def password=(new_password)
         self.password_salt = self.class.password_salt if new_password.present?
         super
       end
 
+      # Overrides authenticatable salt to use the new password_salt
+      # column. authenticatable_salt is used by `valid_password?`
+      # and by other modules whenever there is a need for a random
+      # token based on the user password.
       def authenticatable_salt
         self.password_salt
-      end
-
-      # Verifies whether an incoming_password (ie from sign in) is the user password.
-      def valid_password?(incoming_password)
-        self.class.encryptor_class.compare(self.encrypted_password,incoming_password, self.class.stretches, self.password_salt, self.class.pepper)
       end
 
     protected
 
       # Digests the password using the configured encryptor.
       def password_digest(password)
-        if self.password_salt.present?
-          self.class.encryptor_class.digest(password, self.class.stretches, self.password_salt, self.class.pepper)
+        if password_salt.present?
+          encryptor_class.digest(password, self.class.stretches, authenticatable_salt, self.class.pepper)
         end
+      end
+
+      def encryptor_class
+        self.class.encryptor_class
       end
 
       module ClassMethods

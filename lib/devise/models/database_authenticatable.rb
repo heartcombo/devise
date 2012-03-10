@@ -40,7 +40,7 @@ module Devise
       # Verifies whether an password (ie from sign in) is the user password.
       def valid_password?(password)
         return false if encrypted_password.blank?
-        Devise::Encryptors::BCrypt.compare(self.encrypted_password, password, self.class.stretches, nil, self.class.pepper)
+        encryptor_class.compare(encrypted_password, password, self.class.stretches, authenticatable_salt, self.class.pepper)
       end
 
       # Set password and password confirmation to nil
@@ -98,14 +98,18 @@ module Devise
 
       # A reliable way to expose the salt regardless of the implementation.
       def authenticatable_salt
-        self.encrypted_password[0,29] if self.encrypted_password
+        encrypted_password[0,29] if encrypted_password
       end
 
     protected
 
       # Digests the password using bcrypt.
       def password_digest(password)
-        Devise::Encryptors::BCrypt.digest(password, self.class.stretches, ::BCrypt::Engine.generate_salt, self.class.pepper)
+        encryptor_class.digest(password, self.class.stretches, ::BCrypt::Engine.generate_salt, self.class.pepper)
+      end
+
+      def encryptor_class
+        Devise::Encryptors::BCrypt
       end
 
       module ClassMethods

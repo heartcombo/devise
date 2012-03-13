@@ -56,6 +56,7 @@ module Devise
       def after_token_authentication
       end
 
+
       module ClassMethods
         def find_for_token_authentication(conditions)
           find_for_authentication(:authentication_token => conditions[token_authentication_key])

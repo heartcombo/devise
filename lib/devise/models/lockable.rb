@@ -92,11 +92,18 @@ module Devise
           self.failed_attempts += 1
           if attempts_exceeded?
             lock_access! unless access_locked?
-            return :locked
           else
             save(:validate => false)
           end
           false
+        end
+      end
+
+      def unauthenticated_message
+        if self.respond_to?(:failed_attempts) && attempts_exceeded?
+          :locked
+        else
+          super
         end
       end
 

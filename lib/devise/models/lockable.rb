@@ -105,7 +105,7 @@ module Devise
       end
 
       def unauthenticated_message
-        if self.respond_to?(:failed_attempts) && attempts_exceeded?
+        if lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
           :locked
         else
           super

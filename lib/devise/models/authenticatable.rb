@@ -78,6 +78,10 @@ module Devise
         block_given? ? yield : true
       end
 
+      def unauthenticated_message
+        :invalid
+      end
+
       def active_for_authentication?
         true
       end

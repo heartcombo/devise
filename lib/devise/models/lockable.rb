@@ -23,7 +23,12 @@ module Devise
       delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, :to => "self.class"
 
       def self.required_fields(klass)
-        [:failed_attempts, :unlock_at, :unlock_token]
+        attributes = []
+        attributes << :failed_attempts if klass.lock_strategy_enabled?(:failed_attempts)
+        attributes << :unlock_at if klass.unlock_strategy_enabled?(:time)
+        attributes << :unlock_token if klass.unlock_strategy_enabled?(:email)
+
+        attributes
       end
 
       # Lock a user setting its locked_at to actual time.
@@ -92,11 +97,18 @@ module Devise
           self.failed_attempts += 1
           if attempts_exceeded?
             lock_access! unless access_locked?
-            return :locked
           else
             save(:validate => false)
           end
           false
+        end
+      end
+
+      def unauthenticated_message
+        if lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
+          :locked
+        else
+          super
         end
       end
 

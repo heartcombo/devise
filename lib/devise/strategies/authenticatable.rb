@@ -23,14 +23,20 @@ module Devise
         result = resource && resource.valid_for_authentication?(&block)
 
         case result
-        when String, Symbol
+        when Symbol, String
+          ActiveSupport::Deprecation.warn "valid_for_authentication should return a boolean value"
           fail!(result)
-          false
-        when TrueClass
+          return false
+        end
+
+        if result
           decorate(resource)
           true
         else
-          result
+          if resource
+            fail!(resource.unauthenticated_message)
+          end
+          false
         end
       end
 

@@ -1,4 +1,4 @@
-== 2.1.0.dev
+== 2.1.0.rc
 
 * enhancements
   * Add check_fields! method on Devise::Models to check if the model includes the fields that Devise uses
@@ -7,6 +7,7 @@
 * bug fix
   * Ensure after sign in hook is not called without a resource
   * Fix a term: now on Omniauth related flash messages, we say that we're authenticating from an omniauth provider instead of authorizing
+  * Fixed redirect when authenticated mounted apps (by @hakanensari)
 
 * deprecation
   * All devise modules should have a required_fields(klass) module method to help gathering missing attributes

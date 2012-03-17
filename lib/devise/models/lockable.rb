@@ -43,7 +43,7 @@ module Devise
         save(:validate => false)
       end
 
-      # Unlock a user by cleaning locket_at and failed_attempts.
+      # Unlock a user by cleaning locked_at and failed_attempts.
       def unlock_access!
         self.locked_at = nil
         self.failed_attempts = 0 if respond_to?(:failed_attempts=)
@@ -149,9 +149,9 @@ module Devise
         # with an email not found error.
         # Options must contain the user email
         def send_unlock_instructions(attributes={})
-         lockable = find_or_initialize_with_errors(unlock_keys, attributes, :not_found)
-         lockable.resend_unlock_token if lockable.persisted?
-         lockable
+          lockable = find_or_initialize_with_errors(unlock_keys, attributes, :not_found)
+          lockable.resend_unlock_token if lockable.persisted?
+          lockable
         end
 
         # Find a user by its unlock token and try to unlock it.

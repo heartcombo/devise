@@ -1,5 +1,3 @@
-require "devise/hooks/recoverable"
-
 module Devise
   module Models
 

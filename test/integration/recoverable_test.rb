@@ -284,4 +284,17 @@ class PasswordTest < ActionController::IntegrationTest
       assert_current_url "/users/sign_in"
     end
   end
+
+  test "after recovering a password, should set failed attempts to 0" do
+    user = create_user
+    user.update_attribute(:failed_attempts, 10)
+
+    assert_equal 10, user.failed_attempts
+    request_forgot_password
+    reset_password :reset_password_token => user.reload.reset_password_token
+
+    assert warden.authenticated?(:user)
+    user.reload
+    assert_equal 0, user.failed_attempts
+  end
 end

@@ -88,9 +88,8 @@ module Devise
         # if the user can login or not (wrong password, etc)
         unlock_access! if lock_expired?
 
+        # As failed_attempts is always 0 after sign_in, there is no need to set it to 0
         if super && !access_locked?
-          self.failed_attempts = 0
-          save(:validate => false)
           true
         else
           self.failed_attempts ||= 0

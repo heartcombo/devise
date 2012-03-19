@@ -1,3 +1,5 @@
+require "devise/hooks/lockable"
+
 module Devise
   module Models
     # Handles blocking a user access after a certain number of attempts.
@@ -89,8 +91,6 @@ module Devise
         unlock_access! if lock_expired?
 
         if super && !access_locked?
-          self.failed_attempts = 0
-          save(:validate => false)
           true
         else
           self.failed_attempts ||= 0

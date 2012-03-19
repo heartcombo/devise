@@ -14,15 +14,6 @@ class LockableTest < ActiveSupport::TestCase
     end
   end
 
-  test "should clear failed_attempts on successfull validation" do
-    user = create_user
-    user.confirm!
-    user.valid_for_authentication?{ false }
-    assert_equal 1, user.reload.failed_attempts
-    user.valid_for_authentication?{ true }
-    assert_equal 0, user.reload.failed_attempts
-  end
-
   test "should increment failed_attempts on successfull validation if the user is already locked" do
     user = create_user
     user.confirm!

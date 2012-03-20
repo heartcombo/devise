@@ -1,3 +1,10 @@
+begin
+  require "scrypt"
+rescue LoadError
+  $stderr.puts "You must install the scrypt gem in order to use SCrypt encryption."
+  exit(1)
+end
+
 module Devise
   module Encryptors
     class SCrypt < Base

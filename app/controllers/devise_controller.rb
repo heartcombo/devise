@@ -67,10 +67,21 @@ MESSAGE
     instance_variable_set(:"@#{resource_name}", new_resource)
   end
 
-  # Build a devise resource.
-  def build_resource(hash=nil)
+  # Build a devise resource. 
+  # Assignment bypasses attribute protection when :unsafe option is passed
+  def build_resource(hash = nil, options = {})
     hash ||= params[resource_name] || {}
-    self.resource = resource_class.new(hash)
+
+    if options[:unsafe]
+      self.resource = resource_class.new.tap do |resource|
+        hash.each do |key, value|
+          setter = :"#{key}="
+          resource.send(setter, value) if resource.respond_to?(setter)
+        end
+      end
+    else
+      self.resource = resource_class.new(hash)
+    end
   end
 
   # Helper for use in before_filters where no authentication is required.

@@ -1,7 +1,8 @@
 == trunk (2.1.0.rc2)
 
 * bug fix
-  * `failed_attempts` being set to zero after sign ins (by @rodrigoflores)
+  * `/users/sign_in` doesn't choke on protected attributes used to select sign in scope (by @Paymium)
+  * `failed_attempts` is set to zero after any sign in (including via reset password) (by @rodrigoflores)
 
 == 2.1.0.rc
 

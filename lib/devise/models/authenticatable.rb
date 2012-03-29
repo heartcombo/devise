@@ -178,7 +178,7 @@ module Devise
           attributes.delete_if { |key, value| value.blank? }
 
           if attributes.size == required_attributes.size
-            record = find_first_by_auth_conditions(attributes)
+            record = find_for_authentication(attributes)
           end
 
           unless record

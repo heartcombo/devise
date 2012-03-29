@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
   map.admin_root '/admin_area/home', :controller => "admins", :action => "index"
 
   map.connect '/sign_in', :controller => "sessions", :action => "new"
+  map.connect '/any_url_you_wish', :controller => 'home', :action => 'index'
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end

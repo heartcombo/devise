@@ -32,6 +32,12 @@ class PasswordTest < ActionController::IntegrationTest
     click_button 'Change my password'
   end
 
+  def redefine_after_reset_password_path
+    PasswordsController.send :define_method, :after_sending_reset_password_instructions_path_for do |r_name|
+      '/any_url_you_wish'
+    end
+  end
+
   test 'authenticated user should not be able to visit forgot password page' do
     sign_in_as_user
     assert warden.authenticated?(:user)
@@ -48,6 +54,15 @@ class PasswordTest < ActionController::IntegrationTest
 
     assert_template 'sessions/new'
     assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
+  end
+
+  test 'programmers should be able to redefine redirect path after user resets password' do
+    create_user
+    redefine_after_reset_password_path
+    request_forgot_password
+
+    assert_response :success
+    assert_template 'home/index'
   end
 
   test 'not authenticated user with invalid email should receive an error message' do

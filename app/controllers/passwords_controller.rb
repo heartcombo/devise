@@ -14,7 +14,7 @@ class PasswordsController < ApplicationController
 
     if resource.errors.empty?
       set_flash_message :notice, :send_instructions
-      redirect_to new_session_path(resource_name)
+      redirect_to after_sending_reset_password_instructions_path_for(resource_name)
     else
       render_with_scope :new
     end
@@ -37,5 +37,11 @@ class PasswordsController < ApplicationController
     else
       render_with_scope :edit
     end
+  end
+
+  protected
+
+  def after_sending_reset_password_instructions_path_for(resource_name)
+    new_session_path(resource_name)
   end
 end

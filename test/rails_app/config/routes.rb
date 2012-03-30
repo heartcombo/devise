@@ -12,7 +12,8 @@ ActionController::Routing::Routes.draw do |map|
                  :controllers => { :passwords => "custom" }
 
   map.namespace :custom_controllers do |cc|
-    cc.devise_for :users, :controllers => { :sessions => "custom" }
+    cc.devise_for :editors, :class_name => "User",
+                  :controllers => { :sessions => "custom" }
   end
 
   map.resources :users, :only => [:index], :member => { :expire => :get }

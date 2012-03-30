@@ -141,7 +141,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   test 'map user with custom namespace and with :controllers option' do
     assert_recognizes(
         {:controller => 'custom_controllers/custom', :action => 'new'},
-        {:path => '/custom_controllers/users/sign_in', :method => :get}
+        {:path => '/custom_controllers/editors/sign_in', :method => :get}
     )
   end
 end

@@ -136,11 +136,12 @@ module Devise
       controllers_names = Hash.new {|hash, key| hash[key] = key }
 
       names_option = options.delete(:controllers)
-
       return controllers_names unless names_option.present?
+
       raise "Hash should be presented for :controllers option for devise_for method" unless names_option.is_a?(Hash)
 
-      controllers_names.merge(names_option)
+      symbolized_names_option = Hash[names_option.map{|k,v| [k.to_sym, v.to_sym]}]
+      controllers_names.merge(symbolized_names_option)
     end
   end
 end

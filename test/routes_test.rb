@@ -138,6 +138,13 @@ class CustomizedRoutingTest < ActionController::TestCase
     )
   end
 
+  test 'map editors with namespaced :controllers option' do
+    assert_recognizes(
+        {:controller => 'custom_controllers/custom', :action => 'show'},
+        {:path => '/editors/unlock', :method => :get}
+    )
+  end
+
   test 'map user with custom namespace and with :controllers option' do
     assert_recognizes(
         {:controller => 'custom_controllers/custom', :action => 'new'},

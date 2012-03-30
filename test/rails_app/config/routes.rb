@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
     }
 
   map.devise_for :editors, :class_name => "User",
-                 :controllers => { :passwords => "custom" }
+                 :controllers => { :passwords => "custom", "unlocks" => "custom_controllers/custom" }
 
   map.namespace :custom_controllers do |cc|
     cc.devise_for :editors, :class_name => "User",

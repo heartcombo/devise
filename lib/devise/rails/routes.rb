@@ -72,6 +72,10 @@ module ActionController::Routing
       #
       #    You need to make sure that your sign_out controls trigger a request with a matching HTTP method.
       #
+      #  * :controllers => the controller which should be used. All routes by default points to Devise controllers. However, if you want them to point to custom controller, you should do:
+      #
+      #    map.devise_for :users, :controllers => { :sessions => "users/sessions" }
+      #
       #  Any other options will be passed to route definition. If you need conditions for your routes, just map:
       #
       #    map.devise_for :users, :conditions => { :subdomain => /.+/ }

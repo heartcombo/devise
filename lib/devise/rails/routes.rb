@@ -136,7 +136,7 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, :format => false
     #
-    #  * :constraints => works the same as Rails' contraints
+    #  * :constraints => works the same as Rails' constraints
     #
     #  * :defaults => works the same as Rails' defaults
     #

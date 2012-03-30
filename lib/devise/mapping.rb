@@ -85,7 +85,19 @@ module Devise
 
     # Check if the respective controller has a module in the mapping class.
     def allows?(controller)
-      (self.for & CONTROLLERS[controller.to_sym]).present?
+
+      controller = controller.to_sym
+
+      # Restore original devise controller's name if we are using custom controller name
+      if CONTROLLERS.include?(controller)
+        original_devise_name = controller
+      elsif @custom_controllers_names && @custom_controllers_names.value?(controller)
+        original_devise_name = @custom_controllers_names.key(controller)
+      else
+        return false
+      end
+
+      (self.for & CONTROLLERS[original_devise_name]).present?
     end
 
     # Return in which position in the path prefix devise should find the as mapping.

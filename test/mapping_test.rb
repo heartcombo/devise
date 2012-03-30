@@ -30,6 +30,13 @@ class MappingTest < ActiveSupport::TestCase
     assert_not mapping.allows?(:passwords)
   end
 
+  test 'allows a custom controller depending on the mapping' do
+    mapping = Devise.mappings[:editor]
+    assert mapping.allows?(:custom)
+    assert mapping.allows?(:passwords)
+    assert_not mapping.allows?(:some_random_name)
+  end
+
   test 'find mapping by path' do
     assert_nil   Devise::Mapping.find_by_path("/foo/bar")
     assert_equal Devise.mappings[:user], Devise::Mapping.find_by_path("/users/session")

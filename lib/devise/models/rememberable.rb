@@ -42,7 +42,7 @@ module Devise
       attr_accessor :remember_me, :extend_remember_period
 
       def self.required_fields(klass)
-        [:remember_created_at, :remember_token]
+        [:remember_created_at]
       end
 
       # Generate a new remember token and save the record without validations
@@ -91,7 +91,7 @@ module Devise
 
     protected
 
-      def generate_remember_token?
+      def generate_remember_token? #:nodoc:
         respond_to?(:remember_token) && remember_expired?
       end
 
@@ -114,7 +114,7 @@ module Devise
         end
 
         # Generate a token checking if one does not already exist in the database.
-        def remember_token
+        def remember_token #:nodoc:
           generate_token(:remember_token)
         end
 

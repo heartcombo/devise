@@ -54,7 +54,7 @@ module Devise
       BLACKLIST_FOR_SERIALIZATION = [:encrypted_password, :reset_password_token, :reset_password_sent_at,
         :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip,
         :last_sign_in_ip, :password_salt, :confirmation_token, :confirmed_at, :confirmation_sent_at,
-        :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at, :authentication_token]
+        :remember_token, :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at, :authentication_token]
 
       included do
         class_attribute :devise_modules, :instance_writer => false

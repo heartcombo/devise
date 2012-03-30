@@ -168,8 +168,7 @@ class RememberableTest < ActiveSupport::TestCase
 
   test 'should have the required_fiels array' do
     assert_same_content Devise::Models::Rememberable.required_fields(User), [
-      :remember_created_at,
-      :remember_token
+      :remember_created_at
     ]
   end
 end

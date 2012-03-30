@@ -1,0 +1,2 @@
+class CustomControllers::CustomController < ApplicationController
+end

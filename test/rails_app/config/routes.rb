@@ -8,6 +8,14 @@ ActionController::Routing::Routes.draw do |map|
       :unlock => 'unblock', :sign_up => 'register'
     }
 
+  map.devise_for :editors, :class_name => "User",
+                 :controllers => { :passwords => "custom", "unlocks" => "custom_controllers/custom" }
+
+  map.namespace :custom_controllers do |cc|
+    cc.devise_for :editors, :class_name => "User",
+                  :controllers => { :sessions => "custom" }
+  end
+
   map.resources :users, :only => [:index], :member => { :expire => :get }
   map.resources :admins, :only => :index
   map.root :controller => :home

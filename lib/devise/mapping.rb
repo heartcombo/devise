@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :name, :as, :path_names, :path_prefix, :route_options, :sign_out_via
+    attr_reader :name, :as, :path_names, :path_prefix, :route_options, :sign_out_via, :custom_controllers_names
 
     # Loop through all mappings looking for a map that matches with the requested
     # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
@@ -59,6 +59,8 @@ module Devise
       @klass = (options.delete(:class_name) || name.to_s.classify).to_s
       @name  = (options.delete(:scope) || name.to_s.singularize).to_sym
 
+      @custom_controllers_names = build_controllers_names(options)
+
       @path_prefix   = "/#{options.delete(:path_prefix)}/".squeeze("/")
       @route_options = options || {}
 
@@ -83,7 +85,19 @@ module Devise
 
     # Check if the respective controller has a module in the mapping class.
     def allows?(controller)
-      (self.for & CONTROLLERS[controller.to_sym]).present?
+
+      controller = controller.to_sym
+
+      # Restore original devise controller's name if we are using custom controller name
+      if CONTROLLERS.include?(controller)
+        original_devise_name = controller
+      elsif @custom_controllers_names && @custom_controllers_names.value?(controller)
+        original_devise_name = @custom_controllers_names.key(controller)
+      else
+        return false
+      end
+
+      (self.for & CONTROLLERS[original_devise_name]).present?
     end
 
     # Return in which position in the path prefix devise should find the as mapping.
@@ -126,5 +140,20 @@ module Devise
       end
     end
     Devise::Mapping.register *ALL
+
+
+    private
+
+    def build_controllers_names(options)
+      controllers_names = Hash.new {|hash, key| hash[key] = key }
+
+      names_option = options.delete(:controllers)
+      return controllers_names unless names_option.present?
+
+      raise "Hash should be presented for :controllers option for devise_for method" unless names_option.is_a?(Hash)
+
+      symbolized_names_option = Hash[names_option.map{|k,v| [k.to_sym, v.to_sym]}]
+      controllers_names.merge(symbolized_names_option)
+    end
   end
 end

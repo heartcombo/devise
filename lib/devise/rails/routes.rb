@@ -102,9 +102,8 @@ module ActionController::Routing
       end
 
       protected
-
         def database_authenticatable(routes, mapping)
-          routes.with_options(:controller => 'sessions', :name_prefix => nil) do |session|
+          routes.with_options(:controller => mapping.custom_controllers_names[:sessions], :name_prefix => nil) do |session|
             session.send(:"new_#{mapping.name}_session",     mapping.path_names[:sign_in],  :action => 'new',     :conditions => { :method => :get })
             session.send(:"#{mapping.name}_session",         mapping.path_names[:sign_in],  :action => 'create',  :conditions => { :method => :post })
             destroy_options = { :action => 'destroy' }
@@ -114,19 +113,28 @@ module ActionController::Routing
         end
 
         def confirmable(routes, mapping)
-          routes.resource :confirmation, :only => [:new, :create, :show], :as => mapping.path_names[:confirmation]
+          routes.resource :confirmation, :only => [:new, :create, :show],
+                          :as => mapping.path_names[:confirmation],
+                          :controller => mapping.custom_controllers_names[:confirmations]
         end
 
         def lockable(routes, mapping)
-          routes.resource :unlock, :only => [:new, :create, :show], :as => mapping.path_names[:unlock]
+          routes.resource :unlock, :only => [:new, :create, :show],
+                          :as => mapping.path_names[:unlock],
+                          :controller => mapping.custom_controllers_names[:unlocks]
         end
 
         def recoverable(routes, mapping)
-          routes.resource :password, :only => [:new, :create, :edit, :update], :as => mapping.path_names[:password]
+          routes.resource :password, :only => [:new, :create, :edit, :update],
+                          :as => mapping.path_names[:password],
+                          :controller => mapping.custom_controllers_names[:passwords]
         end
 
         def registerable(routes, mapping)
-          routes.resource :registration, :only => [:new, :create, :edit, :update, :destroy], :as => mapping.raw_path[1..-1], :path_prefix => nil, :path_names => { :new => mapping.path_names[:sign_up] }
+          routes.resource :registration, :only => [:new, :create, :edit, :update, :destroy],
+                          :as => mapping.raw_path[1..-1],
+                          :path_prefix => nil, :path_names => { :new => mapping.path_names[:sign_up] },
+                          :controller => mapping.custom_controllers_names[:registrations]
         end
     end
   end

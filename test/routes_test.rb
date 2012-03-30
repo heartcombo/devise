@@ -83,7 +83,9 @@ class MapRoutingTest < ActionController::TestCase
       assert_recognizes({:controller => 'confirmations', :action => 'new'}, 'admin_area/confirmation/new')
     end
   end
+end
 
+class CustomizedRoutingTest < ActionController::TestCase
   test 'map account with custom path name for session sign in' do
     assert_recognizes({:controller => 'sessions', :action => 'new', :locale => 'en', :extra => 'value'}, '/en/accounts/login')
   end
@@ -127,5 +129,19 @@ class MapRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_anymethods/sign_out', :method => :post})
     assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_anymethods/sign_out', :method => :delete})
     assert_recognizes({:controller => 'sessions', :action => 'destroy'}, {:path => '/sign_out_via_anymethods/sign_out', :method => :put})
+  end
+
+  test 'map editors with :controllers option' do
+    assert_recognizes(
+        {:controller => 'custom', :action => 'create'},
+        {:path => '/editors/password', :method => :post}
+    )
+  end
+
+  test 'map user with custom namespace and with :controllers option' do
+    assert_recognizes(
+        {:controller => 'custom_controllers/custom', :action => 'new'},
+        {:path => '/custom_controllers/users/sign_in', :method => :get}
+    )
   end
 end

@@ -22,7 +22,7 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :name, :as, :path_names, :path_prefix, :route_options, :sign_out_via
+    attr_reader :name, :as, :path_names, :path_prefix, :route_options, :sign_out_via, :custom_controllers_names
 
     # Loop through all mappings looking for a map that matches with the requested
     # path (ie /users/sign_in). If a path prefix is given, it's taken into account.
@@ -58,6 +58,8 @@ module Devise
       @as    = (options.delete(:as) || name).to_sym
       @klass = (options.delete(:class_name) || name.to_s.classify).to_s
       @name  = (options.delete(:scope) || name.to_s.singularize).to_sym
+
+      @custom_controllers_names = build_controllers_names(options)
 
       @path_prefix   = "/#{options.delete(:path_prefix)}/".squeeze("/")
       @route_options = options || {}
@@ -126,5 +128,19 @@ module Devise
       end
     end
     Devise::Mapping.register *ALL
+
+
+    private
+
+    def build_controllers_names(options)
+      controllers_names = Hash.new {|hash, key| hash[key] = key }
+
+      names_option = options.delete(:controllers)
+
+      return controllers_names unless names_option.present?
+      raise "Hash should be presented for :controllers option for devise_for method" unless names_option.is_a?(Hash)
+
+      controllers_names.merge(names_option)
+    end
   end
 end

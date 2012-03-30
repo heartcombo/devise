@@ -158,6 +158,12 @@ module Devise
         end
 
         # Find first record based on conditions given (ie by the sign in form).
+        # This method is always called during an authentication process but
+        # it may be wrapped as well. For instance, database authenticatable
+        # provides a `find_for_database_authentication` that wraps a call to
+        # this method. This allows you to customize both database authenticatable
+        # or the whole authenticate stack by customize `find_for_authentication.` 
+        #
         # Overwrite to add customized conditions, create a join, or maybe use a
         # namedscope to filter records while authenticating.
         # Example:
@@ -167,6 +173,10 @@ module Devise
         #     super
         #   end
         #
+        # Finally, notice that Devise also queries for users in other scenarios
+        # besides authentication, for example when retrieving an user to send
+        # an e-mail for password reset. In such cases, find_for_authentication
+        # is not called.
         def find_for_authentication(conditions)
           find_first_by_auth_conditions(conditions)
         end

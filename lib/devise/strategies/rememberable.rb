@@ -1,4 +1,4 @@
-require 'devise/strategies/base'
+require 'devise/strategies/authenticatable'
 
 module Devise
   module Strategies

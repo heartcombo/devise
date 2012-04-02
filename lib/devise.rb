@@ -139,6 +139,10 @@ module Devise
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes
 
+  # Authentication token expiration on timeout
+  mattr_accessor :expire_auth_token_on_timeout
+  @@expire_auth_token_on_timeout = false
+
   # Used to encrypt password. Please generate one with rake secret.
   mattr_accessor :pepper
   @@pepper = nil

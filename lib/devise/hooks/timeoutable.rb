@@ -11,6 +11,7 @@ Warden::Manager.after_set_user do |record, warden, options|
 
     if record.timedout?(last_request_at)
       warden.logout(scope)
+      record.reset_authentication_token! if record.respond_to?(:reset_authentication_token!) && record.expire_auth_token_on_timeout
       throw :warden, :scope => scope, :message => :timeout
     end
 

@@ -12,6 +12,13 @@ en:
         other: "%{count} errors prohibited this %{resource} from being saved:"
 
   devise:
+    links:
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+      forgot_password: "Forgot your password?"
+      didnt_receive_confirmation: "Didn't receive confirmation instructions?"
+      didnt_receive_unlock: "Didn't receive unlock instructions?"
+      sign_in_with: "Sign in with %{provider}"
     failure:
       already_authenticated: 'You are already signed in.'
       unauthenticated: 'You need to sign in or sign up before continuing.'

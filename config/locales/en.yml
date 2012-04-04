@@ -27,6 +27,10 @@ en:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:
+      title_new: 'Forgot your password?'
+      title_edit: 'Change your password'
+      submit_new: 'Send me reset password instructions'
+      submit_edit: 'Change my password'
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'

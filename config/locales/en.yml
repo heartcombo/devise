@@ -23,7 +23,7 @@ en:
       inactive: 'Your account was not activated yet.'
     sessions:
       title_new: 'Sign in'
-      submin_new: 'Sign in'
+      submit_new: 'Sign in'
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:

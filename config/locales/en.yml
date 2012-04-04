@@ -55,3 +55,11 @@ en:
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+    links:
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+      forgot_password: "Forgot your password?"
+      confirm_istruction: "Didn't receive confirmation instructions?"
+      unlock_istruction: "Didn't receive unlock instructions?"
+      omniauth: "Sign in with"
+

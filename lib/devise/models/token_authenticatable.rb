@@ -56,6 +56,9 @@ module Devise
       def after_token_authentication
       end
 
+      def expire_auth_token_on_timeout
+        self.class.expire_auth_token_on_timeout
+      end
 
       module ClassMethods
         def find_for_token_authentication(conditions)
@@ -67,7 +70,7 @@ module Devise
           generate_token(:authentication_token)
         end
 
-        ::Devise::Models.config(self, :token_authentication_key)
+        ::Devise::Models.config(self, :token_authentication_key, :expire_auth_token_on_timeout)
       end
     end
   end

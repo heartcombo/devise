@@ -12,7 +12,7 @@
   <div><%= f.label :password_confirmation %><br />
   <%= f.password_field :password_confirmation %></div>
 
-  <div><%= f.submit devise.registrations.submit_new %></div>
+  <div><%= f.submit I18n.t(devise.registrations.submit_new) %></div>
 <% end %>
 
 <%= render :partial => "devise/shared/links" %>

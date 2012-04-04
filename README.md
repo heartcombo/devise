@@ -91,7 +91,9 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 Devise 2.0 works with Rails 3.1 onwards. You can add it to your Gemfile with:
 
-  gem 'devise'
+```ruby
+gem 'devise'
+```
 
 Run the bundle command to install it.
 

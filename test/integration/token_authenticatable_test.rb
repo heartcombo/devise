@@ -100,7 +100,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
     end
   end
 
-  test 'should not authenticated and reset token when expire_auth_token_on_timeout is set to true, timeoutable is enabled and we have a timed out session' do
+  test 'should reset token and not authenticate when expire_auth_token_on_timeout is set to true, timeoutable is enabled and we have a timed out session' do
     swap Devise, :token_authentication_key => :secret_token, :expire_auth_token_on_timeout => true, :timeout_in => (-1).minute do
       user = sign_in_as_new_user_with_token
       assert warden.authenticated?(:user)

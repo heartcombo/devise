@@ -4,6 +4,7 @@
   * `/users/sign_in` doesn't choke on protected attributes used to select sign in scope (by @Paymium)
   * `failed_attempts` is set to zero after any sign in (including via reset password) (by @rodrigoflores)
   * Added token expiration on timeout (by @antiarchitect)
+  * Do not accidentally mark `_prefixes` as private
 
 == 2.1.0.rc
 

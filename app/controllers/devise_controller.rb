@@ -38,6 +38,17 @@ class DeviseController < Devise.parent_controller.constantize
     @devise_mapping ||= request.env["devise.mapping"]
   end
 
+  # Override prefixes to consider the scoped view.
+  def _prefixes #:nodoc:
+    @_prefixes ||= if self.class.scoped_views? && devise_mapping
+      super.unshift("#{devise_mapping.scoped_path}/#{controller_name}")
+    else
+      super
+    end
+  end
+
+  hide_action :_prefixes
+
   protected
 
   # Checks whether it's a devise mapped resource or not.
@@ -67,7 +78,7 @@ MESSAGE
     instance_variable_set(:"@#{resource_name}", new_resource)
   end
 
-  # Build a devise resource. 
+  # Build a devise resource.
   # Assignment bypasses attribute protection when :unsafe option is passed
   def build_resource(hash = nil, options = {})
     hash ||= params[resource_name] || {}
@@ -162,14 +173,5 @@ MESSAGE
 
   def is_navigational_format?
     Devise.navigational_formats.include?(request.format.try(:ref))
-  end
-
-  # Override prefixes to consider the scoped view.
-  def _prefixes #:nodoc:
-    @_prefixes ||= if self.class.scoped_views? && devise_mapping
-      super.unshift("#{devise_mapping.scoped_path}/#{controller_name}")
-    else
-      super
-    end
   end
 end

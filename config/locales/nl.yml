@@ -1,0 +1,104 @@
+# Additional translations at http://github.com/plataformatec/devise/wiki/I18n
+
+nl:
+  errors:
+    messages:
+      expired: "is verlopen, vraag een nieuwe aan"
+      not_found: "niet gevonden"
+      already_confirmed: "is reeds bevestigd"
+      not_locked: "is niet gesloten"
+      not_saved:
+        one: "Kon de gebruiker niet opslaan:"
+        other: "Kon de gebruiker niet opslaan:"
+
+  devise:
+    email: 'e-mail'
+    password: 'wachtwoord'
+    password_confirmation: 'nogmaals het wachtwoord'
+    sign_in: 'Aanmelden'
+    sign_up: 'Registreer'
+    failure:
+      already_authenticated: 'Je bent al ingelogd.'
+      unauthenticated: 'Je dient in te loggen of je in te schrijven.'
+      unconfirmed: 'Je dient eerst je account te bevestigen.'
+      locked: 'Je account is geblokkeerd.'
+      invalid: 'Ongeldig e-mail of wachtwoord.'
+      invalid_token: 'Ongeldig authenticatie token.'
+      timeout: 'Je sessie is verlopen, log a.u.b. opnieuw in.'
+      inactive: 'Je account is nog niet geactiveerd.'
+    sessions:
+      new:
+        remember_me: 'onthoud mij'
+      signed_in: 'Je bent succesvol ingelogd.'
+      signed_out: 'Je bent succesvol uitgelogd.'
+    passwords:
+      edit:
+        change_your_password: 'Verander je wachtwoord'
+        new_password: 'Nieuw wachtwoord'
+        confirm_new_password: 'Bevestig nieuw wachtwoord'
+        change_my_password: 'Verander mijn wachtwoord'
+      new:
+        forgot_your_password: 'Wachtwoord vergeten?'
+        request_reset_password_instructions: 'Stuur me instructies om mijn wachtwoord opnieuw in te stellen'
+      send_instructions: 'Je ontvangt via e-mail instructies hoe je je wachtwoord opnieuw kunt instellen.'
+      send_paranoid_instructions: 'Als je e-mailadres bij ons bekend is, ontvang je via e-mail instructies hoe je je wachtwoord opnieuw kunt instellen.'
+      updated: 'Je wachtwoord is gewijzigd. Je bent nu ingelogd.'
+      updated_not_active: 'Je wachtwoord is gewijzigd.'
+    confirmations:
+      new:
+        resend_confirmation_instructions: 'Stuur mij bevestigingsinstructies.'
+      send_instructions: 'Je ontvangt via e-mail instructies hoe je je account kan bevestigen.'
+      send_paranoid_instructions: 'Als je e-mailadres bij ons bekend is, ontvang je via e-mail instructies hoe je je account kan bevestigen.'
+      confirmed: 'Je account is bevestigd.'
+    registrations:
+      edit:
+        edit: 'Bewerk'
+        leave_blank_if_no_change_wanted: 'laat leeg als je het niet wilt veranderen'
+        need_current_password_to_confirm: 'we hebben je huidige wachtwoord nodig om je veranderingen te verwerken'
+        update: 'Update'
+        unhappy: 'Niet tevreden?'
+        cancel_my_account: 'Verwijder mijn account'
+        are_you_sure: 'Weet je het zeker?'
+        back: 'Terug'
+        current_password: 'huidig wachtwoord'
+      signed_up_but_unconfirmed: 'Je ontvangt via e-mail instructies hoe je je account kunt activeren.'
+      signed_up_but_inactive: 'Je bent inschreven. Je kan niet automatisch ingelogd worden omdat je account nog niet geactiveerd is.'
+      signed_up_but_locked: 'Je bent inschreven. Je kan niet automatisch ingelogd worden omdat je account geblokkeerd is.'
+      signed_up: 'Je bent inschreven.'
+      update_needs_confirmation: 'Je hebt je e-mailadres succesvol gewijzigd, dit adres moet nog bevestigd worden. Controleer je e-mail
+       en klik op de link in de mail om je mailadres te bevestigen.'
+      updated: 'Je account gegevens zijn opgeslagen.'
+      destroyed: 'Je account is verwijderd, wellicht tot ziens!'
+    unlocks:
+      new:
+        resend_unlock_instructions: 'Stuur deblokkeer instructies'
+      send_instructions: 'Je ontvangt via e-mail instructies hoe je je account kan deblokkeren.'
+      unlocked: 'Je account is niet meer geblokkeerd. Je kan nu weer inloggen.'
+      send_paranoid_instructions: 'Als je e-mailadres bij ons bekend is, ontvang je via e-mail instructies hoe je je account kan deblokkeren.'
+    omniauth_callbacks:
+      success: 'Successvol aangemeld met je %{kind} account.'
+      failure: 'Kon je niet aanmelden met je %{kind} account, omdat "%{reason}".'
+    mailer:
+      hello: 'Hallo'
+      confirmation_instructions:
+        subject: 'Bevestiging mailadres'
+        welcome: 'Welkom'
+        confirm_through_mail: 'Je kunt je account e-mailadres bevestigen door te klikken op onderstaande link.'
+        confirm_my_account: 'Bevestig mijn e-mailadres'
+      reset_password_instructions:
+        subject: 'Wachtwoord opnieuw instellen'
+        change_password_through_link_below: 'Je hebt aangegeven dat je je wachtwoord wilt veranderen. Dit kun je doen door te klikken op onderstaande link.'
+        change_my_password: 'Verander mijn wachtwoord'
+        ignore_if_not_requested: 'Als je dit niet aangegeven hebt, negeer dan deze e-mail.'
+        password_unchanged_unless_link_used: 'Je wachtwoord zal niet veranderen tot je via bovenstaande link een nieuwe maakt.'
+      unlock_instructions:
+        subject: 'Deblokkeer instructies'
+        locked_because_too_much_failed_logins: 'Je account is geblokkeerd vanwege een groot aantal niet succesvolle inlogpogingen.'
+        click_below_to_unlock: 'Klik op onderstaande link om je account te deblokkeren.'
+        unlock_my_account: 'Deblokkeer mijn account'
+    shared:
+      links:
+        forgot_your_password: 'Wachtwoord vergeten?'
+        did_not_receive_confirmation_instructions: "Geen bevestigingsinstructies ontvangen?"
+        did_not_receive_unlock_instructions: "Geen deblokkeerinstructies ontvangen?"
+        sign_in_with: 'Aanmelden met'

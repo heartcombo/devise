@@ -124,6 +124,7 @@ GEM
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
     ruby-openid (2.1.8)
+    scrypt (1.0.3)
     sprockets (2.1.2)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -163,5 +164,6 @@ DEPENDENCIES
   rails (~> 3.2.0)
   rdoc
   ruby-debug (>= 0.10.3)
+  scrypt (~> 1.0.3)
   sqlite3-ruby
   webrat (= 0.7.2)

@@ -54,7 +54,7 @@ class EncryptableTest < ActiveSupport::TestCase
   test 'should respect encryptor configuration' do
     swap_with_encryptor Admin, :sha512 do
       admin = create_admin
-      assert_equal admin.encrypted_password, encrypt_password(admin, Admin.pepper, Admin.stretches, ::Devise::Encryptors::Sha512)
+      assert_equal admin.encrypted_password, encrypt_password(admin, Admin.pepper, Admin.stretches, Devise::Encryptors::Sha512)
     end
   end
 

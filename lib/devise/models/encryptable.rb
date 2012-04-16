@@ -67,7 +67,7 @@ module Devise
             when nil
               raise "You need to give an :encryptor as option in order to use :encryptable"
             else
-              ::Devise::Encryptors.const_get(encryptor.to_s.classify)
+              Devise::Encryptors.const_get(encryptor.to_s.classify)
           end
         end
 

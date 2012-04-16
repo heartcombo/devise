@@ -70,7 +70,7 @@ module Devise
           generate_token(:authentication_token)
         end
 
-        ::Devise::Models.config(self, :token_authentication_key, :expire_auth_token_on_timeout)
+        Devise::Models.config(self, :token_authentication_key, :expire_auth_token_on_timeout)
       end
     end
   end

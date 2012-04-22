@@ -25,7 +25,7 @@ platforms :jruby do
 end
 
 platforms :ruby do
-  gem "sqlite3-ruby"
+  gem "sqlite3"
 
   group :mongoid do
     gem "mongo", "~> 1.3.0"

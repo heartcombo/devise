@@ -11,7 +11,7 @@ class Devise::UnlocksController < DeviseController
     self.resource = resource_class.send_unlock_instructions(params[resource_name])
 
     if successfully_sent?(resource)
-      respond_with({}, :location => after_sending_reset_unlock_instructions_path_for(resource))
+      respond_with({}, :location => after_sending_unlock_instructions_path_for(resource))
     else
       respond_with(resource)
     end
@@ -32,7 +32,7 @@ class Devise::UnlocksController < DeviseController
   protected
 
     # The path used after sending unlock password instructions
-    def after_sending_reset_unlock_instructions_path_for(resource)
+    def after_sending_unlock_instructions_path_for(resource)
       new_session_path(resource)
     end
 

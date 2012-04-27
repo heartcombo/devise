@@ -22,10 +22,15 @@ module ActiveRecord
       end
 
       def inject_devise_content
-        inject_into_class(model_path, class_name, model_contents + <<CONTENT) if model_exists?
+        content = model_contents + <<CONTENT
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 CONTENT
+
+        indent_size = class_name.to_s.split("::").size - 1
+        content = content.split("\n").map { |line| "  " * indent_size + line}.join("\n")
+
+        inject_into_class(model_path, class_name.to_s.split("::").last, content) if model_exists?
       end
 
       def migration_data

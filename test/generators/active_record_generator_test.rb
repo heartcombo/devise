@@ -34,4 +34,20 @@ if DEVISE_ORM == :active_record
       assert_no_migration "db/migrate/devise_create_monsters.rb"
     end
   end
+
+  class RailsEngine ; end
+
+  class ActiveRecordGeneratorTest < Rails::Generators::TestCase
+    tests ActiveRecord::Generators::DeviseGenerator
+    destination File.expand_path("../../tmp", __FILE__)
+    setup :prepare_destination
+
+    test "all files are properly created" do
+      swap Rails::Generators, :namespace => RailsEngine do
+        run_generator ["monster"]
+
+        assert_file "app/models/rails_engine/monster.rb", /devise/,  /attr_accessible (:[a-z_]+(, )?)+/
+      end
+    end
+  end
 end

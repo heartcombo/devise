@@ -5,6 +5,7 @@
   * `failed_attempts` is set to zero after any sign in (including via reset password) (by @rodrigoflores)
   * Added token expiration on timeout (by @antiarchitect)
   * Do not accidentally mark `_prefixes` as private
+  * Resource generator now working on engines
 
 == 2.1.0.rc
 

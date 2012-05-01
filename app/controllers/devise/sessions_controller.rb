@@ -28,9 +28,7 @@ class Devise::SessionsController < DeviseController
     respond_to do |format|
       format.any(*navigational_formats) { redirect_to redirect_path }
       format.all do
-        method = "to_#{request_format}"
-        text = {}.respond_to?(method) ? {}.send(method) : ""
-        render :text => text, :status => :ok
+        head :no_content
       end
     end
   end

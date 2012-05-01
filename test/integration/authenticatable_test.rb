@@ -461,14 +461,14 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   test 'sign out with xml format returns ok response' do
     sign_in_as_user
     get destroy_user_session_path(:format => 'xml')
-    assert_response :ok
+    assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
 
   test 'sign out with json format returns empty json response' do
     sign_in_as_user
     get destroy_user_session_path(:format => 'json')
-    assert_response :ok
+    assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
 end

@@ -27,10 +27,12 @@ module ActiveRecord
   attr_accessible :email, :password, :password_confirmation, :remember_me
 CONTENT
 
-        indent_size = class_name.to_s.split("::").size - 1
-        content = content.split("\n").map { |line| "  " * indent_size + line}.join("\n")
+        class_path = class_name.to_s.split("::")
 
-        inject_into_class(model_path, class_name.to_s.split("::").last, content) if model_exists?
+        indent_depth = class_path.size - 1
+        content = content.split("\n").map { |line| "  " * indent_depth + line } .join("\n")
+
+        inject_into_class(model_path, class_path.last, content) if model_exists?
       end
 
       def migration_data

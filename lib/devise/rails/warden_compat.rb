@@ -21,13 +21,19 @@ class Warden::SessionSerializer
   end
 
   def deserialize(keys)
-    klass, *args = keys
+    klass_name, *args = keys
 
     begin
-      ActiveSupport::Inflector.constantize(klass).serialize_from_session(*args)
+      klass = ActiveSupport::Inflector.constantize(klass_name)
+      if klass.respond_to? :serialize_from_session
+        klass.serialize_from_session(*args)
+      else
+        Rails.logger.warn "[Devise] Stored serialized class #{klass_name} seems not to be Devise enabled anymore. Did you do that on purpose?"
+        nil
+      end
     rescue NameError => e
       if e.message =~ /uninitialized constant/
-        Rails.logger.debug "[Devise] Trying to deserialize invalid class #{klass}"
+        Rails.logger.debug "[Devise] Trying to deserialize invalid class #{klass_name}"
         nil
       else
         raise

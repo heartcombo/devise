@@ -35,15 +35,19 @@ if DEVISE_ORM == :active_record
     end
   end
 
-  class RailsEngine ; end
+  module RailsEngine
+    class Engine < Rails::Engine
+      isolate_namespace RailsEngine
+    end
+  end
 
-  class ActiveRecordGeneratorTest < Rails::Generators::TestCase
+  class ActiveRecordEngineGeneratorTest < Rails::Generators::TestCase
     tests ActiveRecord::Generators::DeviseGenerator
     destination File.expand_path("../../tmp", __FILE__)
     setup :prepare_destination
 
     test "all files are properly created" do
-      swap Rails::Generators, :namespace => RailsEngine do
+      swap Rails, :application => RailsEngine::Engine.instance do
         run_generator ["monster"]
 
         assert_file "app/models/rails_engine/monster.rb", /devise/,  /attr_accessible (:[a-z_]+(, )?)+/

@@ -41,16 +41,28 @@ if DEVISE_ORM == :active_record
     end
   end
 
+  def simulate_inside_engine(engine, namespace)
+    if Rails::Generators.respond_to?(:namespace=)
+      swap Rails::Generators, :namespace => namespace do
+        yield
+      end
+    else
+      swap Rails, :application => engine.instance do
+        yield
+      end
+    end
+  end
+
   class ActiveRecordEngineGeneratorTest < Rails::Generators::TestCase
     tests ActiveRecord::Generators::DeviseGenerator
     destination File.expand_path("../../tmp", __FILE__)
     setup :prepare_destination
 
     test "all files are properly created" do
-      swap Rails, :application => RailsEngine::Engine.instance do
+      simulate_inside_engine(RailsEngine::Engine, RailsEngine) do
         run_generator ["monster"]
 
-        assert_file "app/models/rails_engine/monster.rb", /devise/,  /attr_accessible (:[a-z_]+(, )?)+/
+        assert_file "app/models/rails_engine/monster.rb", /devise/,/attr_accessible (:[a-z_]+(, )?)+/
       end
     end
   end

@@ -76,7 +76,9 @@ class CustomStrategyTest < ActionController::TestCase
     assert ret.is_a?(Array)
     assert_equal 400, ret.first
 
-    # no need to test the saved response yet, that should be set by the correct processing of an action.
+    # check the saved response as well. This is purely so that the response is available to the testing framework
+    # for verification. In production, the above array would be delivered directly to Rack.
+    assert_response 400
   end
 
   test "custom strategy can return custom headers" do
@@ -86,7 +88,8 @@ class CustomStrategyTest < ActionController::TestCase
     assert ret.is_a?(Array)
     assert_equal ret.third['X-FOO'], 'BAR'
 
-    # no need to test the saved response yet, that should be set by the correct processing of an action.
+    # check the saved response headers as well.
+    assert_equal response.headers['X-FOO'], 'BAR'
   end
 
 end

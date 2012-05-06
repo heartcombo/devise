@@ -102,11 +102,11 @@ module Devise
       end
 
       def downcase_keys
-        (self.class.case_insensitive_keys || []).each { |k| self[k].try(:downcase!) }
+        self.class.case_insensitive_keys.each { |k| self[k].try(:downcase!) }
       end
 
       def strip_whitespace
-        (self.class.strip_whitespace_keys || []).each { |k| self[k].try(:strip!) }
+        self.class.strip_whitespace_keys.each { |k| self[k].try(:strip!) }
       end
 
       array = %w(serializable_hash)

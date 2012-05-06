@@ -237,11 +237,6 @@ module Devise
         redirect_to after_sign_in_path_for(resource)
       end
 
-      def redirect_location(scope, resource) #:nodoc:
-        ActiveSupport::Deprecation.warn "redirect_location in Devise is deprecated. Please use after_sign_in_path_for instead.", caller
-        after_sign_in_path_for(resource)
-      end
-
       def expire_session_data_after_sign_in!
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end

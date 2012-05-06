@@ -60,7 +60,9 @@ module Devise
             failed_attributes << field unless instance.respond_to?(field)
           end
         else
-          ActiveSupport::Deprecation.warn "The module #{mod} doesn't implement self.required_fields(klass). Devise uses required_fields to warn developers of any missing fields in their models. Please implement #{mod}.required_fields(klass) that returns an array of symbols with the required fields."
+          ActiveSupport::Deprecation.warn "The module #{mod} doesn't implement self.required_fields(klass). " \
+            "Devise uses required_fields to warn developers of any missing fields in their models. " \
+            "Please implement #{mod}.required_fields(klass) that returns an array of symbols with the required fields."
         end
       end
 
@@ -110,8 +112,8 @@ module Devise
       end
     end
 
-    # The hook which is called inside devise. So your ORM can include devise
-    # compatibility stuff.
+    # The hook which is called inside devise.
+    # So your ORM can include devise compatibility stuff.
     def devise_modules_hook!
       yield
     end

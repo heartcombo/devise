@@ -78,14 +78,12 @@ module Devise
   @@request_keys = []
 
   # Keys that should be case-insensitive.
-  # False by default for backwards compatibility.
   mattr_accessor :case_insensitive_keys
-  @@case_insensitive_keys = false
+  @@case_insensitive_keys = [ :email ]
 
   # Keys that should have whitespace stripped.
-  # False by default for backwards compatibility.
   mattr_accessor :strip_whitespace_keys
-  @@strip_whitespace_keys = false
+  @@strip_whitespace_keys = []
 
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
@@ -182,9 +180,8 @@ module Devise
   @@reset_password_keys = [ :email ]
 
   # Time interval you can reset your password with a reset password key
-  # Nil by default for backwards compatibility.
   mattr_accessor :reset_password_within
-  @@reset_password_within = nil
+  @@reset_password_within = 6.hours
 
   # The default scope which is used by warden.
   mattr_accessor :default_scope
@@ -226,36 +223,14 @@ module Devise
   mattr_accessor :router_name
   @@router_name = nil
 
-  # DEPRECATED CONFIG
+  # DEPRECATION
 
-  # If true, uses salt as remember token and does not create it in the database.
-  # By default is false for backwards compatibility.
-  mattr_accessor :use_salt_as_remember_token
-  @@use_salt_as_remember_token = false
-
-  # Tells if devise should apply the schema in ORMs where devise declaration
-  # and schema belongs to the same class (as Datamapper and Mongoid).
-  mattr_accessor :apply_schema
-  @@apply_schema = true
-
-  def self.remember_across_browsers=(value)
-    warn "\n[DEVISE] Devise.remember_across_browsers is deprecated and has no effect. Please remove it.\n"
+  def self.use_salt_as_remember_token=(value)
+    warn "\n[DEVISE] Devise.use_salt_as_remember_token is deprecated and has no effect. Please remove it.\n"
   end
 
-  def self.confirm_within=(value)
-    warn "\n[DEVISE] Devise.confirm_within= is deprecated. Please set Devise.allow_unconfirmed_access_for= instead.\n"
-    Devise.allow_unconfirmed_access_for = value
-  end
-
-  def self.cookie_options=(value)
-    warn "\n[DEVISE] Devise.cookie_options= is deprecated. Please set Devise.rememberable_options= instead.\n"
-    Devise.rememberable_options = value
-  end
-
-  def self.stateless_token=(value)
-    warn "\n[DEVISE] Devise.stateless_token= is deprecated. Please append :token_auth to Devise.skip_session_storage " \
-      "instead, for example: Devise.skip_session_storage << :token_auth\n"
-    Devise.skip_session_storage << :token_auth
+  def self.apply_schema=(value)
+    warn "\n[DEVISE] Devise.apply_schema is deprecated and has no effect. Please remove it.\n"
   end
 
   # PRIVATE CONFIGURATION

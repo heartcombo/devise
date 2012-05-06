@@ -5,6 +5,8 @@
 
 * deprecations
   * Deprecations warnings added on Devise 2.0 are now removed with their features
+  * use_salt_as_remember_token and apply_schema does not have any effect since 2.0 and are now deprecated
+  * valid_for_authentication? must now return a boolean
 
 * bug fix
   * `/users/sign_in` doesn't choke on protected attributes used to select sign in scope (by @Paymium)

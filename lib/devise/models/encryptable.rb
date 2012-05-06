@@ -35,6 +35,12 @@ module Devise
         super
       end
 
+      # Validates the password considering the salt.
+      def valid_password?(password)
+        return false if encrypted_password.blank?
+        encryptor_class.compare(encrypted_password, password, self.class.stretches, authenticatable_salt, self.class.pepper)
+      end
+
       # Overrides authenticatable salt to use the new password_salt
       # column. authenticatable_salt is used by `valid_password?`
       # and by other modules whenever there is a need for a random

@@ -74,50 +74,48 @@ module Devise
 
       result ||= {}
 
-      # set the response. In production, the rack result is returned from Warden::Manager#call, which
-      # the following is modelled on.
+      # Set the response. In production, the rack result is returned
+      # from Warden::Manager#call, which the following is modelled on.
       case result
-        when Array
-          if result.first == 401 && intercept_401?(env) # does this happen during testing?
-            process_unauthenticated(env)
-          else
-            result # result is already the array rack response
-          end
-        when Hash
-          process_unauthenticated(env, result)
+      when Array
+        if result.first == 401 && intercept_401?(env) # does this happen during testing?
+          _process_unauthenticated(env)
         else
-          # any other type, eg: ActionController::TestResponse pass through unchanged.
           result
+        end
+      when Hash
+        _process_unauthenticated(env, result)
+      else
+        result
       end
     end
 
-
-    def process_unauthenticated(env, options = {})
-
+    def _process_unauthenticated(env, options = {})
       options[:action] ||= :unauthenticated
       proxy = env['warden']
       result = options[:result] || proxy.result
-      # set the controller response as well as return our rack response array
+
       ret = case result
-              when :redirect
-                body = proxy.message || "You are being redirected to #{proxy.headers['Location']}"
-                [proxy.status, proxy.headers, [body]]
-              when :custom
-                proxy.custom_response
-              else
-                env["PATH_INFO"] = "/#{options[:action]}"
-                env["warden.options"] = options
-                Warden::Manager._run_callbacks(:before_failure, env, options)
+      when :redirect
+        body = proxy.message || "You are being redirected to #{proxy.headers['Location']}"
+        [proxy.status, proxy.headers, [body]]
+      when :custom
+        proxy.custom_response
+      else
+        env["PATH_INFO"] = "/#{options[:action]}"
+        env["warden.options"] = options
+        Warden::Manager._run_callbacks(:before_failure, env, options)
 
-                status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
-                @controller.send :render, :status => status, :text => body,
-                                 :content_type => headers["Content-Type"], :location => headers["Location"]
-                nil # causes process return @response
-            end
+        status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
+        @controller.send :render, :status => status, :text => body,
+          :content_type => headers["Content-Type"], :location => headers["Location"]
+        nil # causes process return @response
+      end
 
-      # ensure that the controller response is set up. In production, this is not necessary since warden returns
-      # the results to rack. However, at testing time, we want the response to be available to the testing framework
-      # to verify what would be returned to rack.
+      # ensure that the controller response is set up. In production, this is
+      # not necessary since warden returns the results to rack. However, at
+      # testing time, we want the response to be available to the testing
+      # framework to verify what would be returned to rack.
       if ret.is_a?(Array)
         # ensure the controller response is set to our response.
         @controller.response ||= @response
@@ -127,7 +125,6 @@ module Devise
       end
 
       ret
-
     end
   end
 end

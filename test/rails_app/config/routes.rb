@@ -84,6 +84,7 @@ Rails.application.routes.draw do
 
   match "/set", :to => "home#set"
   match "/unauthenticated", :to => "home#unauthenticated"
+  match "/custom_strategy/new"
 
   root :to => "home#index"
 end

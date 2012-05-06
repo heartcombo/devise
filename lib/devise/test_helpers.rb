@@ -97,22 +97,37 @@ module Devise
       options[:action] ||= :unauthenticated
       proxy = env['warden']
       result = options[:result] || proxy.result
-      case result
-        when :redirect
-          body = proxy.message || "You are being redirected to #{proxy.headers['Location']}"
-          [proxy.status, proxy.headers, [body]]
-        when :custom
-          proxy.custom_response
-        else
-          env["PATH_INFO"] = "/#{options[:action]}"
-          env["warden.options"] = options
-          Warden::Manager._run_callbacks(:before_failure, env, options)
+      # set the controller response as well as return our rack response array
+      ret = case result
+              when :redirect
+                body = proxy.message || "You are being redirected to #{proxy.headers['Location']}"
+                [proxy.status, proxy.headers, [body]]
+              when :custom
+                proxy.custom_response
+              else
+                env["PATH_INFO"] = "/#{options[:action]}"
+                env["warden.options"] = options
+                Warden::Manager._run_callbacks(:before_failure, env, options)
 
-          status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
-          @controller.send :render, :status => status, :text => body,
-                           :content_type => headers["Content-Type"], :location => headers["Location"]
-          nil # causes process return @response
+                status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
+                @controller.send :render, :status => status, :text => body,
+                                 :content_type => headers["Content-Type"], :location => headers["Location"]
+                nil # causes process return @response
+            end
+
+      # ensure that the controller response is set up. In production, this is not necessary since warden returns
+      # the results to rack. However, at testing time, we want the response to be available to the testing framework
+      # to verify what would be returned to rack.
+      if ret.is_a?(Array)
+        # ensure the controller response is set to our response.
+        @controller.response ||= @response
+        @response.status = ret.first
+        @response.headers = ret.second
+        @response.body = ret.third
       end
+
+      ret
+
     end
   end
 end

@@ -1,11 +1,18 @@
 == trunk (2.1.0.rc2)
 
+* enhancements
+  * Devise model generator now works with engines
+
+* deprecations
+  * Deprecations warnings added on Devise 2.0 are now removed with their features
+
 * bug fix
   * `/users/sign_in` doesn't choke on protected attributes used to select sign in scope (by @Paymium)
   * `failed_attempts` is set to zero after any sign in (including via reset password) (by @rodrigoflores)
   * Added token expiration on timeout (by @antiarchitect)
   * Do not accidentally mark `_prefixes` as private
-  * Resource generator now working on engines
+  * Better support for custom strategies on test helpers (by @mattconnolly)
+  * Return `head :no_content` in SessionsController now that most JS libraries handle it (by @julianvargasalvarez)
 
 == 2.1.0.rc
 

@@ -76,19 +76,19 @@ module Devise
 
       # set the response. In production, the rack result is returned from Warden::Manager#call, which
       # the following is modelled on.
-      response = case result
-                   when Array
-                     if result.first == 401 && intercept_401?(env) # does this happen during testing?
-                       process_unauthenticated(env)
-                     else
-                       result # result is already the array rack response
-                     end
-                   when Hash
-                     process_unauthenticated(env, result)
-                   else
-                     # any other type, eg: ActionController::TestResponse pass through unchanged.
-                     result
-                 end
+      case result
+        when Array
+          if result.first == 401 && intercept_401?(env) # does this happen during testing?
+            process_unauthenticated(env)
+          else
+            result # result is already the array rack response
+          end
+        when Hash
+          process_unauthenticated(env, result)
+        else
+          # any other type, eg: ActionController::TestResponse pass through unchanged.
+          result
+      end
     end
 
 

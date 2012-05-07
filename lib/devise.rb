@@ -20,11 +20,6 @@ module Devise
     autoload :UrlHelpers, 'devise/controllers/url_helpers'
   end
 
-  module Encryptors
-    autoload :Base, 'devise/encryptors/base'
-    autoload :BCrypt, 'devise/encryptors/bcrypt'
-  end
-
   module Mailers
     autoload :Helpers, 'devise/mailers/helpers'
   end

@@ -89,6 +89,10 @@ module Devise
       devise_modules_hook! do
         include Devise::Models::Authenticatable
         selected_modules.each do |m|
+          if m == :encryptable && !(defined?(Devise::Models::Encryptable))
+            warn "[DEVISE] You're trying to include :encryptable in your model but it is not bundled with the Devise gem anymore. Please add `devise-encryptable` to your Gemfile to proceed.\n"
+          end
+
           mod = Devise::Models.const_get(m.to_s.classify)
 
           if mod.const_defined?("ClassMethods")

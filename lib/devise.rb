@@ -22,12 +22,7 @@ module Devise
 
   module Encryptors
     autoload :Base, 'devise/encryptors/base'
-    autoload :AuthlogicSha512, 'devise/encryptors/authlogic_sha512'
     autoload :BCrypt, 'devise/encryptors/bcrypt'
-    autoload :ClearanceSha1, 'devise/encryptors/clearance_sha1'
-    autoload :RestfulAuthenticationSha1, 'devise/encryptors/restful_authentication_sha1'
-    autoload :Sha512, 'devise/encryptors/sha512'
-    autoload :Sha1, 'devise/encryptors/sha1'
   end
 
   module Mailers
@@ -147,10 +142,6 @@ module Devise
   mattr_accessor :pepper
   @@pepper = nil
 
-  # Used to define the password encryption algorithm.
-  mattr_accessor :encryptor
-  @@encryptor = nil
-
   # Scoped views. Since it relies on fallbacks to render default views, it's
   # turned off by default.
   mattr_accessor :scoped_views
@@ -238,6 +229,10 @@ module Devise
   # and schema belongs to the same class (as Datamapper and Mongoid).
   mattr_accessor :apply_schema
   @@apply_schema = true
+
+  def self.encryptor=(value)
+    warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise_encryptable gem.\n"
+  end
 
   def self.remember_across_browsers=(value)
     warn "\n[DEVISE] Devise.remember_across_browsers is deprecated and has no effect. Please remove it.\n"

@@ -22,9 +22,6 @@ class Admin
   field :confirmation_sent_at, :type => Time
   field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
-  ## Encryptable
-  field :password_salt, :type => String
-
   ## Lockable
   field :locked_at, :type => Time
 end

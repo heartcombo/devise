@@ -9,6 +9,7 @@
   * valid_for_authentication? must now return a boolean
 
 * bug fix
+  * Ensure the failure app still respects config.relative_url_root
   * `/users/sign_in` doesn't choke on protected attributes used to select sign in scope (by @Paymium)
   * `failed_attempts` is set to zero after any sign in (including via reset password) (by @rodrigoflores)
   * Added token expiration on timeout (by @antiarchitect)

@@ -29,25 +29,33 @@ class FailureTest < ActiveSupport::TestCase
   end
 
   context 'When redirecting' do
-    test 'return to the default redirect location' do
+    test 'returns to the default redirect location' do
       call_failure
       assert_equal 302, @response.first
       assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
-    test 'return to the default redirect location for wildcard requests' do
+    test 'returns to the default redirect location for wildcard requests' do
       call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
       assert_equal 302, @response.first
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
-    test 'return to the root path if no session path is available' do
+    test 'returns to the root path if no session path is available' do
       swap Devise, :router_name => :fake_app do
         call_failure :app => RootFailureApp
         assert_equal 302, @response.first
         assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
         assert_equal 'http://test.host/', @response.second['Location']
+      end
+    end
+
+    test 'returns to the default redirect location considering the relative url root' do
+      swap Rails.application.config, :relative_url_root => "/sample" do
+        call_failure
+        assert_equal 302, @response.first
+        assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
       end
     end
 

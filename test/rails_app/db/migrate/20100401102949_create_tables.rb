@@ -22,9 +22,6 @@ class CreateTables < ActiveRecord::Migration
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
 
-      ## Encryptable
-      # t.string :password_salt
-
       ## Confirmable
       t.string   :confirmation_token
       t.datetime :confirmed_at
@@ -59,9 +56,6 @@ class CreateTables < ActiveRecord::Migration
       t.datetime :confirmed_at
       t.datetime :confirmation_sent_at
       t.string   :unconfirmed_email # Only if using reconfirmable
-
-      ## Encryptable
-      t.string :password_salt
 
       ## Lockable
       t.datetime :locked_at

@@ -2,6 +2,7 @@
 
 * enhancements
   * Devise model generator now works with engines
+  * Devise encryptable was moved to its new gem (http://github.com/plataformatec/devise-encryptable)
 
 * deprecations
   * Deprecations warnings added on Devise 2.0 are now removed with their features

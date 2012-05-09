@@ -20,15 +20,6 @@ module Devise
     autoload :UrlHelpers, 'devise/controllers/url_helpers'
   end
 
-  module Encryptors
-    autoload :Base, 'devise/encryptors/base'
-    autoload :AuthlogicSha512, 'devise/encryptors/authlogic_sha512'
-    autoload :ClearanceSha1, 'devise/encryptors/clearance_sha1'
-    autoload :RestfulAuthenticationSha1, 'devise/encryptors/restful_authentication_sha1'
-    autoload :Sha512, 'devise/encryptors/sha512'
-    autoload :Sha1, 'devise/encryptors/sha1'
-  end
-
   module Mailers
     autoload :Helpers, 'devise/mailers/helpers'
   end
@@ -51,15 +42,6 @@ module Devise
 
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
-
-  # Declare encryptors length which are used in migrations.
-  ENCRYPTORS_LENGTH = {
-    :sha1   => 40,
-    :sha512 => 128,
-    :clearance_sha1 => 40,
-    :restful_authentication_sha1 => 40,
-    :authlogic_sha512 => 128
-  }
 
   # Custom domain for cookies. Not set by default
   mattr_accessor :rememberable_options
@@ -144,10 +126,6 @@ module Devise
   mattr_accessor :pepper
   @@pepper = nil
 
-  # Used to define the password encryption algorithm.
-  mattr_accessor :encryptor
-  @@encryptor = nil
-
   # Scoped views. Since it relies on fallbacks to render default views, it's
   # turned off by default.
   mattr_accessor :scoped_views
@@ -223,7 +201,9 @@ module Devise
   mattr_accessor :router_name
   @@router_name = nil
 
-  # DEPRECATION
+  def self.encryptor=(value)
+    warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n"
+  end
 
   def self.use_salt_as_remember_token=(value)
     warn "\n[DEVISE] Devise.use_salt_as_remember_token is deprecated and has no effect. Please remove it.\n"

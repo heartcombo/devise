@@ -202,7 +202,7 @@ module Devise
   @@router_name = nil
 
   def self.encryptor=(value)
-    warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise_encryptable gem.\n"
+    warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n"
   end
 
   def self.use_salt_as_remember_token=(value)

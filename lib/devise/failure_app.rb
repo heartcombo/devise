@@ -88,7 +88,7 @@ module Devise
       opts  = {}
       route = :"new_#{scope}_session_path"
       opts[:format] = request_format unless skip_format?
-      opts[:script_name] = nil
+      opts[:script_name] = Rails.application.config.relative_url_root
 
       context = send(Devise.available_router_name)
 

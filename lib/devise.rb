@@ -43,15 +43,6 @@ module Devise
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
-  # Declare encryptors length which are used in migrations.
-  ENCRYPTORS_LENGTH = {
-    :sha1   => 40,
-    :sha512 => 128,
-    :clearance_sha1 => 40,
-    :restful_authentication_sha1 => 40,
-    :authlogic_sha512 => 128
-  }
-
   # Custom domain for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}

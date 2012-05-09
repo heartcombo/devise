@@ -51,11 +51,13 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
 
-    test 'returns to the default redirect location considering the relative url root' do
-      swap Rails.application.config, :relative_url_root => "/sample" do
-        call_failure
-        assert_equal 302, @response.first
-        assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
+    if Rails.application.config.respond_to?(:relative_url_root)
+      test 'returns to the default redirect location considering the relative url root' do
+        swap Rails.application.config, :relative_url_root => "/sample" do
+          call_failure
+          assert_equal 302, @response.first
+          assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
+        end
       end
     end
 

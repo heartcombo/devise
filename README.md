@@ -28,7 +28,6 @@ It's comprised of 12 modules:
 * Timeoutable: expires sessions that have no activity in a specified period of time.
 * Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
-* Encryptable: adds support of other authentication mechanisms besides the built-in Bcrypt (the default).
 
 ## Information
 

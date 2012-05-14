@@ -180,7 +180,7 @@ class ConfirmationTest < ActionController::IntegrationTest
       fill_in 'email', :with => user.email
       click_button 'Resend confirmation instructions'
 
-      assert_contain "If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_contain "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
       assert_current_url "/users/sign_in"
     end
   end
@@ -196,7 +196,7 @@ class ConfirmationTest < ActionController::IntegrationTest
       assert_not_contain "1 error prohibited this user from being saved:"
       assert_not_contain "Email not found"
 
-      assert_contain "If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_contain "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
       assert_current_url "/users/sign_in"
     end
   end

@@ -1,4 +1,4 @@
-*IMPORTANT:* Devise 2.1 is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.1
+*IMPORTANT:* Devise 2.1 is on a release process. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.1
 
 *IMPORTANT:* Devise 2.0 is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 

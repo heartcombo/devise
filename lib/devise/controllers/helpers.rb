@@ -88,8 +88,8 @@ module Devise
       # Return true if the given scope is signed in session. If no scope given, return
       # true if any scope is signed in. Does not run authentication hooks.
       def signed_in?(scope=nil)
-        [ scope || Devise.mappings.keys ].flatten.any? do |scope|
-          warden.authenticate?(:scope => scope)
+        [ scope || Devise.mappings.keys ].flatten.any? do |_scope|
+          warden.authenticate?(:scope => _scope)
         end
       end
 
@@ -155,7 +155,7 @@ module Devise
         warden.raw_session.inspect
         warden.logout
         expire_devise_cached_variables!
-        
+
         users.any?
       end
 

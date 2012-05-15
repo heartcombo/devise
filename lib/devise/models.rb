@@ -27,7 +27,7 @@ module Devise
     # inside the given class.
     #
     def self.config(mod, *accessors) #:nodoc:
-      (class << mod; self; end).send :attr_accessor, :available_configs
+      class << mod; attr_accessor :available_configs; end
       mod.available_configs = accessors
 
       accessors.each do |accessor|

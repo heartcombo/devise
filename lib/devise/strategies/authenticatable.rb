@@ -84,8 +84,8 @@ module Devise
 
       # Extract the appropriate subhash for authentication from params.
       def params_auth_hash
-         params[scope]
-       end
+        params[scope]
+      end
 
       # Extract a hash with attributes:values from the http params.
       def http_auth_hash

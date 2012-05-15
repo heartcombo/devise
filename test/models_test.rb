@@ -25,7 +25,7 @@ end
 class ActiveRecordTest < ActiveSupport::TestCase
   def include_module?(klass, mod)
     klass.devise_modules.include?(mod) &&
-    klass.included_modules.include?(Devise::Models::const_get(mod.to_s.classify))
+      klass.included_modules.include?(Devise::Models::const_get(mod.to_s.classify))
   end
 
   def assert_include_modules(klass, *modules)
@@ -153,13 +153,13 @@ class CheckFieldsTest < ActiveSupport::TestCase
       devise :database_authenticatable
     end
 
-    exception = assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: encrypted_password, email" do
+    assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: encrypted_password, email" do
       Devise::Models.check_fields!(Magician)
     end
   end
 
   test "doesn't raise a NoMethodError exception when the module doesn't have a required_field(klass) class method" do
-     driver = Class.new do
+    driver = Class.new do
       extend Devise::Models
 
       def self.before_validation(instance)

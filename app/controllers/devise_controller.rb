@@ -5,7 +5,7 @@ class DeviseController < Devise.parent_controller.constantize
   helper DeviseHelper
 
   helpers = %w(resource scope_name resource_name signed_in_resource
-               resource_class devise_mapping)
+               resource_class resource_params devise_mapping)
   hide_action *helpers
   helper_method *helpers
 
@@ -26,6 +26,10 @@ class DeviseController < Devise.parent_controller.constantize
   # Proxy to devise map class
   def resource_class
     devise_mapping.to
+  end
+
+  def resource_params
+    params[resource_name]
   end
 
   # Returns a signed in resource from session (if one exists)
@@ -81,7 +85,7 @@ MESSAGE
   # Build a devise resource.
   # Assignment bypasses attribute protection when :unsafe option is passed
   def build_resource(hash = nil, options = {})
-    hash ||= params[resource_name] || {}
+    hash ||= resource_params || {}
 
     if options[:unsafe]
       self.resource = resource_class.new.tap do |resource|

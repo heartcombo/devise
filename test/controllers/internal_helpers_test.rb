@@ -33,6 +33,13 @@ class HelpersTest < ActionController::TestCase
     assert_equal user, @controller.instance_variable_get(:@user)
   end
 
+  test 'get resource params from request params using resource name as key' do
+    user_params = {'name' => 'Shirley Templar'}
+    @controller.stubs(:params).returns(HashWithIndifferentAccess.new({'user' => user_params}))
+
+    assert_equal user_params, @controller.resource_params
+  end
+
   test 'resources methods are not controller actions' do
     assert @controller.class.action_methods.empty?
   end

@@ -8,7 +8,7 @@ class Devise::UnlocksController < DeviseController
 
   # POST /resource/unlock
   def create
-    self.resource = resource_class.send_unlock_instructions(params[resource_name])
+    self.resource = resource_class.send_unlock_instructions(resource_params)
 
     if successfully_sent?(resource)
       respond_with({}, :location => after_sending_unlock_instructions_path_for(resource))

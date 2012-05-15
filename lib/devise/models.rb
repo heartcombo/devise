@@ -54,8 +54,10 @@ module Devise
       instance = klass.new
 
       klass.devise_modules.each do |mod|
-        if const_get(mod.to_s.classify).respond_to?(:required_fields)
-          const_get(mod.to_s.classify).required_fields(klass).each do |field|
+        constant = const_get(mod.to_s.classify)
+
+        if constant.respond_to?(:required_fields)
+          constant.required_fields(klass).each do |field|
             failed_attributes << field unless instance.respond_to?(field)
           end
         else

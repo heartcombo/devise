@@ -39,7 +39,7 @@ class Devise::RegistrationsController < DeviseController
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
 
-    if resource.update_with_password(params[resource_name])
+    if resource.update_with_password(resource_params)
       if is_navigational_format?
         if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
           flash_key = :update_needs_confirmation
@@ -77,7 +77,7 @@ class Devise::RegistrationsController < DeviseController
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
   def build_resource(hash=nil)
-    hash ||= params[resource_name] || {}
+    hash ||= resource_params || {}
     self.resource = resource_class.new_with_session(hash, session)
   end
 

@@ -51,10 +51,9 @@ module Devise
 
     def self.check_fields!(klass)
       failed_attributes = []
+      instance = klass.new
 
       klass.devise_modules.each do |mod|
-        instance = klass.new
-
         if const_get(mod.to_s.classify).respond_to?(:required_fields)
           const_get(mod.to_s.classify).required_fields(klass).each do |field|
             failed_attributes << field unless instance.respond_to?(field)

@@ -79,4 +79,12 @@ class DatabaseAuthenticationTest < ActionController::IntegrationTest
       assert_contain 'Invalid credentials'
     end
   end
+
+  test 'encrypted_password should reflect changes in stretches confir param' do
+    user = create_user
+    encrypted_password = user.reload.encrypted_password
+    user.class.stretches += 1
+    sign_in_as_user
+    assert_not_equal encrypted_password, user.reload.encrypted_password
+  end
 end

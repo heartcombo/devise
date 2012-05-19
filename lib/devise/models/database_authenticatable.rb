@@ -45,6 +45,19 @@ module Devise
         Devise.secure_compare(password, encrypted_password)
       end
 
+      # If config param +stretches+ changes, update the password hash so everyone benefits
+      # immediately without having to change their password
+      def check_stretches_update!(password)
+        return if password.blank? || encrypted_password.blank?
+        bcrypt = ::BCrypt::Password.new(encrypted_password)
+        if ::BCrypt::Engine.autodetect_cost(bcrypt.salt) != self.class.stretches
+          self.encrypted_password = password_digest(password)
+        end
+
+        # Silently ignore save errors - we'll get 'em next time
+        save
+      end
+
       # Set password and password confirmation to nil
       def clean_up_passwords
         self.password = self.password_confirmation = nil

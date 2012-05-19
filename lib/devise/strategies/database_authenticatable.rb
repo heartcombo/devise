@@ -9,6 +9,7 @@ module Devise
 
         if validate(resource){ resource.valid_password?(password) }
           resource.after_database_authentication
+          resource.check_stretches_update!(password)
           success!(resource)
         elsif !halted?
           fail(:invalid)

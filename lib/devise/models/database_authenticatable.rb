@@ -52,10 +52,9 @@ module Devise
         bcrypt = ::BCrypt::Password.new(encrypted_password)
         if ::BCrypt::Engine.autodetect_cost(bcrypt.salt) != self.class.stretches
           self.encrypted_password = password_digest(password)
+          # Silently ignore save errors - we'll get 'em next time
+          save
         end
-
-        # Silently ignore save errors - we'll get 'em next time
-        save
       end
 
       # Set password and password confirmation to nil

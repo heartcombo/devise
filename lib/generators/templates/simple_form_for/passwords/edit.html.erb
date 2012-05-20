@@ -6,14 +6,14 @@
   <%= f.input :reset_password_token, :as => :hidden %>
   <%= f.full_error :reset_password_token %>
 
-  <div class="inputs">
+  <div class="form-inputs">
     <%= f.input :password, :label => "New password", :required => true %>
     <%= f.input :password_confirmation, :label => "Confirm your new password", :required => true %>
   </div>
 
-  <div class="actions">
+  <div class="form-actions">
     <%= f.button :submit, "Change my password" %>
   </div>
 <% end %>
 
-<%= render :partial => "devise/shared/links" %>
+<%= render "devise/shared/links" %>

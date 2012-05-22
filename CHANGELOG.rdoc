@@ -1,3 +1,6 @@
+* deprecations
+  * Strategy#validate() no longer validates nil resources
+
 == 2.1.0
 
 Notes: https://github.com/plataformatec/devise/wiki/How-to:-upgrade-to-devise-2.1

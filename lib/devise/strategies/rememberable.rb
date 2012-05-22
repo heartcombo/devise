@@ -19,11 +19,13 @@ module Devise
       def authenticate!
         resource = mapping.to.serialize_from_cookie(*remember_cookie)
 
+        unless resource
+          cookies.delete(remember_key)
+          return pass
+        end
+
         if validate(resource)
           success!(resource)
-        elsif !halted?
-          cookies.delete(remember_key)
-          pass
         end
       end
 

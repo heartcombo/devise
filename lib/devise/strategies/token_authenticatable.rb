@@ -16,12 +16,11 @@ module Devise
 
       def authenticate!
         resource = mapping.to.find_for_token_authentication(authentication_hash)
+        return fail(:invalid_token) unless resource
 
         if validate(resource)
           resource.after_token_authentication
           success!(resource)
-        elsif !halted?
-          fail(:invalid_token)
         end
       end
 

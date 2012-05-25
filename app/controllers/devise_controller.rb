@@ -43,8 +43,11 @@ class DeviseController < Devise.parent_controller.constantize
   end
 
   # Override prefixes to consider the scoped view.
+  # Notice we need to check for the request due to a bug in
+  # Action Controller tests that forces _prefixes to be
+  # loaded before even having a request object.
   def _prefixes #:nodoc:
-    @_prefixes ||= if self.class.scoped_views? && devise_mapping
+    @_prefixes ||= if self.class.scoped_views? && request && devise_mapping
       super.unshift("#{devise_mapping.scoped_path}/#{controller_name}")
     else
       super

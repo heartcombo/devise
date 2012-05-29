@@ -334,7 +334,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin = create_admin
     admin.unconfirmed_email = "new_test@email.com"
     assert admin.save
-    admin = Admin.find_by_unconfirmed_email_with_errors(:email => "new_test@email.com")
+    admin = Admin.find_by_unconfirmed_attribute_with_errors(:email => "new_test@email.com")
     assert admin.persisted?
   end
 

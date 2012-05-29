@@ -1,4 +1,5 @@
 require "active_support/core_ext/object/try"
+require "active_support/core_ext/hash/slice"
 
 module ActionDispatch::Routing
   class RouteSet #:nodoc:
@@ -367,8 +368,14 @@ module ActionDispatch::Routing
           :cancel => mapping.path_names[:cancel]
         }
 
-        resource :registration, :only => [:new, :create, :edit, :update, :destroy], :path => mapping.path_names[:registration],
-                 :path_names => path_names, :controller => controllers[:registrations] do
+        options = {
+          :only => [:new, :create, :edit, :update, :destroy],
+          :path => mapping.path_names[:registration],
+          :path_names => path_names,
+          :controller => controllers[:registrations]
+        }
+
+        resource :registration, options do
           get :cancel
         end
       end
@@ -376,7 +383,30 @@ module ActionDispatch::Routing
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         path, @scope[:path] = @scope[:path], nil
         path_prefix = "/#{mapping.path}/auth".squeeze("/")
+        set_omniauth_path_prefix!(path_prefix)
 
+        match "#{path_prefix}/:action/callback", :constraints => { :action => Regexp.union(mapping.to.omniauth_providers.map(&:to_s)) },
+          :to => controllers[:omniauth_callbacks], :as => :omniauth_callback
+      ensure
+        @scope[:path] = path
+      end
+
+      DEVISE_SCOPE_KEYS = [:as, :path, :module, :constraints, :defaults, :options]
+
+      def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
+        old = {}
+        DEVISE_SCOPE_KEYS.each { |k| old[k] = @scope[k] }
+
+        new = { :as => new_as, :path => new_path, :module => nil }
+        new.merge!(options.slice(:constraints, :defaults, :options))
+
+        @scope.merge!(new)
+        yield
+      ensure
+        @scope.merge!(old)
+      end
+
+      def set_omniauth_path_prefix!(path_prefix) #:nodoc:
         if ::OmniAuth.config.path_prefix && ::OmniAuth.config.path_prefix != path_prefix
           raise "Wrong OmniAuth configuration. If you are getting this exception, it means that either:\n\n" \
             "1) You are manually setting OmniAuth.config.path_prefix and it doesn't match the Devise one\n" \
@@ -385,22 +415,6 @@ module ActionDispatch::Routing
         else
           ::OmniAuth.config.path_prefix = path_prefix
         end
-
-        match "#{path_prefix}/:action/callback", :constraints => { :action => Regexp.union(mapping.to.omniauth_providers.map(&:to_s)) },
-          :to => controllers[:omniauth_callbacks], :as => :omniauth_callback
-      ensure
-        @scope[:path] = path
-      end
-
-      def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
-        old_as, old_path, old_module, old_constraints, old_defaults, old_options =
-          *@scope.values_at(:as, :path, :module, :constraints, :defaults, :options)
-        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults], @scope[:options] =
-          new_as, new_path, nil, *options.values_at(:constraints, :defaults, :options)
-        yield
-      ensure
-        @scope[:as], @scope[:path], @scope[:module], @scope[:constraints], @scope[:defaults], @scope[:options] =
-          old_as, old_path, old_module, old_constraints, old_defaults, old_options
       end
 
       def raise_no_devise_method_error!(klass) #:nodoc:

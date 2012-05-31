@@ -35,9 +35,6 @@ module Devise
         after_create  :send_on_create_confirmation_instructions, :if => :confirmation_required?
         before_update :postpone_confirmable_attribute_change_until_confirmation, :if => :postpone_confirmable_attribute_change?
         after_update  :send_confirmation_instructions, :if => :reconfirmation_required?
-
-        alias_attribute :confirmable_attribute, confirmable_attribute
-        alias_attribute :unconfirmed_attribute, unconfirmed_attribute
       end
 
       def self.required_fields(klass)
@@ -65,6 +62,31 @@ module Devise
             save(:validate => false)
           end
         end
+      end
+
+      # Defines confirmable/unconfirmed attribute accessors
+      def confirmable_attribute
+        send(self.class.confirmable_attribute)
+      end
+
+      def confirmable_attribute=(_confirmable_attribute)
+        send(self.class.confirmable_attribute.to_s + '=', _confirmable_attribute)
+      end
+
+      def confirmable_attribute_was
+        send(self.class.confirmable_attribute.to_s + '_was')
+      end
+
+      def unconfirmed_attribute
+        send(self.class.unconfirmed_attribute)
+      end
+
+      def unconfirmed_attribute=(_unconfirmed_attribute)
+        send(self.class.unconfirmed_attribute.to_s + '=', _unconfirmed_attribute)
+      end
+
+      def confirmable_attribute_changed?
+        send(self.class.confirmable_attribute.to_s + '_changed?')
       end
 
       # Verifies whether a user is confirmed or not

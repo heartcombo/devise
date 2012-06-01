@@ -88,7 +88,7 @@ module Devise
         # Resets the reset password token with and save the record without
         # validating
         def generate_reset_password_token!
-          generate_reset_password_token && save(:validate => false)
+          generate_reset_password_token and save(:validate => false)
         end
 
         # Removes reset_password token

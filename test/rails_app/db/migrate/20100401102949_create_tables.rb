@@ -62,10 +62,27 @@ class CreateTables < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    create_table :mobile_users do |t|
+      ## Database authenticatable
+      t.string :email,              :null => true
+      t.string :phone_number
+      t.string :encrypted_password, :null => true
+
+      ## Confirmable
+      t.string   :confirmation_token
+      t.datetime :confirmed_at
+      t.datetime :confirmation_sent_at
+      t.string   :unconfirmed_phone_number # Only if using reconfirmable
+
+      t.timestamps
+    end
+  
   end
 
   def self.down
     drop_table :users
     drop_table :admins
+    drop_table :mobile_users
   end
 end

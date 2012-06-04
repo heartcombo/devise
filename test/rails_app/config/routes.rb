@@ -42,6 +42,9 @@ Rails.application.routes.draw do
     match "/join", :to => "home#join"
   end
 
+  # MobileUser scope
+  devise_for :mobile_user
+
   # Routes for constraints testing
   devise_for :headquarters_admin, :class_name => "Admin", :path => "headquarters", :constraints => {:host => /192\.168\.1\.\d\d\d/}
 

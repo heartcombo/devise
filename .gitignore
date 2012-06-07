@@ -8,3 +8,5 @@ rdoc/*
 pkg
 log
 test/tmp/*
+
+.rvmrc

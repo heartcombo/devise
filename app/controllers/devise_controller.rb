@@ -62,11 +62,19 @@ class DeviseController < Devise.parent_controller.constantize
   def assert_is_devise_resource! #:nodoc:
     unknown_action! <<-MESSAGE unless devise_mapping
 Could not find devise mapping for path #{request.fullpath.inspect}.
-Maybe you forgot to wrap your route inside the scope block? For example:
+This may happen for two reasons:
 
-devise_scope :user do
-  match "/some/route" => "some_devise_controller"
-end
+1) You forgot to wrap your route inside the scope block. For example:
+
+  devise_scope :user do
+    match "/some/route" => "some_devise_controller"
+  end
+
+2) You are testing a Devise controller bypassing the router.
+   If so, you can explicitly tell Devise which mapping to use:
+   
+   @request.env["devise.mapping"] = Devise.mappings[:user]
+
 MESSAGE
   end
 

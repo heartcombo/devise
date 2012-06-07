@@ -304,7 +304,23 @@ https://github.com/plataformatec/devise/wiki/I18n
 
 ### Test helpers
 
-Devise includes some tests helpers for functional specs. To use them, you just need to include Devise::TestHelpers in your test class and use the sign_in and sign_out method. Such methods have the same signature as in controllers:
+Devise includes some tests helpers for functional specs. In other to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file:
+
+```ruby
+class ActionController::TestCase
+  include Devise::TestHelpers
+end
+```
+
+If you're using RSpec, you can put the following inside a file named `spec/support/devise.rb`:
+
+```ruby
+RSpec.configure do |config|
+  config.include Devise::TestHelpers, :type => :controller
+end
+```
+
+Now you are ready to use the `sign_in` and `sign_out` methods. Such methods have the same signature as in controllers:
 
 ```ruby
 sign_in :user, @user   # sign_in(scope, resource)
@@ -314,23 +330,14 @@ sign_out :user         # sign_out(scope)
 sign_out @user         # sign_out(resource)
 ```
 
-You can include the Devise Test Helpers in all of your tests by adding the following to the bottom of your test/test_helper.rb file:
+There are two things that is important to keep in mind:
 
-```ruby
-class ActionController::TestCase
-  include Devise::TestHelpers
-end
-```
+1) These helpers are not going to work for integration tests driven by Capybara or Webrat. They are meant to be used with functional tests only. Instead, fill in the form or explicitly set the user in session;
 
-If you're using RSpec and want the helpers automatically included within all `describe` blocks, add a file called spec/support/devise.rb with the following contents:
+2) If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from router, but since functional tests do not pass through the router, it needs to be told explicitly. For example, if you are testing the user scope, simply do:
 
-```ruby
-RSpec.configure do |config|
-  config.include Devise::TestHelpers, :type => :controller
-end
-```
-
-Do not use such helpers for integration tests such as Cucumber or Webrat. Instead, fill in the form or explicitly set the user in session. For more tips, check the wiki (https://wiki.github.com/plataformatec/devise).
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    get :new
 
 ### Omniauth
 

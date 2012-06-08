@@ -24,15 +24,39 @@ en:
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
+      new:
+        title: 'Sign in'
+        submit: 'Sign in'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
+      mailer:
+        hello: 'Hello %{email}!'
+        info: "Someone has requested a link to change your password, and you can do this through the link below."
+        link: Change my password
+        ignore_this_email: "If you didn't request this, please ignore this email."
+        info_password_dont_change: "Your password won't change until you access the link above and create a new one."
+      new:
+        title: 'Forgot your password?'
+        submit: 'Send me reset password instructions'
+      edit:
+        title: Change your password
+        password_label: New password
+        password_confirmation_label: Confirm new password
+        submit: Change my password
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       send_paranoid_instructions: 'If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
+      mailer:
+        hello: 'Hello %{email}!'
+        info: 'You can confirm your account email through the link below:'
+        link: Confirm my account
+      new:
+        title: Resend confirmation instructions
+        submit: Resend confirmation instructions
     registrations:
       signed_up: 'Welcome! You have signed up successfully.'
       signed_up_but_unconfirmed: 'A message with a confirmation link has been sent to your email address. Please open the link to activate your account.'
@@ -41,10 +65,31 @@ en:
       updated: 'You updated your account successfully.'
       update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and click on the confirm link to finalize confirming your new email address."
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+      new:
+        title: 'Sign up'
+        submit: 'Sign up'
+      edit:
+        title: 'Edit %{resource_name}'
+        info_password: "(leave blank if you don't want to change it)"
+        info_current_password: ' (we need your current password to confirm your changes)'
+        cancel_account: Cancel my account
+        cancel_account_link: Cancel my account
+        confirm_cancel_account: 'Are you sure?'
+        unhappy: 'Unhappy? '
+        back: Back
+        submit: 'Update'
     unlocks:
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
       unlocked: 'Your account has been unlocked successfully. Please sign in to continue.'
       send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
+      mailer:
+        hello: 'Hello %{email}!' 
+        info: 'Your account has been locked due to an excessive amount of unsuccessful sign in attempts.'
+        click_link: "Click the link below to unlock your account: "
+        link: Unlock my account
+      new:
+        title: Resend unlock instructions
+        submit: Resend unlock instructions
     omniauth_callbacks:
       success: 'Successfully authenticated from %{kind} account.'
       failure: 'Could not authenticate you from %{kind} because "%{reason}".'
@@ -55,3 +100,10 @@ en:
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+    shared_links:
+      new_session: "Sign in"
+      registerable: "Sign up"
+      recoverable: "Forgot your password?"
+      confirmable: "Didn't receive confirmation instructions?"
+      lockable: "Didn't receive unlock instructions?"
+      omniauthable: 'Sign in with %{provider}'

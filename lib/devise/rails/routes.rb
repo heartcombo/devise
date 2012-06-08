@@ -382,7 +382,7 @@ module ActionDispatch::Routing
 
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         path, @scope[:path] = @scope[:path], nil
-        path_prefix = "/#{mapping.path}/auth".squeeze("/")
+        path_prefix = Devise.omniauth_path_prefix || "/#{mapping.path}/auth".squeeze("/")
         set_omniauth_path_prefix!(path_prefix)
 
         match "#{path_prefix}/:action/callback", :constraints => { :action => Regexp.union(mapping.to.omniauth_providers.map(&:to_s)) },

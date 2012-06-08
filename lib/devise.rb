@@ -199,6 +199,11 @@ module Devise
   # to provide custom routes.
   mattr_accessor :router_name
   @@router_name = nil
+  
+  # Set the omniauth path prefix so it can be overriden when
+  # Devise is used in a mountable engine
+  mattr_accessor :omniauth_path_prefix
+  @@omniauth_path_prefix = nil
 
   def self.encryptor=(value)
     warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n"

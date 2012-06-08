@@ -126,6 +126,12 @@ class PasswordTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'not authenticated user without a reset password token should not be able to visit the page' do
+    get edit_user_password_path
+    assert_response :redirect
+    assert_redirected_to "/users/sign_in"
+  end
+
   test 'not authenticated user with invalid reset password token should not be able to change his password' do
     user = create_user
     reset_password :reset_password_token => 'invalid_reset_password'

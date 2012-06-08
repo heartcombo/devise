@@ -1,5 +1,7 @@
 class Devise::PasswordsController < DeviseController
   prepend_before_filter :require_no_authentication
+  # Render the #edit only if coming from a reset password email link
+  append_before_filter :assert_reset_token_passed, :only => :edit
 
   # GET /resource/password/new
   def new
@@ -44,4 +46,11 @@ class Devise::PasswordsController < DeviseController
       new_session_path(resource_name)
     end
 
+    # Check if a reset_password_token is provided in the request
+    def assert_reset_token_passed
+      if params[:reset_password_token].blank?
+        set_flash_message(:error, :no_token)
+        redirect_to new_session_path(resource_name)
+      end
+    end
 end

@@ -1,3 +1,10 @@
+* enhancements
+  * `Devise.omniauth_path_prefix` is available to configure omniauth path prefix
+  * Redirect to sign in page when trying to access password#edit without a token (by @gbataille)
+
+* bug fix
+  * `update_with_password` now relies on assign_attributes and forwards the :as option (by @wtn)
+
 * deprecations
   * Strategy#validate() no longer validates nil resources
 

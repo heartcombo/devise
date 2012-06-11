@@ -38,11 +38,11 @@ module Devise
         self.locked_at = Time.now.utc
 
         if unlock_strategy_enabled?(:email)
-          generate_unlock_token
+          generate_unlock_token!
           send_unlock_instructions
+        else
+          save(:validate => false)
         end
-
-        save(:validate => false)
       end
 
       # Unlock a user by cleaning locked_at and failed_attempts.
@@ -121,6 +121,10 @@ module Devise
         # Generates unlock token
         def generate_unlock_token
           self.unlock_token = self.class.unlock_token
+        end
+
+        def generate_unlock_token!
+          generate_unlock_token && save(:validate => false)
         end
 
         # Tells if the lock is expired if :time unlock strategy is active

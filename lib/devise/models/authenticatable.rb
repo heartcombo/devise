@@ -139,7 +139,7 @@ module Devise
           :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage)
 
         def serialize_into_session(record)
-          [record.to_key, record.authenticatable_salt]
+          [[record.id], record.authenticatable_salt]
         end
 
         def serialize_from_session(key, salt)

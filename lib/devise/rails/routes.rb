@@ -258,7 +258,8 @@ module ActionDispatch::Routing
     end
 
     # Allow you to route based on whether a scope is authenticated. You
-    # can optionally specify which scope.
+    # can optionally specify which scope and a block. The block accepts
+    # a model and allows extra constraints to be done on the instance.
     #
     #   authenticated :admin do
     #     root :to => 'admin/dashboard#show'
@@ -268,11 +269,15 @@ module ActionDispatch::Routing
     #     root :to => 'dashboard#show'
     #   end
     #
+    #   authenticated :user, lambda { |u| u.role == "admin" } do
+    #     root :to => "admin/dashboard#show"
+    #   end
+    #
     #   root :to => 'landing#show'
     #
-    def authenticated(scope=nil)
+    def authenticated(scope=nil, block=nil)
       constraint = lambda do |request|
-        request.env["warden"].authenticate? :scope => scope
+        request.env["warden"].authenticate?(:scope => scope) and (block.nil? or block.call(request.env["warden"].user))
       end
 
       constraints(constraint) do

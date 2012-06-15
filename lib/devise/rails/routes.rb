@@ -237,7 +237,9 @@ module ActionDispatch::Routing
       end
     end
 
-    # Allow you to add authentication request from the router:
+    # Allow you to add authentication request from the router.
+    # Takes an optional scope and block to provide constraints
+    # on the model instance itself.
     #
     #   authenticate do
     #     resources :post
@@ -247,9 +249,13 @@ module ActionDispatch::Routing
     #     resources :users
     #   end
     #
-    def authenticate(scope=nil)
+    #   authenticate :user, lambda {|u| u.role == "admin"} do
+    #     root :to => "admin/dashboard#show"
+    #   end
+    #
+    def authenticate(scope=nil, block=nil)
       constraint = lambda do |request|
-        request.env["warden"].authenticate!(:scope => scope)
+        request.env["warden"].authenticate!(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
       end
 
       constraints(constraint) do
@@ -258,7 +264,8 @@ module ActionDispatch::Routing
     end
 
     # Allow you to route based on whether a scope is authenticated. You
-    # can optionally specify which scope.
+    # can optionally specify which scope and a block. The block accepts
+    # a model and allows extra constraints to be done on the instance.
     #
     #   authenticated :admin do
     #     root :to => 'admin/dashboard#show'
@@ -268,11 +275,15 @@ module ActionDispatch::Routing
     #     root :to => 'dashboard#show'
     #   end
     #
+    #   authenticated :user, lambda {|u| u.role == "admin"} do
+    #     root :to => "admin/dashboard#show"
+    #   end
+    #
     #   root :to => 'landing#show'
     #
-    def authenticated(scope=nil)
+    def authenticated(scope=nil, block=nil)
       constraint = lambda do |request|
-        request.env["warden"].authenticate? :scope => scope
+        request.env["warden"].authenticate?(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
       end
 
       constraints(constraint) do

@@ -30,8 +30,16 @@ Rails.application.routes.draw do
     match "/private", :to => "home#private", :as => :private
   end
 
+  authenticate(:admin, lambda { |admin| admin.active? }) do
+    match "/private/active", :to => "home#private", :as => :private_active
+  end
+
   authenticated :admin do
     match "/dashboard", :to => "home#admin_dashboard"
+  end
+
+  authenticated :admin, lambda { |admin| admin.active? } do
+    match "/dashboard/active", :to => "home#admin_dashboard"
   end
 
   authenticated do

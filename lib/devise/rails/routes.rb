@@ -255,7 +255,7 @@ module ActionDispatch::Routing
     #
     def authenticate(scope=nil, block=nil)
       constraint = lambda do |request|
-        request.env["warden"].authenticate!(:scope => scope) and (block.nil? or block.call(request.env["warden"].user(scope)))
+        request.env["warden"].authenticate!(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
       end
 
       constraints(constraint) do
@@ -283,7 +283,7 @@ module ActionDispatch::Routing
     #
     def authenticated(scope=nil, block=nil)
       constraint = lambda do |request|
-        request.env["warden"].authenticate?(:scope => scope) and (block.nil? or block.call(request.env["warden"].user(scope)))
+        request.env["warden"].authenticate?(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
       end
 
       constraints(constraint) do

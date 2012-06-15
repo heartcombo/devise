@@ -161,6 +161,28 @@ class AuthenticationRoutesRestrictions < ActionController::IntegrationTest
     assert_contain 'Private!'
   end
 
+  test 'signed in as inactive admin should not be able to access private/active route restricted to active admins (authenticate denied)' do
+    sign_in_as_admin(:active => false)
+    assert warden.authenticated?(:admin)
+    assert_not warden.authenticated?(:user)
+
+    assert_raises ActionController::RoutingError do
+      get "/private/active"
+    end
+  end
+
+  test 'signed in as active admin should be able to access private/active route restricted to active admins (authenticate accepted)' do
+    sign_in_as_admin(:active => true)
+    assert warden.authenticated?(:admin)
+    assert_not warden.authenticated?(:user)
+
+    get private_active_path
+
+    assert_response :success
+    assert_template 'home/private'
+    assert_contain 'Private!'
+  end
+
   test 'signed in as admin should get admin dashboard (authenticated accepted)' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
@@ -189,6 +211,28 @@ class AuthenticationRoutesRestrictions < ActionController::IntegrationTest
     assert_raises ActionController::RoutingError do
       get dashboard_path
     end
+  end
+
+  test 'signed in as inactive admin should not be able to access dashboard/active route restricted to active admins (authenticated denied)' do
+    sign_in_as_admin(:active => false)
+    assert warden.authenticated?(:admin)
+    assert_not warden.authenticated?(:user)
+
+    assert_raises ActionController::RoutingError do
+      get "/dashboard/active"
+    end
+  end
+
+  test 'signed in as active admin should be able to access dashboard/active route restricted to active admins (authenticated accepted)' do
+    sign_in_as_admin(:active => true)
+    assert warden.authenticated?(:admin)
+    assert_not warden.authenticated?(:user)
+
+    get dashboard_active_path
+
+    assert_response :success
+    assert_template 'home/admin_dashboard'
+    assert_contain 'Admin dashboard'
   end
 
   test 'signed in user should not see unauthenticated page (unauthenticated denied)' do

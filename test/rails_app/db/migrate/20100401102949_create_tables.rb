@@ -60,6 +60,9 @@ class CreateTables < ActiveRecord::Migration
       ## Lockable
       t.datetime :locked_at
 
+      ## Attribute for testing route blocks
+      t.boolean :active, :default => false
+
       t.timestamps
     end
   end

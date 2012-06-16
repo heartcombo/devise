@@ -255,6 +255,7 @@ module Devise
       def handle_unverified_request
         sign_out_all_scopes
         warden.clear_strategies_cache!
+        request.env["devise.skip_storage"] = true
         expire_devise_cached_variables!
         super # call the default behaviour which resets the session
       end

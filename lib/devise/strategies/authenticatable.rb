@@ -9,7 +9,7 @@ module Devise
       attr_accessor :authentication_hash, :authentication_type, :password
 
       def store?
-        !mapping.to.skip_session_storage.include?(authentication_type)
+        super && !mapping.to.skip_session_storage.include?(authentication_type)
       end
 
       def valid?

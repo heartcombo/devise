@@ -93,20 +93,8 @@ module Devise
       def authenticatable_salt
       end
 
-      def devise_mailer
-        Devise.mailer
-      end
-
       def headers_for(name)
         {}
-      end
-
-      def downcase_keys
-        self.class.case_insensitive_keys.each { |k| self[k].try(:downcase!) }
-      end
-
-      def strip_whitespace
-        self.class.strip_whitespace_keys.each { |k| self[k].try(:strip!) }
       end
 
       array = %w(serializable_hash)
@@ -135,6 +123,10 @@ module Devise
       end
 
       protected
+
+      def devise_mailer
+        Devise.mailer
+      end
 
       # This is an internal method called every time Devise needs
       # to send a notification/mail. This can be overriden if you
@@ -169,6 +161,14 @@ module Devise
       #
       def send_devise_notification(notification)
         devise_mailer.send(notification, self).deliver
+      end
+
+      def downcase_keys
+        self.class.case_insensitive_keys.each { |k| self[k].try(:downcase!) }
+      end
+
+      def strip_whitespace
+        self.class.strip_whitespace_keys.each { |k| self[k].try(:strip!) }
       end
 
       module ClassMethods

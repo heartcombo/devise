@@ -43,6 +43,12 @@ class ActiveSupport::TestCase
     Admin.create!(valid_attributes)
   end
 
+  def create_mobile_user(attributes={})
+    valid_attributes = valid_attributes(attributes)
+    valid_attributes.delete(:username)
+    MobileUser.create!(valid_attributes)
+  end
+
   # Execute the block setting the given values and restoring old values after
   # the block is executed.
   def swap(object, new_values)

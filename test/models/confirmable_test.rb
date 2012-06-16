@@ -334,7 +334,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin = create_admin
     admin.unconfirmed_email = "new_test@email.com"
     assert admin.save
-    admin = Admin.find_by_unconfirmed_email_with_errors(:email => "new_test@email.com")
+    admin = Admin.find_by_unconfirmed_attribute_with_errors(:email => "new_test@email.com")
     assert admin.persisted?
   end
 
@@ -353,5 +353,25 @@ class ReconfirmableTest < ActiveSupport::TestCase
       :confirmed_at,
       :unconfirmed_email
     ]
+  end
+end
+
+class MobileUserTest < ActiveSupport::TestCase
+  test 'required_fields should also contain unconfirmable when reconfirmable_email is true' do
+    assert_same_content Devise::Models::Confirmable.required_fields(MobileUser), [
+      :confirmation_sent_at,
+      :confirmation_token,
+      :confirmed_at,
+      :unconfirmed_phone_number
+    ]
+  end
+
+  test 'should update phone_number only when it is confirmed' do
+    mobile_user = create_mobile_user
+    assert mobile_user.confirm!
+    assert mobile_user.update_attributes(:phone_number => '2188888888')
+    assert_not_equal '2188888888', mobile_user.phone_number
+    assert mobile_user.confirm!
+    assert_equal '2188888888', mobile_user.phone_number
   end
 end

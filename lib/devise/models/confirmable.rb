@@ -14,11 +14,12 @@ module Devise
     #     use this to let your user access some features of your application without
     #     confirming the account, but blocking it after a certain period (ie 7 days).
     #     By default allow_unconfirmed_access_for is zero, it means users always have to confirm to sign in.
-    #   * +reconfirmable+: requires any email changes to be confirmed (exactly the same way as
-    #     initial account confirmation) to be applied. Requires additional unconfirmed_email
-    #     db field to be setup (t.reconfirmable in migrations). Until confirmed new email is
-    #     stored in unconfirmed email column, and copied to email column on successful
-    #     confirmation.
+    #   * +reconfirmable+: requires changes to specific attribute (email by default) to be confirmed 
+    #     (exactly the same way as initial account confirmation) to be applied. 
+    #     Requires additional attribute (unconfirmed_email by default) db field to be setup 
+    #     (t.reconfirmable in migrations). 
+    #     Until confirmed new email is stored in unconfirmed email column, and copied to email 
+    #     column on successful confirmation.
     #
     # == Examples
     #
@@ -32,28 +33,28 @@ module Devise
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
         after_create  :send_on_create_confirmation_instructions, :if => :confirmation_required?
-        before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
+        before_update :postpone_confirmable_attribute_change_until_confirmation, :if => :postpone_confirmable_attribute_change?
         after_update  :send_confirmation_instructions, :if => :reconfirmation_required?
       end
 
       def self.required_fields(klass)
         required_methods = [:confirmation_token, :confirmed_at, :confirmation_sent_at]
-        required_methods << :unconfirmed_email if klass.reconfirmable
+        required_methods << klass.unconfirmed_attribute if klass.reconfirmable
         required_methods
       end
 
       # Confirm a user by setting it's confirmed_at to actual time. If the user
-      # is already confirmed, add an error to email field. If the user is invalid
+      # is already confirmed, add an error to the proper field. If the user is invalid
       # add errors
       def confirm!
         pending_any_confirmation do
           self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
-          if self.class.reconfirmable && unconfirmed_email.present?
+          if self.class.reconfirmable && unconfirmed_attribute.present?
             skip_reconfirmation!
-            self.email = unconfirmed_email
-            self.unconfirmed_email = nil
+            self.confirmable_attribute = self.unconfirmed_attribute
+            self.unconfirmed_attribute = nil
 
             # We need to validate in such cases to enforce e-mail uniqueness
             save(:validate => true)
@@ -63,13 +64,38 @@ module Devise
         end
       end
 
+      # Defines confirmable/unconfirmed attribute accessors
+      def confirmable_attribute
+        send(self.class.confirmable_attribute)
+      end
+
+      def confirmable_attribute=(_confirmable_attribute)
+        send(self.class.confirmable_attribute.to_s + '=', _confirmable_attribute)
+      end
+
+      def confirmable_attribute_was
+        send(self.class.confirmable_attribute.to_s + '_was')
+      end
+
+      def unconfirmed_attribute
+        send(self.class.unconfirmed_attribute)
+      end
+
+      def unconfirmed_attribute=(_unconfirmed_attribute)
+        send(self.class.unconfirmed_attribute.to_s + '=', _unconfirmed_attribute)
+      end
+
+      def confirmable_attribute_changed?
+        send(self.class.confirmable_attribute.to_s + '_changed?')
+      end
+
       # Verifies whether a user is confirmed or not
       def confirmed?
         !!confirmed_at
       end
 
       def pending_reconfirmation?
-        self.class.reconfirmable && unconfirmed_email.present?
+        self.class.reconfirmable && unconfirmed_attribute.present?
       end
 
       # Send confirmation instructions by email
@@ -114,7 +140,7 @@ module Devise
       def headers_for(action)
         headers = super
         if action == :confirmation_instructions && pending_reconfirmation?
-          headers[:to] = unconfirmed_email
+          headers[:to] = unconfirmed_attribute
         end
         headers
       end
@@ -161,7 +187,7 @@ module Devise
           if !confirmed? || pending_reconfirmation?
             yield
           else
-            self.errors.add(:email, :already_confirmed)
+            self.errors.add(self.class.confirmable_attribute, :already_confirmed)
             false
           end
         end
@@ -182,14 +208,14 @@ module Devise
           confirm! unless confirmed?
         end
 
-        def postpone_email_change_until_confirmation
+        def postpone_confirmable_attribute_change_until_confirmation
           @reconfirmation_required = true
-          self.unconfirmed_email = self.email
-          self.email = self.email_was
+          self.unconfirmed_attribute = self.confirmable_attribute
+          self.confirmable_attribute = self.confirmable_attribute_was
         end
 
-        def postpone_email_change?
-          postpone = self.class.reconfirmable && email_changed? && !@bypass_postpone
+        def postpone_confirmable_attribute_change?
+          postpone = self.class.reconfirmable && confirmable_attribute_changed? && !@bypass_postpone
           @bypass_postpone = nil
           postpone
         end
@@ -199,12 +225,12 @@ module Devise
         end
 
       module ClassMethods
-        # Attempt to find a user by its email. If a record is found, send new
-        # confirmation instructions to it. If not, try searching for a user by unconfirmed_email
-        # field. If no user is found, returns a new user with an email not found error.
-        # Options must contain the user email
+        # Attempt to find a user by its attributes. If a record is found, send new
+        # confirmation instructions to it. If not, try searching for a user by unconfirmed_attribute
+        # field. If no user is found, returns a new user with a not found error.
+        # Options must contain the confirmable_attribute
         def send_confirmation_instructions(attributes={})
-          confirmable = find_by_unconfirmed_email_with_errors(attributes) if reconfirmable
+          confirmable = find_by_unconfirmed_attribute_with_errors(attributes) if reconfirmable
           unless confirmable.try(:persisted?)
             confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)
           end
@@ -227,15 +253,15 @@ module Devise
           generate_token(:confirmation_token)
         end
 
-        # Find a record for confirmation by unconfirmed email field
-        def find_by_unconfirmed_email_with_errors(attributes = {})
-          unconfirmed_required_attributes = confirmation_keys.map { |k| k == :email ? :unconfirmed_email : k }
+        # Find a record for confirmation by unconfirmed attribute field
+        def find_by_unconfirmed_attribute_with_errors(attributes = {})
+          unconfirmed_required_attributes = confirmation_keys.map { |k| k == confirmable_attribute ? unconfirmed_attribute : k }
           unconfirmed_attributes = attributes.symbolize_keys
-          unconfirmed_attributes[:unconfirmed_email] = unconfirmed_attributes.delete(:email)
+          unconfirmed_attributes[unconfirmed_attribute] = unconfirmed_attributes.delete(confirmable_attribute)
           find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)
         end
 
-        Devise::Models.config(self, :allow_unconfirmed_access_for, :confirmation_keys, :reconfirmable)
+        Devise::Models.config(self, :allow_unconfirmed_access_for, :confirmation_keys, :confirmable_attribute, :unconfirmed_attribute, :reconfirmable)
       end
     end
   end

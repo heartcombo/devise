@@ -54,6 +54,12 @@ module Devise
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]
 
+  # Keys used when (re)confirming a user.
+  mattr_accessor :confirmable_attribute
+  mattr_accessor :unconfirmed_attribute
+  @@confirmable_attribute = :email
+  @@unconfirmed_attribute = :unconfirmed_email
+  
   # Request keys used when authenticating a user.
   mattr_accessor :request_keys
   @@request_keys = []

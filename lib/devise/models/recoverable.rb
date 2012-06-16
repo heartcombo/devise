@@ -45,7 +45,7 @@ module Devise
       # Resets reset password token and send reset password instructions by email
       def send_reset_password_instructions
         generate_reset_password_token! if should_generate_reset_token?
-        self.devise_mailer.reset_password_instructions(self).deliver
+        send_devise_notification(:reset_password_instructions)
       end
 
       # Checks if the reset password token sent is within the limit time.

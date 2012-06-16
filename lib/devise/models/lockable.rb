@@ -60,7 +60,7 @@ module Devise
 
       # Send unlock instructions by email
       def send_unlock_instructions
-        self.devise_mailer.unlock_instructions(self).deliver
+        send_devise_notification(:unlock_instructions)
       end
 
       # Resend the unlock instructions if the user is locked.

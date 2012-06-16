@@ -78,7 +78,7 @@ module Devise
         @reconfirmation_required = false
 
         generate_confirmation_token! if self.confirmation_token.blank?
-        self.devise_mailer.confirmation_instructions(self).deliver
+        send_devise_notification(:confirmation_instructions)
       end
 
       # Resend confirmation token. This method does not need to generate a new token.
@@ -125,7 +125,7 @@ module Devise
         # instructions on creation. This can be overriden
         # in models to map to a nice sign up e-mail.
         def send_on_create_confirmation_instructions
-          self.devise_mailer.confirmation_instructions(self).deliver
+          send_devise_notification(:confirmation_instructions)
         end
 
         # Callback to overwrite if confirmation is required or not.

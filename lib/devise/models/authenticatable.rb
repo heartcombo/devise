@@ -134,6 +134,43 @@ module Devise
         RUBY
       end
 
+      protected
+
+      # This is an internal method called every time Devise needs
+      # to send a notification/mail. This can be overriden if you
+      # need to customize the e-mail delivery logic. For instance,
+      # if you are using a queue to deliver e-mails (delayed job,
+      # sidekiq, resque, etc), you must add the delivery to the queue
+      # just after the transaction was committed. To achieve this,
+      # you can override send_devise_notification to store the
+      # deliveries until the after_commit callback is triggered:
+      #
+      #     class User
+      #       devise :database_authenticatable, :confirmable
+      #
+      #       after_commit :send_pending_notifications
+      #
+      #       protected
+      #
+      #       def send_devise_notification(notification)
+      #         pending_notifications << notification
+      #       end
+      #
+      #       def send_pending_notifications
+      #         pending_notifications.each do |n|
+      #           devise_mailer.send(n, self).deliver
+      #         end
+      #       end
+      #
+      #       def pending_notifications
+      #         @pending_notifications ||= []
+      #       end
+      #     end
+      #
+      def send_devise_notification(notification)
+        devise_mailer.send(notification, self).deliver
+      end
+
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
           :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage)

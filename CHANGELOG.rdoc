@@ -1,4 +1,9 @@
+== 2.1.1
+
+Notes: https://github.com/plataformatec/devise/wiki/How-to:-upgrade-to-devise-2.1
+
 * enhancements
+  * `sign_out_all_scopes` now locks warden and does not allow new logins in the same action
   * `Devise.omniauth_path_prefix` is available to configure omniauth path prefix
   * Redirect to sign in page when trying to access password#edit without a token (by @gbataille)
   * Allow a lambda in authenticate(d) routes helpers to further select the scope
@@ -13,8 +18,6 @@
   * Strategy#validate() no longer validates nil resources
 
 == 2.1.0
-
-Notes: https://github.com/plataformatec/devise/wiki/How-to:-upgrade-to-devise-2.1
 
 * enhancements
   * Add `check_fields!(model_class)` method on Devise::Models to check if the model includes the fields that Devise uses

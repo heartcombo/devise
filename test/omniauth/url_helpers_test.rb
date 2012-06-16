@@ -30,7 +30,7 @@ class OmniAuthRoutesTest < ActionController::TestCase
   test 'should generate authorization path' do
     assert_match "/users/auth/facebook", @controller.omniauth_authorize_path(:user, :facebook)
 
-    assert_raise ArgumentError do
+    assert_raise ActionController::RoutingError do
       @controller.omniauth_authorize_path(:user, :github)
     end
   end
@@ -47,12 +47,5 @@ class OmniAuthRoutesTest < ActionController::TestCase
   test 'should not add a "?" if no param was sent' do
     assert_equal "/users/auth/openid",
                   @controller.omniauth_authorize_path(:user, :openid)
-  end
-
-  test 'should set script name in the path if present' do
-    @request.env['SCRIPT_NAME'] = '/q'
-
-    assert_equal "/q/users/auth/facebook",
-                 @controller.omniauth_authorize_path(:user, :facebook)
   end
 end

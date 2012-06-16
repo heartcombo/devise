@@ -7,6 +7,7 @@
 * bug fix
   * `update_with_password` now relies on assign_attributes and forwards the :as option (by @wtn)
   * Do not trigger timeout on sign in related actions
+  * Timeout does not explode when reset_authentication_token! is accidentally defined by Active Model (by @remomueller)
 
 * deprecations
   * Strategy#validate() no longer validates nil resources

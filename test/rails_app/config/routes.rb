@@ -9,7 +9,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :admins, :only => [:index]
+  resources :admins, :only => [:index] do
+    get :expire, :on => :member
+  end
 
   # Users scope
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }

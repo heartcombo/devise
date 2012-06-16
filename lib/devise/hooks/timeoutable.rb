@@ -5,17 +5,18 @@
 # verify timeout in the following request.
 Warden::Manager.after_set_user do |record, warden, options|
   scope = options[:scope]
+  env   = warden.request.env
 
   if record && record.respond_to?(:timedout?) && warden.authenticated?(scope) && options[:store] != false
     last_request_at = warden.session(scope)['last_request_at']
 
-    if record.timedout?(last_request_at)
+    if record.timedout?(last_request_at) && !env['devise.skip_timeout']
       warden.logout(scope)
       record.reset_authentication_token! if record.respond_to?(:reset_authentication_token!) && record.expire_auth_token_on_timeout
       throw :warden, :scope => scope, :message => :timeout
     end
 
-    unless warden.request.env['devise.skip_trackable']
+    unless env['devise.skip_trackable']
       warden.session(scope)['last_request_at'] = Time.now.utc
     end
   end

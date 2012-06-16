@@ -1,6 +1,8 @@
 * enhancements
   * `Devise.omniauth_path_prefix` is available to configure omniauth path prefix
   * Redirect to sign in page when trying to access password#edit without a token (by @gbataille)
+  * Allow a lambda in authenticate(d) routes helpers to further select the scope
+  * Removed warnings on Rails 3.2.6 (by @nashby)
 
 * bug fix
   * `update_with_password` now relies on assign_attributes and forwards the :as option (by @wtn)

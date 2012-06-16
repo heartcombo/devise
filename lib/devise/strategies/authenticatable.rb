@@ -27,7 +27,7 @@ module Devise
       # unauthenticated_message.
       def validate(resource, &block)
         unless resource
-          ActiveSupport::Depreation.warn "an empty resource was given to #{self.class.name}#validate. " \
+          ActiveSupport::Deprecation.warn "an empty resource was given to #{self.class.name}#validate. " \
             "Please ensure the resource is not nil", caller
         end
 

@@ -5,7 +5,7 @@ PATH
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
-      warden (~> 1.1.1)
+      warden (~> 1.2.1)
 
 GEM
   remote: http://rubygems.org/
@@ -135,7 +135,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.33)
-    warden (1.1.1)
+    warden (1.2.1)
       rack (>= 1.0)
     webrat (0.7.2)
       nokogiri (>= 1.2.0)

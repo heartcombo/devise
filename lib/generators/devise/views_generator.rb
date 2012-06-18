@@ -10,6 +10,10 @@ module Devise
         argument :scope, :required => false, :default => nil,
                          :desc => "The scope to copy views to"
 
+        # Le sigh, ensure Thor won't handle opts as args
+        class_option :form_builder, :aliases => "-b"
+        class_option :markerb
+
         public_task :copy_views
       end
 
@@ -98,6 +102,7 @@ module Devise
                        :desc => "The scope to copy views to"
 
       invoke SharedViewsGenerator
+
       hook_for :form_builder, :aliases => "-b",
                               :desc => "Form builder to be used",
                               :default => defined?(SimpleForm) ? "simple_form_for" : "form_for"

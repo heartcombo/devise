@@ -10,6 +10,10 @@ module Devise
         argument :scope, :required => false, :default => nil,
                          :desc => "The scope to copy views to"
 
+        # Le sigh, ensure Thor won't handle opts as args
+        class_option :form_builder, :aliases => "-b"
+        class_option :markerb
+
         public_task :copy_views
       end
 

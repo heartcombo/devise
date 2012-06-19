@@ -11,6 +11,7 @@ module Devise
                          :desc => "The scope to copy views to"
 
         # Le sigh, ensure Thor won't handle opts as args
+        # It should be fixed in future Rails releases
         class_option :form_builder, :aliases => "-b"
         class_option :markerb
 

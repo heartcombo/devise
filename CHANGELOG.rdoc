@@ -1,6 +1,12 @@
-== 2.1.1
+== 2.1.2
 
-Notes: https://github.com/plataformatec/devise/wiki/How-to:-upgrade-to-devise-2.1
+* Enhancements
+  * Handle backwards incompatibility between Rails 3.2.6 and Thor 0.15.x
+
+* bug fix
+  * Fix regression on strategy validation on previous release
+
+== 2.1.1 (yanked)
 
 * enhancements
   * `sign_out_all_scopes` now locks warden and does not allow new logins in the same action

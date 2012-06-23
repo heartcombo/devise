@@ -23,6 +23,20 @@ class SessionsControllerTest < ActionController::TestCase
     assert_template "devise/sessions/new"
   end
 
+  test "#destroy doesn't set the flash if the requested format is not navigational" do
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    user = create_user
+    user.confirm!
+    post :create, :format => 'json', :user => {
+      :email => user.email,
+      :password => user.password
+    }
+
+    delete :destroy, :format => 'json'
+    assert flash[:notice].blank?, "flash[:notice] should be blank, not #{flash[:notice].inspect}"
+    assert_equal 204, @response.status
+  end
+
   if defined?(ActiveRecord) && ActiveRecord::Base.respond_to?(:mass_assignment_sanitizer)
     test "#new doesn't raise mass-assignment exception even if sign-in key is attr_protected" do
       request.env["devise.mapping"] = Devise.mappings[:user]

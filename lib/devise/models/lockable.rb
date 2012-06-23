@@ -27,7 +27,7 @@ module Devise
       def self.required_fields(klass)
         attributes = []
         attributes << :failed_attempts if klass.lock_strategy_enabled?(:failed_attempts)
-        attributes << :unlock_at if klass.unlock_strategy_enabled?(:time)
+        attributes << :locked_at if klass.unlock_strategy_enabled?(:time)
         attributes << :unlock_token if klass.unlock_strategy_enabled?(:email)
 
         attributes

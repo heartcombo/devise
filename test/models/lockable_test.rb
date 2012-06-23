@@ -232,19 +232,19 @@ class LockableTest < ActiveSupport::TestCase
       swap Devise, :lock_strategy => :failed_attempts do
         assert_same_content Devise::Models::Lockable.required_fields(User), [
          :failed_attempts,
-         :unlock_at,
+         :locked_at,
          :unlock_token
         ]
       end
     end
   end
 
-  test 'required_fields should contain only failed_attempts and unlock_at when the strategies are time and failed_attempts are enabled' do
+  test 'required_fields should contain only failed_attempts and locked_at when the strategies are time and failed_attempts are enabled' do
     swap Devise, :unlock_strategy => :time do
       swap Devise, :lock_strategy => :failed_attempts do
         assert_same_content Devise::Models::Lockable.required_fields(User), [
          :failed_attempts,
-         :unlock_at
+         :locked_at
         ]
       end
     end

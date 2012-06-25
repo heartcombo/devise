@@ -16,7 +16,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     fill_in 'email', :with => user.email
     click_button 'Resend confirmation instructions'
   end
-
+  
   test 'user should be able to request a new confirmation' do
     resend_confirmation
 
@@ -234,6 +234,25 @@ class ConfirmationOnChangeTest < ActionController::IntegrationTest
     assert_equal 'new_test@example.com', admin.unconfirmed_email
     visit_admin_confirmation_with_token(admin.confirmation_token)
 
+    assert_contain 'Your account was successfully confirmed.'
+    assert_current_url '/admin_area/home'
+    assert admin.reload.confirmed?
+    assert_not admin.reload.pending_reconfirmation?
+  end
+  
+  test 'admin with previously valid confirmation token should not be able to confirm email after email changed again' do
+    admin = create_admin
+    admin.update_attributes(:email => 'first_test@example.com')
+    assert_equal 'first_test@example.com', admin.unconfirmed_email
+    confirmation_token = admin.confirmation_token
+    admin.update_attributes(:email => 'second_test@example.com')
+    assert_equal 'second_test@example.com', admin.unconfirmed_email
+    
+    visit_admin_confirmation_with_token(confirmation_token)
+    assert_have_selector '#error_explanation'
+    assert_contain /Confirmation token(.*)invalid/
+    
+    visit_admin_confirmation_with_token(admin.confirmation_token)
     assert_contain 'Your account was successfully confirmed.'
     assert_current_url '/admin_area/home'
     assert admin.reload.confirmed?

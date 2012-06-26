@@ -72,7 +72,7 @@ This may happen for two reasons:
 
 2) You are testing a Devise controller bypassing the router.
    If so, you can explicitly tell Devise which mapping to use:
-   
+
    @request.env["devise.mapping"] = Devise.mappings[:user]
 
 MESSAGE
@@ -187,6 +187,6 @@ MESSAGE
   end
 
   def is_navigational_format?
-    Devise.navigational_formats.include?(request.format.try(:ref))
+    Devise.navigational_formats.include?(request_format)
   end
 end

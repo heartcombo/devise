@@ -28,8 +28,9 @@ module Devise
       def headers_for(action)
         headers = {
           :subject       => translate(devise_mapping, action),
-          :from          => mailer_sender(devise_mapping),
           :to            => resource.email,
+          :from          => mailer_sender(devise_mapping),
+          :reply_to      => mailer_reply_to(devise_mapping),
           :template_path => template_paths
         }
 
@@ -37,16 +38,20 @@ module Devise
           headers.merge!(resource.headers_for(action))
         end
 
-        unless headers.key?(:reply_to)
-          headers[:reply_to] = headers[:from]
-        end
-
         headers
       end
 
-      def mailer_sender(mapping)
-        if default_params[:from].present?
-          default_params[:from]
+      def mailer_reply_to(mapping)
+        mailer_sender(mapping, :reply_to)
+      end
+      
+      def mailer_from(mapping)
+        mailer_sender(mapping, :from)
+      end
+
+      def mailer_sender(mapping, sender = :from)
+        if default_params[sender].present?
+          default_params[sender]
         elsif Devise.mailer_sender.is_a?(Proc)
           Devise.mailer_sender.call(mapping.name)
         else

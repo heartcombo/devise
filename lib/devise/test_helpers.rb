@@ -45,6 +45,7 @@ module Devise
     def sign_in(resource_or_scope, resource=nil)
       scope    ||= Devise::Mapping.find_scope!(resource_or_scope)
       resource ||= resource_or_scope
+      warden.instance_variable_get(:@users).delete(scope)
       warden.session_serializer.store(resource, scope)
     end
 

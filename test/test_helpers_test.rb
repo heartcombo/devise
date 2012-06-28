@@ -47,6 +47,18 @@ class TestHelpersTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "does not redirect with valid user after failed first attempt" do
+    get :index
+    assert_response :redirect
+
+    user = create_user
+    user.confirm!
+
+    sign_in user
+    get :index
+    assert_response :success
+  end
+
   test "redirects if valid user signed out" do
     user = create_user
     user.confirm!

@@ -1,6 +1,13 @@
+* bug fix
+  * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)
+  * Properly camelize omniauth strategies (by @saizai)
+  * Do not set flash messages for non navigational requests on session sign out (by @mathieul)
+  * Set the proper fields as required on the lockable module (by @nickhoffman)
+  * Respects Devise mailer default's reply_to (by @mrchrisadams)
+
 == 2.1.2
 
-* Enhancements
+* enhancements
   * Handle backwards incompatibility between Rails 3.2.6 and Thor 0.15.x
 
 * bug fix

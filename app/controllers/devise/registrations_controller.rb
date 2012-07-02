@@ -41,7 +41,7 @@ class Devise::RegistrationsController < DeviseController
 
     if resource.update_with_password(resource_params)
       if is_navigational_format?
-        if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
+        if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation? && resource.unconfirmed_email_changed?
           flash_key = :update_needs_confirmation
         end
         set_flash_message :notice, flash_key || :updated

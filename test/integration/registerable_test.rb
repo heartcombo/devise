@@ -321,4 +321,25 @@ class ReconfirmableRegistrationTest < ActionController::IntegrationTest
 
     assert Admin.first.valid_password?('pas123')
   end
+
+  test 'a signed in admin should not see a reconfirmation message if he did not change his email, despite having an unconfirmed email' do
+    sign_in_as_admin
+
+    get edit_admin_registration_path
+    fill_in 'email', :with => 'admin.new@example.com'
+    fill_in 'current password', :with => '123456'
+    click_button 'Update'
+
+    get edit_admin_registration_path
+    fill_in 'password', :with => 'pas123'
+    fill_in 'password confirmation', :with => 'pas123'
+    fill_in 'current password', :with => '123456'
+    click_button 'Update'
+
+    assert_current_url '/admin_area/home'
+    assert_contain 'You updated your account successfully.'
+
+    assert_equal "admin.new@example.com", Admin.first.unconfirmed_email
+    assert Admin.first.valid_password?('pas123')
+  end
 end

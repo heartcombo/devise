@@ -85,8 +85,8 @@ Devise.setup do |config|
   # config.extend_remember_period = false
 
   # ==> Configuration for :validatable
-  # Range for password length. Default is 6..128.
-  # config.password_length = 6..128
+  # Range for password length. Default is 8..128.
+  # config.password_length = 8..128
 
   # Regex to use to validate the email address
   # config.email_regexp = /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i

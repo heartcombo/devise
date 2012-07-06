@@ -1,3 +1,6 @@
+* enhancement
+  * default minimum password length is now 8 (by @carlosgaldino).
+
 * bug fix
   * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)
   * Properly camelize omniauth strategies (by @saizai)

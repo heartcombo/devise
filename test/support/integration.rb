@@ -10,8 +10,8 @@ class ActionDispatch::IntegrationTest
       user = User.create!(
         :username => 'usertest',
         :email => options[:email] || 'user@test.com',
-        :password => options[:password] || '123456',
-        :password_confirmation => options[:password] || '123456',
+        :password => options[:password] || '12345678',
+        :password_confirmation => options[:password] || '12345678',
         :created_at => Time.now.utc
       )
       user.confirm! unless options[:confirm] == false
@@ -36,7 +36,7 @@ class ActionDispatch::IntegrationTest
     user = create_user(options)
     visit_with_option options[:visit], new_user_session_path
     fill_in 'email', :with => options[:email] || 'user@test.com'
-    fill_in 'password', :with => options[:password] || '123456'
+    fill_in 'password', :with => options[:password] || '12345678'
     check 'remember me' if options[:remember_me] == true
     yield if block_given?
     click_button 'Sign In'

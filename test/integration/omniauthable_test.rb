@@ -61,8 +61,8 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
 
     assert_difference "User.count" do
       visit "/users/sign_up"
-      fill_in "Password", :with => "123456"
-      fill_in "Password confirmation", :with => "123456"
+      fill_in "Password", :with => "12345678"
+      fill_in "Password confirmation", :with => "12345678"
       click_button "Sign up"
     end
 

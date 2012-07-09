@@ -104,6 +104,10 @@ module Devise
   mattr_accessor :allow_unconfirmed_access_for
   @@allow_unconfirmed_access_for = 0.days
 
+  # Time interval the confirmation token is valid. nil = unlimited
+  mattr_accessor :expire_confirmation_token_after
+  @@expire_confirmation_token_after = nil
+
   # Defines which key will be used when confirming an account.
   mattr_accessor :confirmation_keys
   @@confirmation_keys = [ :email ]
@@ -199,7 +203,7 @@ module Devise
   # to provide custom routes.
   mattr_accessor :router_name
   @@router_name = nil
-  
+
   # Set the omniauth path prefix so it can be overriden when
   # Devise is used in a mountable engine
   mattr_accessor :omniauth_path_prefix

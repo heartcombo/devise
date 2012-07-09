@@ -12,7 +12,8 @@ class ActionDispatch::IntegrationTest
         :email => options[:email] || 'user@test.com',
         :password => options[:password] || '12345678',
         :password_confirmation => options[:password] || '12345678',
-        :created_at => Time.now.utc
+        :created_at => Time.now.utc,
+        :confirmation_sent_at => options[:confirmation_sent_at]
       )
       user.confirm! unless options[:confirm] == false
       user.lock_access! if options[:locked] == true

@@ -178,7 +178,7 @@ module Devise
 
         # Checks whether the record requires any confirmation.
         def pending_any_confirmation
-          if !confirmation_period_expired? && (!confirmed? || pending_reconfirmation?)
+          unless confirmation_period_expired? || (confirmed? && !pending_reconfirmation?)
             yield
           else
             # TODO: cache this call or not?

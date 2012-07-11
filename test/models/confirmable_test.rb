@@ -236,7 +236,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
-  def confirm_user_by_token_with_confirmation_sent_at confirmation_sent_at
+  def confirm_user_by_token_with_confirmation_sent_at(confirmation_sent_at)
     user = create_user
     user.confirmation_sent_at = confirmation_sent_at
     confirmed_user = User.confirm_by_token(user.confirmation_token)

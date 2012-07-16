@@ -50,7 +50,6 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert user.reload.confirmed?
   end
 
-  include ActionView::Helpers::DateHelper
   test 'user with valid confirmation token should not be able to confirm an account after the token has expired' do
     swap Devise, :expire_confirmation_token_after => 3.days do
       user = create_user(:confirm => false, :confirmation_sent_at => 4.days.ago)

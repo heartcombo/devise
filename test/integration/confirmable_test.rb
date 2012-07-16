@@ -50,28 +50,22 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert user.reload.confirmed?
   end
 
+  include ActionView::Helpers::DateHelper
   test 'user with valid confirmation token should not be able to confirm an account after the token has expired' do
     swap Devise, :expire_confirmation_token_after => 3.days do
-      # TODO: why is confirmation_sent_at not set correctly when passed to create_user?
-      # TODO: User.create! always sets confirmation_sent_at to Time.now
       user = create_user(:confirm => false, :confirmation_sent_at => 4.days.ago)
-      user.confirmation_sent_at = 4.days.ago
-      user.save
       assert_not user.confirmed?
       visit_user_confirmation_with_token(user.confirmation_token)
 
       assert_have_selector '#error_explanation'
-      assert_contain /needs to be confirmed within/
+      assert_contain /needs to be confirmed within 3 days/
       assert_not user.reload.confirmed?
     end
   end
 
   test 'user with valid confirmation token should be able to confirm an account before the token has expired' do
     swap Devise, :expire_confirmation_token_after => 3.days do
-      # TODO: why is confirmation_sent_at not set correctly when passed to create_user?
       user = create_user(:confirm => false, :confirmation_sent_at => 2.days.ago)
-      user.confirmation_sent_at = 2.days.ago
-      user.save
       assert_not user.confirmed?
       visit_user_confirmation_with_token(user.confirmation_token)
 

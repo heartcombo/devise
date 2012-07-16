@@ -30,7 +30,6 @@ module Devise
     #
     module Confirmable
       extend ActiveSupport::Concern
-      # TODO: is this a good idea?
       include ActionView::Helpers::DateHelper
 
       included do
@@ -159,30 +158,18 @@ module Devise
           confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
         end
 
-        # Checks if the user confirmation happens before the token becomes invalid
-        #
-        # Examples:
-        #
-        #   # expire_confirmation_token_after = 3.days and confirmation_sent_at = 2.days.ago
-        #   confirmation_period_expired?  # returns false
-        #
-        #   # expire_confirmation_token_after = 3.days and confirmation_sent_at = 4.days.ago
-        #   confirmation_period_expired?  # returns true
-        #
-        #   # expire_confirmation_token_after = nil
-        #   confirmation_period_expired?  # will always return false
-        #
-        def confirmation_period_expired?
-          self.class.expire_confirmation_token_after && (Time.now > self.confirmation_sent_at + self.class.expire_confirmation_token_after)
-        end
-
         # Checks whether the record requires any confirmation.
         def pending_any_confirmation
-          unless confirmation_period_expired? || (confirmed? && !pending_reconfirmation?)
+          @confirmation_period_expired = if @confirmation_period_expired.nil?
+                                           self.class.expire_confirmation_token_after && (Time.now > self.confirmation_sent_at + self.class.expire_confirmation_token_after )
+                                         else
+                                           @confirmation_period_expired
+                                         end
+
+          if (!confirmed? || pending_reconfirmation?) && !@confirmation_period_expired
             yield
           else
-            # TODO: cache this call or not?
-            if confirmation_period_expired?
+            if @confirmation_period_expired
               self.errors.add(:email, :confirmation_period_expired, period: time_ago_in_words(self.class.expire_confirmation_token_after.ago))
             else
               self.errors.add(:email, :already_confirmed)

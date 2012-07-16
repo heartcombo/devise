@@ -237,11 +237,8 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   def confirm_user_by_token_with_confirmation_sent_at(confirmation_sent_at)
-    # TODO: why is confirmation_sent_at not set correctly when passed to create_user?
-    # TODO: User.create! always sets confirmation_sent_at to Time.now
     user = create_user
-    user.confirmation_sent_at = confirmation_sent_at
-    user.save
+    user.update_attribute(:confirmation_sent_at, confirmation_sent_at)
     confirmed_user = User.confirm_by_token(user.confirmation_token)
     assert_equal confirmed_user, user
     user.reload.confirmed?

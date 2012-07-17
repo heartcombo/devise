@@ -12,7 +12,11 @@ class DeviseHelperTest < ActionController::IntegrationTest
       } } },
       # Required to prevent tests from blowing up when they don't find
       # the I18n version of the "Sign up" button.
+      #
+      # I haven't worked out why both are required yet but it looks like one
+      # supplies the string to the button, one to the test.
       :sign_up => 'Connectez',
+      :devise => { :registrations => { :new => { :sign_up => 'Connectez' } } },
       :activerecord => model_labels,
       :mongoid => model_labels
     }

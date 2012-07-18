@@ -31,6 +31,9 @@ en:
         change_password: 'Change password'
         new_password: 'New password'
         confirm_password: 'Confirm new password'
+      new:
+        forgot_password: 'Forgot your password?'
+        send_instructions: 'Send me reset password instructions'
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'

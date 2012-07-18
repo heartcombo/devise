@@ -24,7 +24,7 @@ class PasswordTest < ActionController::IntegrationTest
     fill_in 'New password', :with => '987654321'
     fill_in 'Confirm new password', :with => '987654321'
     yield if block_given?
-    click_button 'Change my password'
+    click_button 'Change password'
   end
 
   test 'reset password with email of different case should succeed when email is in the list of case insensitive keys' do

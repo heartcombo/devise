@@ -249,13 +249,13 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should accept confirmation email token after 2 days when expiration is set to 3 days' do
-    swap Devise, :expire_confirmation_token_after => 3.days do
+    swap Devise, :confirm_within => 3.days do
       assert confirm_user_by_token_with_confirmation_sent_at(2.days.ago)
     end
   end
 
   test 'should not accept confirmation email token after 4 days when expiration is set to 3 days' do
-    swap Devise, :expire_confirmation_token_after => 3.days do
+    swap Devise, :confirm_within => 3.days do
       assert_not confirm_user_by_token_with_confirmation_sent_at(4.days.ago)
     end
   end

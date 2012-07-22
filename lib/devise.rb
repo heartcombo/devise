@@ -105,8 +105,8 @@ module Devise
   @@allow_unconfirmed_access_for = 0.days
 
   # Time interval the confirmation token is valid. nil = unlimited
-  mattr_accessor :expire_confirmation_token_after
-  @@expire_confirmation_token_after = nil
+  mattr_accessor :confirm_within
+  @@confirm_within = nil
 
   # Defines which key will be used when confirming an account.
   mattr_accessor :confirmation_keys

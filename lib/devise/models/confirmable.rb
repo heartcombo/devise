@@ -19,7 +19,7 @@ module Devise
     #     db field to be setup (t.reconfirmable in migrations). Until confirmed new email is
     #     stored in unconfirmed email column, and copied to email column on successful
     #     confirmation.
-    #   * +expire_confirmation_token_after+: the time before a sent confirmation token becomes invalid.
+    #   * +confirm_within+: the time before a sent confirmation token becomes invalid.
     #     You can use this to force the user to confirm within a set period of time.
     #
     # == Examples
@@ -158,19 +158,37 @@ module Devise
           confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
         end
 
+
+        # Checks if the user confirmation happens before the token becomes invalid
+        # Examples:
+        #
+        #   # confirm_within = 3.days and confirmation_sent_at = 2.days.ago
+        #   confirmation_period_expired?  # returns false
+        #
+        #   # confirm_within = 3.days and confirmation_sent_at = 4.days.ago
+        #   confirmation_period_expired?  # returns true
+        #
+        #   # confirm_within = nil
+        #   confirmation_period_expired?  # will always return false
+        #
+        def confirmation_period_expired?
+          if @confirmation_period_expired.nil?
+            @confirmation_period_expired = self.class.confirm_within && (Time.now > self.confirmation_sent_at + self.class.confirm_within )
+            @confirmation_period_expired
+          else
+            @confirmation_period_expired
+          end
+        end
+
         # Checks whether the record requires any confirmation.
         def pending_any_confirmation
-          @confirmation_period_expired = if @confirmation_period_expired.nil?
-                                           self.class.expire_confirmation_token_after && (Time.now > self.confirmation_sent_at + self.class.expire_confirmation_token_after )
-                                         else
-                                           @confirmation_period_expired
-                                         end
+          @confirmation_period_expired = confirmation_period_expired?
 
           if (!confirmed? || pending_reconfirmation?) && !@confirmation_period_expired
             yield
           else
             if @confirmation_period_expired
-              self.errors.add(:email, :confirmation_period_expired, period: time_ago_in_words(self.class.expire_confirmation_token_after.ago))
+              self.errors.add(:email, :confirmation_period_expired, :period => time_ago_in_words(self.class.confirm_within.ago))
             else
               self.errors.add(:email, :already_confirmed)
             end
@@ -247,7 +265,7 @@ module Devise
           find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)
         end
 
-        Devise::Models.config(self, :allow_unconfirmed_access_for, :confirmation_keys, :reconfirmable, :expire_confirmation_token_after)
+        Devise::Models.config(self, :allow_unconfirmed_access_for, :confirmation_keys, :reconfirmable, :confirm_within)
       end
     end
   end

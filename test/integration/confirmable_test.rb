@@ -16,7 +16,7 @@ class ConfirmationTest < ActionController::IntegrationTest
     fill_in 'email', :with => user.email
     click_button 'Resend confirmation instructions'
   end
-  
+
   test 'user should be able to request a new confirmation' do
     resend_confirmation
 
@@ -48,6 +48,30 @@ class ConfirmationTest < ActionController::IntegrationTest
     assert_contain 'Your account was successfully confirmed.'
     assert_current_url '/'
     assert user.reload.confirmed?
+  end
+
+  test 'user with valid confirmation token should not be able to confirm an account after the token has expired' do
+    swap Devise, :confirm_within => 3.days do
+      user = create_user(:confirm => false, :confirmation_sent_at => 4.days.ago)
+      assert_not user.confirmed?
+      visit_user_confirmation_with_token(user.confirmation_token)
+
+      assert_have_selector '#error_explanation'
+      assert_contain /needs to be confirmed within 3 days/
+      assert_not user.reload.confirmed?
+    end
+  end
+
+  test 'user with valid confirmation token should be able to confirm an account before the token has expired' do
+    swap Devise, :confirm_within => 3.days do
+      user = create_user(:confirm => false, :confirmation_sent_at => 2.days.ago)
+      assert_not user.confirmed?
+      visit_user_confirmation_with_token(user.confirmation_token)
+
+      assert_contain 'Your account was successfully confirmed.'
+      assert_current_url '/'
+      assert user.reload.confirmed?
+    end
   end
 
   test 'user should be redirected to a custom path after confirmation' do
@@ -239,7 +263,7 @@ class ConfirmationOnChangeTest < ActionController::IntegrationTest
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?
   end
-  
+
   test 'admin with previously valid confirmation token should not be able to confirm email after email changed again' do
     admin = create_admin
     admin.update_attributes(:email => 'first_test@example.com')
@@ -247,11 +271,11 @@ class ConfirmationOnChangeTest < ActionController::IntegrationTest
     confirmation_token = admin.confirmation_token
     admin.update_attributes(:email => 'second_test@example.com')
     assert_equal 'second_test@example.com', admin.unconfirmed_email
-    
+
     visit_admin_confirmation_with_token(confirmation_token)
     assert_have_selector '#error_explanation'
     assert_contain /Confirmation token(.*)invalid/
-    
+
     visit_admin_confirmation_with_token(admin.confirmation_token)
     assert_contain 'Your account was successfully confirmed.'
     assert_current_url '/admin_area/home'

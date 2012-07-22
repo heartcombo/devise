@@ -235,6 +235,30 @@ class ConfirmableTest < ActiveSupport::TestCase
       assert_equal "can't be blank", confirm_user.errors[:username].join
     end
   end
+
+  def confirm_user_by_token_with_confirmation_sent_at(confirmation_sent_at)
+    user = create_user
+    user.update_attribute(:confirmation_sent_at, confirmation_sent_at)
+    confirmed_user = User.confirm_by_token(user.confirmation_token)
+    assert_equal confirmed_user, user
+    user.reload.confirmed?
+  end
+
+  test 'should accept confirmation email token even after 5 years when no expiration is set' do
+    assert confirm_user_by_token_with_confirmation_sent_at(5.years.ago)
+  end
+
+  test 'should accept confirmation email token after 2 days when expiration is set to 3 days' do
+    swap Devise, :confirm_within => 3.days do
+      assert confirm_user_by_token_with_confirmation_sent_at(2.days.ago)
+    end
+  end
+
+  test 'should not accept confirmation email token after 4 days when expiration is set to 3 days' do
+    swap Devise, :confirm_within => 3.days do
+      assert_not confirm_user_by_token_with_confirmation_sent_at(4.days.ago)
+    end
+  end
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase

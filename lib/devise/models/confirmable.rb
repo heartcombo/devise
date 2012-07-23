@@ -121,6 +121,7 @@ module Devise
         end
         headers
       end
+
       protected
 
         # A callback method used to deliver confirmation
@@ -158,7 +159,6 @@ module Devise
           confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
         end
 
-
         # Checks if the user confirmation happens before the token becomes invalid
         # Examples:
         #
@@ -172,26 +172,21 @@ module Devise
         #   confirmation_period_expired?  # will always return false
         #
         def confirmation_period_expired?
-          if @confirmation_period_expired.nil?
-            @confirmation_period_expired = self.class.confirm_within && (Time.now > self.confirmation_sent_at + self.class.confirm_within )
-            @confirmation_period_expired
-          else
-            @confirmation_period_expired
-          end
+          self.class.confirm_within && (Time.now > self.confirmation_sent_at + self.class.confirm_within )
         end
 
         # Checks whether the record requires any confirmation.
         def pending_any_confirmation
-          @confirmation_period_expired = confirmation_period_expired?
+          expired = confirmation_period_expired?
 
-          if (!confirmed? || pending_reconfirmation?) && !@confirmation_period_expired
+          if (!confirmed? || pending_reconfirmation?) && !expired
             yield
+          elsif expired
+            self.errors.add(:email, :confirmation_period_expired,
+              :period => Devise::TimeInflector.time_ago_in_words(self.class.confirm_within.ago))
+            false
           else
-            if @confirmation_period_expired
-              self.errors.add(:email, :confirmation_period_expired, :period => time_ago_in_words(self.class.confirm_within.ago))
-            else
-              self.errors.add(:email, :already_confirmed)
-            end
+            self.errors.add(:email, :already_confirmed)
             false
           end
         end

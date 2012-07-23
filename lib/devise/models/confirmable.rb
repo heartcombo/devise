@@ -50,6 +50,12 @@ module Devise
       # add errors
       def confirm!
         pending_any_confirmation do
+          if confirmation_period_expired?
+            self.errors.add(:email, :confirmation_period_expired,
+              :period => Devise::TimeInflector.time_ago_in_words(self.class.confirm_within.ago))
+            return false
+          end
+
           self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
@@ -86,7 +92,10 @@ module Devise
 
       # Resend confirmation token. This method does not need to generate a new token.
       def resend_confirmation_token
-        pending_any_confirmation { send_confirmation_instructions }
+        pending_any_confirmation do
+          self.confirmation_token = nil if confirmation_period_expired?
+          send_confirmation_instructions
+        end
       end
 
       # Overwrites active_for_authentication? for confirmation
@@ -177,14 +186,8 @@ module Devise
 
         # Checks whether the record requires any confirmation.
         def pending_any_confirmation
-          expired = confirmation_period_expired?
-
-          if (!confirmed? || pending_reconfirmation?) && !expired
+          if (!confirmed? || pending_reconfirmation?)
             yield
-          elsif expired
-            self.errors.add(:email, :confirmation_period_expired,
-              :period => Devise::TimeInflector.time_ago_in_words(self.class.confirm_within.ago))
-            false
           else
             self.errors.add(:email, :already_confirmed)
             false

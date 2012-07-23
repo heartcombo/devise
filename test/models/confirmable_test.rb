@@ -259,6 +259,16 @@ class ConfirmableTest < ActiveSupport::TestCase
       assert_not confirm_user_by_token_with_confirmation_sent_at(4.days.ago)
     end
   end
+
+  test 'should generate a new token if the previous one has expired' do
+    swap Devise, :confirm_within => 3.days do
+      user = create_user
+      user.update_attribute(:confirmation_sent_at, 4.days.ago)
+      old = user.confirmation_token
+      user.resend_confirmation_token
+      assert_not_equal user.confirmation_token, old
+    end
+  end
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase

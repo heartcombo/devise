@@ -1,6 +1,6 @@
 * enhancement
   * Default minimum password length is now 8 (by @carlosgaldino).
-  * Confirmable now has a confirm_within option to set a period when the confirmation token is still valid (by @promisedlandt)
+  * Confirmable now has a confirm_within option to set a period while the confirmation token is still valid (by @promisedlandt)
 
 * bug fix
   * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)

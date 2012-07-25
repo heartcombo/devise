@@ -240,7 +240,7 @@ devise_for :admins, :controllers => { :sessions => "admins/sessions" }
 
 3) And since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
 
-Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
+Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate. Do not print the entire flash hash, print specific keys or atleast remove the :timedout key from the hash as Devise adds this key in some circumstances, this key is not meant for display.
 
 ### Configuring routes
 

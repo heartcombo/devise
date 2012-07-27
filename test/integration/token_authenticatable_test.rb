@@ -121,7 +121,7 @@ class TokenAuthenticationTest < ActionController::IntegrationTest
       @user = nil
 
       user2 = create_user_with_authentication_token(:email => "another@test.com")
-      user2.update_attribute(:authentication_token, "ANOTHERTOKEN")
+      user2.update_column(:authentication_token, "ANOTHERTOKEN")
 
       assert_not_equal user1, user2
       visit users_path(Devise.token_authentication_key.to_s + '[$ne]' => user1.authentication_token)

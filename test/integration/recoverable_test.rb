@@ -293,7 +293,7 @@ class PasswordTest < ActionController::IntegrationTest
 
   test "after recovering a password, should set failed attempts to 0" do
     user = create_user
-    user.update_attribute(:failed_attempts, 10)
+    user.update_column(:failed_attempts, 10)
 
     assert_equal 10, user.failed_attempts
     request_forgot_password

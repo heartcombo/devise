@@ -2,6 +2,6 @@
 # This is only triggered when the user is explicitly set (with set_user)
 Warden::Manager.after_set_user :except => :fetch do |record, warden, options|
   if record.respond_to?(:failed_attempts) && warden.authenticated?(options[:scope])
-    record.update_column(:failed_attempts, 0)
+    record.update_attribute(:failed_attempts, 0)
   end
 end

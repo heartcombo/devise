@@ -37,6 +37,18 @@ class SessionsControllerTest < ActionController::TestCase
     assert_equal 204, @response.status
   end
 
+  test "#destroy allows after_sign_out_path_for to properly use current_user when determining a path" do
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+
+    user = User.new
+    user.expects(:active_for_authentication?).returns(true)
+    @controller.sign_in(:user, user)
+
+    @controller.instance_eval "def after_sign_out_path_for(resource); if current_user; admin_root_path; else; root_path; end; end"
+    delete :destroy
+    assert_redirected_to root_path
+  end
+
   if defined?(ActiveRecord) && ActiveRecord::Base.respond_to?(:mass_assignment_sanitizer)
     test "#new doesn't raise mass-assignment exception even if sign-in key is attr_protected" do
       request.env["devise.mapping"] = Devise.mappings[:user]

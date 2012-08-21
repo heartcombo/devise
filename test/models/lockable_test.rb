@@ -51,6 +51,12 @@ class LockableTest < ActiveSupport::TestCase
     assert user.access_locked?
   end
 
+  test "access_locked? should return false when locked_at is nil" do
+    user = create_user
+    assert_nil user.locked_at
+    assert_equal false, user.access_locked?
+  end
+
   test "active_for_authentication? should be the opposite of locked?" do
     user = create_user
     user.confirm!

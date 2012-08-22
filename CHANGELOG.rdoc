@@ -5,6 +5,8 @@
   * Ensure passing :format => false to devise_for is not permanent
   * Ensure path checker does not check invalid routes
 
+* warden regression
+  * using warden 1.2.1 with Devise 1.5.3 introduces a regression for some types of functional tests (see github.com/plataformatec/devise/issues/1928).  Can peg warden to 1.2.0 in your Gemfile to fix this.
 == 1.5.2
 
 * enhancements

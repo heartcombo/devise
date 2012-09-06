@@ -21,11 +21,15 @@ Some setup you must do manually if you haven't yet:
        <p class="notice"><%= notice %></p>
        <p class="alert"><%= alert %></p>
 
-  4. If you are deploying Rails 3.1 on Heroku, you may want to set:
+  4. If you are deploying Rails 3.1+ on Heroku, you may want to set:
 
        config.assets.initialize_on_precompile = false
 
      On config/application.rb forcing your application to not access the DB
      or load models when precompiling your assets.
+
+  5. You can copy Devise views (for customization) to your app by running:
+
+       rails g devise:views
 
 ===============================================================================

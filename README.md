@@ -1,10 +1,8 @@
-*IMPORTANT:* Devise 2.1 is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.1
-
 ## Devise
 
-INFO: This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
-
 [![Build Status](https://secure.travis-ci.org/plataformatec/devise.png)](http://travis-ci.org/plataformatec/devise) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/plataformatec/devise)
+
+This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
 
 Devise is a flexible authentication solution for Rails based on Warden. It:
 

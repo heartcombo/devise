@@ -118,6 +118,8 @@ Devise will create some helpers to use inside your controllers and views. To set
 before_filter :authenticate_user!
 ```
 
+(Assuming your model is called User. If it was Admins, then it would be `authenticate_admin!` or whatever)
+
 To verify if a user is signed in, use the following helper:
 
 ```ruby

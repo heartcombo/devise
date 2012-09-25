@@ -40,7 +40,7 @@ class Devise::RegistrationsController < DeviseController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    if resource.update_with_password(resource_params)
+    if resource.update_with_password(resource_params, :without_protection => resource_class.devise_attr_accessible)
       if is_navigational_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
           :update_needs_confirmation : :updated
@@ -82,9 +82,9 @@ class Devise::RegistrationsController < DeviseController
 
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
-  def build_resource(hash=nil)
-    hash ||= resource_params || {}
-    self.resource = resource_class.new_with_session(hash, session)
+  def build_resource(params=nil)
+    params ||= resource_params || {}
+    self.resource = resource_class.new_with_session(params, session, :without_protection => resource_class.devise_attr_accessible)
   end
 
   # The path used after sign up. You need to overwrite this method

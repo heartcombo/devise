@@ -28,8 +28,9 @@ class DeviseController < Devise.parent_controller.constantize
     devise_mapping.to
   end
 
+  # Returns resource params
   def resource_params
-    params[resource_name]
+    check_resource_params(params[resource_name])
   end
 
   # Returns a signed in resource from session (if one exists)
@@ -188,5 +189,20 @@ MESSAGE
 
   def is_navigational_format?
     Devise.navigational_formats.include?(request_format)
+  end
+
+  # Raise an exception if devise_attr_accessible is set
+  # and inappropriate param is among "params".
+  def check_resource_params(params)
+    if resource_class.devise_attr_accessible && params
+      protected_params = params.keys.select do |param|
+        !resource_class.devise_attr_accessible.index(param.to_sym)
+      end
+      unless protected_params.empty?
+        raise "#{protected_params} are not devise_attr_accessible"
+      end
+    end
+
+    params
   end
 end

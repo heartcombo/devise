@@ -1,6 +1,6 @@
 Hello <%= @resource.email %>!
 
-Your account has been locked due to an excessive amount of unsuccessful sign in attempts.
+Your account has been locked due to an excessive number of unsuccessful sign in attempts.
 
 Click the link below to unlock your account:
 

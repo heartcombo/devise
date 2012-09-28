@@ -107,8 +107,8 @@ module Devise
         env["warden.options"] = options
         Warden::Manager._run_callbacks(:before_failure, env, options)
 
-        status, headers, body = Devise.warden_config[:failure_app].call(env).to_a
-        @controller.send :render, :status => status, :text => body,
+        status, headers, response = Devise.warden_config[:failure_app].call(env).to_a
+        @controller.send :render, :status => status, :text => response.body,
           :content_type => headers["Content-Type"], :location => headers["Location"]
         nil # causes process return @response
       end

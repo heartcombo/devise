@@ -38,6 +38,10 @@ module Devise
     #
     module TokenAuthenticatable
       extend ActiveSupport::Concern
+      
+      included do
+        attr_reader :current_authentication_token
+      end
 
       def self.required_fields(klass)
         [:authentication_token]
@@ -70,6 +74,30 @@ module Devise
 
       def expire_auth_token_on_timeout
         self.class.expire_auth_token_on_timeout
+      end
+      
+      def valid_authentication_token?(authentication_token)
+        return false if self.authentication_token.blank?
+        Devise.secure_compare(self.authentication_token, authentication_token)
+      end
+      
+      def update_with_authentication_token(params, *options)
+        current_authentication_token = params.delete(:current_authentication_token)
+      
+        if params[:password].blank?
+          params.delete(:password)
+          params.delete(:password_confirmation) if params[:password_confirmation].blank?
+        end
+      
+        result = if valid_authentication_token?(current_authentication_token)
+          update_attributes(params, *options)
+        else
+          self.assign_attributes(params, *options)
+          self.valid?
+          self.errors.add(:current_authentication_token, current_authentication_token.blank? ? :blank : :invalid)
+          false
+        end
+        result
       end
 
       module ClassMethods

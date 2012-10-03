@@ -40,7 +40,15 @@ class Devise::RegistrationsController < DeviseController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    if resource.update_with_password(resource_params)
+    updated = if resource_params[:current_password]
+      resource.update_with_password(resource_params)
+    elsif resource_params[:current_authentication_token]
+      resource.update_with_authentication_token(resource_params)
+    else
+      false
+    end
+
+    if updated
       if is_navigational_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
           :update_needs_confirmation : :updated

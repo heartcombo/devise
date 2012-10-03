@@ -71,6 +71,37 @@ module Devise
       def expire_auth_token_on_timeout
         self.class.expire_auth_token_on_timeout
       end
+      
+      def valid_authentication_token?(authentication_token)
+        return false if self.authentication_token.blank?
+        Devise.secure_compare(self.authentication_token, authentication_token)
+      end
+      
+      # Set password and password confirmation to nil
+      def clean_up_passwords
+        self.password = self.password_confirmation = nil
+      end
+      
+      def update_with_authentication_token(params, *options)
+        current_authentication_token = params.delete(:authentication_token)
+      
+        if params[:password].blank?
+          params.delete(:password)
+          params.delete(:password_confirmation) if params[:password_confirmation].blank?
+        end
+      
+        result = if valid_authentication_token?(current_authentication_token)
+          update_attributes(params, *options)
+        else
+          self.assign_attributes(params, *options)
+          self.valid?
+          self.errors.add(:authentication_token, current_authentication_token.blank? ? :blank : :invalid)
+          false
+        end
+        
+        clean_up_passwords
+        result
+      end
 
       module ClassMethods
         def find_for_token_authentication(conditions)

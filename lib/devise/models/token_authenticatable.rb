@@ -38,10 +38,6 @@ module Devise
     #
     module TokenAuthenticatable
       extend ActiveSupport::Concern
-      
-      included do
-        attr_reader :current_authentication_token
-      end
 
       def self.required_fields(klass)
         [:authentication_token]
@@ -81,8 +77,13 @@ module Devise
         Devise.secure_compare(self.authentication_token, authentication_token)
       end
       
+      # Set password and password confirmation to nil
+      def clean_up_passwords
+        self.password = self.password_confirmation = nil
+      end
+      
       def update_with_authentication_token(params, *options)
-        current_authentication_token = params.delete(:current_authentication_token)
+        current_authentication_token = params.delete(:authentication_token)
       
         if params[:password].blank?
           params.delete(:password)
@@ -94,9 +95,11 @@ module Devise
         else
           self.assign_attributes(params, *options)
           self.valid?
-          self.errors.add(:current_authentication_token, current_authentication_token.blank? ? :blank : :invalid)
+          self.errors.add(:authentication_token, current_authentication_token.blank? ? :blank : :invalid)
           false
         end
+        
+        clean_up_passwords
         result
       end
 

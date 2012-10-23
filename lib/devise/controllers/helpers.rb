@@ -93,12 +93,6 @@ module Devise
         end
       end
 
-      # Signs in a user on sign up. This helper delegates to sign_in and separates
-      # sign_up and sign_in events. Enables hooking into the sign_up event.
-      def sign_up(resource_name, resource)
-        sign_in(resource_name, resource)
-      end
-
       # Sign in a user that already was authenticated. This helper is useful for logging
       # users in after sign up.
       #

@@ -100,12 +100,6 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     @controller.sign_in(:user, user)
   end
 
-  test 'sign up delegates to sign_in' do
-    user = User.new
-    @controller.expects(:sign_in).with(:user, user)
-    @controller.sign_up(:user, user)
-  end
-
   test 'sign in accepts a resource as argument' do
     user = User.new
     @mock_warden.expects(:user).returns(nil)

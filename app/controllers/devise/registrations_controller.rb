@@ -87,6 +87,12 @@ class Devise::RegistrationsController < DeviseController
     self.resource = resource_class.new_with_session(hash, session)
   end
 
+  # Signs in a user on sign up. You can overwrite this method in your own
+  # RegistrationsController.
+  def sign_up(resource_name, resource)
+    sign_in(resource_name, resource)
+  end
+
   # The path used after sign up. You need to overwrite this method
   # in your own RegistrationsController.
   def after_sign_up_path_for(resource)

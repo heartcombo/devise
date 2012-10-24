@@ -95,6 +95,12 @@ class HelpersTest < ActionController::TestCase
     assert_equal 'devise custom options', flash[:notice]
   end
 
+  test 'allows custom i18n options to override resource_name' do
+    I18n.expects(:t).with("custom_resource_name.confirmed", anything)
+    @controller.stubs(:devise_i18n_options).returns(:resource_name => "custom_resource_name")
+    @controller.send :set_flash_message, :notice, :confirmed
+  end
+
   test 'navigational_formats not returning a wild card' do
     MyController.send(:public, :navigational_formats)
     Devise.navigational_formats = [:"*/*", :html]

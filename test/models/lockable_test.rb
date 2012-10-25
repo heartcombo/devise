@@ -260,4 +260,14 @@ class LockableTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'should not return a locked unauthenticated message if in paranoid mode' do
+    swap Devise, :paranoid => :true do
+      user = create_user
+      user.failed_attempts = Devise.maximum_attempts + 1
+      user.lock_access!
+
+      assert_equal :invalid, user.unauthenticated_message
+    end
+  end
 end

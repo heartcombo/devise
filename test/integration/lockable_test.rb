@@ -221,4 +221,22 @@ class LockTest < ActionController::IntegrationTest
     end
   end
 
+  test "in paranoid mode, when locking a user that exists it should not say that the user was locked" do
+    swap Devise, :paranoid => true, :maximum_attempts => 1 do
+      user = create_user(:locked => false)
+
+      visit new_user_session_path
+      fill_in 'email', :with => user.email
+      fill_in 'password', :with => "abadpassword"
+      click_button 'Sign in'
+
+      fill_in 'email', :with => user.email
+      fill_in 'password', :with => "abadpassword"
+      click_button 'Sign in'
+
+      assert_current_url "/users/sign_in"
+      assert_not_contain "locked"
+    end
+  end
+
 end

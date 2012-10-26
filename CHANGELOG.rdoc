@@ -1,6 +1,9 @@
 * enhancement
   * Default minimum password length is now 8 (by @carlosgaldino).
   * Confirmable now has a confirm_within option to set a period while the confirmation token is still valid (by @promisedlandt)
+  * Make #set_flash_message respect i18n-set resource_name (by @latortuga)
+  * Separate `sign_in` and `sign_up` on RegistrationsController (by @rubynortheast)
+  * Add autofocus to default views (by @Radagaisus)
 
 * bug fix
   * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)
@@ -8,6 +11,8 @@
   * Do not set flash messages for non navigational requests on session sign out (by @mathieul)
   * Set the proper fields as required on the lockable module (by @nickhoffman)
   * Respects Devise mailer default's reply_to (by @mrchrisadams)
+  * Properly assign resource on sign_in action (by @adammcnamara)
+  * Unlockable could leak account existence on paranoid mode (by @latortuga)
 
 == 2.1.2
 

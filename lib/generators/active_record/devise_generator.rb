@@ -27,7 +27,11 @@ module ActiveRecord
   attr_accessible :email, :password, :password_confirmation, :remember_me
 CONTENT
 
-        class_path = class_name.to_s.split("::")
+        class_path = if namespaced?
+          class_name.to_s.split("::")
+        else
+          [class_name]
+        end
 
         indent_depth = class_path.size - 1
         content = content.split("\n").map { |line| "  " * indent_depth + line } .join("\n") << "\n"

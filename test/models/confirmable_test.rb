@@ -327,6 +327,16 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert admin.confirmed?
   end
 
+  test 'should erase unconfirmed_email when email was changed to confirmed email' do
+    admin = create_admin(:email => 'email1@example.com')
+    assert admin.confirm!
+    assert admin.update_attributes(:email => 'email2@example.com')
+    assert 'email2@example.com', admin.unconfirmed_email
+    assert admin.update_attributes(:email => 'email1@example.com')
+    assert_nil admin.unconfirmed_email
+    assert admin.confirmed?
+  end
+
   test 'should update email only when it is confirmed' do
     admin = create_admin
     assert admin.confirm!

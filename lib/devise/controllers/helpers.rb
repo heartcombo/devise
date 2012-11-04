@@ -162,8 +162,8 @@ module Devise
         users.any?
       end
 
-      # Returns and delete the url stored in the session for the given scope. Useful
-      # for giving redirect backs after sign up:
+      # Returns and delete (if it's navigational format) the url stored in the session for
+      # the given scope. Useful for giving redirect backs after sign up:
       #
       # Example:
       #
@@ -171,7 +171,12 @@ module Devise
       #
       def stored_location_for(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
-        session.delete("#{scope}_return_to")
+
+        if is_navigational_format?
+          session.delete("#{scope}_return_to")
+        else
+          session["#{scope}_return_to"]
+        end
       end
 
       # The scope root url to be used when he's signed in. By default, it first

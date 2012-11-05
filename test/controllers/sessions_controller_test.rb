@@ -13,6 +13,34 @@ class SessionsControllerTest < ActionController::TestCase
     end
   end
 
+  test "#create delete the url stored in the session if the requested format is navigational" do
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    request.session["user_return_to"] = 'foo.bar'
+
+    user = create_user
+    user.confirm!
+    post :create, :user => {
+      :email => user.email,
+      :password => user.password
+    }
+
+    assert_nil request.session["user_return_to"]
+  end
+
+  test "#create doesn't delete the url stored in the session if the requested format is not navigational" do
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    request.session["user_return_to"] = 'foo.bar'
+
+    user = create_user
+    user.confirm!
+    post :create, :format => 'json', :user => {
+      :email => user.email,
+      :password => user.password
+    }
+
+    assert_equal 'foo.bar', request.session["user_return_to"]
+  end
+
   test "#create doesn't raise exception after Warden authentication fails when TestHelpers included" do
     request.env["devise.mapping"] = Devise.mappings[:user]
     post :create, :user => {

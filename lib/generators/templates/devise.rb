@@ -72,6 +72,13 @@ Devise.setup do |config|
   # passing :skip => :sessions to `devise_for` in your config/routes.rb
   config.skip_session_storage = [:http_auth]
 
+  # Devise uses update_attributes in its controllers, so fields like :name
+  # and :password should be attr_accessible in your model. If you don't want
+  # them to be attr_accissble, you can use this option. If it is set, Devise
+  # uses update_attributes :without_protection, but doesn't accept any param
+  # not from this list
+  # config.devise_attr_accessible = [:name, :password, :password_confirmation]
+
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.

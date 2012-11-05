@@ -61,6 +61,20 @@ class RegistrationTest < ActionController::IntegrationTest
     assert_not user.confirmed?
   end
 
+  test 'a guest user shold not be able to sign up with protected params if devise_attr_accissble is truly' do
+    swap Devise, :devise_attr_accessible => [ :email ] do # now user_sign_up() is hack!
+      assert_raise RuntimeError do  
+        user_sign_up
+      end
+    end
+  end
+
+  test 'a guest user shold be able to sign up without protected params if devise_attr_accissble is truly' do
+    swap Devise, :devise_attr_accessible => [ :email, :password, :password_confirmation ] do
+      user_sign_up # Doesn't raise RuntimeError
+    end
+  end
+ 
   test 'a guest user should receive the confirmation instructions from the default mailer' do
     user_sign_up
     assert_equal ['please-change-me@config-initializers-devise.com'], ActionMailer::Base.deliveries.first.from

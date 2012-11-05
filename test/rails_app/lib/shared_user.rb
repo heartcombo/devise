@@ -14,7 +14,7 @@ module SharedUser
   end
 
   module ExtendMethods
-    def new_with_session(params, session)
+    def new_with_session(params, session, options)
       super.tap do |user|
         if data = session["devise.facebook_data"]
           user.email = data["email"]

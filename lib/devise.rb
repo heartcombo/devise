@@ -51,6 +51,10 @@ module Devise
   mattr_accessor :stretches
   @@stretches = 10
 
+  # List of accessible attributes
+  mattr_accessor :devise_attr_accessible
+  @@devise_attr_accessible = false
+
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]

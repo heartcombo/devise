@@ -172,7 +172,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
+        Devise::Models.config(self, :devise_attr_accessible, :authentication_keys, :request_keys, :strip_whitespace_keys,
           :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage)
 
         def serialize_into_session(record)

@@ -16,8 +16,8 @@ module Devise
         #
         # By default discards all information sent by the session by calling
         # new with params.
-        def new_with_session(params, session)
-          new(params)
+        def new_with_session(params, session, *options)
+          new(params, *options)
         end
       end
     end

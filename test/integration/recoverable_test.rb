@@ -190,15 +190,43 @@ class PasswordTest < ActionController::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
-  test 'does not sign in user automatically after changing its password if it\'s locked' do
-    user = create_user(:locked => true)
-    request_forgot_password
-    reset_password :reset_password_token => user.reload.reset_password_token
+  test 'does not sign in user automatically after changing its password if it\'s locked and unlock strategy is :none or :time' do
+    [:none, :time].each do |strategy|
+      swap Devise, :unlock_strategy => strategy do
+        user = create_user(:locked => true)
+        request_forgot_password
+        reset_password :reset_password_token => user.reload.reset_password_token
 
-    assert_contain 'Your password was changed successfully.'
-    assert_not_contain 'You are now signed in.'
-    assert_equal new_user_session_path, @request.path
-    assert !warden.authenticated?(:user)
+        assert_contain 'Your password was changed successfully.'
+        assert_not_contain 'You are now signed in.'
+        assert_equal new_user_session_path, @request.path
+        assert !warden.authenticated?(:user)
+      end
+    end
+  end
+
+  test 'unlocks and signs in locked user automatically after changing it\'s password if unlock strategy is :email' do
+    swap Devise, :unlock_strategy => :email do
+      user = create_user(:locked => true)
+      request_forgot_password
+      reset_password :reset_password_token => user.reload.reset_password_token
+
+      assert_contain 'Your password was changed successfully.'
+      assert !user.reload.access_locked?
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'unlocks and signs in locked user automatically after changing it\'s password if unlock strategy is :both' do
+    swap Devise, :unlock_strategy => :both do
+      user = create_user(:locked => true)
+      request_forgot_password
+      reset_password :reset_password_token => user.reload.reset_password_token
+
+      assert_contain 'Your password was changed successfully.'
+      assert !user.reload.access_locked?
+      assert warden.authenticated?(:user)
+    end
   end
 
   test 'sign in user automatically and confirm after changing its password if it\'s not confirmed' do

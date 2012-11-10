@@ -6,8 +6,8 @@ class Admin
   include SharedAdmin
 
   ## Database authenticatable
-  field :email,              :type => String, :null => true
-  field :encrypted_password, :type => String, :null => true
+  field :email,              :type => String
+  field :encrypted_password, :type => String
 
   ## Recoverable
   field :reset_password_token,   :type => String
@@ -24,4 +24,6 @@ class Admin
 
   ## Lockable
   field :locked_at, :type => Time
+
+  field :active, :type => Boolean, :default => false
 end

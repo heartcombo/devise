@@ -456,7 +456,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_match '<?xml version="1.0" encoding="UTF-8"?>', response.body
     assert_match /<user>.*<\/user>/m, response.body
     assert_match '<email></email>', response.body
-    assert_match '<password nil="true"></password>', response.body
+    assert_match '<password nil="true"', response.body
   end
 
   test 'sign in stub in json format' do

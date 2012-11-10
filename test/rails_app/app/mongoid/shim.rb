@@ -7,13 +7,13 @@ module Shim
   end
 
   module ClassMethods
-    def last(options={})
+    def last(options = {})
       options.delete(:order) if options[:order] == "id"
-      super(options)
+      where(options).last
     end
 
     def find_by_email(email)
-      first(:conditions => { :email => email })
+      find_by(:email => email)
     end
   end
 

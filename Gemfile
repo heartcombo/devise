@@ -11,7 +11,7 @@ group :test do
   gem "omniauth-facebook"
   gem "omniauth-openid", "~> 1.0.1"
   gem "webrat", "0.7.2", :require => false
-  gem "mocha", :require => false
+  gem "mocha", "0.10.0", :require => false
 end
 
 platforms :jruby do
@@ -24,8 +24,6 @@ platforms :ruby do
   gem "sqlite3"
 
   group :mongoid do
-    gem "mongo", "~> 1.3.0"
-    gem "mongoid", "~> 2.0"
-    gem "bson_ext", "~> 1.3.0"
+    gem "mongoid", "~> 3.0"
   end
 end

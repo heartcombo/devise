@@ -4,6 +4,8 @@
   * Make #set_flash_message respect i18n-set resource_name (by @latortuga)
   * Separate `sign_in` and `sign_up` on RegistrationsController (by @rubynortheast)
   * Add autofocus to default views (by @Radagaisus)
+  * Support Mongoid 3 onwards (by @durran)
+  * Unlock user on password reset (by @marcinb)
 
 * bug fix
   * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)
@@ -11,8 +13,10 @@
   * Do not set flash messages for non navigational requests on session sign out (by @mathieul)
   * Set the proper fields as required on the lockable module (by @nickhoffman)
   * Respects Devise mailer default's reply_to (by @mrchrisadams)
-  * Properly assign resource on sign_in action (by @adammcnamara)
+  * Properly assign resource on `sign_in` related action (by @adammcnamara)
   * Unlockable could leak account existence on paranoid mode (by @latortuga)
+  * `update_with_password` doesn't change encrypted password when it is invalid (by @nashby)
+  * Properly handle namespaced models on Active Record generator (by @nashby)
 
 == 2.1.2
 

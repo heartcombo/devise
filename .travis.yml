@@ -1,12 +1,32 @@
+language: ruby
 script: "bundle exec rake test"
 rvm:
   - 1.8.7
   - 1.9.2
   - 1.9.3
   - ree
+env:
+  - DEVISE_ORM=mongoid
+  - DEVISE_ORM=active_record
+matrix:
+  exclude:
+    - rvm: ree
+      env: DEVISE_ORM=mongoid
+      gemfile: Gemfile
+    - rvm: 1.8.7
+      env: DEVISE_ORM=mongoid
+      gemfile: Gemfile
+    - rvm: ree
+      env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-3.1.x
+    - rvm: 1.8.7
+      env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-3.1.x
 gemfile:
   - gemfiles/Gemfile.rails-3.1.x
   - Gemfile
+services:
+  - mongodb
 notifications:
   recipients:
     - jose.valim@plataformatec.com.br

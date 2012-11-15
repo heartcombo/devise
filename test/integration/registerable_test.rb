@@ -203,7 +203,7 @@ class RegistrationTest < ActionController::IntegrationTest
 
     fill_in 'password', :with => 'pas123'
     fill_in 'password confirmation', :with => ''
-    fill_in 'current password', :with => '123456'
+    fill_in 'current password', :with => '12345678'
     click_button 'Update'
 
     assert_contain "Password doesn't match confirmation"

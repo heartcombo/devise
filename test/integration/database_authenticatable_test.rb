@@ -53,12 +53,14 @@ class DatabaseAuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'sign in with invalid email should return to sign in form with error message' do
-    sign_in_as_admin do
-      fill_in 'email', :with => 'wrongemail@test.com'
-    end
+    store_translations :en, :devise => { :failure => { :admin => { :invalid_email => 'Invalid email address' } } } do
+      sign_in_as_admin do
+        fill_in 'email', :with => 'wrongemail@test.com'
+      end
 
-    assert_contain 'Invalid email or password'
-    assert_not warden.authenticated?(:admin)
+      assert_contain 'Invalid email address'
+      assert_not warden.authenticated?(:admin)
+    end
   end
 
   test 'sign in with invalid pasword should return to sign in form with error message' do

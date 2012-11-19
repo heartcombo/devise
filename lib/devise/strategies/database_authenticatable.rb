@@ -6,7 +6,7 @@ module Devise
     class DatabaseAuthenticatable < Authenticatable
       def authenticate!
         resource = valid_password? && mapping.to.find_for_database_authentication(authentication_hash)
-        return fail(:nonexistent) unless resource
+        return fail(:invalid_email) unless resource
 
         if validate(resource){ resource.valid_password?(password) }
           resource.after_database_authentication

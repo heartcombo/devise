@@ -87,7 +87,7 @@ module Devise
   # an one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
   mattr_accessor :email_regexp
-  @@email_regexp = /\A[\w\._%-]+@[\w\.-]+\.[a-zA-Z]{2,4}\z/
+  @@email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
 
   # Range validation for password length
   mattr_accessor :password_length

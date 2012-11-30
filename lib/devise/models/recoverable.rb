@@ -101,10 +101,10 @@ module Devise
         end
 
       module ClassMethods
-        # Attempt to find a user by its email. If a record is found, send new
-        # password instructions to it. If not user is found, returns a new user
+        # Attempt to find a user by it's email. If a record is found, send new
+        # password instructions to it. If user is not found, returns a new user
         # with an email not found error.
-        # Attributes must contain the user email
+        # Attributes must contain the user's email
         def send_reset_password_instructions(attributes={})
           recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
           recoverable.send_reset_password_instructions if recoverable.persisted?

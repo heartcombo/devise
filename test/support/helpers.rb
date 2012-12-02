@@ -29,6 +29,10 @@ class ActiveSupport::TestCase
       :password_confirmation => '12345678' }.update(attributes)
   end
 
+  def new_user_with_class(klass=User, attributes={})
+    klass.new(valid_attributes(attributes))
+  end
+
   def new_user(attributes={})
     User.new(valid_attributes(attributes))
   end

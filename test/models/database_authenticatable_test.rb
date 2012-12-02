@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_models'
 require 'digest/sha1'
 
 class DatabaseAuthenticatableTest < ActiveSupport::TestCase

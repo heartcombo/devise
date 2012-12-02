@@ -164,11 +164,19 @@ module Devise
       end
 
       def downcase_keys
-        self.class.case_insensitive_keys.each { |k| self[k].try(:downcase!) }
+        self.class.case_insensitive_keys.each { |k| apply_to_attribute_or_variable(k, :downcase!) }
       end
 
       def strip_whitespace
-        self.class.strip_whitespace_keys.each { |k| self[k].try(:strip!) }
+        self.class.strip_whitespace_keys.each { |k| apply_to_attribute_or_variable(k, :strip!) }
+      end
+
+      def apply_to_attribute_or_variable(attr, method)
+        if self[attr]
+          self[attr].try(method)
+        else
+          send(attr).try(method)
+        end
       end
 
       module ClassMethods

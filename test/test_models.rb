@@ -25,4 +25,3 @@ end
 
 class Inheritable < Admin
 end
-

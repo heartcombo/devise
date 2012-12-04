@@ -14,18 +14,18 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should downcase case insensitive keys that refer to virtual attributes when saving' do
-    email = 'Foo@Bar1.com'
+    email        = 'Foo@Bar1.com'
     confirmation = 'Foo@Bar1.com'
-    pw = '12345678'
-    user = UserWithVirtualAttributes.new(
-      :email => email,
-      :email_confirmation => confirmation,
-      :password => pw,
-      :password_confirmation => pw)
+    attributes   = valid_attributes(:email => email, :email_confirmation => confirmation)
 
-    assert_nothing_raised "ActiveRecord::RecordInvalid" do
+    user = UserWithVirtualAttributes.new(attributes)
+    assert_equal confirmation, user.email_confirmation
+
+    assert_nothing_raised ActiveRecord::RecordInvalid do
       user.save!
     end
+
+    assert_equal confirmation.downcase, user.email_confirmation
   end
 
   test 'should remove whitespace from strip whitespace keys when saving' do

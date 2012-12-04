@@ -172,11 +172,7 @@ module Devise
       end
 
       def apply_to_attribute_or_variable(attr, method)
-        if self[attr]
-          self[attr].try(method)
-        else
-          send(attr).try(method)
-        end
+        (self[attr] || send(attr)).try(method)
       end
 
       module ClassMethods
@@ -207,7 +203,7 @@ module Devise
         # it may be wrapped as well. For instance, database authenticatable
         # provides a `find_for_database_authentication` that wraps a call to
         # this method. This allows you to customize both database authenticatable
-        # or the whole authenticate stack by customize `find_for_authentication.` 
+        # or the whole authenticate stack by customize `find_for_authentication.`
         #
         # Overwrite to add customized conditions, create a join, or maybe use a
         # namedscope to filter records while authenticating.

@@ -17,14 +17,10 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     email        = 'Foo@Bar1.com'
     confirmation = 'Foo@Bar1.com'
     attributes   = valid_attributes(:email => email, :email_confirmation => confirmation)
-
     user = UserWithVirtualAttributes.new(attributes)
+
     assert_equal confirmation, user.email_confirmation
-
-    assert_nothing_raised ActiveRecord::RecordInvalid do
-      user.save!
-    end
-
+    user.save!
     assert_equal confirmation.downcase, user.email_confirmation
   end
 

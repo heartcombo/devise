@@ -24,9 +24,9 @@ class DeviseHelperTest < ActionController::IntegrationTest
   test 'test errors.messages.not_saved with single error from i18n' do
     get new_user_registration_path
 
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user123'
-    click_button 'Sign up'
+    fill_in 'user_password', :with => 'new_user123'
+    fill_in 'user_password_confirmation', :with => 'new_user123'
+    click_button
 
     assert_have_selector '#error_explanation'
     assert_contain "Erreur lors de l'enregistrement de 'utilisateur': 1 erreur"
@@ -38,11 +38,12 @@ class DeviseHelperTest < ActionController::IntegrationTest
     (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
 
     get new_user_registration_path
+    #$stderr.puts body.inspect
 
-    fill_in 'email', :with => 'invalid_email'
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user321'
-    click_button 'Sign up'
+    fill_in 'user_email', :with => 'invalid_email'
+    fill_in 'user_password', :with => 'new_user123'
+    fill_in 'user_password_confirmation', :with => 'new_user321'
+    click_button
 
     assert_have_selector '#error_explanation'
     assert_contain "Erreur lors de l'enregistrement de 'utilisateur': 2 erreurs"

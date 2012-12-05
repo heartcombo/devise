@@ -1,18 +1,24 @@
-<h2>Sign up</h2>
+<h2><%= I18n.t('devise.registrations.new.heading') %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
+  <div>
+    <%= f.label :email, I18n.t('devise.registrations.new.form.email') %><br />
+    <%= f.email_field :email, :autofocus => true %>
+  </div>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+  <div>
+    <%= f.label :password, I18n.t('devise.registrations.new.form.password') %><br />
+    <%= f.password_field :password %>
+  </div>
 
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <div>
+    <%= f.label :password_confirmation, I18n.t('devise.registrations.new.form.password_confirmation') %><br />
+    <%= f.password_field :password_confirmation %>
+  </div>
 
-  <div><%= f.submit "Sign up" %></div>
+  <div><%= f.submit I18n.t('devise.registrations.new.actions.sign_up') %></div>
 <% end %>
 
 <%= render "devise/shared/links" %>

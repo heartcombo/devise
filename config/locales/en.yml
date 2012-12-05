@@ -26,13 +26,36 @@ en:
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
+      new:
+        heading: 'Sign in'
+        form:
+          email: 'Email'
+          password: 'Password'
+          remember_me: 'Remember me'
+        actions:
+          sign_in: 'Sign in'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
+      new:
+        heading: 'Forgot your password?'
+        form:
+          email: 'Email'
+        actions:
+          send_instructions: 'Send me reset password instructions'
+      edit:
+        heading: 'Change your password'
+        form:
+          password: 'New password'
+          password_confirmation: 'Confirm new password'
+        actions:
+          change_password: 'Change my password'
     confirmations:
+      actions:
+        send_instructions: 'Resend confirmation instructions'
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       send_paranoid_instructions: 'If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
@@ -44,17 +67,65 @@ en:
       updated: 'You updated your account successfully.'
       update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and click on the confirm link to finalize confirming your new email address."
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+      new:
+        heading: 'Sign up'
+        form:
+          email: 'Email'
+          password: 'Password'
+          password_confirmation: 'Password confirmation'
+        actions:
+          sign_up: 'Sign up'
+      edit:
+        heading: 'Edit %{resource}'
+        form:
+          email: 'Email'
+          password:
+            label: 'Password'
+            hint: "(leave blank if you don't want to change it)"
+          password_confirmation: 'Password confirmation'
+          current_password:
+            label: 'Current password'
+            hint: '(we need your current password to confirm your changes)'
+        actions:
+          update: 'Update'
+          back: 'Back'
+        cancel_account:
+          heading: 'Cancel my account'
+          description: 'Unhappy? %{cancel_account_link}.'
+          actions:
+            cancel_account:
+              text: 'Cancel my account'
+              confirmation: 'Are you sure?'
     unlocks:
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
       unlocked: 'Your account has been unlocked successfully. Please sign in to continue.'
       send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
+      new:
+        heading: 'Resend unlock instructions'
+        form:
+          email: 'Email'
+        actions:
+          resend_instructions: "Resend unlock instructions"
     omniauth_callbacks:
       success: 'Successfully authenticated from %{kind} account.'
       failure: 'Could not authenticate you from %{kind} because "%{reason}".'
     mailer:
       confirmation_instructions:
         subject: 'Confirmation instructions'
+        actions:
+          confirm_account: 'Confirm my account'
       reset_password_instructions:
         subject: 'Reset password instructions'
+        actions:
+          reset_password: 'Change my password'
       unlock_instructions:
         subject: 'Unlock Instructions'
+        actions:
+          unlock_account: 'Unlock my account'
+    shared:
+      sign_in: 'Sign in'
+      sign_up: 'Sign up'
+      reset_password: 'Forgot your password?'
+      send_confirmation_instructions: "Didn't receive confirmation instructions?"
+      send_unlock_instructions: "Didn't receive unlock instructions?"
+      omniauth_sign_in: 'Sign in with %{provider}'

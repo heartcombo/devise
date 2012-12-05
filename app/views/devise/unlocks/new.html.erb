@@ -1,12 +1,12 @@
-<h2>Resend unlock instructions</h2>
+<h2><%= I18n.t('devise.unlocks.new.heading') %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
   <%= devise_error_messages! %>
 
-  <div><%= f.label :email %><br />
+  <div><%= f.label :email, I18n.t('devise.unlocks.new.form.email') %><br />
   <%= f.email_field :email, :autofocus => true %></div>
 
-  <div><%= f.submit "Resend unlock instructions" %></div>
+  <div><%= f.submit I18n.t('devise.unlocks.new.actions.resend_instructions') %></div>
 <% end %>
 
 <%= render "devise/shared/links" %>

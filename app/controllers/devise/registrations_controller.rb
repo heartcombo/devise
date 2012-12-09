@@ -1,7 +1,7 @@
 class Devise::RegistrationsController < DeviseController
   prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, :only => [:edit, :update, :destroy]
-
+  prepend_before_filter :devise_permitted if Devise::RAILS4
   # GET /resource/sign_up
   def new
     resource = build_resource({})
@@ -39,6 +39,9 @@ class Devise::RegistrationsController < DeviseController
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
+    if Devise::RAILS4
+      resource_params = permitted_params
+    end
 
     if resource.update_with_password(resource_params)
       if is_navigational_format?
@@ -83,7 +86,11 @@ class Devise::RegistrationsController < DeviseController
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
   def build_resource(hash=nil)
-    hash ||= resource_params || {}
+    if Devise::RAILS4
+      hash = resource_params ? permitted_params : {}
+    else
+      hash ||= resource_params || {}
+    end
     self.resource = resource_class.new_with_session(hash, session)
   end
 

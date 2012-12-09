@@ -5,6 +5,7 @@ require 'orm_adapter'
 require 'set'
 require 'securerandom'
 
+
 module Devise
   autoload :Delegator,     'devise/delegator'
   autoload :FailureApp,    'devise/failure_app'
@@ -31,6 +32,7 @@ module Devise
 
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user" (this is why they are constants).
+  RAILS4 = %r(4.0).match(Rails.version) ? true : false
   ALL         = []
   CONTROLLERS = ActiveSupport::OrderedHash.new
   ROUTES      = ActiveSupport::OrderedHash.new

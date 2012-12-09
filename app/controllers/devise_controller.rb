@@ -5,12 +5,13 @@ class DeviseController < Devise.parent_controller.constantize
   helper DeviseHelper
 
   helpers = %w(resource scope_name resource_name signed_in_resource
-               resource_class resource_params devise_mapping)
+               resource_class resource_params devise_mapping devise_permitted permitted_params)
   hide_action *helpers
   helper_method *helpers
 
   prepend_before_filter :assert_is_devise_resource!
   respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
+  mattr_accessor :params_whitelist
 
   # Gets the actual resource stored in the instance variable
   def resource
@@ -27,6 +28,7 @@ class DeviseController < Devise.parent_controller.constantize
   def resource_class
     devise_mapping.to
   end
+
 
   def resource_params
     params[resource_name]
@@ -56,7 +58,19 @@ class DeviseController < Devise.parent_controller.constantize
 
   hide_action :_prefixes
 
+  public
+
+  # Whitelist default generated attributes
+  def devise_permitted(whitelist=[:email, :password, :password_confirmation, :current_password])
+    @@params_whitelist = whitelist
+  end
+
   protected
+
+  # In concordance to Rails 4 Strong Parameters guidelines
+  def permitted_params
+    params.require(resource_class.name.downcase.to_sym).permit(@@params_whitelist)
+  end
 
   # Checks whether it's a devise mapped resource or not.
   def assert_is_devise_resource! #:nodoc:
@@ -96,17 +110,20 @@ MESSAGE
   # Build a devise resource.
   # Assignment bypasses attribute protection when :unsafe option is passed
   def build_resource(hash = nil, options = {})
-    hash ||= resource_params || {}
-
-    if options[:unsafe]
-      self.resource = resource_class.new.tap do |resource|
-        hash.each do |key, value|
-          setter = :"#{key}="
-          resource.send(setter, value) if resource.respond_to?(setter)
-        end
-      end
+    if Devise::RAILS4
+      self.resource = resource_params ? resource_class.new(permitted_params) : resource_class.new
     else
-      self.resource = resource_class.new(hash)
+      hash ||= resource_params || {}
+      if options[:unsafe]
+        self.resource = resource_class.new.tap do |resource|
+          hash.each do |key, value|
+            setter = :"#{key}="
+            resource.send(setter, value) if resource.respond_to?(setter)
+          end
+        end
+      else
+        self.resource = resource_class.new(hash)
+      end
     end
   end
 

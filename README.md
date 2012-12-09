@@ -162,6 +162,25 @@ current_member
 member_session
 ```
 
+### Rails 4 Beta
+
+By default Devise will whitelist [:email, :password, :password_confirmation, :password_current] on install. However in Rails 4.0, Strong Parameters requires any additional parameters to be explicitly permitted. As permission logic should be in the controller by nature, you would need to create a custom controller and define your permissions there.
+
+```ruby
+#config/routes.rb
+devise_for :users, :controllers => { :registrations => "custom_controller" }
+
+#apps/controllers/registrations_controller.rb
+class RegistrationsController < Devise::RegistrationsController
+  before_filter :permissions
+
+  def permissions
+    # Redefine the list of permissible parameters
+    devise_permitted [:name, :email, :password, :password_confirmation, :password_current]
+  end
+end
+```
+
 ### Configuring Models
 
 The devise method in your models also accepts some options to configure its modules. For example, you can choose the cost of the encryption algorithm with:

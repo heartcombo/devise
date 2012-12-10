@@ -176,7 +176,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def permissions
     # Redefine the list of permissible parameters
-    devise_permitted [:name, :email, :password, :password_confirmation, :password_current]
+    devise_permitted [:name, :email, :password, :password_confirmation, :current_password]
   end
 end
 ```

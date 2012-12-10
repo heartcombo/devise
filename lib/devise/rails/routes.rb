@@ -352,7 +352,7 @@ module ActionDispatch::Routing
         resource :session, :only => [], :controller => controllers[:sessions], :path => "" do
           get   :new,     :path => mapping.path_names[:sign_in],  :as => "new"
           post  :create,  :path => mapping.path_names[:sign_in]
-          match :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
+          delete :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
         end
       end
 
@@ -398,12 +398,12 @@ module ActionDispatch::Routing
 
         providers = Regexp.union(mapping.to.omniauth_providers.map(&:to_s))
 
-        match "#{path_prefix}/:provider",
+        get "#{path_prefix}/:provider",
           :constraints => { :provider => providers },
           :to => "#{controllers[:omniauth_callbacks]}#passthru",
           :as => :omniauth_authorize
 
-        match "#{path_prefix}/:action/callback",
+        get "#{path_prefix}/:action/callback",
           :constraints => { :action => providers },
           :to => controllers[:omniauth_callbacks],
           :as => :omniauth_callback

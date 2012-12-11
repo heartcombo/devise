@@ -110,17 +110,17 @@ MESSAGE
   # Build a devise resource.
   # Assignment bypasses attribute protection when :unsafe option is passed
   def build_resource(hash = nil, options = {})
-    if Devise::RAILS4
-      self.resource = resource_params ? resource_class.new(permitted_params) : resource_class.new
-    else
-      hash ||= resource_params || {}
-      if options[:unsafe]
-        self.resource = resource_class.new.tap do |resource|
-          hash.each do |key, value|
-            setter = :"#{key}="
-            resource.send(setter, value) if resource.respond_to?(setter)
-          end
+    hash ||= resource_params || {}
+    if options[:unsafe]
+      self.resource = resource_class.new.tap do |resource|
+        hash.each do |key, value|
+          setter = :"#{key}="
+          resource.send(setter, value) if resource.respond_to?(setter)
         end
+      end
+    else
+      if !hash.empty?
+        self.resource = Devise::RAILS4 ? resource_class.new(permitted_params) : resource_class.new(hash)
       else
         self.resource = resource_class.new(hash)
       end

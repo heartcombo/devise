@@ -64,7 +64,7 @@ class FailureTest < ActiveSupport::TestCase
         swap Rails.application.config, :relative_url_root => "/scoped" do
           call_failure('warden.options' => { :scope => :scoped_admin })
           assert_equal 302, @response.first
-          assert_equal 'http://test.host/scoped/scoped_admin/sign_in', @response.second['Location']
+          assert_equal 'http://test.host/scoped/scoped_admins/sign_in', @response.second['Location']
         end
       end
     end

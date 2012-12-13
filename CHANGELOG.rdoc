@@ -10,6 +10,7 @@
   * Support alternate sign in error message when email record does not exist (@gabetax)
 
 * bug fix
+  * unconfirmed_email now uses the proper e-mail on salutation
   * Fix default email_regexp config to not allow spaces (by @kukula)
   * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)
   * Properly camelize omniauth strategies (by @saizai)

@@ -294,7 +294,6 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_nil admin.confirmation_token
   end
 
-
   test 'should regenerate confirmation token after changing email' do
     admin = create_admin
     assert admin.confirm!
@@ -310,6 +309,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_email_sent "new_test@example.com" do
       assert admin.update_attributes(:email => 'new_test@example.com')
     end
+    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should not send confirmation by email after changing password' do

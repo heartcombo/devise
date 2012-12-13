@@ -1,4 +1,4 @@
-Welcome <%= @resource.email %>!
+Welcome <%= @headers[:to] %>!
 
 You can confirm your account through the link below:
 

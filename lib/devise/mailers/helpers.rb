@@ -38,7 +38,7 @@ module Devise
           headers.merge!(resource.headers_for(action))
         end
 
-        headers
+        @headers = headers
       end
 
       def mailer_reply_to(mapping)

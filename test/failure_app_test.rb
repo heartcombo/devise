@@ -59,6 +59,14 @@ class FailureTest < ActiveSupport::TestCase
           assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
         end
       end
+
+      test 'returns to the default redirect location considering the relative url root and scope' do
+        swap Rails.application.config, :relative_url_root => "/scoped" do
+          call_failure('warden.options' => { :scope => :scoped_admin })
+          assert_equal 302, @response.first
+          assert_equal 'http://test.host/scoped/scoped_admin/sign_in', @response.second['Location']
+        end
+      end
     end
 
     test 'uses the proxy failure message as symbol' do

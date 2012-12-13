@@ -72,6 +72,10 @@ Rails.application.routes.draw do
     devise_for :sub_admin, :class_name => "Admin"
   end
 
+  scope 'scoped' do
+    devise_for :scoped_admins, :class_name => "Admin"
+  end
+
   namespace :publisher, :path_names => { :sign_in => "i_dont_care", :sign_out => "get_out" } do
     devise_for :accounts, :class_name => "Admin", :path_names => { :sign_in => "get_in" }
   end

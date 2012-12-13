@@ -10,7 +10,7 @@ class DeviseController < Devise.parent_controller.constantize
   helper_method *helpers
 
   prepend_before_filter :assert_is_devise_resource!
-  respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
+  respond_to :html if mimes_for_respond_to.empty?
 
   # Gets the actual resource stored in the instance variable
   def resource

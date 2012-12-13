@@ -303,8 +303,10 @@ class ReconfirmableRegistrationTest < ActionController::IntegrationTest
 
     assert_current_url '/admin_area/home'
     assert_contain 'but we need to verify your new email address'
+    assert_equal 'admin.new@example.com', Admin.first.unconfirmed_email
 
-    assert_equal "admin.new@example.com", Admin.first.unconfirmed_email
+    get edit_admin_registration_path
+    assert_contain 'Currently waiting confirmation for: admin.new@example.com'
   end
 
   test 'a signed in admin should not see a reconfirmation message if they did not change their password' do

@@ -268,6 +268,7 @@ class ConfirmationOnChangeTest < ActionController::IntegrationTest
     admin = create_admin
     admin.update_attributes(:email => 'first_test@example.com')
     assert_equal 'first_test@example.com', admin.unconfirmed_email
+
     confirmation_token = admin.confirmation_token
     admin.update_attributes(:email => 'second_test@example.com')
     assert_equal 'second_test@example.com', admin.unconfirmed_email

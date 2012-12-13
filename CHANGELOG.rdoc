@@ -6,8 +6,11 @@
   * Add autofocus to default views (by @Radagaisus)
   * Support Mongoid 3 onwards (by @durran)
   * Unlock user on password reset (by @marcinb)
+  * Allow validation callbacks to apply to virtual attributes (by @latortuga)
+  * Support alternate sign in error message when email record does not exist (@gabetax)
 
 * bug fix
+  * Fix default email_regexp config to not allow spaces (by @kukula)
   * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)
   * Properly camelize omniauth strategies (by @saizai)
   * Do not set flash messages for non navigational requests on session sign out (by @mathieul)

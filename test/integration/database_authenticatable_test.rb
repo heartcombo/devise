@@ -53,7 +53,7 @@ class DatabaseAuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'sign in with invalid email should return to sign in form with error message' do
-    store_translations :en, :devise => { :failure => { :admin => { :invalid_email => 'Invalid email address' } } } do
+    store_translations :en, :devise => { :failure => { :admin => { :not_found_in_database => 'Invalid email address' } } } do
       sign_in_as_admin do
         fill_in 'email', :with => 'wrongemail@test.com'
       end

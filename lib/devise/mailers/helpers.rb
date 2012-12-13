@@ -38,13 +38,14 @@ module Devise
           headers.merge!(resource.headers_for(action))
         end
 
-        @headers = headers
+        @email = headers[:to]
+        headers
       end
 
       def mailer_reply_to(mapping)
         mailer_sender(mapping, :reply_to)
       end
-      
+
       def mailer_from(mapping)
         mailer_sender(mapping, :from)
       end

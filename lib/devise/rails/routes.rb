@@ -352,8 +352,16 @@ module ActionDispatch::Routing
         resource :session, :only => [], :controller => controllers[:sessions], :path => "" do
           get   :new,     :path => mapping.path_names[:sign_in],  :as => "new"
           post  :create,  :path => mapping.path_names[:sign_in]
-          delete :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
+          sign_out_via_route(mapping)
         end
+      end
+
+      def sign_out_via_route(mapping)
+        options = Devise.sign_out_via
+        options = options.class == Array ? options : [options]
+        delete :destroy, :path => mapping.path_names[:sign_out], :as => "destroy" if options.include?(:delete)
+        post :destroy, :path => mapping.path_names[:sign_out], :as => "destroy" if options.include?(:post)
+        get :destroy, :path => mapping.path_names[:sign_out], :as => "destroy" if options.empty?
       end
 
       def devise_password(mapping, controllers) #:nodoc:

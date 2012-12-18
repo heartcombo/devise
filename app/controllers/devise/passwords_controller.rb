@@ -21,8 +21,11 @@ class Devise::PasswordsController < DeviseController
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
-    self.resource = resource_class.new
-    resource.reset_password_token = params[:reset_password_token]
+    self.resource = resource_class.find_or_initialize_with_error_by(:reset_password_token, params[:reset_password_token])
+    if resource.errors[:reset_password_token].any?
+      flash[:error] = resource.errors.full_message(:reset_password_token, resource.errors[:reset_password_token].first)
+      redirect_to new_user_password_path
+    end
   end
 
   # PUT /resource/password

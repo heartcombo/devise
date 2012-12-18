@@ -132,6 +132,16 @@ class PasswordTest < ActionController::IntegrationTest
     assert_redirected_to "/users/sign_in"
   end
 
+  test 'not authenticated user with an invalid reset password token should not be able to visit the edit_user_password page' do
+    get edit_user_password_path(:reset_password_token => 'something_invalid')
+    assert_response :redirect
+    assert_redirected_to "/users/password/new"
+
+    get "/users/password/new"
+    assert_have_selector '#flash_error'
+    assert_contain /Reset password token(.*)invalid/
+  end
+
   test 'not authenticated user with invalid reset password token should not be able to change his password' do
     user = create_user
     reset_password :reset_password_token => 'invalid_reset_password'

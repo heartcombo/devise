@@ -14,10 +14,6 @@ module Devise
     #   # resets the user password and save the record, true if valid passwords are given, otherwise false
     #   User.find(1).reset_password!('password123', 'password123')
     #
-    #   # only resets the user password, without saving the record
-    #   user = User.find(1)
-    #   user.reset_password('password123', 'password123')
-    #
     #   # creates a new token and send it with instructions about how to reset the password
     #   User.find(1).send_reset_password_instructions
     #

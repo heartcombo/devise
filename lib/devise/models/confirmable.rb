@@ -249,6 +249,17 @@ module Devise
           confirmable.confirm! if confirmable.persisted?
           confirmable
         end
+        
+        # find an already confirmed used by token
+        # return the user
+        # useful if you are using confirmable to take payment or otherwise process
+        # the user account on the initial confirmation only and want to enable
+        # changing  email with confirmations
+        
+        def confirm_changed_by_token(confirmation_token)
+          confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
+          if confirmable.persisted?   confirmable        
+        end
 
         # Generate a token checking if one does not already exist in the database.
         def confirmation_token

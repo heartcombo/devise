@@ -258,7 +258,9 @@ module Devise
         
         def confirm_changed_by_token(confirmation_token)
           confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
-          if confirmable.persisted?   confirmable        
+          if confirmable.persisted? 
+          confirmable        
+          end
         end
 
         # Generate a token checking if one does not already exist in the database.

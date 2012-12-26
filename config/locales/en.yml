@@ -24,6 +24,9 @@ en:
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
+      new:
+        header: 'Sign in'
+        sign_in_button: 'Sign in'
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:
@@ -32,7 +35,17 @@ en:
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
+      edit:
+        header: 'Change your password'
+        new_password: 'New password'
+        new_passowrd_confirm: 'Confirm new password'
+        submit_text: 'Change my password'
+      new:
+        header: 'Forgot your password?'
+        submit_text: 'Send me reset password instructions'
     confirmations:
+      header: 'Resend confirmation instructions'
+      submit_button: 'Resend confirmation instructions'
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       send_paranoid_instructions: 'If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
@@ -44,7 +57,25 @@ en:
       updated: 'You updated your account successfully.'
       update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and click on the confirm link to finalize confirming your new email address."
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+      edit:
+        header: 'Edit '
+        waiting_for_conformation: 'Currently waiting confirmation for: '
+        leave_blank: '(leave blank if you don''t want to change it)'
+        we_need_password: '(we need your current password to confirm your changes)'
+        update_button: 'Update'
+        cancel_header: 'Cancel my account'
+        cancel_label: 'Unhappy? '
+        cancel_link: 'Cancel my account'
+        cancel_confirmation: 'Are you sure?'
+        back_link: 'Back'
+      new:
+        header: 'Sign up'
+        signup_button: 'Sign up'
+
     unlocks:
+      new:
+        header: 'Resend unlock instructions'
+        resend_button: 'Resend unlock instructions'
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
       unlocked: 'Your account has been unlocked successfully. Please sign in to continue.'
       send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
@@ -53,8 +84,30 @@ en:
       failure: 'Could not authenticate you from %{kind} because "%{reason}".'
     mailer:
       confirmation_instructions:
+        welcome: 'Welcome'
+        view_message: 'You can confirm your account email through the link below:'
+        link_text: 'Confirm my account'
         subject: 'Confirmation instructions'
       reset_password_instructions:
+        hello: 'Hello'
+        view_message1: 'Someone has requested a link to change your password. You can do this through the link below.'
+        link_text: 'Change my password'
+        view_message2: 'If you didn''t request this, please ignore this email.'
+        view_message3: 'Your password won''t change until you access the link above and create a new one.'
         subject: 'Reset password instructions'
       unlock_instructions:
+        hello: 'Hello'
+        message1: 'Your account has been locked due to an excessive number of unsuccessful sign in attempts.'
+        message2: 'Click the link below to unlock your account:'
+        link_text: 'Unlock my account'
         subject: 'Unlock Instructions'
+
+
+    shared:
+      links:
+        sign_in: 'Sign in'
+        sign_up: 'Sign up'
+        forgot_password: 'Forgot your password?'
+        not_received_confirmation_instructions: 'Didn''t receive confirmation instructions?'
+        not_received_unlock_instructions: 'Didn''t receive unlock instructions?'
+        sign_in_with: 'Sign in with'

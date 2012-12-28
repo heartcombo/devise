@@ -11,7 +11,6 @@ class DeviseController < Devise.parent_controller.constantize
 
   prepend_before_filter :assert_is_devise_resource!
   respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
-  mattr_accessor :params_whitelist
 
   # Gets the actual resource stored in the instance variable
   def resource
@@ -58,19 +57,18 @@ class DeviseController < Devise.parent_controller.constantize
 
   hide_action :_prefixes
 
-  public
 
-  # Whitelist default generated attributes
-  def devise_permitted(whitelist=[:email, :password, :password_confirmation, :current_password])
-    @@params_whitelist = whitelist
+  # To define custom whitelist
+  def devise_permitted(whitelist)
+    Devise.params_whitelist = whitelist
   end
-
-  protected
 
   # In concordance to Rails 4 Strong Parameters guidelines
   def permitted_params
-    params.require(resource_class.name.downcase.to_sym).permit(@@params_whitelist)
+    params.require(resource_class.name.downcase.to_sym).permit(Devise.params_whitelist)
   end
+
+  protected
 
   # Checks whether it's a devise mapped resource or not.
   def assert_is_devise_resource! #:nodoc:

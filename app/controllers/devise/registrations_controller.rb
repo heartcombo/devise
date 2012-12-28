@@ -39,9 +39,7 @@ class Devise::RegistrationsController < DeviseController
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
-    if Devise::RAILS4
-      resource_params = permitted_params
-    end
+    resource_params = Devise::RAILS4 ? permitted_params : params[resource_name]
 
     if resource.update_with_password(resource_params)
       if is_navigational_format?

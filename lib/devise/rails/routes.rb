@@ -352,16 +352,13 @@ module ActionDispatch::Routing
         resource :session, :only => [], :controller => controllers[:sessions], :path => "" do
           get   :new,     :path => mapping.path_names[:sign_in],  :as => "new"
           post  :create,  :path => mapping.path_names[:sign_in]
-          sign_out_via_route(mapping)
-        end
-      end
+          options = [mapping.sign_out_via].flatten.to_set
+          if Set[:post,:delete].subset? options
+            match :destroy, :path => mapping.path_names[:sign_out_via_delete_or_post], :as => "destroy", via: mapping.sign_out_via
+          end
+          match :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", via: mapping.sign_out_via
 
-      def sign_out_via_route(mapping)
-        options = Devise.sign_out_via
-        options = options.class == Array ? options : [options]
-        delete :destroy, :path => mapping.path_names[:sign_out], :as => "destroy" if options.include?(:delete)
-        post :destroy, :path => mapping.path_names[:sign_out], :as => "destroy" if options.include?(:post)
-        get :destroy, :path => mapping.path_names[:sign_out], :as => "destroy" if options.empty?
+        end
       end
 
       def devise_password(mapping, controllers) #:nodoc:
@@ -406,15 +403,17 @@ module ActionDispatch::Routing
 
         providers = Regexp.union(mapping.to.omniauth_providers.map(&:to_s))
 
-        get "#{path_prefix}/:provider",
+        match "#{path_prefix}/:provider",
           :constraints => { :provider => providers },
           :to => "#{controllers[:omniauth_callbacks]}#passthru",
-          :as => :omniauth_authorize
+          :as => :omniauth_authorize,
+          :via => [:get, :post]
 
-        get "#{path_prefix}/:action/callback",
+        match "#{path_prefix}/:action/callback",
           :constraints => { :action => providers },
           :to => controllers[:omniauth_callbacks],
-          :as => :omniauth_callback
+          :as => :omniauth_callback,
+          :via => [:get, :post]
       ensure
         @scope[:path] = path
       end

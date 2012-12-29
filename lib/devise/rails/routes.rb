@@ -235,6 +235,11 @@ module ActionDispatch::Routing
           end
         end
       end
+    rescue Exception
+      # If we are re-setting the database,
+      # or migrating the database (maybe in production),
+      # then ignore the error
+      raise unless ARGV.join.include?('db:migrate')
     end
 
     # Allow you to add authentication request from the router.

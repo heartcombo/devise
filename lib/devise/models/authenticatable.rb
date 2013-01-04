@@ -93,10 +93,6 @@ module Devise
       def authenticatable_salt
       end
 
-      def headers_for(name)
-        {}
-      end
-
       array = %w(serializable_hash)
       # to_xml does not call serializable_hash on 3.1
       array << "to_xml" if Rails::VERSION::STRING[0,3] == "3.1"
@@ -159,8 +155,8 @@ module Devise
       #       end
       #     end
       #
-      def send_devise_notification(notification)
-        devise_mailer.send(notification, self).deliver
+      def send_devise_notification(notification, opts={})
+        devise_mailer.send(notification, self, opts).deliver
       end
 
       def downcase_keys

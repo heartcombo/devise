@@ -11,9 +11,9 @@ module Devise
       protected
 
       # Configure default email options
-      def devise_mail(record, action)
+      def devise_mail(record, action, opts={})
         initialize_from_record(record)
-        mail headers_for(action)
+        mail headers_for(action, opts)
       end
 
       def initialize_from_record(record)
@@ -25,16 +25,19 @@ module Devise
         @devise_mapping ||= Devise.mappings[scope_name]
       end
 
-      def headers_for(action)
+      def headers_for(action, opts)
         headers = {
           :subject       => translate(devise_mapping, action),
           :to            => resource.email,
           :from          => mailer_sender(devise_mapping),
           :reply_to      => mailer_reply_to(devise_mapping),
-          :template_path => template_paths
-        }
+          :template_path => template_paths,
+          :template_name => action
+        }.merge(opts)
 
         if resource.respond_to?(:headers_for)
+          ActiveSupport::Deprecation.warn "Calling headers_for in the model is no longer supported. " <<
+            "Please customize your mailer instead."
           headers.merge!(resource.headers_for(action))
         end
 

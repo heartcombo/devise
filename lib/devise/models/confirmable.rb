@@ -87,7 +87,9 @@ module Devise
         @reconfirmation_required = false
 
         generate_confirmation_token! if self.confirmation_token.blank?
-        send_devise_notification(:confirmation_instructions)
+
+        opts = pending_reconfirmation? ? { :to => unconfirmed_email } : { }
+        send_devise_notification(:confirmation_instructions, opts)
       end
 
       # Resend confirmation token. This method does not need to generate a new token.
@@ -121,14 +123,6 @@ module Devise
       # to be generated, call skip_reconfirmation!
       def skip_reconfirmation!
         @bypass_postpone = true
-      end
-
-      def headers_for(action)
-        headers = super
-        if action == :confirmation_instructions && pending_reconfirmation?
-          headers[:to] = unconfirmed_email
-        end
-        headers
       end
 
       protected

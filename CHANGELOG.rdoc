@@ -1,3 +1,7 @@
+* backwards incompatibility changes
+  * `headers_for` is deprecated, customize the mailer directly instead
+  * All mailer methods now expect a second argument with delivery options
+
 == 2.2.0.rc
 
 * important changes

@@ -517,6 +517,25 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
+
+  test 'sign out with non-navigational format via XHR does not redirect' do
+    swap Devise, :navigational_formats => ['*/*', :html] do 
+      sign_in_as_user
+      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
+      assert_response :no_content
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  # Belt and braces ... Perhaps this test is not necessary?
+  test 'sign out with navigational format via XHR does redirect' do
+    swap Devise, :navigational_formats => ['*/*', :html] do 
+      sign_in_as_user
+      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "text/html,*/*" }
+      assert_response :redirect
+      assert_not warden.authenticated?(:user)
+    end
+  end
 end
 
 class AuthenticationKeysTest < ActionController::IntegrationTest

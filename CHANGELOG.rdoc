@@ -1,17 +1,15 @@
-* backwards incompatibility changes
+== 2.2.0
+
+* backwards incompatible changes
   * `headers_for` is deprecated, customize the mailer directly instead
   * All mailer methods now expect a second argument with delivery options
-
-== 2.2.0.rc
-
-* important changes
   * Default minimum password length is now 8 (by @carlosgaldino)
-  * Support alternate sign in error message when email record does not exist (this adds a new I18n key to the locale file) (@gabetax)
+  * Support alternate sign in error message when email record does not exist (this adds a new I18n key to the locale file) (by @gabetax)
   * DeviseController responds only to HTML requests by default (call `DeviseController.respond_to` or `ApplicationController.respond_to` to add new formats)
   * Support Mongoid 3 onwards (by @durran)
-  * Fix unlockable which could leak account existence on paranoid mode (by @latortuga)
 
 * enhancements
+  * Fix unlockable which could leak account existence on paranoid mode (by @latortuga)
   * Confirmable now has a confirm_within option to set a period while the confirmation token is still valid (by @promisedlandt)
   * Flash messages in controller now respects `resource_name` (by @latortuga)
   * Separate `sign_in` and `sign_up` on RegistrationsController (by @rubynortheast)

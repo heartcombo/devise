@@ -393,4 +393,4 @@ https://github.com/plataformatec/devise/contributors
 
 ## License
 
-MIT License. Copyright 2012 Plataformatec. http://plataformatec.com.br
+MIT License. Copyright 2009-2013 Plataformatec. http://plataformatec.com.br

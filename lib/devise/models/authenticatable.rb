@@ -168,7 +168,16 @@ module Devise
       end
 
       def apply_to_attribute_or_variable(attr, method)
-        (self[attr] || send(attr)).try(method)
+        if self[attr]
+          self[attr].try(method)
+
+        # Use respond_to? here to avoid a regression where globally
+        # configured strip_whitespace_keys or case_insensitive_keys were
+        # attempting to strip! or downcase! when a model didn't have the
+        # globally configured key.
+        elsif respond_to?(attr)
+          send(attr).try(method)
+        end
       end
 
       module ClassMethods

@@ -34,6 +34,18 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal email.strip, user.email
   end
 
+  test "doesn't throw exception when globally configured strip_whitespace_keys are not present on a model" do
+    swap Devise, :strip_whitespace_keys => [:fake_key] do
+      assert_nothing_raised { create_user }
+    end
+  end
+
+  test "doesn't throw exception when globally configured case_insensitive_keys are not present on a model" do
+    swap Devise, :case_insensitive_keys => [:fake_key] do
+      assert_nothing_raised { create_user }
+    end
+  end
+
   test "param filter should not convert booleans and integer to strings" do
     conditions = { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
     conditions = Devise::ParamFilter.new([], []).filter(conditions)

@@ -34,8 +34,9 @@ gemfile:
 services:
   - mongodb
 notifications:
-  recipients:
-    - jose.valim@plataformatec.com.br
-    - carlos@plataformatec.com.br
-    - rodrigo.flores@plataformatec.com.br
-    - rafael.franca@plataformatec.com.br
+  email: false
+  campfire:
+    on_success: change
+    on_failure: always
+    rooms:
+      secure: "TRiqvuM4i/QmRDWjUSNitE5/P91BOzDkNl53+bZjjtxcISCswZtmECWBR7n9\n3xwqCOU1o2lfohxZ32OHOj/Nj7o+90zWJfWxcv+if0hIXRiil62M5pg0lZUd\nyJ4M5VQ0lSWo5he1OUrXhSabPJeaK3B8yT/tdh+qO5yzR+vb/jc="

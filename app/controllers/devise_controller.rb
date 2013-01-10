@@ -58,6 +58,11 @@ class DeviseController < Devise.parent_controller.constantize
 
   protected
 
+  # Paramaters to be passed to the mailer methods
+  def mailer_params
+    {}
+  end
+
   # Checks whether it's a devise mapped resource or not.
   def assert_is_devise_resource! #:nodoc:
     unknown_action! <<-MESSAGE unless devise_mapping

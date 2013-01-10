@@ -67,12 +67,12 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should find a user to send instructions by email' do
     user = create_user
-    reset_password_user = User.send_reset_password_instructions(:email => user.email)
+    reset_password_user = User.find_for_reset_password_instructions(:email => user.email)
     assert_equal reset_password_user, user
   end
 
   test 'should return a new record with errors if user was not found by e-mail' do
-    reset_password_user = User.send_reset_password_instructions(:email => "invalid@example.com")
+    reset_password_user = User.find_for_reset_password_instructions(:email => "invalid@example.com")
     assert_not reset_password_user.persisted?
     assert_equal "not found", reset_password_user.errors[:email].join
   end
@@ -80,7 +80,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should find a user to send instructions by authentication_keys' do
     swap Devise, :authentication_keys => [:username, :email] do
       user = create_user
-      reset_password_user = User.send_reset_password_instructions(:email => user.email, :username => user.username)
+      reset_password_user = User.find_for_reset_password_instructions(:email => user.email, :username => user.username)
       assert_equal reset_password_user, user
     end
   end
@@ -88,7 +88,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should require all reset_password_keys' do
       swap Devise, :reset_password_keys => [:username, :email] do
           user = create_user
-          reset_password_user = User.send_reset_password_instructions(:email => user.email)
+          reset_password_user = User.find_for_reset_password_instructions(:email => user.email)
           assert_not reset_password_user.persisted?
           assert_equal "can't be blank", reset_password_user.errors[:username].join
       end
@@ -97,14 +97,16 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should reset reset_password_token before send the reset instructions email' do
     user = create_user
     token = user.reset_password_token
-    User.send_reset_password_instructions(:email => user.email)
+    user = User.find_for_reset_password_instructions(:email => user.email)
+    user.send_reset_password_instructions
     assert_not_equal token, user.reload.reset_password_token
   end
 
   test 'should send email instructions to the user reset his password' do
     user = create_user
     assert_email_sent do
-      User.send_reset_password_instructions(:email => user.email)
+      user = User.find_for_reset_password_instructions(:email => user.email)
+      user.send_reset_password_instructions
     end
   end
 

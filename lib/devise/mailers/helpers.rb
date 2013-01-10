@@ -27,7 +27,7 @@ module Devise
 
       def headers_for(action, opts)
         headers = {
-          :subject       => translate(devise_mapping, action),
+          :subject       => subject_for(action),
           :to            => resource.email,
           :from          => mailer_sender(devise_mapping),
           :reply_to      => mailer_reply_to(devise_mapping),
@@ -86,8 +86,8 @@ module Devise
       #         confirmation_instructions:
       #           subject: '...'
       #
-      def translate(mapping, key)
-        I18n.t(:"#{mapping.name}_subject", :scope => [:devise, :mailer, key],
+      def subject_for(key)
+        I18n.t(:"#{devise_mapping.name}_subject", :scope => [:devise, :mailer, key],
           :default => [:subject, key.to_s.humanize])
       end
     end

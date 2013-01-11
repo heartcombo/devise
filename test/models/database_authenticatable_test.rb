@@ -132,13 +132,6 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_match "is invalid", user.errors[:current_password].join
   end
 
-  test 'should not change encrypted password when it is invalid' do
-    user = create_user
-    assert_not user.update_with_password(:current_password => 'other',
-      :password => 'pass4321', :password_confirmation => 'pass4321')
-    assert_not user.encrypted_password_changed?
-  end
-
   test 'should add an error to current password when it is blank' do
     user = create_user
     assert_not user.update_with_password(:password => 'pass4321',

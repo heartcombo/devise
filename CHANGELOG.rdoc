@@ -1,3 +1,9 @@
+== 2.2.1
+
+* bug fix
+  * Fix regression with case_insensitive_keys
+  * Fix regression when password is blank when it is invalid
+
 == 2.2.0
 
 * backwards incompatible changes

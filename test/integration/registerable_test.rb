@@ -214,7 +214,7 @@ class RegistrationTest < ActionController::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    click_link "Cancel my account", :method => :delete
+    click_button "Cancel my account"
     assert_contain "Bye! Your account was successfully cancelled. We hope to see you again soon."
 
     assert User.all.empty?

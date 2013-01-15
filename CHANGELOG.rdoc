@@ -1,3 +1,8 @@
+== 2.2.2
+
+* bug fix
+  * Fix bug when checking for reconfirmable in templates
+
 == 2.2.1
 
 * bug fix

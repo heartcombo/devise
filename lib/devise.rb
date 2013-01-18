@@ -199,6 +199,12 @@ module Devise
   mattr_accessor :parent_controller
   @@parent_controller = "ApplicationController"
 
+  # The parent mailer all Devise mailers inherit from.
+  # Defaults to ActionMailer::Base. This should be set early
+  # in the initialization process and should be set to a string.
+  mattr_accessor :parent_mailer
+  @@parent_mailer = "ActionMailer::Base"
+
   # The router Devise should use to generate routes. Defaults
   # to :main_app. Should be overriden by engines in order
   # to provide custom routes.

@@ -41,7 +41,7 @@ module Devise
       end
 
       def remember_key
-        "remember_#{scope}_token"
+        mapping.to.rememberable_options.fetch(:key, "remember_#{scope}_token")
       end
 
       def remember_cookie

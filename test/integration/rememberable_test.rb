@@ -58,7 +58,7 @@ class RememberMeTest < ActionController::IntegrationTest
   end
 
   test 'generate remember token with a custom key' do
-     swap Devise, :rememberable_options => { :key => "v1lat_token" } do
+    swap Devise, :rememberable_options => { :key => "v1lat_token" } do
       user = sign_in_as_user :remember_me => true
       assert request.cookies["v1lat_token"]
     end

@@ -197,6 +197,7 @@ module ActionDispatch::Routing
       options[:module]      ||= @scope[:module] if @scope[:module].present?
       options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?
       options[:path_names]    = (@scope[:path_names] || {}).merge(options[:path_names] || {})
+      options[:route_names]   = (@scope[:route_names] || {}).merge(options[:route_names] || {})
       options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})
       options[:defaults]      = (@scope[:defaults] || {}).merge(options[:defaults] || {})
       options[:options]       = @scope[:options] || {}
@@ -349,7 +350,7 @@ module ActionDispatch::Routing
     protected
 
       def devise_session(mapping, controllers) #:nodoc:
-        resource :session, :only => [], :controller => controllers[:sessions], :path => "" do
+        resource mapping.route_names[:session] || :session, :only => [], :controller => controllers[:sessions], :path => "" do
           get   :new,     :path => mapping.path_names[:sign_in],  :as => "new"
           post  :create,  :path => mapping.path_names[:sign_in]
           match :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
@@ -357,18 +358,18 @@ module ActionDispatch::Routing
       end
 
       def devise_password(mapping, controllers) #:nodoc:
-        resource :password, :only => [:new, :create, :edit, :update],
+        resource mapping.route_names[:password] || :password, :only => [:new, :create, :edit, :update],
           :path => mapping.path_names[:password], :controller => controllers[:passwords]
       end
 
       def devise_confirmation(mapping, controllers) #:nodoc:
-        resource :confirmation, :only => [:new, :create, :show],
+        resource mapping.route_names[:confirmation] || :confirmation, :only => [:new, :create, :show],
           :path => mapping.path_names[:confirmation], :controller => controllers[:confirmations]
       end
 
       def devise_unlock(mapping, controllers) #:nodoc:
         if mapping.to.unlock_strategy_enabled?(:email)
-          resource :unlock, :only => [:new, :create, :show],
+          resource mapping.route_names[:unlock] || :unlock, :only => [:new, :create, :show],
             :path => mapping.path_names[:unlock], :controller => controllers[:unlocks]
         end
       end
@@ -386,7 +387,7 @@ module ActionDispatch::Routing
           :controller => controllers[:registrations]
         }
 
-        resource :registration, options do
+        resource mapping.route_names[:registration] || :registration, options do
           get :cancel
         end
       end

@@ -22,8 +22,8 @@ module Devise
   #   # is the modules included in the class
   #
   class Mapping #:nodoc:
-    attr_reader :singular, :scoped_path, :path, :controllers, :path_names,
-                :class_name, :sign_out_via, :format, :used_routes, :used_helpers, :failure_app
+    attr_reader :singular, :scoped_path, :path, :controllers, :path_names, :class_name,
+                :sign_out_via, :format, :used_routes, :used_helpers, :failure_app, :route_names
 
     alias :name :singular
 
@@ -65,6 +65,7 @@ module Devise
       default_path_names(options)
       default_used_route(options)
       default_used_helpers(options)
+      default_route_names(options)
     end
 
     # Return modules for the mapping.
@@ -133,6 +134,11 @@ module Devise
       @path_names = Hash.new { |h,k| h[k] = k.to_s }
       @path_names[:registration] = ""
       @path_names.merge!(options[:path_names]) if options[:path_names]
+    end
+
+    def default_route_names(options)
+      @route_names = Hash.new { |h,k| h[k] = k.to_s }
+      @route_names.merge!(options[:route_names]) if options[:route_names]
     end
 
     def default_constraints(options)

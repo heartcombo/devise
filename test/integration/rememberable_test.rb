@@ -57,6 +57,13 @@ class RememberMeTest < ActionController::IntegrationTest
     end
   end
 
+  test 'generate remember token with a custom key' do
+     swap Devise, :rememberable_options => { :key => "v1lat_token" } do
+      user = sign_in_as_user :remember_me => true
+      assert request.cookies["v1lat_token"]
+    end
+  end
+
   test 'generate remember token after sign in setting session options' do
     begin
       Rails.configuration.session_options[:domain] = "omg.somewhere.com"

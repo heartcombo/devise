@@ -43,7 +43,7 @@ module Devise
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
-  # Custom domain for cookies. Not set by default
+  # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}
 

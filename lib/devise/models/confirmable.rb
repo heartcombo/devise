@@ -86,7 +86,8 @@ module Devise
         self.confirmation_token = nil if reconfirmation_required?
         @reconfirmation_required = false
 
-        generate_confirmation_token! if self.confirmation_token.blank?
+        # skip confirmation for ORM's that do not clear the changes of the record in after update callback
+        skip_reconfirmation! and generate_confirmation_token! if self.confirmation_token.blank?
 
         opts = pending_reconfirmation? ? { :to => unconfirmed_email } : { }
         send_devise_notification(:confirmation_instructions, opts)

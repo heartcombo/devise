@@ -23,14 +23,14 @@ module Devise
       def remember_me(resource)
         scope = Devise::Mapping.find_scope!(resource)
         resource.remember_me!(resource.extend_remember_period)
-        cookies.signed["remember_#{scope}_token"] = remember_cookie_values(resource)
+        cookies.signed[remember_key(resource, scope)] = remember_cookie_values(resource)
       end
 
       # Forgets the given resource by deleting a cookie
       def forget_me(resource)
         scope = Devise::Mapping.find_scope!(resource)
         resource.forget_me!
-        cookies.delete("remember_#{scope}_token", forget_cookie_values(resource))
+        cookies.delete(remember_key(resource, scope), forget_cookie_values(resource))
       end
 
       protected
@@ -46,6 +46,10 @@ module Devise
           :value => resource.class.serialize_into_cookie(resource),
           :expires => resource.remember_expires_at
         )
+      end
+
+      def remember_key(resource, scope)
+        resource.rememberable_options.fetch(:key, "remember_#{scope}_token")
       end
     end
   end

@@ -189,6 +189,13 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.valid_password?('12345678')
   end
 
+  test 'should ignore the current_password field if provided' do
+    user = create_user
+    user.update_without_password(:password => 'pass4321', :password_confirmation => 'pass4321', :current_password => '12345678')
+    assert !user.reload.valid_password?('pass4321')
+    assert user.valid_password?('12345678')
+  end
+
   test 'downcase_keys with validation' do
     user = User.create(:email => "HEllO@example.com", :password => "123456")
     user = User.create(:email => "HEllO@example.com", :password => "123456")

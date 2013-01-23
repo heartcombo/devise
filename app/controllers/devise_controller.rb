@@ -67,7 +67,7 @@ This may happen for two reasons:
 1) You forgot to wrap your route inside the scope block. For example:
 
   devise_scope :user do
-    match "/some/route" => "some_devise_controller"
+    get "/some/route" => "some_devise_controller"
   end
 
 2) You are testing a Devise controller bypassing the router.

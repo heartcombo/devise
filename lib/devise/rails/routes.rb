@@ -329,7 +329,7 @@ module ActionDispatch::Routing
     # good and working example.
     #
     #  devise_scope :user do
-    #    match "/some/route" => "some_devise_controller"
+    #    get "/some/route" => "some_devise_controller"
     #  end
     #  devise_for :users
     #
@@ -401,12 +401,14 @@ module ActionDispatch::Routing
         match "#{path_prefix}/:provider",
           :constraints => { :provider => providers },
           :to => "#{controllers[:omniauth_callbacks]}#passthru",
-          :as => :omniauth_authorize
+          :as => :omniauth_authorize,
+          :via => [:get, :post]
 
         match "#{path_prefix}/:action/callback",
           :constraints => { :action => providers },
           :to => controllers[:omniauth_callbacks],
-          :as => :omniauth_callback
+          :as => :omniauth_callback,
+          :via => [:get, :post]
       ensure
         @scope[:path] = path
       end

@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", :github => "rails/rails", :branch => "3-2-stable"
+gem "rails", "~> 4.0.0.beta", github: "rails/rails", branch: "master"
 gem "omniauth", "~> 1.0.0"
 gem "omniauth-oauth2", "~> 1.0.0"
 gem "rdoc"
@@ -27,6 +27,6 @@ end
 
 platforms :mri_19 do
   group :mongoid do
-    gem "mongoid", "~> 3.0"
+    gem "mongoid", github: "mongoid/mongoid", branch: "master"
   end
 end

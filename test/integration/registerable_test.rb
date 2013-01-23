@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RegistrationTest < ActionController::IntegrationTest
+class RegistrationTest < ActionDispatch::IntegrationTest
 
   test 'a guest admin should be able to sign in successfully' do
     get new_admin_session_path
@@ -292,7 +292,7 @@ class RegistrationTest < ActionController::IntegrationTest
   end
 end
 
-class ReconfirmableRegistrationTest < ActionController::IntegrationTest
+class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
   test 'a signed in admin should see a more appropriate flash message when editing his account if reconfirmable is enabled' do
     sign_in_as_admin
     get edit_admin_registration_path

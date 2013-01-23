@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DatabaseAuthenticationTest < ActionController::IntegrationTest
+class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
   test 'sign in with email of different case should succeed when email is in the list of case insensitive keys' do
     create_user(:email => 'Foo@Bar.com')
 

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ConfirmationTest < ActionController::IntegrationTest
+class ConfirmationTest < ActionDispatch::IntegrationTest
 
   def visit_user_confirmation_with_token(confirmation_token)
     visit user_confirmation_path(:confirmation_token => confirmation_token)
@@ -226,7 +226,7 @@ class ConfirmationTest < ActionController::IntegrationTest
   end
 end
 
-class ConfirmationOnChangeTest < ActionController::IntegrationTest
+class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
   def create_second_admin(options={})
     @admin = nil
     create_admin(options)

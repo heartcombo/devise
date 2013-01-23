@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RememberMeTest < ActionController::IntegrationTest
+class RememberMeTest < ActionDispatch::IntegrationTest
   def create_user_and_remember(add_to_token='')
     user = create_user
     user.remember_me!

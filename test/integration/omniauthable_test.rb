@@ -1,7 +1,7 @@
 require 'test_helper'
 
 
-class OmniauthableIntegrationTest < ActionController::IntegrationTest
+class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   FACEBOOK_INFO = {
     "id" => '12345',
     "link" => 'http://facebook.com/josevalim',

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LockTest < ActionController::IntegrationTest
+class LockTest < ActionDispatch::IntegrationTest
 
   def visit_user_unlock_with_token(unlock_token)
     visit user_unlock_path(:unlock_token => unlock_token)

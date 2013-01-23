@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TokenAuthenticationTest < ActionController::IntegrationTest
+class TokenAuthenticationTest < ActionDispatch::IntegrationTest
 
   test 'authenticate with valid authentication token key and value through params' do
     swap Devise, :token_authentication_key => :secret_token do

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AuthenticationSanityTest < ActionController::IntegrationTest
+class AuthenticationSanityTest < ActionDispatch::IntegrationTest
   test 'home should be accessible without sign in' do
     visit '/'
     assert_response :success
@@ -134,7 +134,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationRoutesRestrictions < ActionController::IntegrationTest
+class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
   test 'not signed in should not be able to access private route (authenticate denied)' do
     get private_path
     assert_redirected_to new_admin_session_path
@@ -254,7 +254,7 @@ class AuthenticationRoutesRestrictions < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationRedirectTest < ActionController::IntegrationTest
+class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
   test 'redirect from warden shows sign in or sign up message' do
     get admins_path
 
@@ -317,7 +317,7 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationSessionTest < ActionController::IntegrationTest
+class AuthenticationSessionTest < ActionDispatch::IntegrationTest
   test 'destroyed account is signed out' do
     sign_in_as_user
     get '/users'
@@ -364,7 +364,7 @@ class AuthenticationSessionTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationWithScopedViewsTest < ActionController::IntegrationTest
+class AuthenticationWithScopedViewsTest < ActionDispatch::IntegrationTest
   test 'renders the scoped view if turned on and view is available' do
     swap Devise, :scoped_views => true do
       assert_raise Webrat::NotFoundError do
@@ -405,7 +405,7 @@ class AuthenticationWithScopedViewsTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationOthersTest < ActionController::IntegrationTest
+class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   test 'handles unverified requests gets rid of caches' do
     swap UsersController, :allow_forgery_protection => true do
       post exhibit_user_url(1)
@@ -519,7 +519,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   end
 
   test 'sign out with non-navigational format via XHR does not redirect' do
-    swap Devise, :navigational_formats => ['*/*', :html] do 
+    swap Devise, :navigational_formats => ['*/*', :html] do
       sign_in_as_user
       xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
       assert_response :no_content
@@ -529,7 +529,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
 
   # Belt and braces ... Perhaps this test is not necessary?
   test 'sign out with navigational format via XHR does redirect' do
-    swap Devise, :navigational_formats => ['*/*', :html] do 
+    swap Devise, :navigational_formats => ['*/*', :html] do
       sign_in_as_user
       xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "text/html,*/*" }
       assert_response :redirect
@@ -538,7 +538,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationKeysTest < ActionController::IntegrationTest
+class AuthenticationKeysTest < ActionDispatch::IntegrationTest
   test 'missing authentication keys cause authentication to abort' do
     swap Devise, :authentication_keys => [:subdomain] do
       sign_in_as_user
@@ -555,7 +555,7 @@ class AuthenticationKeysTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationRequestKeysTest < ActionController::IntegrationTest
+class AuthenticationRequestKeysTest < ActionDispatch::IntegrationTest
   test 'request keys are used on authentication' do
     host! 'foo.bar.baz'
 
@@ -596,7 +596,7 @@ class AuthenticationRequestKeysTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationSignOutViaTest < ActionController::IntegrationTest
+class AuthenticationSignOutViaTest < ActionDispatch::IntegrationTest
   def sign_in!(scope)
     sign_in_as_admin(:visit => send("new_#{scope}_session_path"))
     assert warden.authenticated?(scope)

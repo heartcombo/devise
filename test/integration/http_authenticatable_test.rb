@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HttpAuthenticationTest < ActionController::IntegrationTest
+class HttpAuthenticationTest < ActionDispatch::IntegrationTest
   test 'handles unverified requests gets rid of caches but continues signed in' do
     swap UsersController, :allow_forgery_protection => true do
       create_user

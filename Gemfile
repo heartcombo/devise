@@ -3,6 +3,7 @@ source "http://rubygems.org"
 gemspec
 
 gem "rails", "~> 4.0.0.beta", github: "rails/rails", branch: "master"
+gem "protected_attributes", "~> 1.0.0"
 gem "omniauth", "~> 1.0.0"
 gem "omniauth-oauth2", "~> 1.0.0"
 gem "rdoc"

@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 3.2.6"
+gem "rails", :github => "rails/rails", :branch => "3-2-stable"
 gem "omniauth", "~> 1.0.0"
 gem "omniauth-oauth2", "~> 1.0.0"
 gem "rdoc"
@@ -11,7 +11,7 @@ group :test do
   gem "omniauth-facebook"
   gem "omniauth-openid", "~> 1.0.1"
   gem "webrat", "0.7.2", :require => false
-  gem "mocha", "0.10.0", :require => false
+  gem "mocha", "~> 0.13.1", :require => false
 end
 
 platforms :jruby do

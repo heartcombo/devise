@@ -10,7 +10,7 @@ require "orm/#{DEVISE_ORM}"
 
 I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__)
 
-require 'mocha'
+require 'mocha/setup'
 require 'webrat'
 Webrat.configure do |config|
   config.mode = :rails

@@ -33,9 +33,8 @@ module Devise
 
     private
 
-    # Determine which values should be transformed to string or passed as-is to the query builder underneath
     def param_requires_string_conversion?(value)
-      true unless value.is_a?(TrueClass) || value.is_a?(FalseClass) || value.is_a?(Fixnum)
+      true
     end
   end
 end

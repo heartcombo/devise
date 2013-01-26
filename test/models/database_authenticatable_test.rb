@@ -11,7 +11,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user.save!
     assert_equal email.downcase, user.email
   end
-  
+
   test 'should remove whitespace from strip whitespace keys when saving' do
     # strip_whitespace_keys is set to :email by default.
     email = ' foo@bar.com '
@@ -23,9 +23,9 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test "param filter should not convert booleans and integer to strings" do
-    conditions = { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
+    conditions = { "login" => "foo@bar.com", "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
     conditions = Devise::ParamFilter.new([], []).filter(conditions)
-    assert_equal( { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => "1..10" }, conditions)
+    assert_equal( { "login" => "foo@bar.com", "bool1" => "true", "bool2" => "false", "fixnum" => "123", "will_be_converted" => "1..10" }, conditions)
   end
 
   test 'should respond to password and password confirmation' do
@@ -86,14 +86,14 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       :password => 'pass321', :password_confirmation => 'pass321')
     assert user.reload.valid_password?('pass321')
   end
-  
+
   test 'should update password with valid current password and :as option' do
     user = create_user
     assert user.update_with_password(:current_password => '123456',
       :password => 'pass321', :password_confirmation => 'pass321', :as => :admin)
     assert user.reload.valid_password?('pass321')
   end
-  
+
   test 'should add an error to current password when it is invalid' do
     user = create_user
     assert_not user.update_with_password(:current_password => 'other',
@@ -145,7 +145,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user.update_without_password(:email => 'new@example.com')
     assert_equal 'new@example.com', user.email
   end
-  
+
   test 'should update the user without password with :as option' do
     user = create_user
     user.update_without_password(:email => 'new@example.com', :as => :admin)

@@ -17,7 +17,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert warden.authenticated?(:admin)
     assert_current_url "/admin_area/home"
 
-    admin = Admin.last :order => "id"
+    admin = Admin.order(:id).last
     assert_equal admin.email, 'new_user@test.com'
   end
 
@@ -56,7 +56,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_not warden.authenticated?(:user)
 
-    user = User.last :order => "id"
+    user = User.order(:id).last
     assert_equal user.email, 'new_user@test.com'
     assert_not user.confirmed?
   end
@@ -251,7 +251,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
 
-    admin = Admin.last :order => "id"
+    admin = Admin.order(:id).last
     assert_equal admin.email, 'new_user@test.com'
   end
 
@@ -260,7 +260,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
 
-    user = User.last :order => "id"
+    user = User.order(:id).last
     assert_equal user.email, 'new_user@test.com'
   end
 

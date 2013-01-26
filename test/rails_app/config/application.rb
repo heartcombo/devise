@@ -32,6 +32,9 @@ module RailsApp
 
     config.action_mailer.default_url_options = { :host => "localhost:3000" }
 
+    # Disable forcing whitelist attributes from protected attributes.
+    config.active_record.whitelist_attributes = false
+
     # This was used to break devise in some situations
     config.to_prepare do
       Devise::SessionsController.layout "application"

@@ -1,6 +1,9 @@
-== 2.0.4
+== 2.0.5
 
-Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
+* bug fix
+  * Require string conversion for all values
+
+== 2.0.4
 
 * bug fix
   * Fix a regression that caused Warden to be initialized too late

@@ -205,21 +205,20 @@ module Devise
         # namedscope to filter records while authenticating.
         # Example:
         #
-        #   def self.find_for_authentication(conditions={})
-        #     conditions[:active] = true
-        #     super
+        #   def self.find_for_authentication(tainted_conditions)
+        #     find_first_by_auth_conditions(tainted_conditions, active: true)
         #   end
         #
         # Finally, notice that Devise also queries for users in other scenarios
         # besides authentication, for example when retrieving an user to send
         # an e-mail for password reset. In such cases, find_for_authentication
         # is not called.
-        def find_for_authentication(conditions)
-          find_first_by_auth_conditions(conditions)
+        def find_for_authentication(tainted_conditions)
+          find_first_by_auth_conditions(tainted_conditions)
         end
 
-        def find_first_by_auth_conditions(conditions)
-          to_adapter.find_first devise_param_filter.filter(conditions)
+        def find_first_by_auth_conditions(tainted_conditions, opts={})
+          to_adapter.find_first(devise_param_filter.filter(tainted_conditions).merge(opts))
         end
 
         # Find an initialize a record setting an error if it can't be found.

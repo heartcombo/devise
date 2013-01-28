@@ -155,7 +155,7 @@ module Devise
         # Example:
         #
         #   def self.find_for_authentication(tainted_conditions)
-        #     find_first_by_auth_conditions(tainted_conditions, active: true)
+        #     find_first_by_auth_conditions(tainted_conditions, :active => true)
         #   end
         #
         # Finally, notice that Devise also queries for users in other scenarios

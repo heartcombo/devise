@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ResetPasswordInstructionsTest < ActionMailer::TestCase
-
   def setup
     setup_mailer
     Devise.mailer = 'Devise::Mailer'
@@ -47,6 +46,11 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   test 'setup sender from custom mailer defaults' do
     Devise.mailer = 'Users::Mailer'
     assert_equal ['custom@example.com'], mail.from
+  end
+
+  test 'custom mailer renders parent mailer template' do
+    Devise.mailer = 'Users::Mailer'
+    assert_not_blank mail.body.encoded
   end
 
   test 'setup reply to as copy from sender' do

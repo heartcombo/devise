@@ -49,6 +49,11 @@ class UnlockInstructionsTest < ActionMailer::TestCase
     assert_equal ['custom@example.com'], mail.from
   end
 
+  test 'custom mailer renders parent mailer template' do
+    Devise.mailer = 'Users::Mailer'
+    assert_not_blank mail.body.encoded
+  end
+
   test 'setup reply to as copy from sender' do
     assert_equal ['test@example.com'], mail.reply_to
   end

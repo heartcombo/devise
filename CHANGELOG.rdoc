@@ -1,3 +1,8 @@
+== master
+
+* bug fix
+  * Fix inheriting mailer templates from `Devise::Mailer`
+
 == 2.2.3
 
 * bug fix

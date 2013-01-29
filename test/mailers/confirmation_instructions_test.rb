@@ -46,6 +46,11 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     assert_equal ['custom@example.com'], mail.from
   end
 
+  test 'custom mailer renders parent mailer template' do
+    Devise.mailer = 'Users::Mailer'
+    assert_not_blank mail.body.encoded
+  end
+
   test 'setup reply to as copy from sender' do
     assert_equal ['test@example.com'], mail.reply_to
   end
@@ -55,7 +60,6 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     assert_equal ['custom@example.com'], mail.from
     assert_equal ['custom_reply_to@example.com'], mail.reply_to
   end
-
 
   test 'setup subject from I18n' do
     store_translations :en, :devise => { :mailer => { :confirmation_instructions => { :subject => 'Account Confirmation' } } } do

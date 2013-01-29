@@ -3,6 +3,7 @@ module Devise
     class MissingAttribute < StandardError
       def initialize(attributes)
         @attributes = attributes
+        @@params_whitelist = []
       end
 
       def message

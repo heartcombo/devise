@@ -5,7 +5,7 @@ class DeviseController < Devise.parent_controller.constantize
   helper DeviseHelper
 
   helpers = %w(resource scope_name resource_name signed_in_resource
-               resource_class resource_params devise_mapping)
+               resource_class resource_params devise_mapping devise_permitted permitted_params)
   hide_action *helpers
   helper_method *helpers
 
@@ -27,6 +27,7 @@ class DeviseController < Devise.parent_controller.constantize
   def resource_class
     devise_mapping.to
   end
+
 
   def resource_params
     params[resource_name]
@@ -55,6 +56,17 @@ class DeviseController < Devise.parent_controller.constantize
   end
 
   hide_action :_prefixes
+
+
+  # To define custom whitelist
+  def devise_permitted(whitelist)
+    Devise.params_whitelist = whitelist
+  end
+
+  # In concordance to Rails 4 Strong Parameters guidelines
+  def permitted_params
+    params.require(resource_class.name.downcase.to_sym).permit(Devise.params_whitelist)
+  end
 
   protected
 
@@ -97,7 +109,6 @@ MESSAGE
   # Assignment bypasses attribute protection when :unsafe option is passed
   def build_resource(hash = nil, options = {})
     hash ||= resource_params || {}
-
     if options[:unsafe]
       self.resource = resource_class.new.tap do |resource|
         hash.each do |key, value|
@@ -106,7 +117,11 @@ MESSAGE
         end
       end
     else
-      self.resource = resource_class.new(hash)
+      if !hash.empty?
+        self.resource = Devise::RAILS4 ? resource_class.new(permitted_params) : resource_class.new(hash)
+      else
+        self.resource = resource_class.new(hash)
+      end
     end
   end
 

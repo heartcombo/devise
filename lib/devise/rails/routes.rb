@@ -352,7 +352,12 @@ module ActionDispatch::Routing
         resource :session, :only => [], :controller => controllers[:sessions], :path => "" do
           get   :new,     :path => mapping.path_names[:sign_in],  :as => "new"
           post  :create,  :path => mapping.path_names[:sign_in]
+          options = [mapping.sign_out_via].flatten.to_set
+          if Set[:post,:delete].subset? options
+            match :destroy, :path => mapping.path_names[:sign_out_via_delete_or_post], :as => "destroy", :via => mapping.sign_out_via
+          end
           match :destroy, :path => mapping.path_names[:sign_out], :as => "destroy", :via => mapping.sign_out_via
+
         end
       end
 

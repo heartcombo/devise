@@ -5,6 +5,7 @@ require 'orm_adapter'
 require 'set'
 require 'securerandom'
 
+
 module Devise
   autoload :Delegator,     'devise/delegator'
   autoload :FailureApp,    'devise/failure_app'
@@ -31,6 +32,7 @@ module Devise
 
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user" (this is why they are constants).
+  RAILS4 = %r(4.0).match(Rails.version) ? true : false
   ALL         = []
   CONTROLLERS = ActiveSupport::OrderedHash.new
   ROUTES      = ActiveSupport::OrderedHash.new
@@ -54,6 +56,10 @@ module Devise
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]
+
+  # Params whitelist for default rails 4 strong parameters
+  mattr_accessor :params_whitelist
+  @@params_whitelist = [:email, :password, :password_confirmation, :current_password]
 
   # Request keys used when authenticating a user.
   mattr_accessor :request_keys

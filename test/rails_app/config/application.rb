@@ -16,7 +16,7 @@ require "devise"
 module RailsApp
   class Application < Rails::Application
     # Add additional load paths for your own custom dirs
-    config.autoload_paths.reject!{ |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers views).include?($1) }
+    config.autoload_paths.reject!{ |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers mailers views).include?($1) }
     config.autoload_paths += [ "#{config.root}/app/#{DEVISE_ORM}" ]
 
     # Configure generators values. Many other options are available, be sure to check the documentation.

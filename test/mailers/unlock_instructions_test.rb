@@ -66,7 +66,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
   end
 
   test 'body should have user info' do
-    assert_match(/#{user.email}/, mail.body.encoded)
+    assert_match user.email, mail.body.encoded
   end
 
   test 'body should have link to unlock the account' do

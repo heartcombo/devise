@@ -13,7 +13,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-It's composed of 12 modules:
+It's composed of 11 modules:
 
 * [Database Authenticatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/DatabaseAuthenticatable): encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * [Token Authenticatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable): signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.

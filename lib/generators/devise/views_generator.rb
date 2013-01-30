@@ -18,7 +18,7 @@ module Devise
         public_task :copy_views
       end
 
-      # TODO: Add this to Rails itslef
+      # TODO: Add this to Rails itself
       module ClassMethods
         def hide!
           Rails::Generators.hide_namespace self.namespace

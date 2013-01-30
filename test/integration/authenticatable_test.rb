@@ -504,14 +504,26 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
-  test 'sign out with xml format returns ok response' do
+  test 'sign out with html redirects' do
+    sign_in_as_user
+    get destroy_user_session_path
+    assert_response :redirect
+    assert_current_url '/'
+
+    sign_in_as_user
+    get destroy_user_session_path(:format => 'html')
+    assert_response :redirect
+    assert_current_url '/'
+  end
+
+  test 'sign out with xml format returns no content' do
     sign_in_as_user
     get destroy_user_session_path(:format => 'xml')
     assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
 
-  test 'sign out with json format returns empty json response' do
+  test 'sign out with json format returns no content' do
     sign_in_as_user
     get destroy_user_session_path(:format => 'json')
     assert_response :no_content

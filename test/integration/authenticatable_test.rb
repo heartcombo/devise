@@ -662,3 +662,26 @@ class AuthenticationSignOutViaTest < ActionDispatch::IntegrationTest
     assert warden.authenticated?(:sign_out_via_delete_or_post)
   end
 end
+
+class DoubleAuthenticationRedirectTest < ActionDispatch::IntegrationTest
+  test 'signed in as user redirects when visiting user sign in page' do
+    sign_in_as_user
+    get new_user_session_path(:format => :html)
+    assert_redirected_to '/'
+  end
+
+  test 'signed in as admin redirects when visiting admin sign in page' do
+    sign_in_as_admin
+    get new_admin_session_path(:format => :html)
+    assert_redirected_to '/admin_area/home'
+  end
+
+  test 'signed in as both user and admin redirects when visiting admin sign in page' do
+    sign_in_as_user
+    sign_in_as_admin
+    get new_user_session_path(:format => :html)
+    assert_redirected_to '/'
+    get new_admin_session_path(:format => :html)
+    assert_redirected_to '/admin_area/home'
+  end
+end

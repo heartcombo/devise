@@ -18,6 +18,11 @@
   * `update_with_password` doesn't change encrypted password when it is invalid (by @nashby)
   * Properly handle namespaced models on Active Record generator (by @nashby)
 
+== 2.1.3
+
+* bug fix
+  * Require string conversion for all values
+
 == 2.1.2
 
 * enhancements

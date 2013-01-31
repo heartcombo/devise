@@ -35,15 +35,9 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test "param filter should not convert booleans and integer to strings" do
-    conditions = { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
+    conditions = { "login" => "foo@bar.com", "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
     conditions = Devise::ParamFilter.new([], []).filter(conditions)
-    assert_equal( { 'login' => 'foo@bar.com', "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => "1..10" }, conditions)
-  end
-
-  test "param filter should not convert regular expressions to strings" do
-    conditions = { "regexp" => /expression/ }
-    conditions = Devise::ParamFilter.new([], []).filter(conditions)
-    assert_equal( { "regexp" => /expression/ }, conditions)
+    assert_equal( { "login" => "foo@bar.com", "bool1" => "true", "bool2" => "false", "fixnum" => "123", "will_be_converted" => "1..10" }, conditions)
   end
 
   test 'should respond to password and password confirmation' do

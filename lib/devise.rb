@@ -32,7 +32,7 @@ module Devise
 
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user" (this is why they are constants).
-  RAILS4 = %r(4.0).match(Rails.version) ? true : false
+  RAILS4 = %r(^4\.).match(Rails.version) ? true : false
   ALL         = []
   CONTROLLERS = ActiveSupport::OrderedHash.new
   ROUTES      = ActiveSupport::OrderedHash.new

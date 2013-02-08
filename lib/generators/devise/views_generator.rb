@@ -36,7 +36,13 @@ module Devise
       protected
 
       def view_directory(name, _target_path = nil)
-        directory name.to_s, _target_path || "#{target_path}/#{name}"
+        directory name.to_s, _target_path || "#{target_path}/#{name}" do |content|
+          if scope
+            content.gsub "devise/shared/links", "#{scope}/shared/links"
+          else
+            content
+          end
+        end
       end
 
       def target_path

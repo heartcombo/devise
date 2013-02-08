@@ -1,6 +1,7 @@
 == master
 
 * bug fix
+  * Generating scoped devise views now uses the correct scoped shared links partial instead of the default devise one (by @nashby)
   * Fix inheriting mailer templates from `Devise::Mailer`
 
 == 2.2.3

@@ -38,11 +38,25 @@ module Devise
 
       # Try both scoped and non scoped keys.
       def params_auth_hash
-        if params[scope].kind_of?(Hash) && params[scope].has_key?(authentication_keys.first)
-          params[scope]
-        else
-          params
+        auth_key = authentication_keys.first
+
+        return_params = \
+          if params[scope].kind_of?(Hash) && params[scope].has_key?(auth_key)
+            params[scope]
+          else
+            params
+          end
+
+        if mapping.to.allow_authorization_to_set_auth_token
+          token = ActionController::HttpAuthentication::Token
+            .token_and_options(request)
+
+          if token
+            return_params.merge! auth_key => token.first
+          end
         end
+
+        return_params
       end
 
       # Overwrite authentication keys to use token_authentication_key.

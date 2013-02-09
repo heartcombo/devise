@@ -48,8 +48,7 @@ module Devise
           end
 
         if mapping.to.allow_authorization_to_set_auth_token
-          token = ActionController::HttpAuthentication::Token
-            .token_and_options(request)
+          token = ActionController::HttpAuthentication::Token.token_and_options(request)
 
           if token
             return_params.merge! auth_key => token.first

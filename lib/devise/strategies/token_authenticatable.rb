@@ -52,6 +52,7 @@ module Devise
 
           if token
             return_params.merge! auth_key => token.first
+            request.env['devise.token_options'] = token.last
           end
         end
 

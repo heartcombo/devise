@@ -40,14 +40,14 @@ module Devise
       def params_auth_hash
         auth_key = authentication_keys.first
 
-        return_params = \
+        return_params =
           if params[scope].kind_of?(Hash) && params[scope].has_key?(auth_key)
             params[scope]
           else
             params
           end
 
-        if mapping.to.allow_authorization_to_set_auth_token
+        if mapping.to.allow_token_authenticatable_via_headers
           token = ActionController::HttpAuthentication::Token.token_and_options(request)
 
           if token

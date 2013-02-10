@@ -154,7 +154,7 @@ class TokenAuthenticationTest < ActionDispatch::IntegrationTest
   end
 
   test 'authenticate with valid authentication token key and value through http header without allowing token authorization setting is denied' do
-    swap Devise, :token_authentication_key => :secret_token, :allow_authorization_to_set_auth_token => false do
+    swap Devise, :token_authentication_key => :secret_token, :allow_token_authenticatable_via_headers => false do
       sign_in_as_new_user_with_token(:token_auth => true)
 
       assert_response :unauthorized

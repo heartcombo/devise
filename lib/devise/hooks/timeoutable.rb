@@ -18,7 +18,7 @@ Warden::Manager.after_set_user do |record, warden, options|
       throw :warden, :scope => scope, :message => :timeout
     end
 
-    unless env['devise.skip_trackable']
+    unless env['devise.skip_timeout'] || env['devise.skip_trackable']
       warden.session(scope)['last_request_at'] = Time.now.utc
     end
   end

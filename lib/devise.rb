@@ -102,6 +102,7 @@ module Devise
   @@extend_remember_period = false
 
   # Time interval you can access your account before confirming your account.
+  # nil - allows unconfirmed access for unlimited time
   mattr_accessor :allow_unconfirmed_access_for
   @@allow_unconfirmed_access_for = 0.days
 

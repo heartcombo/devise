@@ -204,6 +204,13 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not user.active_for_authentication?
   end
 
+  test 'should be active when we set allow_unconfirmed_access_for to nil' do
+    Devise.allow_unconfirmed_access_for = nil
+    user = create_user
+    user.confirmation_sent_at = Date.today
+    assert user.active_for_authentication?
+  end
+
   test 'should not be active without confirmation' do
     user = create_user
     user.confirmation_sent_at = nil

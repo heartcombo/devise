@@ -35,6 +35,18 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'session without last_request_at is not honored' do
+    user = sign_in_as_user
+    assert_response :success
+    assert warden.authenticated?(:user)
+
+    get clear_timeout_user_path(user)
+
+    get users_path
+    assert_redirected_to users_path
+    assert_not warden.authenticated?(:user)
+  end
+
   test 'time out user session after default limit time' do
     user = sign_in_as_user
     get expire_user_path(user)

@@ -45,8 +45,16 @@ module Devise
     def sign_in(resource_or_scope, resource=nil)
       scope    ||= Devise::Mapping.find_scope!(resource_or_scope)
       resource ||= resource_or_scope
+
       warden.instance_variable_get(:@users).delete(scope)
-      warden.session_serializer.store(resource, scope)
+      serialized = warden.session_serializer.store(resource, scope)
+
+      if resource.respond_to?(:timedout?)
+        sess = (warden.raw_session["warden.user.#{scope}.session"] ||= {})
+        sess['last_request_at'] = Time.now.utc
+      end
+
+      serialized
     end
 
     # Sign out a given resource or scope by calling logout on Warden.

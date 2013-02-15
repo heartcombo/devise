@@ -34,7 +34,7 @@ module Devise
 
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
-        after_create  :send_on_create_confirmation_instructions, :if => Proc.new { confirmation_required? && !@skip_confirmation_notification }
+        after_create  :send_on_create_confirmation_instructions, :if => :send_confirmation_notification?
         before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
         after_update  :send_confirmation_instructions, :if => :reconfirmation_required?
       end
@@ -227,6 +227,10 @@ module Devise
 
         def reconfirmation_required?
           self.class.reconfirmable && @reconfirmation_required
+        end
+
+        def send_confirmation_notification?
+          confirmation_required? && !@skip_confirmation_notification
         end
 
       module ClassMethods

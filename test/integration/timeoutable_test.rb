@@ -67,6 +67,20 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     assert_contain 'Signed out successfully'
   end
 
+  test 'expired session is not extended by sign in page' do
+    user = sign_in_as_user
+    get expire_user_path(user)
+    assert warden.authenticated?(:user)
+
+    get "/users/sign_in"
+    assert_redirected_to "/users/sign_in"
+    follow_redirect!
+
+    assert_response :success
+    assert_contain 'Sign in'
+    assert_not warden.authenticated?(:user)
+  end
+
   test 'time out is not triggered on sign in' do
     user = sign_in_as_user
     get expire_user_path(user)

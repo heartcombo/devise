@@ -20,4 +20,9 @@ class UsersController < ApplicationController
     user_session['last_request_at'] = 31.minutes.ago.utc
     render :text => 'User will be expired on next request'
   end
+
+  def clear_timeout
+    user_session['last_request_at'] = nil
+    render :text => 'User will be expired on next request'
+  end
 end

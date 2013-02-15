@@ -10,8 +10,8 @@ class TimeoutableTest < ActiveSupport::TestCase
     assert_not new_user.timedout?(29.minutes.ago)
   end
 
-  test 'should not be expired when params is nil' do
-    assert_not new_user.timedout?(nil)
+  test 'should be expired when params is nil' do
+    assert new_user.timedout?(nil)
   end
 
   test 'should use timeout_in method' do

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :users, :only => [:index] do
     get :expire, :on => :member
     get :accept, :on => :member
+    get :clear_timeout, :on => :member
 
     authenticate do
       post :exhibit, :on => :member

@@ -262,6 +262,15 @@ end
 
 This way you tell devise to use the scope :user when "/sign_in" is accessed. Notice `devise_scope` is also aliased as `as` in your router.
 
+In case your app requires users to be authenticated for all pages and to avoid the "You need to sign in or sign up before continuing." message when trying to access the application root, add this to your routes.rb:
+
+```ruby
+authenticated :user do
+  root :to => 'home#index'
+end
+root :to => redirect('/users/sign_in')
+```
+
 ### I18n
 
 Devise uses flash messages with I18n with the flash keys :notice and :alert. To customize your app, you can set up your locale file:

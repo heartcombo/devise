@@ -398,13 +398,13 @@ module ActionDispatch::Routing
 
         providers = Regexp.union(mapping.to.omniauth_providers.map(&:to_s))
 
-        get "#{path_prefix}/:provider",
+        match "#{path_prefix}/:provider",
           :constraints => { :provider => providers },
           :to => "#{controllers[:omniauth_callbacks]}#passthru",
           :as => :omniauth_authorize,
           :via => [:get, :post]
 
-        get "#{path_prefix}/:action/callback",
+        match "#{path_prefix}/:action/callback",
           :constraints => { :action => providers },
           :to => controllers[:omniauth_callbacks],
           :as => :omniauth_callback,

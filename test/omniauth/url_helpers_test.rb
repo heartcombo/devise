@@ -30,7 +30,7 @@ class OmniAuthRoutesTest < ActionController::TestCase
   test 'should generate authorization path' do
     assert_match "/users/auth/facebook", @controller.omniauth_authorize_path(:user, :facebook)
 
-    assert_raise ActionController::RoutingError do
+    assert_raise ActionController::UrlGenerationError do
       @controller.omniauth_authorize_path(:user, :github)
     end
   end

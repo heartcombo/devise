@@ -104,6 +104,16 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should skip confirmation e-mail without confirming if skip_confirmation_notification! is invoked' do
+    user = new_user
+    user.skip_confirmation_notification!
+
+    assert_email_not_sent do
+      user.save!
+      assert !user.confirmed?
+    end
+  end
+
   test 'should find a user to send confirmation instructions' do
     user = create_user
     confirmation_user = User.send_confirmation_instructions(:email => user.email)

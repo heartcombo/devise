@@ -333,22 +333,34 @@ class AuthenticationSessionTest < ActionDispatch::IntegrationTest
     assert_equal "Cart", @controller.user_session[:cart]
   end
 
-  test 'does not explode when invalid user class is stored in session' do
-    klass = User
-    paths = ActiveSupport::Dependencies.autoload_paths.dup
-
+  test 'does not explode when class name is still stored in session' do
+    # In order to test that old sessions do not break with the new scoped
+    # deserialization, we need to serialize the session the old way. This is
+    # done by removing the newly used scoped serialization method
+    # (#user_serialize) and bringing back the old uncsoped #serialize method
+    # that includes the record's class name in the serialization.
     begin
+      Warden::SessionSerializer.class_eval do
+        alias_method :original_serialize, :serialize
+        alias_method :original_user_serialize, :user_serialize
+        remove_method :user_serialize
+
+        def serialize(record)
+          klass = record.class
+          array = klass.serialize_into_session(record)
+          array.unshift(klass.name)
+        end
+      end
+
       sign_in_as_user
       assert warden.authenticated?(:user)
-
-      Object.send :remove_const, :User
-      ActiveSupport::Dependencies.autoload_paths.clear
-
-      visit "/users"
-      assert_not warden.authenticated?(:user)
     ensure
-      Object.const_set(:User, klass)
-      ActiveSupport::Dependencies.autoload_paths.replace(paths)
+      Warden::SessionSerializer.class_eval do
+        alias_method :serialize, :original_serialize
+        remove_method :original_serialize
+        alias_method :user_serialize, :original_user_serialize
+        remove_method :original_user_serialize
+      end
     end
   end
 

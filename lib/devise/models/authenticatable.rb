@@ -140,13 +140,13 @@ module Devise
       #
       #       protected
       #
-      #       def send_devise_notification(notification)
-      #         pending_notifications << notification
+      #       def send_devise_notification(notification, opts)
+      #         pending_notifications << { type: notification, opts: opts }
       #       end
       #
       #       def send_pending_notifications
       #         pending_notifications.each do |n|
-      #           devise_mailer.send(n, self).deliver
+      #           devise_mailer.send(n[:type], self, n[:opts]).deliver
       #         end
       #       end
       #

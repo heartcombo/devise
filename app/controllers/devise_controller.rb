@@ -58,6 +58,15 @@ class DeviseController < Devise.parent_controller.constantize
 
   protected
 
+  # Allows controllers to pass params to mailers.
+  # This may seem odd, but `super` here is ApplicationController and we want the
+  # params from there to override our defaults here, but only if it exists.
+  def mailer_params
+    default = {}
+    default.merge!(super) if defined?(super)
+    default
+  end
+
   # Checks whether it's a devise mapped resource or not.
   def assert_is_devise_resource! #:nodoc:
     unknown_action! <<-MESSAGE unless devise_mapping

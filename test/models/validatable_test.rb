@@ -54,6 +54,12 @@ class ValidatableTest < ActiveSupport::TestCase
   end
 
   test 'should require confirmation to be set when creating a new record' do
+    user = new_user(:password => 'new_password', :password_confirmation => nil)
+    assert user.invalid?
+    assert_equal 'can\'t be blank', user.errors[:password_confirmation].join
+  end
+
+  test 'should require confirmation to match password when creating a new record' do
     user = new_user(:password => 'new_password', :password_confirmation => 'blabla')
     assert user.invalid?
     assert_equal 'doesn\'t match confirmation', user.errors[:password].join

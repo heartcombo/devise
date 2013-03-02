@@ -84,7 +84,13 @@ class Devise::RegistrationsController < DeviseController
   # temporary session data to the newly created user.
   def build_resource(hash=nil)
     hash ||= resource_params || {}
-    self.resource = resource_class.new_with_session(hash, session)
+    if ActionController::Parameters.present?
+      params = ActionController::Parameters.new(hash)
+      params.permit!
+    else
+      params = hash
+    end
+    self.resource = resource_class.new_with_session(params, session)
   end
 
   # Signs in a user on sign up. You can overwrite this method in your own

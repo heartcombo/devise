@@ -14,6 +14,10 @@ module Devise
         super && !mapping.to.skip_session_storage.include?(:token_auth)
       end
 
+      def valid?
+        super || valid_for_token_auth?
+      end
+
       def authenticate!
         resource = mapping.to.find_for_token_authentication(authentication_hash)
         return fail(:invalid_token) unless resource
@@ -36,27 +40,40 @@ module Devise
         false
       end
 
+      # Check if the model accepts this strategy as token authenticatable.
+      def token_authenticatable?
+        mapping.to.allow_token_authenticatable_via_headers
+      end
+
+      # Check if this is strategy is valid for token authentication by:
+      #
+      #   * Validating if the model allows http token authentication;
+      #   * If the http auth token exists;
+      #   * If all authentication keys are present;
+      #
+      def valid_for_token_auth?
+        token_authenticatable? && auth_token.present? && with_authentication_hash(:token_auth, token_auth_hash)
+      end
+
+      # Extract the auth token from the request
+      def auth_token
+        @auth_token ||= ActionController::HttpAuthentication::Token.
+          token_and_options(request)
+      end
+
+      # Extract a hash with attributes:values from the auth_token.
+      def token_auth_hash
+        request.env['devise.token_options'] = auth_token.last
+        {authentication_keys.first => auth_token.first}
+      end
+
       # Try both scoped and non scoped keys.
       def params_auth_hash
-        auth_key = authentication_keys.first
-
-        return_params =
-          if params[scope].kind_of?(Hash) && params[scope].has_key?(auth_key)
-            params[scope]
-          else
-            params
-          end
-
-        if mapping.to.allow_token_authenticatable_via_headers
-          token = ActionController::HttpAuthentication::Token.token_and_options(request)
-
-          if token
-            return_params.merge! auth_key => token.first
-            request.env['devise.token_options'] = token.last
-          end
+        if params[scope].kind_of?(Hash) && params[scope].has_key?(authentication_keys.first)
+          params[scope]
+        else
+          params
         end
-
-        return_params
       end
 
       # Overwrite authentication keys to use token_authentication_key.

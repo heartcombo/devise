@@ -182,6 +182,11 @@ Devise.setup do |config|
   # Defines name of the authentication token params key
   # config.token_authentication_key = :auth_token
 
+  # Tell if authentication through HTTP Token Auth is enabled. True by default.
+  # Any extra options passed along with the options will be available in the
+  # env['devise.token_options'] hash
+  # config.allow_token_authenticatable_via_headers = false
+
   # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "users/sessions/new". It's turned off by default because it's slower if you

@@ -10,6 +10,9 @@ module Devise
     #
     #   * +authentication_keys+: parameters used for authentication. By default [:email].
     #
+    #   * +http_auth_key+: map the username passed via HTTP Auth to this parameter. Defaults to
+    #     the first element in +authentication_keys+.
+    #
     #   * +request_keys+: parameters from the request object used for authentication.
     #     By specifying a symbol (which should be a request method), it will automatically be
     #     passed to find_for_authentication method and considered in your model lookup.
@@ -194,7 +197,8 @@ module Devise
 
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
-          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage)
+          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage,
+          :http_auth_key)
 
         def serialize_into_session(record)
           [record.to_key, record.authenticatable_salt]

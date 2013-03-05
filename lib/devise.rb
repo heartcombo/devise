@@ -51,6 +51,10 @@ module Devise
   mattr_accessor :stretches
   @@stretches = 10
 
+  # The default key used when authenticating over http auth.
+  mattr_accessor :http_auth_key
+  @@http_auth_key = nil
+
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
   @@authentication_keys = [ :email ]

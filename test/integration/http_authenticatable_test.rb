@@ -62,6 +62,24 @@ class HttpAuthenticationTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'it uses appropriate authentication_keys when configured with hash' do
+    swap Devise, :authentication_keys => { :username => false, :email => false } do
+      sign_in_as_new_user_with_http("usertest")
+      assert_response :success
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'it uses the appropriate key when configured explicitly' do
+    swap Devise, :authentication_keys => { :email => false, :username => false }, :http_auth_key => :username do
+      sign_in_as_new_user_with_http("usertest")
+      assert_response :success
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
+    end
+  end
+
   test 'test request with oauth2 header doesnt get mistaken for basic authentication' do
     swap Devise, :http_authenticatable => true do
       add_oauth2_header

@@ -140,20 +140,20 @@ module Devise
       #
       #       protected
       #
-      #       def send_devise_notification(notification)
+      #       def send_devise_notification(notification, opts = {})
       #         # if the record is new or changed then delay the
       #         # delivery until the after_commit callback otherwise
       #         # send now because after_commit will not be called.
       #         if new_record? || changed?
-      #           pending_notifications << notification
+      #           pending_notifications << [notification, opts]
       #         else
-      #           devise_mailer.send(notification, self).deliver
+      #           devise_mailer.send(notification, self, opts).deliver
       #         end
       #       end
       #
       #       def send_pending_notifications
-      #         pending_notifications.each do |n|
-      #           devise_mailer.send(n, self).deliver
+      #         pending_notifications.each do |n, opts|
+      #           devise_mailer.send(n, self, opts).deliver
       #         end
       #
       #         # Empty the pending notifications array because the

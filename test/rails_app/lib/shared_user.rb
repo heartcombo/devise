@@ -7,7 +7,6 @@ module SharedUser
            :trackable, :validatable, :omniauthable
 
     attr_accessor :other_key
-    attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :confirmation_sent_at
 
     # They need to be included after Devise is called.
     extend ExtendMethods

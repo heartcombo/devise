@@ -83,7 +83,11 @@ class Devise::RegistrationsController < DeviseController
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
   def build_resource(hash=nil)
-    hash ||= resource_params || {}
+    if request.get?
+      hash ||= {}
+    else
+      hash ||= resource_params || {}
+    end
     self.resource = resource_class.new_with_session(hash, session)
   end
 

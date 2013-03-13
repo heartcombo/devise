@@ -39,5 +39,4 @@ class Devise::ConfirmationsController < DeviseController
     def after_confirmation_path_for(resource_name, resource)
       after_sign_in_path_for(resource)
     end
-
 end

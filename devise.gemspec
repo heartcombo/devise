@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "devise"
   s.version     = Devise::VERSION.dup
   s.platform    = Gem::Platform::RUBY
+  s.license     = "MIT"
   s.summary     = "Flexible authentication solution for Rails with Warden"
   s.email       = "contact@plataformatec.com.br"
   s.homepage    = "http://github.com/plataformatec/devise"

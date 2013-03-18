@@ -23,8 +23,11 @@ module ActiveRecord
 
       def inject_devise_content
         content = model_contents + <<CONTENT
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  # Setup strong parameters for your model
+  private
+  def #{file_name}_params
+    params.require(:#{file_name}).permit(:email, :password, :password_confirmation, :remember_me)
+  end
 CONTENT
 
         class_path = if namespaced?

@@ -8,7 +8,7 @@ class Devise::UnlocksController < DeviseController
 
   # POST /resource/unlock
   def create
-    self.resource = resource_class.send_unlock_instructions(resource_params)
+    self.resource = resource_class.send_unlock_instructions(send_unlock_resource_params)
 
     if successfully_sent?(resource)
       respond_with({}, :location => after_sending_unlock_instructions_path_for(resource))
@@ -30,6 +30,10 @@ class Devise::UnlocksController < DeviseController
   end
 
   protected
+    def send_unlock_resource_params
+      permitted = [:email]
+      whitelisted_params(permitted)
+    end
 
     # The path used after sending unlock password instructions
     def after_sending_unlock_instructions_path_for(resource)

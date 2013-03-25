@@ -59,6 +59,10 @@ module Devise
   mattr_accessor :request_keys
   @@request_keys = []
 
+  # Params permitted for strong_parameters
+  mattr_accessor :permitted_params
+  @@permitted_params = {}
+
   # Keys that should be case-insensitive.
   mattr_accessor :case_insensitive_keys
   @@case_insensitive_keys = [ :email ]

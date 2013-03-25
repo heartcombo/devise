@@ -35,7 +35,8 @@ class HelpersTest < ActionController::TestCase
 
   test 'get resource params from request params using resource name as key' do
     user_params = {'name' => 'Shirley Templar'}
-    @controller.stubs(:params).returns(HashWithIndifferentAccess.new({'user' => user_params}))
+    Devise.stubs(:permitted_params).returns({:user => [:name]})
+    @controller.stubs(:params).returns(ActionController::Parameters.new({'user' => user_params}))
 
     assert_equal user_params, @controller.resource_params
   end

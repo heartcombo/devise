@@ -10,7 +10,7 @@ class Devise::PasswordsController < DeviseController
 
   # POST /resource/password
   def create
-    self.resource = resource_class.send_reset_password_instructions(resource_params)
+    self.resource = resource_class.send_reset_password_instructions(send_reset_password_resource_params)
 
     if successfully_sent?(resource)
       respond_with({}, :location => after_sending_reset_password_instructions_path_for(resource_name))
@@ -27,7 +27,7 @@ class Devise::PasswordsController < DeviseController
 
   # PUT /resource/password
   def update
-    self.resource = resource_class.reset_password_by_token(resource_params)
+    self.resource = resource_class.reset_password_by_token(reset_password_resource_params)
 
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
@@ -41,6 +41,15 @@ class Devise::PasswordsController < DeviseController
   end
 
   protected
+    def send_reset_password_resource_params
+      permitted = [:email]
+      whitelisted_params(permitted)
+    end
+
+    def reset_password_resource_params
+      permitted = [:password, :password_confirmation, :reset_password_token]
+      whitelisted_params(permitted)
+    end
 
     # The path used after sending reset password instructions
     def after_sending_reset_password_instructions_path_for(resource_name)

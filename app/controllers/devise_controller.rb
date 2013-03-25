@@ -5,7 +5,7 @@ class DeviseController < Devise.parent_controller.constantize
   helper DeviseHelper
 
   helpers = %w(resource scope_name resource_name signed_in_resource
-               resource_class resource_params devise_mapping)
+               resource_class resource_params devise_mapping whitelisted_params)
   hide_action *helpers
   helper_method *helpers
 
@@ -29,7 +29,22 @@ class DeviseController < Devise.parent_controller.constantize
   end
 
   def resource_params
-    params[resource_name]
+    if defined? ActionController::StrongParameters
+      params.fetch(resource_name, {})
+    else
+      params[resource_name]
+    end
+  end
+
+  # Pass resource_params through StrongParameters for use of
+  # other method.
+  def whitelisted_params(permitted)
+    permitted = permitted.concat (Devise.permitted_params[resource_name.to_sym] || [])
+    if defined? ActionController::StrongParameters
+      resource_params.permit(*permitted)
+    else
+      resource_params
+    end
   end
 
   # Returns a signed in resource from session (if one exists)
@@ -95,8 +110,12 @@ MESSAGE
 
   # Build a devise resource.
   # Assignment bypasses attribute protection when :unsafe option is passed
+  #
+  # NOTE: @arashbm: I have no idea what is this intended to do. Right now it only
+  # generates resources with argumant ({}) here and there which doesn't make sense
+  # to me. I assume it doesn't need any attributes (which I feel is a false assumption)
   def build_resource(hash = nil, options = {})
-    hash ||= resource_params || {}
+    hash ||= whitelisted_params(options[:permitted_params] || []) || {}
 
     if options[:unsafe]
       self.resource = resource_class.new.tap do |resource|

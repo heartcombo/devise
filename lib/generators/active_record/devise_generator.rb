@@ -22,10 +22,14 @@ module ActiveRecord
       end
 
       def inject_devise_content
-        content = model_contents + <<CONTENT
+        content = model_contents
+
+        unless defined? AccountController::StrongParameters
+        content += <<CONTENT
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 CONTENT
+        end
 
         class_path = if namespaced?
           class_name.to_s.split("::")

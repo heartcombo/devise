@@ -32,6 +32,11 @@ Devise.setup do |config|
   # The same considerations mentioned for authentication_keys also apply to request_keys.
   # config.request_keys = []
 
+  # Configure custom permitted parameters for Devise controllers. If you use your own
+  # views with Devise controllers you may want to whitelist your own fields so Devise
+  # controllers can use them. Format is { user: [:name, :age] }
+  # config.permitted_params = {}
+
   # Configure which authentication keys should be case-insensitive.
   # These keys will be downcased upon creating or modifying a user and when used
   # to authenticate or find a user. Default is :email.

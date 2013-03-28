@@ -83,7 +83,12 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 
   test 'set null fields on migrations' do
-    Admin.create!
+    # Ignore email sending since no email exists.
+    klass = Class.new(Admin) do
+      def send_devise_notification(*); end
+    end
+
+    klass.create!
   end
 end
 

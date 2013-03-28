@@ -57,9 +57,10 @@ class RememberableTest < ActiveSupport::TestCase
 
   test 'forget_me should not try to update resource if it has been destroyed' do
     resource = create_resource
-    resource.destroy
     resource.expects(:remember_created_at).never
     resource.expects(:save).never
+
+    resource.destroy
     resource.forget_me!
   end
 

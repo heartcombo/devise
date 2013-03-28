@@ -15,7 +15,6 @@ end
 class UserWithVirtualAttributes < User
   devise :case_insensitive_keys => [ :email, :email_confirmation ]
   validates :email, :presence => true, :confirmation => {:on => :create}
-  attr_accessible :email, :email_confirmation
 end
 
 class Several < Admin

@@ -2,14 +2,14 @@ module Shim
   extend ::ActiveSupport::Concern
 
   included do
+    include ::ActiveModel::MassAssignmentSecurity
     include ::Mongoid::Timestamps
     field :created_at, :type => DateTime
   end
 
   module ClassMethods
-    def last(options = {})
-      options.delete(:order) if options[:order] == "id"
-      where(options).last
+    def order(attribute)
+      asc(attribute)
     end
 
     def find_by_email(email)

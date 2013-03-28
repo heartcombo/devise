@@ -28,10 +28,6 @@ class DeviseController < Devise.parent_controller.constantize
     devise_mapping.to
   end
 
-  def resource_params
-    params[resource_name]
-  end
-
   # Returns a signed in resource from session (if one exists)
   def signed_in_resource
     warden.authenticate(:scope => resource_name)
@@ -96,7 +92,11 @@ MESSAGE
   # Build a devise resource.
   # Assignment bypasses attribute protection when :unsafe option is passed
   def build_resource(hash = nil, options = {})
-    hash ||= resource_params || {}
+    if request.get?
+      hash ||= {}
+    else
+      hash ||= resource_params || {}
+    end
 
     if options[:unsafe]
       self.resource = resource_class.new.tap do |resource|
@@ -180,5 +180,22 @@ MESSAGE
     respond_with(*args) do |format|
       format.any(*navigational_formats, &block)
     end
+  end
+
+  # Setup a param sanitizer to filter parameters using strong_parameters. See
+  # lib/devise/controllers/parameter_sanitizer.rb for more info. Override this
+  # method in your application controller to use your own parameter sanitizer.
+  def parameters_sanitizer
+    @parameters_sanitizer ||= Devise::ParameterSanitizer.new
+  end
+
+  # Return the params to be used for mass assignment passed through the
+  # strong_parameters require/permit step. To customize the parameters
+  # permitted for a specific controller, simply prepend a before_filter and
+  # call #permit_devise_param or #remove_permitted_devise_param on
+  # parameters_sanitizer to update the default allowed lists of permitted
+  # parameters.
+  def resource_params
+    params.require(resource_name).permit(parameters_sanitizer.permitted_params_for(controller_name))
   end
 end

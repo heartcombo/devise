@@ -10,6 +10,9 @@ module Devise
     #
     #   * +authentication_keys+: parameters used for authentication. By default [:email].
     #
+    #   * +http_auth_key+: map the username passed via HTTP Auth to this parameter. Defaults to
+    #     the first element in +authentication_keys+.
+    #
     #   * +request_keys+: parameters from the request object used for authentication.
     #     By specifying a symbol (which should be a request method), it will automatically be
     #     passed to find_for_authentication method and considered in your model lookup.
@@ -140,14 +143,26 @@ module Devise
       #
       #       protected
       #
-      #       def send_devise_notification(notification)
-      #         pending_notifications << notification
+      #       def send_devise_notification(notification, opts = {})
+      #         # if the record is new or changed then delay the
+      #         # delivery until the after_commit callback otherwise
+      #         # send now because after_commit will not be called.
+      #         if new_record? || changed?
+      #           pending_notifications << [notification, opts]
+      #         else
+      #           devise_mailer.send(notification, self, opts).deliver
+      #         end
       #       end
       #
       #       def send_pending_notifications
-      #         pending_notifications.each do |n|
-      #           devise_mailer.send(n, self).deliver
+      #         pending_notifications.each do |n, opts|
+      #           devise_mailer.send(n, self, opts).deliver
       #         end
+      #
+      #         # Empty the pending notifications array because the
+      #         # after_commit hook can be called multiple times which
+      #         # could cause multiple emails to be sent.
+      #         pending_notifications.clear
       #       end
       #
       #       def pending_notifications
@@ -182,7 +197,8 @@ module Devise
 
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
-          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage)
+          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage,
+          :http_auth_key)
 
         def serialize_into_session(record)
           [record.to_key, record.authenticatable_salt]

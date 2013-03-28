@@ -100,7 +100,7 @@ module Devise
 
       # Extract a hash with attributes:values from the http params.
       def http_auth_hash
-        keys = [authentication_keys.first, :password]
+        keys = [http_auth_key, :password]
         Hash[*keys.zip(decode_credentials).flatten]
       end
 
@@ -137,6 +137,14 @@ module Devise
       # Holds the authentication keys.
       def authentication_keys
         @authentication_keys ||= mapping.to.authentication_keys
+      end
+
+      def http_auth_key
+        @http_auth_key ||= mapping.to.http_auth_key
+        @http_auth_key ||= case authentication_keys
+          when Array then authentication_keys.first
+          when Hash then authentication_keys.keys.first
+        end
       end
 
       # Holds request keys.

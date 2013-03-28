@@ -62,7 +62,7 @@ PATH
       warden (~> 1.2.1)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     activerecord-deprecated_finders (0.0.3)
     arel (4.0.0.beta1)

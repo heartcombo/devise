@@ -21,7 +21,7 @@ class Devise::ConfirmationsController < DeviseController
 
     if resource.errors.empty?
       set_flash_message(:notice, :confirmed) if is_navigational_format?
-      sign_in(resource_name, resource)
+      sign_up(resource_name, resource)
       respond_with_navigational(resource){ redirect_to after_confirmation_path_for(resource_name, resource) }
     else
       respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render :new }
@@ -38,6 +38,12 @@ class Devise::ConfirmationsController < DeviseController
     # The path used after confirmation.
     def after_confirmation_path_for(resource_name, resource)
       after_sign_in_path_for(resource)
+    end
+
+    # Signs in a user on sign up. You can overwrite this method in your own
+    # ConfirmationsController.
+    def sign_up(resource_name, resource)
+      sign_in(resource_name, resource)
     end
 
 end

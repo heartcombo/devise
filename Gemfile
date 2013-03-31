@@ -25,7 +25,7 @@ platforms :ruby do
   gem "sqlite3"
 end
 
-platforms :mri_19 do
+platforms :mri_19, :mri_20 do
   group :mongoid do
     gem "mongoid", github: "mongoid/mongoid", branch: "master"
   end

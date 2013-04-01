@@ -1,5 +1,9 @@
 require 'devise/strategies/database_authenticatable'
-require 'bcrypt'
+begin
+  require 'scrypt'
+rescue LoadError
+  require 'bcrypt'
+end
 
 module Devise
   module Models
@@ -40,8 +44,13 @@ module Devise
       # Verifies whether an password (ie from sign in) is the user password.
       def valid_password?(password)
         return false if encrypted_password.blank?
-        bcrypt   = ::BCrypt::Password.new(encrypted_password)
-        password = ::BCrypt::Engine.hash_secret("#{password}#{self.class.pepper}", bcrypt.salt)
+        if defined? SCrypt
+          scrypt   = ::SCrypt::Password.new(encrypted_password)
+          password = ::SCrypt::Engine.hash_secret("#{password}#{self.class.pepper}", scrypt.cost + scrypt.salt)
+        else
+          bcrypt   = ::BCrypt::Password.new(encrypted_password)
+          password = ::BCrypt::Engine.hash_secret("#{password}#{self.class.pepper}", bcrypt.salt)
+        end
         Devise.secure_compare(password, encrypted_password)
       end
 
@@ -100,14 +109,27 @@ module Devise
 
       # A reliable way to expose the salt regardless of the implementation.
       def authenticatable_salt
-        encrypted_password[0,29] if encrypted_password
+        if encrypted_password
+          if defined? SCrypt
+            password = ::SCrypt::Password.new(encrypted_password)
+            password.cost + password.salt 
+          elsif defined? BCrypt
+            ::BCrypt::Password.new(encrypted_password).salt
+          else
+            encrypted_password[0,29] 
+          end
+        end
       end
 
     protected
 
       # Digests the password using bcrypt.
       def password_digest(password)
-        ::BCrypt::Password.create("#{password}#{self.class.pepper}", :cost => self.class.stretches).to_s
+        if defined? SCrypt
+          ::SCrypt::Password.create("#{password}#{self.class.pepper}").to_s
+        else
+          ::BCrypt::Password.create("#{password}#{self.class.pepper}", :cost => self.class.stretches).to_s
+        end
       end
 
       module ClassMethods

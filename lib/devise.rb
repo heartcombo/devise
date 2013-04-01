@@ -222,7 +222,7 @@ module Devise
   @@omniauth_path_prefix = nil
 
   def self.encryptor=(value)
-    warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n"
+    warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n" unless value.to_s == 'scrypt' || value.to_s == 'bcrypt'
   end
 
   def self.use_salt_as_remember_token=(value)

@@ -3,6 +3,7 @@
 * enhancements
   * Add `#skip_confirmation_notification!` method to `Confirmable`. Allows skipping confirmation email without auto-confirming. (by @gregates)
   * allow_unconfirmed_access_for config from `:confirmable` module can be set to `nil` that means unconfirmed access for unlimited time. (by @nashby)
+  * Prefer scrypt if available to bcrypt (no bcrypt/other -> scrypt migrations yet)
 
 * bug fix
   * Generating scoped devise views now uses the correct scoped shared links partial instead of the default devise one (by @nashby)

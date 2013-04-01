@@ -187,8 +187,8 @@ MESSAGE
   # Setup a param sanitizer to filter parameters using strong_parameters. See
   # lib/devise/controllers/parameter_sanitizer.rb for more info. Override this
   # method in your application controller to use your own parameter sanitizer.
-  def parameters_sanitizer
-    @parameters_sanitizer ||= Devise::ParameterSanitizer.new
+  def devise_parameters_sanitizer
+    @devise_parameters_sanitizer ||= Devise::ParameterSanitizer.new
   end
 
   # Return the params to be used for mass assignment passed through the
@@ -198,6 +198,6 @@ MESSAGE
   # parameters_sanitizer to update the default allowed lists of permitted
   # parameters.
   def resource_params
-    params.require(resource_name).permit(parameters_sanitizer.permitted_params_for(controller_name))
+    params.require(resource_name).permit(devise_parameters_sanitizer.permitted_params_for(controller_name))
   end
 end

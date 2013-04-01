@@ -6,7 +6,7 @@ class Devise::ConfirmationsController < DeviseController
 
   # POST /resource/confirmation
   def create
-    self.resource = resource_class.send_confirmation_instructions(resource_params)
+    self.resource = resource_class.send_confirmation_instructions(send_confirmation_resource_params)
 
     if successfully_sent?(resource)
       respond_with({}, :location => after_resending_confirmation_instructions_path_for(resource_name))
@@ -29,6 +29,10 @@ class Devise::ConfirmationsController < DeviseController
   end
 
   protected
+    def send_confirmation_resource_params
+      permitted = [:email]
+      whitelisted_params(permitted)
+    end
 
     # The path used after resending confirmation instructions.
     def after_resending_confirmation_instructions_path_for(resource_name)

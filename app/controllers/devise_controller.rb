@@ -163,12 +163,13 @@ MESSAGE
   #
   # Please refer to README or en.yml locale file to check what messages are
   # available.
-  def set_flash_message(key, kind, options={})
-    flash[key] = get_message(kind, options) if message.present?
+  def set_flash_message(key, kind, options = {})
+    message = find_message(kind, options)
+    flash[key] = message if message.present?
   end
 
   # Get message for given
-  def get_message(kind, options = {})
+  def find_message(kind, options = {})
     options[:scope] = "devise.#{controller_name}"
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name

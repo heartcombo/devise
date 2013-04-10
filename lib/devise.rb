@@ -10,6 +10,7 @@ module Devise
   autoload :FailureApp,         'devise/failure_app'
   autoload :OmniAuth,           'devise/omniauth'
   autoload :ParamFilter,        'devise/param_filter'
+  autoload :BaseSanitizer,      'devise/parameter_sanitizer'
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
   autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'

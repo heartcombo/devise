@@ -10,7 +10,7 @@ class Devise::RegistrationsController < DeviseController
 
   # POST /resource
   def create
-    build_resource
+    build_resource(create_registration_params)
 
     if resource.save
       if resource.active_for_authentication?
@@ -40,7 +40,7 @@ class Devise::RegistrationsController < DeviseController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    if resource.update_with_password(resource_params)
+    if resource.update_with_password(update_resource_params)
       if is_navigational_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
           :update_needs_confirmation : :updated
@@ -83,11 +83,7 @@ class Devise::RegistrationsController < DeviseController
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
   def build_resource(hash=nil)
-    if request.get?
-      hash ||= {}
-    else
-      hash ||= resource_params || {}
-    end
+    hash ||= {}
     self.resource = resource_class.new_with_session(hash, session)
   end
 
@@ -119,5 +115,13 @@ class Devise::RegistrationsController < DeviseController
   def authenticate_scope!
     send(:"authenticate_#{resource_name}!", :force => true)
     self.resource = send(:"current_#{resource_name}")
+  end
+
+  def create_registration_params
+    whitelisted_params(:registrations)
+  end
+
+  def update_resource_params
+    whitelisted_params(:registrations)
   end
 end

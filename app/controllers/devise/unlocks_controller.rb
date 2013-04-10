@@ -8,7 +8,7 @@ class Devise::UnlocksController < DeviseController
 
   # POST /resource/unlock
   def create
-    self.resource = resource_class.send_unlock_instructions(resource_params)
+    self.resource = resource_class.send_unlock_instructions(create_unlock_params)
 
     if successfully_sent?(resource)
       respond_with({}, :location => after_sending_unlock_instructions_path_for(resource))
@@ -41,4 +41,7 @@ class Devise::UnlocksController < DeviseController
       new_session_path(resource)
     end
 
+    def create_unlock_params
+      whitelisted_params(:unlocks)
+    end
 end

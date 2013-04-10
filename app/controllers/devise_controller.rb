@@ -28,10 +28,6 @@ class DeviseController < Devise.parent_controller.constantize
     devise_mapping.to
   end
 
-  def resource_params
-    params[resource_name]
-  end
-
   # Returns a signed in resource from session (if one exists)
   def signed_in_resource
     warden.authenticate(:scope => resource_name)
@@ -96,7 +92,13 @@ MESSAGE
   # Build a devise resource.
   # Assignment bypasses attribute protection when :unsafe option is passed
   def build_resource(hash = nil, options = {})
-    hash ||= resource_params || {}
+    # When building a resource, invoke strong_parameters require/permit
+    # steps if the params hash includes the resource name.
+    if params[resource_name]
+      hash ||= whitelisted_params(controller_name) || {}
+    else
+      hash ||= {}
+    end
 
     if options[:unsafe]
       self.resource = resource_class.new.tap do |resource|
@@ -180,5 +182,31 @@ MESSAGE
     respond_with(*args) do |format|
       format.any(*navigational_formats, &block)
     end
+  end
+
+  # Setup a param sanitizer to filter parameters using strong_parameters. See
+  # lib/devise/controllers/parameter_sanitizer.rb for more info. Override this
+  # method in your application controller to use your own parameter sanitizer.
+  def devise_parameter_sanitizer
+    return super if defined?(super)
+    @devise_parameter_sanitizer ||= if defined?(ActionController::StrongParameters)
+      Devise::ParameterSanitizer.new(resource_name, params)
+    else
+      Devise::BaseSanitizer.new(resource_name, params)
+    end
+  end
+
+  # Return the params to be used for mass assignment passed through the
+  # strong_parameters require/permit step. To customize the parameters
+  # permitted for a specific controller, simply prepend a before_filter and
+  # call #permit, #permit! or #forbid on devise_parameters_sanitizer to update
+  # the default allowed lists of permitted parameters for a specific
+  # controller/action combination.
+  def whitelisted_params(contr_name)
+    devise_parameter_sanitizer.sanitize_for(contr_name)
+  end
+
+  def resource_params
+    params.fetch(resource_name, {})
   end
 end

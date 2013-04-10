@@ -22,10 +22,7 @@ module ActiveRecord
       end
 
       def inject_devise_content
-        content = model_contents + <<CONTENT
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-CONTENT
+        content = model_contents
 
         class_path = if namespaced?
           class_name.to_s.split("::")

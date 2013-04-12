@@ -46,6 +46,11 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     assert_equal ['custom@example.com'], mail.from
   end
 
+  test 'setup sender from curstom mailer defaults with proc' do
+    Devise.mailer = 'Users::FromProcMailer'
+    assert_equal ['custom@example.com'], mail.from
+  end
+
   test 'custom mailer renders parent mailer template' do
     Devise.mailer = 'Users::Mailer'
     assert_not_blank mail.body.encoded

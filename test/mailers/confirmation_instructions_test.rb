@@ -46,7 +46,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     assert_equal ['custom@example.com'], mail.from
   end
 
-  test 'setup sender from curstom mailer defaults with proc' do
+  test 'setup sender from custom mailer defaults with proc' do
     Devise.mailer = 'Users::FromProcMailer'
     assert_equal ['custom@example.com'], mail.from
   end

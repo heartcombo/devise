@@ -45,4 +45,3 @@ class Devise::SessionsController < DeviseController
     { :scope => resource_name, :recall => "#{controller_path}#new" }
   end
 end
-

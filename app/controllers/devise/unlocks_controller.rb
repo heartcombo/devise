@@ -3,7 +3,7 @@ class Devise::UnlocksController < DeviseController
 
   # GET /resource/unlock/new
   def new
-    build_resource({})
+    self.resource = resource_class.new
   end
 
   # POST /resource/unlock

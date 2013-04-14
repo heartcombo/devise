@@ -28,10 +28,6 @@ class DeviseController < Devise.parent_controller.constantize
     devise_mapping.to
   end
 
-  def resource_params
-    params[resource_name]
-  end
-
   # Returns a signed in resource from session (if one exists)
   def signed_in_resource
     warden.authenticate(:scope => resource_name)
@@ -91,23 +87,6 @@ MESSAGE
   # Sets the resource creating an instance variable
   def resource=(new_resource)
     instance_variable_set(:"@#{resource_name}", new_resource)
-  end
-
-  # Build a devise resource.
-  # Assignment bypasses attribute protection when :unsafe option is passed
-  def build_resource(hash = nil, options = {})
-    hash ||= resource_params || {}
-
-    if options[:unsafe]
-      self.resource = resource_class.new.tap do |resource|
-        hash.each do |key, value|
-          setter = :"#{key}="
-          resource.send(setter, value) if resource.respond_to?(setter)
-        end
-      end
-    else
-      self.resource = resource_class.new(hash)
-    end
   end
 
   # Helper for use in before_filters where no authentication is required.
@@ -180,5 +159,9 @@ MESSAGE
     respond_with(*args) do |format|
       format.any(*navigational_formats, &block)
     end
+  end
+
+  def resource_params
+    params.fetch(resource_name, {})
   end
 end

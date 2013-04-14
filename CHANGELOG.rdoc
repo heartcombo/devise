@@ -3,10 +3,13 @@
 * enhancements
   * Add `#skip_confirmation_notification!` method to `Confirmable`. Allows skipping confirmation email without auto-confirming. (by @gregates)
   * allow_unconfirmed_access_for config from `:confirmable` module can be set to `nil` that means unconfirmed access for unlimited time. (by @nashby)
+  * Support Rails' token strategy on authentication (by @robhurring)
+  * Support explicitly setting the http authentication key via `config.http_authentication_key` (by  @neo)
 
 * bug fix
   * Generating scoped devise views now uses the correct scoped shared links partial instead of the default devise one (by @nashby)
   * Fix inheriting mailer templates from `Devise::Mailer`
+  * Fix a bug when procs are used as default mailer in Devise (by @tomasv)
 
 == 2.2.3
 

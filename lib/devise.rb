@@ -52,8 +52,8 @@ module Devise
   @@stretches = 10
 
   # The default key used when authenticating over http auth.
-  mattr_accessor :http_auth_key
-  @@http_auth_key = nil
+  mattr_accessor :http_authentication_key
+  @@http_authentication_key = nil
 
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
@@ -181,10 +181,6 @@ module Devise
   # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
-
-  # Allow HTTP token authorization to set token_authentication_key
-  mattr_accessor :allow_token_authenticatable_via_headers
-  @@allow_token_authenticatable_via_headers = true
 
   # Skip session storage for the following strategies
   mattr_accessor :skip_session_storage

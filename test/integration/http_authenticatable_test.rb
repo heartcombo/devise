@@ -72,7 +72,7 @@ class HttpAuthenticationTest < ActionDispatch::IntegrationTest
   end
 
   test 'it uses the appropriate key when configured explicitly' do
-    swap Devise, :authentication_keys => { :email => false, :username => false }, :http_auth_key => :username do
+    swap Devise, :authentication_keys => { :email => false, :username => false }, :http_authentication_key => :username do
       sign_in_as_new_user_with_http("usertest")
       assert_response :success
       assert_match '<email>user@test.com</email>', response.body

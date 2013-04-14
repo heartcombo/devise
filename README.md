@@ -188,7 +188,7 @@ In case you want to customize the permitted parameters (the lazy way™) you can
 
 ```ruby
 class ApplicationController < ActionController::Base
-  before_filter :configure_permitted_parameters
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   protected
 

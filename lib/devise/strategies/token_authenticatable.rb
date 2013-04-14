@@ -14,6 +14,10 @@ module Devise
         super && !mapping.to.skip_session_storage.include?(:token_auth)
       end
 
+      def valid?
+        super || valid_for_token_auth?
+      end
+
       def authenticate!
         resource = mapping.to.find_for_token_authentication(authentication_hash)
         return fail(:invalid_token) unless resource
@@ -34,6 +38,33 @@ module Devise
       # Do not use remember_me behavior with token.
       def remember_me?
         false
+      end
+
+      # Check if the model accepts this strategy as token authenticatable.
+      def token_authenticatable?
+        mapping.to.allow_token_authenticatable_via_headers
+      end
+
+      # Check if this is strategy is valid for token authentication by:
+      #
+      #   * Validating if the model allows http token authentication;
+      #   * If the http auth token exists;
+      #   * If all authentication keys are present;
+      #
+      def valid_for_token_auth?
+        token_authenticatable? && auth_token.present? && with_authentication_hash(:token_auth, token_auth_hash)
+      end
+
+      # Extract the auth token from the request
+      def auth_token
+        @auth_token ||= ActionController::HttpAuthentication::Token.
+          token_and_options(request)
+      end
+
+      # Extract a hash with attributes:values from the auth_token.
+      def token_auth_hash
+        request.env['devise.token_options'] = auth_token.last
+        {authentication_keys.first => auth_token.first}
       end
 
       # Try both scoped and non scoped keys.

@@ -182,6 +182,10 @@ module Devise
   mattr_accessor :token_authentication_key
   @@token_authentication_key = :auth_token
 
+  # Allow HTTP token authorization to set token_authentication_key
+  mattr_accessor :allow_token_authenticatable_via_headers
+  @@allow_token_authenticatable_via_headers = true
+
   # Skip session storage for the following strategies
   mattr_accessor :skip_session_storage
   @@skip_session_storage = []

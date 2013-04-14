@@ -141,7 +141,7 @@ user_session
 After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. Example: For a :user resource, it will use `user_root_path` if it exists, otherwise default `root_path` will be used. This means that you need to set the root inside your routes:
 
 ```ruby
-root :to => "home#index"
+root to: "home#index"
 ```
 
 You can also overwrite `after_sign_in_path_for` and `after_sign_out_path_for` to customize your redirect hooks.
@@ -174,34 +174,31 @@ devise :database_authenticatable, :registerable, :confirmable, :recoverable, :st
 
 Besides :stretches, you can define :pepper, :encryptor, :confirm_within, :remember_for, :timeout_in, :unlock_in and other values. For details, see the initializer file that was created when you invoked the "devise:install" generator described above.
 
-### Configuring multiple models
+### Parameter sanitization
 
-Devise allows you to set up as many roles as you want. For example, you may have a User model and also want an Admin model with just authentication and timeoutable features. If so, just follow these steps:
+Wehn you customize your own views, you may end up adding new attributes to forms. Rails 4 moved the parameter sanitization from the model to the controller, causing Devise to handle this concern at the controller as well.
+
+There are just three actions in Devise that allows any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and the permited parameters by default are:
+
+* `sign_in` (`Devise::SessionsController#new`) - Permits only the authentication keys (like `email`)
+* `sign_up` (`Devise::RegistrationsController#create`) - Permits authentication keys plus `password` and `password_confirmation`
+* `account_update` (`Devise::RegistrationsController#update`) - Permits authentication keys plus `password`, `password_confirmation` and `current_password`
+
+In case you want to customize the permitted parameters (the lazy way™) you can do with a simple before filter in your `ApplicationController`:
 
 ```ruby
-# Create a migration with the required fields
-create_table :admins do |t|
-  t.string :email
-  t.string :encrypted_password
-  t.timestamps
+class ApplicationController < ActionController::Base
+  before_filter :configure_permitted_parameters
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:username, :email) }
+  end
 end
-
-# Inside your Admin model
-devise :database_authenticatable, :timeoutable
-
-# Inside your routes
-devise_for :admins
-
-# Inside your protected controller
-before_filter :authenticate_admin!
-
-# Inside your controllers and views
-admin_signed_in?
-current_admin
-admin_session
 ```
 
-On the other hand, you can simply run the generator!
+The example above overrides the permitted parameters for the user to be both `:username` and `:email`. The non-lazy way to configure parameters would be by defining the before filter above in a custom controller. We detail how to configure and customize controllers in some sections below.
 
 ### Configuring views
 
@@ -351,15 +348,40 @@ You can read more about Omniauth support in the wiki:
 
 * https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
 
+### Configuring multiple models
+
+Devise allows you to set up as many roles as you want. For example, you may have a User model and also want an Admin model with just authentication and timeoutable features. If so, just follow these steps:
+
+```ruby
+# Create a migration with the required fields
+create_table :admins do |t|
+  t.string :email
+  t.string :encrypted_password
+  t.timestamps
+end
+
+# Inside your Admin model
+devise :database_authenticatable, :timeoutable
+
+# Inside your routes
+devise_for :admins
+
+# Inside your protected controller
+before_filter :authenticate_admin!
+
+# Inside your controllers and views
+admin_signed_in?
+current_admin
+admin_session
+```
+
+On the other hand, you can simply run the generator!
+
 ### Other ORMs
 
 Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you just need to require it in the initializer file.
 
-### Migrating from other solutions
-
-Devise implements encryption strategies for Clearance, Authlogic and Restful-Authentication. To make use of these strategies, you need set the desired encryptor in the encryptor initializer config option and add :encryptable to your model. You might also need to rename your encrypted password and salt columns to match Devise's fields (encrypted_password and password_salt).
-
-## Troubleshooting
+## Additional information
 
 ### Heroku
 
@@ -370,8 +392,6 @@ config.assets.initialize_on_precompile = false
 ```
 
 Read more about the potential issues at http://guides.rubyonrails.org/asset_pipeline.html
-
-## Additional information
 
 ### Warden
 

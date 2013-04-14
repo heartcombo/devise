@@ -2,7 +2,6 @@ module Shim
   extend ::ActiveSupport::Concern
 
   included do
-    include ::ActiveModel::MassAssignmentSecurity
     include ::Mongoid::Timestamps
     field :created_at, :type => DateTime
   end

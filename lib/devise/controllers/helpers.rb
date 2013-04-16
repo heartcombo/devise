@@ -16,7 +16,7 @@ module Devise
       end
 
       # Define authentication filters and accessor helpers based on mappings.
-      # These filters should be used inside the controllers as before_filters,
+      # These filters should be used inside the controllers as before_actions,
       # so you can control the scope of the user who should be signed in to
       # access that specific controller/action.
       # Example:
@@ -36,8 +36,8 @@ module Devise
       #     admin_session       # Session data available only to the admin scope
       #
       #   Use:
-      #     before_filter :authenticate_user!  # Tell devise to use :user map
-      #     before_filter :authenticate_admin! # Tell devise to use :admin map
+      #     before_action :authenticate_user!  # Tell devise to use :user map
+      #     before_action :authenticate_admin! # Tell devise to use :admin map
       #
       def self.define_helpers(mapping) #:nodoc:
         mapping = mapping.name
@@ -75,7 +75,7 @@ module Devise
       # the controllers defined inside devise. Useful if you want to apply a before
       # filter to all controllers, except the ones in devise:
       #
-      #   before_filter :my_filter, :unless => :devise_controller?
+      #   before_action :my_filter, :unless => :devise_controller?
       def devise_controller?
         is_a?(DeviseController)
       end

@@ -564,7 +564,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 1.0.5
 
 * bug fix
-  * Use prepend_before_filter in require_no_authentication.
+  * Use prepend_before_action in require_no_authentication.
   * require_no_authentication on unlockable.
   * Fix a bug when giving an association proxy to devise.
   * Do not use lock! on lockable since it's part of ActiveRecord API.
@@ -819,7 +819,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Renamed mail_sender to mailer_sender
 
 * enhancements
-  * skip_before_filter added in Devise controllers
+  * skip_before_action added in Devise controllers
   * Use home_or_root_path on require_no_authentication as well
   * Added devise_controller?, useful to select or reject filters in ApplicationController
   * Allow :path_prefix to be given to devise_for

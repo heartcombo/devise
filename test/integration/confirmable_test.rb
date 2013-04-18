@@ -275,7 +275,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
 
     visit_admin_confirmation_with_token(confirmation_token)
     assert_have_selector '#error_explanation'
-    assert_contain /Confirmation token(.*)invalid/
+    assert_contain(/Confirmation token(.*)invalid/)
 
     visit_admin_confirmation_with_token(admin.confirmation_token)
     assert_contain 'Your account was successfully confirmed.'
@@ -293,7 +293,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
 
     visit_admin_confirmation_with_token(admin.confirmation_token)
     assert_have_selector '#error_explanation'
-    assert_contain /Email.*already.*taken/
+    assert_contain(/Email.*already.*taken/)
     assert admin.reload.pending_reconfirmation?
   end
 end

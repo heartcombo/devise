@@ -270,7 +270,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
   end
 
   test 'change password with invalid token in XML format should return invalid response' do
-    user = create_user
+    create_user
     request_forgot_password
     put user_password_path(:format => 'xml'), :user => {:reset_password_token => 'invalid.token', :password => '987654321', :password_confirmation => '987654321'}
     assert_response :unprocessable_entity

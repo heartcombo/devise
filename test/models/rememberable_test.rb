@@ -115,7 +115,7 @@ class RememberableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'remember should not be expired if it was created whitin the limit time' do
+  test 'remember should not be expired if it was created within the limit time' do
     swap Devise, :remember_for => 30.days do
       resource = create_resource
       resource.remember_me!
@@ -167,7 +167,7 @@ class RememberableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should have the required_fiels array' do
+  test 'should have the required_fields array' do
     assert_same_content Devise::Models::Rememberable.required_fields(User), [
       :remember_created_at
     ]

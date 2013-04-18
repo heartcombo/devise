@@ -18,7 +18,7 @@ module Devise
     #     passed to find_for_authentication method and considered in your model lookup.
     #
     #     For instance, if you set :request_keys to [:subdomain], :subdomain will be considered
-    #     as key on authentication. This can also be a hash where the value is a boolean expliciting
+    #     as key on authentication. This can also be a hash where the value is a boolean specifying
     #     if the value is required or not.
     #
     #   * +http_authenticatable+: if this model allows http authentication. By default true.
@@ -35,7 +35,7 @@ module Devise
     # == active_for_authentication?
     #
     # After authenticating a user and in each request, Devise checks if your model is active by
-    # calling model.active_for_authentication?. This method is overwriten by other devise modules. For instance,
+    # calling model.active_for_authentication?. This method is overwritten by other devise modules. For instance,
     # :confirmable overwrites .active_for_authentication? to only return true if your model was confirmed.
     #
     # You overwrite this method yourself, but if you do, don't forget to call super:

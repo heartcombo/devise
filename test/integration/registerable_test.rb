@@ -112,7 +112,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     #    https://github.com/mongoid/mongoid/issues/756
     (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
 
-    user = create_user
+    create_user
     get new_user_registration_path
 
     fill_in 'email', :with => 'user@test.com'
@@ -285,7 +285,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'a user cancel his account in XML format should return valid response' do
-    user = sign_in_as_user
+    sign_in_as_user
     delete user_registration_path(:format => 'xml')
     assert_response :success
     assert_equal User.count, 0

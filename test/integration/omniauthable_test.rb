@@ -90,7 +90,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     assert session["devise.facebook_data"]
-    user = sign_in_as_user
+    sign_in_as_user
     assert !session["devise.facebook_data"]
   end
 

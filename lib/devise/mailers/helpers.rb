@@ -70,7 +70,7 @@ module Devise
         template_path
       end
 
-      # Setup a subject doing an I18n lookup. At first, it attemps to set a subject
+      # Setup a subject doing an I18n lookup. At first, it attempts to set a subject
       # based on the current mapping:
       #
       #   en:

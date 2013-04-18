@@ -2,7 +2,7 @@ require 'devise/hooks/timeoutable'
 
 module Devise
   module Models
-    # Timeoutable takes care of veryfing whether a user session has already
+    # Timeoutable takes care of verifyng whether a user session has already
     # expired or not. When a session expires after the configured time, the user
     # will be asked for credentials again, it means, he/she will be redirected
     # to the sign in page.

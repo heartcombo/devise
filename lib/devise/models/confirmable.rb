@@ -228,7 +228,7 @@ module Devise
 
         def postpone_email_change?
           postpone = self.class.reconfirmable && email_changed? && !@bypass_postpone
-          @bypass_postpone = nil
+          @bypass_postpone = false
           postpone
         end
 

@@ -80,9 +80,9 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'setup a default message' do
       call_failure
-      assert_match /You are being/, @response.last.body
-      assert_match /redirected/, @response.last.body
-      assert_match /users\/sign_in/, @response.last.body
+      assert_match(/You are being/, @response.last.body)
+      assert_match(/redirected/, @response.last.body)
+      assert_match(/users\/sign_in/, @response.last.body)
     end
 
     test 'works for any navigational format' do

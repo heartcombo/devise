@@ -1,6 +1,7 @@
 == master
 
 * enhancements
+  * Allow to override path after password resetting (by @worker8)
   * Add `#skip_confirmation_notification!` method to `Confirmable`. Allows skipping confirmation email without auto-confirming. (by @gregates)
   * allow_unconfirmed_access_for config from `:confirmable` module can be set to `nil` that means unconfirmed access for unlimited time. (by @nashby)
   * Support Rails' token strategy on authentication (by @robhurring)

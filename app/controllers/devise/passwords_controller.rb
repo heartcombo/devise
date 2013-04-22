@@ -41,7 +41,7 @@ class Devise::PasswordsController < DeviseController
   end
 
   protected
-    def after_reseting_password_path_for(resource_name)
+    def after_reseting_password_path_for(resource)
       after_sign_in_path_for(resource)
     end
 

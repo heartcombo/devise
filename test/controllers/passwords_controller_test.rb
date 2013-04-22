@@ -14,15 +14,15 @@ class PasswordsControllerTest < ActionController::TestCase
     put :update, "user"=>{"reset_password_token"=>@user.reset_password_token, "password"=>"123456", "password_confirmation"=>"123456"}
   end
 
-  test 'redirect to after_sign_in_path_for if after_reseting_password_path_for is not overridden' do
+  test 'redirect to after_sign_in_path_for if after_resetting_password_path_for is not overridden' do
     put_update_with_params
     assert_redirected_to "http://test.host/"
   end
 
-  test 'redirect accordingly if after_reseting_password_path_for is overridden' do
+  test 'redirect accordingly if after_resetting_password_path_for is overridden' do
     custom_path = "http://custom.path/"
-    # Overwrite after_reseting_password_path_for with custom_path
-    Devise::PasswordsController.any_instance.stubs(:after_reseting_password_path_for).with(@user).returns(custom_path)
+    # Overwrite after_resetting_password_path_for with custom_path
+    Devise::PasswordsController.any_instance.stubs(:after_resetting_password_path_for).with(@user).returns(custom_path)
     put_update_with_params
     assert_redirected_to custom_path
   end

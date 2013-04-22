@@ -34,14 +34,14 @@ class Devise::PasswordsController < DeviseController
       flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
       set_flash_message(:notice, flash_message) if is_navigational_format?
       sign_in(resource_name, resource)
-      respond_with resource, :location => after_reseting_password_path_for(resource)
+      respond_with resource, :location => after_resetting_password_path_for(resource)
     else
       respond_with resource
     end
   end
 
   protected
-    def after_reseting_password_path_for(resource)
+    def after_resetting_password_path_for(resource)
       after_sign_in_path_for(resource)
     end
 

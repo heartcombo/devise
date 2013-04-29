@@ -183,6 +183,32 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.valid_password?('12345678')
   end
 
+  test 'should destroy user if current password is valid' do
+    user = create_user
+    assert user.destroy_with_password('12345678')
+    assert_raise ActiveRecord::RecordNotFound do
+      user.reload
+    end
+  end
+
+  test 'should not destroy user with invalid password' do
+    user = create_user
+    assert_not user.destroy_with_password('other')
+    assert_nothing_raised ActiveRecord::RecordNotFound do
+      user.reload
+    end
+    assert_match "is invalid", user.errors[:current_password].join
+  end
+
+  test 'should not destroy user with blank password' do
+    user = create_user
+    assert_not user.destroy_with_password(nil)
+    assert_nothing_raised ActiveRecord::RecordNotFound do
+      user.reload
+    end
+    assert_match "can't be blank", user.errors[:current_password].join
+  end
+
   test 'downcase_keys with validation' do
     user = User.create(:email => "HEllO@example.com", :password => "123456")
     user = User.create(:email => "HEllO@example.com", :password => "123456")

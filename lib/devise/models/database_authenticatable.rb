@@ -107,7 +107,6 @@ module Devise
           false
         end
 
-        self.current_password = nil
         result
       end
 

@@ -153,7 +153,8 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_current_url '/users/password'
     assert_have_selector '#error_explanation'
-    assert_contain 'Password confirmation doesn\'t match Password'
+    assert_contain Devise.rails4? ?
+      "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
     assert_not user.reload.valid_password?('987654321')
   end
 

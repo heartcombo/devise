@@ -100,7 +100,8 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_template 'registrations/new'
     assert_have_selector '#error_explanation'
     assert_contain "Email is invalid"
-    assert_contain "Password confirmation doesn't match Password"
+    assert_contain Devise.rails4? ?
+      "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
     assert_contain "2 errors prohibited"
     assert_nil User.first
 
@@ -206,7 +207,8 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     fill_in 'current password', :with => '12345678'
     click_button 'Update'
 
-    assert_contain "Password confirmation doesn't match Password"
+    assert_contain Devise.rails4? ?
+      "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
     assert_not User.first.valid_password?('pas123')
   end
 

@@ -1,5 +1,7 @@
 require 'test_helper'
 
+ExpectedRoutingError = Devise.rails4? ? MiniTest::Assertion : ActionController::RoutingError
+
 class DefaultRoutingTest < ActionController::TestCase
   test 'map new user session' do
     assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, {:path => 'users/sign_in', :method => :get})
@@ -101,7 +103,7 @@ class DefaultRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'users/omniauth_callbacks', :action => 'google'}, {:path => 'users/auth/google/callback', :method => :post})
     assert_named_route "/users/auth/google/callback", :user_omniauth_callback_path, :google
 
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'ysers/omniauth_callbacks', :action => 'twitter'}, {:path => 'users/auth/twitter/callback', :method => :get})
     end
   end
@@ -123,7 +125,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'does not map admin password' do
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/passwords', :action => 'new'}, 'admin_area/password/new')
     end
   end
@@ -133,7 +135,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'does only map reader password' do
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, 'reader/sessions/new')
     end
     assert_recognizes({:controller => 'devise/passwords', :action => 'new'}, 'reader/password/new')
@@ -161,14 +163,14 @@ class CustomizedRoutingTest < ActionController::TestCase
 
   test 'map deletes with :sign_out_via option' do
     assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :delete})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/deletes/sign_out', :method => :get})
     end
   end
 
   test 'map posts with :sign_out_via option' do
     assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :post})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/posts/sign_out', :method => :get})
     end
   end
@@ -176,56 +178,56 @@ class CustomizedRoutingTest < ActionController::TestCase
   test 'map delete_or_posts with :sign_out_via option' do
     assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :post})
     assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :delete})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/sessions', :action => 'destroy'}, {:path => '/sign_out_via/delete_or_posts/sign_out', :method => :get})
     end
   end
 
   test 'map with constraints defined in hash' do
     assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://192.168.1.100/headquarters/sign_up', :method => :get})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://10.0.0.100/headquarters/sign_up', :method => :get})
     end
   end
 
   test 'map with constraints defined in block' do
     assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://192.168.1.100/homebase/sign_up', :method => :get})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => 'http://10.0.0.100//homebase/sign_up', :method => :get})
     end
   end
 
   test 'map with format false for sessions' do
     assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, {:path => '/htmlonly_admin/sign_in', :method => :get})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/sessions', :action => 'new'}, {:path => '/htmlonly_admin/sign_in.xml', :method => :get})
     end
   end
 
   test 'map with format false for passwords' do
     assert_recognizes({:controller => 'devise/passwords', :action => 'create'}, {:path => '/htmlonly_admin/password', :method => :post})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/passwords', :action => 'create'}, {:path => '/htmlonly_admin/password.xml', :method => :post})
     end
   end
 
   test 'map with format false for registrations' do
     assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => '/htmlonly_admin/sign_up', :method => :get})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/registrations', :action => 'new'}, {:path => '/htmlonly_admin/sign_up.xml', :method => :get})
     end
   end
 
   test 'map with format false for confirmations' do
     assert_recognizes({:controller => 'devise/confirmations', :action => 'show'}, {:path => '/htmlonly_users/confirmation', :method => :get})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/confirmations', :action => 'show'}, {:path => '/htmlonly_users/confirmation.xml', :method => :get})
     end
   end
 
   test 'map with format false for unlocks' do
     assert_recognizes({:controller => 'devise/unlocks', :action => 'show'}, {:path => '/htmlonly_users/unlock', :method => :get})
-    assert_raise Assertion do
+    assert_raise ExpectedRoutingError do
       assert_recognizes({:controller => 'devise/unlocks', :action => 'show'}, {:path => '/htmlonly_users/unlock.xml', :method => :get})
     end
   end

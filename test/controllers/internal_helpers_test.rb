@@ -35,10 +35,17 @@ class HelpersTest < ActionController::TestCase
 
   test 'get resource params from request params using resource name as key' do
     user_params = {'email' => 'shirley@templar.com'}
-    @controller.stubs(:params).returns(ActionController::Parameters.new({'user' => user_params}))
-    # Stub controller name so strong parameters can filter properly.
-    # DeviseController does not allow any parameters by default.
-    @controller.stubs(:controller_name).returns(:sessions_controller)
+
+    params = if Devise.rails4?
+      # Stub controller name so strong parameters can filter properly.
+      # DeviseController does not allow any parameters by default.
+      @controller.stubs(:controller_name).returns(:sessions_controller)
+
+      ActionController::Parameters.new({'user' => user_params})
+    else
+      HashWithIndifferentAccess.new({'user' => user_params})
+    end
+    @controller.stubs(:params).returns(params)
 
     assert_equal user_params, @controller.send(:resource_params)
   end

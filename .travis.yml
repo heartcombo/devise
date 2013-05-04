@@ -6,6 +6,9 @@ rvm:
 env:
   - DEVISE_ORM=mongoid
   - DEVISE_ORM=active_record
+gemfile:
+  - gemfiles/Gemfile.rails-3.2.x
+  - Gemfile
 services:
   - mongodb
 notifications:

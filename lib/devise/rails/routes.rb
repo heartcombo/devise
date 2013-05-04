@@ -237,16 +237,6 @@ module ActionDispatch::Routing
       end
     end
 
-    def get_constraints_given_method(scope=nil, block=nil, method_to_apply='authenticate!')
-      constraint = lambda do |request|
-        request.env['warden'].send(method_to_apply, {:scope => scope}) && (block.nil? || block.call(request.env["warden"].user(scope)))
-      end
-
-      constraints(constraint) do
-        yield
-      end
-    end
-
     # Allow you to add authentication request from the router.
     # Takes an optional scope and block to provide constraints
     # on the model instance itself.
@@ -264,7 +254,7 @@ module ActionDispatch::Routing
     #   end
     #
     def authenticate(scope=nil, block=nil)
-      get_constraints_given_method(scope, block, 'authenticate!') do
+      constraints_for(:authenticate!, scope, block) do
         yield
       end
     end
@@ -288,7 +278,7 @@ module ActionDispatch::Routing
     #   root :to => 'landing#show'
     #
     def authenticated(scope=nil, block=nil)
-      get_constraints_given_method(scope, block, 'authenticate?') do
+      constraints_for(:authenticate?, scope, block) do
         yield
       end
     end
@@ -428,6 +418,17 @@ module ActionDispatch::Routing
         yield
       ensure
         @scope.merge!(old)
+      end
+
+      def constraints_for(method_to_apply, scope=nil, block=nil)
+        constraint = lambda do |request|
+          request.env['warden'].send(method_to_apply, :scope => scope) &&
+            (block.nil? || block.call(request.env["warden"].user(scope)))
+        end
+
+        constraints(constraint) do
+          yield
+        end
       end
 
       def set_omniauth_path_prefix!(path_prefix) #:nodoc:

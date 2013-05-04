@@ -8,19 +8,17 @@ module Devise
     def filter(conditions)
       conditions = stringify_params(conditions.dup)
 
-      @case_insensitive_keys.each do |k|
-        value = conditions[k]
-        next unless value.respond_to?(:downcase)
-        conditions[k] = value.downcase
-      end
-
-      @strip_whitespace_keys.each do |k|
-        value = conditions[k]
-        next unless value.respond_to?(:strip)
-        conditions[k] = value.strip
-      end
+      apply_filter_method_to_condition_keys(conditions, :downcase, @case_insensitive_keys)
+      apply_filter_method_to_condition_keys(conditions, :strip, @strip_whitespace_keys)
 
       conditions
+    end
+
+    def apply_filter_method_to_condition_keys(conditions, method, condition_keys)
+      condition_keys.each do |k|
+        value = conditions[k]
+        conditions[k] = value.send(method) if value.respond_to?(method)
+      end
     end
 
     # Force keys to be string to avoid injection on mongoid related database.

@@ -22,5 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency("warden", "~> 1.2.1")
   s.add_dependency("orm_adapter", "~> 0.1")
   s.add_dependency("bcrypt-ruby", "~> 3.0")
-  s.add_dependency("railties", "~> 4.0.0.beta")
+  s.add_dependency("railties", "~> 4.0.0.rc1")
 end

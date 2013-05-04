@@ -81,7 +81,7 @@ module Devise
       end
 
       # Setup a param sanitizer to filter parameters using strong_parameters. See
-      # lib/devise/controllers/parameter_sanitizer.rb for more info. Override this
+      # lib/devise/parameter_sanitizer.rb for more info. Override this
       # method in your application controller to use your own parameter sanitizer.
       def devise_parameter_sanitizer
         @devise_parameter_sanitizer ||= if defined?(ActionController::StrongParameters)

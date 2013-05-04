@@ -52,6 +52,18 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal( { "login" => "foo@bar.com", "bool1" => "true", "bool2" => "false", "fixnum" => "123", "will_be_converted" => "1..10" }, conditions)
   end
 
+  test 'param filter should filter case_insensitive_keys as insensitive' do
+    conditions = {'insensitive' => 'insensitive_VAL', 'sensitive' => 'sensitive_VAL'}
+    conditions = Devise::ParamFilter.new(['insensitive'], []).filter(conditions)
+    assert_equal( {'insensitive' => 'insensitive_val', 'sensitive' => 'sensitive_VAL'}, conditions )
+  end
+
+  test 'param filter should filter strip_whitespace_keys stripping whitespaces' do
+    conditions = {'strip_whitespace' => ' strip_whitespace_val ', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}
+    conditions = Devise::ParamFilter.new([], ['strip_whitespace']).filter(conditions)
+    assert_equal( {'strip_whitespace' => 'strip_whitespace_val', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}, conditions )
+  end
+
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)

@@ -49,6 +49,16 @@ class UnlockInstructionsTest < ActionMailer::TestCase
     assert_equal ['custom@example.com'], mail.from
   end
 
+  test 'setup sender from custom mailer defaults with proc' do
+    Devise.mailer = 'Users::FromProcMailer'
+    assert_equal ['custom@example.com'], mail.from
+  end
+
+  test 'custom mailer renders parent mailer template' do
+    Devise.mailer = 'Users::Mailer'
+    assert_not_blank mail.body.encoded
+  end
+
   test 'setup reply to as copy from sender' do
     assert_equal ['test@example.com'], mail.reply_to
   end
@@ -66,7 +76,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
   end
 
   test 'body should have user info' do
-    assert_match(/#{user.email}/, mail.body.encoded)
+    assert_match user.email, mail.body.encoded
   end
 
   test 'body should have link to unlock the account' do

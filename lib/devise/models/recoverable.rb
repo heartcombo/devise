@@ -1,7 +1,7 @@
 module Devise
   module Models
 
-    # Recoverable takes care of reseting the user password and send reset instructions.
+    # Recoverable takes care of resetting the user password and send reset instructions.
     #
     # ==Options
     #
@@ -102,9 +102,9 @@ module Devise
 
       module ClassMethods
         # Attempt to find a user by its email. If a record is found, send new
-        # password instructions to it. If not user is found, returns a new user
+        # password instructions to it. If user is not found, returns a new user
         # with an email not found error.
-        # Attributes must contain the user email
+        # Attributes must contain the user's email
         def send_reset_password_instructions(attributes={})
           recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
           recoverable.send_reset_password_instructions if recoverable.persisted?

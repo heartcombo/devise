@@ -8,14 +8,17 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
   test "Assert all views are properly created with no params" do
     run_generator
     assert_files
+    assert_shared_links
   end
 
-  test "Assert all views are properly created with scope param param" do
+  test "Assert all views are properly created with scope param" do
     run_generator %w(users)
     assert_files "users"
+    assert_shared_links "users"
 
     run_generator %w(admins)
     assert_files "admins"
+    assert_shared_links "admins"
   end
 
   test "Assert views with simple form" do
@@ -48,5 +51,17 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/sessions/new.html.erb"
     assert_file "app/views/#{scope}/shared/_links.erb"
     assert_file "app/views/#{scope}/unlocks/new.html.erb"
+  end
+
+  def assert_shared_links(scope = nil)
+    scope = "devise" if scope.nil?
+    link = /<%= render \"#{scope}\/shared\/links\" %>/
+
+    assert_file "app/views/#{scope}/passwords/edit.html.erb", link
+    assert_file "app/views/#{scope}/passwords/new.html.erb", link
+    assert_file "app/views/#{scope}/confirmations/new.html.erb", link
+    assert_file "app/views/#{scope}/registrations/new.html.erb", link
+    assert_file "app/views/#{scope}/sessions/new.html.erb", link
+    assert_file "app/views/#{scope}/unlocks/new.html.erb", link
   end
 end

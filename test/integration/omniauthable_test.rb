@@ -1,7 +1,7 @@
 require 'test_helper'
 
 
-class OmniauthableIntegrationTest < ActionController::IntegrationTest
+class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   FACEBOOK_INFO = {
     "id" => '12345',
     "link" => 'http://facebook.com/josevalim',
@@ -61,8 +61,8 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
 
     assert_difference "User.count" do
       visit "/users/sign_up"
-      fill_in "Password", :with => "123456"
-      fill_in "Password confirmation", :with => "123456"
+      fill_in "Password", :with => "12345678"
+      fill_in "Password confirmation", :with => "12345678"
       click_button "Sign up"
     end
 
@@ -90,7 +90,7 @@ class OmniauthableIntegrationTest < ActionController::IntegrationTest
     end
 
     assert session["devise.facebook_data"]
-    user = sign_in_as_user
+    sign_in_as_user
     assert !session["devise.facebook_data"]
   end
 

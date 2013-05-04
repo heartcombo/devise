@@ -6,11 +6,12 @@ require 'set'
 require 'securerandom'
 
 module Devise
-  autoload :Delegator,   'devise/delegator'
-  autoload :FailureApp,  'devise/failure_app'
-  autoload :OmniAuth,    'devise/omniauth'
-  autoload :ParamFilter, 'devise/param_filter'
-  autoload :TestHelpers, 'devise/test_helpers'
+  autoload :Delegator,     'devise/delegator'
+  autoload :FailureApp,    'devise/failure_app'
+  autoload :OmniAuth,      'devise/omniauth'
+  autoload :ParamFilter,   'devise/param_filter'
+  autoload :TestHelpers,   'devise/test_helpers'
+  autoload :TimeInflector, 'devise/time_inflector'
 
   module Controllers
     autoload :Helpers, 'devise/controllers/helpers'
@@ -42,13 +43,17 @@ module Devise
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
-  # Custom domain for cookies. Not set by default
+  # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}
 
   # The number of times to encrypt password.
   mattr_accessor :stretches
   @@stretches = 10
+
+  # The default key used when authenticating over http auth.
+  mattr_accessor :http_authentication_key
+  @@http_authentication_key = nil
 
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
@@ -86,7 +91,7 @@ module Devise
   # an one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
   mattr_accessor :email_regexp
-  @@email_regexp = /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/
+  @@email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
 
   # Range validation for password length
   mattr_accessor :password_length
@@ -101,8 +106,13 @@ module Devise
   @@extend_remember_period = false
 
   # Time interval you can access your account before confirming your account.
+  # nil - allows unconfirmed access for unlimited time
   mattr_accessor :allow_unconfirmed_access_for
   @@allow_unconfirmed_access_for = 0.days
+
+  # Time interval the confirmation token is valid. nil = unlimited
+  mattr_accessor :confirm_within
+  @@confirm_within = nil
 
   # Defines which key will be used when confirming an account.
   mattr_accessor :confirmation_keys
@@ -194,12 +204,18 @@ module Devise
   mattr_accessor :parent_controller
   @@parent_controller = "ApplicationController"
 
+  # The parent mailer all Devise mailers inherit from.
+  # Defaults to ActionMailer::Base. This should be set early
+  # in the initialization process and should be set to a string.
+  mattr_accessor :parent_mailer
+  @@parent_mailer = "ActionMailer::Base"
+
   # The router Devise should use to generate routes. Defaults
   # to :main_app. Should be overriden by engines in order
   # to provide custom routes.
   mattr_accessor :router_name
   @@router_name = nil
-  
+
   # Set the omniauth path prefix so it can be overriden when
   # Devise is used in a mountable engine
   mattr_accessor :omniauth_path_prefix
@@ -299,7 +315,7 @@ module Devise
   # == Options:
   #
   #   +model+      - String representing the load path to a custom *model* for this module (to autoload.)
-  #   +controller+ - Symbol representing the name of an exisiting or custom *controller* for this module.
+  #   +controller+ - Symbol representing the name of an existing or custom *controller* for this module.
   #   +route+      - Symbol representing the named *route* helper for this module.
   #   +strategy+   - Symbol representing if this module got a custom *strategy*.
   #
@@ -409,6 +425,17 @@ module Devise
 
       Devise.mappings.each_value do |mapping|
         warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
+
+        warden_config.serialize_into_session(mapping.name) do |record|
+          mapping.to.serialize_into_session(record)
+        end
+
+        warden_config.serialize_from_session(mapping.name) do |key|
+          # Previous versions contained an additional entry at the beginning of
+          # key with the record's class name.
+          args = key[-2, 2]
+          mapping.to.serialize_from_session(*args)
+        end
       end
 
       @@warden_config_block.try :call, Devise.warden_config
@@ -416,7 +443,7 @@ module Devise
     end
   end
 
-  # Generate a friendly string randomically to be used as token.
+  # Generate a friendly string randomly to be used as token.
   def self.friendly_token
     SecureRandom.base64(15).tr('+/=lIO0', 'pqrsxyz')
   end

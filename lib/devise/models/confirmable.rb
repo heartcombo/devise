@@ -19,6 +19,8 @@ module Devise
     #     db field to be setup (t.reconfirmable in migrations). Until confirmed new email is
     #     stored in unconfirmed email column, and copied to email column on successful
     #     confirmation.
+    #   * +confirm_within+: the time before a sent confirmation token becomes invalid.
+    #     You can use this to force the user to confirm within a set period of time.
     #
     # == Examples
     #
@@ -28,12 +30,20 @@ module Devise
     #
     module Confirmable
       extend ActiveSupport::Concern
+      include ActionView::Helpers::DateHelper
 
       included do
         before_create :generate_confirmation_token, :if => :confirmation_required?
-        after_create  :send_on_create_confirmation_instructions, :if => :confirmation_required?
+        after_create  :send_on_create_confirmation_instructions, :if => :send_confirmation_notification?
         before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
         after_update  :send_confirmation_instructions, :if => :reconfirmation_required?
+      end
+
+      def initialize(*args, &block)
+        @bypass_postpone = false
+        @reconfirmation_required = false
+        @skip_confirmation_notification = false
+        super
       end
 
       def self.required_fields(klass)
@@ -47,6 +57,12 @@ module Devise
       # add errors
       def confirm!
         pending_any_confirmation do
+          if confirmation_period_expired?
+            self.errors.add(:email, :confirmation_period_expired,
+              :period => Devise::TimeInflector.time_ago_in_words(self.class.confirm_within.ago))
+            return false
+          end
+
           self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
@@ -78,12 +94,17 @@ module Devise
         @reconfirmation_required = false
 
         generate_confirmation_token! if self.confirmation_token.blank?
-        send_devise_notification(:confirmation_instructions)
+
+        opts = pending_reconfirmation? ? { :to => unconfirmed_email } : { }
+        send_devise_notification(:confirmation_instructions, opts)
       end
 
       # Resend confirmation token. This method does not need to generate a new token.
       def resend_confirmation_token
-        pending_any_confirmation { send_confirmation_instructions }
+        pending_any_confirmation do
+          self.confirmation_token = nil if confirmation_period_expired?
+          send_confirmation_instructions
+        end
       end
 
       # Overwrites active_for_authentication? for confirmation
@@ -105,18 +126,16 @@ module Devise
         self.confirmed_at = Time.now.utc
       end
 
+      # Skips sending the confirmation notification email after_create. Unlike
+      # #skip_confirmation!, record still requires confirmation.
+      def skip_confirmation_notification!
+        @skip_confirmation_notification = true
+      end
+
       # If you don't want reconfirmation to be sent, neither a code
       # to be generated, call skip_reconfirmation!
       def skip_reconfirmation!
         @bypass_postpone = true
-      end
-
-      def headers_for(action)
-        headers = super
-        if action == :confirmation_instructions && pending_reconfirmation?
-          headers[:to] = unconfirmed_email
-        end
-        headers
       end
 
       protected
@@ -152,13 +171,32 @@ module Devise
         #   # allow_unconfirmed_access_for = 0.days
         #   confirmation_period_valid?   # will always return false
         #
+        #   # allow_unconfirmed_access_for = nil
+        #   confirmation_period_valid?   # will always return true
+        #
         def confirmation_period_valid?
-          confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
+          self.class.allow_unconfirmed_access_for.nil? || (confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago)
+        end
+
+        # Checks if the user confirmation happens before the token becomes invalid
+        # Examples:
+        #
+        #   # confirm_within = 3.days and confirmation_sent_at = 2.days.ago
+        #   confirmation_period_expired?  # returns false
+        #
+        #   # confirm_within = 3.days and confirmation_sent_at = 4.days.ago
+        #   confirmation_period_expired?  # returns true
+        #
+        #   # confirm_within = nil
+        #   confirmation_period_expired?  # will always return false
+        #
+        def confirmation_period_expired?
+          self.class.confirm_within && (Time.now > self.confirmation_sent_at + self.class.confirm_within )
         end
 
         # Checks whether the record requires any confirmation.
         def pending_any_confirmation
-          if !confirmed? || pending_reconfirmation?
+          if (!confirmed? || pending_reconfirmation?)
             yield
           else
             self.errors.add(:email, :already_confirmed)
@@ -190,12 +228,16 @@ module Devise
 
         def postpone_email_change?
           postpone = self.class.reconfirmable && email_changed? && !@bypass_postpone
-          @bypass_postpone = nil
+          @bypass_postpone = false
           postpone
         end
 
         def reconfirmation_required?
           self.class.reconfirmable && @reconfirmation_required
+        end
+
+        def send_confirmation_notification?
+          confirmation_required? && !@skip_confirmation_notification
         end
 
       module ClassMethods
@@ -235,7 +277,7 @@ module Devise
           find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)
         end
 
-        Devise::Models.config(self, :allow_unconfirmed_access_for, :confirmation_keys, :reconfirmable)
+        Devise::Models.config(self, :allow_unconfirmed_access_for, :confirmation_keys, :reconfirmable, :confirm_within)
       end
     end
   end

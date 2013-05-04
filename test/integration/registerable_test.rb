@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RegistrationTest < ActionController::IntegrationTest
+class RegistrationTest < ActionDispatch::IntegrationTest
 
   test 'a guest admin should be able to sign in successfully' do
     get new_admin_session_path
@@ -112,7 +112,7 @@ class RegistrationTest < ActionController::IntegrationTest
     #    https://github.com/mongoid/mongoid/issues/756
     (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
 
-    user = create_user
+    create_user
     get new_user_registration_path
 
     fill_in 'email', :with => 'user@test.com'
@@ -144,7 +144,7 @@ class RegistrationTest < ActionController::IntegrationTest
     get edit_user_registration_path
 
     fill_in 'email', :with => 'user.new@example.com'
-    fill_in 'current password', :with => '123456'
+    fill_in 'current password', :with => '12345678'
     click_button 'Update'
 
     assert_current_url '/'
@@ -157,9 +157,9 @@ class RegistrationTest < ActionController::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    fill_in 'password', :with => '12345678'
-    fill_in 'password confirmation', :with => '12345678'
-    fill_in 'current password', :with => '123456'
+    fill_in 'password', :with => '1234567890'
+    fill_in 'password confirmation', :with => '1234567890'
+    fill_in 'current password', :with => '12345678'
     click_button 'Update'
 
     assert_contain 'You updated your account successfully.'
@@ -186,15 +186,15 @@ class RegistrationTest < ActionController::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    fill_in 'password', :with => 'pas123'
-    fill_in 'password confirmation', :with => 'pas123'
-    fill_in 'current password', :with => '123456'
+    fill_in 'password', :with => 'pass1234'
+    fill_in 'password confirmation', :with => 'pass1234'
+    fill_in 'current password', :with => '12345678'
     click_button 'Update'
 
     assert_current_url '/'
     assert_contain 'You updated your account successfully.'
 
-    assert User.first.valid_password?('pas123')
+    assert User.first.valid_password?('pass1234')
   end
 
   test 'a signed in user should not be able to edit his password with invalid confirmation' do
@@ -203,7 +203,7 @@ class RegistrationTest < ActionController::IntegrationTest
 
     fill_in 'password', :with => 'pas123'
     fill_in 'password confirmation', :with => ''
-    fill_in 'current password', :with => '123456'
+    fill_in 'current password', :with => '12345678'
     click_button 'Update'
 
     assert_contain "Password doesn't match confirmation"
@@ -214,7 +214,7 @@ class RegistrationTest < ActionController::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    click_link "Cancel my account", :method => :delete
+    click_button "Cancel my account"
     assert_contain "Bye! Your account was successfully cancelled. We hope to see you again soon."
 
     assert User.all.empty?
@@ -272,7 +272,7 @@ class RegistrationTest < ActionController::IntegrationTest
 
   test 'a user update information with valid data in XML format should return valid response' do
     user = sign_in_as_user
-    put user_registration_path(:format => 'xml'), :user => { :current_password => '123456', :email => 'user.new@test.com' }
+    put user_registration_path(:format => 'xml'), :user => { :current_password => '12345678', :email => 'user.new@test.com' }
     assert_response :success
     assert_equal user.reload.email, 'user.new@test.com'
   end
@@ -285,14 +285,14 @@ class RegistrationTest < ActionController::IntegrationTest
   end
 
   test 'a user cancel his account in XML format should return valid response' do
-    user = sign_in_as_user
+    sign_in_as_user
     delete user_registration_path(:format => 'xml')
     assert_response :success
     assert_equal User.count, 0
   end
 end
 
-class ReconfirmableRegistrationTest < ActionController::IntegrationTest
+class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
   test 'a signed in admin should see a more appropriate flash message when editing his account if reconfirmable is enabled' do
     sign_in_as_admin
     get edit_admin_registration_path
@@ -303,8 +303,10 @@ class ReconfirmableRegistrationTest < ActionController::IntegrationTest
 
     assert_current_url '/admin_area/home'
     assert_contain 'but we need to verify your new email address'
+    assert_equal 'admin.new@example.com', Admin.first.unconfirmed_email
 
-    assert_equal "admin.new@example.com", Admin.first.unconfirmed_email
+    get edit_admin_registration_path
+    assert_contain 'Currently waiting confirmation for: admin.new@example.com'
   end
 
   test 'a signed in admin should not see a reconfirmation message if they did not change their password' do

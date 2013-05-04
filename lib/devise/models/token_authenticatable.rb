@@ -18,6 +18,18 @@ module Devise
     # If you want to delete the token after it is used, you can do so in the
     # after_token_authentication callback.
     #
+    # == APIs
+    #
+    # If you are using token authentication with APIs and using trackable. Every
+    # request will be considered as a new sign in (since there is no session in
+    # APIs). You can disable this by creating a before filter as follow:
+    #
+    #   before_filter :skip_trackable
+    #
+    #   def skip_trackable
+    #     request.env['devise.skip_trackable'] = true
+    #   end
+    #
     # == Options
     #
     # TokenAuthenticatable adds the following options to devise_for:

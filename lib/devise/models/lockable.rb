@@ -105,7 +105,11 @@ module Devise
       end
 
       def unauthenticated_message
-        if lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
+        # If set to paranoid mode, do not show the locked message because it
+        # leaks the existence of an account.
+        if Devise.paranoid
+          super
+        elsif lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
           :locked
         else
           super

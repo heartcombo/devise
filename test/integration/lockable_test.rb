@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LockTest < ActionController::IntegrationTest
+class LockTest < ActionDispatch::IntegrationTest
 
   def visit_user_unlock_with_token(unlock_token)
     visit user_unlock_path(:unlock_token => unlock_token)
@@ -218,6 +218,24 @@ class LockTest < ActionController::IntegrationTest
 
       assert_contain "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
 
+    end
+  end
+
+  test "in paranoid mode, when locking a user that exists it should not say that the user was locked" do
+    swap Devise, :paranoid => true, :maximum_attempts => 1 do
+      user = create_user(:locked => false)
+
+      visit new_user_session_path
+      fill_in 'email', :with => user.email
+      fill_in 'password', :with => "abadpassword"
+      click_button 'Sign in'
+
+      fill_in 'email', :with => user.email
+      fill_in 'password', :with => "abadpassword"
+      click_button 'Sign in'
+
+      assert_current_url "/users/sign_in"
+      assert_not_contain "locked"
     end
   end
 

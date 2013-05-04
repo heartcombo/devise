@@ -1,10 +1,12 @@
-*IMPORTANT:* Devise 2.1 is out. If you are upgrading, please read: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.1
+![Devise Logo](https://raw.github.com/plataformatec/devise/master/devise.png)
 
-## Devise
+By [Plataformatec](http://plataformatec.com.br/).
 
-INFO: This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
+[![Gem Version](https://fury-badge.herokuapp.com/rb/devise.png)](http://badge.fury.io/rb/devise)
+[![Build Status](https://api.travis-ci.org/plataformatec/devise.png?branch=master)](http://travis-ci.org/plataformatec/devise)
+[![Code Climate](https://codeclimate.com/github/plataformatec/devise.png)](https://codeclimate.com/github/plataformatec/devise)
 
-[![Build Status](https://secure.travis-ci.org/plataformatec/devise.png)](http://travis-ci.org/plataformatec/devise) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/plataformatec/devise)
+This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
 
 Devise is a flexible authentication solution for Rails based on Warden. It:
 
@@ -13,7 +15,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple roles (or models/scopes) signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
-It's composed of 12 modules:
+It's composed of 11 modules:
 
 * [Database Authenticatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/DatabaseAuthenticatable): encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * [Token Authenticatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable): signs in a user based on an authentication token (also known as "single access token"). The token can be given both through query string or HTTP Basic Authentication.
@@ -108,7 +110,7 @@ The generator will install an initializer which describes ALL Devise's configura
 rails generate devise MODEL
 ```
 
-Replace MODEL by the class name used for the applications users, it's frequently 'User' but could also be 'Admin'. This will create a model (if one does not exist) and configure it with default Devise modules. Next, you'll usually run "rake db:migrate" as the generator will have created a migration file (if your ORM supports them). This generator also configures your config/routes.rb file to point to Devise controller.
+Replace MODEL by the class name used for the applications users, it's frequently 'User' but could also be 'Admin'. This will create a model (if one does not exist) and configure it with default Devise modules. Next, you'll usually run "rake db:migrate" as the generator will have created a migration file (if your ORM supports them). This generator also configures your config/routes.rb file to point to the Devise controller.
 
 Note that you should re-start your app here if you've already started it. Otherwise you'll run into strange errors like users being unable to login and the route helpers being undefined.
 
@@ -240,14 +242,14 @@ devise_for :admins, :controllers => { :sessions => "admins/sessions" }
 
 3) And since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
 
-Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate.
+Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate. Do not print the entire flash hash, print specific keys or at least remove the `:timedout` key from the hash as Devise adds this key in some circumstances, this key is not meant for display.
 
 ### Configuring routes
 
 Devise also ships with default routes. If you need to customize them, you should probably be able to do it through the devise_for method. It accepts several options like :class_name, :path_prefix and so on, including the possibility to change path names for I18n:
 
 ```ruby
-devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
+devise_for :users, :path => "auth", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
 ```
 
 Be sure to check `devise_for` documentation for details.
@@ -304,7 +306,7 @@ https://github.com/plataformatec/devise/wiki/I18n
 
 ### Test helpers
 
-Devise includes some tests helpers for functional specs. In other to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file:
+Devise includes some tests helpers for functional specs. In order to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file:
 
 ```ruby
 class ActionController::TestCase
@@ -341,7 +343,13 @@ There are two things that is important to keep in mind:
 
 ### Omniauth
 
-Devise comes with Omniauth support out of the box to authenticate from other providers. You can read more about Omniauth support in the wiki:
+Devise comes with Omniauth support out of the box to authenticate with other providers. To use it, just specify your omniauth configuration in `config/initializers/devise.rb`:
+
+```ruby
+config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
+```
+
+You can read more about Omniauth support in the wiki:
 
 * https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
 
@@ -387,4 +395,6 @@ https://github.com/plataformatec/devise/contributors
 
 ## License
 
-MIT License. Copyright 2012 Plataformatec. http://plataformatec.com.br
+MIT License. Copyright 2009-2013 Plataformatec. http://plataformatec.com.br
+
+You are not granted rights or licenses to the trademarks of the Plataformatec, including without limitation the Devise name or logo.

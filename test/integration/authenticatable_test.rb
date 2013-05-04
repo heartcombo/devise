@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AuthenticationSanityTest < ActionController::IntegrationTest
+class AuthenticationSanityTest < ActionDispatch::IntegrationTest
   test 'home should be accessible without sign in' do
     visit '/'
     assert_response :success
@@ -134,7 +134,7 @@ class AuthenticationSanityTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationRoutesRestrictions < ActionController::IntegrationTest
+class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
   test 'not signed in should not be able to access private route (authenticate denied)' do
     get private_path
     assert_redirected_to new_admin_session_path
@@ -254,7 +254,7 @@ class AuthenticationRoutesRestrictions < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationRedirectTest < ActionController::IntegrationTest
+class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
   test 'redirect from warden shows sign in or sign up message' do
     get admins_path
 
@@ -317,7 +317,7 @@ class AuthenticationRedirectTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationSessionTest < ActionController::IntegrationTest
+class AuthenticationSessionTest < ActionDispatch::IntegrationTest
   test 'destroyed account is signed out' do
     sign_in_as_user
     get '/users'
@@ -333,22 +333,34 @@ class AuthenticationSessionTest < ActionController::IntegrationTest
     assert_equal "Cart", @controller.user_session[:cart]
   end
 
-  test 'does not explode when invalid user class is stored in session' do
-    klass = User
-    paths = ActiveSupport::Dependencies.autoload_paths.dup
-
+  test 'does not explode when class name is still stored in session' do
+    # In order to test that old sessions do not break with the new scoped
+    # deserialization, we need to serialize the session the old way. This is
+    # done by removing the newly used scoped serialization method
+    # (#user_serialize) and bringing back the old uncsoped #serialize method
+    # that includes the record's class name in the serialization.
     begin
+      Warden::SessionSerializer.class_eval do
+        alias_method :original_serialize, :serialize
+        alias_method :original_user_serialize, :user_serialize
+        remove_method :user_serialize
+
+        def serialize(record)
+          klass = record.class
+          array = klass.serialize_into_session(record)
+          array.unshift(klass.name)
+        end
+      end
+
       sign_in_as_user
       assert warden.authenticated?(:user)
-
-      Object.send :remove_const, :User
-      ActiveSupport::Dependencies.autoload_paths.clear
-
-      visit "/users"
-      assert_not warden.authenticated?(:user)
     ensure
-      Object.const_set(:User, klass)
-      ActiveSupport::Dependencies.autoload_paths.replace(paths)
+      Warden::SessionSerializer.class_eval do
+        alias_method :serialize, :original_serialize
+        remove_method :original_serialize
+        alias_method :user_serialize, :original_user_serialize
+        remove_method :original_user_serialize
+      end
     end
   end
 
@@ -364,7 +376,7 @@ class AuthenticationSessionTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationWithScopedViewsTest < ActionController::IntegrationTest
+class AuthenticationWithScopedViewsTest < ActionDispatch::IntegrationTest
   test 'renders the scoped view if turned on and view is available' do
     swap Devise, :scoped_views => true do
       assert_raise Webrat::NotFoundError do
@@ -405,7 +417,7 @@ class AuthenticationWithScopedViewsTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationOthersTest < ActionController::IntegrationTest
+class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   test 'handles unverified requests gets rid of caches' do
     swap UsersController, :allow_forgery_protection => true do
       post exhibit_user_url(1)
@@ -456,7 +468,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_match '<?xml version="1.0" encoding="UTF-8"?>', response.body
     assert_match /<user>.*<\/user>/m, response.body
     assert_match '<email></email>', response.body
-    assert_match '<password nil="true"></password>', response.body
+    assert_match '<password nil="true"', response.body
   end
 
   test 'sign in stub in json format' do
@@ -483,7 +495,7 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
 
   test 'sign in with xml format returns xml response' do
     create_user
-    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '123456'}
+    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '12345678'}
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
@@ -493,33 +505,64 @@ class AuthenticationOthersTest < ActionController::IntegrationTest
     assert_response :success
 
     create_user
-    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '123456'}
+    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '12345678'}
     assert_response :success
 
     get new_user_session_path(:format => 'xml')
     assert_response :success
 
-    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '123456'}
+    post user_session_path(:format => 'xml'), :user => {:email => "user@test.com", :password => '12345678'}
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
-  test 'sign out with xml format returns ok response' do
+  test 'sign out with html redirects' do
+    sign_in_as_user
+    get destroy_user_session_path
+    assert_response :redirect
+    assert_current_url '/'
+
+    sign_in_as_user
+    get destroy_user_session_path(:format => 'html')
+    assert_response :redirect
+    assert_current_url '/'
+  end
+
+  test 'sign out with xml format returns no content' do
     sign_in_as_user
     get destroy_user_session_path(:format => 'xml')
     assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
 
-  test 'sign out with json format returns empty json response' do
+  test 'sign out with json format returns no content' do
     sign_in_as_user
     get destroy_user_session_path(:format => 'json')
     assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
+
+  test 'sign out with non-navigational format via XHR does not redirect' do
+    swap Devise, :navigational_formats => ['*/*', :html] do
+      sign_in_as_user
+      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
+      assert_response :no_content
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  # Belt and braces ... Perhaps this test is not necessary?
+  test 'sign out with navigational format via XHR does redirect' do
+    swap Devise, :navigational_formats => ['*/*', :html] do
+      sign_in_as_user
+      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "text/html,*/*" }
+      assert_response :redirect
+      assert_not warden.authenticated?(:user)
+    end
+  end
 end
 
-class AuthenticationKeysTest < ActionController::IntegrationTest
+class AuthenticationKeysTest < ActionDispatch::IntegrationTest
   test 'missing authentication keys cause authentication to abort' do
     swap Devise, :authentication_keys => [:subdomain] do
       sign_in_as_user
@@ -536,7 +579,7 @@ class AuthenticationKeysTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationRequestKeysTest < ActionController::IntegrationTest
+class AuthenticationRequestKeysTest < ActionDispatch::IntegrationTest
   test 'request keys are used on authentication' do
     host! 'foo.bar.baz'
 
@@ -577,7 +620,7 @@ class AuthenticationRequestKeysTest < ActionController::IntegrationTest
   end
 end
 
-class AuthenticationSignOutViaTest < ActionController::IntegrationTest
+class AuthenticationSignOutViaTest < ActionDispatch::IntegrationTest
   def sign_in!(scope)
     sign_in_as_admin(:visit => send("new_#{scope}_session_path"))
     assert warden.authenticated?(scope)
@@ -629,5 +672,28 @@ class AuthenticationSignOutViaTest < ActionController::IntegrationTest
       get destroy_sign_out_via_delete_or_post_session_path
     end
     assert warden.authenticated?(:sign_out_via_delete_or_post)
+  end
+end
+
+class DoubleAuthenticationRedirectTest < ActionDispatch::IntegrationTest
+  test 'signed in as user redirects when visiting user sign in page' do
+    sign_in_as_user
+    get new_user_session_path(:format => :html)
+    assert_redirected_to '/'
+  end
+
+  test 'signed in as admin redirects when visiting admin sign in page' do
+    sign_in_as_admin
+    get new_admin_session_path(:format => :html)
+    assert_redirected_to '/admin_area/home'
+  end
+
+  test 'signed in as both user and admin redirects when visiting admin sign in page' do
+    sign_in_as_user
+    sign_in_as_admin
+    get new_user_session_path(:format => :html)
+    assert_redirected_to '/'
+    get new_admin_session_path(:format => :html)
+    assert_redirected_to '/admin_area/home'
   end
 end

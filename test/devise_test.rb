@@ -68,5 +68,16 @@ class DeviseTest < ActiveSupport::TestCase
     end
     assert_not Devise.secure_compare("size_1", "size_four")
   end
-  
+
+  test 'Devise.email_regexp should match valid email addresses' do
+    valid_emails = ["test@example.com", "jo@jo.co", "f4$_m@you.com", "testing.example@example.com.ua"]
+    non_valid_emails = ["rex", "test@go,com", "test user@example.com", "test_user@example server.com"]
+
+    valid_emails.each do |email|
+      assert_match Devise.email_regexp, email
+    end
+    non_valid_emails.each do |email|
+      assert_no_match Devise.email_regexp, email
+    end
+  end
 end

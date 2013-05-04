@@ -18,7 +18,7 @@ module Devise
         public_task :copy_views
       end
 
-      # TODO: Add this to Rails itslef
+      # TODO: Add this to Rails itself
       module ClassMethods
         def hide!
           Rails::Generators.hide_namespace self.namespace
@@ -36,7 +36,13 @@ module Devise
       protected
 
       def view_directory(name, _target_path = nil)
-        directory name.to_s, _target_path || "#{target_path}/#{name}"
+        directory name.to_s, _target_path || "#{target_path}/#{name}" do |content|
+          if scope
+            content.gsub "devise/shared/links", "#{scope}/shared/links"
+          else
+            content
+          end
+        end
       end
 
       def target_path

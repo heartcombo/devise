@@ -10,7 +10,7 @@ class DeviseController < Devise.parent_controller.constantize
   helper_method *helpers
 
   prepend_before_filter :assert_is_devise_resource!
-  respond_to *Mime::SET.map(&:to_sym) if mimes_for_respond_to.empty?
+  respond_to :html if mimes_for_respond_to.empty?
 
   # Gets the actual resource stored in the instance variable
   def resource
@@ -67,7 +67,7 @@ This may happen for two reasons:
 1) You forgot to wrap your route inside the scope block. For example:
 
   devise_scope :user do
-    match "/some/route" => "some_devise_controller"
+    get "/some/route" => "some_devise_controller"
   end
 
 2) You are testing a Devise controller bypassing the router.
@@ -163,13 +163,18 @@ MESSAGE
   #
   # Please refer to README or en.yml locale file to check what messages are
   # available.
-  def set_flash_message(key, kind, options={})
+  def set_flash_message(key, kind, options = {})
+    message = find_message(kind, options)
+    flash[key] = message if message.present?
+  end
+
+  # Get message for given
+  def find_message(kind, options = {})
     options[:scope] = "devise.#{controller_name}"
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
     options = devise_i18n_options(options) if respond_to?(:devise_i18n_options, true)
-    message = I18n.t("#{resource_name}.#{kind}", options)
-    flash[key] = message if message.present?
+    I18n.t("#{options[:resource_name]}.#{kind}", options)
   end
 
   def clean_up_passwords(object)
@@ -180,13 +185,5 @@ MESSAGE
     respond_with(*args) do |format|
       format.any(*navigational_formats, &block)
     end
-  end
-
-  def request_format
-    @request_format ||= request.format.try(:ref)
-  end
-
-  def is_navigational_format?
-    Devise.navigational_formats.include?(request_format)
   end
 end

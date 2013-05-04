@@ -17,39 +17,39 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   as :user do
-    match "/as/sign_in", :to => "devise/sessions#new"
+    get "/as/sign_in", :to => "devise/sessions#new"
   end
 
-  match "/sign_in", :to => "devise/sessions#new"
+  get "/sign_in", :to => "devise/sessions#new"
 
   # Admin scope
   devise_for :admin, :path => "admin_area", :controllers => { :sessions => :"admins/sessions" }, :skip => :passwords
 
-  match "/admin_area/home", :to => "admins#index", :as => :admin_root
-  match "/anywhere", :to => "foo#bar", :as => :new_admin_password
+  get "/admin_area/home", :to => "admins#index", :as => :admin_root
+  get "/anywhere", :to => "foo#bar", :as => :new_admin_password
 
   authenticate(:admin) do
-    match "/private", :to => "home#private", :as => :private
+    get "/private", :to => "home#private", :as => :private
   end
 
   authenticate(:admin, lambda { |admin| admin.active? }) do
-    match "/private/active", :to => "home#private", :as => :private_active
+    get "/private/active", :to => "home#private", :as => :private_active
   end
 
   authenticated :admin do
-    match "/dashboard", :to => "home#admin_dashboard"
+    get "/dashboard", :to => "home#admin_dashboard"
   end
 
   authenticated :admin, lambda { |admin| admin.active? } do
-    match "/dashboard/active", :to => "home#admin_dashboard"
+    get "/dashboard/active", :to => "home#admin_dashboard"
   end
 
   authenticated do
-    match "/dashboard", :to => "home#user_dashboard"
+    get "/dashboard", :to => "home#user_dashboard"
   end
 
   unauthenticated do
-    match "/join", :to => "home#join"
+    get "/join", :to => "home#join"
   end
 
   # Routes for constraints testing
@@ -92,9 +92,9 @@ Rails.application.routes.draw do
     devise_for :delete_or_posts, :sign_out_via => [:delete, :post], :class_name => "Admin"
   end
 
-  match "/set", :to => "home#set"
-  match "/unauthenticated", :to => "home#unauthenticated"
-  match "/custom_strategy/new"
+  get "/set", :to => "home#set"
+  get "/unauthenticated", :to => "home#unauthenticated"
+  get "/custom_strategy/new"
 
   root :to => "home#index"
 end

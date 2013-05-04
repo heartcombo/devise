@@ -9,7 +9,7 @@ class TestHelpersTest < ActionController::TestCase
       self.status = 306
     end
   end
-  
+
   test "redirects if attempting to access a page unauthenticated" do
     get :index
     assert_redirected_to new_user_session_path
@@ -70,7 +70,7 @@ class TestHelpersTest < ActionController::TestCase
     get :index
     assert_redirected_to new_user_session_path
   end
-  
+
   test "respects custom failure app" do
     begin
       Devise.warden_config.failure_app = CustomFailureApp
@@ -79,6 +79,11 @@ class TestHelpersTest < ActionController::TestCase
     ensure
       Devise.warden_config.failure_app = Devise::FailureApp
     end
+  end
+
+  test "returns the body of a failure app" do
+    get :index
+    assert_equal response.body, "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>"
   end
 
   test "defined Warden after_authentication callback should not be called when sign_in is called" do

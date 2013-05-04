@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 gemspec
 
@@ -10,12 +10,8 @@ gem "rdoc"
 group :test do
   gem "omniauth-facebook"
   gem "omniauth-openid", "~> 1.0.1"
-  gem "webrat", "0.7.2", :require => false
-  gem "mocha", :require => false
-
-  platforms :mri_18 do
-    gem "ruby-debug", ">= 0.10.3"
-  end
+  gem "webrat", "0.7.3", :require => false
+  gem "mocha", "~> 0.13.1", :require => false
 end
 
 platforms :jruby do
@@ -26,10 +22,11 @@ end
 
 platforms :ruby do
   gem "sqlite3"
+end
 
+
+platforms :mri_19 do
   group :mongoid do
-    gem "mongo", "~> 1.3.0"
-    gem "mongoid", "~> 2.0"
-    gem "bson_ext", "~> 1.3.0"
+    gem "mongoid", "~> 3.0"
   end
 end

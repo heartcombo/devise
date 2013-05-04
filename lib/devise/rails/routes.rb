@@ -43,20 +43,20 @@ module ActionDispatch::Routing
     # needed routes:
     #
     #  # Session routes for Authenticatable (default)
-    #       new_user_session GET  /users/sign_in                    {:controller=>"devise/sessions", :action=>"new"}
-    #           user_session POST /users/sign_in                    {:controller=>"devise/sessions", :action=>"create"}
-    #   destroy_user_session GET  /users/sign_out                   {:controller=>"devise/sessions", :action=>"destroy"}
+    #       new_user_session GET    /users/sign_in                    {:controller=>"devise/sessions", :action=>"new"}
+    #           user_session POST   /users/sign_in                    {:controller=>"devise/sessions", :action=>"create"}
+    #   destroy_user_session DELETE /users/sign_out                   {:controller=>"devise/sessions", :action=>"destroy"}
     #
     #  # Password routes for Recoverable, if User model has :recoverable configured
-    #      new_user_password GET  /users/password/new(.:format)     {:controller=>"devise/passwords", :action=>"new"}
-    #     edit_user_password GET  /users/password/edit(.:format)    {:controller=>"devise/passwords", :action=>"edit"}
-    #          user_password PUT  /users/password(.:format)         {:controller=>"devise/passwords", :action=>"update"}
-    #                        POST /users/password(.:format)         {:controller=>"devise/passwords", :action=>"create"}
+    #      new_user_password GET    /users/password/new(.:format)     {:controller=>"devise/passwords", :action=>"new"}
+    #     edit_user_password GET    /users/password/edit(.:format)    {:controller=>"devise/passwords", :action=>"edit"}
+    #          user_password PUT    /users/password(.:format)         {:controller=>"devise/passwords", :action=>"update"}
+    #                        POST   /users/password(.:format)         {:controller=>"devise/passwords", :action=>"create"}
     #
     #  # Confirmation routes for Confirmable, if User model has :confirmable configured
-    #  new_user_confirmation GET  /users/confirmation/new(.:format) {:controller=>"devise/confirmations", :action=>"new"}
-    #      user_confirmation GET  /users/confirmation(.:format)     {:controller=>"devise/confirmations", :action=>"show"}
-    #                        POST /users/confirmation(.:format)     {:controller=>"devise/confirmations", :action=>"create"}
+    #  new_user_confirmation GET    /users/confirmation/new(.:format) {:controller=>"devise/confirmations", :action=>"new"}
+    #      user_confirmation GET    /users/confirmation(.:format)     {:controller=>"devise/confirmations", :action=>"show"}
+    #                        POST   /users/confirmation(.:format)     {:controller=>"devise/confirmations", :action=>"create"}
     #
     # ==== Options
     #
@@ -183,7 +183,7 @@ module ActionDispatch::Routing
     #      end
     #    end
     #
-    # In order to get Devise to recognize the deactivate action, your devise_for entry should look like this,
+    # In order to get Devise to recognize the deactivate action, your devise_scope entry should look like this:
     #
     #     devise_scope :owner do
     #       post "deactivate", :to => "registrations#deactivate", :as => "deactivate_registration"
@@ -254,11 +254,7 @@ module ActionDispatch::Routing
     #   end
     #
     def authenticate(scope=nil, block=nil)
-      constraint = lambda do |request|
-        request.env["warden"].authenticate!(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
-      end
-
-      constraints(constraint) do
+      constraints_for(:authenticate!, scope, block) do
         yield
       end
     end
@@ -282,11 +278,7 @@ module ActionDispatch::Routing
     #   root :to => 'landing#show'
     #
     def authenticated(scope=nil, block=nil)
-      constraint = lambda do |request|
-        request.env["warden"].authenticate?(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
-      end
-
-      constraints(constraint) do
+      constraints_for(:authenticate?, scope, block) do
         yield
       end
     end
@@ -329,7 +321,7 @@ module ActionDispatch::Routing
     # good and working example.
     #
     #  devise_scope :user do
-    #    match "/some/route" => "some_devise_controller"
+    #    get "/some/route" => "some_devise_controller"
     #  end
     #  devise_for :users
     #
@@ -401,12 +393,14 @@ module ActionDispatch::Routing
         match "#{path_prefix}/:provider",
           :constraints => { :provider => providers },
           :to => "#{controllers[:omniauth_callbacks]}#passthru",
-          :as => :omniauth_authorize
+          :as => :omniauth_authorize,
+          :via => [:get, :post]
 
         match "#{path_prefix}/:action/callback",
           :constraints => { :action => providers },
           :to => controllers[:omniauth_callbacks],
-          :as => :omniauth_callback
+          :as => :omniauth_callback,
+          :via => [:get, :post]
       ensure
         @scope[:path] = path
       end
@@ -424,6 +418,17 @@ module ActionDispatch::Routing
         yield
       ensure
         @scope.merge!(old)
+      end
+
+      def constraints_for(method_to_apply, scope=nil, block=nil)
+        constraint = lambda do |request|
+          request.env['warden'].send(method_to_apply, :scope => scope) &&
+            (block.nil? || block.call(request.env["warden"].user(scope)))
+        end
+
+        constraints(constraint) do
+          yield
+        end
       end
 
       def set_omniauth_path_prefix!(path_prefix) #:nodoc:

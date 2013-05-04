@@ -14,6 +14,12 @@ if DEVISE_ORM == :active_record
       assert_migration "db/migrate/devise_create_monsters.rb", /def change/
     end
 
+    test "all files for namespaced model are properly created" do
+      run_generator %w(admin/monster)
+      assert_file "app/models/admin/monster.rb", /devise/, /attr_accessible (:[a-z_]+(, )?)+/
+      assert_migration "db/migrate/devise_create_admin_monsters.rb", /def change/
+    end
+
     test "update model migration when model exists" do
       run_generator %w(monster)
       assert_file "app/models/monster.rb"

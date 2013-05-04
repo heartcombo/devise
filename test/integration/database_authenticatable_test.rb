@@ -1,46 +1,46 @@
 require 'test_helper'
 
-class DatabaseAuthenticationTest < ActionController::IntegrationTest
+class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
   test 'sign in with email of different case should succeed when email is in the list of case insensitive keys' do
     create_user(:email => 'Foo@Bar.com')
-    
+
     sign_in_as_user do
       fill_in 'email', :with => 'foo@bar.com'
     end
-    
+
     assert warden.authenticated?(:user)
   end
 
   test 'sign in with email of different case should fail when email is NOT the list of case insensitive keys' do
     swap Devise, :case_insensitive_keys => [] do
       create_user(:email => 'Foo@Bar.com')
-      
+
       sign_in_as_user do
         fill_in 'email', :with => 'foo@bar.com'
       end
-      
+
       assert_not warden.authenticated?(:user)
     end
   end
-  
+
   test 'sign in with email including extra spaces should succeed when email is in the list of strip whitespace keys' do
     create_user(:email => ' foo@bar.com ')
-    
+
     sign_in_as_user do
       fill_in 'email', :with => 'foo@bar.com'
     end
-    
+
     assert warden.authenticated?(:user)
   end
 
   test 'sign in with email including extra spaces should fail when email is NOT the list of strip whitespace keys' do
     swap Devise, :strip_whitespace_keys => [] do
       create_user(:email => 'foo@bar.com')
-      
+
       sign_in_as_user do
         fill_in 'email', :with => ' foo@bar.com '
       end
-      
+
       assert_not warden.authenticated?(:user)
     end
   end
@@ -53,12 +53,14 @@ class DatabaseAuthenticationTest < ActionController::IntegrationTest
   end
 
   test 'sign in with invalid email should return to sign in form with error message' do
-    sign_in_as_admin do
-      fill_in 'email', :with => 'wrongemail@test.com'
-    end
+    store_translations :en, :devise => { :failure => { :admin => { :not_found_in_database => 'Invalid email address' } } } do
+      sign_in_as_admin do
+        fill_in 'email', :with => 'wrongemail@test.com'
+      end
 
-    assert_contain 'Invalid email or password'
-    assert_not warden.authenticated?(:admin)
+      assert_contain 'Invalid email address'
+      assert_not warden.authenticated?(:admin)
+    end
   end
 
   test 'sign in with invalid pasword should return to sign in form with error message' do

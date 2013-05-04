@@ -59,7 +59,7 @@ class LockableTest < ActiveSupport::TestCase
     assert_not user.active_for_authentication?
   end
 
-  test "should unlock a user by cleaning locked_at, falied_attempts and unlock_token" do
+  test "should unlock a user by cleaning locked_at, failed_attempts and unlock_token" do
     user = create_user
     user.lock_access!
     assert_not_nil user.reload.locked_at
@@ -258,6 +258,16 @@ class LockableTest < ActiveSupport::TestCase
          :unlock_token
         ]
       end
+    end
+  end
+
+  test 'should not return a locked unauthenticated message if in paranoid mode' do
+    swap Devise, :paranoid => :true do
+      user = create_user
+      user.failed_attempts = Devise.maximum_attempts + 1
+      user.lock_access!
+
+      assert_equal :invalid, user.unauthenticated_message
     end
   end
 end

@@ -1,3 +1,3 @@
 module Devise
-  VERSION = "2.1.2".freeze
+  VERSION = "2.2.3".freeze
 end

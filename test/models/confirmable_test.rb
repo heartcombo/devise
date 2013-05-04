@@ -104,6 +104,16 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should skip confirmation e-mail without confirming if skip_confirmation_notification! is invoked' do
+    user = new_user
+    user.skip_confirmation_notification!
+
+    assert_email_not_sent do
+      user.save!
+      assert !user.confirmed?
+    end
+  end
+
   test 'should find a user to send confirmation instructions' do
     user = create_user
     confirmation_user = User.send_confirmation_instructions(:email => user.email)
@@ -204,6 +214,13 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not user.active_for_authentication?
   end
 
+  test 'should be active when we set allow_unconfirmed_access_for to nil' do
+    Devise.allow_unconfirmed_access_for = nil
+    user = create_user
+    user.confirmation_sent_at = Date.today
+    assert user.active_for_authentication?
+  end
+
   test 'should not be active without confirmation' do
     user = create_user
     user.confirmation_sent_at = nil
@@ -235,6 +252,40 @@ class ConfirmableTest < ActiveSupport::TestCase
       assert_equal "can't be blank", confirm_user.errors[:username].join
     end
   end
+
+  def confirm_user_by_token_with_confirmation_sent_at(confirmation_sent_at)
+    user = create_user
+    user.update_attribute(:confirmation_sent_at, confirmation_sent_at)
+    confirmed_user = User.confirm_by_token(user.confirmation_token)
+    assert_equal confirmed_user, user
+    user.reload.confirmed?
+  end
+
+  test 'should accept confirmation email token even after 5 years when no expiration is set' do
+    assert confirm_user_by_token_with_confirmation_sent_at(5.years.ago)
+  end
+
+  test 'should accept confirmation email token after 2 days when expiration is set to 3 days' do
+    swap Devise, :confirm_within => 3.days do
+      assert confirm_user_by_token_with_confirmation_sent_at(2.days.ago)
+    end
+  end
+
+  test 'should not accept confirmation email token after 4 days when expiration is set to 3 days' do
+    swap Devise, :confirm_within => 3.days do
+      assert_not confirm_user_by_token_with_confirmation_sent_at(4.days.ago)
+    end
+  end
+
+  test 'should generate a new token if the previous one has expired' do
+    swap Devise, :confirm_within => 3.days do
+      user = create_user
+      user.update_attribute(:confirmation_sent_at, 4.days.ago)
+      old = user.confirmation_token
+      user.resend_confirmation_token
+      assert_not_equal user.confirmation_token, old
+    end
+  end
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase
@@ -260,7 +311,6 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_nil admin.confirmation_token
   end
 
-
   test 'should regenerate confirmation token after changing email' do
     admin = create_admin
     assert admin.confirm!
@@ -276,6 +326,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_email_sent "new_test@example.com" do
       assert admin.update_attributes(:email => 'new_test@example.com')
     end
+    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should not send confirmation by email after changing password' do

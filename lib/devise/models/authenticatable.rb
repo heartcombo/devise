@@ -10,12 +10,15 @@ module Devise
     #
     #   * +authentication_keys+: parameters used for authentication. By default [:email].
     #
+    #   * +http_authentication_key+: map the username passed via HTTP Auth to this parameter. Defaults to
+    #     the first element in +authentication_keys+.
+    #
     #   * +request_keys+: parameters from the request object used for authentication.
     #     By specifying a symbol (which should be a request method), it will automatically be
     #     passed to find_for_authentication method and considered in your model lookup.
     #
     #     For instance, if you set :request_keys to [:subdomain], :subdomain will be considered
-    #     as key on authentication. This can also be a hash where the value is a boolean expliciting
+    #     as key on authentication. This can also be a hash where the value is a boolean specifying
     #     if the value is required or not.
     #
     #   * +http_authenticatable+: if this model allows http authentication. By default true.
@@ -32,7 +35,7 @@ module Devise
     # == active_for_authentication?
     #
     # After authenticating a user and in each request, Devise checks if your model is active by
-    # calling model.active_for_authentication?. This method is overwriten by other devise modules. For instance,
+    # calling model.active_for_authentication?. This method is overwritten by other devise modules. For instance,
     # :confirmable overwrites .active_for_authentication? to only return true if your model was confirmed.
     #
     # You overwrite this method yourself, but if you do, don't forget to call super:
@@ -93,10 +96,6 @@ module Devise
       def authenticatable_salt
       end
 
-      def headers_for(name)
-        {}
-      end
-
       array = %w(serializable_hash)
       # to_xml does not call serializable_hash on 3.1
       array << "to_xml" if Rails::VERSION::STRING[0,3] == "3.1"
@@ -144,14 +143,26 @@ module Devise
       #
       #       protected
       #
-      #       def send_devise_notification(notification)
-      #         pending_notifications << notification
+      #       def send_devise_notification(notification, opts = {})
+      #         # if the record is new or changed then delay the
+      #         # delivery until the after_commit callback otherwise
+      #         # send now because after_commit will not be called.
+      #         if new_record? || changed?
+      #           pending_notifications << [notification, opts]
+      #         else
+      #           devise_mailer.send(notification, self, opts).deliver
+      #         end
       #       end
       #
       #       def send_pending_notifications
-      #         pending_notifications.each do |n|
-      #           devise_mailer.send(n, self).deliver
+      #         pending_notifications.each do |n, opts|
+      #           devise_mailer.send(n, self, opts).deliver
       #         end
+      #
+      #         # Empty the pending notifications array because the
+      #         # after_commit hook can be called multiple times which
+      #         # could cause multiple emails to be sent.
+      #         pending_notifications.clear
       #       end
       #
       #       def pending_notifications
@@ -159,21 +170,35 @@ module Devise
       #       end
       #     end
       #
-      def send_devise_notification(notification)
-        devise_mailer.send(notification, self).deliver
+      def send_devise_notification(notification, opts={})
+        devise_mailer.send(notification, self, opts).deliver
       end
 
       def downcase_keys
-        self.class.case_insensitive_keys.each { |k| self[k].try(:downcase!) }
+        self.class.case_insensitive_keys.each { |k| apply_to_attribute_or_variable(k, :downcase!) }
       end
 
       def strip_whitespace
-        self.class.strip_whitespace_keys.each { |k| self[k].try(:strip!) }
+        self.class.strip_whitespace_keys.each { |k| apply_to_attribute_or_variable(k, :strip!) }
+      end
+
+      def apply_to_attribute_or_variable(attr, method)
+        if self[attr]
+          self[attr].try(method)
+
+        # Use respond_to? here to avoid a regression where globally
+        # configured strip_whitespace_keys or case_insensitive_keys were
+        # attempting to strip! or downcase! when a model didn't have the
+        # globally configured key.
+        elsif respond_to?(attr)
+          send(attr).try(method)
+        end
       end
 
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
-          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage)
+          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage,
+          :http_authentication_key)
 
         def serialize_into_session(record)
           [record.to_key, record.authenticatable_salt]
@@ -199,27 +224,26 @@ module Devise
         # it may be wrapped as well. For instance, database authenticatable
         # provides a `find_for_database_authentication` that wraps a call to
         # this method. This allows you to customize both database authenticatable
-        # or the whole authenticate stack by customize `find_for_authentication.` 
+        # or the whole authenticate stack by customize `find_for_authentication.`
         #
         # Overwrite to add customized conditions, create a join, or maybe use a
         # namedscope to filter records while authenticating.
         # Example:
         #
-        #   def self.find_for_authentication(conditions={})
-        #     conditions[:active] = true
-        #     super
+        #   def self.find_for_authentication(tainted_conditions)
+        #     find_first_by_auth_conditions(tainted_conditions, :active => true)
         #   end
         #
         # Finally, notice that Devise also queries for users in other scenarios
         # besides authentication, for example when retrieving an user to send
         # an e-mail for password reset. In such cases, find_for_authentication
         # is not called.
-        def find_for_authentication(conditions)
-          find_first_by_auth_conditions(conditions)
+        def find_for_authentication(tainted_conditions)
+          find_first_by_auth_conditions(tainted_conditions)
         end
 
-        def find_first_by_auth_conditions(conditions)
-          to_adapter.find_first devise_param_filter.filter(conditions)
+        def find_first_by_auth_conditions(tainted_conditions, opts={})
+          to_adapter.find_first(devise_param_filter.filter(tainted_conditions).merge(opts))
         end
 
         # Find an initialize a record setting an error if it can't be found.

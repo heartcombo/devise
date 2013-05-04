@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SessionTimeoutTest < ActionController::IntegrationTest
+class SessionTimeoutTest < ActionDispatch::IntegrationTest
 
   def last_request_at
     @controller.user_session['last_request_at']

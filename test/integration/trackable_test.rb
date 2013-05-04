@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TrackableHooksTest < ActionController::IntegrationTest
+class TrackableHooksTest < ActionDispatch::IntegrationTest
 
   test "current and last sign in timestamps are updated on each sign in" do
     user = create_user

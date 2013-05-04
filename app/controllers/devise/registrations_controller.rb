@@ -15,7 +15,7 @@ class Devise::RegistrationsController < DeviseController
     if resource.save
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?
-        sign_in(resource_name, resource)
+        sign_up(resource_name, resource)
         respond_with resource, :location => after_sign_up_path_for(resource)
       else
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_navigational_format?
@@ -42,10 +42,9 @@ class Devise::RegistrationsController < DeviseController
 
     if resource.update_with_password(resource_params)
       if is_navigational_format?
-        if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation? && (prev_unconfirmed_email != resource.unconfirmed_email)
-          flash_key = :update_needs_confirmation
-        end
-        set_flash_message :notice, flash_key || :updated
+        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
+          :update_needs_confirmation : :updated
+        set_flash_message :notice, flash_key
       end
       sign_in resource_name, resource, :bypass => true
       respond_with resource, :location => after_update_path_for(resource)
@@ -75,11 +74,23 @@ class Devise::RegistrationsController < DeviseController
 
   protected
 
+  def update_needs_confirmation?(resource, previous)
+    resource.respond_to?(:pending_reconfirmation?) &&
+      resource.pending_reconfirmation? &&
+      previous != resource.unconfirmed_email
+  end
+
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
   def build_resource(hash=nil)
     hash ||= resource_params || {}
     self.resource = resource_class.new_with_session(hash, session)
+  end
+
+  # Signs in a user on sign up. You can overwrite this method in your own
+  # RegistrationsController.
+  def sign_up(resource_name, resource)
+    sign_in(resource_name, resource)
   end
 
   # The path used after sign up. You need to overwrite this method

@@ -1,9 +1,65 @@
+== master
+
+* enhancements
+  * Allow to override path after password resetting (by @worker8)
+  * Add `#skip_confirmation_notification!` method to `Confirmable`. Allows skipping confirmation email without auto-confirming. (by @gregates)
+  * allow_unconfirmed_access_for config from `:confirmable` module can be set to `nil` that means unconfirmed access for unlimited time. (by @nashby)
+  * Support Rails' token strategy on authentication (by @robhurring)
+  * Support explicitly setting the http authentication key via `config.http_authentication_key` (by @neo)
+
 * bug fix
+  * Generating scoped devise views now uses the correct scoped shared links partial instead of the default devise one (by @nashby)
+  * Fix inheriting mailer templates from `Devise::Mailer`
+  * Fix a bug when procs are used as default mailer in Devise (by @tomasv)
+
+== 2.2.3
+
+Security announcement: http://blog.plataformatec.com.br/2013/01/security-announcement-devise-v2-2-3-v2-1-3-v2-0-5-and-v1-5-3-released/
+
+* bug fix
+  * Require string conversion for all values
+
+== 2.2.2
+
+* bug fix
+  * Fix bug when checking for reconfirmable in templates
+
+== 2.2.1
+
+* bug fix
+  * Fix regression with case_insensitive_keys
+  * Fix regression when password is blank when it is invalid
+
+== 2.2.0
+
+* backwards incompatible changes
+  * `headers_for` is deprecated, customize the mailer directly instead
+  * All mailer methods now expect a second argument with delivery options
+  * Default minimum password length is now 8 (by @carlosgaldino)
+  * Support alternate sign in error message when email record does not exist (this adds a new I18n key to the locale file) (by @gabetax)
+  * DeviseController responds only to HTML requests by default (call `DeviseController.respond_to` or `ApplicationController.respond_to` to add new formats)
+  * Support Mongoid 3 onwards (by @durran)
+
+* enhancements
+  * Fix unlockable which could leak account existence on paranoid mode (by @latortuga)
+  * Confirmable now has a confirm_within option to set a period while the confirmation token is still valid (by @promisedlandt)
+  * Flash messages in controller now respects `resource_name` (by @latortuga)
+  * Separate `sign_in` and `sign_up` on RegistrationsController (by @rubynortheast)
+  * Add autofocus to default views (by @Radagaisus)
+  * Unlock user on password reset (by @marcinb)
+  * Allow validation callbacks to apply to virtual attributes (by @latortuga)
+
+* bug fix
+  * unconfirmed_email now uses the proper e-mail on salutation
+  * Fix default email_regexp config to not allow spaces (by @kukula)
   * Fix a regression introduced on warden 1.2.1 (by @ejfinneran)
   * Properly camelize omniauth strategies (by @saizai)
   * Do not set flash messages for non navigational requests on session sign out (by @mathieul)
   * Set the proper fields as required on the lockable module (by @nickhoffman)
   * Respects Devise mailer default's reply_to (by @mrchrisadams)
+  * Properly assign resource on `sign_in` related action (by @adammcnamara)
+  * `update_with_password` doesn't change encrypted password when it is invalid (by @nashby)
+  * Properly handle namespaced models on Active Record generator (by @nashby)
 
 == 2.1.2
 

@@ -1,15 +1,15 @@
-class Devise::Mailer < ::ActionMailer::Base
+class Devise::Mailer < Devise.parent_mailer.constantize
   include Devise::Mailers::Helpers
 
-  def confirmation_instructions(record)
-    devise_mail(record, :confirmation_instructions)
+  def confirmation_instructions(record, opts={})
+    devise_mail(record, :confirmation_instructions, opts)
   end
 
-  def reset_password_instructions(record)
-    devise_mail(record, :reset_password_instructions)
+  def reset_password_instructions(record, opts={})
+    devise_mail(record, :reset_password_instructions, opts)
   end
 
-  def unlock_instructions(record)
-    devise_mail(record, :unlock_instructions)
+  def unlock_instructions(record, opts={})
+    devise_mail(record, :unlock_instructions, opts)
   end
 end

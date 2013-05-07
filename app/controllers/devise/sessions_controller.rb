@@ -5,7 +5,7 @@ class Devise::SessionsController < DeviseController
 
   # GET /resource/sign_in
   def new
-    self.resource = build_resource(nil, :unsafe => true)
+    self.resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)
     respond_with(resource, serialize_options(resource))
   end
@@ -33,6 +33,10 @@ class Devise::SessionsController < DeviseController
   end
 
   protected
+
+  def sign_in_params
+    devise_parameter_sanitizer.for(:sign_in)
+  end
 
   def serialize_options(resource)
     methods = resource_class.authentication_keys.dup

@@ -7,9 +7,8 @@ module Shim
   end
 
   module ClassMethods
-    def last(options = {})
-      options.delete(:order) if options[:order] == "id"
-      where(options).last
+    def order(attribute)
+      asc(attribute)
     end
 
     def find_by_email(email)

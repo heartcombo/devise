@@ -6,12 +6,14 @@ require 'set'
 require 'securerandom'
 
 module Devise
-  autoload :Delegator,     'devise/delegator'
-  autoload :FailureApp,    'devise/failure_app'
-  autoload :OmniAuth,      'devise/omniauth'
-  autoload :ParamFilter,   'devise/param_filter'
-  autoload :TestHelpers,   'devise/test_helpers'
-  autoload :TimeInflector, 'devise/time_inflector'
+  autoload :Delegator,          'devise/delegator'
+  autoload :FailureApp,         'devise/failure_app'
+  autoload :OmniAuth,           'devise/omniauth'
+  autoload :ParamFilter,        'devise/param_filter'
+  autoload :BaseSanitizer,      'devise/parameter_sanitizer'
+  autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
+  autoload :TestHelpers,        'devise/test_helpers'
+  autoload :TimeInflector,      'devise/time_inflector'
 
   module Controllers
     autoload :Helpers, 'devise/controllers/helpers'

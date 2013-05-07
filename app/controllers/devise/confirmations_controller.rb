@@ -1,7 +1,7 @@
 class Devise::ConfirmationsController < DeviseController
   # GET /resource/confirmation/new
   def new
-    build_resource({})
+    self.resource = resource_class.new
   end
 
   # POST /resource/confirmation
@@ -39,5 +39,4 @@ class Devise::ConfirmationsController < DeviseController
     def after_confirmation_path_for(resource_name, resource)
       after_sign_in_path_for(resource)
     end
-
 end

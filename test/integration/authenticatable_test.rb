@@ -191,7 +191,7 @@ class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
     get dashboard_path
 
     assert_response :success
-    assert_template 'home/admin'
+    assert_template 'home/admin_dashboard'
     assert_contain 'Admin dashboard'
   end
 
@@ -203,7 +203,7 @@ class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
     get dashboard_path
 
     assert_response :success
-    assert_template 'home/user'
+    assert_template 'home/user_dashboard'
     assert_contain 'User dashboard'
   end
 

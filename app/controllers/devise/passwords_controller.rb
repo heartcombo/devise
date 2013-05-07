@@ -5,7 +5,7 @@ class Devise::PasswordsController < DeviseController
 
   # GET /resource/password/new
   def new
-    build_resource({})
+    self.resource = resource_class.new
   end
 
   # POST /resource/password

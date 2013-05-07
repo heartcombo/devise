@@ -96,5 +96,5 @@ Rails.application.routes.draw do
   get "/unauthenticated", :to => "home#unauthenticated"
   get "/custom_strategy/new"
 
-  root :to => "home#index"
+  root :to => "home#index", :via => [:get, :post]
 end

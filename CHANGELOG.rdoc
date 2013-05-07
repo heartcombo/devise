@@ -1,3 +1,9 @@
+== master
+
+* enhancements
+  * Rails 4 and Strong Parameters compatibility. (@carlosantoniodasilva, @josevalim, @latortuga, @lucasmazza, @nashby, @rafaelfranca, @spastorino)
+  * Drop support for Rails < 3.2 and Ruby < 1.9.3.
+
 == 2.2.4
 
 * enhancements

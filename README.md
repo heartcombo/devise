@@ -57,7 +57,7 @@ You can view the Devise documentation in RDoc format here:
 
 http://rubydoc.info/github/plataformatec/devise/master/frames
 
-If you need to use Devise with Rails 2.3, you can always run "gem server" from the command line after you install the gem to access the old documentation.
+If you need to use Devise with previous versions of Rails, you can always run "gem server" from the command line after you install the gem to access the old documentation.
 
 ### Example applications
 
@@ -90,7 +90,7 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 ## Getting started
 
-Devise 2.0 works with Rails 3.1 onwards. You can add it to your Gemfile with:
+Devise 3.0 works with Rails 3.2 onwards. You can add it to your Gemfile with:
 
 ```ruby
 gem 'devise'

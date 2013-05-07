@@ -37,7 +37,7 @@ class Devise::ConfirmationsController < DeviseController
 
     # The path used after confirmation.
     def after_confirmation_path_for(resource_name, resource)
-      after_sign_in_path_for(resource) if is_navigational_format?
+      after_sign_in_path_for(resource)
     end
 
 end

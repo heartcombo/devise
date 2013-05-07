@@ -96,7 +96,7 @@ class Devise::RegistrationsController < DeviseController
   # The path used after sign up. You need to overwrite this method
   # in your own RegistrationsController.
   def after_sign_up_path_for(resource)
-    after_sign_in_path_for(resource) if is_navigational_format?
+    after_sign_in_path_for(resource)
   end
 
   # The path used after sign up for inactive accounts. You need to overwrite
@@ -108,7 +108,7 @@ class Devise::RegistrationsController < DeviseController
   # The default url to be used after updating a resource. You need to overwrite
   # this method in your own RegistrationsController.
   def after_update_path_for(resource)
-    signed_in_root_path(resource) if is_navigational_format?
+    signed_in_root_path(resource)
   end
 
   # Authenticates the current scope and gets the current resource from the session.

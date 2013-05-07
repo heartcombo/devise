@@ -250,7 +250,7 @@ module ActionDispatch::Routing
     #   end
     #
     #   authenticate :user, lambda {|u| u.role == "admin"} do
-    #     root :to => "admin/dashboard#show"
+    #     root :to => "admin/dashboard#show", :as => :user_root
     #   end
     #
     def authenticate(scope=nil, block=nil)
@@ -264,15 +264,15 @@ module ActionDispatch::Routing
     # a model and allows extra constraints to be done on the instance.
     #
     #   authenticated :admin do
-    #     root :to => 'admin/dashboard#show'
+    #     root :to => 'admin/dashboard#show', :as => :admin_root
     #   end
     #
     #   authenticated do
-    #     root :to => 'dashboard#show'
+    #     root :to => 'dashboard#show', :as => :authenticated_root
     #   end
     #
     #   authenticated :user, lambda {|u| u.role == "admin"} do
-    #     root :to => "admin/dashboard#show"
+    #     root :to => "admin/dashboard#show", :as => :user_root
     #   end
     #
     #   root :to => 'landing#show'

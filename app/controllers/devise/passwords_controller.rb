@@ -42,7 +42,7 @@ class Devise::PasswordsController < DeviseController
 
   protected
     def after_resetting_password_path_for(resource)
-      after_sign_in_path_for(resource) if is_navigational_format?
+      after_sign_in_path_for(resource)
     end
 
     # The path used after sending reset password instructions

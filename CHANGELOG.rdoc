@@ -1,6 +1,7 @@
 == master
 
 * enhancements
+  * Add `destroy_with_password` to `DatabaseAuthenticatable`. Allows destroying a record when `:current_password` matches, similarly to how `update_with_password` works. (by @michiel3)
   * Allow to override path after password resetting (by @worker8)
   * Add `#skip_confirmation_notification!` method to `Confirmable`. Allows skipping confirmation email without auto-confirming. (by @gregates)
   * allow_unconfirmed_access_for config from `:confirmable` module can be set to `nil` that means unconfirmed access for unlimited time. (by @nashby)
@@ -8,6 +9,7 @@
   * Support explicitly setting the http authentication key via `config.http_authentication_key` (by @neo)
 
 * bug fix
+  * Do not redirect when accessing devise API via JSON. (by @sebastianwr)
   * Generating scoped devise views now uses the correct scoped shared links partial instead of the default devise one (by @nashby)
   * Fix inheriting mailer templates from `Devise::Mailer`
   * Fix a bug when procs are used as default mailer in Devise (by @tomasv)

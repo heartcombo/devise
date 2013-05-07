@@ -198,26 +198,20 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should destroy user if current password is valid' do
     user = create_user
     assert user.destroy_with_password('12345678')
-    assert_raise ActiveRecord::RecordNotFound do
-      user.reload
-    end
+    assert_nil User.find_by_id(user.id)
   end
 
   test 'should not destroy user with invalid password' do
     user = create_user
     assert_not user.destroy_with_password('other')
-    assert_nothing_raised ActiveRecord::RecordNotFound do
-      user.reload
-    end
+    assert User.find(user.id)
     assert_match "is invalid", user.errors[:current_password].join
   end
 
   test 'should not destroy user with blank password' do
     user = create_user
     assert_not user.destroy_with_password(nil)
-    assert_nothing_raised ActiveRecord::RecordNotFound do
-      user.reload
-    end
+    assert User.find(user.id)
     assert_match "can't be blank", user.errors[:current_password].join
   end
 

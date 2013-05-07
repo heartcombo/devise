@@ -1,4 +1,4 @@
-== master
+== 2.2.4
 
 * enhancements
   * Add `destroy_with_password` to `DatabaseAuthenticatable`. Allows destroying a record when `:current_password` matches, similarly to how `update_with_password` works. (by @michiel3)

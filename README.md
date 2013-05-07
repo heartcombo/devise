@@ -200,6 +200,32 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+If you have multiple roles, you may want to set up different parameter sanitizer per role. In this case, we recommend inheriting from from `Devise::ParameterSanitizer` and add your own logic:
+
+```ruby
+class User::ParameterSanitizer < Devise::ParameterSanitizer
+  def sign_in
+    default_params.permit(:username, :email)
+  end
+end
+```
+
+And then configure your controllers to use it:
+
+```ruby
+class ApplicationController < ActionController::Base
+  protected
+
+  def devise_parameter_sanitizer
+    if resource_class.is_a?(User)
+      User::ParameterSanitizer.new(User, :user, params)
+    else
+      super # Use the default one
+    end
+  end
+end
+```
+
 The example above overrides the permitted parameters for the user to be both `:username` and `:email`. The non-lazy way to configure parameters would be by defining the before filter above in a custom controller. We detail how to configure and customize controllers in some sections below.
 
 ### Configuring views

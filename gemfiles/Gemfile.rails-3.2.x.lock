@@ -1,7 +1,7 @@
 PATH
-  remote: /Users/carlos/Projects/oss/devise
+  remote: ..
   specs:
-    devise (2.2.3)
+    devise (2.2.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -65,7 +65,7 @@ GEM
       origin (~> 1.0)
       tzinfo (~> 0.3.22)
     moped (1.4.5)
-    multi_json (1.7.2)
+    multi_json (1.7.3)
     multipart-post (1.2.0)
     nokogiri (1.5.9)
     oauth2 (0.8.1)

@@ -8,16 +8,16 @@ module Devise
     def filter(conditions)
       conditions = stringify_params(conditions.dup)
 
-      @case_insensitive_keys.each do |k|
-        value = conditions[k]
-        next unless value.respond_to?(:downcase)
-        conditions[k] = value.downcase
-      end
+      conditions.merge!(filtered_hash_by_method_for_given_keys(conditions.dup, :downcase, @case_insensitive_keys))
+      conditions.merge!(filtered_hash_by_method_for_given_keys(conditions.dup, :strip, @strip_whitespace_keys))
 
-      @strip_whitespace_keys.each do |k|
+      conditions
+    end
+
+    def filtered_hash_by_method_for_given_keys(conditions, method, condition_keys)
+      condition_keys.each do |k|
         value = conditions[k]
-        next unless value.respond_to?(:strip)
-        conditions[k] = value.strip
+        conditions[k] = value.send(method) if value.respond_to?(method)
       end
 
       conditions

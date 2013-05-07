@@ -48,10 +48,14 @@ Devise.setup do |config|
   # enable it only for database (email + password) authentication.
   # config.params_authenticatable = true
 
-  # Tell if authentication through HTTP Basic Auth is enabled. False by default.
+  # Tell if authentication through HTTP Auth is enabled. False by default.
   # It can be set to an array that will enable http authentication only for the
   # given strategies, for example, `config.http_authenticatable = [:token]` will
-  # enable it only for token authentication.
+  # enable it only for token authentication. The supported strategies are:
+  # :database      = Support basic authentication with authentication key + password
+  # :token         = Support basic authentication with token authentication key
+  # :token_options = Support token authentication with options as defined in
+  #                  http://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html
   # config.http_authenticatable = false
 
   # If http headers should be returned for AJAX requests. True by default.

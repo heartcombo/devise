@@ -52,6 +52,18 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal( { "login" => "foo@bar.com", "bool1" => "true", "bool2" => "false", "fixnum" => "123", "will_be_converted" => "1..10" }, conditions)
   end
 
+  test 'param filter should filter case_insensitive_keys as insensitive' do
+    conditions = {'insensitive' => 'insensitive_VAL', 'sensitive' => 'sensitive_VAL'}
+    conditions = Devise::ParamFilter.new(['insensitive'], []).filter(conditions)
+    assert_equal( {'insensitive' => 'insensitive_val', 'sensitive' => 'sensitive_VAL'}, conditions )
+  end
+
+  test 'param filter should filter strip_whitespace_keys stripping whitespaces' do
+    conditions = {'strip_whitespace' => ' strip_whitespace_val ', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}
+    conditions = Devise::ParamFilter.new([], ['strip_whitespace']).filter(conditions)
+    assert_equal( {'strip_whitespace' => 'strip_whitespace_val', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}, conditions )
+  end
+
   test 'should respond to password and password confirmation' do
     user = new_user
     assert user.respond_to?(:password)
@@ -168,6 +180,26 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user.update_without_password(:password => 'pass4321', :password_confirmation => 'pass4321')
     assert !user.reload.valid_password?('pass4321')
     assert user.valid_password?('12345678')
+  end
+
+  test 'should destroy user if current password is valid' do
+    user = create_user
+    assert user.destroy_with_password('12345678')
+    assert !user.persisted?
+  end
+
+  test 'should not destroy user with invalid password' do
+    user = create_user
+    assert_not user.destroy_with_password('other')
+    assert user.persisted?
+    assert_match "is invalid", user.errors[:current_password].join
+  end
+
+  test 'should not destroy user with blank password' do
+    user = create_user
+    assert_not user.destroy_with_password(nil)
+    assert user.persisted?
+    assert_match "can't be blank", user.errors[:current_password].join
   end
 
   test 'downcase_keys with validation' do

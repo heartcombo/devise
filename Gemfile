@@ -10,7 +10,7 @@ gem "rdoc"
 group :test do
   gem "omniauth-facebook"
   gem "omniauth-openid", "~> 1.0.1"
-  gem "webrat", "0.7.2", :require => false
+  gem "webrat", "0.7.3", :require => false
   gem "mocha", "~> 0.13.1", :require => false
 end
 

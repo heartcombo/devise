@@ -7,11 +7,20 @@ module Devise
     #
     #   http://myapp.example.com/?user_token=SECRET
     #
-    # For HTTP, you can pass the token as username and blank password. Since some clients may require
-    # a password, you can pass "X" as password and it will simply be ignored.
+    # For headers, you can use basic authentication passing the token as username and
+    # blank password. Since some clients may require a password, you can pass "X" as
+    # password and it will simply be ignored.
+    #
+    # You may also pass the token using the Token authentication mechanism provided
+    # by Rails: http://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html
+    # The token options are stored in request.env['devise.token_options']
     class TokenAuthenticatable < Authenticatable
       def store?
         super && !mapping.to.skip_session_storage.include?(:token_auth)
+      end
+
+      def valid?
+        super || valid_for_token_auth?
       end
 
       def authenticate!
@@ -36,7 +45,33 @@ module Devise
         false
       end
 
-      # Try both scoped and non scoped keys.
+      # Check if the model accepts this strategy as token authenticatable.
+      def token_authenticatable?
+        mapping.to.http_authenticatable?(:token_options)
+      end
+
+      # Check if this is strategy is valid for token authentication by:
+      #
+      #   * Validating if the model allows http token authentication;
+      #   * If the http auth token exists;
+      #   * If all authentication keys are present;
+      #
+      def valid_for_token_auth?
+        token_authenticatable? && auth_token.present? && with_authentication_hash(:token_auth, token_auth_hash)
+      end
+
+      # Extract the auth token from the request
+      def auth_token
+        @auth_token ||= ActionController::HttpAuthentication::Token.token_and_options(request)
+      end
+
+      # Extract a hash with attributes:values from the auth_token
+      def token_auth_hash
+        request.env['devise.token_options'] = auth_token.last
+        { authentication_keys.first => auth_token.first }
+      end
+
+      # Try both scoped and non scoped keys
       def params_auth_hash
         if params[scope].kind_of?(Hash) && params[scope].has_key?(authentication_keys.first)
           params[scope]

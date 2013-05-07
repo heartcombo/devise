@@ -129,6 +129,46 @@ class TokenAuthenticationTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'authenticate with valid authentication token key and value through http header' do
+    swap Devise, :token_authentication_key => :secret_token do
+      sign_in_as_new_user_with_token(:token_auth => true)
+
+      assert_response :success
+      assert_match '<email>user@test.com</email>', response.body
+      assert_equal request.env['devise.token_options'], {}
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'authenticate with valid authentication token key and value through http header, with options' do
+    swap Devise, :token_authentication_key => :secret_token, :http_authenticatable => [:token_options] do
+      signature = "**TESTSIGNATURE**"
+      sign_in_as_new_user_with_token(:token_auth => true, :token_options => {:signature => signature, :nonce => 'def'})
+
+      assert_response :success
+      assert_match '<email>user@test.com</email>', response.body
+      assert_equal request.env['devise.token_options'][:signature], signature
+      assert_equal request.env['devise.token_options'][:nonce], 'def'
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'authenticate with valid authentication token key and value through http header without allowing token authorization setting is denied' do
+    swap Devise, :token_authentication_key => :secret_token, :http_authenticatable => false do
+      sign_in_as_new_user_with_token(:token_auth => true)
+
+      assert_response :unauthorized
+      assert_nil warden.user(:user)
+    end
+  end
+
+  test 'does not authenticate with improper authentication token value in header' do
+    sign_in_as_new_user_with_token(:token_auth => true, :auth_token => '*** INVALID TOKEN ***')
+
+    assert_response :unauthorized
+    assert_nil warden.user(:user)
+  end
+
   private
 
     def sign_in_as_new_user_with_token(options = {})
@@ -139,6 +179,10 @@ class TokenAuthenticationTest < ActionDispatch::IntegrationTest
 
       if options[:http_auth]
         header = "Basic #{Base64.encode64("#{VALID_AUTHENTICATION_TOKEN}:X")}"
+        get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => header
+      elsif options[:token_auth]
+        token_options = options[:token_options] || {}
+        header = ActionController::HttpAuthentication::Token.encode_credentials(options[:auth_token], token_options)
         get users_path(:format => :xml), {}, "HTTP_AUTHORIZATION" => header
       else
         visit users_path(options[:auth_token_key].to_sym => options[:auth_token])

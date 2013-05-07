@@ -10,7 +10,7 @@ module Devise
     #
     #   * +authentication_keys+: parameters used for authentication. By default [:email].
     #
-    #   * +http_auth_key+: map the username passed via HTTP Auth to this parameter. Defaults to
+    #   * +http_authentication_key+: map the username passed via HTTP Auth to this parameter. Defaults to
     #     the first element in +authentication_keys+.
     #
     #   * +request_keys+: parameters from the request object used for authentication.
@@ -18,7 +18,7 @@ module Devise
     #     passed to find_for_authentication method and considered in your model lookup.
     #
     #     For instance, if you set :request_keys to [:subdomain], :subdomain will be considered
-    #     as key on authentication. This can also be a hash where the value is a boolean expliciting
+    #     as key on authentication. This can also be a hash where the value is a boolean specifying
     #     if the value is required or not.
     #
     #   * +http_authenticatable+: if this model allows http authentication. By default true.
@@ -35,7 +35,7 @@ module Devise
     # == active_for_authentication?
     #
     # After authenticating a user and in each request, Devise checks if your model is active by
-    # calling model.active_for_authentication?. This method is overwriten by other devise modules. For instance,
+    # calling model.active_for_authentication?. This method is overwritten by other devise modules. For instance,
     # :confirmable overwrites .active_for_authentication? to only return true if your model was confirmed.
     #
     # You overwrite this method yourself, but if you do, don't forget to call super:
@@ -198,7 +198,7 @@ module Devise
       module ClassMethods
         Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
           :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage,
-          :http_auth_key)
+          :http_authentication_key)
 
         def serialize_into_session(record)
           [record.to_key, record.authenticatable_salt]

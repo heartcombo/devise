@@ -54,8 +54,8 @@ module Devise
   @@stretches = 10
 
   # The default key used when authenticating over http auth.
-  mattr_accessor :http_auth_key
-  @@http_auth_key = nil
+  mattr_accessor :http_authentication_key
+  @@http_authentication_key = nil
 
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
@@ -317,7 +317,7 @@ module Devise
   # == Options:
   #
   #   +model+      - String representing the load path to a custom *model* for this module (to autoload.)
-  #   +controller+ - Symbol representing the name of an exisiting or custom *controller* for this module.
+  #   +controller+ - Symbol representing the name of an existing or custom *controller* for this module.
   #   +route+      - Symbol representing the named *route* helper for this module.
   #   +strategy+   - Symbol representing if this module got a custom *strategy*.
   #
@@ -445,7 +445,7 @@ module Devise
     end
   end
 
-  # Generate a friendly string randomically to be used as token.
+  # Generate a friendly string randomly to be used as token.
   def self.friendly_token
     SecureRandom.base64(15).tr('+/=lIO0', 'pqrsxyz')
   end

@@ -12,7 +12,7 @@ GIT
 PATH
   remote: .
   specs:
-    devise (2.2.3)
+    devise (2.2.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -135,7 +135,7 @@ GEM
     tzinfo (0.3.37)
     warden (1.2.1)
       rack (>= 1.0)
-    webrat (0.7.2)
+    webrat (0.7.3)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
@@ -157,4 +157,4 @@ DEPENDENCIES
   rails (~> 4.0.0.rc1)
   rdoc
   sqlite3
-  webrat (= 0.7.2)
+  webrat (= 0.7.3)

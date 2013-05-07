@@ -39,6 +39,13 @@ module Devise
         after_update  :send_confirmation_instructions, :if => :reconfirmation_required?
       end
 
+      def initialize(*args, &block)
+        @bypass_postpone = false
+        @reconfirmation_required = false
+        @skip_confirmation_notification = false
+        super
+      end
+
       def self.required_fields(klass)
         required_methods = [:confirmation_token, :confirmed_at, :confirmation_sent_at]
         required_methods << :unconfirmed_email if klass.reconfirmable
@@ -221,7 +228,7 @@ module Devise
 
         def postpone_email_change?
           postpone = self.class.reconfirmable && email_changed? && !@bypass_postpone
-          @bypass_postpone = nil
+          @bypass_postpone = false
           postpone
         end
 

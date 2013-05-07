@@ -167,7 +167,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
   end
 
   test 'resent confirmation token with invalid E-Mail in XML format should return invalid response' do
-    user = create_user(:confirm => false)
+    create_user(:confirm => false)
     post user_confirmation_path(:format => 'xml'), :user => { :email => 'invalid.test@test.com' }
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
@@ -181,7 +181,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
   end
 
   test 'confirm account with invalid confirmation token in XML format should return invalid response' do
-    user = create_user(:confirm => false)
+    create_user(:confirm => false)
     get user_confirmation_path(:confirmation_token => 'invalid_confirmation', :format => 'xml')
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
@@ -275,7 +275,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
 
     visit_admin_confirmation_with_token(confirmation_token)
     assert_have_selector '#error_explanation'
-    assert_contain /Confirmation token(.*)invalid/
+    assert_contain(/Confirmation token(.*)invalid/)
 
     visit_admin_confirmation_with_token(admin.confirmation_token)
     assert_contain 'Your account was successfully confirmed.'
@@ -293,7 +293,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
 
     visit_admin_confirmation_with_token(admin.confirmation_token)
     assert_have_selector '#error_explanation'
-    assert_contain /Email.*already.*taken/
+    assert_contain(/Email.*already.*taken/)
     assert admin.reload.pending_reconfirmation?
   end
 end

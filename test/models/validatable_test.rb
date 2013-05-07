@@ -64,7 +64,7 @@ class ValidatableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should require password when updating/reseting password' do
+  test 'should require password when updating/resetting password' do
     user = create_user
 
     user.password = ''
@@ -74,7 +74,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'can\'t be blank', user.errors[:password].join
   end
 
-  test 'should require confirmation when updating/reseting password' do
+  test 'should require confirmation when updating/resetting password' do
     user = create_user
     user.password_confirmation = 'another_password'
     assert user.invalid?
@@ -108,7 +108,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_not (user.errors[:password].join =~ /is too long/)
   end
 
-  test 'should complain about length even if possword is not required' do
+  test 'should complain about length even if password is not required' do
     user = new_user(:password => 'x'*129, :password_confirmation => 'x'*129)
     user.stubs(:password_required?).returns(false)
     assert user.invalid?

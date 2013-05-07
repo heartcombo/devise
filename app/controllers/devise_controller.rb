@@ -142,13 +142,18 @@ MESSAGE
   #
   # Please refer to README or en.yml locale file to check what messages are
   # available.
-  def set_flash_message(key, kind, options={})
+  def set_flash_message(key, kind, options = {})
+    message = find_message(kind, options)
+    flash[key] = message if message.present?
+  end
+
+  # Get message for given
+  def find_message(kind, options = {})
     options[:scope] = "devise.#{controller_name}"
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
     options = devise_i18n_options(options) if respond_to?(:devise_i18n_options, true)
-    message = I18n.t("#{options[:resource_name]}.#{kind}", options)
-    flash[key] = message if message.present?
+    I18n.t("#{options[:resource_name]}.#{kind}", options)
   end
 
   def clean_up_passwords(object)

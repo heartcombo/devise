@@ -250,15 +250,11 @@ module ActionDispatch::Routing
     #   end
     #
     #   authenticate :user, lambda {|u| u.role == "admin"} do
-    #     root :to => "admin/dashboard#show"
+    #     root :to => "admin/dashboard#show", :as => :user_root
     #   end
     #
     def authenticate(scope=nil, block=nil)
-      constraint = lambda do |request|
-        request.env["warden"].authenticate!(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
-      end
-
-      constraints(constraint) do
+      constraints_for(:authenticate!, scope, block) do
         yield
       end
     end
@@ -268,25 +264,21 @@ module ActionDispatch::Routing
     # a model and allows extra constraints to be done on the instance.
     #
     #   authenticated :admin do
-    #     root :to => 'admin/dashboard#show'
+    #     root :to => 'admin/dashboard#show', :as => :admin_root
     #   end
     #
     #   authenticated do
-    #     root :to => 'dashboard#show'
+    #     root :to => 'dashboard#show', :as => :authenticated_root
     #   end
     #
     #   authenticated :user, lambda {|u| u.role == "admin"} do
-    #     root :to => "admin/dashboard#show"
+    #     root :to => "admin/dashboard#show", :as => :user_root
     #   end
     #
     #   root :to => 'landing#show'
     #
     def authenticated(scope=nil, block=nil)
-      constraint = lambda do |request|
-        request.env["warden"].authenticate?(:scope => scope) && (block.nil? || block.call(request.env["warden"].user(scope)))
-      end
-
-      constraints(constraint) do
+      constraints_for(:authenticate?, scope, block) do
         yield
       end
     end
@@ -426,6 +418,17 @@ module ActionDispatch::Routing
         yield
       ensure
         @scope.merge!(old)
+      end
+
+      def constraints_for(method_to_apply, scope=nil, block=nil)
+        constraint = lambda do |request|
+          request.env['warden'].send(method_to_apply, :scope => scope) &&
+            (block.nil? || block.call(request.env["warden"].user(scope)))
+        end
+
+        constraints(constraint) do
+          yield
+        end
       end
 
       def set_omniauth_path_prefix!(path_prefix) #:nodoc:

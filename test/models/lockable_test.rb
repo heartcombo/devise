@@ -59,7 +59,7 @@ class LockableTest < ActiveSupport::TestCase
     assert_not user.active_for_authentication?
   end
 
-  test "should unlock a user by cleaning locked_at, falied_attempts and unlock_token" do
+  test "should unlock a user by cleaning locked_at, failed_attempts and unlock_token" do
     user = create_user
     user.lock_access!
     assert_not_nil user.reload.locked_at

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: f703270f44021fb9e7411d8ed113159282e726c6
+  revision: fe7f43430580860db6d1d89cea27eda24ab60ab1
   branch: master
   specs:
     mongoid (4.0.0)

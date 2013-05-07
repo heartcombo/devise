@@ -42,12 +42,12 @@ class Devise::PasswordsController < DeviseController
 
   protected
     def after_resetting_password_path_for(resource)
-      after_sign_in_path_for(resource)
+      after_sign_in_path_for(resource) if is_navigational_format?
     end
 
     # The path used after sending reset password instructions
     def after_sending_reset_password_instructions_path_for(resource_name)
-      new_session_path(resource_name)
+      new_session_path(resource_name) if is_navigational_format?
     end
 
     # Check if a reset_password_token is provided in the request

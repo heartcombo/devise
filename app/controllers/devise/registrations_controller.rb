@@ -10,7 +10,7 @@ class Devise::RegistrationsController < DeviseController
 
   # POST /resource
   def create
-    self.resource = build_resource(sign_up_params)
+    build_resource(sign_up_params)
 
     if resource.save
       if resource.active_for_authentication?

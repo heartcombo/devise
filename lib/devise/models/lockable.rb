@@ -146,16 +146,16 @@ module Devise
           if access_locked?
             yield
           else
-            self.errors.add(:email, :not_locked)
+            self.errors.add(Devise.unlock_keys.first, :not_locked)
             false
           end
         end
 
       module ClassMethods
-        # Attempt to find a user by its email. If a record is found, send new
+        # Attempt to find a user by its unlock keys. If a record is found, send new
         # unlock instructions to it. If not user is found, returns a new user
         # with an email not found error.
-        # Options must contain the user email
+        # Options must contain the user's unlock keys
         def send_unlock_instructions(attributes={})
           lockable = find_or_initialize_with_errors(unlock_keys, attributes, :not_found)
           lockable.resend_unlock_token if lockable.persisted?

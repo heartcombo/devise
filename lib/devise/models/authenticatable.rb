@@ -21,7 +21,7 @@ module Devise
     #     as key on authentication. This can also be a hash where the value is a boolean specifying
     #     if the value is required or not.
     #
-    #   * +http_authenticatable+: if this model allows http authentication. By default true.
+    #   * +http_authenticatable+: if this model allows http authentication. By default false.
     #     It also accepts an array specifying the strategies that should allow http.
     #
     #   * +params_authenticatable+: if this model allows authentication through request params. By default true.

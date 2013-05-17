@@ -200,7 +200,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-If you have multiple roles, you may want to set up different parameter sanitizer per role. In this case, we recommend inheriting from from `Devise::ParameterSanitizer` and add your own logic:
+If you have multiple roles, you may want to set up different parameter sanitizer per role. In this case, we recommend inheriting from `Devise::ParameterSanitizer` and add your own logic:
 
 ```ruby
 class User::ParameterSanitizer < Devise::ParameterSanitizer

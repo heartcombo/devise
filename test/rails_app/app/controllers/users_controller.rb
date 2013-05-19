@@ -8,6 +8,14 @@ class UsersController < ApplicationController
     respond_with(current_user)
   end
 
+  def edit_form
+    user_session['last_request_at'] = 31.minutes.ago.utc
+  end
+
+  def update_form
+    render :text => 'Update'
+  end
+
   def accept
     @current_user = current_user
   end

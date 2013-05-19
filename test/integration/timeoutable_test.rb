@@ -45,6 +45,16 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     assert_not warden.authenticated?(:user)
   end
 
+  test 'time out user session after deault limit time and redirect to latest get request' do
+    user = sign_in_as_user
+    visit edit_form_user_path(user)
+
+    click_button 'Update'
+    sign_in_as_user
+
+    assert_equal edit_form_user_url(user), current_url
+  end
+
   test 'time out is not triggered on sign out' do
     user = sign_in_as_user
     get expire_user_path(user)

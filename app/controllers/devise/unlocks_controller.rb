@@ -1,5 +1,5 @@
 class Devise::UnlocksController < DeviseController
-  prepend_before_filter :require_no_authentication
+  prepend_before_action :require_no_authentication
 
   # GET /resource/unlock/new
   def new

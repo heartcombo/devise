@@ -116,10 +116,10 @@ Note that you should re-start your app here if you've already started it. Otherw
 
 ### Controller filters and helpers
 
-Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_filter:
+Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_action:
 
 ```ruby
-before_filter :authenticate_user!
+before_action :authenticate_user!
 ```
 
 To verify if a user is signed in, use the following helper:
@@ -157,7 +157,7 @@ config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 Notice that if your devise model is not called "user" but "member", then the helpers you should use are:
 
 ```ruby
-before_filter :authenticate_member!
+before_action :authenticate_member!
 
 member_signed_in?
 
@@ -190,7 +190,7 @@ In case you want to customize the permitted parameters (the lazy way™) you can
 
 ```ruby
 class ApplicationController < ActionController::Base
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
 
@@ -369,7 +369,7 @@ devise :database_authenticatable, :timeoutable
 devise_for :admins
 
 # Inside your protected controller
-before_filter :authenticate_admin!
+before_action :authenticate_admin!
 
 # Inside your controllers and views
 admin_signed_in?

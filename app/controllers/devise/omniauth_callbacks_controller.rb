@@ -1,5 +1,5 @@
 class Devise::OmniauthCallbacksController < DeviseController
-  prepend_before_filter { request.env["devise.skip_timeout"] = true }
+  prepend_before_action { request.env["devise.skip_timeout"] = true }
 
   def passthru
     render :status => 404, :text => "Not found. Authentication passthru."

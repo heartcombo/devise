@@ -114,6 +114,14 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not send confirmation when no email is provided' do
+    assert_email_not_sent do
+      user = new_user
+      user.email = ''
+      user.save(:validate => false)
+    end
+  end
+
   test 'should find a user to send confirmation instructions' do
     user = create_user
     confirmation_user = User.send_confirmation_instructions(:email => user.email)
@@ -334,6 +342,15 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert admin.confirm!
     assert_email_not_sent do
       assert admin.update_attributes(:password => 'newpass', :password_confirmation => 'newpass')
+    end
+  end
+
+  test 'should not send confirmation by email after changing to a blank email' do
+    admin = create_admin
+    assert admin.confirm!
+    assert_email_not_sent do
+      admin.email = ''
+      admin.save(:validate => false)
     end
   end
 

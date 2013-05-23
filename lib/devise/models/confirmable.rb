@@ -227,17 +227,17 @@ module Devise
         end
 
         def postpone_email_change?
-          postpone = self.class.reconfirmable && email_changed? && !@bypass_postpone
+          postpone = self.class.reconfirmable && email_changed? && !@bypass_postpone && !self.email.blank?
           @bypass_postpone = false
           postpone
         end
 
         def reconfirmation_required?
-          self.class.reconfirmable && @reconfirmation_required
+          self.class.reconfirmable && @reconfirmation_required && !self.email.blank?
         end
 
         def send_confirmation_notification?
-          confirmation_required? && !@skip_confirmation_notification
+          confirmation_required? && !@skip_confirmation_notification && !self.email.blank?
         end
 
       module ClassMethods

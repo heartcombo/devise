@@ -41,7 +41,7 @@ module Devise
     end
 
     def sign_in
-      default_params.permit(auth_keys)
+      default_params.permit(auth_keys + [:password])
     end
 
     def sign_up

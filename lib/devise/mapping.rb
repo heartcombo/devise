@@ -29,17 +29,17 @@ module Devise
 
     # Receives an object and find a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.
-    def self.find_scope!(duck)
-      case duck
+    def self.find_scope!(obj)
+      case obj
       when String, Symbol
-        return duck
+        return obj
       when Class
-        Devise.mappings.each_value { |m| return m.name if duck <= m.to }
+        Devise.mappings.each_value { |m| return m.name if obj <= m.to }
       else
-        Devise.mappings.each_value { |m| return m.name if duck.is_a?(m.to) }
+        Devise.mappings.each_value { |m| return m.name if obj.is_a?(m.to) }
       end
 
-      raise "Could not find a valid mapping for #{duck.inspect}"
+      raise "Could not find a valid mapping for #{obj.inspect}"
     end
 
     def self.find_by_path!(path, path_type=:fullpath)

@@ -11,10 +11,16 @@ class Devise::SessionsController < DeviseController
 
   # POST /resource/sign_in
   def create
+    logger.debug("Authenticating in Warden...")
     resource = warden.authenticate!(auth_options)
+    logger.debug("Warden authentication returned resource #{resource.inspect}.")
     set_flash_message(:notice, :signed_in) if is_navigational_format?
+    logger.debug("Signing the resource in with the name '#{resource_name}'...")
     sign_in(resource_name, resource)
-    respond_with resource, :location => after_sign_in_path_for(resource)
+    logger.debug("Sign-in of the resource '#{resource_name}' completed.")
+    location = after_sign_in_path_for(resource)
+    logger.debug("Redirecting to the after-sign-in path '#{location}'.")
+    respond_with resource, :location => location
   end
 
   # DELETE /resource/sign_out

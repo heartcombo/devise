@@ -17,12 +17,15 @@ module Devise
       # the record in the database. If the attempt fails, we pass to another
       # strategy handle the authentication.
       def authenticate!
+        logger.debug("Performing authentication with the Rememberable strategy...")
         resource = mapping.to.serialize_from_cookie(*remember_cookie)
 
         if validate(resource)
+          logger.debug("Authentication with the Rememberable strategy succeeded.")
           success!(resource)
         elsif !halted?
           cookies.delete(remember_key)
+          logger.debug("Authentication with the Rememberable strategy failed.")
           pass
         end
       end

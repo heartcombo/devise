@@ -44,7 +44,15 @@ module Devise
         logger.debug("The password is not blank so we are encrypting it and comparing the result...")
         bcrypt   = ::BCrypt::Password.new(encrypted_password)
         password = ::BCrypt::Engine.hash_secret("#{password}#{self.class.pepper}", bcrypt.salt)
-        result = Devise.secure_compare(password, encrypted_password)
+        identical = Devise.secure_compare(password, encrypted_password)
+
+        if identical
+          logger.debug("The encrypted password matches the encrypted password on record.")
+        else
+          logger.debug("The encrypted password does not match the encrypted password on record.")
+        end
+
+        identical
       end
 
       # Set password and password confirmation to nil

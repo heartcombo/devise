@@ -21,7 +21,7 @@ Some setup you must do manually if you haven't yet:
        <p class="notice"><%= notice %></p>
        <p class="alert"><%= alert %></p>
 
-  4. If you are deploying Rails 3.1+ on Heroku, you may want to set:
+  4. If you are deploying on Heroku with Rails 3.2 only, you may want to set:
 
        config.assets.initialize_on_precompile = false
 

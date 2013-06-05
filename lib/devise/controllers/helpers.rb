@@ -121,7 +121,10 @@ module Devise
           # Do nothing. User already signed in and we are not forcing it.
           true
         else
-          warden.set_user(resource, options.merge!(:scope => scope))
+          options.merge!(:scope => scope)
+          logger.debug("Setting the user in Warden to #{fmt(resource)} with options #{options.inspect}...")
+          warden.set_user(resource, options)
+          logger.debug("Warden user has been set.")
         end
       end
 

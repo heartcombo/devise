@@ -34,7 +34,16 @@ class DeviseController < Devise.parent_controller.constantize
 
   # Returns a signed in resource from session (if one exists)
   def signed_in_resource
-    warden.authenticate(:scope => resource_name)
+    logger.debug("Trying to authenticate '#{resource_name}' via Warden...")
+    model = warden.authenticate(:scope => resource_name)
+
+    if model
+      logger.debug("Warden could not find a '#{resource_name}'.")
+    else
+      logger.debug("Warden found a '#{resource_name}': #{fmt(model)}.")
+    end
+
+    model
   end
 
   # Attempt to find the mapped route for devise based on request path

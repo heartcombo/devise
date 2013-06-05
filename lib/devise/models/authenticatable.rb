@@ -182,7 +182,18 @@ module Devise
         end
 
         def find_first_by_auth_conditions(conditions)
-          to_adapter.find_first devise_param_filter.filter(conditions)
+          logger.debug("Searching for the first record matching the conditions #{conditions.inspect} for authentication...")
+          filtered_conditions = devise_param_filter.filter(conditions)
+          logger.debug("After filtering, the conditions have become #{filtered_conditions.inspect}.")
+          record = to_adapter.find_first(filtered_conditions)
+
+          if record
+            logger.debug("Found this record: #{fmt(record)}.")
+          else
+            logger.debug("No record matching #{filtered_conditions.inspect} was found.")
+          end
+
+          record
         end
 
         # Find an initialize a record setting an error if it can't be found.

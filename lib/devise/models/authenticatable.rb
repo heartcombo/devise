@@ -184,7 +184,7 @@ module Devise
         def find_first_by_auth_conditions(conditions)
           logger.debug("Searching for the first record matching the conditions #{conditions.inspect} for authentication...")
           filtered_conditions = devise_param_filter.filter(conditions)
-          logger.debug("After filtering, the conditions have become #{filtered_conditions.inspect}.")
+          logger.debug("After filtering, the conditions have become #{filtered_conditions.inspect}.") unless filtered_conditions == conditions
           record = to_adapter.find_first(filtered_conditions)
 
           if record

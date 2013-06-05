@@ -10,6 +10,12 @@ module Devise
           mapping
         end
       end
+
+      private
+
+      def logger
+        Rails.logger
+      end
     end
   end
 end

@@ -3,3 +3,19 @@
 <p>You can confirm your account email through the link below:</p>
 
 <p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "EmailMessage",
+  "description": "Confirm my account",
+  "action": {
+    "@type": "ConfirmAction",
+    "name": "Confirm my account",
+    "handler": {
+      "@type": "HttpActionHandler",
+      "url": "<%= confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %>"
+    }
+  }
+}
+</script>

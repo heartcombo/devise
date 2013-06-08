@@ -5,3 +5,20 @@
 <p>Click the link below to unlock your account:</p>
 
 <p><%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "EmailMessage",
+  "description": "Unlock my account",
+  "action": {
+    "@type": "ConfirmAction",
+    "name": "Unlock my account",
+    "handler": {
+      "@type": "HttpActionHandler",
+      "url": "<%= unlock_url(@resource, :unlock_token => @resource.unlock_token) %>"
+    }
+  }
+}
+</script>

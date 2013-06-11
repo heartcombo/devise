@@ -47,7 +47,12 @@ module Devise
         generate_reset_password_token! if should_generate_reset_token?
         send_devise_notification(:reset_password_instructions)
       end
-
+      
+      def reset_password_token!
+        generate_reset_password_token! if should_generate_reset_token?
+        self.reset_password_token
+      end 
+      
       # Checks if the reset password token sent is within the limit time.
       # We do this by calculating if the difference between today and the
       # sending date does not exceed the confirm in time configured.

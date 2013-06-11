@@ -294,6 +294,23 @@ class ConfirmableTest < ActiveSupport::TestCase
       assert_not_equal user.confirmation_token, old
     end
   end
+  
+  test 'should generate a new token when a valid one does not exist' do
+    swap Devise, :confirm_within => 3.days do
+      user = create_user
+      user.update_attribute(:confirmation_sent_at, 4.days.ago)
+      old = user.confirmation_token
+      token = user.confirmation_token!
+      assert_not_equal user.confirmation_token, old
+      assert_equal user.confirmation_token, token
+    end
+  end
+  
+  test 'should not generate a new token when a valid one exists' do
+    user = create_user
+    assert_not_nil user.confirmation_token
+    assert_equal user.confirmation_token, user.confirmation_token!
+  end
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase

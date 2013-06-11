@@ -106,6 +106,11 @@ module Devise
           send_confirmation_instructions
         end
       end
+      
+      def confirmation_token!
+        generate_confirmation_token! if should_generate_confirmation_token?
+        self.confirmation_token
+      end 
 
       # Overwrites active_for_authentication? for confirmation
       # by verifying whether a user is active to sign in or not. If the user
@@ -139,6 +144,9 @@ module Devise
       end
 
       protected
+        def should_generate_confirmation_token?
+          confirmation_token.nil? || confirmation_period_expired?
+        end
 
         # A callback method used to deliver confirmation
         # instructions on creation. This can be overriden

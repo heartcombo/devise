@@ -48,7 +48,7 @@ module Devise
         send_devise_notification(:reset_password_instructions)
       end
       
-      def reset_password_token!
+      def get_or_create_reset_password_token
         generate_reset_password_token! if should_generate_reset_token?
         self.reset_password_token
       end 

@@ -110,7 +110,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should find a user to reset his password based on reset_password_token' do
     user = create_user
-    user.reset_password_token!
+    user.get_or_create_reset_password_token
 
     reset_password_user = User.reset_password_by_token(:reset_password_token => user.reset_password_token)
     assert_equal reset_password_user, user
@@ -130,7 +130,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should return a new record with errors if password is blank' do
     user = create_user
-    user.reset_password_token!
+    user.get_or_create_reset_password_token
 
     reset_password_user = User.reset_password_by_token(:reset_password_token => user.reset_password_token, :password => '')
     assert_not reset_password_user.errors.empty?
@@ -140,7 +140,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should reset successfully user password given the new password and confirmation' do
     user = create_user
     old_password = user.password
-    user.reset_password_token!
+    user.get_or_create_reset_password_token
 
     User.reset_password_by_token(
       :reset_password_token => user.reset_password_token,
@@ -179,7 +179,7 @@ class RecoverableTest < ActiveSupport::TestCase
     swap Devise, :reset_password_within => 1.hour do
       user = create_user
       old_password = user.password
-      user.reset_password_token!
+      user.get_or_create_reset_password_token
       user.reset_password_sent_at = 2.days.ago
       user.save!
 
@@ -207,7 +207,7 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     assert_nil user.reset_password_token
     
-    token = user.reset_password_token!
+    token = user.get_or_create_reset_password_token
     assert_not_nil user.reset_password_token
   end
   
@@ -215,6 +215,6 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     user.send :generate_reset_password_token!
     assert_not_nil user.reset_password_token
-    assert_equal user.reset_password_token, user.reset_password_token!
+    assert_equal user.reset_password_token, user.get_or_create_reset_password_token
   end  
 end

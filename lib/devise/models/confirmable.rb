@@ -107,7 +107,7 @@ module Devise
         end
       end
       
-      def confirmation_token!
+      def get_or_create_confirmation_token
         generate_confirmation_token! if should_generate_confirmation_token?
         self.confirmation_token
       end 

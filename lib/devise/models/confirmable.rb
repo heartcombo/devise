@@ -93,7 +93,7 @@ module Devise
         self.confirmation_token = nil if reconfirmation_required?
         @reconfirmation_required = false
 
-        generate_confirmation_token! if self.confirmation_token.blank?
+        ensure_confirmation_token!
 
         opts = pending_reconfirmation? ? { :to => unconfirmed_email } : { }
         send_devise_notification(:confirmation_instructions, opts)
@@ -107,9 +107,9 @@ module Devise
         end
       end
       
-      def get_or_create_confirmation_token
+      # Generate a confirmation token unless already exists and save the record.
+      def ensure_confirmation_token!
         generate_confirmation_token! if should_generate_confirmation_token?
-        self.confirmation_token
       end 
 
       # Overwrites active_for_authentication? for confirmation

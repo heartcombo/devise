@@ -382,11 +382,11 @@ class ReconfirmableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should stay confirmed when email is changed' do
+  test 'should be unconfirmed when email is changed' do
     admin = create_admin
     assert admin.confirm!
     assert admin.update_attributes(:email => 'new_test@example.com')
-    assert admin.confirmed?
+    assert !admin.confirmed?
   end
 
   test 'should update email only when it is confirmed' do

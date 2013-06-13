@@ -231,11 +231,16 @@ module Devise
 
         # Regenerates a new token.
         def regenerate_confirmation_token
+          unconfirm if confirmed?
           generate_confirmation_token
         end
 
         def regenerate_confirmation_token!
           regenerate_confirmation_token && save(:validate => false)
+        end
+
+        def unconfirm
+          self.confirmed_at = nil
         end
 
         def after_password_reset

@@ -55,7 +55,7 @@ module Devise
 
       # Verifies whether a user is locked or not.
       def access_locked?
-        locked_at && !lock_expired?
+        !!locked_at && !lock_expired?
       end
 
       # Send unlock instructions by email

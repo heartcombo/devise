@@ -1,5 +1,7 @@
 language: ruby
-script: "bundle exec rake test"
+
+bundler_args: '--binstubs --without documentation'
+script: "rake test"
 rvm:
   - 1.9.3
   - 2.0.0

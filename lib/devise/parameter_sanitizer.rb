@@ -41,15 +41,15 @@ module Devise
     end
 
     def sign_in
-      default_params.permit(auth_keys)
+      default_params.permit(*auth_keys)
     end
 
     def sign_up
-      default_params.permit(auth_keys + [:password, :password_confirmation])
+      default_params.permit(*(auth_keys + [:password, :password_confirmation]))
     end
 
     def account_update
-      default_params.permit(auth_keys + [:password, :password_confirmation, :current_password])
+      default_params.permit(*(auth_keys + [:password, :password_confirmation, :current_password]))
     end
 
     def auth_keys

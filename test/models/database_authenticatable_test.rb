@@ -48,19 +48,19 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test "param filter should not convert booleans and integer to strings" do
     conditions = { "login" => "foo@bar.com", "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
-    conditions = Devise::ParamFilter.new([], []).filter(conditions)
+    conditions = Devise::ParameterFilter.new([], []).filter(conditions)
     assert_equal( { "login" => "foo@bar.com", "bool1" => "true", "bool2" => "false", "fixnum" => "123", "will_be_converted" => "1..10" }, conditions)
   end
 
   test 'param filter should filter case_insensitive_keys as insensitive' do
     conditions = {'insensitive' => 'insensitive_VAL', 'sensitive' => 'sensitive_VAL'}
-    conditions = Devise::ParamFilter.new(['insensitive'], []).filter(conditions)
+    conditions = Devise::ParameterFilter.new(['insensitive'], []).filter(conditions)
     assert_equal( {'insensitive' => 'insensitive_val', 'sensitive' => 'sensitive_VAL'}, conditions )
   end
 
   test 'param filter should filter strip_whitespace_keys stripping whitespaces' do
     conditions = {'strip_whitespace' => ' strip_whitespace_val ', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}
-    conditions = Devise::ParamFilter.new([], ['strip_whitespace']).filter(conditions)
+    conditions = Devise::ParameterFilter.new([], ['strip_whitespace']).filter(conditions)
     assert_equal( {'strip_whitespace' => 'strip_whitespace_val', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}, conditions )
   end
 

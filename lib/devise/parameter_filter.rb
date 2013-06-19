@@ -1,5 +1,5 @@
 module Devise
-  class ParamFilter
+  class ParameterFilter
     def initialize(case_insensitive_keys, strip_whitespace_keys)
       @case_insensitive_keys = case_insensitive_keys || []
       @strip_whitespace_keys = strip_whitespace_keys || []

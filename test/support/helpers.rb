@@ -63,7 +63,7 @@ class ActiveSupport::TestCase
   def clear_cached_variables(options)
     if options.key?(:case_insensitive_keys) || options.key?(:strip_whitespace_keys)
       Devise.mappings.each do |_, mapping|
-        mapping.to.instance_variable_set(:@devise_param_filter, nil)
+        mapping.to.instance_variable_set(:@devise_parameter_filter, nil)
       end
     end
   end

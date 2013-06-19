@@ -9,7 +9,7 @@ module Devise
   autoload :Delegator,          'devise/delegator'
   autoload :FailureApp,         'devise/failure_app'
   autoload :OmniAuth,           'devise/omniauth'
-  autoload :ParamFilter,        'devise/param_filter'
+  autoload :ParameterFilter,    'devise/parameter_filter'
   autoload :BaseSanitizer,      'devise/parameter_sanitizer'
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
   autoload :TestHelpers,        'devise/test_helpers'

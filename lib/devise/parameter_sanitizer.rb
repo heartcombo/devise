@@ -40,8 +40,12 @@ module Devise
       end
     end
 
+    # These are the params used to sign in a user so we don't need to
+    # mass-assign the password param in order to authenticate. Excluding it
+    # here allows us to construct a new user without sensitive information if
+    # authentication fails.
     def sign_in
-      default_params.permit(*auth_keys)
+      default_params.permit(*auth_keys + [:password])
     end
 
     def sign_up
@@ -53,7 +57,7 @@ module Devise
     end
 
     def auth_keys
-      resource_class.authentication_keys
+      resource_class.authentication_keys.respond_to?(:keys) ? resource_class.authentication_keys.keys : resource_class.authentication_keys
     end
   end
 end

@@ -81,7 +81,7 @@ module Devise
       #
       # Example:
       #
-      #   def update_without_password(params={})
+      #   def update_without_password(params, *options)
       #     params.delete(:email)
       #     super(params)
       #   end

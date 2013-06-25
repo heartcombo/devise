@@ -250,22 +250,24 @@ rails generate devise:views users
 
 If the customization at the views level is not enough, you can customize each controller by following these steps:
 
-1) Create your custom controller, for example a Admins::SessionsController:
+1. Create your custom controller, for example a `Admins::SessionsController`:  
 
-```ruby
-class Admins::SessionsController < Devise::SessionsController
-end
-```
+    ```ruby
+    class Admins::SessionsController < Devise::SessionsController
+    end
+    ```
 
-2) Tell the router to use this controller:
+    Note that in the above example, the controller needs to be created in the `app/controller/admins/` directory.
 
-```ruby
-devise_for :admins, :controllers => { :sessions => "admins/sessions" }
-```
+2. Tell the router to use this controller:
 
-3) And since we changed the controller, it won't use the "devise/sessions" views, so remember to copy "devise/sessions" to "admin/sessions".
+    ```ruby
+    devise_for :admins, :controllers => { :sessions => "admins/sessions" }
+    ```
 
-Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call "flash[:notice]" and "flash[:alert]" as appropriate. Do not print the entire flash hash, print specific keys or at least remove the `:timedout` key from the hash as Devise adds this key in some circumstances, this key is not meant for display.
+3. And since we changed the controller, it won't use the `"devise/sessions"` views, so remember to copy `"devise/sessions"` to `"admin/sessions"`.
+
+    Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call `"flash[:notice]"` and `"flash[:alert]"` as appropriate. Do not print the entire flash hash, print specific keys or at least remove the `:timedout` key from the hash as Devise adds this key in some circumstances, this key is not meant for display.
 
 ### Configuring routes
 
@@ -357,12 +359,14 @@ sign_out @user         # sign_out(resource)
 
 There are two things that is important to keep in mind:
 
-1) These helpers are not going to work for integration tests driven by Capybara or Webrat. They are meant to be used with functional tests only. Instead, fill in the form or explicitly set the user in session;
+1. These helpers are not going to work for integration tests driven by Capybara or Webrat. They are meant to be used with functional tests only. Instead, fill in the form or explicitly set the user in session;
 
-2) If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from router, but since functional tests do not pass through the router, it needs to be told explicitly. For example, if you are testing the user scope, simply do:
+2. If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from router, but since functional tests do not pass through the router, it needs to be told explicitly. For example, if you are testing the user scope, simply do:
 
+    ```ruby
     @request.env["devise.mapping"] = Devise.mappings[:user]
     get :new
+    ```
 
 ### Omniauth
 

@@ -119,6 +119,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/01/security-announc
   * Do not accidentally mark `_prefixes` as private
   * Better support for custom strategies on test helpers (by @mattconnolly)
   * Return `head :no_content` in SessionsController now that most JS libraries handle it (by @julianvargasalvarez)
+  * Reverted moving devise/shared/_links.erb to devise/_links.erb
 
 == 2.0.4
 

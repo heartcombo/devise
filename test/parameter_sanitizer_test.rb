@@ -22,7 +22,14 @@ if defined?(ActionController::StrongParameters)
 
     test 'filters some parameters on sign in by default' do
       sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
-      assert_equal({ "email" => "jose" }, sanitizer.for(:sign_in))
+      assert_equal({ "email" => "jose", "password" => "invalid" }, sanitizer.for(:sign_in))
+    end
+
+    test 'handles auth keys as a hash' do
+      swap Devise, :authentication_keys => {:email => true} do
+        sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
+        assert_equal({ "email" => "jose", "password" => "invalid" }, sanitizer.for(:sign_in))
+      end
     end
 
     test 'filters some parameters on sign up by default' do

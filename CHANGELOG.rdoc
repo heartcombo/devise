@@ -1,8 +1,12 @@
-== 3.0.0.rc
+== 3.0.0
 
 * enhancements
-  * Rails 4 and Strong Parameters compatibility. (@carlosantoniodasilva, @josevalim, @latortuga, @lucasmazza, @nashby, @rafaelfranca, @spastorino)
-  * Drop support for Rails < 3.2 and Ruby < 1.9.3.
+  * Rails 4 and Strong Parameters compatibility (by @carlosantoniodasilva, @josevalim, @latortuga, @lucasmazza, @nashby, @rafaelfranca, @spastorino)
+  * Drop support for Rails < 3.2 and Ruby < 1.9.3
+  * Enable to skip sending reconfirmation email when reconfirmable is on and skip_confirmation_notification! is invoked (by @tkhr)
+
+* bug fix
+  * Errors on unlock are now properly reflected on the first `unlock_keys`
 
 == 2.2.4
 

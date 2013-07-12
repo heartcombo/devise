@@ -45,7 +45,7 @@ module Devise
     # here allows us to construct a new user without sensitive information if
     # authentication fails.
     def sign_in
-      default_params.permit(*auth_keys + [:password])
+      default_params.permit(*auth_keys + [:password, :remember_me])
     end
 
     def sign_up

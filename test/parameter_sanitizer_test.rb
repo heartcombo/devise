@@ -21,8 +21,8 @@ if defined?(ActionController::StrongParameters)
     end
 
     test 'filters some parameters on sign in by default' do
-      sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
-      assert_equal({ "email" => "jose", "password" => "invalid" }, sanitizer.for(:sign_in))
+      sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid", "remember_me" => "1" })
+      assert_equal({ "email" => "jose", "password" => "invalid", "remember_me" => "1" }, sanitizer.for(:sign_in))
     end
 
     test 'handles auth keys as a hash' do

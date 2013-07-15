@@ -101,7 +101,7 @@ class HelpersTest < ActionController::TestCase
 
   test 'uses custom i18n options' do
     @controller.stubs(:devise_i18n_options).returns(:default => "devise custom options")
-    @controller.send :set_flash_message, :notice, :invalid_i18n_messagesend_instructions
+    @controller.send :set_flash_message, :notice, :invalid_i18n_message
     assert_equal 'devise custom options', flash[:notice]
   end
 

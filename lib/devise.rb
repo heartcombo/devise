@@ -222,6 +222,10 @@ module Devise
   # Devise is used in a mountable engine
   mattr_accessor :omniauth_path_prefix
   @@omniauth_path_prefix = nil
+  
+  # Don't set the flash for the given keys
+  mattr_accessor :skip_flash_message
+  @@skip_flash_message = []
 
   def self.encryptor=(value)
     warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n"

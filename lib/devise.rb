@@ -466,3 +466,12 @@ require 'devise/mapping'
 require 'devise/models'
 require 'devise/modules'
 require 'devise/rails'
+
+class ActionController::Base
+  # If you cannot inherit from Devise::Base you can call
+  # devise in your controller to have all the required modules and
+  # funcionality included.
+  def self.devise
+    Devise::Base.devise(self)
+  end
+end

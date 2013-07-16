@@ -5,7 +5,7 @@ PATH
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
       railties (~> 3.1)
-      warden (~> 1.1.1)
+      warden (~> 1.1.1, != 1.2.2)
 
 GEM
   remote: http://rubygems.org/
@@ -39,7 +39,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.2.6)
     arel (3.0.0)
-    bcrypt-ruby (3.0.1)
+    bcrypt-ruby (3.1.1)
     bson (1.5.1)
     bson_ext (1.3.1)
     builder (3.0.0)

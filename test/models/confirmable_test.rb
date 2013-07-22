@@ -312,6 +312,27 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.ensure_confirmation_token!
     assert_equal user.confirmation_token, old
   end
+
+  test 'should call after_confirmation if confirmed' do
+    user = create_user
+    user.define_singleton_method :after_confirmation do
+      self.username = self.username.to_s + 'updated'
+    end
+    old = user.username
+    assert user.confirm!
+    assert_not_equal user.username, old
+  end
+
+  test 'should not call after_confirmation if not confirmed' do
+    user = create_user
+    assert user.confirm!
+    user.define_singleton_method :after_confirmation do
+      self.username = self.username.to_s + 'updated'
+    end
+    old = user.username
+    assert_not user.confirm!
+    assert_equal user.username, old
+  end
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase

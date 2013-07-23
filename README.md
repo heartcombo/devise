@@ -12,7 +12,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 * Is Rack based;
 * Is a complete MVC solution based on Rails engines;
-* Allows you to have multiple roles (or models/scopes) signed in at the same time;
+* Allows you to have multiple models signed in at the same time;
 * Is based on a modularity concept: use just what you really need.
 
 It's composed of 11 modules:
@@ -202,7 +202,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-If you have multiple roles, you may want to set up different parameter sanitizer per role. In this case, we recommend inheriting from `Devise::ParameterSanitizer` and add your own logic:
+If you have multiple Devise models, you may want to set up different parameter sanitizer per model. In this case, we recommend inheriting from `Devise::ParameterSanitizer` and add your own logic:
 
 ```ruby
 class User::ParameterSanitizer < Devise::ParameterSanitizer
@@ -240,7 +240,7 @@ Since Devise is an engine, all its views are packaged inside the gem. These view
 rails generate devise:views
 ```
 
-If you have more than one role in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all roles. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
+If you have more than one Devise model in your application (such as "User" and "Admin"), you will notice that Devise uses the same views for all models. Fortunately, Devise offers an easy way to customize views. All you need to do is set "config.scoped_views = true" inside "config/initializers/devise.rb".
 
 After doing so, you will be able to have views based on the role like "users/sessions/new" and "admins/sessions/new". If no view is found within the scope, Devise will use the default view at "devise/sessions/new". You can also use the generator to generate scoped views:
 
@@ -384,7 +384,7 @@ You can read more about Omniauth support in the wiki:
 
 ### Configuring multiple models
 
-Devise allows you to set up as many roles as you want. For example, you may have a User model and also want an Admin model with just authentication and timeoutable features. If so, just follow these steps:
+Devise allows you to set up as many Devise models as you want. If you want to have an Admin model with just authentication and timeout features, in addition to the User model above, just run:
 
 ```ruby
 # Create a migration with the required fields
@@ -409,7 +409,9 @@ current_admin
 admin_session
 ```
 
-On the other hand, you can simply run the generator!
+Alternatively, you can simply run the Devise generator.
+
+Keep in mind that those models will have completely different routes. They **do not** and **cannot** share the same controller for sign in, sign out and so on. In case you want to have different roles sharing the same actions, we recommend you to use a role-based approach, by either providing a role column or using [CanCan](https://github.com/ryanb/cancan).
 
 ### Other ORMs
 

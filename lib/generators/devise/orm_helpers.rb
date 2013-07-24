@@ -2,7 +2,7 @@ module Devise
   module Generators
     module OrmHelpers
       def model_contents
-<<-CONTENT
+        buffer = <<-CONTENT
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -10,6 +10,32 @@ module Devise
          :recoverable, :rememberable, :trackable, :validatable
 
 CONTENT
+        buffer += <<-CONTENT if needs_attr_accessible?
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+
+CONTENT
+        buffer
+      end
+
+      def needs_attr_accessible?
+        if rails_3?
+          !strong_parameters_enabled?
+        else
+          protected_attributes_enabled?
+        end
+      end
+
+      def rails_3?
+        Rails::VERSION::MAJOR == 3
+      end
+
+      def strong_parameters_enabled?
+        defined?(ActionController::StrongParameters)
+      end
+
+      def protected_attributes_enabled?
+        defined?(ActiveModel::MassAssignmentSecurity)
       end
 
       def model_exists?

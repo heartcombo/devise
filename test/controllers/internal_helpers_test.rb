@@ -93,6 +93,13 @@ class HelpersTest < ActionController::TestCase
     assert flash[:notice].nil?
   end
 
+  test 'does not issue flash messages with excluded keys' do
+    swap Devise, :skip_flash_message => ["user.send_instructions"] do
+      @controller.send :set_flash_message, :notice, :send_instructions
+      assert flash[:notice].nil?
+    end
+  end
+
   test 'issues non-blank flash messages normally' do
     I18n.stubs(:t).returns('non-blank')
     @controller.send :set_flash_message, :notice, :send_instructions
@@ -101,7 +108,7 @@ class HelpersTest < ActionController::TestCase
 
   test 'uses custom i18n options' do
     @controller.stubs(:devise_i18n_options).returns(:default => "devise custom options")
-    @controller.send :set_flash_message, :notice, :invalid_i18n_messagesend_instructions
+    @controller.send :set_flash_message, :notice, :invalid_i18n_message
     assert_equal 'devise custom options', flash[:notice]
   end
 

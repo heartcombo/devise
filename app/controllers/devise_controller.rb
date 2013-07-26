@@ -153,7 +153,9 @@ MESSAGE
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
     options = devise_i18n_options(options) if respond_to?(:devise_i18n_options, true)
-    I18n.t("#{options[:resource_name]}.#{kind}", options)
+    if Devise.skip_flash_message.all? { |excluded| excluded != "#{options[:resource_name]}.#{kind}" }
+      I18n.t("#{options[:resource_name]}.#{kind}", options)
+    end
   end
 
   def clean_up_passwords(object)

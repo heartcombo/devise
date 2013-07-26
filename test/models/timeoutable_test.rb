@@ -46,11 +46,6 @@ class TimeoutableTest < ActiveSupport::TestCase
 
   test 'should not raise error if remember_created_at is not empty and rememberable is disabled' do
     user = create_admin(remember_created_at: Time.current)
-
-    begin
-      assert user.timedout?(31.minutes.ago)
-    rescue NoMethodError => e
-      refute_includes e.message, "undefined method `remember_expired?' for #<Admin:"
-    end
+    assert user.timedout?(31.minutes.ago)
   end
 end

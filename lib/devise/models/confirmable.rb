@@ -66,7 +66,7 @@ module Devise
           self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
-          if self.class.reconfirmable && unconfirmed_email.present?
+          saved = if self.class.reconfirmable && unconfirmed_email.present?
             skip_reconfirmation!
             self.email = unconfirmed_email
             self.unconfirmed_email = nil
@@ -76,6 +76,9 @@ module Devise
           else
             save(:validate => false)
           end
+
+          after_confirmation if saved
+          saved
         end
       end
 
@@ -262,6 +265,9 @@ module Devise
 
         def send_confirmation_notification?
           confirmation_required? && !@skip_confirmation_notification && !self.email.blank?
+        end
+
+        def after_confirmation
         end
 
       module ClassMethods

@@ -62,28 +62,14 @@ if DEVISE_ORM == :active_record
     destination File.expand_path("../../tmp", __FILE__)
     setup :prepare_destination
 
-    test "all files are properly created in rails 4.0 without the protected_attributes gem" do
+    test "all files are properly created in rails 4.0" do
       ActiveRecord::Generators::DeviseGenerator.any_instance.stubs(:rails_3?).returns(false)
-      ActiveRecord::Generators::DeviseGenerator.any_instance.stubs(:protected_attributes_enabled?).returns(false)
       simulate_inside_engine(RailsEngine::Engine, RailsEngine) do
         run_generator ["monster"]
 
         assert_file "app/models/rails_engine/monster.rb", /devise/
         assert_file "app/models/rails_engine/monster.rb" do |content|
           assert_no_match /attr_accessible :email/, content
-        end
-      end
-    end
-
-    test "all files are properly created in rails 4.0 when the protected_attributes gem is installed" do
-      ActiveRecord::Generators::DeviseGenerator.any_instance.stubs(:rails_3?).returns(false)
-      ActiveRecord::Generators::DeviseGenerator.any_instance.stubs(:protected_attributes_enabled?).returns(true)
-      simulate_inside_engine(RailsEngine::Engine, RailsEngine) do
-        run_generator ["monster"]
-
-        assert_file "app/models/rails_engine/monster.rb", /devise/
-        assert_file "app/models/rails_engine/monster.rb" do |content|
-          assert_match /attr_accessible :email/, content
         end
       end
     end

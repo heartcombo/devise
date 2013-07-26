@@ -1,3 +1,7 @@
+== 3.0.1
+* bug fix
+  * When using rails 3.2, the generator adds 'attr_accessible' to the model (by @jcoyne)
+
 == 3.0.0
 
 * enhancements

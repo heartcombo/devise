@@ -43,4 +43,14 @@ class TimeoutableTest < ActiveSupport::TestCase
   test 'required_fields should contain the fields that Devise uses' do
     assert_same_content Devise::Models::Timeoutable.required_fields(User), []
   end
+
+  test 'should not raise error if remember_created_at is not empty and rememberable is disabled' do
+    user = create_admin(remember_created_at: Time.current)
+
+    begin
+      assert user.timedout?(31.minutes.ago)
+    rescue NoMethodError => e
+      refute_includes e.message, "undefined method `remember_expired?' for #<Admin:"
+    end
+  end
 end

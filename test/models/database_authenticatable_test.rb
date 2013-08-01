@@ -208,6 +208,11 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert !user.valid?
   end
 
+  test 'invalid email not accepted' do
+    user = User.create(:email => '"string"<string@gmail.com>', :password => "123456")
+    assert !user.valid?, "#{user.email} is invalid"
+  end
+
   test 'required_fiels should be encryptable_password and the email field by default' do
     assert_same_content Devise::Models::DatabaseAuthenticatable.required_fields(User), [
       :email,

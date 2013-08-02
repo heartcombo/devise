@@ -1,4 +1,5 @@
 require 'devise/hooks/activatable'
+require 'devise/hooks/csrf_cleaner'
 
 module Devise
   module Models

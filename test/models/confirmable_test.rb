@@ -27,11 +27,11 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_nil user.confirmed_at
   end
 
-  test 'should clear confirmation token while confirming a user' do
+  test 'should not clear confirmation token while confirming a user' do
     user = create_user
     assert_present user.confirmation_token
     user.confirm!
-    assert_nil user.confirmation_token
+    assert_present user.confirmation_token
   end
 
   test 'should verify whether a user is confirmed or not' do
@@ -294,7 +294,7 @@ class ConfirmableTest < ActiveSupport::TestCase
       assert_not_equal user.confirmation_token, old
     end
   end
-  
+
   test 'should generate a new token when a valid one does not exist' do
     swap Devise, :confirm_within => 3.days do
       user = create_user
@@ -304,7 +304,7 @@ class ConfirmableTest < ActiveSupport::TestCase
       assert_not_equal user.confirmation_token, old
     end
   end
-  
+
   test 'should not generate a new token when a valid one exists' do
     user = create_user
     assert_not_nil user.confirmation_token

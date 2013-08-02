@@ -63,7 +63,6 @@ module Devise
             return false
           end
 
-          self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
           saved = if self.class.reconfirmable && unconfirmed_email.present?
@@ -115,11 +114,11 @@ module Devise
           send_confirmation_instructions
         end
       end
-      
+
       # Generate a confirmation token unless already exists and save the record.
       def ensure_confirmation_token!
         generate_confirmation_token! if should_generate_confirmation_token?
-      end 
+      end
 
       # Overwrites active_for_authentication? for confirmation
       # by verifying whether a user is active to sign in or not. If the user

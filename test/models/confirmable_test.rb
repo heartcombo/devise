@@ -170,7 +170,7 @@ class ConfirmableTest < ActiveSupport::TestCase
 
     user.reload
     assert user.confirmed?
-    assert_nil user.confirmation_token
+    assert_present user.confirmation_token
   end
 
   test 'should not be able to send instructions if the user is already confirmed' do
@@ -345,7 +345,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should generate confirmation token after changing email' do
     admin = create_admin
     assert admin.confirm!
-    assert_nil admin.confirmation_token
+    assert_present admin.confirmation_token
     assert admin.update_attributes(:email => 'new_test@example.com')
     assert_not_nil admin.confirmation_token
   end
@@ -355,7 +355,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert admin.confirm!
     admin.skip_reconfirmation!
     assert admin.update_attributes(:email => 'new_test@example.com')
-    assert_nil admin.confirmation_token
+    assert_present admin.confirmation_token
   end
 
   test 'should skip sending reconfirmation email when email is changed and skip_confirmation_notification! is invoked' do

@@ -1,3 +1,8 @@
+== 2.2.5
+
+* bug fix
+  * Clean up CSRF token after authentication (by @homakov). Notice this change will clean up the CSRF Token after authentication (sign in, sign up, etc). So if you are using AJAX for such features, you will need to fetch a new CSRF token from the server.
+
 == 2.2.4
 
 * enhancements

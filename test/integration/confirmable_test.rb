@@ -89,20 +89,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     user.save
     visit_user_confirmation_with_token(user.confirmation_token)
 
-    assert_have_selector '#error_explanation'
-    assert_contain 'already confirmed'
-  end
-
-  test 'already confirmed user should not be able to confirm the account again neither request confirmation' do
-    user = create_user(:confirm => false)
-    user.confirmed_at = Time.now
-    user.save
-
-    visit_user_confirmation_with_token(user.confirmation_token)
-    assert_contain 'already confirmed'
-
-    fill_in 'email', :with => user.email
-    click_button 'Resend confirmation instructions'
+    assert_have_selector '#flash_alert'
     assert_contain 'already confirmed'
   end
 
@@ -292,8 +279,8 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     create_second_admin(:email => "new_admin_test@example.com")
 
     visit_admin_confirmation_with_token(admin.confirmation_token)
-    assert_have_selector '#error_explanation'
-    assert_contain(/Email.*already.*taken/)
+    assert_have_selector '#flash_alert'
+    assert_contain('already confirmed')
     assert admin.reload.pending_reconfirmation?
   end
 end

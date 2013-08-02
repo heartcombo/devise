@@ -223,6 +223,10 @@ module Devise
   mattr_accessor :omniauth_path_prefix
   @@omniauth_path_prefix = nil
 
+  # Set if we should clean up the CSRF Token on authentication
+  mattr_accessor :clean_up_csrf_token_on_authentication
+  @@clean_up_csrf_token_on_authentication = true
+
   def self.encryptor=(value)
     warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n"
   end

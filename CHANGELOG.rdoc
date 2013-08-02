@@ -5,6 +5,7 @@
 
 * bug fix
   * When using rails 3.2, the generator adds 'attr_accessible' to the model (by @jcoyne)
+  * Clean up CSRF token after authentication (by @homakov). Notice this change will clean up the CSRF Token after authentication (sign in, sign up, etc). So if you are using AJAX for such features, you will need to fetch a new CSRF token from the server.
 
 == 3.0.0
 

@@ -79,7 +79,10 @@ module Devise
 
         # Generate a token checking if one does not already exist in the database.
         def authentication_token
-          generate_token(:authentication_token)
+          loop do
+            token = Devise.friendly_token
+            break token unless to_adapter.find_first({ :authentication_token => token })
+          end
         end
 
         Devise::Models.config(self, :token_authentication_key, :expire_auth_token_on_timeout)

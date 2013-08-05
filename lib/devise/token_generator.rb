@@ -1,9 +1,36 @@
 # Deprecate: Copied verbatim from Rails source, remove once we move to Rails 4 only.
 require 'thread_safe'
 require 'openssl'
-require 'secure_random'
+require 'securerandom'
 
 module Devise
+  class TokenGenerator
+    def initialize(key_generator)
+      @key_generator = key_generator
+    end
+
+    def digest(klass, column, value)
+      value.present? && OpenSSL::HMAC.hexdigest("SHA1", key_for(klass, column), value.to_s)
+    end
+
+    def generate(klass, column)
+      adapter = klass.to_adapter
+      key     = key_for(klass, column)
+
+      loop do
+        raw = Devise.friendly_token
+        enc = OpenSSL::HMAC.hexdigest("SHA1", key, raw)
+        break [raw, enc] unless adapter.find_first({ column => enc })
+      end
+    end
+
+    private
+    
+    def key_for(klass, column)
+      @key_generator.generate_key("#{klass.name} #{column}")
+    end
+  end
+
   # KeyGenerator is a simple wrapper around OpenSSL's implementation of PBKDF2
   # It can be used to derive a number of keys for various purposes from a given secret.
   # This lets Rails applications have a single secure secret, but avoid reusing that

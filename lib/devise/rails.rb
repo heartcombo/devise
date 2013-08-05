@@ -30,7 +30,11 @@ module Devise
     end
 
     initializer "devise.secret_key" do
-      unless Devise.secret_key
+      if secret_key = Devise.secret_key
+        Devise.token_generator = Devise::TokenGenerator.new(
+          Devise::CachingKeyGenerator.new(Devise::KeyGenerator.new(secret_key))
+        )
+      else
         raise <<-ERROR
 Devise.secret_key was not set. Please add the following to your Devise initializer:
 

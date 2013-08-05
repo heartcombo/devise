@@ -14,6 +14,7 @@ module Devise
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
   autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'
+  autoload :TokenGenerator,     'devise/token_generator'
 
   module Controllers
     autoload :Helpers, 'devise/controllers/helpers'
@@ -48,6 +49,10 @@ module Devise
   # Secret key used by the key generator
   mattr_accessor :secret_key
   @@secret_key = nil
+
+  # Secret key used by the key generator
+  mattr_accessor :token_generator
+  @@token_generator = nil
 
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options

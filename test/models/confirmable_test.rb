@@ -51,9 +51,17 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal "was already confirmed, please try signing in", user.errors[:email].join
   end
 
-  test 'should find and confirm a user automatically' do
+  test 'DEPRECATED: should find and confirm a user automatically' do
     user = create_user
     confirmed_user = User.confirm_by_token(user.confirmation_token)
+    assert_equal confirmed_user, user
+    assert user.reload.confirmed?
+  end
+
+  test 'should find and confirm a user automatically based on the raw token' do
+    user = create_user
+    raw  = user.instance_variable_get(:@raw_confirmation_token)
+    confirmed_user = User.confirm_by_token(raw)
     assert_equal confirmed_user, user
     assert user.reload.confirmed?
   end
@@ -176,7 +184,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should not be able to send instructions if the user is already confirmed' do
     user = create_user
     user.confirm!
-    assert_not user.resend_confirmation_token
+    assert_not user.resend_confirmation_instructions
     assert user.confirmed?
     assert_equal 'was already confirmed, please try signing in', user.errors[:email].join
   end
@@ -285,32 +293,12 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should generate a new token if the previous one has expired' do
-    swap Devise, :confirm_within => 3.days do
-      user = create_user
-      user.update_attribute(:confirmation_sent_at, 4.days.ago)
-      old = user.confirmation_token
-      user.resend_confirmation_token
-      assert_not_equal user.confirmation_token, old
-    end
-  end
-  
-  test 'should generate a new token when a valid one does not exist' do
-    swap Devise, :confirm_within => 3.days do
-      user = create_user
-      user.update_attribute(:confirmation_sent_at, 4.days.ago)
-      old = user.confirmation_token
-      user.ensure_confirmation_token!
-      assert_not_equal user.confirmation_token, old
-    end
-  end
-  
-  test 'should not generate a new token when a valid one exists' do
+  test 'always generate a new token on resend' do
     user = create_user
-    assert_not_nil user.confirmation_token
-    old = user.confirmation_token
-    user.ensure_confirmation_token!
-    assert_equal user.confirmation_token, old
+    old  = user.confirmation_token
+    user = User.find(user.id)
+    user.resend_confirmation_instructions
+    assert_not_equal user.confirmation_token, old
   end
 
   test 'should call after_confirmation if confirmed' do

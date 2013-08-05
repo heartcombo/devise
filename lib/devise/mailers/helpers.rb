@@ -35,12 +35,6 @@ module Devise
           :template_name => action
         }.merge(opts)
 
-        if resource.respond_to?(:headers_for)
-          ActiveSupport::Deprecation.warn "Calling headers_for in the model is no longer supported. " <<
-            "Please customize your mailer instead."
-          headers.merge!(resource.headers_for(action))
-        end
-
         @email = headers[:to]
         headers
       end

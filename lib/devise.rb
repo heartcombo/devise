@@ -227,18 +227,6 @@ module Devise
   mattr_accessor :clean_up_csrf_token_on_authentication
   @@clean_up_csrf_token_on_authentication = true
 
-  def self.encryptor=(value)
-    warn "\n[DEVISE] To select a encryption which isn't bcrypt, you should use devise-encryptable gem.\n"
-  end
-
-  def self.use_salt_as_remember_token=(value)
-    warn "\n[DEVISE] Devise.use_salt_as_remember_token is deprecated and has no effect. Please remove it.\n"
-  end
-
-  def self.apply_schema=(value)
-    warn "\n[DEVISE] Devise.apply_schema is deprecated and has no effect. Please remove it.\n"
-  end
-
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.

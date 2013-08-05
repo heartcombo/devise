@@ -26,19 +26,7 @@ module Devise
       # In case the resource can't be validated, it will fail with the given
       # unauthenticated_message.
       def validate(resource, &block)
-        unless resource
-          ActiveSupport::Deprecation.warn "an empty resource was given to #{self.class.name}#validate. " \
-            "Please ensure the resource is not nil", caller
-        end
-
         result = resource && resource.valid_for_authentication?(&block)
-
-        case result
-        when Symbol, String
-          ActiveSupport::Deprecation.warn "valid_for_authentication? should return a boolean value"
-          fail!(result)
-          return false
-        end
 
         if result
           decorate(resource)

@@ -202,7 +202,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
 
   test 'sign in and redirect uses the stored location' do
     user = User.new
-    @controller.session[:"user_return_to"] = "/foo.bar"
+    @controller.session[:user_return_to] = "/foo.bar"
     @mock_warden.expects(:user).with(:user).returns(nil)
     @mock_warden.expects(:set_user).with(user, :scope => :user).returns(true)
     @controller.expects(:redirect_to).with("/foo.bar")

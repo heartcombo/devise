@@ -21,6 +21,7 @@ module Devise
 
       # Remembers the given resource by setting up a cookie
       def remember_me(resource)
+        return if env["devise.skip_storage"]
         scope = Devise::Mapping.find_scope!(resource)
         resource.remember_me!(resource.extend_remember_period)
         cookies.signed[remember_key(resource, scope)] = remember_cookie_values(resource)

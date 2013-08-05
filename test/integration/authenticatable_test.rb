@@ -433,7 +433,7 @@ end
 
 class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   test 'handles unverified requests gets rid of caches' do
-    swap UsersController, :allow_forgery_protection => true do
+    swap ApplicationController, :allow_forgery_protection => true do
       post exhibit_user_url(1)
       assert_not warden.authenticated?(:user)
 

@@ -45,6 +45,10 @@ module Devise
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
+  # Secret key used by the key generator
+  mattr_accessor :secret_key
+  @@secret_key = nil
+
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}

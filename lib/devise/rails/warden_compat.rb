@@ -3,6 +3,7 @@ module Warden::Mixins::Common
     @request ||= ActionDispatch::Request.new(env)
   end
 
+  # Deprecate: Remove this check once we move to Rails 4 only.
   NULL_STORE =
     defined?(ActionController::RequestForgeryProtection::ProtectionMethods::NullSession::NullSessionHash) ?
       ActionController::RequestForgeryProtection::ProtectionMethods::NullSession::NullSessionHash : nil

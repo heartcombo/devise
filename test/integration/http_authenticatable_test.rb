@@ -2,7 +2,7 @@ require 'test_helper'
 
 class HttpAuthenticationTest < ActionDispatch::IntegrationTest
   test 'handles unverified requests gets rid of caches but continues signed in' do
-    swap UsersController, :allow_forgery_protection => true do
+    swap ApplicationController, :allow_forgery_protection => true do
       create_user
       post exhibit_user_url(1), {}, "HTTP_AUTHORIZATION" => "Basic #{Base64.encode64("user@test.com:12345678")}"
       assert warden.authenticated?(:user)

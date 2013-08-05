@@ -3,9 +3,16 @@ module Warden::Mixins::Common
     @request ||= ActionDispatch::Request.new(env)
   end
 
-  # This is called internally by Warden on logout
+  NULL_STORE =
+    defined?(ActionController::RequestForgeryProtection::ProtectionMethods::NullSession::NullSessionHash) ?
+      ActionController::RequestForgeryProtection::ProtectionMethods::NullSession::NullSessionHash : nil
+
   def reset_session!
-    request.reset_session
+    # Calling reset_session on NULL_STORE causes it fail.
+    # This is a bug that needs to be fixed in Rails.
+    unless NULL_STORE && request.session.is_a?(NULL_STORE)
+      request.reset_session
+    end
   end
 
   def cookies

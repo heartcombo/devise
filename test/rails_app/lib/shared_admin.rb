@@ -11,4 +11,7 @@ module SharedAdmin
     validates_uniqueness_of :email, :allow_blank => true, :if => :email_changed?
   end
 
+  def raw_confirmation_token
+    @raw_confirmation_token
+  end
 end

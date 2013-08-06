@@ -12,6 +12,10 @@ module SharedUser
     extend ExtendMethods
   end
 
+  def raw_confirmation_token
+    @raw_confirmation_token
+  end
+
   module ExtendMethods
     def new_with_session(params, session)
       super.tap do |user|

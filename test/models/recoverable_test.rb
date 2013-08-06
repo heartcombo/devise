@@ -109,11 +109,13 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'DEPRECATED: should find a user to reset his password based on reset_password_token' do
-    user = create_user
-    user.send_reset_password_instructions
+    swap Devise, allow_insecure_token_lookup: true do
+      user = create_user
+      user.send_reset_password_instructions
 
-    reset_password_user = User.reset_password_by_token(:reset_password_token => user.reset_password_token)
-    assert_equal reset_password_user, user
+      reset_password_user = User.reset_password_by_token(:reset_password_token => user.reset_password_token)
+      assert_equal reset_password_user, user
+    end
   end
 
   test 'should find a user to reset his password based on the raw token' do

@@ -50,9 +50,10 @@ module Devise
   mattr_accessor :secret_key
   @@secret_key = nil
 
-  # Secret key used by the key generator
-  mattr_accessor :token_generator
-  @@token_generator = nil
+  # Allow insecure token lookup. Must be used
+  # temporarily just for migration.
+  mattr_accessor :allow_insecure_token_lookup
+  @@allow_insecure_tokens_lookup = false
 
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
@@ -259,6 +260,10 @@ module Devise
   # When true, enter in paranoid mode to avoid user enumeration.
   mattr_accessor :paranoid
   @@paranoid = false
+
+  # Stores the token generator
+  mattr_accessor :token_generator
+  @@token_generator = nil
 
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.

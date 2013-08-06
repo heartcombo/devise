@@ -30,18 +30,19 @@ module Devise
     end
 
     initializer "devise.secret_key" do
-      if secret_key = Devise.secret_key
-        Devise.token_generator = Devise::TokenGenerator.new(
-          Devise::CachingKeyGenerator.new(Devise::KeyGenerator.new(secret_key))
-        )
-      else
-        raise <<-ERROR
+      Devise.token_generator ||=
+        if secret_key = Devise.secret_key
+          Devise::TokenGenerator.new(
+            Devise::CachingKeyGenerator.new(Devise::KeyGenerator.new(secret_key))
+          )
+        else
+          raise <<-ERROR
 Devise.secret_key was not set. Please add the following to your Devise initializer:
 
   config.secret_key = '#{SecureRandom.hex(64)}'
 
 ERROR
-      end
+        end
     end
 
     initializer "devise.fix_routes_proxy_missing_respond_to_bug" do

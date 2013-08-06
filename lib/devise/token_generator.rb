@@ -5,12 +5,13 @@ require 'securerandom'
 
 module Devise
   class TokenGenerator
-    def initialize(key_generator)
+    def initialize(key_generator, digest="SHA256")
       @key_generator = key_generator
+      @digest = digest
     end
 
     def digest(klass, column, value)
-      value.present? && OpenSSL::HMAC.hexdigest("SHA1", key_for(column), value.to_s)
+      value.present? && OpenSSL::HMAC.hexdigest(@digest, key_for(column), value.to_s)
     end
 
     def generate(klass, column)
@@ -18,15 +19,15 @@ module Devise
 
       loop do
         raw = Devise.friendly_token
-        enc = OpenSSL::HMAC.hexdigest("SHA1", key, raw)
+        enc = OpenSSL::HMAC.hexdigest(@digest, key, raw)
         break [raw, enc] unless klass.to_adapter.find_first({ column => enc })
       end
     end
 
     private
-    
+
     def key_for(column)
-      @key_generator.generate_key(column.to_s)
+      @key_generator.generate_key("Devise #{column}")
     end
   end
 

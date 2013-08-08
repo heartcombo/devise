@@ -215,7 +215,7 @@ class FailureTest < ActiveSupport::TestCase
       }
       call_failure(env)
       assert @response.third.body.include?('<h2>Sign in</h2>')
-      assert @response.third.body.include?('Your account was not activated yet.')
+      assert @response.third.body.include?('Your account is not activated yet.')
     end
   end
 end

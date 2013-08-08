@@ -1,3 +1,14 @@
+== 3.1.0
+
+* bug fix
+  * Do not sign in after confirmation (you can enable this temporarily by setting `config.allow_insecure_sign_in_after_confirmation` to true in your configuration file)
+  * Do not store confirmation, unlock and reset password tokens directly in the database (you can enable this temporarily by setting `config.allow_insecure_tokens_lookup` to true in your configuration file)
+  * Do not compare directly against confirmation, unlock and reset password tokens
+  * Skip storage for cookies on unverified requests
+
+* deprecations
+  * Token authentication is deprecated
+
 == 3.0.1
 
 * enhancements

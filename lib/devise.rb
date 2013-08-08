@@ -55,6 +55,11 @@ module Devise
   mattr_accessor :allow_insecure_token_lookup
   @@allow_insecure_tokens_lookup = false
 
+  # Allow insecure sign in after confirmation. Must be used
+  # temporarily just for migration.
+  mattr_accessor :allow_insecure_sign_in_after_confirmation
+  @@allow_insecure_sign_in_after_confirmation = false
+
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}

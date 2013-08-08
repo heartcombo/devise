@@ -38,16 +38,6 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     assert_contain /Confirmation token(.*)invalid/
   end
 
-  test 'user with valid confirmation token should be able to confirm an account' do
-    user = create_user(:confirm => false)
-    assert_not user.confirmed?
-    visit_user_confirmation_with_token(user.raw_confirmation_token)
-
-    assert_contain 'Your account was successfully confirmed.'
-    assert_current_url '/'
-    assert user.reload.confirmed?
-  end
-
   test 'user with valid confirmation token should not be able to confirm an account after the token has expired' do
     swap Devise, :confirm_within => 3.days do
       user = create_user(:confirm => false, :confirmation_sent_at => 4.days.ago)
@@ -67,7 +57,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
       assert_contain 'Your account was successfully confirmed.'
-      assert_current_url '/'
+      assert_current_url '/users/sign_in'
       assert user.reload.confirmed?
     end
   end
@@ -102,21 +92,6 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     fill_in 'email', :with => user.email
     click_button 'Resend confirmation instructions'
     assert_contain 'already confirmed'
-  end
-
-  test 'sign in user automatically after confirming its email' do
-    user = create_user(:confirm => false)
-    visit_user_confirmation_with_token(user.raw_confirmation_token)
-
-    assert warden.authenticated?(:user)
-  end
-
-  test 'increases sign count when signed in through confirmation' do
-    user = create_user(:confirm => false)
-    visit_user_confirmation_with_token(user.raw_confirmation_token)
-
-    user.reload
-    assert_equal 1, user.sign_in_count
   end
 
   test 'not confirmed user with setup to block without confirmation should not be able to sign in' do
@@ -257,7 +232,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
 
     assert_contain 'Your account was successfully confirmed.'
-    assert_current_url '/admin_area/home'
+    assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?
   end
@@ -279,7 +254,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
 
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
     assert_contain 'Your account was successfully confirmed.'
-    assert_current_url '/admin_area/home'
+    assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?
   end

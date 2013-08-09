@@ -1,3 +1,8 @@
+== 2.2.6
+
+* bug fix
+  * Skip storage for cookies on unverified requests
+
 == 2.2.5
 
 * bug fix

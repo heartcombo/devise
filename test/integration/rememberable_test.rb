@@ -48,7 +48,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
       assert request.session[:_csrf_token]
 
       post user_session_path, :authenticity_token => "oops", :user =>
-           { email: "jose.valim@gmail.com", password: "123456", :remember_me => "1" }
+           { :email => "jose.valim@gmail.com", :password => "123456", :remember_me => "1" }
       assert_not warden.authenticated?(:user)
       assert_not request.cookies['remember_user_token']
     end

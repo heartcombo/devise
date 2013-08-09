@@ -1,4 +1,11 @@
+== 3.0.2
+
+* bug fix
+  * Skip storage for cookies on unverified requests
+
 == 3.0.1
+
+Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixation-attacks-in-devise/
 
 * enhancements
   * Add after_confirmation callback

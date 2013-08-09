@@ -117,6 +117,7 @@ module Devise
       #   sign_in :user, @user                      # sign_in(scope, resource)
       #   sign_in @user                             # sign_in(resource)
       #   sign_in @user, :event => :authentication  # sign_in(resource, options)
+      #   sign_in @user, :store => false            # sign_in(resource, options)
       #   sign_in @user, :bypass => true            # sign_in(resource, options)
       #
       def sign_in(resource_or_scope, *args)

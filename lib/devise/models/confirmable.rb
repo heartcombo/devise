@@ -7,7 +7,7 @@ module Devise
     #
     # == Options
     #
-    # Confirmable adds the following options to devise_for:
+    # Confirmable adds the following options to +devise+:
     #
     #   * +allow_unconfirmed_access_for+: the time you want to allow the user to access his account
     #     before confirming it. After this period, the user access is denied. You can

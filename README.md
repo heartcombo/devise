@@ -187,7 +187,7 @@ There are just three actions in Devise that allows any set of parameters to be p
 * `sign_up` (`Devise::RegistrationsController#create`) - Permits authentication keys plus `password` and `password_confirmation`
 * `account_update` (`Devise::RegistrationsController#update`) - Permits authentication keys plus `password`, `password_confirmation` and `current_password`
 
-In case you want to customize the permitted parameters (the lazy way™) you can do with a simple before filter in your `ApplicationController`:
+In case you want to permit additional parameters (the lazy way™) you can do with a simple before filter in your `ApplicationController`:
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -196,8 +196,24 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:username, :email) }
+    # permit parameters for all actions
+    devise_permitted_parameters.add(:username, :age) 
+
+    # permit a parameter for a single action
+    devise_permitted_parameters.for(:sign_up) << :hometown
   end
+end
+```
+
+To remove or overwrite the defaults that Devise provides:
+
+```ruby
+def configure_permitted_parameters
+  # remove a permitted parameter
+  devise_permitted_parameters.remove(:email) 
+
+  # overwrite the Devise defaults
+  devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:username, :email) }
 end
 ```
 

@@ -48,6 +48,46 @@ if defined?(ActionController::StrongParameters)
       assert_equal({ "email" => "jose", "password" => "invalid" }, sanitizer.for(:sign_in))
     end
 
+    test 'adding permitted parameters for a single action' do
+      sanitizer = sanitizer(user: { "email" => "jose", "username" => "jose1" })
+      sanitizer.permitted_parameters.for(:sign_up).push(:username)
+
+      assert_equal({ "email" => "jose", "username" => "jose1" }, sanitizer.for(:sign_up))
+      assert_equal({ "email" => "jose" }, sanitizer.for(:sign_in))
+    end
+
+    test 'adding permitted parameters for all actions' do
+      sanitizer = sanitizer(user: { "email" => "jose", "username" => "jose1" })
+      sanitizer.permitted_parameters.add(:username)
+
+      assert_equal({ "email" => "jose", "username" => "jose1" }, sanitizer.for(:sign_in))
+      assert_equal({ "email" => "jose", "username" => "jose1" }, sanitizer.for(:sign_up))
+      assert_equal({ "email" => "jose", "username" => "jose1" }, sanitizer.for(:account_update))
+    end
+
+    test 'removing default parameters' do
+      sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
+      sanitizer.permitted_parameters.remove(:email)
+
+      assert_equal({ "password" => "invalid" }, sanitizer.for(:sign_in))
+      assert_equal({ "password" => "invalid" }, sanitizer.for(:sign_up))
+      assert_equal({ "password" => "invalid" }, sanitizer.for(:account_update))
+    end
+
+    test 'adding multiple permitted parameters' do
+      sanitizer = sanitizer(user: { "email" => "jose", "username" => "jose1", "role" => "valid" })
+
+      sanitizer.permitted_parameters.add(:username, :role)
+      assert_equal({ "email" => "jose", "username" => "jose1", "role" => "valid" }, sanitizer.for(:sign_in))
+    end
+
+    test 'removing multiple default parameters' do
+      sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid", "remember_me" => "1" })
+      sanitizer.permitted_parameters.remove(:email, :password)
+
+      assert_equal({ "remember_me" => "1" }, sanitizer.for(:sign_in))
+    end
+
     test 'raises on unknown hooks' do
       sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
       assert_raise NotImplementedError do

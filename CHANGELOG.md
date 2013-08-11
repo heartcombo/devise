@@ -10,7 +10,7 @@
 
 * enhancements
   * Better security defaults
-  * Allow easier customization of parameter sanitizer
+  * Allow easier customization of parameter sanitizer (by @alexpeattie)
 
 * bug fix
   * Do not sign in after confirmation

@@ -660,7 +660,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Added Registerable
   * Added Http Basic Authentication support
   * Allow scoped_views to be customized per controller/mailer class
-  * [#99] Allow authenticatable to used in change_table statements
+  * Allow authenticatable to used in change_table statements
 
 == 0.9.2
 
@@ -800,19 +800,19 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Added DataMapper support
   * Remove store_location from authenticatable strategy and add it to failure app
   * Allow a strategy to be placed after authenticatable
-  * [#45] Do not rely attribute? methods, since they are not added on Datamapper
+  * Do not rely attribute? methods, since they are not added on Datamapper
 
 == 0.5.6
 
 * enhancements
-  * [#42] Do not send nil to build (DataMapper compatibility)
-  * [#44] Allow to have scoped views
+  * Do not send nil to build (DataMapper compatibility)
+  * Allow to have scoped views
 
 == 0.5.5
 
 * enhancements
   * Allow overwriting find for authentication method
-  * [#38] Remove Ruby 1.8.7 dependency
+  * Remove Ruby 1.8.7 dependency
 
 == 0.5.4
 
@@ -820,7 +820,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Deprecate :singular in devise_for and use :scope instead
 
 * enhancements
-  * [#37] Create after_sign_in_path_for and after_sign_out_path_for hooks to be
+  * Create after_sign_in_path_for and after_sign_out_path_for hooks to be
     overwriten in ApplicationController
   * Create sign_in_and_redirect and sign_out_and_redirect helpers
   * Warden::Manager.default_scope is automatically configured to the first given scope
@@ -832,7 +832,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Ensure all controllers are unloadable
 
 * enhancements
-  * [#35] Moved friendly_token to Devise
+  * Moved friendly_token to Devise
   * Added Devise.all, so you can freeze your app strategies
   * Added Devise.apply_schema, so you can turn it to false in Datamapper or MongoMapper
     in cases you don't want it be handlded automatically
@@ -840,9 +840,9 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 0.5.2
 
 * enhancements
-  * [#28] Improved sign_in and sign_out helpers to accepts resources
-  * [#28] Added stored_location_for as a helper
-  * [#20] Added test helpers
+  * Improved sign_in and sign_out helpers to accepts resources
+  * Added stored_location_for as a helper
+  * Added test helpers
 
 == 0.5.1
 
@@ -863,7 +863,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 0.4.3
 
 * bug fix
-  * [#29] Authentication just fails if user cannot be serialized from session, without raising errors;
+  * Authentication just fails if user cannot be serialized from session, without raising errors;
   * Default configuration values should not overwrite user values;
 
 == 0.4.2
@@ -881,7 +881,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 0.4.1
 
 * bug fix
-  * [#21] Ensure options can be set even if models were not loaded
+  * Ensure options can be set even if models were not loaded
 
 == 0.4.0
 
@@ -892,25 +892,25 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * :authenticable calls are deprecated, use :authenticatable instead
 
 * enhancements
-  * [#16] Allow devise to be more agnostic and do not require ActiveRecord to be loaded
+  * Allow devise to be more agnostic and do not require ActiveRecord to be loaded
   * Allow Warden::Manager to be configured through Devise
   * Created a generator which creates an initializer
 
 == 0.3.0
 
 * bug fix
-  * [#15] Allow yml messages to be configured by not using engine locales
+  * Allow yml messages to be configured by not using engine locales
 
 * deprecations
   * Renamed confirm_in to confirm_within
-  * [#14] Do not send confirmation messages when user changes his e-mail
-  * [#13] Renamed authenticable to authenticatable and added deprecation warnings
+  * Do not send confirmation messages when user changes his e-mail
+  * Renamed authenticable to authenticatable and added deprecation warnings
 
 == 0.2.3
 
 * enhancements
   * Ensure fail! works inside strategies
-  * [#12] Make unauthenticated message (when you haven't signed in) different from invalid message
+  * Make unauthenticated message (when you haven't signed in) different from invalid message
 
 * bug fix
   * Do not redirect on invalid authenticate
@@ -919,7 +919,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 == 0.2.2
 
 * bug fix
-  * [#9] Fix a bug when using customized resources
+  * Fix a bug when using customized resources
 
 == 0.2.1
 
@@ -927,17 +927,17 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Clean devise_views generator to use devise existing views
 
 * enhancements
-  * [#7] Create instance variables (like @user) for each devise controller
+  * Create instance variables (like @user) for each devise controller
   * Use Devise::Controller::Helpers only internally
 
 * bug fix
-  * [#6] Fix a bug with Mongrel and Ruby 1.8.6
+  * Fix a bug with Mongrel and Ruby 1.8.6
 
 == 0.2.0
 
 * enhancements
-  * [#4] Allow option :null => true in authenticable migration
-  * [#3] Remove attr_accessible calls from devise modules
+  * Allow option :null => true in authenticable migration
+  * Remove attr_accessible calls from devise modules
   * Customizable time frame for rememberable with :remember_for config
   * Customizable time frame for confirmable with :confirm_in config
   * Generators for creating a resource and copy views
@@ -946,12 +946,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Do not load hooks or strategies if they are not used
 
 * bug fixes
-  * [#2] Fixed requiring devise strategies
+  * Fixed requiring devise strategies
 
 == 0.1.1
 
 * bug fixes
-  * [#1] Fixed requiring devise mapping
+  * Fixed requiring devise mapping
 
 == 0.1.0
 

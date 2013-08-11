@@ -13,14 +13,23 @@ module Devise
       if block_given?
         @blocks[kind] = block
       else
-        block = @blocks[kind]
-        block ? block.call(default_params) : fallback_for(kind)
+        default_for(kind)
+      end
+    end
+
+    def sanitize(kind)
+      if block = @blocks[kind]
+        block.call(default_params)
+      elsif respond_to?(kind, true)
+        send(kind)
+      else
+        raise NotImplementedError, "Devise doesn't know how to sanitize parameters for #{kind}"
       end
     end
 
     private
 
-    def fallback_for(kind)
+    def default_for(kind)
       default_params
     end
 
@@ -30,61 +39,45 @@ module Devise
   end
 
   class ParameterSanitizer < BaseSanitizer
-
-    class PermittedParameters
-
-      def initialize(resource_class)
-        @resource_class = resource_class
-        @for = { :sign_in => sign_in, :sign_up => sign_up, :account_update => account_update }
-      end
-
-      def sign_in
-        auth_keys + [:password, :remember_me]
-      end
-
-      def sign_up
-        auth_keys + [:password, :password_confirmation]
-      end
-
-      def account_update
-        auth_keys + [:password, :password_confirmation, :current_password]
-      end
-
-      def auth_keys
-        @resource_class.authentication_keys.respond_to?(:keys) ? @resource_class.authentication_keys.keys : @resource_class.authentication_keys
-      end
-
-      def for(kind)
-        @for[kind]
-      end
-
-      def add(*params)
-        @for.each { |action, permitted| permitted.push *params }
-      end
-
-      def remove(*params)
-        @for.each do |action, permitted| 
-          permitted.delete_if { |param| params.include? param }
-        end
-      end
-
+    def initialize(*)
+      super
+      @permitted = Hash.new { |h,k| h[k] = attributes_for(k) }
     end
 
-    def permitted_parameters
-      @permitted_parameters ||= PermittedParameters.new(@resource_class)
+    def sign_in
+      default_params.permit self.for(:sign_in)
+    end
+
+    def sign_up
+      default_params.permit self.for(:sign_up)
+    end
+
+    def account_update
+      default_params.permit self.for(:account_update)
     end
 
     private
 
-    def fallback_for(kind)
-      if respond_to?(kind, true)
-        send(kind)
-      elsif (permitted = permitted_parameters.for(kind))
-        default_params.permit permitted
-      else
-        raise NotImplementedError, "Devise Parameter Sanitizer doesn't know how to sanitize parameters for #{kind}"
+    # Change for(kind) to return the values in the @permitted
+    # hash, allowing the developer to customize at runtime.
+    def default_for(kind)
+      @permitted[kind] || raise("No sanitizer provided for #{kind}")
+    end
+
+    def attributes_for(kind)
+      case kind
+      when :sign_in
+        auth_keys + [:password, :remember_me]
+      when :sign_up
+        auth_keys + [:password, :password_confirmation]
+      when :account_update
+        auth_keys + [:password, :password_confirmation, :current_password]
       end
     end
 
+    def auth_keys
+      @auth_keys ||= @resource_class.authentication_keys.respond_to?(:keys) ?
+                       @resource_class.authentication_keys.keys : @resource_class.authentication_keys
+    end
   end
 end

@@ -91,10 +91,6 @@ module Devise
         end
       end
 
-      def devise_permitted_parameters
-        devise_parameter_sanitizer.permitted_parameters
-      end
-
       # Tell warden that params authentication is allowed for that specific page.
       def allow_params_authentication!
         request.env["devise.allow_params_authentication"] = true

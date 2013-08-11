@@ -117,10 +117,10 @@ class Devise::RegistrationsController < DeviseController
   end
 
   def sign_up_params
-    devise_parameter_sanitizer.for(:sign_up)
+    devise_parameter_sanitizer.sanitize(:sign_up)
   end
 
   def account_update_params
-    devise_parameter_sanitizer.for(:account_update)
+    devise_parameter_sanitizer.sanitize(:account_update)
   end
 end

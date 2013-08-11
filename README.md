@@ -196,23 +196,15 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    # permit parameters for all actions
-    devise_permitted_parameters.add(:username, :age) 
-
-    # permit a parameter for a single action
-    devise_permitted_parameters.for(:sign_up) << :hometown
+    devise_parameter_sanitizer.for(:sign_up) << :username
   end
 end
 ```
 
-To remove or overwrite the defaults that Devise provides:
+To completely change Devise defaults or invoke custom behaviour, you can also pass a block:
 
 ```ruby
 def configure_permitted_parameters
-  # remove a permitted parameter
-  devise_permitted_parameters.remove(:email) 
-
-  # overwrite the Devise defaults
   devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:username, :email) }
 end
 ```
@@ -267,7 +259,7 @@ rails generate devise:views users
 
 If the customization at the views level is not enough, you can customize each controller by following these steps:
 
-1. Create your custom controller, for example a `Admins::SessionsController`:  
+1. Create your custom controller, for example a `Admins::SessionsController`:
 
     ```ruby
     class Admins::SessionsController < Devise::SessionsController

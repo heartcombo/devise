@@ -448,12 +448,6 @@ We have a long list of valued contributors. Check them all at:
 
 https://github.com/plataformatec/devise/contributors
 
-### Maintainers
-
-* José Valim (https://github.com/josevalim)
-* Carlos Antônio da Silva (https://github.com/carlosantoniodasilva)
-* Rodrigo Flores (https://github.com/rodrigoflores)
-
 ## License
 
 MIT License. Copyright 2009-2013 Plataformatec. http://plataformatec.com.br

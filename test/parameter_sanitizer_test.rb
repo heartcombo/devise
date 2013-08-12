@@ -3,18 +3,11 @@ require 'devise/parameter_sanitizer'
 
 class BaseSanitizerTest < ActiveSupport::TestCase
   def sanitizer(params)
-    params = ActionController::Parameters.new(params)
     Devise::BaseSanitizer.new(User, :user, params)
   end
 
   test 'returns chosen params' do
     sanitizer = sanitizer(user: { "email" => "jose" })
-    assert_equal({ "email" => "jose" }, sanitizer.for(:sign_in))
-  end
-
-  test 'allow custom blocks' do
-    sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
-    sanitizer.for(:sign_in) { |user| user.permit(:email) }
     assert_equal({ "email" => "jose" }, sanitizer.sanitize(:sign_in))
   end
 end

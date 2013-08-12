@@ -20,16 +20,18 @@ module Devise
     def sanitize(kind)
       if block = @blocks[kind]
         block.call(default_params)
-      elsif respond_to?(kind, true)
-        send(kind)
       else
-        raise NotImplementedError, "Devise doesn't know how to sanitize parameters for #{kind}"
+        default_sanitize(kind)
       end
     end
 
     private
 
     def default_for(kind)
+      raise ArgumentError, "a block is expected in Devise base sanitizer"
+    end
+
+    def default_sanitize(kind)
       default_params
     end
 
@@ -62,6 +64,14 @@ module Devise
     # hash, allowing the developer to customize at runtime.
     def default_for(kind)
       @permitted[kind] || raise("No sanitizer provided for #{kind}")
+    end
+
+    def default_sanitize(kind)
+      if respond_to?(kind, true)
+        send(kind)
+      else
+        raise NotImplementedError, "Devise doesn't know how to sanitize parameters for #{kind}"
+      end
     end
 
     def attributes_for(kind)

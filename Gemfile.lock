@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: fe7f43430580860db6d1d89cea27eda24ab60ab1
+  revision: 346a79a7d01aa194de80e649916239a18d38ce13
   branch: master
   specs:
     mongoid (4.0.0)
@@ -12,7 +12,7 @@ GIT
 PATH
   remote: .
   specs:
-    devise (3.0.1)
+    devise (3.1.0.rc)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)

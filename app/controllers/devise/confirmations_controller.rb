@@ -37,6 +37,10 @@ class Devise::ConfirmationsController < DeviseController
 
     # The path used after confirmation.
     def after_confirmation_path_for(resource_name, resource)
-      new_session_path(resource_name)
+      if Devise.allow_insecure_sign_in_after_confirmation
+        after_sign_in_path_for(resource)
+      else
+        new_session_path(resource_name)
+      end
     end
 end

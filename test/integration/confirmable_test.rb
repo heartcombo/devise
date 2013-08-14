@@ -279,8 +279,8 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     create_second_admin(:email => "new_admin_test@example.com")
 
     visit_admin_confirmation_with_token(admin.confirmation_token)
-    assert_have_selector '#flash_alert'
-    assert_contain('already confirmed')
+    assert_have_selector '#error_explanation'
+    assert_contain(/Email.*already.*taken/)
     assert admin.reload.pending_reconfirmation?
   end
 end

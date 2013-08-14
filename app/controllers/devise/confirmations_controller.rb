@@ -19,7 +19,7 @@ class Devise::ConfirmationsController < DeviseController
   def show
     self.resource = resource_class.find_by_confirmation_token(params[:confirmation_token])
 
-    if resource.present? && resource.confirmed?
+    if resource.present? && resource.confirmed? && !resource.pending_reconfirmation?
       set_flash_message(:alert, :already_confirmed)
       redirect_to new_session_path(resource_name)
     else

@@ -236,15 +236,6 @@ class PasswordTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'sign in user automatically and confirm after changing its password if it\'s not confirmed' do
-    user = create_user(:confirm => false)
-    request_forgot_password
-    reset_password
-
-    assert warden.authenticated?(:user)
-    assert user.reload.confirmed?
-  end
-
   test 'reset password request with valid E-Mail in XML format should return valid response' do
     create_user
     post user_password_path(:format => 'xml'), :user => {:email => "user@test.com"}

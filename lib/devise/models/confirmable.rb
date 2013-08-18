@@ -215,11 +215,6 @@ module Devise
           generate_confirmation_token && save(:validate => false)
         end
 
-        def after_password_reset
-          super
-          confirm! unless confirmed?
-        end
-
         def postpone_email_change_until_confirmation
           @reconfirmation_required = true
           self.unconfirmed_email = self.email

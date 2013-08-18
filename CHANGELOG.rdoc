@@ -1,3 +1,8 @@
+== 2.2.7
+
+* bug fix
+  * Do not confirm account after reset password
+
 == 2.2.6
 
 * bug fix

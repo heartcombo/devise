@@ -15,7 +15,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/devise-3-1-now-w
   * Allow easier customization of parameter sanitizer (by @alexpeattie)
 
 * bug fix
-  * Do not confirm e-mail after password reset
+  * Do not confirm e-mail after password reset (by @moll)
   * Do not sign in after confirmation
   * Do not store confirmation, unlock and reset password tokens directly in the database
   * Do not compare directly against confirmation, unlock and reset password tokens

@@ -1,4 +1,4 @@
-== 3.1.0.rc
+== 3.1.0.rc2
 
 * backwards incompatible changes
   * Do not store confirmation, unlock and reset password tokens directly in the database. This means tokens previously stored in the database are no longer valid. You can reenable this temporarily by setting `config.allow_insecure_tokens_lookup = true` in your configuration file. It is recommended to keep this configuration set to true just temporarily in your production servers only to aid migration
@@ -13,6 +13,7 @@
   * Allow easier customization of parameter sanitizer (by @alexpeattie)
 
 * bug fix
+  * Do not confirm e-mail after password reset
   * Do not sign in after confirmation
   * Do not store confirmation, unlock and reset password tokens directly in the database
   * Do not compare directly against confirmation, unlock and reset password tokens

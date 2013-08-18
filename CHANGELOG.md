@@ -1,5 +1,7 @@
 == 3.1.0.rc2
 
+Security announcement: http://blog.plataformatec.com.br/2013/08/devise-3-1-now-with-more-secure-defaults/
+
 * backwards incompatible changes
   * Do not store confirmation, unlock and reset password tokens directly in the database. This means tokens previously stored in the database are no longer valid. You can reenable this temporarily by setting `config.allow_insecure_tokens_lookup = true` in your configuration file. It is recommended to keep this configuration set to true just temporarily in your production servers only to aid migration
   * The Devise mailer and its views were changed to explicitly receive a token as argument. You will need to update your mailers and re-copy the views to your application with `rails g devise:views`

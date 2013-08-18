@@ -192,6 +192,7 @@ module ActionDispatch::Routing
     #
     def devise_for(*resources)
       @devise_finalized = false
+      raise_no_secret_key unless Devise.secret_key
       options = resources.extract_options!
 
       options[:as]          ||= @scope[:as]     if @scope[:as].present?
@@ -433,6 +434,15 @@ module ActionDispatch::Routing
         else
           ::OmniAuth.config.path_prefix = path_prefix
         end
+      end
+
+      def raise_no_secret_key #:nodoc:
+        raise <<-ERROR
+Devise.secret_key was not set. Please add the following to your Devise initializer:
+
+  config.secret_key = '#{SecureRandom.hex(64)}'
+
+ERROR
       end
 
       def raise_no_devise_method_error!(klass) #:nodoc:

@@ -35,13 +35,6 @@ module Devise
           Devise::TokenGenerator.new(
             Devise::CachingKeyGenerator.new(Devise::KeyGenerator.new(secret_key))
           )
-        else
-          raise <<-ERROR
-Devise.secret_key was not set. Please add the following to your Devise initializer:
-
-  config.secret_key = '#{SecureRandom.hex(64)}'
-
-ERROR
         end
     end
 

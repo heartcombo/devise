@@ -7,7 +7,7 @@ class PasswordsControllerTest < ActionController::TestCase
   def setup
     request.env["devise.mapping"] = Devise.mappings[:user]
 
-    @user = create_user
+    @user = create_user.tap(&:confirm!)
     @user.send_reset_password_instructions
   end
 

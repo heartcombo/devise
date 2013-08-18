@@ -1,3 +1,8 @@
+== 3.0.3
+
+* bug fix
+  * Do not confirm account after reset password
+
 == 3.0.2
 
 * bug fix

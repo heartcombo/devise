@@ -187,7 +187,7 @@ There are just three actions in Devise that allows any set of parameters to be p
 * `sign_up` (`Devise::RegistrationsController#create`) - Permits authentication keys plus `password` and `password_confirmation`
 * `account_update` (`Devise::RegistrationsController#update`) - Permits authentication keys plus `password`, `password_confirmation` and `current_password`
 
-In case you want to permit additional parameters (the lazy way™) you can do with a simple before filter in your `ApplicationController`:
+In case you want to permit additional parameters (the lazy way™) you can do with a simple before filter in your `ApplicationController` - but watch out!, this only works in **master** branch so far:
 
 ```ruby
 class ApplicationController < ActionController::Base

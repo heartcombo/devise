@@ -110,12 +110,16 @@ module Devise
         # Recreate the user based on the stored cookie
         def serialize_from_cookie(id, remember_token)
           record = to_adapter.get(id)
-          record if record && record.rememberable_value == remember_token && !record.remember_expired?
+          record if record && !record.remember_expired? &&
+                    Devise.secure_compare(record.rememberable_value, remember_token)
         end
 
         # Generate a token checking if one does not already exist in the database.
         def remember_token #:nodoc:
-          generate_token(:remember_token)
+          loop do
+            token = Devise.friendly_token
+            break token unless to_adapter.find_first({ :remember_token => token })
+          end
         end
 
         Devise::Models.config(self, :remember_for, :extend_remember_period, :rememberable_options)

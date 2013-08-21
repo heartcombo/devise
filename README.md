@@ -2,7 +2,6 @@
 
 By [Plataformatec](http://plataformatec.com.br/).
 
-[![Gem Version](https://fury-badge.herokuapp.com/rb/devise.png)](http://badge.fury.io/rb/devise)
 [![Build Status](https://api.travis-ci.org/plataformatec/devise.png?branch=master)](http://travis-ci.org/plataformatec/devise)
 [![Code Climate](https://codeclimate.com/github/plataformatec/devise.png)](https://codeclimate.com/github/plataformatec/devise)
 

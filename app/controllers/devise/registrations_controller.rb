@@ -40,15 +40,7 @@ class Devise::RegistrationsController < DeviseController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    #check to see if a password is required. If not, update_without_password
-    update_status = false
-    if resource.password_required?
-      update_status = resource.update_with_password(account_update_params)
-    else
-      update_status = resource.update_without_password(account_update_params)
-    end
-
-    if update_status
+    if update_resource(resource, account_update_params)
       if is_navigational_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
           :update_needs_confirmation : :updated
@@ -86,6 +78,12 @@ class Devise::RegistrationsController < DeviseController
     resource.respond_to?(:pending_reconfirmation?) &&
       resource.pending_reconfirmation? &&
       previous != resource.unconfirmed_email
+  end
+
+  # By default we want to require a password checks on update.
+  # You can overwrite this method in your own RegistrationsController.
+  def update_resource(resource, params)
+    resource.update_with_password(params)
   end
 
   # Build a devise resource passing in the session. Useful to move

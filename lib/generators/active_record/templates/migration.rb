@@ -14,6 +14,5 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
     add_index :<%= table_name %>, :reset_password_token, :unique => true
     # add_index :<%= table_name %>, :confirmation_token,   :unique => true
     # add_index :<%= table_name %>, :unlock_token,         :unique => true
-    # add_index :<%= table_name %>, :authentication_token, :unique => true
   end
 end

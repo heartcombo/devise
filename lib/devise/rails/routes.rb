@@ -395,6 +395,12 @@ module ActionDispatch::Routing
           :to => controllers[:omniauth_callbacks],
           :as => :omniauth_callback,
           :via => [:get, :post]
+
+        match "#{path_prefix}/:provider/setup",
+          :constraints => { :provider => providers },
+          :to => "#{controllers[:omniauth_callbacks]}#setup",
+          :as => :omniauth_setup,
+          :via => [:get, :post]
       ensure
         @scope[:path] = path
       end

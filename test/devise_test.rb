@@ -11,6 +11,16 @@ module Devise
 end
 
 class DeviseTest < ActiveSupport::TestCase
+  test 'bcrypt on the class' do
+    password = "super secret"
+    klass    = Struct.new(:pepper, :stretches).new("blahblah", 2)
+    hash     = Devise.bcrypt(klass, password)
+    assert_equal hash, Devise.bcrypt(klass, password)
+
+    klass    = Struct.new(:pepper, :stretches).new("bla", 2)
+    assert_not_equal hash, Devise.bcrypt(klass, password)
+  end
+
   test 'model options can be configured through Devise' do
     swap Devise, :allow_unconfirmed_access_for => 113, :pepper => "foo" do
       assert_equal 113, Devise.allow_unconfirmed_access_for

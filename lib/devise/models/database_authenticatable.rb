@@ -2,6 +2,11 @@ require 'devise/strategies/database_authenticatable'
 require 'bcrypt'
 
 module Devise
+  # Digests the password using bcrypt.
+  def self.bcrypt(klass, password)
+    ::BCrypt::Password.create("#{password}#{klass.pepper}", :cost => klass.stretches).to_s
+  end
+
   module Models
     # Authenticatable Module, responsible for encrypting password and validating
     # authenticity of a user while signing in.
@@ -34,7 +39,7 @@ module Devise
       # Generates password encryption based on the given value.
       def password=(new_password)
         @password = new_password
-        self.encrypted_password = password_digest(@password) if @password.present?
+        self.encrypted_password = Devise.bcrypt(self.class, @password) if @password.present?
       end
 
       # Verifies whether an password (ie from sign in) is the user password.
@@ -119,11 +124,6 @@ module Devise
       end
 
     protected
-
-      # Digests the password using bcrypt.
-      def password_digest(password)
-        ::BCrypt::Password.create("#{password}#{self.class.pepper}", :cost => self.class.stretches).to_s
-      end
 
       module ClassMethods
         Devise::Models.config(self, :pepper, :stretches)

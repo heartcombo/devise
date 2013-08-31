@@ -56,8 +56,20 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_not user.confirmed?
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
-      assert_contain 'Your account was successfully confirmed.'
+      assert_contain 'Your account was successfully confirmed. Please sign in.'
       assert_current_url '/users/sign_in'
+      assert user.reload.confirmed?
+    end
+  end
+
+  test 'user should be signed in after confirmation if allow_insecure_sign_in_after_confirmation is enabled' do
+    swap Devise, :confirm_within => 3.days, :allow_insecure_sign_in_after_confirmation => true do
+      user = create_user(:confirm => false, :confirmation_sent_at => 2.days.ago)
+      assert_not user.confirmed?
+      visit_user_confirmation_with_token(user.raw_confirmation_token)
+
+      assert_contain 'Your account was successfully confirmed. You are now signed in.'
+      assert_current_url root_url
       assert user.reload.confirmed?
     end
   end

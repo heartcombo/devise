@@ -48,7 +48,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixat
   * Errors on unlock are now properly reflected on the first `unlock_keys`
 
 * backwards incompatible changes
-  * Changes on session storage will expire all existing sessions on upgrade
+  * Changes on session storage will expire all existing sessions on upgrade. For those storing the session in the DB, they can be upgraded according to this gist: https://gist.github.com/moll/6417606
 
 == 2.2.4
 

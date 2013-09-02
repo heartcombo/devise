@@ -1,4 +1,4 @@
-== 3.1.0.rc2
+== 3.1.0
 
 Security announcement: http://blog.plataformatec.com.br/2013/08/devise-3-1-now-with-more-secure-defaults/
 
@@ -42,10 +42,13 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixat
 * enhancements
   * Rails 4 and Strong Parameters compatibility (by @carlosantoniodasilva, @josevalim, @latortuga, @lucasmazza, @nashby, @rafaelfranca, @spastorino)
   * Drop support for Rails < 3.2 and Ruby < 1.9.3
-  * Enable to skip sending reconfirmation email when reconfirmable is on and skip_confirmation_notification! is invoked (by @tkhr)
+  * Enable to skip sending reconfirmation email when reconfirmable is on and `skip_confirmation_notification!` is invoked (by @tkhr)
 
 * bug fix
   * Errors on unlock are now properly reflected on the first `unlock_keys`
+
+* backwards incompatible changes
+  * Changes on session storage will expire all existing sessions on upgrade
 
 == 2.2.4
 

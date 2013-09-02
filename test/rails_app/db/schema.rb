@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(:version => 20100401102949) do
     t.integer  "failed_attempts",                     :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.string   "authentication_token"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

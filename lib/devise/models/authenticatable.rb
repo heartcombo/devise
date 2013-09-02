@@ -29,9 +29,7 @@ module Devise
     #     It also accepts an array specifying the strategies that should allow params authentication.
     #
     #   * +skip_session_storage+: By default Devise will store the user in session.
-    #     You can skip storage for http and token auth by appending values to array:
-    #     :skip_session_storage => [:token_auth] or :skip_session_storage => [:http_auth, :token_auth],
-    #     by default is set to :skip_session_storage => [:http_auth].
+    #     By default is set to :skip_session_storage => [:http_auth].
     #
     # == active_for_authentication?
     #

@@ -84,11 +84,6 @@ module Devise
       devise_modules_hook! do
         include Devise::Models::Authenticatable
 
-        if selected_modules.include?(:token_authenticatable)
-          ActiveSupport::Deprecation.warn "devise :token_authenticatable is deprecated. " \
-            "Please check Devise 3.1 release notes for more information on how to upgrade."
-        end
-
         selected_modules.each do |m|
           mod = Devise::Models.const_get(m.to_s.classify)
 

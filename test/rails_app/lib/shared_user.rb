@@ -3,7 +3,7 @@ module SharedUser
 
   included do
     devise :database_authenticatable, :confirmable, :lockable, :recoverable,
-           :registerable, :rememberable, :timeoutable, :token_authenticatable,
+           :registerable, :rememberable, :timeoutable,
            :trackable, :validatable, :omniauthable
 
     attr_accessor :other_key

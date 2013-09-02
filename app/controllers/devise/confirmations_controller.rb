@@ -20,12 +20,7 @@ class Devise::ConfirmationsController < DeviseController
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
 
     if resource.errors.empty?
-      if Devise.allow_insecure_sign_in_after_confirmation
-        set_flash_message(:notice, :confirmed_and_signed_in) if is_navigational_format?
-        sign_in(resource_name, resource)
-      else
-        set_flash_message(:notice, :confirmed) if is_navigational_format?
-      end
+      set_flash_message(:notice, :confirmed) if is_navigational_format?
       respond_with_navigational(resource){ redirect_to after_confirmation_path_for(resource_name, resource) }
     else
       respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render :new }
@@ -41,10 +36,6 @@ class Devise::ConfirmationsController < DeviseController
 
     # The path used after confirmation.
     def after_confirmation_path_for(resource_name, resource)
-      if Devise.allow_insecure_sign_in_after_confirmation
-        after_sign_in_path_for(resource)
-      else
-        new_session_path(resource_name)
-      end
+      new_session_path(resource_name)
     end
 end

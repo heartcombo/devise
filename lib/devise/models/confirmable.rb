@@ -275,10 +275,6 @@ module Devise
           confirmation_token = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
 
           confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
-          if !confirmable.persisted? && Devise.allow_insecure_token_lookup
-            confirmable = find_or_initialize_with_error_by(:confirmation_token, original_token)
-          end
-
           confirmable.confirm! if confirmable.persisted?
           confirmable.confirmation_token = original_token
           confirmable

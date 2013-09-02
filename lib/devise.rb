@@ -50,15 +50,21 @@ module Devise
   mattr_accessor :secret_key
   @@secret_key = nil
 
-  # Allow insecure token lookup. Must be used
-  # temporarily just for migration.
-  mattr_accessor :allow_insecure_token_lookup
-  @@allow_insecure_tokens_lookup = false
+  [ :allow_insecure_token_lookup,
+    :allow_insecure_sign_in_after_confirmation,
+    :token_authentication_key ].each do |method|
+    class_eval <<-RUBY
+    def self.#{method}
+      ActiveSupport::Deprecation.warn "Devise.#{method} is deprecated " \
+        "and has no effect"
+    end
 
-  # Allow insecure sign in after confirmation. Must be used
-  # temporarily just for migration.
-  mattr_accessor :allow_insecure_sign_in_after_confirmation
-  @@allow_insecure_sign_in_after_confirmation = false
+    def self.#{method}=(val)
+      ActiveSupport::Deprecation.warn "Devise.#{method}= is deprecated " \
+        "and has no effect"
+    end
+    RUBY
+  end
 
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
@@ -194,10 +200,6 @@ module Devise
   # Address which sends Devise e-mails.
   mattr_accessor :mailer_sender
   @@mailer_sender = nil
-
-  # Authentication token params key name of choice. E.g. /users/sign_in?some_key=...
-  mattr_accessor :token_authentication_key
-  @@token_authentication_key = :auth_token
 
   # Skip session storage for the following strategies
   mattr_accessor :skip_session_storage

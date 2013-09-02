@@ -116,9 +116,6 @@ module Devise
           reset_password_token = Devise.token_generator.digest(self, :reset_password_token, original_token)
 
           recoverable = find_or_initialize_with_error_by(:reset_password_token, reset_password_token)
-          if !recoverable.persisted? && Devise.allow_insecure_token_lookup
-            recoverable = find_or_initialize_with_error_by(:reset_password_token, original_token)
-          end
 
           if recoverable.persisted?
             if recoverable.reset_password_period_valid?

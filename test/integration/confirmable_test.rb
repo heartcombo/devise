@@ -62,27 +62,6 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'user should be signed in after confirmation if allow_insecure_sign_in_after_confirmation is enabled' do
-    swap Devise, :confirm_within => 3.days, :allow_insecure_sign_in_after_confirmation => true do
-      user = create_user(:confirm => false, :confirmation_sent_at => 2.days.ago)
-      assert_not user.confirmed?
-      visit_user_confirmation_with_token(user.raw_confirmation_token)
-
-      assert_contain 'Your account was successfully confirmed. You are now signed in.'
-      assert_current_url root_url
-      assert user.reload.confirmed?
-    end
-  end
-
-  test 'user should be redirected to a custom path after confirmation' do
-    Devise::ConfirmationsController.any_instance.stubs(:after_confirmation_path_for).returns("/?custom=1")
-
-    user = create_user(:confirm => false)
-    visit_user_confirmation_with_token(user.raw_confirmation_token)
-
-    assert_current_url "/?custom=1"
-  end
-
   test 'already confirmed user should not be able to confirm the account again' do
     user = create_user(:confirm => false)
     user.confirmed_at = Time.now

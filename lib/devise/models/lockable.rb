@@ -165,10 +165,6 @@ module Devise
           unlock_token   = Devise.token_generator.digest(self, :unlock_token, unlock_token)
 
           lockable = find_or_initialize_with_error_by(:unlock_token, unlock_token)
-          if !lockable.persisted? && Devise.allow_insecure_token_lookup
-            lockable = find_or_initialize_with_error_by(:unlock_token, original_token)
-          end
-
           lockable.unlock_access! if lockable.persisted?
           lockable.unlock_token = original_token
           lockable

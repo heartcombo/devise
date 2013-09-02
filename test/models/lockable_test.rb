@@ -139,16 +139,6 @@ class LockableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'DEPRECATED: should find and unlock a user automatically' do
-    swap Devise, allow_insecure_token_lookup: true do
-      user = create_user
-      user.lock_access!
-      locked_user = User.unlock_access_by_token(user.unlock_token)
-      assert_equal locked_user, user
-      assert_not user.reload.access_locked?
-    end
-  end
-
   test 'should find and unlock a user automatically based on raw token' do
     user = create_user
     raw  = user.send_unlock_instructions

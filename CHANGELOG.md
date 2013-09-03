@@ -1,6 +1,6 @@
 == 3.2.0-dev
 
-* enchancements
+* enhancements
   * Previously deprecated token authenticatable and insecure lookups have been removed
 
 == 3.1.0

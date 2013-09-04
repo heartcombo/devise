@@ -445,7 +445,7 @@ https://github.com/hassox/warden
 
 We have a long list of valued contributors. Check them all at:
 
-https://github.com/plataformatec/devise/contributors
+https://github.com/plataformatec/devise/graphs/contributors
 
 ## License
 

@@ -3,7 +3,8 @@ module Devise
     # Validatable creates all needed validations for a user email and password.
     # It's optional, given you may want to create the validations by yourself.
     # Automatically validate if the email is present, unique and its format is
-    # valid. Also tests presence of password, confirmation and length.
+    # valid. Setting +skip_email_uniqueness+ to true skips the validation of
+		# email uniqueness. Also tests presence of password, confirmation and length.
     #
     # == Options
     #
@@ -11,6 +12,8 @@ module Devise
     #
     #   * +email_regexp+: the regular expression used to validate e-mails;
     #   * +password_length+: a range expressing password length. Defaults to 8..128.
+		#   * +skip_email_uniqueness+: set to true to skip validation of email
+		#     uniqueness.
     #
     module Validatable
       # All validations used by this module.
@@ -27,7 +30,7 @@ module Devise
 
         base.class_eval do
           validates_presence_of   :email, :if => :email_required?
-          validates_uniqueness_of :email, :allow_blank => true, :if => :email_changed?
+          validates_uniqueness_of :email, :allow_blank => true, :if => :email_changed? unless skip_email_uniqueness
           validates_format_of     :email, :with  => email_regexp, :allow_blank => true, :if => :email_changed?
 
           validates_presence_of     :password, :if => :password_required?
@@ -59,7 +62,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :email_regexp, :password_length)
+        Devise::Models.config(self, :email_regexp, :skip_email_uniqueness, :password_length)
       end
     end
   end

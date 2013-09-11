@@ -113,9 +113,9 @@ module Devise
         # Attributes must contain reset_password_token, password and confirmation
         def reset_password_by_token(attributes={})
           original_token       = attributes[:reset_password_token]
-          reset_password_token = Devise.token_generator.digest(self, :reset_password_token, original_token)
+          # reset_password_token = Devise.token_generator.digest(self, :reset_password_token, original_token)
 
-          recoverable = find_or_initialize_with_error_by(:reset_password_token, reset_password_token)
+          recoverable = find_or_initialize_with_error_by(:reset_password_token, original_token)
 
           if recoverable.persisted?
             if recoverable.reset_password_period_valid?

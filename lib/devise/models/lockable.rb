@@ -162,9 +162,12 @@ module Devise
         # Options must have the unlock_token
         def unlock_access_by_token(unlock_token)
           original_token = unlock_token
-          unlock_token   = Devise.token_generator.digest(self, :unlock_token, unlock_token)
+          # unlock_token   = Devise.token_generator.digest(self, :unlock_token, unlock_token)
 
-          lockable = find_or_initialize_with_error_by(:unlock_token, unlock_token)
+          # lockable = find_or_initialize_with_error_by(:unlock_token, unlock_token)
+
+          lockable = find_or_initialize_with_error_by(:unlock_token, original_token)
+
           lockable.unlock_access! if lockable.persisted?
           lockable.unlock_token = original_token
           lockable

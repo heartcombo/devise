@@ -163,8 +163,7 @@ module Devise
       desc "Copies Devise views to your application."
 
       argument :scope, :required => false, :default => nil,
-                       :desc => "The scope to copy views to",
-                       :haml => false
+                       :desc => "The scope to copy views to"
 
       invoke SharedViewsGenerator
 

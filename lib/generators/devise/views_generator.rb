@@ -14,6 +14,7 @@ module Devise
         # It should be fixed in future Rails releases
         class_option :form_builder, :aliases => "-b"
         class_option :markerb
+        class_option :template, :type => :string, :aliases => "-t"
 
         public_task :copy_views
       end
@@ -32,7 +33,7 @@ module Devise
         view_directory :sessions
         view_directory :unlocks
       end
-
+      
       protected
 
       def view_directory(name, _target_path = nil)
@@ -44,7 +45,7 @@ module Devise
           end
         end
       end
-
+      
       def target_path
         @target_path ||= "app/views/#{scope || :devise}"
       end
@@ -87,6 +88,62 @@ module Devise
       end
     end
 
+    class SlimGenerator < Rails::Generators::Base #:nodoc:
+      include ViewPathTemplates
+      source_root File.expand_path("../../../../app/views/devise", __FILE__)
+      desc "Converts .erb view files to specified templating format"
+      hide!
+      
+      def copy_views
+        converts_to_slim
+      end
+      
+      protected
+      
+      def converts_to_slim
+        verify_slim_existence
+        system( "for file in #{target_path}/**/*.erb; do erb2slim $file ${file%erb}slim && rm $file; done")
+      end
+      
+      def verify_slim_existence
+        begin
+          require "html2slim"
+        rescue LoadError
+            say "html2slim is not installed, or it is not specified in your Gemfile."
+          exit
+        end
+      end
+      
+    end
+    
+    class HamlGenerator < Rails::Generators::Base #:nodoc:
+      include ViewPathTemplates
+      source_root File.expand_path("../../../../app/views/devise", __FILE__)
+      desc "Converts .erb view files to specified templating format"
+      hide!
+      
+      def copy_views
+        converts_to_haml
+      end
+      
+      protected
+      
+      def converts_to_haml
+        verify_haml_existence
+        system( "for file in #{target_path}/**/*.erb; do html2haml -e $file ${file%erb}haml && rm $file; done")
+      end
+      
+      def verify_haml_existence
+        begin
+          require "html2haml"
+        rescue LoadError
+            say "html2haml is not installed, or it is not specified in your Gemfile."
+          exit
+        end
+      end
+      
+    end
+    
     class MarkerbGenerator < Rails::Generators::Base #:nodoc:
       include ViewPathTemplates
       source_root File.expand_path("../../templates", __FILE__)
@@ -106,7 +163,8 @@ module Devise
       desc "Copies Devise views to your application."
 
       argument :scope, :required => false, :default => nil,
-                       :desc => "The scope to copy views to"
+                       :desc => "The scope to copy views to",
+                       :haml => false
 
       invoke SharedViewsGenerator
 
@@ -117,6 +175,11 @@ module Devise
       hook_for :markerb,  :desc => "Generate markerb instead of erb mail views",
                           :default => defined?(Markerb) ? :markerb : :erb,
                           :type => :boolean
+      
+      hook_for :template, :aliases => "-t",
+                      :desc => "Converts .erb view files to specified templating format. Available options are 'haml' and 'slim'",
+                      :type => :string
+      
     end
   end
 end

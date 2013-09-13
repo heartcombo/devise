@@ -35,7 +35,7 @@ Devise is guaranteed to be thread-safe on YARV. Thread-safety support on JRuby i
 
 The Devise Wiki has lots of additional information about Devise including many "how-to" articles and answers to the most frequently asked questions. Please browse the Wiki after finishing this README:
 
-https://wiki.github.com/plataformatec/devise
+https://github.com/plataformatec/devise/wiki
 
 ### Bug reports
 

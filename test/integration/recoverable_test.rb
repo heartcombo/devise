@@ -190,7 +190,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
   end
 
   test 'sign in user automatically after changing its password' do
-    user = create_user
+    create_user
     request_forgot_password
     reset_password
 
@@ -260,7 +260,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
   end
 
   test 'change password with valid parameters in XML format should return valid response' do
-    user = create_user
+    create_user
     request_forgot_password
     put user_password_path(:format => 'xml'), :user => {
       :reset_password_token => 'abcdef', :password => '987654321', :password_confirmation => '987654321'

@@ -64,14 +64,14 @@ class RememberMeTest < ActionDispatch::IntegrationTest
     # since we changed the domain. This is the only difference with the
     # previous test.
     swap Devise, :rememberable_options => { :domain => "omg.somewhere.com" } do
-      user = sign_in_as_user :remember_me => true
+      sign_in_as_user :remember_me => true
       assert_nil request.cookies["remember_user_token"]
     end
   end
 
   test 'generate remember token with a custom key' do
     swap Devise, :rememberable_options => { :key => "v1lat_token" } do
-      user = sign_in_as_user :remember_me => true
+      sign_in_as_user :remember_me => true
       assert request.cookies["v1lat_token"]
     end
   end
@@ -79,7 +79,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
   test 'generate remember token after sign in setting session options' do
     begin
       Rails.configuration.session_options[:domain] = "omg.somewhere.com"
-      user = sign_in_as_user :remember_me => true
+      sign_in_as_user :remember_me => true
       assert_nil request.cookies["remember_user_token"]
     ensure
       Rails.configuration.session_options.delete(:domain)

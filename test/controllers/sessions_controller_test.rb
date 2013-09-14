@@ -10,7 +10,7 @@ class SessionsControllerTest < ActionController::TestCase
     end
     request.env["devise.mapping"] = Devise.mappings[:user]
     request.session["user_return_to"] = 'foo.bar'
-    user = create_user
+    create_user
     post :create, :user => {
       :email => "wrong@email.com",
       :password => "wrongpassword"

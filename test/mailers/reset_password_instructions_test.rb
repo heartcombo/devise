@@ -82,7 +82,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
     host = ActionMailer::Base.default_url_options[:host]
 
     if mail.body.encoded =~ %r{<a href=\"http://#{host}/users/password/edit\?reset_password_token=([^"]+)">}
-      assert_equal Devise.token_generator.digest(user.class, :reset_password_token, $1), user.reset_password_token
+      assert_equal Devise.token_generator.digest(:reset_password_token, $1), user.reset_password_token
     else
       flunk "expected reset password url regex to match"
     end

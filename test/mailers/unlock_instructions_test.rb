@@ -83,7 +83,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
     host = ActionMailer::Base.default_url_options[:host]
 
     if mail.body.encoded =~ %r{<a href=\"http://#{host}/users/unlock\?unlock_token=([^"]+)">}
-      assert_equal Devise.token_generator.digest(user.class, :unlock_token, $1), user.unlock_token
+      assert_equal Devise.token_generator.digest(:unlock_token, $1), user.unlock_token
     else
       flunk "expected unlock url regex to match"
     end

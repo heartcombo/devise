@@ -10,7 +10,7 @@ module Devise
       @digest = digest
     end
 
-    def digest(klass, column, value)
+    def digest(column, value)
       value.present? && OpenSSL::HMAC.hexdigest(@digest, key_for(column), value.to_s)
     end
 

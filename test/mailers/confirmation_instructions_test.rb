@@ -86,7 +86,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     host = ActionMailer::Base.default_url_options[:host]
 
     if mail.body.encoded =~ %r{<a href=\"http://#{host}/users/confirmation\?confirmation_token=([^"]+)">}
-      assert_equal Devise.token_generator.digest(user.class, :confirmation_token, $1), user.confirmation_token
+      assert_equal Devise.token_generator.digest(:confirmation_token, $1), user.confirmation_token
     else
       flunk "expected confirmation url regex to match"
     end

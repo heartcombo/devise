@@ -101,11 +101,6 @@ module Devise
           recoverable
         end
 
-        # Generate a token checking if one does not already exist in the database.
-        def reset_password_token
-          generate_token(:reset_password_token)
-        end
-
         # Attempt to find a user by its reset_password_token to reset its
         # password. If a user is found and token is still valid, reset its password and automatically
         # try saving the record. If not user is found, returns a new user

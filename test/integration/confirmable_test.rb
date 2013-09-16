@@ -56,7 +56,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_not user.confirmed?
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
-      assert_contain 'Your account was successfully confirmed. Please sign in.'
+      assert_contain 'Your account was successfully confirmed.'
       assert_current_url '/users/sign_in'
       assert user.reload.confirmed?
     end
@@ -120,6 +120,16 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
 
       assert_response :success
       assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'unconfirmed but signed in user should be redirected to their root path' do
+    swap Devise, :allow_unconfirmed_access_for => 1.day do
+      user = sign_in_as_user(:confirm => false)
+
+      visit_user_confirmation_with_token(user.raw_confirmation_token)
+      assert_contain 'Your account was successfully confirmed.'
+      assert_current_url '/'
     end
   end
 

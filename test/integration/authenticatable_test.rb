@@ -341,6 +341,20 @@ class AuthenticationSessionTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'allows independent _csrf_token for different scopes' do
+    swap ApplicationController, :allow_forgery_protection => true do
+      sign_in_as_user
+      get users_path
+      user_csrf_token = session[:_csrf_token]
+
+      sign_in_as_admin
+      assert warden.authenticated?(:user), 'User should still be authenticated after admin signs in'
+
+      post exhibit_user_path(1), {'authenticity_token' => user_csrf_token}
+      assert warden.authenticated?(:user), 'User should still be authenticated after posting a form'
+    end
+  end
+
   test 'allows session to be set for a given scope' do
     sign_in_as_user
     get '/users'

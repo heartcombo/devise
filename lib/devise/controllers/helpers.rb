@@ -287,6 +287,13 @@ module Devise
         Devise.navigational_formats.include?(request_format)
       end
 
+      # Overwrite Rails' form authenticity token to allow for independent
+      # authentication scopes
+      def form_authenticity_token
+        session_scope = warden.authenticated? ? warden.session : warden.request.session
+        session_scope[:_csrf_token] ||= SecureRandom.base64(32)
+      end
+
       private
 
       def expire_devise_cached_variables!

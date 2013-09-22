@@ -345,7 +345,7 @@ class AuthenticationSessionTest < ActionDispatch::IntegrationTest
     swap ApplicationController, :allow_forgery_protection => true do
       sign_in_as_user
       get users_path
-      user_csrf_token = session[:_csrf_token]
+      user_csrf_token = warden.session[:_csrf_token]
 
       sign_in_as_admin
       assert warden.authenticated?(:user), 'User should still be authenticated after admin signs in'

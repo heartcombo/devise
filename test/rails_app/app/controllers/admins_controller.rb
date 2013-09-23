@@ -2,6 +2,7 @@ class AdminsController < ApplicationController
   before_filter :authenticate_admin!
 
   def index
+    form_authenticity_token
   end
 
   def expire

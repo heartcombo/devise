@@ -43,8 +43,11 @@ module Devise
         mapping = mapping.name
 
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
+          attr_reader :current_auth_scope
+
           def authenticate_#{mapping}!(opts={})
             opts[:scope] = :#{mapping}
+            @current_auth_scope = :#{mapping} unless devise_controller?
             warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
           end
 
@@ -285,6 +288,13 @@ module Devise
 
       def is_navigational_format?
         Devise.navigational_formats.include?(request_format)
+      end
+
+      # Overwrite Rails' form authenticity token to allow for independent
+      # authentication scopes
+      def form_authenticity_token
+        session_scope = current_auth_scope ? warden.session(current_auth_scope) : warden.request.session
+        session_scope[:_csrf_token] ||= SecureRandom.base64(32)
       end
 
       private

@@ -1,3 +1,9 @@
+== 3.1.1
+
+* bug fix
+  * Improve default message which asked users to sign in even when they were already signed (by @gregates)
+  * Improve error message for when the `config.secret_key` is missing
+
 == 3.1.0
 
 Security announcement: http://blog.plataformatec.com.br/2013/08/devise-3-1-now-with-more-secure-defaults/

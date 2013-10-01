@@ -442,6 +442,7 @@ Devise.secret_key was not set. Please add the following to your Devise initializ
 
   config.secret_key = '#{SecureRandom.hex(64)}'
 
+Please ensure you restarted your application after installing Devise or setting the key.
 ERROR
       end
 

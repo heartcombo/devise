@@ -15,10 +15,11 @@ class DeviseTest < ActiveSupport::TestCase
     password = "super secret"
     klass    = Struct.new(:pepper, :stretches).new("blahblah", 2)
     hash     = Devise.bcrypt(klass, password)
-    assert_equal hash, Devise.bcrypt(klass, password)
+    assert_equal ::BCrypt::Password.create(hash), hash
 
     klass    = Struct.new(:pepper, :stretches).new("bla", 2)
-    assert_not_equal hash, Devise.bcrypt(klass, password)
+    hash     = Devise.bcrypt(klass, password)
+    assert_not_equal ::BCrypt::Password.new(hash), hash
   end
 
   test 'model options can be configured through Devise' do
@@ -69,7 +70,7 @@ class DeviseTest < ActiveSupport::TestCase
     Devise::ALL.delete(:kivi)
     Devise::CONTROLLERS.delete(:kivi)
   end
-  
+
   test 'should complain when comparing empty or different sized passes' do
     [nil, ""].each do |empty|
       assert_not Devise.secure_compare(empty, "something")

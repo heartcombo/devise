@@ -11,6 +11,17 @@ module Devise
 end
 
 class DeviseTest < ActiveSupport::TestCase
+  test 'bcrypt on the class' do
+    password = "super secret"
+    klass    = Struct.new(:pepper, :stretches).new("blahblah", 2)
+    hash     = Devise.bcrypt(klass, password)
+    assert_equal ::BCrypt::Password.create(hash), hash
+
+    klass    = Struct.new(:pepper, :stretches).new("bla", 2)
+    hash     = Devise.bcrypt(klass, password)
+    assert_not_equal ::BCrypt::Password.new(hash), hash
+  end
+
   test 'model options can be configured through Devise' do
     swap Devise, :allow_unconfirmed_access_for => 113, :pepper => "foo" do
       assert_equal 113, Devise.allow_unconfirmed_access_for
@@ -59,7 +70,7 @@ class DeviseTest < ActiveSupport::TestCase
     Devise::ALL.delete(:kivi)
     Devise::CONTROLLERS.delete(:kivi)
   end
-  
+
   test 'should complain when comparing empty or different sized passes' do
     [nil, ""].each do |empty|
       assert_not Devise.secure_compare(empty, "something")

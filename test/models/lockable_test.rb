@@ -279,4 +279,13 @@ class LockableTest < ActiveSupport::TestCase
       assert_equal :invalid, user.unauthenticated_message
     end
   end
+
+  test 'should return last attempt message if user made next-to-last attempt of password entering' do
+    swap Devise, :last_attempt_warning => :true do
+      user = create_user
+      user.failed_attempts = Devise.maximum_attempts - 1
+
+      assert_equal :last_attempt, user.unauthenticated_message
+    end
+  end
 end

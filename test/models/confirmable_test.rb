@@ -105,13 +105,15 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should skip confirmation e-mail without confirming if skip_confirmation_notification! is invoked' do
+  test 'should skip confirmation e-mail and token generation without confirming if skip_confirmation_notification! is invoked' do
     user = new_user
     user.skip_confirmation_notification!
 
     assert_email_not_sent do
       user.save!
       assert !user.confirmed?
+      assert_nil user.confirmation_token
+      assert_nil user.confirmation_sent_at
     end
   end
 

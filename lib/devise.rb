@@ -268,6 +268,10 @@ module Devise
   mattr_accessor :paranoid
   @@paranoid = false
 
+  # When true, warn user if he just used next-to-last attempt of authentication
+  mattr_accessor :last_attempt_warning
+  @@last_attempt_warning = false
+
   # Stores the token generator
   mattr_accessor :token_generator
   @@token_generator = nil

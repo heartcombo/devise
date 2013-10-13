@@ -112,6 +112,8 @@ module Devise
         # leaks the existence of an account.
         if Devise.paranoid
           super
+        elsif lock_strategy_enabled?(:failed_attempts) && last_attempt?
+          :last_attempt
         elsif lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
           :locked
         else
@@ -123,6 +125,10 @@ module Devise
 
         def attempts_exceeded?
           self.failed_attempts > self.class.maximum_attempts
+        end
+
+        def last_attempt?
+          self.failed_attempts == self.class.maximum_attempts - 1
         end
 
         # Tells if the lock is expired if :time unlock strategy is active

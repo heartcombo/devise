@@ -24,6 +24,15 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal confirmation.downcase, user.email_confirmation
   end
 
+  test 'should not mutate value assigned to case insensitive key' do
+    email          = 'Foo@Bar.com'
+    original_email = email.dup
+    user           = new_user(:email => email)
+
+    user.save!
+    assert_equal original_email, email
+  end
+
   test 'should remove whitespace from strip whitespace keys when saving' do
     # strip_whitespace_keys is set to :email by default.
     email = ' foo@bar.com '
@@ -32,6 +41,15 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal email, user.email
     user.save!
     assert_equal email.strip, user.email
+  end
+
+  test 'should not mutate value assigned to string whitespace key' do
+    email          = ' foo@bar.com '
+    original_email = email.dup
+    user           = new_user(:email => email)
+
+    user.save!
+    assert_equal original_email, email
   end
 
   test "doesn't throw exception when globally configured strip_whitespace_keys are not present on a model" do

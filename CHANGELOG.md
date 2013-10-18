@@ -3,6 +3,7 @@
 * enhancements
   * Previously deprecated token authenticatable and insecure lookups have been removed
   * Add a class method so you can encrypt passwords from fixtures (by @tenderlove)
+  * Prevent mutation of values assigned to case and whitespace santitized members (by @iamvery)
 
 ### 3.1.1
 

@@ -5,6 +5,7 @@
   * Add a class method so you can encrypt passwords from fixtures (by @tenderlove)
   * Send custom message when user enters invalid password and it has only one attempt
   to enter correct password before his account will be locked (by @Lightpower)
+  * Prevent mutation of values assigned to case and whitespace santitized members (by @iamvery)
 
 ### 3.1.1
 

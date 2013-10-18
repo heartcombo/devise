@@ -187,7 +187,7 @@ module Devise
 
         # Use respond_to? here to avoid a regression where globally
         # configured strip_whitespace_keys or case_insensitive_keys were
-        # attempting to strip! or downcase! when a model didn't have the
+        # attempting to strip or downcase when a model didn't have the
         # globally configured key.
         elsif respond_to?(attr) && respond_to?("#{attr}=")
           new_value = send(attr).try(method)

@@ -58,6 +58,28 @@ module ActionDispatch::Routing
     #      user_confirmation GET    /users/confirmation(.:format)     {:controller=>"devise/confirmations", :action=>"show"}
     #                        POST   /users/confirmation(.:format)     {:controller=>"devise/confirmations", :action=>"create"}
     #
+    # ==== Routes integration
+    #
+    # +devise_for+ is meant to play nicely with other routes methods. For example,
+    # by calling +devise_for+ inside a namespace, it automatically nests your devise
+    # controllers:
+    #
+    #     namespace :publisher do
+    #       devise_for :account
+    #     end
+    #
+    # The snippet above will use publisher/sessions controller instead of devise/sessions
+    # controller. You can revert this change or configure it directly by passing the :module
+    # option described below to +devise_for+.
+    #
+    # Also note that when you use a namespace it will affect all the helpers and methods
+    # for controllers and views. For example, using the above setup you'll end with
+    # following methods: current_publisher_account, authenticate_publisher_account!,
+    # publisher_account_signed_in, etc.
+    #
+    # The only aspect not affect by the router configuration is the model name. The
+    # model name can be explicitly set via the :class_name option.
+    #
     # ==== Options
     #
     # You can configure your routes with some options:
@@ -103,20 +125,6 @@ module ActionDispatch::Routing
     #    to namespace all at once, use module:
     #
     #      devise_for :users, :module => "users"
-    #
-    #    Notice that whenever you use namespace in the router DSL, it automatically sets the module.
-    #    So the following setup:
-    #
-    #      namespace :publisher do
-    #        devise_for :account
-    #      end
-    #
-    #    Will use publisher/sessions controller instead of devise/sessions controller. You can revert
-    #    this by providing the :module option to devise_for.
-    #
-    #    Also pay attention that when you use a namespace it will affect all the helpers and methods for controllers
-    #    and views. For example, using the above setup you'll end with following methods:
-    #    current_publisher_account, authenticate_publisher_account!, publisher_account_signed_in, etc.
     #
     #  * :skip => tell which controller you want to skip routes from being created:
     #

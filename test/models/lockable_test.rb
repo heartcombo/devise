@@ -284,11 +284,14 @@ class LockableTest < ActiveSupport::TestCase
     swap Devise, :last_attempt_warning => :true do
       swap Devise, :lock_strategy => :failed_attempts do
         user = create_user
-        user.failed_attempts = Devise.maximum_attempts - 2
+        user.failed_attempts = Devise.maximum_attempts - 1
         assert_equal :invalid, user.unauthenticated_message
 
-        user.failed_attempts = Devise.maximum_attempts - 1
+        user.failed_attempts = Devise.maximum_attempts
         assert_equal :last_attempt, user.unauthenticated_message
+
+        user.failed_attempts = Devise.maximum_attempts + 1
+        assert_equal :locked, user.unauthenticated_message
       end
     end
   end

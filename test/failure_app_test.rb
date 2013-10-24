@@ -8,6 +8,12 @@ class FailureTest < ActiveSupport::TestCase
     end
   end
 
+  class FailureWithI18nOptions < Devise::FailureApp
+    def i18n_options(options)
+      options.merge(:name => 'Steve')
+    end
+  end
+
   def self.context(name, &block)
     instance_eval(&block)
   end
@@ -65,6 +71,11 @@ class FailureTest < ActiveSupport::TestCase
       call_failure('warden' => OpenStruct.new(:message => :invalid))
       assert_equal 'Invalid email or password.', @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+    end
+
+    test 'uses custom i18n options' do
+      call_failure('warden' => OpenStruct.new(:message => :does_not_exist), :app => FailureWithI18nOptions)
+      assert_equal 'User Steve does not exist', @request.flash[:alert]
     end
 
     test 'uses the proxy failure message as string' do

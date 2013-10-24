@@ -68,8 +68,13 @@ module Devise
       message = warden_message || default || :unauthenticated
 
       if message.is_a?(Symbol)
-        I18n.t(:"#{scope}.#{message}", :resource_name => scope,
-               :scope => "devise.failure", :default => [message])
+        options = {}
+        options[:resource_name] = scope
+        options[:scope] = "devise.failure"
+        options[:default] = [message]
+        options = i18n_options(options) if respond_to?(:i18n_options, true)
+
+        I18n.t(:"#{scope}.#{message}", options)
       else
         message.to_s
       end

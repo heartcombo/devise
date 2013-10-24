@@ -101,7 +101,7 @@ module Devise
       end
 
       # Destroy record when :current_password matches, otherwise returns
-      # error on :current_password. It also automatically rejects 
+      # error on :current_password. It also automatically rejects
       # :current_password if it is blank.
       def destroy_with_password(current_password)
         result = if valid_password?(current_password)
@@ -115,6 +115,16 @@ module Devise
         result
       end
 
+      # A callback initiated after successfully authenticating. This can be
+      # used to insert your own logic that is only run after the user successfully
+      # authenticates.
+      #
+      # Example:
+      #
+      #   def after_database_authentication
+      #     self.update_attribute(:invite_code, nil)
+      #   end
+      #
       def after_database_authentication
       end
 

@@ -64,6 +64,10 @@ module Devise
 
   protected
 
+    def i18n_options(options)
+      options
+    end
+
     def i18n_message(default = nil)
       message = warden_message || default || :unauthenticated
 
@@ -72,7 +76,7 @@ module Devise
         options[:resource_name] = scope
         options[:scope] = "devise.failure"
         options[:default] = [message]
-        options = i18n_options(options) if respond_to?(:i18n_options, true)
+        options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)
       else

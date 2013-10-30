@@ -127,13 +127,17 @@ module Devise
 
         expire_session_data_after_sign_in!
 
-        if options[:bypass]
-          warden.session_serializer.store(resource, scope)
-        elsif warden.user(scope) == resource && !options.delete(:force)
-          # Do nothing. User already signed in and we are not forcing it.
-          true
-        else
-          warden.set_user(resource, options.merge!(:scope => scope))
+        ActiveSupport::Notifications.instrument 'sign_in.devise', options: options, user_id: resource.id do
+
+          if options[:bypass]
+            warden.session_serializer.store(resource, scope)
+          elsif warden.user(scope) == resource && !options.delete(:force)
+            # Do nothing. User already signed in and we are not forcing it.
+            true
+          else
+            warden.set_user(resource, options.merge!(:scope => scope))
+          end
+
         end
       end
 
@@ -148,30 +152,39 @@ module Devise
       #
       def sign_out(resource_or_scope=nil)
         return sign_out_all_scopes unless resource_or_scope
-        scope = Devise::Mapping.find_scope!(resource_or_scope)
-        user = warden.user(:scope => scope, :run_callbacks => false) # If there is no user
 
-        warden.raw_session.inspect # Without this inspect here. The session does not clear.
-        warden.logout(scope)
-        warden.clear_strategies_cache!(:scope => scope)
-        instance_variable_set(:"@current_#{scope}", nil)
+        ActiveSupport::Notifications.instrument 'sign_out.devise', user_id: resource.id do
 
-        !!user
+          scope = Devise::Mapping.find_scope!(resource_or_scope)
+          user = warden.user(:scope => scope, :run_callbacks => false) # If there is no user
+
+          warden.raw_session.inspect # Without this inspect here. The session does not clear.
+          warden.logout(scope)
+          warden.clear_strategies_cache!(:scope => scope)
+          instance_variable_set(:"@current_#{scope}", nil)
+
+          !!user
+
+        end
       end
 
       # Sign out all active users or scopes. This helper is useful for signing out all roles
       # in one click. This signs out ALL scopes in warden. Returns true if there was at least one logout
       # and false if there was no user logged in on all scopes.
       def sign_out_all_scopes(lock=true)
-        users = Devise.mappings.keys.map { |s| warden.user(:scope => s, :run_callbacks => false) }
+        ActiveSupport::Notifications.instrument 'sign_out.devise' do
 
-        warden.raw_session.inspect
-        warden.logout
-        expire_devise_cached_variables!
-        warden.clear_strategies_cache!
-        warden.lock! if lock
+          users = Devise.mappings.keys.map { |s| warden.user(:scope => s, :run_callbacks => false) }
 
-        users.any?
+          warden.raw_session.inspect
+          warden.logout
+          expire_devise_cached_variables!
+          warden.clear_strategies_cache!
+          warden.lock! if lock
+
+          users.any?
+
+        end
       end
 
       # Returns and delete (if it's navigational format) the url stored in the session for

@@ -47,18 +47,22 @@ module Devise
     end
 
     def sign_in
-      default_params.permit self.for(:sign_in)
+      permit self.for(:sign_in)
     end
 
     def sign_up
-      default_params.permit self.for(:sign_up)
+      permit self.for(:sign_up)
     end
 
     def account_update
-      default_params.permit self.for(:account_update)
+      permit self.for(:account_update)
     end
 
     private
+
+    def permit(keys)
+      default_params.permit(*Array(keys))
+    end
 
     # Change for(kind) to return the values in the @permitted
     # hash, allowing the developer to customize at runtime.

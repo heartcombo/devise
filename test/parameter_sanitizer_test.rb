@@ -68,5 +68,14 @@ if defined?(ActionController::StrongParameters)
         sanitizer.sanitize(:unknown)
       end
     end
+
+    test 'passes parameters to filter as arguments to sanitizer' do
+      params = {user: stub}
+      sanitizer = Devise::ParameterSanitizer.new(User, :user, params)
+
+      params[:user].expects(:permit).with(kind_of(Symbol), kind_of(Symbol), kind_of(Symbol))
+
+      sanitizer.sanitize(:sign_in)
+    end
   end
 end

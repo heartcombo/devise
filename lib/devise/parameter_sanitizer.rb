@@ -60,6 +60,8 @@ module Devise
 
     private
 
+    # TODO: We do need to flatten so it works with strong_parameters
+    # gem. We should drop it once we move to Rails 4 only support.
     def permit(keys)
       default_params.permit(*Array(keys))
     end

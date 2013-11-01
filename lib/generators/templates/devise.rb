@@ -221,10 +221,6 @@ Devise.setup do |config|
   # The "*/*" below is required to match Internet Explorer requests.
   # config.navigational_formats = ['*/*', :html]
 
-  # Lists the formats that should display flash messages. Inherits
-  # navigational_formats if falsy
-  # config.flashing_formats = nil
-
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 

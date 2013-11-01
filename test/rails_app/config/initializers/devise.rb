@@ -162,10 +162,6 @@ Devise.setup do |config|
   # should add them to the navigational formats lists. Default is [:html]
   # config.navigational_formats = [:html, :iphone]
 
-  # Lists the formats that should display flash messages. Inherits
-  # navigational_formats if falsy
-  # config.flashing_formats = nil
-
   # The default HTTP method used to sign out a resource. Default is :get.
   # config.sign_out_via = :get
 

@@ -209,10 +209,6 @@ module Devise
   mattr_accessor :navigational_formats
   @@navigational_formats = ["*/*", :html]
 
-  # Which formats should display flash messages.
-  mattr_accessor :flashing_formats
-  @@flashing_formats = nil
-
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
   @@sign_out_all_scopes = true

@@ -291,8 +291,10 @@ module Devise
         Devise.navigational_formats.include?(request_format)
       end
 
+      # Check if flash messages should be emitted. Default is to do it on
+      # navigational formats
       def is_flashing_format?
-        (Devise.flashing_formats || Devise.navigational_formats).include?(request_format)
+        is_navigational_format?
       end
 
       private

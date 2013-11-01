@@ -291,6 +291,10 @@ module Devise
         Devise.navigational_formats.include?(request_format)
       end
 
+      def is_flashing_format?
+        (Devise.flashing_formats || Devise.navigational_formats).include?(request_format)
+      end
+
       private
 
       def expire_devise_cached_variables!

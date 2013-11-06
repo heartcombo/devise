@@ -386,8 +386,14 @@ module ActionDispatch::Routing
       end
 
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
+        if mapping.fullpath =~ /:[a-zA-Z_]/
+          raise "[DEVISE] Nesting omniauth callbacks under scopes with dynamic segments " \
+            "is not supported. Please, use Devise.omniauth_path_prefix instead."
+        end
+
         path, @scope[:path] = @scope[:path], nil
-        path_prefix = Devise.omniauth_path_prefix || "/#{mapping.path}/auth".squeeze("/")
+        path_prefix = Devise.omniauth_path_prefix || "/#{mapping.fullpath}/auth".squeeze("/")
+
         set_omniauth_path_prefix!(path_prefix)
 
         providers = Regexp.union(mapping.to.omniauth_providers.map(&:to_s))

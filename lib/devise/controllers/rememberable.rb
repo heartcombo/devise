@@ -1,22 +1,12 @@
 module Devise
   module Controllers
     # A module that may be optionally included in a controller in order
-    # to provide remember me behavior.
+    # to provide remember me behavior. Useful when signing in is done
+    # through a callback, like in Omniauth.
     module Rememberable
       # Return default cookie values retrieved from session options.
       def self.cookie_values
         Rails.configuration.session_options.slice(:path, :domain, :secure)
-      end
-
-      # A small warden proxy so we can remember and forget uses from hooks.
-      class Proxy #:nodoc:
-        include Devise::Controllers::Rememberable
-
-        delegate :cookies, :env, :to => :@warden
-
-        def initialize(warden)
-          @warden = warden
-        end
       end
 
       # Remembers the given resource by setting up a cookie

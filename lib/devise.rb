@@ -20,7 +20,12 @@ module Devise
     autoload :Helpers, 'devise/controllers/helpers'
     autoload :Rememberable, 'devise/controllers/rememberable'
     autoload :ScopedViews, 'devise/controllers/scoped_views'
+    autoload :SignInOut, 'devise/controllers/sign_in_out'
     autoload :UrlHelpers, 'devise/controllers/url_helpers'
+  end
+
+  module Hooks
+    autoload :Proxy, 'devise/hooks/proxy'
   end
 
   module Mailers

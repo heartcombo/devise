@@ -148,4 +148,26 @@ class TestHelpersTest < ActionController::TestCase
     get :index
     assert_match /User ##{second_user.id}/, @response.body
   end
+
+
+  test "passes  given headers from the failure app to the response" do
+
+    begin
+      old_failure_app = Devise.warden_config[:failure_app]
+      class CustomTestFailureApp < Devise::FailureApp
+        def respond
+          self.status = 401
+          self.response.headers["CUSTOMHEADER"] = 1
+        end
+      end
+      Devise.warden_config[:failure_app] = CustomTestFailureApp
+      user = create_user
+      sign_in user
+      get :index
+      assert_equal 1, @response.headers["CUSTOMHEADER"]
+    ensure
+      Devise.warden_config[:failure_app] = old_failure_app
+    end
+  end
+
 end

@@ -1,4 +1,4 @@
-### 3.2.0-dev
+### 3.2.0
 
 * enhancements
   * Previously deprecated token authenticatable and insecure lookups have been removed

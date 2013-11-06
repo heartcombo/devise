@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   respond_to :html, :xml
 
   def index
+    form_authenticity_token
     user_session[:cart] = "Cart"
     respond_with(current_user)
   end

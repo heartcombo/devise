@@ -341,6 +341,20 @@ class AuthenticationSessionTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'does not clobber existing csrf token for authenticated users' do
+    swap ApplicationController, :allow_forgery_protection => true do
+      sign_in_as_user
+      get users_path
+      csrf_token = request.session[:_csrf_token]
+
+      sign_in_as_admin
+      get admins_path
+
+      post exhibit_user_path(1), {'authenticity_token' => csrf_token}
+      assert warden.authenticated?(:user), 'User should still be authenticated after posting a form'
+    end
+  end
+
   test 'allows session to be set for a given scope' do
     sign_in_as_user
     get '/users'

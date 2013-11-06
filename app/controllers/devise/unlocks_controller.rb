@@ -9,6 +9,7 @@ class Devise::UnlocksController < DeviseController
   # POST /resource/unlock
   def create
     self.resource = resource_class.send_unlock_instructions(resource_params)
+    yield resource if block_given?
 
     if successfully_sent?(resource)
       respond_with({}, :location => after_sending_unlock_instructions_path_for(resource))
@@ -20,6 +21,7 @@ class Devise::UnlocksController < DeviseController
   # GET /resource/unlock?unlock_token=abcdef
   def show
     self.resource = resource_class.unlock_access_by_token(params[:unlock_token])
+    yield resource if block_given?
 
     if resource.errors.empty?
       set_flash_message :notice, :unlocked if is_flashing_format?

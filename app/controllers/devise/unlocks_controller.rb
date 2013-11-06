@@ -22,7 +22,7 @@ class Devise::UnlocksController < DeviseController
     self.resource = resource_class.unlock_access_by_token(params[:unlock_token])
 
     if resource.errors.empty?
-      set_flash_message :notice, :unlocked if is_navigational_format?
+      set_flash_message :notice, :unlocked if is_flashing_format?
       respond_with_navigational(resource){ redirect_to after_unlock_path_for(resource) }
     else
       respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render :new }

@@ -123,7 +123,7 @@ MESSAGE
     end
 
     if notice
-      set_flash_message :notice, notice if is_navigational_format?
+      set_flash_message :notice, notice if is_flashing_format?
       true
     end
   end

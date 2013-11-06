@@ -6,6 +6,12 @@
   * Send custom message when user enters invalid password and it has only one attempt
   to enter correct password before his account will be locked (by @Lightpower)
   * Prevent mutation of values assigned to case and whitespace santitized members (by @iamvery)
+  * Separate redirects and flash messages in `navigational_formats` and `flashing_formats` (by @ssendev)
+
+* bug fix
+  * A GET to sign_in page shouldn't extend the session (by @drewish)
+  * Splat the arguments to `strong_parameters#permit` to work around a limitation in the `strong_parameters` gem (by @memberful)
+  * Omniauth now uses `mapping.fullpath` when generating routes. This means if you call `devise_for :users` inside a scope, like `scope "/api"`, the scope will now apply to the omniauth route (by @AlexanderZaytsev)
 
 ### 3.1.1
 

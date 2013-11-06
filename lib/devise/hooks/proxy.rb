@@ -6,10 +6,15 @@ module Devise
       include Devise::Controllers::Rememberable
       include Devise::Controllers::SignInOut
 
-      delegate :cookies, :env, :session, :to => :@warden
+      attr_reader :warden
+      delegate :cookies, :env, :to => :warden
 
       def initialize(warden)
         @warden = warden
+      end
+
+      def session
+        warden.request.session
       end
     end
   end

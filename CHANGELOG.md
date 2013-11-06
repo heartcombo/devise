@@ -12,6 +12,7 @@
   * A GET to sign_in page shouldn't extend the session (by @drewish)
   * Splat the arguments to `strong_parameters#permit` to work around a limitation in the `strong_parameters` gem (by @memberful)
   * Omniauth now uses `mapping.fullpath` when generating routes. This means if you call `devise_for :users` inside a scope, like `scope "/api"`, the scope will now apply to the omniauth route (by @AlexanderZaytsev)
+  * Ensure timeoutable hook respects `Devise.sign_out_all_scopes` configuration
 
 * deprecations
   * `expire_session_data_after_sign_in!` has been deprecated in favor of `expire_data_after_sign_in!`

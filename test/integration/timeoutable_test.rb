@@ -45,6 +45,20 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     assert_not warden.authenticated?(:user)
   end
 
+  test 'time out all sessions after default limit time when sign_out_all_scopes is true' do
+    swap Devise, sign_out_all_scopes: true do
+      sign_in_as_admin
+
+      user = sign_in_as_user
+      get expire_user_path(user)
+      assert_not_nil last_request_at
+
+      get root_path
+      assert_not warden.authenticated?(:user)
+      assert_not warden.authenticated?(:admin)
+    end
+  end
+
   test 'time out user session after deault limit time and redirect to latest get request' do
     user = sign_in_as_user
     visit edit_form_user_path(user)

@@ -387,8 +387,23 @@ module ActionDispatch::Routing
 
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         if mapping.fullpath =~ /:[a-zA-Z_]/
-          raise "[DEVISE] Nesting omniauth callbacks under scopes with dynamic segments " \
-            "is not supported. Please, use Devise.omniauth_path_prefix instead."
+          raise <<-ERROR
+Devise does not support scoping omniauth callbacks under a dynamic segment
+and you have set #{mapping.fullpath.inspect}. You can work around by passing
+`skip: :omniauth_callbacks` and manually defining the routes. Here is an example:
+
+    match "/users/auth/:provider",
+      :constraints => { :provider => /\Agoogle|facebook\z/ },
+      :to => "devise/omniauth_callbacks#passthru",
+      :as => :omniauth_authorize,
+      :via => [:get, :post]
+
+    match "/users/auth/:action/callback",
+      :constraints => { :action => /\Agoogle|facebook\z/ },
+      :to => "devise/omniauth_callbacks",
+      :as => :omniauth_callback,
+      :via => [:get, :post]
+ERROR
         end
 
         path, @scope[:path] = @scope[:path], nil

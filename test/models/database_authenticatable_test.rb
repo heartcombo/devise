@@ -93,6 +93,11 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_present user.encrypted_password
   end
 
+  test 'should support custom encryption methods' do
+    user = UserWithCustomEncryption.new(:password => '654321')
+    assert_equal user.encrypted_password, '123456'
+  end
+
   test 'allow authenticatable_salt to work even with nil encrypted password' do
     user = User.new
     user.encrypted_password = nil

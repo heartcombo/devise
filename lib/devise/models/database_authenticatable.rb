@@ -39,7 +39,7 @@ module Devise
       # Generates password encryption based on the given value.
       def password=(new_password)
         @password = new_password
-        self.encrypted_password = Devise.bcrypt(self.class, @password) if @password.present?
+        self.encrypted_password = password_digest(@password) if @password.present?
       end
 
       # Verifies whether an password (ie from sign in) is the user password.
@@ -134,6 +134,15 @@ module Devise
       end
 
     protected
+
+      # Digests the password using bcrypt. Custom encryption should override
+      # this method to apply their own algorithm.
+      #
+      # See https://github.com/plataformatec/devise-encryptable for examples
+      # of other encryption engines.
+      def password_digest(password)
+        Devise.bcrypt(self.class, password)
+      end
 
       module ClassMethods
         Devise::Models.config(self, :pepper, :stretches)

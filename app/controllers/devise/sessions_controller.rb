@@ -34,7 +34,7 @@ class Devise::SessionsController < DeviseController
       format.any(*navigational_formats) { redirect_to redirect_path }
     end
   end
-  alias :destroy! :destroy!
+  alias :destroy! :destroy
 
   # Make aliases protected
   protected :create!, :destroy!

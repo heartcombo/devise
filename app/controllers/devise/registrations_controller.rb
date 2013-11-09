@@ -28,6 +28,7 @@ class Devise::RegistrationsController < DeviseController
       respond_with resource
     end
   end
+  alias :create! :create
 
   # GET /resource/edit
   def edit
@@ -55,6 +56,7 @@ class Devise::RegistrationsController < DeviseController
       respond_with resource
     end
   end
+  alias :update! :update
 
   # DELETE /resource
   def destroy
@@ -64,6 +66,7 @@ class Devise::RegistrationsController < DeviseController
     yield resource if block_given?
     respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
   end
+  alias :destroy! :destroy
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -75,7 +78,8 @@ class Devise::RegistrationsController < DeviseController
     redirect_to new_registration_path(resource_name)
   end
 
-  protected
+  # Make aliases protected
+  protected :create!, :update!, :destroy!
 
   def update_needs_confirmation?(resource, previous)
     resource.respond_to?(:pending_reconfirmation?) &&

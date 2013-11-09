@@ -187,6 +187,17 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     assert_nil @controller.session[:"user_return_to"]
   end
 
+  test 'store location for stores a location to redirect back to' do
+    assert_nil @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, "/foo.bar")
+    assert_equal "/foo.bar", @controller.stored_location_for(:user)
+  end
+
+  test 'store location for accepts a resource as argument' do
+    @controller.store_location_for(User.new, "/foo.bar")
+    assert_equal "/foo.bar", @controller.stored_location_for(User.new)
+  end
+
   test 'after sign in path defaults to root path if none by was specified for the given scope' do
     assert_equal root_path, @controller.after_sign_in_path_for(:user)
   end

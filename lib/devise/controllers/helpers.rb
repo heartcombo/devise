@@ -4,6 +4,7 @@ module Devise
     module Helpers
       extend ActiveSupport::Concern
       include Devise::Controllers::SignInOut
+      include Devise::Controllers::StoreLocation
 
       included do
         helper_method :warden, :signed_in?, :devise_controller?
@@ -95,23 +96,6 @@ module Devise
       # Tell warden that params authentication is allowed for that specific page.
       def allow_params_authentication!
         request.env["devise.allow_params_authentication"] = true
-      end
-
-      # Returns and delete (if it's navigational format) the url stored in the session for
-      # the given scope. Useful for giving redirect backs after sign up:
-      #
-      # Example:
-      #
-      #   redirect_to stored_location_for(:user) || root_path
-      #
-      def stored_location_for(resource_or_scope)
-        scope = Devise::Mapping.find_scope!(resource_or_scope)
-
-        if is_navigational_format?
-          session.delete("#{scope}_return_to")
-        else
-          session["#{scope}_return_to"]
-        end
       end
 
       # The scope root url to be used when he's signed in. By default, it first

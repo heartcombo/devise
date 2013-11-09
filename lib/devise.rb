@@ -21,6 +21,7 @@ module Devise
     autoload :Rememberable, 'devise/controllers/rememberable'
     autoload :ScopedViews, 'devise/controllers/scoped_views'
     autoload :SignInOut, 'devise/controllers/sign_in_out'
+    autoload :StoreLocation, 'devise/controllers/store_location'
     autoload :UrlHelpers, 'devise/controllers/url_helpers'
   end
 

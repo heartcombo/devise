@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    devise (2.2.7)
+    devise (2.2.8)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
@@ -39,7 +39,7 @@ GEM
     activesupport (3.1.12)
       multi_json (~> 1.0)
     arel (2.2.3)
-    bcrypt-ruby (3.1.1)
+    bcrypt-ruby (3.1.2)
     builder (3.0.4)
     columnize (0.3.6)
     erubis (2.7.0)

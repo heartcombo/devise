@@ -12,7 +12,7 @@ GIT
 PATH
   remote: .
   specs:
-    devise (3.0.3)
+    devise (3.0.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -47,7 +47,7 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.0)
     atomic (1.1.10)
-    bcrypt-ruby (3.1.1)
+    bcrypt-ruby (3.1.2)
     builder (3.1.4)
     erubis (2.7.0)
     faraday (0.8.7)

@@ -1,3 +1,5 @@
+require "uri"
+
 module Devise
   module Controllers
     # Provide the ability to store a location.
@@ -31,7 +33,7 @@ module Devise
       #
       def store_location_for(resource_or_scope, location)
         session_key = stored_location_key_for(resource_or_scope)
-        session[session_key] = location
+        session[session_key] = URI.parse(location).path
       end
 
       private

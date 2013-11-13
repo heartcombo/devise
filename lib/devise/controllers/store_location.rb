@@ -33,7 +33,7 @@ module Devise
       #
       def store_location_for(resource_or_scope, location)
         session_key = stored_location_key_for(resource_or_scope)
-        session[session_key] = URI.parse(location).path if location
+        session[session_key] = URI.parse(location).path.sub(/\A\/+/, '/') if location
       end
 
       private

@@ -199,8 +199,9 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
 
   test 'store location for stores only paths' do
-    assert_nil @controller.stored_location_for(:user)
     @controller.store_location_for(:user, "//host/foo.bar")
+    assert_equal "/foo.bar", @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, "///foo.bar")
     assert_equal "/foo.bar", @controller.stored_location_for(:user)
   end
 

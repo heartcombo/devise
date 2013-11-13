@@ -1,3 +1,12 @@
+### 3.2.1
+
+* enhancements
+  * Add `store_location_for` helper and ensure it is safe (by @matthewrudy and @homakov)
+  * Add `yield` around resource methods in Devise controllers (by @edelpero)
+
+* bug fix
+  * Bring `password_digest` back to fix compatibility with `devise-encryptable`
+
 ### 3.2.0
 
 * enhancements

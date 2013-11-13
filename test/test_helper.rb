@@ -4,13 +4,6 @@ DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
 $:.unshift File.dirname(__FILE__)
 puts "\n==> Devise.orm = #{DEVISE_ORM.inspect}"
 
-module Devise
-  # Detection for minor differences between Rails 3.2 and 4 in tests.
-  def self.rails4?
-    Rails.version.start_with? '4'
-  end
-end
-
 require "rails_app/config/environment"
 require "rails/test_help"
 require "orm/#{DEVISE_ORM}"

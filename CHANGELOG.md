@@ -1,3 +1,10 @@
+== 3.1.2
+
+Security announcement: http://blog.plataformatec.com.br/2013/11/e-mail-enumeration-in-devise-in-paranoid-mode
+
+* bug fix
+  * Avoid e-mail enumeration on sign in when in paranoid mode
+
 == 3.1.1
 
 * bug fix

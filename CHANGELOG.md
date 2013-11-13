@@ -1,11 +1,14 @@
 ### 3.2.1
 
+Security announcement: http://blog.plataformatec.com.br/2013/11/e-mail-enumeration-in-devise-in-paranoid-mode
+
 * enhancements
   * Add `store_location_for` helper and ensure it is safe (by @matthewrudy and @homakov)
   * Add `yield` around resource methods in Devise controllers (by @edelpero)
 
 * bug fix
   * Bring `password_digest` back to fix compatibility with `devise-encryptable`
+  * Avoid e-mail enumeration on sign in when in paranoid mode
 
 ### 3.2.0
 

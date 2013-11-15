@@ -1,3 +1,5 @@
+require 'rails/generators/named_base'
+
 module Devise
   module Generators
     class DeviseGenerator < Rails::Generators::NamedBase

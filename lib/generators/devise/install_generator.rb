@@ -1,3 +1,4 @@
+require 'rails/generators/base'
 require 'securerandom'
 
 module Devise

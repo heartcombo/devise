@@ -1,3 +1,5 @@
+require 'rails/generators/base'
+
 module Devise
   module Generators
     # Include this module in your generator to generate Devise views.

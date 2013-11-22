@@ -180,7 +180,7 @@ Besides :stretches, you can define :pepper, :encryptor, :confirm_within, :rememb
 
 When you customize your own views, you may end up adding new attributes to forms. Rails 4 moved the parameter sanitization from the model to the controller, causing Devise to handle this concern at the controller as well.
 
-There are just three actions in Devise that allows any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and the permited parameters by default are:
+There are just three actions in Devise that allows any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and the permitted parameters by default are:
 
 * `sign_in` (`Devise::SessionsController#new`) - Permits only the authentication keys (like `email`)
 * `sign_up` (`Devise::RegistrationsController#create`) - Permits authentication keys plus `password` and `password_confirmation`

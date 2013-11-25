@@ -1,3 +1,10 @@
+### 3.2.2
+
+* bug fix
+  * Ensure timeoutable works when `sign_out_all_scopes` is false (by @louman)
+  * Keep the query string when storing location (by @csexton)
+  * Require rails generator base class in devise generators
+
 ### 3.2.1
 
 Security announcement: http://blog.plataformatec.com.br/2013/11/e-mail-enumeration-in-devise-in-paranoid-mode

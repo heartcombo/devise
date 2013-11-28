@@ -231,7 +231,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert !user.valid?
   end
 
-  test 'required_fiels should be encryptable_password and the email field by default' do
+  test 'required_fields should be encryptable_password and the email field by default' do
     assert_same_content Devise::Models::DatabaseAuthenticatable.required_fields(User), [
       :email,
       :encrypted_password

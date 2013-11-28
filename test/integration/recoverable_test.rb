@@ -39,7 +39,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     end
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
+    assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
   end
 
   test 'reset password with email should send an email from a custom mailer' do
@@ -78,7 +78,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     end
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
+    assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
   end
 
   test 'reset password with email with extra whitespace should fail when email is NOT the list of strip whitespace keys' do
@@ -111,7 +111,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     request_forgot_password
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions about how to reset your password in a few minutes.'
+    assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
   end
 
   test 'not authenticated user with invalid email should receive an error message' do

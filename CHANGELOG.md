@@ -23,7 +23,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/11/e-mail-enumerati
   * Previously deprecated token authenticatable and insecure lookups have been removed
   * Add a class method so you can encrypt passwords from fixtures (by @tenderlove)
   * Send custom message when user enters invalid password and it has only one attempt
-  to enter correct password before his account will be locked (by @Lightpower)
+  to enter correct password before their account will be locked (by @Lightpower)
   * Prevent mutation of values assigned to case and whitespace santitized members (by @iamvery)
   * Separate redirects and flash messages in `navigational_formats` and `flashing_formats` (by @ssendev)
 
@@ -390,7 +390,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 ### 1.4.0
 
 * enhancements
-  * Added authenticated and unauthenticated to the router to route the used based on his status (by @sj26)
+  * Added authenticated and unauthenticated to the router to route the used based on their status (by @sj26)
   * Improve e-mail regexp (by @rodrigoflores)
   * Add strip_whitespace_keys and default to e-mail (by @swrobel)
   * Do not run format and uniqueness validations on e-mail if it hasn't changed (by @Thibaut)
@@ -399,7 +399,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * bug fix
   * password_required? should not affect length validation
-  * User cannot access sign up and similar pages if he is already signed in through a cookie or token
+  * User cannot access sign up and similar pages if they are already signed in through a cookie or token
   * Do not convert booleans to strings on finders (by @xavier)
   * Run validations even if current_password fails (by @crx)
   * Devise now honors routes constraints (by @macmartine)
@@ -507,10 +507,10 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Ensure the friendly token does not include "_" or "-" since some e-mails may not autolink it properly (by @rymai)
   * Extracted encryptors into :encryptable for better bcrypt support
   * :rememberable is now able to use salt as token if no remember_token is provided
-  * Store the salt in session and expire the session if the user changes his password
+  * Store the salt in session and expire the session if the user changes their password
   * Allow :stateless_token to be set to true avoiding users to be stored in session through token authentication
   * cookie_options uses session_options values by default
-  * Sign up now check if the user is active or not and redirect him accordingly setting the inactive_signed_up message
+  * Sign up now checks if the user is active or not and redirect them accordingly, setting the inactive_signed_up message
   * Use ActiveModel#to_key instead of #id
   * sign_out_all_scopes now destroys the whole session
   * Added case_insensitive_keys that automatically downcases the given keys, by default downcases only e-mail (by @adahl)
@@ -953,7 +953,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 
 * deprecations
   * Renamed confirm_in to confirm_within
-  * Do not send confirmation messages when user changes his e-mail
+  * Do not send confirmation messages when user changes their e-mail
   * Renamed authenticable to authenticatable and added deprecation warnings
 
 ### 0.2.3

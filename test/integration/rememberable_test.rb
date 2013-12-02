@@ -25,7 +25,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
     Time.parse(expires).utc
   end
 
-  test 'do not remember the user if he has not checked remember me option' do
+  test 'do not remember the user if they have not checked remember me option' do
     sign_in_as_user
     assert_nil request.cookies["remember_user_cookie"]
   end
@@ -95,7 +95,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
     assert_match /remember_user_token[^\n]*HttpOnly/, response.headers["Set-Cookie"], "Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie."
   end
 
-  test 'remember the user before sign up and redirect him to his home' do
+  test 'remember the user before sign up and redirect them to their home' do
     create_user_and_remember
     get new_user_registration_path
     assert warden.authenticated?(:user)

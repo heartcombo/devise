@@ -9,7 +9,7 @@ module Devise
     #
     # Confirmable adds the following options to +devise+:
     #
-    #   * +allow_unconfirmed_access_for+: the time you want to allow the user to access his account
+    #   * +allow_unconfirmed_access_for+: the time you want to allow the user to access their account
     #     before confirming it. After this period, the user access is denied. You can
     #     use this to let your user access some features of your application without
     #     confirming the account, but blocking it after a certain period (ie 7 days).

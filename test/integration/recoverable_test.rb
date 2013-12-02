@@ -139,7 +139,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert_redirected_to "/users/sign_in"
   end
 
-  test 'not authenticated user with invalid reset password token should not be able to change his password' do
+  test 'not authenticated user with invalid reset password token should not be able to change their password' do
     user = create_user
     reset_password :reset_password_token => 'invalid_reset_password'
 
@@ -150,7 +150,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert_not user.reload.valid_password?('987654321')
   end
 
-  test 'not authenticated user with valid reset password token but invalid password should not be able to change his password' do
+  test 'not authenticated user with valid reset password token but invalid password should not be able to change their password' do
     user = create_user
     request_forgot_password
     reset_password do
@@ -165,7 +165,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert_not user.reload.valid_password?('987654321')
   end
 
-  test 'not authenticated user with valid data should be able to change his password' do
+  test 'not authenticated user with valid data should be able to change their password' do
     user = create_user
     request_forgot_password
     reset_password
@@ -175,7 +175,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert user.reload.valid_password?('987654321')
   end
 
-  test 'after entering invalid data user should still be able to change his password' do
+  test 'after entering invalid data user should still be able to change their password' do
     user = create_user
     request_forgot_password
 

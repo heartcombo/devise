@@ -101,14 +101,14 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_not_equal token, user.reload.reset_password_token
   end
 
-  test 'should send email instructions to the user reset his password' do
+  test 'should send email instructions to the user reset their password' do
     user = create_user
     assert_email_sent do
       User.send_reset_password_instructions(:email => user.email)
     end
   end
 
-  test 'should find a user to reset his password based on the raw token' do
+  test 'should find a user to reset their password based on the raw token' do
     user = create_user
     raw  = user.send_reset_password_instructions
 

@@ -140,7 +140,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'a signed in user should be able to edit his account' do
+  test 'a signed in user should be able to edit their account' do
     sign_in_as_user
     get edit_user_registration_path
 
@@ -154,7 +154,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_equal "user.new@example.com", User.first.email
   end
 
-  test 'a signed in user should still be able to use the website after changing his password' do
+  test 'a signed in user should still be able to use the website after changing their password' do
     sign_in_as_user
     get edit_user_registration_path
 
@@ -168,7 +168,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
-  test 'a signed in user should not change his current user with invalid password' do
+  test 'a signed in user should not change their current user with invalid password' do
     sign_in_as_user
     get edit_user_registration_path
 
@@ -183,7 +183,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_equal "user@test.com", User.first.email
   end
 
-  test 'a signed in user should be able to edit his password' do
+  test 'a signed in user should be able to edit their password' do
     sign_in_as_user
     get edit_user_registration_path
 
@@ -198,7 +198,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert User.first.valid_password?('pass1234')
   end
 
-  test 'a signed in user should not be able to edit his password with invalid confirmation' do
+  test 'a signed in user should not be able to edit their password with invalid confirmation' do
     sign_in_as_user
     get edit_user_registration_path
 
@@ -212,7 +212,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_not User.first.valid_password?('pas123')
   end
 
-  test 'a signed in user should be able to cancel his account' do
+  test 'a signed in user should be able to cancel their account' do
     sign_in_as_user
     get edit_user_registration_path
 
@@ -286,7 +286,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_equal user.reload.email, 'user@test.com'
   end
 
-  test 'a user cancel his account in XML format should return valid response' do
+  test 'a user cancel their account in XML format should return valid response' do
     sign_in_as_user
     delete user_registration_path(:format => 'xml')
     assert_response :success
@@ -295,7 +295,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 end
 
 class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
-  test 'a signed in admin should see a more appropriate flash message when editing his account if reconfirmable is enabled' do
+  test 'a signed in admin should see a more appropriate flash message when editing their account if reconfirmable is enabled' do
     sign_in_as_admin
     get edit_admin_registration_path
 
@@ -326,7 +326,7 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     assert Admin.first.valid_password?('pas123')
   end
 
-  test 'a signed in admin should not see a reconfirmation message if he did not change his email, despite having an unconfirmed email' do
+  test 'a signed in admin should not see a reconfirmation message if they did not change their email, despite having an unconfirmed email' do
     sign_in_as_admin
 
     get edit_admin_registration_path

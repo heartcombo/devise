@@ -155,7 +155,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_nil user.reload.confirmation_token
   end
 
-  test 'should not resend email instructions if the user change his email' do
+  test 'should not resend email instructions if the user change their email' do
     user = create_user
     user.email = 'new_test@example.com'
     assert_email_not_sent do

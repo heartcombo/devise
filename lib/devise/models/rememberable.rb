@@ -17,7 +17,7 @@ module Devise
     #
     #   * +remember_for+: the time you want the user will be remembered without
     #     asking for credentials. After this time the user will be blocked and
-    #     will have to enter his credentials again. This configuration is also
+    #     will have to enter their credentials again. This configuration is also
     #     used to calculate the expires time for the cookie created to remember
     #     the user. By default remember_for is 2.weeks.
     #

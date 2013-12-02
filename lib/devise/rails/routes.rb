@@ -393,13 +393,13 @@ and you have set #{mapping.fullpath.inspect}. You can work around by passing
 `skip: :omniauth_callbacks` and manually defining the routes. Here is an example:
 
     match "/users/auth/:provider",
-      :constraints => { :provider => /\A(google|facebook)\z/ },
+      :constraints => { :provider => /google|facebook/ },
       :to => "devise/omniauth_callbacks#passthru",
       :as => :omniauth_authorize,
       :via => [:get, :post]
 
     match "/users/auth/:action/callback",
-      :constraints => { :action => /\A(google|facebook)\z/ },
+      :constraints => { :action => /google|facebook/ },
       :to => "devise/omniauth_callbacks",
       :as => :omniauth_callback,
       :via => [:get, :post]

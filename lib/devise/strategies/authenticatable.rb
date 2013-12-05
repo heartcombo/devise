@@ -49,7 +49,7 @@ module Devise
         valid_params? && Devise::TRUE_VALUES.include?(params_auth_hash[:remember_me])
       end
 
-      # Check if this is strategy is valid for http authentication by:
+      # Check if this is a valid strategy for http authentication by:
       #
       #   * Validating if the model allows params authentication;
       #   * If any of the authorization headers were sent;
@@ -59,7 +59,7 @@ module Devise
         http_authenticatable? && request.authorization && with_authentication_hash(:http_auth, http_auth_hash)
       end
 
-      # Check if this is strategy is valid for params authentication by:
+      # Check if this is a valid strategy for params authentication by:
       #
       #   * Validating if the model allows params authentication;
       #   * If the request hits the sessions controller through POST;

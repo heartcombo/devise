@@ -180,5 +180,5 @@ class RecoverableTest < ActiveSupport::TestCase
       :reset_password_sent_at,
       :reset_password_token
     ]
-  end  
+  end
 end

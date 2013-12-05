@@ -110,12 +110,12 @@ class MappingTest < ActiveSupport::TestCase
     assert mapping.lockable?
     assert_not mapping.omniauthable?
   end
-  
+
   test 'find mapping by path' do
     assert_raise RuntimeError do
       Devise::Mapping.find_by_path!('/accounts/facebook/callback')
     end
-    
+
     assert_nothing_raised do
       Devise::Mapping.find_by_path!('/:locale/accounts/login')
     end
@@ -123,5 +123,5 @@ class MappingTest < ActiveSupport::TestCase
     assert_nothing_raised do
       Devise::Mapping.find_by_path!('/accounts/facebook/callback', :path)
     end
-  end  
+  end
 end

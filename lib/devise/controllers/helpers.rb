@@ -98,7 +98,7 @@ module Devise
         request.env["devise.allow_params_authentication"] = true
       end
 
-      # The scope root url to be used when he's signed in. By default, it first
+      # The scope root url to be used when they're signed in. By default, it first
       # tries to find a resource_root_path, otherwise it uses the root_path.
       def signed_in_root_path(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)

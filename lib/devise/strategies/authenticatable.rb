@@ -102,9 +102,9 @@ module Devise
         params_auth_hash.is_a?(Hash)
       end
 
-      # Check if password is present and is not equal to "X" (default value for token).
+      # Check if password is present.
       def valid_password?
-        password.present? && password != "X"
+        password.present?
       end
 
       # Helper to decode credentials from HTTP.

@@ -7,8 +7,13 @@ env:
   - DEVISE_ORM=mongoid
   - DEVISE_ORM=active_record
 gemfile:
-  - gemfiles/Gemfile.rails-3.2.x
+  - gemfiles/Gemfile.rails-head
+  - gemfiles/Gemfile.rails-4.0-stable
+  - gemfiles/Gemfile.rails-3.2-stable
   - Gemfile
+matrix:
+  allow_failures:
+    - gemfile: gemfiles/Gemfile.rails-head
 services:
   - mongodb
 notifications:

@@ -178,6 +178,11 @@ module Devise
   mattr_accessor :unlock_keys
   @@unlock_keys = [ :email ]
 
+  # Defines the case sensitive validation for email
+  # Values: true, false
+  mattr_accessor :email_case_sensitive
+  @@email_case_sensitive = true
+
   # Defines which strategy can be used to unlock an account.
   # Values: :email, :time, :both
   mattr_accessor :unlock_strategy

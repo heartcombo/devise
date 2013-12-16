@@ -43,7 +43,7 @@ If you discover a problem with Devise, we would like to know about it. However, 
 
 https://github.com/plataformatec/devise/wiki/Bug-reports
 
-If you found a security bug, do *NOT* use the GitHub issue tracker. Send an email to the maintainers listed at the bottom of the README.
+If you found a security bug, do *NOT* use the GitHub issue tracker. Send an email to opensource@plataformatec.com.br.
 
 ### Mailing list
 

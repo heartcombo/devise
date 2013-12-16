@@ -114,7 +114,7 @@ module Devise
           super
         elsif lock_strategy_enabled?(:failed_attempts) && last_attempt?
           :last_attempt
-        elsif lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
+        elsif lock_strategy_enabled?(:failed_attempts) && (attempts_exceeded? || access_locked?)
           :locked
         else
           super

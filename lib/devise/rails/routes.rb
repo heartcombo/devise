@@ -229,6 +229,14 @@ module ActionDispatch::Routing
           raise_no_devise_method_error!(mapping.class_name)
         end
 
+        if options[:controllers] && options[:controllers][:omniauth_callbacks]
+          unless mapping.omniauthable?
+            msg =  "Mapping omniauth_callbacks on a resource that is not omniauthable\n"
+            msg << "Please add `devise :omniauthable` to the `#{mapping.class_name}` model"
+            raise msg
+          end
+        end
+
         routes  = mapping.used_routes
 
         devise_scope mapping.name do

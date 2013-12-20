@@ -235,6 +235,14 @@ class CustomizedRoutingTest < ActionController::TestCase
   test 'map with format false is not permanent' do
     assert_equal "/set.xml", @routes.url_helpers.set_path(:xml)
   end
+
+  test 'checks if mapping has proper configuration for omniauth callback' do
+    assert_raise ArgumentError do
+      @routes.dup.eval_block do
+        devise_for :admin, controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
+      end
+    end
+  end
 end
 
 class ScopedRoutingTest < ActionController::TestCase

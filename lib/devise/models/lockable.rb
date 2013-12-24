@@ -34,10 +34,13 @@ module Devise
       end
 
       # Lock a user setting its locked_at to actual time.
-      def lock_access!
+      # * +opts+: Hash options if you don't want to send email
+      #   when you lock access, you could pass the next hash
+      #   `{ :send_instructions => false } as option`.
+      def lock_access!(opts = { })
         self.locked_at = Time.now.utc
 
-        if unlock_strategy_enabled?(:email)
+        if unlock_strategy_enabled?(:email) && opts.fetch(:send_instructions, true)
           send_unlock_instructions
         else
           save(:validate => false)

@@ -449,6 +449,6 @@ https://github.com/plataformatec/devise/graphs/contributors
 
 ## License
 
-MIT License. Copyright 2009-2013 Plataformatec. http://plataformatec.com.br
+MIT License. Copyright 2009-2014 Plataformatec. http://plataformatec.com.br
 
 You are not granted rights or licenses to the trademarks of the Plataformatec, including without limitation the Devise name or logo.

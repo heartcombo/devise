@@ -157,6 +157,10 @@ class CustomizedRoutingTest < ActionController::TestCase
     assert_recognizes({:controller => 'devise/registrations', :action => 'new', :locale => 'en'}, '/en/accounts/management/register')
   end
 
+  test 'map account with custom path name for edit registration' do
+    assert_recognizes({:controller => 'devise/registrations', :action => 'edit', :locale => 'en'}, '/en/accounts/management/edit/profile')
+  end
+
   test 'map account with custom path name for cancel registration' do
     assert_recognizes({:controller => 'devise/registrations', :action => 'cancel', :locale => 'en'}, '/en/accounts/management/giveup')
   end

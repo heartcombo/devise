@@ -102,8 +102,11 @@ module ActionDispatch::Routing
     #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :sign_up,
     #    :password, :confirmation, :unlock.
     #
-    #      devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout',
-    #        :password => 'secret', :confirmation => 'verification', registration: 'register }
+    #      devise_for :users, :path_names => {
+    #        :sign_in => 'login', :sign_out => 'logout',
+    #        :password => 'secret', :confirmation => 'verification',
+    #        registration: 'register', edit: 'edit/profile'
+    #      }
     #
     #  * :controllers => the controller which should be used. All routes by default points to Devise controllers.
     #    However, if you want them to point to custom controller, you should do:
@@ -378,6 +381,7 @@ module ActionDispatch::Routing
       def devise_registration(mapping, controllers) #:nodoc:
         path_names = {
           :new => mapping.path_names[:sign_up],
+          :edit => mapping.path_names[:edit],
           :cancel => mapping.path_names[:cancel]
         }
 

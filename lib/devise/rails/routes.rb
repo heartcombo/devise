@@ -102,9 +102,9 @@ module ActionDispatch::Routing
     #  * :path_names => configure different path names to overwrite defaults :sign_in, :sign_out, :sign_up,
     #    :password, :confirmation, :unlock.
     #
-    #      devise_for :users, :path_names => {
-    #        :sign_in => 'login', :sign_out => 'logout',
-    #        :password => 'secret', :confirmation => 'verification',
+    #      devise_for :users, path_names: {
+    #        sign_in: 'login', sign_out: 'logout',
+    #        password: 'secret', confirmation: 'verification',
     #        registration: 'register', edit: 'edit/profile'
     #      }
     #

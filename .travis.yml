@@ -3,6 +3,7 @@ script: "bundle exec rake test"
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.1.0
 env:
   - DEVISE_ORM=mongoid
   - DEVISE_ORM=active_record

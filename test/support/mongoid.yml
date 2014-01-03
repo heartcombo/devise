@@ -1,0 +1,6 @@
+test:
+  sessions:
+    default:
+      database: devise-test-suite
+      hosts:
+        - localhost:<%= ENV['MONGODB_PORT'] || '27017' %>

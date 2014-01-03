@@ -86,7 +86,8 @@ Rails.application.routes.draw do
         :sign_in => "login", :sign_out => "logout",
         :password => "secret", :confirmation => "verification",
         :unlock => "unblock", :sign_up => "register",
-        :registration => "management", :cancel => "giveup"
+        :registration => "management",
+        :cancel => "giveup", :edit => "edit/profile"
       }, :failure_app => lambda { |env| [404, {"Content-Type" => "text/plain"}, ["Oops, not found"]] }, :module => :devise
   end
 

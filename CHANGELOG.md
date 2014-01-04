@@ -91,9 +91,6 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixat
 * bug fix
   * Errors on unlock are now properly reflected on the first `unlock_keys`
 
-* backwards incompatible changes
-  * Changes on session storage will expire all existing sessions on upgrade. For those storing the session in the DB, they can be upgraded according to this gist: https://gist.github.com/moll/6417606
-
 ### 2.2.4
 
 * enhancements
@@ -109,6 +106,9 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixat
   * Generating scoped devise views now uses the correct scoped shared links partial instead of the default devise one (by @nashby)
   * Fix inheriting mailer templates from `Devise::Mailer`
   * Fix a bug when procs are used as default mailer in Devise (by @tomasv)
+
+* backwards incompatible changes
+  * Changes on session storage will expire all existing sessions on upgrade. For those storing the session in the DB, they can be upgraded according to this gist: https://gist.github.com/moll/6417606
 
 ### 2.2.3
 

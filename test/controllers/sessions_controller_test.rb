@@ -5,17 +5,21 @@ class SessionsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   test "#create doesn't raise unpermitted params when sign in fails" do
-    ActiveSupport::Notifications.subscribe /unpermitted_parameters/ do |name, start, finish, id, payload|
-      flunk "Unpermitted params: #{payload}"
+    begin
+      subscriber = ActiveSupport::Notifications.subscribe /unpermitted_parameters/ do |name, start, finish, id, payload|
+        flunk "Unpermitted params: #{payload}"
+      end
+      request.env["devise.mapping"] = Devise.mappings[:user]
+      request.session["user_return_to"] = 'foo.bar'
+      create_user
+      post :create, :user => {
+        :email => "wrong@email.com",
+        :password => "wrongpassword"
+      }
+      assert_equal 200, @response.status
+    ensure
+      ActiveSupport::Notifications.unsubscribe(subscriber)
     end
-    request.env["devise.mapping"] = Devise.mappings[:user]
-    request.session["user_return_to"] = 'foo.bar'
-    create_user
-    post :create, :user => {
-      :email => "wrong@email.com",
-      :password => "wrongpassword"
-    }
-    assert_equal 200, @response.status
   end
 
   test "#create works even with scoped views" do

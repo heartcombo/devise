@@ -113,8 +113,11 @@ class HelpersTest < ActionController::TestCase
 
   test 'navigational_formats not returning a wild card' do
     MyController.send(:public, :navigational_formats)
-    Devise.navigational_formats = [:"*/*", :html]
-    assert_not @controller.navigational_formats.include?(:"*/*")
+
+    swap Devise, :navigational_formats => ['*/*', :html] do
+      assert_not @controller.navigational_formats.include?("*/*")
+    end
+
     MyController.send(:protected, :navigational_formats)
   end
 end

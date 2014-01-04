@@ -130,6 +130,24 @@ class LockableTest < ActiveSupport::TestCase
     end
   end
 
+  test "doesn't send email when you pass option send_instructions to false" do
+    swap Devise, :unlock_strategy => :email do
+      user = create_user
+      assert_email_not_sent do
+        user.lock_access! send_instructions: false
+      end
+    end
+  end
+
+  test "sends email when you pass options other than send_instructions" do
+    swap Devise, :unlock_strategy => :email do
+      user = create_user
+      assert_email_sent do
+        user.lock_access! foo: :bar, bar: :foo
+      end
+    end
+  end
+
   test "should not send email with unlock instructions when :email is not an unlock strategy" do
     swap Devise, :unlock_strategy => :time do
       user = create_user

@@ -9,7 +9,7 @@ class LockableTest < ActiveSupport::TestCase
     user = create_user
     user.confirm!
     swap Devise, :maximum_attempts => 2 do
-      3.times { user.valid_for_authentication?{ false } }
+      2.times { user.valid_for_authentication?{ false } }
       assert user.reload.access_locked?
     end
   end
@@ -19,12 +19,12 @@ class LockableTest < ActiveSupport::TestCase
     user.confirm!
 
     swap Devise, :maximum_attempts => 2 do
-      3.times { user.valid_for_authentication?{ false } }
+      2.times { user.valid_for_authentication?{ false } }
       assert user.reload.access_locked?
     end
 
     user.valid_for_authentication?{ true }
-    assert_equal 4, user.reload.failed_attempts
+    assert_equal 3, user.reload.failed_attempts
   end
 
   test "should not touch failed_attempts if lock_strategy is none" do
@@ -302,13 +302,13 @@ class LockableTest < ActiveSupport::TestCase
     swap Devise, :last_attempt_warning => :true do
       swap Devise, :lock_strategy => :failed_attempts do
         user = create_user
-        user.failed_attempts = Devise.maximum_attempts - 1
+        user.failed_attempts = Devise.maximum_attempts - 2
         assert_equal :invalid, user.unauthenticated_message
 
-        user.failed_attempts = Devise.maximum_attempts
+        user.failed_attempts = Devise.maximum_attempts - 1
         assert_equal :last_attempt, user.unauthenticated_message
 
-        user.failed_attempts = Devise.maximum_attempts + 1
+        user.failed_attempts = Devise.maximum_attempts
         assert_equal :locked, user.unauthenticated_message
       end
     end

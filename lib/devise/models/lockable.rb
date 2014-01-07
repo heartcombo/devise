@@ -127,11 +127,11 @@ module Devise
       protected
 
         def attempts_exceeded?
-          self.failed_attempts > self.class.maximum_attempts
+          self.failed_attempts >= self.class.maximum_attempts
         end
 
         def last_attempt?
-          self.failed_attempts == self.class.maximum_attempts
+          self.failed_attempts == self.class.maximum_attempts - 1
         end
 
         # Tells if the lock is expired if :time unlock strategy is active

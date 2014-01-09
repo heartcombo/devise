@@ -127,7 +127,7 @@ module Devise
       end
 
       # This is an internal method called every time Devise needs
-      # to send a notification/mail. This can be overriden if you
+      # to send a notification/mail. This can be overridden if you
       # need to customize the e-mail delivery logic. For instance,
       # if you are using a queue to deliver e-mails (delayed job,
       # sidekiq, resque, etc), you must add the delivery to the queue

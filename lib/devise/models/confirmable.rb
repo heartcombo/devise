@@ -152,7 +152,7 @@ module Devise
       protected
 
         # A callback method used to deliver confirmation
-        # instructions on creation. This can be overriden
+        # instructions on creation. This can be overridden
         # in models to map to a nice sign up e-mail.
         def send_on_create_confirmation_instructions
           send_confirmation_instructions

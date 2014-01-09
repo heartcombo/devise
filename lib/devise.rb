@@ -236,12 +236,12 @@ module Devise
   @@parent_mailer = "ActionMailer::Base"
 
   # The router Devise should use to generate routes. Defaults
-  # to :main_app. Should be overriden by engines in order
+  # to :main_app. Should be overridden by engines in order
   # to provide custom routes.
   mattr_accessor :router_name
   @@router_name = nil
 
-  # Set the omniauth path prefix so it can be overriden when
+  # Set the omniauth path prefix so it can be overridden when
   # Devise is used in a mountable engine
   mattr_accessor :omniauth_path_prefix
   @@omniauth_path_prefix = nil

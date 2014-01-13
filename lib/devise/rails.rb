@@ -29,7 +29,13 @@ module Devise
       end
     end
 
-    initializer "devise.secret_key" do
+    config.after_initialize do |app|
+      if app.respond_to?(:secrets)
+        Devise.secret_key ||= app.secrets.secret_key_base
+      elsif app.config.respond_to?(:secret_key_base)
+        Devise.secret_key ||= app.config.secret_key_base
+      end
+
       Devise.token_generator ||=
         if secret_key = Devise.secret_key
           Devise::TokenGenerator.new(

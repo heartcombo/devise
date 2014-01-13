@@ -20,6 +20,10 @@ module Devise
       def show_readme
         readme "README" if behavior == :invoke
       end
+
+      def rails_4?
+        Rails::VERSION::MAJOR == 4
+      end
     end
   end
 end

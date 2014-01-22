@@ -1,3 +1,9 @@
+### Unreleased
+
+* enhancements
+  * Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`.
+    You can change this and use your own secret by changing the `devise.rb` initializer.
+
 ### 3.2.2
 
 * bug fix

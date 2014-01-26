@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.licenses    = ["MIT"]
   s.summary     = "Flexible authentication solution for Rails with Warden"
   s.email       = "contact@plataformatec.com.br"
-  s.homepage    = "http://github.com/plataformatec/devise"
+  s.homepage    = "https://github.com/plataformatec/devise"
   s.description = "Flexible authentication solution for Rails with Warden"
   s.authors     = ['José Valim', 'Carlos Antônio']
 

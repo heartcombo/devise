@@ -32,7 +32,7 @@ module Devise
 
           validates_presence_of     :password, :if => :password_required?
           validates_confirmation_of :password, :if => :password_required?
-          validates_length_of       :password, :within => password_length, :allow_blank => true
+          validate :password_should_be_valid
         end
       end
 
@@ -46,6 +46,15 @@ module Devise
       end
 
     protected
+
+
+      # validates_length_of       :password, :within => password_length, :allow_blank => true
+      def password_should_be_valid
+        unless password.blank?
+          errors.add(:password, :too_short, count: self.class.password_length.begin)  if password.length < self.class.password_length.begin
+          errors.add(:password, :too_long, count: self.class.password_length.end)  if password.length > self.class.password_length.end
+        end
+      end
 
       # Checks whether a password is needed or not. For validations only.
       # Passwords are always required if it's a new record, or if the password

@@ -24,13 +24,9 @@ class ActiveRecordTest < ActiveSupport::TestCase
   test 'validations options are not applied too late' do
     validators = WithValidation.validators_on :password
     length = validators.find { |v| v.kind == :length }
-    assert_equal 2, length.options[:minimum]
-    assert_equal 6, length.options[:maximum]
-  end
-
-  test 'validations are applied just once' do
-    validators = Several.validators_on :password
-    assert_equal 1, validators.select{ |v| v.kind == :length }.length
+    assert !WithValidation.new(email: 'john@example.com', password: '1').valid?
+    assert !WithValidation.new(email: 'john@example.com', password: '1231456789').valid?
+    assert WithValidation.new(email: 'john@example.com', password: '12').valid?
   end
 
   test 'chosen modules are inheritable' do

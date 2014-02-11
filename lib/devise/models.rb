@@ -33,13 +33,14 @@ module Devise
       accessors.each do |accessor|
         mod.class_eval <<-METHOD, __FILE__, __LINE__ + 1
           def #{accessor}
-            if defined?(@#{accessor})
+            value = if defined?(@#{accessor})
               @#{accessor}
             elsif superclass.respond_to?(:#{accessor})
               superclass.#{accessor}
             else
               Devise.#{accessor}
             end
+            value.is_a?(Proc) ? value.call : value
           end
 
           def #{accessor}=(value)

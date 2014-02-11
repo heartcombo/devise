@@ -115,6 +115,15 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'is too long (maximum is 128 characters)', user.errors[:password].join
   end
 
+  test 'password_length can be customized using Proc' do
+    default = Devise.password_length
+    Devise.password_length = Proc.new { 129..200 }
+    user = new_user(:password => 'x'*129, :password_confirmation => 'x'*129)
+    user.stubs(:password_required?).returns(false)
+    assert user.valid?
+    Devise.password_length = default
+  end
+
   test 'should not be included in objects with invalid API' do
     assert_raise RuntimeError do
       Class.new.send :include, Devise::Models::Validatable

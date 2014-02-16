@@ -200,13 +200,26 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-To completely change Devise defaults or invoke custom behaviour, you can also pass a block:
+The above works for any additional fields where the parameters are simple scalar types. If you have nested attributes (say you're using `accepts_nested_parameters_for`), then you will need to tell devise about those nestings and types. Devise allows you to completely change Devise defaults or invoke custom behaviour by passing a block:
+
+To permit simple scalar values for username and email, use this
 
 ```ruby
 def configure_permitted_parameters
   devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:username, :email) }
 end
 ```
+
+If you have some checkboxes that express the roles a user may take on registration, the browser will send those selected checkboxes as an array. An array is not one of Strong Parameters permitted scalars, so we need to configure Devise thusly:
+
+```ruby
+def configure_permitted_parameters
+  devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(roles: [], :email, :password, :password_confirmation) }
+end
+```
+For the list of permitted scalars, and how to declare permitted keys in nested hashes and arrays, see
+
+https://github.com/rails/strong_parameters#nested-parameters
 
 If you have multiple Devise models, you may want to set up different parameter sanitizer per model. In this case, we recommend inheriting from `Devise::ParameterSanitizer` and add your own logic:
 

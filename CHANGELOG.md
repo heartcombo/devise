@@ -1,8 +1,13 @@
 ### Unreleased
 
+### 3.2.3
+
 * enhancements
   * Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`.
     You can change this and use your own secret by changing the `devise.rb` initializer.
+
+* bug fix
+  * Migrations will be properly generated when using rails 4.1.0.
 
 ### 3.2.2
 

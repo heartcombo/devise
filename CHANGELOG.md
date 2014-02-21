@@ -1,5 +1,8 @@
 ### Unreleased
 
+* enchancements
+  * `bcrypt` dependency updated due https://github.com/codahale/bcrypt-ruby/pull/86.
+
 ### 3.2.3
 
 * enhancements

@@ -201,7 +201,7 @@ module Devise
           :http_authentication_key)
 
         def serialize_into_session(record)
-          [record.to_key, record.authenticatable_salt]
+          [record.to_key, record.authenticatable_salt].flatten
         end
 
         def serialize_from_session(key, salt)

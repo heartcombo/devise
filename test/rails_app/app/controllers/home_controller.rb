@@ -20,6 +20,6 @@ class HomeController < ApplicationController
   end
 
   def unauthenticated
-    render :text => "unauthenticated", :status => :unauthorized
+    render text: "unauthenticated", status: :unauthorized
   end
 end

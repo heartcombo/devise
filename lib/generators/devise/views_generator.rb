@@ -9,12 +9,12 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
-        argument :scope, :required => false, :default => nil,
-                         :desc => "The scope to copy views to"
+        argument :scope, required: false, default: nil,
+                         desc: "The scope to copy views to"
 
         # Le sigh, ensure Thor won't handle opts as args
         # It should be fixed in future Rails releases
-        class_option :form_builder, :aliases => "-b"
+        class_option :form_builder, aliases: "-b"
         class_option :markerb
 
         public_task :copy_views
@@ -107,18 +107,18 @@ module Devise
     class ViewsGenerator < Rails::Generators::Base
       desc "Copies Devise views to your application."
 
-      argument :scope, :required => false, :default => nil,
-                       :desc => "The scope to copy views to"
+      argument :scope, required: false, default: nil,
+                       desc: "The scope to copy views to"
 
       invoke SharedViewsGenerator
 
-      hook_for :form_builder, :aliases => "-b",
-                              :desc => "Form builder to be used",
-                              :default => defined?(SimpleForm) ? "simple_form_for" : "form_for"
+      hook_for :form_builder, aliases: "-b",
+                              desc: "Form builder to be used",
+                              default: defined?(SimpleForm) ? "simple_form_for" : "form_for"
 
-      hook_for :markerb,  :desc => "Generate markerb instead of erb mail views",
-                          :default => defined?(Markerb) ? :markerb : :erb,
-                          :type => :boolean
+      hook_for :markerb,  desc: "Generate markerb instead of erb mail views",
+                          default: defined?(Markerb) ? :markerb : :erb,
+                          type: :boolean
     end
   end
 end

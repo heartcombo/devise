@@ -29,7 +29,7 @@ module Devise
     #     It also accepts an array specifying the strategies that should allow params authentication.
     #
     #   * +skip_session_storage+: By default Devise will store the user in session.
-    #     By default is set to :skip_session_storage => [:http_auth].
+    #     By default is set to skip_session_storage: [:http_auth].
     #
     # == active_for_authentication?
     #
@@ -59,7 +59,7 @@ module Devise
         :remember_token, :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at]
 
       included do
-        class_attribute :devise_modules, :instance_writer => false
+        class_attribute :devise_modules, instance_writer: false
         self.devise_modules ||= []
 
         before_validation :downcase_keys
@@ -231,7 +231,7 @@ module Devise
         # Example:
         #
         #   def self.find_for_authentication(tainted_conditions)
-        #     find_first_by_auth_conditions(tainted_conditions, :active => true)
+        #     find_first_by_auth_conditions(tainted_conditions, active: true)
         #   end
         #
         # Finally, notice that Devise also queries for users in other scenarios

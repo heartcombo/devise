@@ -18,7 +18,7 @@ Warden::Manager.after_set_user do |record, warden, options|
         record.reset_authentication_token!
       end
 
-      throw :warden, :scope => scope, :message => :timeout
+      throw :warden, scope: scope, message: :timeout
     end
 
     unless env['devise.skip_trackable']

@@ -27,7 +27,7 @@ if defined?(ActionController::StrongParameters)
     end
 
     test 'handles auth keys as a hash' do
-      swap Devise, :authentication_keys => {:email => true} do
+      swap Devise, authentication_keys: {email: true} do
         sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
         assert_equal({ "email" => "jose", "password" => "invalid" }, sanitizer.sanitize(:sign_in))
       end

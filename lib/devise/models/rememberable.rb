@@ -50,7 +50,7 @@ module Devise
       def remember_me!(extend_period=false)
         self.remember_token = self.class.remember_token if generate_remember_token?
         self.remember_created_at = Time.now.utc if generate_remember_timestamp?(extend_period)
-        save(:validate => false) if self.changed?
+        save(validate: false) if self.changed?
       end
 
       # If the record is persisted, remove the remember token (but only if
@@ -59,7 +59,7 @@ module Devise
         return unless persisted?
         self.remember_token = nil if respond_to?(:remember_token=)
         self.remember_created_at = nil
-        save(:validate => false)
+        save(validate: false)
       end
 
       # Remember token should be expired if expiration time not overpass now.
@@ -118,7 +118,7 @@ module Devise
         def remember_token #:nodoc:
           loop do
             token = Devise.friendly_token
-            break token unless to_adapter.find_first({ :remember_token => token })
+            break token unless to_adapter.find_first({ remember_token: token })
           end
         end
 

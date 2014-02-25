@@ -6,7 +6,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should downcase case insensitive keys when saving' do
     # case_insensitive_keys is set to :email by default.
     email = 'Foo@Bar.com'
-    user = new_user(:email => email)
+    user = new_user(email: email)
 
     assert_equal email, user.email
     user.save!
@@ -16,7 +16,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should downcase case insensitive keys that refer to virtual attributes when saving' do
     email        = 'Foo@Bar1.com'
     confirmation = 'Foo@Bar1.com'
-    attributes   = valid_attributes(:email => email, :email_confirmation => confirmation)
+    attributes   = valid_attributes(email: email, email_confirmation: confirmation)
     user = UserWithVirtualAttributes.new(attributes)
 
     assert_equal confirmation, user.email_confirmation
@@ -27,7 +27,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should not mutate value assigned to case insensitive key' do
     email          = 'Foo@Bar.com'
     original_email = email.dup
-    user           = new_user(:email => email)
+    user           = new_user(email: email)
 
     user.save!
     assert_equal original_email, email
@@ -36,7 +36,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should remove whitespace from strip whitespace keys when saving' do
     # strip_whitespace_keys is set to :email by default.
     email = ' foo@bar.com '
-    user = new_user(:email => email)
+    user = new_user(email: email)
 
     assert_equal email, user.email
     user.save!
@@ -46,20 +46,20 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should not mutate value assigned to string whitespace key' do
     email          = ' foo@bar.com '
     original_email = email.dup
-    user           = new_user(:email => email)
+    user           = new_user(email: email)
 
     user.save!
     assert_equal original_email, email
   end
 
   test "doesn't throw exception when globally configured strip_whitespace_keys are not present on a model" do
-    swap Devise, :strip_whitespace_keys => [:fake_key] do
+    swap Devise, strip_whitespace_keys: [:fake_key] do
       assert_nothing_raised { create_user }
     end
   end
 
   test "doesn't throw exception when globally configured case_insensitive_keys are not present on a model" do
-    swap Devise, :case_insensitive_keys => [:fake_key] do
+    swap Devise, case_insensitive_keys: [:fake_key] do
       assert_nothing_raised { create_user }
     end
   end
@@ -94,7 +94,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should support custom encryption methods' do
-    user = UserWithCustomEncryption.new(:password => '654321')
+    user = UserWithCustomEncryption.new(password: '654321')
     assert_equal user.encrypted_password, '123456'
   end
 
@@ -105,8 +105,8 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should not generate encrypted password if password is blank' do
-    assert_blank new_user(:password => nil).encrypted_password
-    assert_blank new_user(:password => '').encrypted_password
+    assert_blank new_user(password: nil).encrypted_password
+    assert_blank new_user(password: '').encrypted_password
   end
 
   test 'should encrypt password again if password has changed' do
@@ -141,23 +141,23 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'should update password with valid current password' do
     user = create_user
-    assert user.update_with_password(:current_password => '12345678',
-      :password => 'pass4321', :password_confirmation => 'pass4321')
+    assert user.update_with_password(current_password: '12345678',
+      password: 'pass4321', password_confirmation: 'pass4321')
     assert user.reload.valid_password?('pass4321')
   end
 
   test 'should add an error to current password when it is invalid' do
     user = create_user
-    assert_not user.update_with_password(:current_password => 'other',
-      :password => 'pass4321', :password_confirmation => 'pass4321')
+    assert_not user.update_with_password(current_password: 'other',
+      password: 'pass4321', password_confirmation: 'pass4321')
     assert user.reload.valid_password?('12345678')
     assert_match "is invalid", user.errors[:current_password].join
   end
 
   test 'should add an error to current password when it is blank' do
     user = create_user
-    assert_not user.update_with_password(:password => 'pass4321',
-      :password_confirmation => 'pass4321')
+    assert_not user.update_with_password(password: 'pass4321',
+      password_confirmation: 'pass4321')
     assert user.reload.valid_password?('12345678')
     assert_match "can't be blank", user.errors[:current_password].join
   end
@@ -166,41 +166,41 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = UserWithValidation.create!(valid_attributes)
     user.save
     assert user.persisted?
-    assert_not user.update_with_password(:username => "")
+    assert_not user.update_with_password(username: "")
     assert_match "usertest", user.reload.username
     assert_match "can't be blank", user.errors[:username].join
   end
 
   test 'should ignore password and its confirmation if they are blank' do
     user = create_user
-    assert user.update_with_password(:current_password => '12345678', :email => "new@example.com")
+    assert user.update_with_password(current_password: '12345678', email: "new@example.com")
     assert_equal "new@example.com", user.email
   end
 
   test 'should not update password with invalid confirmation' do
     user = create_user
-    assert_not user.update_with_password(:current_password => '12345678',
-      :password => 'pass4321', :password_confirmation => 'other')
+    assert_not user.update_with_password(current_password: '12345678',
+      password: 'pass4321', password_confirmation: 'other')
     assert user.reload.valid_password?('12345678')
   end
 
   test 'should clean up password fields on failure' do
     user = create_user
-    assert_not user.update_with_password(:current_password => '12345678',
-      :password => 'pass4321', :password_confirmation => 'other')
+    assert_not user.update_with_password(current_password: '12345678',
+      password: 'pass4321', password_confirmation: 'other')
     assert user.password.blank?
     assert user.password_confirmation.blank?
   end
 
   test 'should update the user without password' do
     user = create_user
-    user.update_without_password(:email => 'new@example.com')
+    user.update_without_password(email: 'new@example.com')
     assert_equal 'new@example.com', user.email
   end
 
   test 'should not update password without password' do
     user = create_user
-    user.update_without_password(:password => 'pass4321', :password_confirmation => 'pass4321')
+    user.update_without_password(password: 'pass4321', password_confirmation: 'pass4321')
     assert !user.reload.valid_password?('pass4321')
     assert user.valid_password?('12345678')
   end
@@ -226,8 +226,8 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'downcase_keys with validation' do
-    User.create(:email => "HEllO@example.com", :password => "123456")
-    user = User.create(:email => "HEllO@example.com", :password => "123456")
+    User.create(email: "HEllO@example.com", password: "123456")
+    user = User.create(email: "HEllO@example.com", password: "123456")
     assert !user.valid?
   end
 
@@ -239,7 +239,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should be encryptable_password and the login when the login is on authentication_keys' do
-    swap Devise, :authentication_keys => [:login] do
+    swap Devise, authentication_keys: [:login] do
       assert_same_content Devise::Models::DatabaseAuthenticatable.required_fields(User), [
         :encrypted_password,
         :login

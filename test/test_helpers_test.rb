@@ -17,7 +17,7 @@ class TestHelpersTest < ActionController::TestCase
   end
 
   test "redirects if attempting to access a page with an unconfirmed account" do
-    swap Devise, :allow_unconfirmed_access_for => 0.days do
+    swap Devise, allow_unconfirmed_access_for: 0.days do
       user = create_user
       assert !user.active_for_authentication?
 
@@ -28,12 +28,12 @@ class TestHelpersTest < ActionController::TestCase
   end
 
   test "returns nil if accessing current_user with an unconfirmed account" do
-    swap Devise, :allow_unconfirmed_access_for => 0.days do
+    swap Devise, allow_unconfirmed_access_for: 0.days do
       user = create_user
       assert !user.active_for_authentication?
 
       sign_in user
-      get :accept, :id => user
+      get :accept, id: user
       assert_nil assigns(:current_user)
     end
   end

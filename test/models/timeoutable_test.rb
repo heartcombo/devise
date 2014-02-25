@@ -29,7 +29,7 @@ class TimeoutableTest < ActiveSupport::TestCase
   end
 
   test 'fallback to Devise config option' do
-    swap Devise, :timeout_in => 1.minute do
+    swap Devise, timeout_in: 1.minute do
       user = new_user
       assert user.timedout?(2.minutes.ago)
       assert_not user.timedout?(30.seconds.ago)

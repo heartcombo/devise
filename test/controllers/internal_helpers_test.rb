@@ -55,7 +55,7 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'require no authentication tests current mapping' do
-    @mock_warden.expects(:authenticate?).with(:rememberable, :scope => :user).returns(true)
+    @mock_warden.expects(:authenticate?).with(:rememberable, scope: :user).returns(true)
     @mock_warden.expects(:user).with(:user).returns(User.new)
     @controller.expects(:redirect_to).with(root_path)
     @controller.send :require_no_authentication
@@ -71,7 +71,7 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'require no authentication sets a flash message' do
-    @mock_warden.expects(:authenticate?).with(:rememberable, :scope => :user).returns(true)
+    @mock_warden.expects(:authenticate?).with(:rememberable, scope: :user).returns(true)
     @mock_warden.expects(:user).with(:user).returns(User.new)
     @controller.expects(:redirect_to).with(root_path)
     @controller.send :require_no_authentication
@@ -79,7 +79,7 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'signed in resource returns signed in resource for current scope' do
-    @mock_warden.expects(:authenticate).with(:scope => :user).returns(User.new)
+    @mock_warden.expects(:authenticate).with(scope: :user).returns(User.new)
     assert_kind_of User, @controller.signed_in_resource
   end
 
@@ -100,21 +100,21 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'uses custom i18n options' do
-    @controller.stubs(:devise_i18n_options).returns(:default => "devise custom options")
+    @controller.stubs(:devise_i18n_options).returns(default: "devise custom options")
     @controller.send :set_flash_message, :notice, :invalid_i18n_messagesend_instructions
     assert_equal 'devise custom options', flash[:notice]
   end
 
   test 'allows custom i18n options to override resource_name' do
     I18n.expects(:t).with("custom_resource_name.confirmed", anything)
-    @controller.stubs(:devise_i18n_options).returns(:resource_name => "custom_resource_name")
+    @controller.stubs(:devise_i18n_options).returns(resource_name: "custom_resource_name")
     @controller.send :set_flash_message, :notice, :confirmed
   end
 
   test 'navigational_formats not returning a wild card' do
     MyController.send(:public, :navigational_formats)
 
-    swap Devise, :navigational_formats => ['*/*', :html] do
+    swap Devise, navigational_formats: ['*/*', :html] do
       assert_not @controller.navigational_formats.include?("*/*")
     end
 

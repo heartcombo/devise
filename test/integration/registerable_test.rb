@@ -8,9 +8,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_template 'registrations/new'
 
-    fill_in 'email', :with => 'new_user@test.com'
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user123'
+    fill_in 'email', with: 'new_user@test.com'
+    fill_in 'password', with: 'new_user123'
+    fill_in 'password confirmation', with: 'new_user123'
     click_button 'Sign up'
 
     assert_contain 'You have signed up successfully'
@@ -26,9 +26,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     get new_admin_session_path
     click_link 'Sign up'
 
-    fill_in 'email', :with => 'new_user@test.com'
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user123'
+    fill_in 'email', with: 'new_user@test.com'
+    fill_in 'password', with: 'new_user123'
+    fill_in 'password confirmation', with: 'new_user123'
     click_button 'Sign up'
 
     assert_contain 'Welcome! You have signed up successfully.'
@@ -41,9 +41,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     get new_user_registration_path
 
-    fill_in 'email', :with => 'new_user@test.com'
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user123'
+    fill_in 'email', with: 'new_user@test.com'
+    fill_in 'password', with: 'new_user123'
+    fill_in 'password confirmation', with: 'new_user123'
     click_button 'Sign up'
   end
 
@@ -76,9 +76,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     Devise::RegistrationsController.any_instance.stubs(:after_inactive_sign_up_path_for).returns("/?custom=1")
     get new_user_registration_path
 
-    fill_in 'email', :with => 'new_user@test.com'
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user123'
+    fill_in 'email', with: 'new_user@test.com'
+    fill_in 'password', with: 'new_user123'
+    fill_in 'password confirmation', with: 'new_user123'
     click_button 'Sign up'
 
     assert_current_url "/?custom=1"
@@ -92,9 +92,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     get new_user_registration_path
 
-    fill_in 'email', :with => 'invalid_email'
-    fill_in 'password', :with => 'new_user123'
-    fill_in 'password confirmation', :with => 'new_user321'
+    fill_in 'email', with: 'invalid_email'
+    fill_in 'password', with: 'new_user123'
+    fill_in 'password confirmation', with: 'new_user321'
     click_button 'Sign up'
 
     assert_template 'registrations/new'
@@ -116,9 +116,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     create_user
     get new_user_registration_path
 
-    fill_in 'email', :with => 'user@test.com'
-    fill_in 'password', :with => '123456'
-    fill_in 'password confirmation', :with => '123456'
+    fill_in 'email', with: 'user@test.com'
+    fill_in 'password', with: '123456'
+    fill_in 'password confirmation', with: '123456'
     click_button 'Sign up'
 
     assert_current_url '/users'
@@ -144,8 +144,8 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    fill_in 'email', :with => 'user.new@example.com'
-    fill_in 'current password', :with => '12345678'
+    fill_in 'email', with: 'user.new@example.com'
+    fill_in 'current password', with: '12345678'
     click_button 'Update'
 
     assert_current_url '/'
@@ -158,9 +158,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    fill_in 'password', :with => '1234567890'
-    fill_in 'password confirmation', :with => '1234567890'
-    fill_in 'current password', :with => '12345678'
+    fill_in 'password', with: '1234567890'
+    fill_in 'password confirmation', with: '1234567890'
+    fill_in 'current password', with: '12345678'
     click_button 'Update'
 
     assert_contain 'You updated your account successfully.'
@@ -172,8 +172,8 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    fill_in 'email', :with => 'user.new@example.com'
-    fill_in 'current password', :with => 'invalid'
+    fill_in 'email', with: 'user.new@example.com'
+    fill_in 'current password', with: 'invalid'
     click_button 'Update'
 
     assert_template 'registrations/edit'
@@ -187,9 +187,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    fill_in 'password', :with => 'pass1234'
-    fill_in 'password confirmation', :with => 'pass1234'
-    fill_in 'current password', :with => '12345678'
+    fill_in 'password', with: 'pass1234'
+    fill_in 'password confirmation', with: 'pass1234'
+    fill_in 'current password', with: '12345678'
     click_button 'Update'
 
     assert_current_url '/'
@@ -202,9 +202,9 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    fill_in 'password', :with => 'pas123'
-    fill_in 'password confirmation', :with => ''
-    fill_in 'current password', :with => '12345678'
+    fill_in 'password', with: 'pas123'
+    fill_in 'password confirmation', with: ''
+    fill_in 'current password', with: '12345678'
     click_button 'Update'
 
     assert_contain Devise.rails4? ?
@@ -235,21 +235,21 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'a user with XML sign up stub' do
-    get new_user_registration_path(:format => 'xml')
+    get new_user_registration_path(format: 'xml')
     assert_response :success
     assert_match %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>), response.body
     assert_no_match(/<confirmation-token/, response.body)
   end
 
   test 'a user with JSON sign up stub' do
-    get new_user_registration_path(:format => 'json')
+    get new_user_registration_path(format: 'json')
     assert_response :success
     assert_match %({"user":), response.body
     assert_no_match(/"confirmation_token"/, response.body)
   end
 
   test 'an admin sign up with valid information in XML format should return valid response' do
-    post admin_registration_path(:format => 'xml'), :admin => { :email => 'new_user@test.com', :password => 'new_user123', :password_confirmation => 'new_user123' }
+    post admin_registration_path(format: 'xml'), admin: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
 
@@ -258,7 +258,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'a user sign up with valid information in XML format should return valid response' do
-    post user_registration_path(:format => 'xml'), :user => { :email => 'new_user@test.com', :password => 'new_user123', :password_confirmation => 'new_user123' }
+    post user_registration_path(format: 'xml'), user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
 
@@ -267,28 +267,28 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'a user sign up with invalid information in XML format should return invalid response' do
-    post user_registration_path(:format => 'xml'), :user => { :email => 'new_user@test.com', :password => 'new_user123', :password_confirmation => 'invalid' }
+    post user_registration_path(format: 'xml'), user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'invalid' }
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test 'a user update information with valid data in XML format should return valid response' do
     user = sign_in_as_user
-    put user_registration_path(:format => 'xml'), :user => { :current_password => '12345678', :email => 'user.new@test.com' }
+    put user_registration_path(format: 'xml'), user: { current_password: '12345678', email: 'user.new@test.com' }
     assert_response :success
     assert_equal user.reload.email, 'user.new@test.com'
   end
 
   test 'a user update information with invalid data in XML format should return invalid response' do
     user = sign_in_as_user
-    put user_registration_path(:format => 'xml'), :user => { :current_password => 'invalid', :email => 'user.new@test.com' }
+    put user_registration_path(format: 'xml'), user: { current_password: 'invalid', email: 'user.new@test.com' }
     assert_response :unprocessable_entity
     assert_equal user.reload.email, 'user@test.com'
   end
 
   test 'a user cancel their account in XML format should return valid response' do
     sign_in_as_user
-    delete user_registration_path(:format => 'xml')
+    delete user_registration_path(format: 'xml')
     assert_response :success
     assert_equal User.count, 0
   end
@@ -299,8 +299,8 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_admin
     get edit_admin_registration_path
 
-    fill_in 'email', :with => 'admin.new@example.com'
-    fill_in 'current password', :with => '123456'
+    fill_in 'email', with: 'admin.new@example.com'
+    fill_in 'current password', with: '123456'
     click_button 'Update'
 
     assert_current_url '/admin_area/home'
@@ -315,9 +315,9 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_admin
     get edit_admin_registration_path
 
-    fill_in 'password', :with => 'pas123'
-    fill_in 'password confirmation', :with => 'pas123'
-    fill_in 'current password', :with => '123456'
+    fill_in 'password', with: 'pas123'
+    fill_in 'password confirmation', with: 'pas123'
+    fill_in 'current password', with: '123456'
     click_button 'Update'
 
     assert_current_url '/admin_area/home'
@@ -330,14 +330,14 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_admin
 
     get edit_admin_registration_path
-    fill_in 'email', :with => 'admin.new@example.com'
-    fill_in 'current password', :with => '123456'
+    fill_in 'email', with: 'admin.new@example.com'
+    fill_in 'current password', with: '123456'
     click_button 'Update'
 
     get edit_admin_registration_path
-    fill_in 'password', :with => 'pas123'
-    fill_in 'password confirmation', :with => 'pas123'
-    fill_in 'current password', :with => '123456'
+    fill_in 'password', with: 'pas123'
+    fill_in 'password confirmation', with: 'pas123'
+    fill_in 'current password', with: '123456'
     click_button 'Update'
 
     assert_current_url '/admin_area/home'

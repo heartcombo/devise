@@ -1,7 +1,7 @@
 class Devise::SessionsController < DeviseController
-  prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
-  prepend_before_filter :allow_params_authentication!, :only => :create
-  prepend_before_filter :only => [ :create, :destroy ] { request.env["devise.skip_timeout"] = true }
+  prepend_before_filter :require_no_authentication, only: [ :new, :create ]
+  prepend_before_filter :allow_params_authentication!, only: :create
+  prepend_before_filter only: [ :create, :destroy ] { request.env["devise.skip_timeout"] = true }
 
   # GET /resource/sign_in
   def new
@@ -16,7 +16,7 @@ class Devise::SessionsController < DeviseController
     set_flash_message(:notice, :signed_in) if is_flashing_format?
     sign_in(resource_name, resource)
     yield resource if block_given?
-    respond_with resource, :location => after_sign_in_path_for(resource)
+    respond_with resource, location: after_sign_in_path_for(resource)
   end
 
   # DELETE /resource/sign_out
@@ -44,10 +44,10 @@ class Devise::SessionsController < DeviseController
     methods = resource_class.authentication_keys.dup
     methods = methods.keys if methods.is_a?(Hash)
     methods << :password if resource.respond_to?(:password)
-    { :methods => methods, :only => [:password] }
+    { methods: methods, only: [:password] }
   end
 
   def auth_options
-    { :scope => resource_name, :recall => "#{controller_path}#new" }
+    { scope: resource_name, recall: "#{controller_path}#new" }
   end
 end

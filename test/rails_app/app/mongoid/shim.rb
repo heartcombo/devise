@@ -3,7 +3,7 @@ module Shim
 
   included do
     include ::Mongoid::Timestamps
-    field :created_at, :type => DateTime
+    field :created_at, type: DateTime
   end
 
   module ClassMethods
@@ -12,7 +12,7 @@ module Shim
     end
 
     def find_by_email(email)
-      find_by(:email => email)
+      find_by(email: email)
     end
   end
 

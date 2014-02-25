@@ -350,8 +350,8 @@ module Devise
   # == Examples:
   #
   #   Devise.add_module(:party_module)
-  #   Devise.add_module(:party_module, :strategy => true, :controller => :sessions)
-  #   Devise.add_module(:party_module, :model => 'party_module/model')
+  #   Devise.add_module(:party_module, strategy: true, controller: :sessions)
+  #   Devise.add_module(:party_module, model: 'party_module/model')
   #
   def self.add_module(module_name, options = {})
     ALL << module_name
@@ -449,7 +449,7 @@ module Devise
       warden_config.intercept_401 = false
 
       Devise.mappings.each_value do |mapping|
-        warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
+        warden_config.scope_defaults mapping.name, strategies: mapping.strategies
 
         warden_config.serialize_into_session(mapping.name) do |record|
           mapping.to.serialize_into_session(record)

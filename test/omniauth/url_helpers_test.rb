@@ -17,8 +17,8 @@ class OmniAuthRoutesTest < ActionController::TestCase
 
     if with_param
       # Default url params
-      assert_equal @controller.send(action, :user, provider, :param => 123),
-                   @controller.send("user_#{action}", provider, :param => 123)
+      assert_equal @controller.send(action, :user, provider, param: 123),
+                   @controller.send("user_#{action}", provider, param: 123)
     end
   end
 
@@ -44,7 +44,7 @@ class OmniAuthRoutesTest < ActionController::TestCase
 
   test 'should generate authorization path with params' do
     assert_match "/users/auth/openid?openid_url=http%3A%2F%2Fyahoo.com",
-                  @controller.omniauth_authorize_path(:user, :openid, :openid_url => "http://yahoo.com")
+                  @controller.omniauth_authorize_path(:user, :openid, openid_url: "http://yahoo.com")
   end
 
   test 'should not add a "?" if no param was sent' do

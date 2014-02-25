@@ -29,7 +29,7 @@ module Devise
       end
     end
 
-    config.after_initialize do |app|
+    initializer "devise.secret_key" do |app|
       if app.respond_to?(:secrets)
         Devise.secret_key ||= app.secrets.secret_key_base
       elsif app.config.respond_to?(:secret_key_base)

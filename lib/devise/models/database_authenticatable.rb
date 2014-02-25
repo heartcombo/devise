@@ -4,7 +4,7 @@ require 'bcrypt'
 module Devise
   # Digests the password using bcrypt.
   def self.bcrypt(klass, password)
-    ::BCrypt::Password.create("#{password}#{klass.pepper}", :cost => klass.stretches).to_s
+    ::BCrypt::Password.create("#{password}#{klass.pepper}", cost: klass.stretches).to_s
   end
 
   module Models

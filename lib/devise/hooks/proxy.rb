@@ -7,7 +7,7 @@ module Devise
       include Devise::Controllers::SignInOut
 
       attr_reader :warden
-      delegate :cookies, :env, :to => :warden
+      delegate :cookies, :env, to: :warden
 
       def initialize(warden)
         @warden = warden

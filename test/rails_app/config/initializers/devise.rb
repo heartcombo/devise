@@ -166,9 +166,9 @@ Devise.setup do |config|
   # config.sign_out_via = :get
 
   # ==> OmniAuth
-  config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :scope => 'email,offline_access'
+  config.omniauth :facebook, 'APP_ID', 'APP_SECRET', scope: 'email,offline_access'
   config.omniauth :openid
-  config.omniauth :openid, :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
+  config.omniauth :openid, name: 'google', identifier: 'https://www.google.com/accounts/o8/id'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
@@ -176,6 +176,6 @@ Devise.setup do |config|
   #
   # config.warden do |manager|
   #   manager.failure_app = AnotherApp
-  #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
+  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
 end

@@ -104,7 +104,7 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     user = sign_in_as_user
     get expire_user_path(user)
 
-    post "/users/sign_in", :email => user.email, :password => "123456"
+    post "/users/sign_in", email: user.email, password: "123456"
 
     assert_response :redirect
     follow_redirect!
@@ -129,7 +129,7 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
   end
 
   test 'user configured timeout limit' do
-    swap Devise, :timeout_in => 8.minutes do
+    swap Devise, timeout_in: 8.minutes do
       user = sign_in_as_user
 
       get users_path
@@ -145,8 +145,8 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
   end
 
   test 'error message with i18n' do
-    store_translations :en, :devise => {
-      :failure => { :user => { :timeout => 'Session expired!' } }
+    store_translations :en, devise: {
+      failure: { user: { timeout: 'Session expired!' } }
     } do
       user = sign_in_as_user
 
@@ -158,8 +158,8 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
   end
 
   test 'error message with i18n with double redirect' do
-    store_translations :en, :devise => {
-      :failure => { :user => { :timeout => 'Session expired!' } }
+    store_translations :en, devise: {
+      failure: { user: { timeout: 'Session expired!' } }
     } do
       user = sign_in_as_user
 
@@ -172,7 +172,7 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
   end
 
   test 'time out not triggered if remembered' do
-    user = sign_in_as_user :remember_me => true
+    user = sign_in_as_user remember_me: true
     get expire_user_path(user)
     assert_not_nil last_request_at
 

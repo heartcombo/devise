@@ -23,14 +23,14 @@ module RailsApp
     # config.generators do |g|
     #   g.orm             :active_record
     #   g.template_engine :erb
-    #   g.test_framework  :test_unit, :fixture => true
+    #   g.test_framework  :test_unit, fixture: true
     # end
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password
     config.assets.enabled = false
 
-    config.action_mailer.default_url_options = { :host => "localhost:3000" }
+    config.action_mailer.default_url_options = { host: "localhost:3000" }
 
     # This was used to break devise in some situations
     config.to_prepare do

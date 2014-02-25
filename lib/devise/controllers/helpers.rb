@@ -55,7 +55,7 @@ module Devise
           end
 
           def current_#{mapping}
-            @current_#{mapping} ||= warden.authenticate(:scope => :#{mapping})
+            @current_#{mapping} ||= warden.authenticate(scope: :#{mapping})
           end
 
           def #{mapping}_session
@@ -77,7 +77,7 @@ module Devise
       # the controllers defined inside devise. Useful if you want to apply a before
       # filter to all controllers, except the ones in devise:
       #
-      #   before_filter :my_filter, :unless => :devise_controller?
+      #   before_filter :my_filter, unless: :devise_controller?
       def devise_controller?
         is_a?(::DeviseController)
       end
@@ -121,10 +121,10 @@ module Devise
       # root path. For a user scope, you can define the default url in
       # the following way:
       #
-      #   map.user_root '/users', :controller => 'users' # creates user_root_path
+      #   map.user_root '/users', controller: 'users' # creates user_root_path
       #
       #   map.namespace :user do |user|
-      #     user.root :controller => 'users' # creates user_root_path
+      #     user.root controller: 'users' # creates user_root_path
       #   end
       #
       # If the resource root path is not defined, root_path is used. However,

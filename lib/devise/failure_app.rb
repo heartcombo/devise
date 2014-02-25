@@ -15,7 +15,7 @@ module Devise
 
     include Devise::Controllers::StoreLocation
 
-    delegate :flash, :to => :request
+    delegate :flash, to: :request
 
     def self.call(env)
       @respond ||= action(:respond)
@@ -151,9 +151,9 @@ module Devise
       return i18n_message unless request_format
       method = "to_#{request_format}"
       if method == "to_xml"
-        { :error => i18n_message }.to_xml(:root => "errors")
+        { error: i18n_message }.to_xml(root: "errors")
       elsif {}.respond_to?(method)
-        { :error => i18n_message }.send(method)
+        { error: i18n_message }.send(method)
       else
         i18n_message
       end

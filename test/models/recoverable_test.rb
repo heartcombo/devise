@@ -67,28 +67,28 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should find a user to send instructions by email' do
     user = create_user
-    reset_password_user = User.send_reset_password_instructions(:email => user.email)
+    reset_password_user = User.send_reset_password_instructions(email: user.email)
     assert_equal reset_password_user, user
   end
 
   test 'should return a new record with errors if user was not found by e-mail' do
-    reset_password_user = User.send_reset_password_instructions(:email => "invalid@example.com")
+    reset_password_user = User.send_reset_password_instructions(email: "invalid@example.com")
     assert_not reset_password_user.persisted?
     assert_equal "not found", reset_password_user.errors[:email].join
   end
 
   test 'should find a user to send instructions by authentication_keys' do
-    swap Devise, :authentication_keys => [:username, :email] do
+    swap Devise, authentication_keys: [:username, :email] do
       user = create_user
-      reset_password_user = User.send_reset_password_instructions(:email => user.email, :username => user.username)
+      reset_password_user = User.send_reset_password_instructions(email: user.email, username: user.username)
       assert_equal reset_password_user, user
     end
   end
 
   test 'should require all reset_password_keys' do
-      swap Devise, :reset_password_keys => [:username, :email] do
+      swap Devise, reset_password_keys: [:username, :email] do
           user = create_user
-          reset_password_user = User.send_reset_password_instructions(:email => user.email)
+          reset_password_user = User.send_reset_password_instructions(email: user.email)
           assert_not reset_password_user.persisted?
           assert_equal "can't be blank", reset_password_user.errors[:username].join
       end
@@ -97,14 +97,14 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should reset reset_password_token before send the reset instructions email' do
     user = create_user
     token = user.reset_password_token
-    User.send_reset_password_instructions(:email => user.email)
+    User.send_reset_password_instructions(email: user.email)
     assert_not_equal token, user.reload.reset_password_token
   end
 
   test 'should send email instructions to the user reset their password' do
     user = create_user
     assert_email_sent do
-      User.send_reset_password_instructions(:email => user.email)
+      User.send_reset_password_instructions(email: user.email)
     end
   end
 
@@ -112,18 +112,18 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     raw  = user.send_reset_password_instructions
 
-    reset_password_user = User.reset_password_by_token(:reset_password_token => raw)
+    reset_password_user = User.reset_password_by_token(reset_password_token: raw)
     assert_equal reset_password_user, user
   end
 
   test 'should return a new record with errors if no reset_password_token is found' do
-    reset_password_user = User.reset_password_by_token(:reset_password_token => 'invalid_token')
+    reset_password_user = User.reset_password_by_token(reset_password_token: 'invalid_token')
     assert_not reset_password_user.persisted?
     assert_equal "is invalid", reset_password_user.errors[:reset_password_token].join
   end
 
   test 'should return a new record with errors if reset_password_token is blank' do
-    reset_password_user = User.reset_password_by_token(:reset_password_token => '')
+    reset_password_user = User.reset_password_by_token(reset_password_token: '')
     assert_not reset_password_user.persisted?
     assert_match "can't be blank", reset_password_user.errors[:reset_password_token].join
   end
@@ -132,7 +132,7 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     raw  = user.send_reset_password_instructions
 
-    reset_password_user = User.reset_password_by_token(:reset_password_token => raw, :password => '')
+    reset_password_user = User.reset_password_by_token(reset_password_token: raw, password: '')
     assert_not reset_password_user.errors.empty?
     assert_match "can't be blank", reset_password_user.errors[:password].join
   end
@@ -143,9 +143,9 @@ class RecoverableTest < ActiveSupport::TestCase
     raw  = user.send_reset_password_instructions
 
     User.reset_password_by_token(
-      :reset_password_token => raw,
-      :password => 'new_password',
-      :password_confirmation => 'new_password'
+      reset_password_token: raw,
+      password: 'new_password',
+      password_confirmation: 'new_password'
     )
     user.reload
 
@@ -154,7 +154,7 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should not reset password after reset_password_within time' do
-    swap Devise, :reset_password_within => 1.hour do
+    swap Devise, reset_password_within: 1.hour do
       user = create_user
       raw  = user.send_reset_password_instructions
 
@@ -163,9 +163,9 @@ class RecoverableTest < ActiveSupport::TestCase
       user.save!
 
       reset_password_user = User.reset_password_by_token(
-        :reset_password_token => raw,
-        :password => 'new_password',
-        :password_confirmation => 'new_password'
+        reset_password_token: raw,
+        password: 'new_password',
+        password_confirmation: 'new_password'
       )
       user.reload
 

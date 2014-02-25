@@ -49,7 +49,7 @@ module Devise
 
         self.reset_password_token   = enc
         self.reset_password_sent_at = Time.now.utc
-        self.save(:validate => false)
+        self.save(validate: false)
 
         send_devise_notification(:reset_password_instructions, raw, {})
         raw

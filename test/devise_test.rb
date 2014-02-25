@@ -23,7 +23,7 @@ class DeviseTest < ActiveSupport::TestCase
   end
 
   test 'model options can be configured through Devise' do
-    swap Devise, :allow_unconfirmed_access_for => 113, :pepper => "foo" do
+    swap Devise, allow_unconfirmed_access_for: 113, pepper: "foo" do
       assert_equal 113, Devise.allow_unconfirmed_access_for
       assert_equal "foo", Devise.pepper
     end
@@ -60,12 +60,12 @@ class DeviseTest < ActiveSupport::TestCase
     assert_not defined?(Devise::Models::Coconut)
     Devise::ALL.delete(:coconut)
 
-    assert_nothing_raised(Exception) { Devise.add_module(:banana, :strategy => :fruits) }
+    assert_nothing_raised(Exception) { Devise.add_module(:banana, strategy: :fruits) }
     assert_equal :fruits, Devise::STRATEGIES[:banana]
     Devise::ALL.delete(:banana)
     Devise::STRATEGIES.delete(:banana)
 
-    assert_nothing_raised(Exception) { Devise.add_module(:kivi, :controller => :fruits) }
+    assert_nothing_raised(Exception) { Devise.add_module(:kivi, controller: :fruits) }
     assert_equal :fruits, Devise::CONTROLLERS[:kivi]
     Devise::ALL.delete(:kivi)
     Devise::CONTROLLERS.delete(:kivi)

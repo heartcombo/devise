@@ -31,11 +31,11 @@ module Devise
       end
 
       def remember_cookie_values(resource)
-        options = { :httponly => true }
+        options = { httponly: true }
         options.merge!(forget_cookie_values(resource))
         options.merge!(
-          :value => resource.class.serialize_into_cookie(resource),
-          :expires => resource.remember_expires_at
+          value: resource.class.serialize_into_cookie(resource),
+          expires: resource.remember_expires_at
         )
       end
 

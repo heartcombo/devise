@@ -67,13 +67,13 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'setup subject from I18n' do
-    store_translations :en, :devise => { :mailer => { :confirmation_instructions => { :subject => 'Account Confirmation' } } } do
+    store_translations :en, devise: { mailer: { confirmation_instructions: { subject: 'Account Confirmation' } } } do
       assert_equal 'Account Confirmation', mail.subject
     end
   end
 
   test 'subject namespaced by model' do
-    store_translations :en, :devise => { :mailer => { :confirmation_instructions => { :user_subject => 'User Account Confirmation' } } } do
+    store_translations :en, devise: { mailer: { confirmation_instructions: { user_subject: 'User Account Confirmation' } } } do
       assert_equal 'User Account Confirmation', mail.subject
     end
   end
@@ -93,7 +93,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'renders a scoped if scoped_views is set to true' do
-    swap Devise, :scoped_views => true do
+    swap Devise, scoped_views: true do
       assert_equal user.email, mail.body.decoded
     end
   end
@@ -108,7 +108,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'mailer sender accepts a proc' do
-    swap Devise, :mailer_sender => proc { "another@example.com" } do
+    swap Devise, mailer_sender: proc { "another@example.com" } do
       assert_equal ['another@example.com'], mail.from
     end
   end

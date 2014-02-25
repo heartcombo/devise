@@ -15,7 +15,7 @@ if DEVISE_ORM == :mongoid
 
     test "all files are properly deleted" do
       run_generator %w(monster)
-      run_generator %w(monster), :behavior => :revoke
+      run_generator %w(monster), behavior: :revoke
       assert_no_file "app/models/monster.rb"
     end
   end

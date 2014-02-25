@@ -2,21 +2,21 @@ require 'test_helper'
 
 class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
   test 'sign in with email of different case should succeed when email is in the list of case insensitive keys' do
-    create_user(:email => 'Foo@Bar.com')
+    create_user(email: 'Foo@Bar.com')
 
     sign_in_as_user do
-      fill_in 'email', :with => 'foo@bar.com'
+      fill_in 'email', with: 'foo@bar.com'
     end
 
     assert warden.authenticated?(:user)
   end
 
   test 'sign in with email of different case should fail when email is NOT the list of case insensitive keys' do
-    swap Devise, :case_insensitive_keys => [] do
-      create_user(:email => 'Foo@Bar.com')
+    swap Devise, case_insensitive_keys: [] do
+      create_user(email: 'Foo@Bar.com')
 
       sign_in_as_user do
-        fill_in 'email', :with => 'foo@bar.com'
+        fill_in 'email', with: 'foo@bar.com'
       end
 
       assert_not warden.authenticated?(:user)
@@ -24,21 +24,21 @@ class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
   end
 
   test 'sign in with email including extra spaces should succeed when email is in the list of strip whitespace keys' do
-    create_user(:email => ' foo@bar.com ')
+    create_user(email: ' foo@bar.com ')
 
     sign_in_as_user do
-      fill_in 'email', :with => 'foo@bar.com'
+      fill_in 'email', with: 'foo@bar.com'
     end
 
     assert warden.authenticated?(:user)
   end
 
   test 'sign in with email including extra spaces should fail when email is NOT the list of strip whitespace keys' do
-    swap Devise, :strip_whitespace_keys => [] do
-      create_user(:email => 'foo@bar.com')
+    swap Devise, strip_whitespace_keys: [] do
+      create_user(email: 'foo@bar.com')
 
       sign_in_as_user do
-        fill_in 'email', :with => ' foo@bar.com '
+        fill_in 'email', with: ' foo@bar.com '
       end
 
       assert_not warden.authenticated?(:user)
@@ -46,16 +46,16 @@ class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
   end
 
   test 'sign in should not authenticate if not using proper authentication keys' do
-    swap Devise, :authentication_keys => [:username] do
+    swap Devise, authentication_keys: [:username] do
       sign_in_as_user
       assert_not warden.authenticated?(:user)
     end
   end
 
   test 'sign in with invalid email should return to sign in form with error message' do
-    store_translations :en, :devise => { :failure => { :admin => { :not_found_in_database => 'Invalid email address' } } } do
+    store_translations :en, devise: { failure: { admin: { not_found_in_database: 'Invalid email address' } } } do
       sign_in_as_admin do
-        fill_in 'email', :with => 'wrongemail@test.com'
+        fill_in 'email', with: 'wrongemail@test.com'
       end
 
       assert_contain 'Invalid email address'
@@ -65,7 +65,7 @@ class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
 
   test 'sign in with invalid pasword should return to sign in form with error message' do
     sign_in_as_admin do
-      fill_in 'password', :with => 'abcdef'
+      fill_in 'password', with: 'abcdef'
     end
 
     assert_contain 'Invalid email or password'
@@ -73,9 +73,9 @@ class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    store_translations :en, :devise => { :failure => { :admin => { :invalid => "Invalid credentials" } } } do
+    store_translations :en, devise: { failure: { admin: { invalid: "Invalid credentials" } } } do
       sign_in_as_admin do
-        fill_in 'password', :with => 'abcdef'
+        fill_in 'password', with: 'abcdef'
       end
 
       assert_contain 'Invalid credentials'

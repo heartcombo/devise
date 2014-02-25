@@ -63,13 +63,13 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   end
 
   test 'setup subject from I18n' do
-    store_translations :en, :devise => { :mailer => { :reset_password_instructions => { :subject => 'Reset instructions' } } } do
+    store_translations :en, devise: { mailer: { reset_password_instructions: { subject: 'Reset instructions' } } } do
       assert_equal 'Reset instructions', mail.subject
     end
   end
 
   test 'subject namespaced by model' do
-    store_translations :en, :devise => { :mailer => { :reset_password_instructions => { :user_subject => 'User Reset Instructions' } } } do
+    store_translations :en, devise: { mailer: { reset_password_instructions: { user_subject: 'User Reset Instructions' } } } do
       assert_equal 'User Reset Instructions', mail.subject
     end
   end
@@ -89,7 +89,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   end
 
   test 'mailer sender accepts a proc' do
-    swap Devise, :mailer_sender => proc { "another@example.com" } do
+    swap Devise, mailer_sender: proc { "another@example.com" } do
       assert_equal ['another@example.com'], mail.from
     end
   end

@@ -8,11 +8,11 @@ class ActionDispatch::IntegrationTest
   def create_user(options={})
     @user ||= begin
       user = User.create!(
-        :username => 'usertest',
-        :email => options[:email] || 'user@test.com',
-        :password => options[:password] || '12345678',
-        :password_confirmation => options[:password] || '12345678',
-        :created_at => Time.now.utc
+        username: 'usertest',
+        email: options[:email] || 'user@test.com',
+        password: options[:password] || '12345678',
+        password_confirmation: options[:password] || '12345678',
+        created_at: Time.now.utc
       )
       user.update_attribute(:confirmation_sent_at, options[:confirmation_sent_at]) if options[:confirmation_sent_at]
       user.confirm! unless options[:confirm] == false
@@ -24,9 +24,9 @@ class ActionDispatch::IntegrationTest
   def create_admin(options={})
     @admin ||= begin
       admin = Admin.create!(
-        :email => options[:email] || 'admin@test.com',
-        :password => '123456', :password_confirmation => '123456',
-        :active => options[:active]
+        email: options[:email] || 'admin@test.com',
+        password: '123456', password_confirmation: '123456',
+        active: options[:active]
       )
       admin.confirm! unless options[:confirm] == false
       admin
@@ -36,8 +36,8 @@ class ActionDispatch::IntegrationTest
   def sign_in_as_user(options={}, &block)
     user = create_user(options)
     visit_with_option options[:visit], new_user_session_path
-    fill_in 'email', :with => options[:email] || 'user@test.com'
-    fill_in 'password', :with => options[:password] || '12345678'
+    fill_in 'email', with: options[:email] || 'user@test.com'
+    fill_in 'password', with: options[:password] || '12345678'
     check 'remember me' if options[:remember_me] == true
     yield if block_given?
     click_button 'Sign In'
@@ -47,8 +47,8 @@ class ActionDispatch::IntegrationTest
   def sign_in_as_admin(options={}, &block)
     admin = create_admin(options)
     visit_with_option options[:visit], new_admin_session_path
-    fill_in 'email', :with => 'admin@test.com'
-    fill_in 'password', :with => '123456'
+    fill_in 'email', with: 'admin@test.com'
+    fill_in 'password', with: '123456'
     yield if block_given?
     click_button 'Sign In'
     admin

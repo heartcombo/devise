@@ -86,7 +86,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'remember for should fallback to devise remember for default configuration' do
-    swap Devise, :remember_for => 1.day do
+    swap Devise, remember_for: 1.day do
       resource = create_resource
       resource.remember_me!
       assert_not resource.remember_expired?
@@ -94,7 +94,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'remember expires at should sum date of creation with remember for configuration' do
-    swap Devise, :remember_for => 3.days do
+    swap Devise, remember_for: 3.days do
       resource = create_resource
       resource.remember_me!
       assert_equal 3.days.from_now.to_date, resource.remember_expires_at.to_date
@@ -105,7 +105,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'remember should be expired if remember_for is zero' do
-    swap Devise, :remember_for => 0.days do
+    swap Devise, remember_for: 0.days do
       Devise.remember_for = 0.days
       resource = create_resource
       resource.remember_me!
@@ -114,7 +114,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'remember should be expired if it was created before limit time' do
-    swap Devise, :remember_for => 1.day do
+    swap Devise, remember_for: 1.day do
       resource = create_resource
       resource.remember_me!
       resource.remember_created_at = 2.days.ago
@@ -124,7 +124,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'remember should not be expired if it was created within the limit time' do
-    swap Devise, :remember_for => 30.days do
+    swap Devise, remember_for: 30.days do
       resource = create_resource
       resource.remember_me!
       resource.remember_created_at = (30.days.ago + 2.minutes)
@@ -134,7 +134,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'if extend_remember_period is false, remember_me! should generate a new timestamp if expired' do
-    swap Devise, :remember_for => 5.minutes do
+    swap Devise, remember_for: 5.minutes do
       resource = create_resource
       resource.remember_me!(false)
       assert resource.remember_created_at
@@ -148,7 +148,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'if extend_remember_period is false, remember_me! should not generate a new timestamp' do
-    swap Devise, :remember_for => 1.year do
+    swap Devise, remember_for: 1.year do
       resource = create_resource
       resource.remember_me!(false)
       assert resource.remember_created_at
@@ -162,7 +162,7 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'if extend_remember_period is true, remember_me! should always generate a new timestamp' do
-    swap Devise, :remember_for => 1.year do
+    swap Devise, remember_for: 1.year do
       resource = create_resource
       resource.remember_me!(true)
       assert resource.remember_created_at

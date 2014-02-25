@@ -6,6 +6,6 @@ class AdminsController < ApplicationController
 
   def expire
     admin_session['last_request_at'] = 31.minutes.ago.utc
-    render :text => 'Admin will be expired on next request'
+    render text: 'Admin will be expired on next request'
   end
 end

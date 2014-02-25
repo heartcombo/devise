@@ -61,8 +61,8 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_difference "User.count" do
       visit "/users/sign_up"
-      fill_in "Password", :with => "12345678"
-      fill_in "Password confirmation", :with => "12345678"
+      fill_in "Password", with: "12345678"
+      fill_in "Password confirmation", with: "12345678"
       click_button "Sign up"
     end
 
@@ -111,7 +111,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   test "generates a proper link when SCRIPT_NAME is set" do
     header 'SCRIPT_NAME', '/q'
     visit "/users/sign_in"
-    assert_select "a", :href => "/q/users/auth/facebook"
+    assert_select "a", href: "/q/users/auth/facebook"
   end
 
   test "handles callback error parameter according to the specification" do

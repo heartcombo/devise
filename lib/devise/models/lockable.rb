@@ -22,7 +22,7 @@ module Devise
     module Lockable
       extend  ActiveSupport::Concern
 
-      delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, :to => "self.class"
+      delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, to: "self.class"
 
       def self.required_fields(klass)
         attributes = []
@@ -36,14 +36,14 @@ module Devise
       # Lock a user setting its locked_at to actual time.
       # * +opts+: Hash options if you don't want to send email
       #   when you lock access, you could pass the next hash
-      #   `{ :send_instructions => false } as option`.
+      #   `{ send_instructions: false } as option`.
       def lock_access!(opts = { })
         self.locked_at = Time.now.utc
 
         if unlock_strategy_enabled?(:email) && opts.fetch(:send_instructions, true)
           send_unlock_instructions
         else
-          save(:validate => false)
+          save(validate: false)
         end
       end
 
@@ -52,7 +52,7 @@ module Devise
         self.locked_at = nil
         self.failed_attempts = 0 if respond_to?(:failed_attempts=)
         self.unlock_token = nil  if respond_to?(:unlock_token=)
-        save(:validate => false)
+        save(validate: false)
       end
 
       # Verifies whether a user is locked or not.
@@ -64,7 +64,7 @@ module Devise
       def send_unlock_instructions
         raw, enc = Devise.token_generator.generate(self.class, :unlock_token)
         self.unlock_token = enc
-        self.save(:validate => false)
+        self.save(validate: false)
         send_devise_notification(:unlock_instructions, raw, {})
         raw
       end
@@ -104,7 +104,7 @@ module Devise
           if attempts_exceeded?
             lock_access! unless access_locked?
           else
-            save(:validate => false)
+            save(validate: false)
           end
           false
         end

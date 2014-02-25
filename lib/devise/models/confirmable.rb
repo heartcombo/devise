@@ -33,10 +33,10 @@ module Devise
       include ActionView::Helpers::DateHelper
 
       included do
-        before_create :generate_confirmation_token, :if => :confirmation_required?
-        after_create  :send_on_create_confirmation_instructions, :if => :send_confirmation_notification?
-        before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, :if => :postpone_email_change?
-        after_update  :send_reconfirmation_instructions,  :if => :reconfirmation_required?
+        before_create :generate_confirmation_token, if: :confirmation_required?
+        after_create  :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
+        before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, if: :postpone_email_change?
+        after_update  :send_reconfirmation_instructions,  if: :reconfirmation_required?
       end
 
       def initialize(*args, &block)
@@ -60,7 +60,7 @@ module Devise
         pending_any_confirmation do
           if confirmation_period_expired?
             self.errors.add(:email, :confirmation_period_expired,
-              :period => Devise::TimeInflector.time_ago_in_words(self.class.confirm_within.ago))
+              period: Devise::TimeInflector.time_ago_in_words(self.class.confirm_within.ago))
             return false
           end
 
@@ -73,9 +73,9 @@ module Devise
             self.unconfirmed_email = nil
 
             # We need to validate in such cases to enforce e-mail uniqueness
-            save(:validate => true)
+            save(validate: true)
           else
-            save(:validate => false)
+            save(validate: false)
           end
 
           after_confirmation if saved
@@ -98,7 +98,7 @@ module Devise
           generate_confirmation_token!
         end
 
-        opts = pending_reconfirmation? ? { :to => unconfirmed_email } : { }
+        opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 
@@ -225,7 +225,7 @@ module Devise
         end
 
         def generate_confirmation_token!
-          generate_confirmation_token && save(:validate => false)
+          generate_confirmation_token && save(validate: false)
         end
 
         def postpone_email_change_until_confirmation_and_regenerate_confirmation_token

@@ -449,7 +449,7 @@ module Devise
       warden_config.intercept_401 = false
 
       Devise.mappings.each_value do |mapping|
-        warden_config.scope_defaults mapping.name, :strategies => mapping.strategies
+        warden_config.scope_defaults mapping.name, strategies: mapping.strategies
 
         warden_config.serialize_into_session(mapping.name) do |record|
           mapping.to.serialize_into_session(record)

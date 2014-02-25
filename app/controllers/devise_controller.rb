@@ -30,7 +30,7 @@ class DeviseController < Devise.parent_controller.constantize
 
   # Returns a signed in resource from session (if one exists)
   def signed_in_resource
-    warden.authenticate(:scope => resource_name)
+    warden.authenticate(scope: resource_name)
   end
 
   # Attempt to find the mapped route for devise based on request path
@@ -99,7 +99,7 @@ MESSAGE
     no_input = devise_mapping.no_input_strategies
 
     authenticated = if no_input.present?
-      args = no_input.dup.push :scope => resource_name
+      args = no_input.dup.push scope: resource_name
       warden.authenticate?(*args)
     else
       warden.authenticated?(resource_name)

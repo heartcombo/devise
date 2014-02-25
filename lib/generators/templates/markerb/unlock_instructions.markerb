@@ -4,4 +4,4 @@ Your account has been locked due to an excessive number of unsuccessful sign in 
 
 Click the link below to unlock your account:
 
-<%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @token) %>
+<%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %>

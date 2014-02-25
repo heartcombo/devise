@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gemspec :path => '..'
+gemspec path: '..'
 
 gem "rails", github: 'rails/rails'
 gem "omniauth", "~> 1.0.0"
@@ -10,8 +10,8 @@ gem "rdoc"
 group :test do
   gem "omniauth-facebook"
   gem "omniauth-openid", "~> 1.0.1"
-  gem "webrat", "0.7.3", :require => false
-  gem "mocha", "~> 0.14", :require => false
+  gem "webrat", "0.7.3", require: false
+  gem "mocha", "~> 0.14", require: false
 end
 
 platforms :jruby do

@@ -6,7 +6,7 @@ module Devise
 
     class << self
       attr_reader :instance
-      delegate :time_ago_in_words, :to => :instance
+      delegate :time_ago_in_words, to: :instance
     end
 
     @instance = new

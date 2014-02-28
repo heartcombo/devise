@@ -50,7 +50,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   test 'a guest user should be able to sign up successfully and be blocked by confirmation' do
     user_sign_up
 
-    assert_contain 'A message with a confirmation link has been sent to your email address. Please open the link to activate your account.'
+    assert_contain 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.'
     assert_not_contain 'You have to confirm your account before continuing'
     assert_current_url "/"
 
@@ -149,7 +149,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     click_button 'Update'
 
     assert_current_url '/'
-    assert_contain 'You updated your account successfully.'
+    assert_contain 'Your account has been updated successfully.'
 
     assert_equal "user.new@example.com", User.first.email
   end
@@ -163,7 +163,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     fill_in 'current password', with: '12345678'
     click_button 'Update'
 
-    assert_contain 'You updated your account successfully.'
+    assert_contain 'Your account has been updated successfully.'
     get users_path
     assert warden.authenticated?(:user)
   end
@@ -193,7 +193,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     click_button 'Update'
 
     assert_current_url '/'
-    assert_contain 'You updated your account successfully.'
+    assert_contain 'Your account has been updated successfully.'
 
     assert User.first.valid_password?('pass1234')
   end
@@ -217,7 +217,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     get edit_user_registration_path
 
     click_button "Cancel my account"
-    assert_contain "Bye! Your account was successfully cancelled. We hope to see you again soon."
+    assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
 
     assert User.all.empty?
   end
@@ -321,7 +321,7 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     click_button 'Update'
 
     assert_current_url '/admin_area/home'
-    assert_contain 'You updated your account successfully.'
+    assert_contain 'Your account has been updated successfully.'
 
     assert Admin.first.valid_password?('pas123')
   end
@@ -341,7 +341,7 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     click_button 'Update'
 
     assert_current_url '/admin_area/home'
-    assert_contain 'You updated your account successfully.'
+    assert_contain 'Your account has been updated successfully.'
 
     assert_equal "admin.new@example.com", Admin.first.unconfirmed_email
     assert Admin.first.valid_password?('pas123')

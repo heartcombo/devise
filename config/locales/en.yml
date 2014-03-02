@@ -2,6 +2,39 @@
 
 en:
   devise:
+    question:
+      are_you_sure: "Are you sure?"
+    button:
+      cancel_account: "Cancel my account"
+    label:
+      unhappy: "Unhappy?"
+    tip:
+      leave_blank: "(leave blank if you don't want to change it)"
+      current_password: "(we need your current password to confirm your changes)"
+    link:
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+      forgot_your_password: "Forgot your password?"
+      request_confirmation_instruction: "Didn't receive confirmation instructions?"
+      request_unlock_instruction: "Didn't receive unlock instructions?"
+      sign_in_with: "Sign in with %{provider}"
+      back: "Back"
+    header:
+      sign_in: "Sign In"
+      edit: "Edit"
+      cancel_account: "Cancel my account"
+      forgot_password: "Forgot your password?"
+      change_password: "Change your password"
+      resend_confirmation: "Resend confirmation instructions"
+      resend_unlock: "Resend unlock instructions"
+    submit:
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+      update: "Update"
+      password_instruction: "Send me reset password instructions"
+      change_password: "Change my password"
+      resend_confirmation: "Resend confirmation instructions"
+      resend_unlock: "Resend unlock instructions"
     confirmations:
       confirmed: "Your account was successfully confirmed."
       send_instructions: "You will receive an email with instructions about how to confirm your account in a few minutes."

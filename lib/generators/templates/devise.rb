@@ -95,9 +95,9 @@ Devise.setup do |config|
   #
   # Limiting the stretches to just one in testing will increase the performance of
   # your test suite dramatically. However, it is STRONGLY RECOMMENDED to not use
-  # a value less than 10 in other environments. Note that  the cost increases
-  # exponentially with the number of stretches. A value of 20 is probably way
-  # too slow (e.g. 60 seconds for 1 calculation).
+  # a value less than 10 in other environments. Note that, for bcrypt (the default
+  # encryptor), the cost increases exponentially with the number of stretches (e.g.
+  # a value of 20 is already extremely slow: approx. 60 seconds for 1 calculation).
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.

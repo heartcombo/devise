@@ -36,6 +36,17 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_files nil, mail_template_engine: "markerb"
   end
 
+
+  test "Assert only views within specified directories" do
+    run_generator %w(-d sessions, registrations)
+    assert_file "app/views/devise/sessions/new.html.erb"
+    assert_file "app/views/devise/registrations/new.html.erb"
+    assert_file "app/views/devise/registrations/edit.html.erb"
+    assert_no_file "app/views/devise/confirmations/new.html.erb"
+
+    #assert_shared_links
+  end
+
   def assert_files(scope = nil, options={})
     scope = "devise" if scope.nil?
     mail_template_engine = options[:mail_template_engine] || "html.erb"

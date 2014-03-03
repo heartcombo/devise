@@ -1,4 +1,5 @@
 require 'rails/generators/base'
+require 'thor/base'
 
 module Devise
   module Generators
@@ -28,6 +29,7 @@ module Devise
       end
 
       def copy_views
+        puts options
         view_directory :confirmations
         view_directory :passwords
         view_directory :registrations
@@ -109,6 +111,12 @@ module Devise
 
       argument :scope, required: false, default: nil,
                        desc: "The scope to copy views to"
+
+      method_options :specified_directories, required: false,
+                    aliases: "-S",
+                    desc: "Specify a subset of views to generate",
+                    default: nil,
+                    type: :array
 
       invoke SharedViewsGenerator
 

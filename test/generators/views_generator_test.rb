@@ -38,13 +38,31 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
 
 
   test "Assert only views within specified directories" do
-    run_generator %w(-d sessions, registrations)
+    run_generator %w(-d sessions registrations)
     assert_file "app/views/devise/sessions/new.html.erb"
     assert_file "app/views/devise/registrations/new.html.erb"
     assert_file "app/views/devise/registrations/edit.html.erb"
     assert_no_file "app/views/devise/confirmations/new.html.erb"
+    assert_no_file "app/views/devise/mailer/confirmation_instructions.html.erb"
+  end
 
-    #assert_shared_links
+  test "Assert specified directories with scope" do
+    run_generator %w(users -d sessions)
+    assert_file "app/views/users/sessions/new.html.erb"
+    assert_no_file "app/views/users/confirmations/new.html.erb"
+  end
+
+  test "Assert specified directories with simple form" do
+    run_generator %w(-d registrations -b simple_form_for)
+    assert_file "app/views/devise/registrations/new.html.erb", /simple_form_for/
+    assert_no_file "app/views/devise/confirmations/new.html.erb"
+    end
+
+  test "Assert specified directories with markerb" do
+    run_generator %w(--markerb -d passwords mailer)
+    assert_file "app/views/devise/passwords/new.html.erb"
+    assert_no_file "app/views/devise/confirmations/new.html.erb"
+    assert_file "app/views/devise/mailer/reset_password_instructions.markerb"
   end
 
   def assert_files(scope = nil, options={})

@@ -1,5 +1,4 @@
 require 'rails/generators/base'
-require 'thor/base'
 
 module Devise
   module Generators
@@ -17,6 +16,7 @@ module Devise
         # It should be fixed in future Rails releases
         class_option :form_builder, aliases: "-b"
         class_option :markerb
+        class_option :selective, aliases: "-d", type: :array, desc: "Select specific view directories to generate (confirmations, passwords, registrations, sessions, unlocks, mailer)"
 
         public_task :copy_views
       end
@@ -29,12 +29,17 @@ module Devise
       end
 
       def copy_views
-        puts options
-        view_directory :confirmations
-        view_directory :passwords
-        view_directory :registrations
-        view_directory :sessions
-        view_directory :unlocks
+        if options[:selective]
+          options[:selective].each do |directory|
+            view_directory directory.to_sym
+          end
+        else
+          view_directory :confirmations
+          view_directory :passwords
+          view_directory :registrations
+          view_directory :sessions
+          view_directory :unlocks
+        end
       end
 
       protected
@@ -87,7 +92,9 @@ module Devise
       hide!
 
       def copy_views
-        view_directory :mailer
+        if !options[:selective] || options[:selective].include?('mailer')
+          view_directory :mailer
+        end
       end
     end
 
@@ -98,7 +105,9 @@ module Devise
       hide!
 
       def copy_views
-        view_directory :markerb, target_path
+        if !options[:selective] || options[:selective].include?('mailer')
+          view_directory :markerb, target_path
+        end
       end
 
       def target_path
@@ -111,12 +120,6 @@ module Devise
 
       argument :scope, required: false, default: nil,
                        desc: "The scope to copy views to"
-
-      method_options :specified_directories, required: false,
-                    aliases: "-S",
-                    desc: "Specify a subset of views to generate",
-                    default: nil,
-                    type: :array
 
       invoke SharedViewsGenerator
 

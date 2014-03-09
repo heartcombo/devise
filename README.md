@@ -267,6 +267,13 @@ After doing so, you will be able to have views based on the role like `users/ses
 rails generate devise:views users
 ```
 
+If you want to generate only a few set of views, like the ones for the `registrable` and `confirmable` module,
+you can pass a list of modules to the generator with the `-v` flag.
+
+```console
+rails generate devise:views -v registrations confirmations
+```
+
 ### Configuring controllers
 
 If the customization at the views level is not enough, you can customize each controller by following these steps:

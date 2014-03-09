@@ -16,6 +16,7 @@ module Devise
         # It should be fixed in future Rails releases
         class_option :form_builder, aliases: "-b"
         class_option :markerb
+        class_option :views, aliases: "-v", type: :array, desc: "Select specific view directories to generate (confirmations, passwords, registrations, sessions, unlocks, mailer)"
 
         public_task :copy_views
       end
@@ -28,11 +29,17 @@ module Devise
       end
 
       def copy_views
-        view_directory :confirmations
-        view_directory :passwords
-        view_directory :registrations
-        view_directory :sessions
-        view_directory :unlocks
+        if options[:views]
+          options[:views].each do |directory|
+            view_directory directory.to_sym
+          end
+        else
+          view_directory :confirmations
+          view_directory :passwords
+          view_directory :registrations
+          view_directory :sessions
+          view_directory :unlocks
+        end
       end
 
       protected
@@ -85,7 +92,9 @@ module Devise
       hide!
 
       def copy_views
-        view_directory :mailer
+        if !options[:views] || options[:views].include?('mailer')
+          view_directory :mailer
+        end
       end
     end
 
@@ -96,7 +105,9 @@ module Devise
       hide!
 
       def copy_views
-        view_directory :markerb, target_path
+        if !options[:views] || options[:views].include?('mailer')
+          view_directory :markerb, target_path
+        end
       end
 
       def target_path

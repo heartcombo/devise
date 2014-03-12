@@ -63,10 +63,10 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    metaclass (0.0.1)
+    metaclass (0.0.4)
     mime-types (1.23)
     minitest (4.7.5)
-    mocha (0.13.3)
+    mocha (1.0.0)
       metaclass (~> 0.0.1)
     moped (1.5.1)
     multi_json (1.7.9)
@@ -148,7 +148,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   devise!
   jruby-openssl
-  mocha (~> 0.13.1)
+  mocha (~> 1.0.0)
   mongoid!
   omniauth (~> 1.0.0)
   omniauth-facebook

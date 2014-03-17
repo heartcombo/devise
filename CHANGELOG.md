@@ -12,7 +12,7 @@
 
 ### 3.2.4
 
-* enchancements
+* enhancements
   * `bcrypt` dependency updated due https://github.com/codahale/bcrypt-ruby/pull/86.
   * View generator now can generate specific views with the `-v` flag, like `rails g devise:views -v sessions` (by @kayline)
 

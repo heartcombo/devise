@@ -21,7 +21,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     resend_confirmation
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
+    assert_contain 'You will receive an email with instructions for how to confirm your email address in a few minutes'
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert_equal ['please-change-me@config-initializers-devise.com'], ActionMailer::Base.deliveries.first.from
   end
@@ -56,7 +56,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_not user.confirmed?
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
-      assert_contain 'Your account was successfully confirmed.'
+      assert_contain 'Your email address has been successfully confirmed.'
       assert_current_url '/users/sign_in'
       assert user.reload.confirmed?
     end
@@ -98,7 +98,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     swap Devise, allow_unconfirmed_access_for: 0.days do
       sign_in_as_user(confirm: false)
 
-      assert_contain 'You have to confirm your account before continuing'
+      assert_contain 'You have to confirm your email address before continuing'
       assert_not warden.authenticated?(:user)
     end
   end
@@ -128,7 +128,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       user = sign_in_as_user(confirm: false)
 
       visit_user_confirmation_with_token(user.raw_confirmation_token)
-      assert_contain 'Your account was successfully confirmed.'
+      assert_contain 'Your email address has been successfully confirmed.'
       assert_current_url '/'
     end
   end
@@ -187,7 +187,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: user.email
       click_button 'Resend confirmation instructions'
 
-      assert_contain "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_contain "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
       assert_current_url "/users/sign_in"
     end
   end
@@ -203,7 +203,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_not_contain "1 error prohibited this user from being saved:"
       assert_not_contain "Email not found"
 
-      assert_contain "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_contain "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
       assert_current_url "/users/sign_in"
     end
   end
@@ -232,7 +232,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     end
 
     assert_current_url '/admin_area/sign_in'
-    assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
+    assert_contain 'You will receive an email with instructions for how to confirm your email address in a few minutes'
   end
 
   test 'admin with valid confirmation token should be able to confirm email after email changed' do
@@ -241,7 +241,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     assert_equal 'new_test@example.com', admin.unconfirmed_email
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
 
-    assert_contain 'Your account was successfully confirmed.'
+    assert_contain 'Your email address has been successfully confirmed.'
     assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?
@@ -263,7 +263,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     assert_contain(/Confirmation token(.*)invalid/)
 
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
-    assert_contain 'Your account was successfully confirmed.'
+    assert_contain 'Your email address has been successfully confirmed.'
     assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?

@@ -171,7 +171,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     reset_password
 
     assert_current_url '/'
-    assert_contain 'Your password was changed successfully. You are now signed in.'
+    assert_contain 'Your password has been changed successfully. You are now signed in.'
     assert user.reload.valid_password?('987654321')
   end
 
@@ -185,7 +185,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert_not user.reload.valid_password?('987654321')
 
     reset_password visit: false
-    assert_contain 'Your password was changed successfully.'
+    assert_contain 'Your password has been changed successfully.'
     assert user.reload.valid_password?('987654321')
   end
 
@@ -204,7 +204,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
         request_forgot_password
         reset_password
 
-        assert_contain 'Your password was changed successfully.'
+        assert_contain 'Your password has been changed successfully.'
         assert_not_contain 'You are now signed in.'
         assert_equal new_user_session_path, @request.path
         assert !warden.authenticated?(:user)
@@ -218,7 +218,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       request_forgot_password
       reset_password
 
-      assert_contain 'Your password was changed successfully.'
+      assert_contain 'Your password has been changed successfully.'
       assert !user.reload.access_locked?
       assert warden.authenticated?(:user)
     end
@@ -230,7 +230,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       request_forgot_password
       reset_password
 
-      assert_contain 'Your password was changed successfully.'
+      assert_contain 'Your password has been changed successfully.'
       assert !user.reload.access_locked?
       assert warden.authenticated?(:user)
     end

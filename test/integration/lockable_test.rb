@@ -22,7 +22,7 @@ class LockTest < ActionDispatch::IntegrationTest
     send_unlock_request
 
     assert_template 'sessions/new'
-    assert_contain 'You will receive an email with instructions about how to unlock your account in a few minutes'
+    assert_contain 'You will receive an email with instructions for how to unlock your account in a few minutes'
 
     mail = ActionMailer::Base.deliveries.last
     assert_equal 1, ActionMailer::Base.deliveries.size
@@ -182,7 +182,7 @@ class LockTest < ActionDispatch::IntegrationTest
       click_button 'Resend unlock instructions'
 
       assert_current_url "/users/sign_in"
-      assert_contain "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+      assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
     end
   end
 
@@ -197,7 +197,7 @@ class LockTest < ActionDispatch::IntegrationTest
       click_button 'Resend unlock instructions'
 
       assert_current_url "/users/sign_in"
-      assert_contain "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+      assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
     end
   end
 
@@ -213,7 +213,7 @@ class LockTest < ActionDispatch::IntegrationTest
       assert_not_contain "Email not found"
       assert_current_url "/users/sign_in"
 
-      assert_contain "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+      assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
 
     end
   end

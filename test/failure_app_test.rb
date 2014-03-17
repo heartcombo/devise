@@ -215,7 +215,7 @@ class FailureTest < ActiveSupport::TestCase
       }
       call_failure(env)
       assert @response.third.body.include?('<h2>Sign in</h2>')
-      assert @response.third.body.include?('You have to confirm your account before continuing.')
+      assert @response.third.body.include?('You have to confirm your email address before continuing.')
     end
 
     test 'calls the original controller if inactive account' do

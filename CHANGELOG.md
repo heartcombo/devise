@@ -1,5 +1,9 @@
 ### Unreleased
 
+* enhancements
+  * Default email messages was updated with grammar fixes. Please check the diff on
+    #2906 for the updated copy. (by @p-originate)
+
 * fixes
   * `SessionsController#destroy` no longer yields the `resource` to receiving block,
     since the resource isn't loaded in the action. If you need access to the current

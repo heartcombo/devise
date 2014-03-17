@@ -174,6 +174,16 @@ Security announcement: http://blog.plataformatec.com.br/2013/01/security-announc
   * `update_with_password` doesn't change encrypted password when it is invalid (by @nashby)
   * Properly handle namespaced models on Active Record generator (by @nashby)
 
+### 2.1.4
+
+* bugfix
+  * Do not confirm account after reset password
+
+### 2.1.3
+
+* bugfix
+  * Require string conversion for all values
+
 ### 2.1.2
 
 * enhancements

@@ -1,5 +1,11 @@
 ### Unreleased
 
+* fixes
+  * `SessionsController#destroy` no longer yields the `resource` to receiving block,
+    since the resource isn't loaded in the action. If you need access to the current
+    resource when overring the action use the scope helper (like `current_user`) before
+    calling `super`.
+
 ### 3.2.4
 
 * enchancements

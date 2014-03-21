@@ -12,8 +12,9 @@ class Devise::RegistrationsController < DeviseController
   def create
     build_resource(sign_up_params)
 
-    if resource.save
-      yield resource if block_given?
+    resource_saved = resource.save
+    yield resource if block_given?
+    if resource_saved
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -41,8 +42,9 @@ class Devise::RegistrationsController < DeviseController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    if update_resource(resource, account_update_params)
-      yield resource if block_given?
+    resource_updated = update_resource(resource, account_update_params)
+    yield resource if block_given?
+    if resource_updated
       if is_flashing_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
           :update_needs_confirmation : :updated

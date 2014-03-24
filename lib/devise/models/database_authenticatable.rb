@@ -55,9 +55,13 @@ module Devise
         self.password = self.password_confirmation = nil
       end
 
-      # Update record attributes when :current_password matches, otherwise returns
-      # error on :current_password. It also automatically rejects :password and
-      # :password_confirmation if they are blank.
+      # Update record attributes when :current_password matches, otherwise
+      # returns error on :current_password.
+      #
+      # This method also rejects the password field if it is blank (allowing
+      # users to change relevant information like the e-mail without changing
+      # their password). In case the password field is rejected, the confirmation
+      # is also rejected as long as it is also blank.
       def update_with_password(params, *options)
         current_password = params.delete(:current_password)
 

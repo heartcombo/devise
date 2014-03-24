@@ -26,6 +26,9 @@ Rails.application.routes.draw do
 
   get "/sign_in", to: "devise/sessions#new"
 
+  # Routes for custom controller testing
+  devise_for :user, only: [:registrations], controllers: { registrations: "custom/registrations" }, as: :custom, path: :custom
+
   # Admin scope
   devise_for :admin, path: "admin_area", controllers: { sessions: :"admins/sessions" }, skip: :passwords
 

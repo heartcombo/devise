@@ -285,7 +285,7 @@ If the customization at the views level is not enough, you can customize each co
     end
     ```
 
-    Note that in the above example, the controller needs to be created in the `app/controller/admins/` directory.
+    Note that in the above example, the controller needs to be created in the `app/controllers/admins/` directory.
 
 2. Tell the router to use this controller:
 

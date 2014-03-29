@@ -122,10 +122,10 @@ You should restart your application after changing Devise's configuration option
 
 ### Controller filters and helpers
 
-Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_filter:
+Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_action:
 
 ```ruby
-before_filter :authenticate_user!
+before_action :authenticate_user!
 ```
 
 To verify if a user is signed in, use the following helper:
@@ -157,7 +157,7 @@ You can also override `after_sign_in_path_for` and `after_sign_out_path_for` to 
 Notice that if your Devise model is called `Member` instead of `User`, for example, then the helpers available are:
 
 ```ruby
-before_filter :authenticate_member!
+before_action :authenticate_member!
 
 member_signed_in?
 
@@ -190,7 +190,7 @@ In case you want to permit additional parameters (the lazy way™) you can do wi
 
 ```ruby
 class ApplicationController < ActionController::Base
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
 

@@ -95,7 +95,7 @@ module Devise
         # If a user is not found, return nil
         def with_reset_password_token(token)
           reset_password_token = Devise.token_generator.digest(self, :reset_password_token, token)
-          find_by_reset_password_token(reset_password_token)
+          to_adapter.find_first(reset_password_token: reset_password_token)
         end
 
         # Attempt to find a user by its email. If a record is found, send new

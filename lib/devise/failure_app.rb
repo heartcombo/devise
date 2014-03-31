@@ -96,15 +96,15 @@ module Devise
           request.referrer
         end
 
-        path || scope_path
+        path || scope_url
       else
-        scope_path
+        scope_url
       end
     end
 
-    def scope_path
+    def scope_url
       opts  = {}
-      route = :"new_#{scope}_session_path"
+      route = :"new_#{scope}_session_url"
       opts[:format] = request_format unless skip_format?
 
       config = Rails.application.config
@@ -114,8 +114,8 @@ module Devise
 
       if context.respond_to?(route)
         context.send(route, opts)
-      elsif respond_to?(:root_path)
-        root_path(opts)
+      elsif respond_to?(:root_url)
+        root_url(opts)
       else
         "/"
       end

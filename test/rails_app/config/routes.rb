@@ -66,6 +66,10 @@ Rails.application.routes.draw do
     devise_for :homebase_admin, class_name: "Admin", path: "homebase"
   end
 
+  constraints(subdomain: 'sub') do
+    devise_for :subdomain_users, class_name: "User", only: [:sessions]
+  end
+
   devise_for :skip_admin, class_name: "Admin", skip: :all
 
   # Routes for format=false testing

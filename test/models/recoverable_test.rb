@@ -153,6 +153,15 @@ class RecoverableTest < ActiveSupport::TestCase
     assert user.valid_password?('new_password')
   end
 
+  test 'should store raw reset_password_token if store_reset_password_tokens_as_raw = true' do
+    swap Devise, store_reset_password_tokens_as_raw: true do
+      user = create_user
+      raw  = user.send_reset_password_instructions
+
+      assert_equal raw, user.reset_password_token
+    end
+  end
+
   test 'should not reset password after reset_password_within time' do
     swap Devise, reset_password_within: 1.hour do
       user = create_user

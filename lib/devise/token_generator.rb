@@ -11,16 +11,25 @@ module Devise
     end
 
     def digest(klass, column, value)
-      value.present? && OpenSSL::HMAC.hexdigest(@digest, key_for(column), value.to_s)
+      if Devise.store_reset_password_tokens_as_raw
+        value.present? && value.to_s
+      else
+        value.present? && OpenSSL::HMAC.hexdigest(@digest, key_for(column), value.to_s)
+      end
     end
 
     def generate(klass, column)
       key = key_for(column)
-
-      loop do
+      if Devise.store_reset_password_tokens_as_raw
         raw = Devise.friendly_token
-        enc = OpenSSL::HMAC.hexdigest(@digest, key, raw)
-        break [raw, enc] unless klass.to_adapter.find_first({ column => enc })
+        enc = raw
+        return [raw, enc]
+      else
+        loop do
+          raw = Devise.friendly_token
+          enc = OpenSSL::HMAC.hexdigest(@digest, key, raw)
+          break [raw, enc] unless klass.to_adapter.find_first({ column => enc })
+        end
       end
     end
 

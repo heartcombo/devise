@@ -91,6 +91,13 @@ module Devise
         end
 
       module ClassMethods
+        # Attempt to find a user by password reset token. If a user is found, return it
+        # If a user is not found, return nil
+        def with_reset_password_token(token)
+          reset_password_token = Devise.token_generator.digest(self, :reset_password_token, token)
+          to_adapter.find_first(reset_password_token: reset_password_token)
+        end
+
         # Attempt to find a user by its email. If a record is found, send new
         # password instructions to it. If user is not found, returns a new user
         # with an email not found error.

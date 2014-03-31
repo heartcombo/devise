@@ -196,6 +196,10 @@ module Devise
   @@reset_password_keys = [ :email ]
 
   # Time interval you can reset your password with a reset password key
+  mattr_accessor :store_reset_password_tokens_as_raw
+  @@store_reset_password_tokens_as_raw = false
+
+  # Time interval you can reset your password with a reset password key
   mattr_accessor :reset_password_within
   @@reset_password_within = 6.hours
 

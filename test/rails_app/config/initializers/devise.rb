@@ -132,6 +132,10 @@ Devise.setup do |config|
   # change their passwords.
   config.reset_password_within = 2.hours
 
+  # Password reset tokens are stored in an encrypted form
+  # Set this to true to store them in plaintext, corresponding to the raw 'devise friendly' tokens
+  config.store_reset_password_tokens_as_raw = false
+
   # Setup a pepper to generate the encrypted password.
   config.pepper = "d142367154e5beacca404b1a6a4f8bc52c6fdcfa3ccc3cf8eb49f3458a688ee6ac3b9fae488432a3bfca863b8a90008368a9f3a3dfbe5a962e64b6ab8f3a3a1a"
 

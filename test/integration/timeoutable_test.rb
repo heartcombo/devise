@@ -8,12 +8,11 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
 
   test 'set last request at in user session after each request' do
     sign_in_as_user
-    old_last_request = last_request_at
     assert_not_nil last_request_at
 
+    @controller.user_session.delete('last_request_at')
     get users_path
     assert_not_nil last_request_at
-    assert_not_equal old_last_request, last_request_at
   end
 
   test 'set last request at in user session after each request is skipped if tracking is disabled' do

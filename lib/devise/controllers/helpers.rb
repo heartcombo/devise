@@ -176,10 +176,9 @@ module Devise
       # Overwrite Rails' handle unverified request to sign out all scopes,
       # clear run strategies and remove cached variables.
       def handle_unverified_request
-        sign_out_all_scopes(false)
+        super # call the default behaviour which resets/nullifies/raises
         request.env["devise.skip_storage"] = true
-        expire_data_after_sign_out!
-        super # call the default behaviour which resets the session
+        sign_out_all_scopes(false)
       end
 
       def request_format

@@ -72,7 +72,6 @@ module Devise
       def sign_out_all_scopes(lock=true)
         users = Devise.mappings.keys.map { |s| warden.user(scope: s, run_callbacks: false) }
 
-        warden.raw_session.inspect
         warden.logout
         expire_data_after_sign_out!
         warden.clear_strategies_cache!

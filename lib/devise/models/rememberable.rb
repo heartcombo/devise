@@ -58,7 +58,7 @@ module Devise
       def forget_me!
         return unless persisted?
         self.remember_token = nil if respond_to?(:remember_token=)
-        self.remember_created_at = nil
+        self.remember_created_at = nil if self.class.expire_all_remember_me_on_sign_out
         save(validate: false)
       end
 
@@ -122,7 +122,7 @@ module Devise
           end
         end
 
-        Devise::Models.config(self, :remember_for, :extend_remember_period, :rememberable_options)
+        Devise::Models.config(self, :remember_for, :extend_remember_period, :rememberable_options, :expire_all_remember_me_on_sign_out)
       end
     end
   end

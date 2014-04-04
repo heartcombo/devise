@@ -134,6 +134,10 @@ module Devise
   mattr_accessor :extend_remember_period
   @@extend_remember_period = false
 
+  # If true, all the remember me tokens are going to be invalidated when the user signs out.
+  mattr_accessor :expire_all_remember_me_on_sign_out
+  @@expire_all_remember_me_on_sign_out = true
+
   # Time interval you can access your account before confirming your account.
   # nil - allows unconfirmed access for unlimited time
   mattr_accessor :allow_unconfirmed_access_for

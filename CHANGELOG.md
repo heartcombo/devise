@@ -1,14 +1,17 @@
-### Unreleased
+### 3.3.0 (unreleased)
 
 * enhancements
-  * Default email messages was updated with grammar fixes. Please check the diff on
-    #2906 for the updated copy. (by @p-originate)
+  * Default email messages was updated with grammar fixes, check the diff on
+    #2906 for the updated copy (by @p-originate)
+  * Allow a resource to be found based on its encrypted password token (by @karlentwistle)
 
-* fixes
+* bug fix
   * `SessionsController#destroy` no longer yields the `resource` to receiving block,
     since the resource isn't loaded in the action. If you need access to the current
     resource when overring the action use the scope helper (like `current_user`) before
-    calling `super`.
+    calling `super`
+  * Serialize the `last_request_at` entry as an Integer
+  * Ensure registration controller block yields happen on failure in addition to success (by @dpehrson)
 
 ### 3.2.4
 

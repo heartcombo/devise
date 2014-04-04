@@ -55,12 +55,27 @@ class RememberableTest < ActiveSupport::TestCase
     assert resource_class.new.respond_to?(:remember_me=)
   end
 
-  test 'forget_me should clear remember_created_at' do
-    resource = create_resource
-    resource.remember_me!
-    assert_not resource.remember_created_at.nil?
-    resource.forget_me!
-    assert resource.remember_created_at.nil?
+  test 'forget_me should clear remember_created_at if expire_all_remember_me_on_sign_out is true' do
+    swap Devise, expire_all_remember_me_on_sign_out: true do
+      resource = create_resource
+      resource.remember_me!
+      assert_not_nil resource.remember_created_at
+
+      resource.forget_me!
+      assert_nil resource.remember_created_at
+    end
+  end
+
+  test 'forget_me should not clear remember_created_at if expire_all_remember_me_on_sign_out is false' do
+    swap Devise, expire_all_remember_me_on_sign_out: false do
+      resource = create_resource
+      resource.remember_me!
+
+      assert_not_nil resource.remember_created_at
+
+      resource.forget_me!
+      assert_not_nil resource.remember_created_at
+    end
   end
 
   test 'forget_me should not try to update resource if it has been destroyed' do

@@ -12,7 +12,9 @@ class FailureTest < ActiveSupport::TestCase
     routes = ActionDispatch::Routing::RouteSet.new
 
     routes.draw do
-      root to: 'foo#bar', constraints: { subdomain: 'sub' }
+      scope subdomain: 'sub' do
+        root to: 'foo#bar'
+      end
     end
 
     include routes.url_helpers

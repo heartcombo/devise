@@ -83,9 +83,9 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'body should have link to confirm the account' do
-    host = ActionMailer::Base.default_url_options[:host]
+    host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 
-    if mail.body.encoded =~ %r{<a href=\"http://#{host}/users/confirmation\?confirmation_token=([^"]+)">}
+    if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/confirmation\?confirmation_token=([^"]+)">}
       assert_equal Devise.token_generator.digest(user.class, :confirmation_token, $1), user.confirmation_token
     else
       flunk "expected confirmation url regex to match"

@@ -8,6 +8,18 @@ class FailureTest < ActiveSupport::TestCase
     end
   end
 
+  class FailureWithSubdomain < RootFailureApp
+    routes = ActionDispatch::Routing::RouteSet.new
+
+    routes.draw do
+      scope subdomain: 'sub' do
+        root to: 'foo#bar'
+      end
+    end
+
+    include routes.url_helpers
+  end
+
   class FailureWithI18nOptions < Devise::FailureApp
     def i18n_options(options)
       options.merge(name: 'Steve')
@@ -42,6 +54,13 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
+    test 'returns to the default redirect location considering subdomain' do
+      call_failure('warden.options' => { scope: :subdomain_user })
+      assert_equal 302, @response.first
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://sub.test.host/subdomain_users/sign_in', @response.second['Location']
+    end
+
     test 'returns to the default redirect location for wildcard requests' do
       call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
       assert_equal 302, @response.first
@@ -57,12 +76,29 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
 
+    test 'returns to the root path considering subdomain if no session path is available' do
+      swap Devise, router_name: :fake_app do
+        call_failure app: FailureWithSubdomain
+        assert_equal 302, @response.first
+        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+        assert_equal 'http://sub.test.host/', @response.second['Location']
+      end
+    end
+
     if Rails.application.config.respond_to?(:relative_url_root)
       test 'returns to the default redirect location considering the relative url root' do
         swap Rails.application.config, relative_url_root: "/sample" do
           call_failure
           assert_equal 302, @response.first
           assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
+        end
+      end
+
+      test 'returns to the default redirect location considering the relative url root and subdomain' do
+        swap Rails.application.config, relative_url_root: "/sample" do
+          call_failure('warden.options' => { scope: :subdomain_user })
+          assert_equal 302, @response.first
+          assert_equal 'http://sub.test.host/sample/subdomain_users/sign_in', @response.second['Location']
         end
       end
     end

@@ -115,7 +115,7 @@ Replace MODEL by the class name used for the applications users, it's frequently
 Next, you need to set up the default url options for the Devise mailer in each environment. Here is a possible configuration for `config/environments/development.rb`:
 
 ```ruby
-config.action_mailer.default_url_options = { host: 'localhost:3000' }
+config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 ```
 
 You should restart your application after changing Devise's configuration options. Otherwise you'll run into strange errors like users being unable to login and route helpers being undefined.

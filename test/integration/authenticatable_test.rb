@@ -118,13 +118,13 @@ class AuthenticationSanityTest < ActionDispatch::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
-  test 'unauthenticated admin does not set message on sign out' do
+  test 'unauthenticated admin set message on sign out' do
     get destroy_admin_session_path
     assert_response :redirect
     assert_redirected_to root_path
 
     get root_path
-    assert_not_contain 'Signed out successfully'
+    assert_contain 'Signed out successfully'
   end
 
   test 'scope uses custom failure app' do
@@ -709,5 +709,21 @@ class DoubleAuthenticationRedirectTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/'
     get new_admin_session_path(format: :html)
     assert_redirected_to '/admin_area/home'
+  end
+end
+
+class DoubleSignOutRedirectTest < ActionDispatch::IntegrationTest
+  test 'sign out after already having signed out redirects to sign in' do
+    sign_in_as_user
+
+    post destroy_sign_out_via_delete_or_post_session_path
+
+    get root_path
+    assert_contain 'Signed out successfully.'
+
+    post destroy_sign_out_via_delete_or_post_session_path
+
+    get root_path
+    assert_contain 'Signed out successfully.'
   end
 end

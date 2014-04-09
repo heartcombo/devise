@@ -11,11 +11,11 @@ env:
     - DEVISE_ORM=active_record
   global:
     # AMAZON_S3_BUCKET
-    - secure: "owrGpYVco0CptAcWAGdVUHqoLNcc7s1sl0UrH5kzw7T8mqrskoaI8yrNyqvhCYA/fXdTLlbhXO3GgYW8yMFe8CtcJbWKWpnk2XUDlsYj0pwPp9FPWBK2w7kSsJOjn+SNeJOTPrSkWnmwmDtGSkVW2tIqwb9k4YfOpYEruhhgBJk="
+    - secure: "qkeYGn2mpgsgU5tKS9GWvFp/utUF/9O8++Shch24DMnq8OB01TrV5QQ2Elj7sSjMWqw2Pbe56nUCA9eOWXhPglGyIq2AI9E0umsEGZxdRlqqobpiMWs5wl8KZ0cFD1rZm6CwfL8atmcNfTt5TnvsaQ2l/k3TerOT2e66R/Mibk8="
     # AMAZON_ACCESS_KEY_ID
-    - secure: "iODI901bQTs5s96zS9YbXtIB9V1sikZE6jpLqf8YfA8rDNIk6yzSXWdrqV5NxtI5vTmaor2BXUMXPQ3MAe6CjEn45WqVWfmYnllAl9avREfzxuvGIewPcMzOIiy22R+nKd9gzntVK/czbKoby73RtTpHZmJ74n7hxF8h3pBMy20="
+    - secure: "rTYGUFH9SPN0L7QtdE6Liyy/1z7nGKxqDF9LMRsmNsIfsqxoTPKZ8bCctQ4ksuk9svynGQsLfsda5pA+YvuALzjdWmGcID6ENgOGvoFnhZO5LuJ5f6t0k8gFpV9oBquQgDWzhzrcPYvCUrUYg3GSlHjFSXdPdht3SoYn7PiDaNs="
     # AMAZON_SECRET_ACCESS_KEY
-    - secure: "B9CsMAopxaG7rrIbIZGQku/zte+wJf9RIVsRZTHrlWFLWm572J17FlJmJAcHQGCUHlD8K1HY0hVTRUp9rD3Mt1bUz3FDPWUDuSJO0f/hvN01bqGvuz1snq7Xpi8v09uzAZ+WWjBmv84TbwbHSoqjI2oPp5PePWThuCiEzkIe34Y="
+    - secure: "VJ4qiWMzoleLojCcluX+w0RtaFVc9ybRNo6NODkGhHSaao8+4EX4rETBQG67tNSInk1iuNqCcZAGwC8V/12RXdao3PguRSLD5IiKeT+D78dqFEoP0+yHg4PbmZ6TJXADW3gUv/IOqkW7f/UYGinRaPu7hloyiC498FpQdmMWSNI="
 gemfile:
   - gemfiles/Gemfile.rails-head
   - gemfiles/Gemfile.rails-4.0-stable

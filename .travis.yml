@@ -1,14 +1,21 @@
 language: ruby
 script: "bundle exec rake test"
-before_install:
-  - gem install bundler -v '>= 1.5.1'
+install: script/cached-bundle install --deployment --path vendor/bundle
 rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
 env:
-  - DEVISE_ORM=mongoid
-  - DEVISE_ORM=active_record
+  matrix:
+    - DEVISE_ORM=mongoid
+    - DEVISE_ORM=active_record
+  global:
+    # AMAZON_S3_BUCKET
+    - secure: "owrGpYVco0CptAcWAGdVUHqoLNcc7s1sl0UrH5kzw7T8mqrskoaI8yrNyqvhCYA/fXdTLlbhXO3GgYW8yMFe8CtcJbWKWpnk2XUDlsYj0pwPp9FPWBK2w7kSsJOjn+SNeJOTPrSkWnmwmDtGSkVW2tIqwb9k4YfOpYEruhhgBJk="
+    # AMAZON_ACCESS_KEY_ID
+    - secure: "iODI901bQTs5s96zS9YbXtIB9V1sikZE6jpLqf8YfA8rDNIk6yzSXWdrqV5NxtI5vTmaor2BXUMXPQ3MAe6CjEn45WqVWfmYnllAl9avREfzxuvGIewPcMzOIiy22R+nKd9gzntVK/czbKoby73RtTpHZmJ74n7hxF8h3pBMy20="
+    # AMAZON_SECRET_ACCESS_KEY
+    - secure: "B9CsMAopxaG7rrIbIZGQku/zte+wJf9RIVsRZTHrlWFLWm572J17FlJmJAcHQGCUHlD8K1HY0hVTRUp9rD3Mt1bUz3FDPWUDuSJO0f/hvN01bqGvuz1snq7Xpi8v09uzAZ+WWjBmv84TbwbHSoqjI2oPp5PePWThuCiEzkIe34Y="
 gemfile:
   - gemfiles/Gemfile.rails-head
   - gemfiles/Gemfile.rails-4.0-stable

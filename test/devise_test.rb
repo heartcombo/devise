@@ -3,10 +3,10 @@ require 'test_helper'
 module Devise
   def self.yield_and_restore
     @@warden_configured = nil
-    c, b = @@warden_config, @@warden_config_block
+    c, b = @@warden_config, @@warden_config_blocks
     yield
   ensure
-    @@warden_config, @@warden_config_block = c, b
+    @@warden_config, @@warden_config_blocks = c, b
   end
 end
 
@@ -50,6 +50,23 @@ class DeviseTest < ActiveSupport::TestCase
 
       Devise.configure_warden!
       assert @executed
+    end
+  end
+
+  test 'warden manager user configuration through multiple blocks' do
+    Devise.yield_and_restore do
+      @first_executed = false
+      @second_executed = false
+      Devise.warden do |config|
+        @first_executed = true
+      end
+      Devise.warden do |config|
+        @second_executed = true
+      end
+
+      Devise.configure_warden!
+      assert @first_executed
+      assert @second_executed
     end
   end
 

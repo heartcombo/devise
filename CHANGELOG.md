@@ -1,6 +1,7 @@
 ### 3.3.0 (unreleased)
 
 * enhancements
+  * Support multiple warden configuration blocks on devise configuration. (by @rossta)
   * Add the `expire_all_remember_me_on_sign_out` configuration to invalidate
     all the remember me tokens when the user signs out. (by @laurocaetano)
   * Default email messages was updated with grammar fixes, check the diff on

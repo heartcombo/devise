@@ -272,7 +272,7 @@ module Devise
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
   @@warden_config = nil
-  @@warden_config_block = nil
+  @@warden_config_blocks = []
 
   # When true, enter in paranoid mode to avoid user enumeration.
   mattr_accessor :paranoid
@@ -413,7 +413,7 @@ module Devise
   #    end
   #  end
   def self.warden(&block)
-    @@warden_config_block = block
+    @@warden_config_blocks << block
   end
 
   # Specify an omniauth provider.
@@ -467,7 +467,7 @@ module Devise
         end
       end
 
-      @@warden_config_block.try :call, Devise.warden_config
+      @@warden_config_blocks.map { |block| block.call Devise.warden_config }
       true
     end
   end

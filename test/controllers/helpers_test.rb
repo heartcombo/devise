@@ -121,6 +121,13 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     @controller.sign_in(user, force: true)
   end
 
+  test 'sign in accepts scope as an option' do
+    user = User.new
+    @mock_warden.expects(:user).returns(nil)
+    @mock_warden.expects(:set_user).with(user, scope: :custom_scope).returns(true)
+    @controller.sign_in(user, scope: :custom_scope)
+  end
+
   test 'sign in accepts bypass as option' do
     user = User.new
     @mock_warden.expects(:session_serializer).returns(serializer = mock())

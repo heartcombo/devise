@@ -55,7 +55,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
 
   test 'custom mailer renders parent mailer template' do
     Devise.mailer = 'Users::Mailer'
-    assert_not_blank mail.body.encoded
+    assert_present mail.body.encoded
   end
 
   test 'setup reply to as copy from sender' do

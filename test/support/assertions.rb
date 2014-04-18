@@ -9,10 +9,9 @@ class ActiveSupport::TestCase
     assert assertion.blank?
   end
 
-  def assert_not_blank(assertion)
-    assert !assertion.blank?
+  def assert_present(assertion)
+    assert assertion.present?
   end
-  alias :assert_present :assert_not_blank
 
   def assert_email_sent(address = nil, &block)
     assert_difference('ActionMailer::Base.deliveries.size', &block)

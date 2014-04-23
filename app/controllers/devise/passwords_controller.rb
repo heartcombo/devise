@@ -10,7 +10,7 @@ class Devise::PasswordsController < DeviseController
 
   # POST /resource/password
   def create
-    self.resource = resource_class.send_reset_password_instructions(resource_params)
+    self.resource = resource_class.send_reset_password_instructions(resource_params, {host: request.host_with_port})
     yield resource if block_given?
 
     if successfully_sent?(resource)

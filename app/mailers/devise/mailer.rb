@@ -9,6 +9,7 @@ if defined?(ActionMailer)
 
     def reset_password_instructions(record, token, opts={})
       @token = token
+      @host = opts.delete(:host)
       devise_mail(record, :reset_password_instructions, opts)
     end
 

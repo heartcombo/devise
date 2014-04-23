@@ -193,6 +193,12 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     assert_equal "/foo.bar", @controller.stored_location_for(:user)
   end
 
+  test 'store bad location for stores a location to redirect back to' do
+    assert_nil @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, "/foo.bar\">Carry")
+    assert_nil @controller.stored_location_for(:user)
+  end
+
   test 'store location for accepts a resource as argument' do
     @controller.store_location_for(User.new, "/foo.bar")
     assert_equal "/foo.bar", @controller.stored_location_for(User.new)

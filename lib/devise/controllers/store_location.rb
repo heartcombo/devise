@@ -33,13 +33,18 @@ module Devise
       #
       def store_location_for(resource_or_scope, location)
         session_key = stored_location_key_for(resource_or_scope)
-        if location
-          uri = URI.parse(location)
+        if (uri = parse_uri(location))
           session[session_key] = [uri.path.sub(/\A\/+/, '/'), uri.query].compact.join('?')
         end
       end
 
       private
+
+      def parse_uri(location)
+        location && URI.parse(location)
+      rescue URI::InvalidURIError
+        nil
+      end
 
       def stored_location_key_for(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)

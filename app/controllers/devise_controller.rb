@@ -173,4 +173,12 @@ MESSAGE
   def resource_params
     params.fetch(resource_name, {})
   end
+
+  def get_mailer_host
+    if Devise.email_host == :request
+      host = request.host
+    else
+      host = ActionMailer::Base.default_url_options[:host]
+    end
+  end
 end

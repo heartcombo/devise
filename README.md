@@ -27,7 +27,7 @@ It's composed of 10 modules:
 * [Validatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * [Lockable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
-Devise is guaranteed to be thread-safe on YARV. Thread-safety support on JRuby is on progress.
+Devise is guaranteed to be thread-safe on YARV. Thread-safety support on JRuby is in progress.
 
 ## Information
 

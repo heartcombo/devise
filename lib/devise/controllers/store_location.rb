@@ -33,7 +33,8 @@ module Devise
       #
       def store_location_for(resource_or_scope, location)
         session_key = stored_location_key_for(resource_or_scope)
-        if (uri = parse_uri(location))
+        uri = parse_uri(location)
+        if uri
           session[session_key] = [uri.path.sub(/\A\/+/, '/'), uri.query].compact.join('?')
         end
       end

@@ -16,7 +16,7 @@
     calling `super`
   * Serialize the `last_request_at` entry as an Integer
   * Ensure registration controller block yields happen on failure in addition to success (by @dpehrson)
-  * Storing location only for valid url (by @parallel588)
+  * Only valid paths will be stored for redirections (by @parallel588)
 
 ### 3.2.4
 

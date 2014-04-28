@@ -133,6 +133,15 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'user should be redirected to sign in page whenever signed in as another resource at same session already' do
+    sign_in_as_admin
+
+    user = create_user(confirm: false)
+    visit_user_confirmation_with_token(user.raw_confirmation_token)
+
+    assert_current_url '/users/sign_in'
+  end
+
   test 'error message is configurable by resource name' do
     store_translations :en, devise: {
       failure: { user: { unconfirmed: "Not confirmed user" } }

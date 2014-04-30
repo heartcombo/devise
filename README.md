@@ -393,7 +393,7 @@ class ActionController::TestCase
 end
 ```
 
-If you're using RSpec, you can put the following inside a file named `spec/support/devise.rb`:
+If you're using RSpec, you can put the following inside your spec_helper.rb file:
 
 ```ruby
 RSpec.configure do |config|

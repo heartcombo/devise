@@ -93,28 +93,28 @@ module Devise
       end
 
       # Send confirmation instructions by email
-      def send_confirmation_instructions
+      def send_confirmation_instructions(opts={})
         unless @raw_confirmation_token
           generate_confirmation_token!
         end
 
-        opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+        opts.merge(pending_reconfirmation? ? { to: unconfirmed_email } : { })
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 
-      def send_reconfirmation_instructions
+      def send_reconfirmation_instructions(opts={})
         @reconfirmation_required = false
 
         unless @skip_confirmation_notification
-          send_confirmation_instructions
+          send_confirmation_instructions(opts)
         end
       end
 
       # Resend confirmation token.
       # Regenerates the token if the period is expired.
-      def resend_confirmation_instructions
+      def resend_confirmation_instructions(opts={})
         pending_any_confirmation do
-          send_confirmation_instructions
+          send_confirmation_instructions(opts)
         end
       end
 
@@ -154,8 +154,8 @@ module Devise
         # A callback method used to deliver confirmation
         # instructions on creation. This can be overridden
         # in models to map to a nice sign up e-mail.
-        def send_on_create_confirmation_instructions
-          send_confirmation_instructions
+        def send_on_create_confirmation_instructions(opts={})
+          send_confirmation_instructions(opts)
         end
 
         # Callback to overwrite if confirmation is required or not.

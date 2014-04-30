@@ -255,7 +255,7 @@ module Devise
   @@clean_up_csrf_token_on_authentication = true
 
   mattr_accessor :email_host
-  @@email_host = :request
+  @@email_host = :default
 
   # PRIVATE CONFIGURATION
 

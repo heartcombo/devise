@@ -37,11 +37,11 @@ module Devise
       # * +opts+: Hash options if you don't want to send email
       #   when you lock access, you could pass the next hash
       #   `{ send_instructions: false } as option`.
-      def lock_access!(opts = { })
+      def lock_access!(opts = {})
         self.locked_at = Time.now.utc
 
         if unlock_strategy_enabled?(:email) && opts.fetch(:send_instructions, true)
-          send_unlock_instructions
+          send_unlock_instructions(opts)
         else
           save(validate: false)
         end
@@ -61,17 +61,17 @@ module Devise
       end
 
       # Send unlock instructions by email
-      def send_unlock_instructions
+      def send_unlock_instructions(opts={})
         raw, enc = Devise.token_generator.generate(self.class, :unlock_token)
         self.unlock_token = enc
         self.save(validate: false)
-        send_devise_notification(:unlock_instructions, raw, {})
+        send_devise_notification(:unlock_instructions, raw, opts)
         raw
       end
 
       # Resend the unlock instructions if the user is locked.
-      def resend_unlock_instructions
-        if_access_locked { send_unlock_instructions }
+      def resend_unlock_instructions(opts={})
+        if_access_locked { send_unlock_instructions(opts) }
       end
 
       # Overwrites active_for_authentication? from Devise::Models::Activatable for locking purposes
@@ -159,9 +159,9 @@ module Devise
         # unlock instructions to it. If not user is found, returns a new user
         # with an email not found error.
         # Options must contain the user's unlock keys
-        def send_unlock_instructions(attributes={})
+        def send_unlock_instructions(attributes={}, opts={})
           lockable = find_or_initialize_with_errors(unlock_keys, attributes, :not_found)
-          lockable.resend_unlock_instructions if lockable.persisted?
+          lockable.resend_unlock_instructions(opts) if lockable.persisted?
           lockable
         end
 

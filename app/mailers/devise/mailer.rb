@@ -16,6 +16,7 @@ if defined?(ActionMailer)
 
     def unlock_instructions(record, token, opts={})
       @token = token
+      @host = opts.delete(:host)
       devise_mail(record, :unlock_instructions, opts)
     end
   end

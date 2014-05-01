@@ -43,7 +43,7 @@ module Devise
       end
       raise "Could not find a valid mapping for #{obj.inspect}" unless mapping
 
-      return (include_router_name ? mapping.name : [mapping.name, mapping.router_name])
+      return (include_router_name ? [mapping.name, mapping.router_name] : mapping.name)
     end
 
     def self.find_by_path!(path, path_type=:fullpath)

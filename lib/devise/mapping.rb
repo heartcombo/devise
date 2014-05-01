@@ -35,11 +35,11 @@ module Devise
       mapping = case obj
       when String, Symbol
         return obj unless include_router_name
-        Devise.mappings.detect { |m| obj == m.name }
+        Devise.mappings.values.detect { |m| obj == m.name }
       when Class
-        Devise.mappings.detect { |m| obj <= m.to }
+        Devise.mappings.values.detect { |m| obj <= m.to }
       else
-        Devise.mappings.detect { |m| obj.is_a?(m.to) }
+        Devise.mappings.values.detect { |m| obj.is_a?(m.to) }
       end
       raise "Could not find a valid mapping for #{obj.inspect}" unless mapping
 

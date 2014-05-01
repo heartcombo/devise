@@ -404,7 +404,7 @@ module Devise
   # Sets warden configuration using a block that will be invoked on warden
   # initialization.
   #
-  #  Devise.initialize do |config|
+  #  Devise.setup do |config|
   #    config.allow_unconfirmed_access_for = 2.days
   #
   #    config.warden do |manager|

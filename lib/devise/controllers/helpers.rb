@@ -155,7 +155,9 @@ module Devise
       #
       # By default it is the root_path.
       def after_sign_out_path_for(resource_or_scope)
-        respond_to?(:root_path) ? root_path : "/"
+        scope, router_name = Devise::Mapping.find_scope!(resource_or_scope, :include_router_name)
+        context = router_name ? send(router_name) : self
+        context.respond_to?(:root_path) ? context.root_path : "/"
       end
 
       # Sign in a user and tries to redirect first to the stored location and

@@ -153,6 +153,8 @@ module ActionDispatch::Routing
     #
     #  * defaults: works the same as Rails' defaults
     #
+    #  * router_name: allows application level router name to be overwritten for the current scope
+    #
     # ==== Scoping
     #
     # Following Rails 3 routes DSL, you can nest devise_for calls inside a scope:

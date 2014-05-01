@@ -23,23 +23,27 @@ module Devise
   #
   class Mapping #:nodoc:
     attr_reader :singular, :scoped_path, :path, :controllers, :path_names,
-                :class_name, :sign_out_via, :format, :used_routes, :used_helpers, :failure_app
+                :class_name, :sign_out_via, :format, :used_routes, :used_helpers,
+                :failure_app, :router_name
 
     alias :name :singular
 
     # Receives an object and find a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.
-    def self.find_scope!(obj)
-      case obj
+    def self.find_scope!(obj, *flags)
+      include_router_name = flags.include?(:include_router_name)
+      mapping = case obj
       when String, Symbol
-        return obj
+        return obj unless include_router_name
+        Devise.mappings.detect { |m| obj == m.name }
       when Class
-        Devise.mappings.each_value { |m| return m.name if obj <= m.to }
+        Devise.mappings.detect { |m| obj <= m.to }
       else
-        Devise.mappings.each_value { |m| return m.name if obj.is_a?(m.to) }
+        Devise.mappings.detect { |m| obj.is_a?(m.to) }
       end
+      raise "Could not find a valid mapping for #{obj.inspect}" unless mapping
 
-      raise "Could not find a valid mapping for #{obj.inspect}"
+      return (include_router_name ? mapping.name : [mapping.name, mapping.router_name])
     end
 
     def self.find_by_path!(path, path_type=:fullpath)
@@ -59,6 +63,8 @@ module Devise
 
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
       @format = options[:format]
+
+      @router_name = options[:router_name]
 
       default_failure_app(options)
       default_controllers(options)

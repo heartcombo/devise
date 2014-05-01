@@ -101,10 +101,15 @@ module Devise
       # The scope root url to be used when they're signed in. By default, it first
       # tries to find a resource_root_path, otherwise it uses the root_path.
       def signed_in_root_path(resource_or_scope)
-        scope = Devise::Mapping.find_scope!(resource_or_scope)
+        scope, router_name = Devise::Mapping.find_scope!(resource_or_scope, :include_router_name)
         home_path = "#{scope}_root_path"
-        if respond_to?(home_path, true)
-          send(home_path)
+
+        context = router_name ? send(router_name) : self
+
+        if context.respond_to?(home_path, true)
+          context.send(home_path)
+        elsif context.respond_to?(:root_path)
+          context.root_path
         elsif respond_to?(:root_path)
           root_path
         else

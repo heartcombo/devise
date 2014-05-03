@@ -1,12 +1,4 @@
 module Devise
-  class RoutingDetails
-    attr_reader :scope, :router_name
-
-    def initialize(mapping)
-      @scope = mapping.name
-      @router_name = mapping.router_name
-    end
-  end
   # Responsible for handling devise mappings and routes configuration. Each
   # resource configured by devise_for in routes is actually creating a mapping
   # object. You can refer to devise_for in routes for usage options.

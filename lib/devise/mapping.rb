@@ -51,6 +51,9 @@ module Devise
       raise "Could not find a valid mapping for #{obj.inspect}"
     end
 
+    # Receives an object and find a mapping for it, then return the routing
+    # details associated with the mapping. If a scope cannot be found,
+    # raises an error.
     def self.find_mapping!(obj)
       case obj
         when String, Symbol

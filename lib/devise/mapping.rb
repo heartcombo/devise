@@ -47,11 +47,11 @@ module Devise
       case obj
         when String, Symbol
           scope = obj.to_sym
-          Devise.mappings.each_value { |m| return m.router_name if m.name == scope }
+          Devise.mappings.each_value { |m| return m if m.name == scope }
         when Class
-          Devise.mappings.each_value { |m| return m.router_name if obj <= m.to }
+          Devise.mappings.each_value { |m| return m if obj <= m.to }
         else
-          Devise.mappings.each_value { |m| return m.router_name if obj.is_a?(m.to) }
+          Devise.mappings.each_value { |m| return m if obj.is_a?(m.to) }
       end
 
       raise "Could not find a valid mapping for #{obj.inspect}" unless mapping

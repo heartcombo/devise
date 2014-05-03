@@ -30,20 +30,31 @@ module Devise
 
     # Receives an object and find a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.
-    def self.find_scope!(obj, *flags)
-      include_router_name = flags.include?(:include_router_name)
-      mapping = case obj
+    def self.find_scope!(obj)
+      case obj
       when String, Symbol
-        return obj unless include_router_name
-        Devise.mappings.values.detect { |m| obj == m.name }
+        return obj
       when Class
-        Devise.mappings.values.detect { |m| obj <= m.to }
+        Devise.mappings.each_value { |m| return m.name if obj <= m.to }
       else
-        Devise.mappings.values.detect { |m| obj.is_a?(m.to) }
+        Devise.mappings.each_value { |m| return m.name if obj.is_a?(m.to) }
       end
-      raise "Could not find a valid mapping for #{obj.inspect}" unless mapping
 
-      return (include_router_name ? [mapping.name, mapping.router_name] : mapping.name)
+      raise "Could not find a valid mapping for #{obj.inspect}"
+    end
+
+    def self.find_mapping!(obj)
+      case obj
+        when String, Symbol
+          scope = obj.to_sym
+          Devise.mappings.each_value { |m| return m.router_name if m.name == scope }
+        when Class
+          Devise.mappings.each_value { |m| return m.router_name if obj <= m.to }
+        else
+          Devise.mappings.each_value { |m| return m.router_name if obj.is_a?(m.to) }
+      end
+
+      raise "Could not find a valid mapping for #{obj.inspect}" unless mapping
     end
 
     def self.find_by_path!(path, path_type=:fullpath)

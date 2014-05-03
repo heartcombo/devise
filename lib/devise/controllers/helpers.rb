@@ -102,7 +102,7 @@ module Devise
       # tries to find a resource_root_path, otherwise it uses the root_path.
       def signed_in_root_path(resource_or_scope)
         mapping = Devise::Mapping.find_mapping!(resource_or_scope)
-        scope = mapping.name
+        scope = mapping.scope
         router_name = mapping.router_name
         home_path = "#{scope}_root_path"
 

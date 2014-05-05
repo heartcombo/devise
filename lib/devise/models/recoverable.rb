@@ -46,7 +46,7 @@ module Devise
       # Returns the token sent in the e-mail.
       def send_reset_password_instructions
         token = set_reset_password_token
-        send_reset_password_instruction_notification(token)
+        send_reset_password_instructions_notification(token)
 
         token
       end
@@ -90,13 +90,12 @@ module Devise
           raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
 
           self.reset_password_token   = enc
+          self.reset_password_sent_at = Time.now.utc
           self.save(validate: false)
           raw
         end
 
-        def send_reset_password_instruction_notification(token)
-          self.reset_password_sent_at = Time.now.utc
-          self.save(validate: false)
+        def send_reset_password_instructions_notification(token)
           send_devise_notification(:reset_password_instructions, token, {})
         end
 

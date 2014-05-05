@@ -1,3 +1,4 @@
+require 'devise'
 module RailsEngine
   class Engine < ::Rails::Engine
     isolate_namespace RailsEngine

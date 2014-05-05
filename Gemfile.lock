@@ -23,6 +23,7 @@ PATH
   remote: test/rails_app/rails_engine
   specs:
     rails_engine (0.0.1)
+      devise
       rails
 
 GEM

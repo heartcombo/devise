@@ -1,5 +1,12 @@
 RailsEngine::Engine.routes.draw do
-  devise_for :engine_users, class_name: 'RailsEngine::User'
+  devise_for :without_router,
+    class_name: 'RailsEngine::User',
+    module: :devise
 
-  # devise_for :engine_users_with_router_name, router_name: :rails_engine
+  devise_for :with_router,
+    class_name: 'RailsEngine::User',
+    router_name: :rails_engine,
+    module: :devise
+
+  root to: 'with_router#index'
 end

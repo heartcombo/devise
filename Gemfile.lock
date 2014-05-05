@@ -19,6 +19,12 @@ PATH
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
 
+PATH
+  remote: test/rails_app/rails_engine
+  specs:
+    rails_engine (0.0.1)
+      rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -161,6 +167,7 @@ DEPENDENCIES
   omniauth-oauth2 (~> 1.0.0)
   omniauth-openid (~> 1.0.1)
   rails (~> 4.0.0)
+  rails_engine!
   rdoc
   sqlite3
   webrat (= 0.7.3)

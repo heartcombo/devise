@@ -12,6 +12,7 @@ rescue LoadError
 end
 
 require "devise"
+require "rails_engine"
 
 module RailsApp
   class Application < Rails::Application

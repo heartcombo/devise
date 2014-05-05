@@ -43,23 +43,6 @@ module Devise
       raise "Could not find a valid mapping for #{obj.inspect}"
     end
 
-    # Receives an object and find a mapping for it, then return the routing
-    # details associated with the mapping. If a scope cannot be found,
-    # raises an error.
-    def self.find_mapping!(obj)
-      case obj
-        when String, Symbol
-          scope = obj.to_sym
-          Devise.mappings.each_value { |m| return RoutingDetails.new(m) if m.name == scope }
-        when Class
-          Devise.mappings.each_value { |m| return RoutingDetails.new(m) if obj <= m.to }
-        else
-          Devise.mappings.each_value { |m| return RoutingDetails.new(m) if obj.is_a?(m.to) }
-      end
-
-      raise "Could not find a valid mapping for #{obj.inspect}" unless mapping
-    end
-
     def self.find_by_path!(path, path_type=:fullpath)
       Devise.mappings.each_value { |m| return m if path.include?(m.send(path_type)) }
       raise "Could not find a valid mapping for path #{path.inspect}"

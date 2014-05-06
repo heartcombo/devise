@@ -2,9 +2,9 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 4.0.0"
-gem "omniauth", "~> 1.0.0"
-gem "omniauth-oauth2", "~> 1.0.0"
+gem "rails", "~> 4.1.0"
+gem "omniauth", "~> 1.2.0"
+gem "omniauth-oauth2", "~> 1.1.0"
 gem "rdoc"
 
 group :test do

@@ -489,7 +489,6 @@ module Devise
 end
 
 require 'warden'
-require 'devise/routing_details'
 require 'devise/mapping'
 require 'devise/models'
 require 'devise/modules'

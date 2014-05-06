@@ -61,7 +61,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'user with valid confirmation token where the token has expired and the mapping is in the non-default engine and a router_name has been specified it should not raise an error' do
+  test 'user with valid confirmation token where the token has expired and the mapping is in the non-default engine and a router_name has been specified it returns the confirmation path' do
     swap Devise, confirm_within: 3.days do
       user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
 
@@ -70,6 +70,36 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_current_url "/rails_engine/with_router/confirmation?confirmation_token=#{user.raw_confirmation_token}"
     end
   end
+
+  test 'user with valid confirmation token where the token has expired and the mapping is in the non-default engine and the application router points to that engine it returns the path' do
+    swap Devise, confirm_within: 3.days, router_name: :rails_engine do
+      user = create_engine_user(confirm: false, confirmation_sent_at: 4.days.ago)
+      visit rails_engine.without_router_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+      assert_current_url "/rails_engine/without_router/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired and the mapping is in the main app and the application router points at the engine it raises an error' do
+    swap Devise, confirm_within: 3.days, router_name: :rails_engine do
+      user = create_engine_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+      assert_raise ActionView::Template::Error do
+        visit_user_confirmation_with_token(user.raw_confirmation_token)
+      end
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired and the mapping points to the main app and the application router points at the engine it returns the path' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days, router_name: :rails_engine do
+      visit user_with_router_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+      assert_current_url "/user_with_routers/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+    end
+  end
+
 
   test 'user with valid confirmation token should be able to confirm an account before the token has expired' do
     swap Devise, confirm_within: 3.days do

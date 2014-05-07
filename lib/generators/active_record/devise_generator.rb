@@ -71,7 +71,11 @@ RUBY
 
       def ip_column
         # Padded with spaces so it aligns nicely with the rest of the columns.
-        "%-8s" % (postgresql? ? "inet" : "string")
+        "%-8s" % (inet? ? "inet" : "string")
+      end
+
+      def inet?
+        Devise.rails4? && postgresql?
       end
 
       def postgresql?

@@ -37,6 +37,12 @@ if DEVISE_ORM == :active_record
       assert_no_file "app/models/monster.rb"
       assert_no_migration "db/migrate/devise_create_monsters.rb"
     end
+
+    test "use string column type for ip addresses" do
+      run_generator %w(monster)
+      assert_migration "db/migrate/devise_create_monsters.rb", /t.string   :current_sign_in_ip/
+      assert_migration "db/migrate/devise_create_monsters.rb", /t.string   :last_sign_in_ip/
+    end
   end
 
   module RailsEngine

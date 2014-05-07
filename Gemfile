@@ -12,7 +12,6 @@ group :test do
   gem "omniauth-openid", "~> 1.0.1"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 1.0.0", require: false
-  gemspec path: "test/rails_app/rails_engine"
 end
 
 platforms :jruby do

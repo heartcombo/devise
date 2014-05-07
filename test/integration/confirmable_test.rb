@@ -51,55 +51,35 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'user with valid confirmation token where the token has expired and the mapping is in the non-default engine it should raise an error' do
-    swap Devise, confirm_within: 3.days do
-      user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+  test 'user with valid confirmation token where the token has expired and with application router_name set to a different engine it should raise an error' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
 
-      assert_raise ActionView::Template::Error do
-        visit rails_engine.without_router_confirmation_path(confirmation_token: user.raw_confirmation_token)
-      end
-    end
-  end
-
-  test 'user with valid confirmation token where the token has expired and the mapping is in the non-default engine and a router_name has been specified it returns the confirmation path' do
-    swap Devise, confirm_within: 3.days do
-      user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
-
-      visit rails_engine.with_router_confirmation_path(confirmation_token: user.raw_confirmation_token)
-
-      assert_current_url "/rails_engine/with_router/confirmation?confirmation_token=#{user.raw_confirmation_token}"
-    end
-  end
-
-  test 'user with valid confirmation token where the token has expired and the mapping is in the non-default engine and the application router points to that engine it returns the path' do
-    swap Devise, confirm_within: 3.days, router_name: :rails_engine do
-      user = create_engine_user(confirm: false, confirmation_sent_at: 4.days.ago)
-      visit rails_engine.without_router_confirmation_path(confirmation_token: user.raw_confirmation_token)
-
-      assert_current_url "/rails_engine/without_router/confirmation?confirmation_token=#{user.raw_confirmation_token}"
-    end
-  end
-
-  test 'user with valid confirmation token where the token has expired and the mapping is in the main app and the application router points at the engine it raises an error' do
-    swap Devise, confirm_within: 3.days, router_name: :rails_engine do
-      user = create_engine_user(confirm: false, confirmation_sent_at: 4.days.ago)
-
+    swap Devise, confirm_within: 3.days, router_name: :fake_engine do
       assert_raise ActionView::Template::Error do
         visit_user_confirmation_with_token(user.raw_confirmation_token)
       end
     end
   end
 
-  test 'user with valid confirmation token where the token has expired and the mapping points to the main app and the application router points at the engine it returns the path' do
+  test 'user with valid confirmation token where the token has expired and with application router_name set to a different engine and route overrides back to main it shows the path' do
     user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
 
-    swap Devise, confirm_within: 3.days, router_name: :rails_engine do
-      visit user_with_router_confirmation_path(confirmation_token: user.raw_confirmation_token)
+    swap Devise, confirm_within: 3.days, router_name: :fake_engine do
+      visit user_on_main_app_confirmation_path(confirmation_token: user.raw_confirmation_token)
 
-      assert_current_url "/user_with_routers/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+      assert_current_url "/user_on_main_apps/confirmation?confirmation_token=#{user.raw_confirmation_token}"
     end
   end
 
+  test 'user with valid confirmation token where the token has expired with router overrides different engine it shows the path' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days do
+      visit user_on_engine_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+      assert_current_url "/user_on_engines/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+    end
+  end
 
   test 'user with valid confirmation token should be able to confirm an account before the token has expired' do
     swap Devise, confirm_within: 3.days do

@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  mount RailsEngine::Engine => '/rails_engine', as: 'rails_engine'
-
   # Resources for testing
   resources :users, only: [:index] do
     member do
@@ -22,9 +20,14 @@ Rails.application.routes.draw do
   # Users scope
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
-  devise_for :user_with_routers,
-    class_name: 'UserWithoutConfirmation',
+  devise_for :user_on_main_apps,
+    class_name: 'UserOnMainApp',
     router_name: :main_app,
+    module: :devise
+
+  devise_for :user_on_engines,
+    class_name: 'UserOnEngine',
+    router_name: :fake_engine,
     module: :devise
 
   as :user do

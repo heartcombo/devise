@@ -7,3 +7,4 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!, if: :devise_controller?
   respond_to *Mime::SET.map(&:to_sym)
 end
+

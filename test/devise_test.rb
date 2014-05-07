@@ -55,18 +55,14 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'warden manager user configuration through multiple blocks' do
     Devise.yield_and_restore do
-      first_executed = false
-      second_executed = false
-      Devise.warden do |config|
-        first_executed = true
-      end
-      Devise.warden do |config|
-        second_executed = true
+      executed = 0
+
+      3.times do
+        Devise.warden { |config| executed += 1 }
       end
 
       Devise.configure_warden!
-      assert first_executed
-      assert second_executed
+      assert_equal 3, executed
     end
   end
 

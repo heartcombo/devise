@@ -42,31 +42,31 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'warden manager user configuration through a block' do
     Devise.yield_and_restore do
-      @executed = false
+      executed = false
       Devise.warden do |config|
-        @executed = true
+        executed = true
         assert_kind_of Warden::Config, config
       end
 
       Devise.configure_warden!
-      assert @executed
+      assert executed
     end
   end
 
   test 'warden manager user configuration through multiple blocks' do
     Devise.yield_and_restore do
-      @first_executed = false
-      @second_executed = false
+      first_executed = false
+      second_executed = false
       Devise.warden do |config|
-        @first_executed = true
+        first_executed = true
       end
       Devise.warden do |config|
-        @second_executed = true
+        second_executed = true
       end
 
       Devise.configure_warden!
-      assert @first_executed
-      assert @second_executed
+      assert first_executed
+      assert second_executed
     end
   end
 

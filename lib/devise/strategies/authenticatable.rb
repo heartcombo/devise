@@ -16,6 +16,13 @@ module Devise
         valid_for_params_auth? || valid_for_http_auth?
       end
 
+      # Override and set to false for things like OmniAuth that technically
+      # run through Authentication (user_set) very often, which would normally
+      # reset CSRF data in the session
+      def clean_up_csrf?
+        true
+      end
+
     private
 
       # Receives a resource and check if it is valid by calling valid_for_authentication?

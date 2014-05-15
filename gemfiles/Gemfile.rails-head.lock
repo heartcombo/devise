@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: e93a4837b0266db46c24aae172e184f57c847b04
+  revision: 9be37a9266d8b703e8f549af7bb6977e7a3a8352
   branch: master
   specs:
     mongoid (4.0.0.beta1)
@@ -11,13 +11,13 @@ GIT
 
 GIT
   remote: git://github.com/rails/arel.git
-  revision: d30b47ed86fd26f36e73d68a8e91f9d8912f1bfe
+  revision: 51d552c2cdcb749c2aaa96e982b5789b73f12f56
   specs:
-    arel (5.0.0.20140412150050)
+    arel (6.0.0.20140505020427)
 
 GIT
   remote: git://github.com/rails/rails.git
-  revision: e918516d2fdfa24e5fc04ef14e371f08f4a8315f
+  revision: 1961894d1254c71f816dad33ce0164fb88625479
   specs:
     actionmailer (4.2.0.alpha)
       actionpack (= 4.2.0.alpha)
@@ -38,7 +38,7 @@ GIT
     activerecord (4.2.0.alpha)
       activemodel (= 4.2.0.alpha)
       activesupport (= 4.2.0.alpha)
-      arel (~> 5.0.0)
+      arel (~> 6.0.0)
     activesupport (4.2.0.alpha)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -75,7 +75,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     bcrypt (3.1.7)
-    bson (2.2.2)
+    bson (2.2.3)
     builder (3.2.2)
     connection_pool (2.0.0)
     erubis (2.7.0)
@@ -85,14 +85,14 @@ GEM
     hike (1.2.3)
     i18n (0.6.9)
     json (1.8.1)
-    jwt (0.1.11)
+    jwt (0.1.13)
       multi_json (>= 1.5)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     metaclass (0.0.4)
     mime-types (1.25.1)
-    mini_portile (0.5.3)
+    mini_portile (0.6.0)
     minitest (5.3.3)
     mocha (1.0.0)
       metaclass (~> 0.0.1)
@@ -100,11 +100,11 @@ GEM
       bson (~> 2.2)
       connection_pool (~> 2.0)
       optionable (~> 0.2.0)
-    multi_json (1.9.3)
+    multi_json (1.10.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    nokogiri (1.6.1)
-      mini_portile (~> 0.5.0)
+    nokogiri (1.6.2.1)
+      mini_portile (= 0.6.0)
     oauth2 (0.9.3)
       faraday (>= 0.8, < 0.10)
       jwt (~> 0.1.8)

@@ -315,12 +315,8 @@ class LockableTest < ActiveSupport::TestCase
   end
 
   test 'should return locked message if user was programatically locked' do
-    swap Devise, last_attempt_warning: :true do
-      swap Devise, lock_strategy: :failed_attempts do
-        user = create_user
-        user.lock_access!
-        assert_equal :locked, user.unauthenticated_message
-      end
-    end
+    user = create_user
+    user.lock_access!
+    assert_equal :locked, user.unauthenticated_message
   end
 end

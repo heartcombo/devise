@@ -115,10 +115,10 @@ module Devise
         # leaks the existence of an account.
         if Devise.paranoid
           super
+        elsif access_locked? || (lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?)
+          :locked
         elsif lock_strategy_enabled?(:failed_attempts) && last_attempt?
           :last_attempt
-        elsif lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
-          :locked
         else
           super
         end

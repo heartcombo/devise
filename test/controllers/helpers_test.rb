@@ -25,6 +25,13 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     @controller.signed_in?
   end
 
+  test 'proxy [group]_signed_in? to authenticate? with each scope' do
+    Devise.groups[:commenter].each do |scope|
+      @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
+    end
+    @controller.commenter_signed_in?
+  end
+
   test 'proxy current_user to authenticate with user scope' do
     @mock_warden.expects(:authenticate).with(scope: :user)
     @controller.current_user
@@ -33,6 +40,20 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   test 'proxy current_admin to authenticate with admin scope' do
     @mock_warden.expects(:authenticate).with(scope: :admin)
     @controller.current_admin
+  end
+
+  test 'proxy current_[group] to authenticate with each scope' do
+    Devise.groups[:commenter].each do |scope|
+      @mock_warden.expects(:authenticate).with(scope: scope).returns(nil)
+    end
+    @controller.current_commenter
+  end
+
+  test 'proxy current_[plural_group] to authenticate with each scope' do
+    Devise.groups[:commenter].each do |scope|
+      @mock_warden.expects(:authenticate).with(scope: scope)
+    end
+    @controller.current_commenters
   end
 
   test 'proxy current_publisher_account to authenticate with namespaced publisher account scope' do
@@ -53,6 +74,14 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   test 'proxy authenticate_admin! to authenticate with admin scope' do
     @mock_warden.expects(:authenticate!).with(scope: :admin)
     @controller.authenticate_admin!
+  end
+
+  test 'proxy authenticate_[group]! to authenticate!? with each scope' do
+    Devise.groups[:commenter].each do |scope|
+      @mock_warden.expects(:authenticate!).with(scope: scope)
+      @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
+    end
+    @controller.authenticate_commenter!
   end
 
   test 'proxy authenticate_publisher_account! to authenticate with namespaced publisher account scope' do

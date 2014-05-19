@@ -68,6 +68,70 @@ module Devise
         end
       end
 
+      # Define authentication filters and accessor helpers for a group of mappings.
+      # These methods are useful when you are working with multiple mappings that
+      # share some functionality. They are pretty much the same as the ones
+      # defined for normal mappings.
+      #
+      # Example:
+      #
+      # Group:
+      #   blogger (contains User and Admin)
+      #
+      #   Generated methods:
+      #     authenticate_blogger!  # Redirects unless user or admin are signed in
+      #     blogger_signed_in?     # Checks whether there is either a user or an admin signed in
+      #     current_blogger        # Currently signed in user or admin
+      #     current_bloggers       # Currently signed in user and admin
+      #
+      #   Use:
+      #     before_filter :authenticate_blogger!              # Redirects unless either a user or an admin are authenticated
+      #     before_filter ->{ authenticate_blogger! :admin }  # Redirects to the admin login page
+      #     current_blogger :user                             # Preferably returns a User if one is signed in
+      #
+      def self.define_group_helpers(group_name)
+        class_eval <<-METHODS, __FILE__, __LINE__ + 1
+          def authenticate_#{group_name}!(favourite=nil, opts={})
+            unless #{group_name}_signed_in?
+              mappings = Devise.groups[:#{group_name}]
+              mappings.unshift mappings.delete(favourite.to_sym) if favourite
+              mappings.each do |mapping|
+                opts[:scope] = mapping
+                warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
+              end
+            end
+          end
+
+          def #{group_name}_signed_in?
+            Devise.groups[:#{group_name}].any? do |mapping|
+              warden.authenticate?(scope: mapping)
+            end
+          end
+
+          def current_#{group_name}(favourite=nil)
+            mappings = Devise.groups[:#{group_name}]
+            mappings.unshift(mappings.delete favourite.to_sym) if favourite
+            mappings.each do |mapping|
+              current = warden.authenticate(scope: mapping)
+              return current if current
+            end
+            nil
+          end
+
+          def current_#{group_name.to_s.pluralize}
+            records = []
+            Devise.groups[:#{group_name}].each do |mapping|
+              records << warden.authenticate(scope: mapping)
+            end
+            records.compact
+          end
+        METHODS
+
+        ActiveSupport.on_load(:action_controller) do
+          helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"
+        end
+      end
+
       # The main accessor for the warden proxy instance
       def warden
         request.env['warden']

@@ -104,5 +104,7 @@ Rails.application.routes.draw do
   get "/unauthenticated", to: "home#unauthenticated"
   get "/custom_strategy/new"
 
+  devise_group :commenters, includes: [:admins, :users]
+
   root to: "home#index", via: [:get, :post]
 end

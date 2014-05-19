@@ -351,6 +351,19 @@ module ActionDispatch::Routing
     end
     alias :as :devise_scope
 
+    # Creates a group that can contain multiple scopes in order to abstract them
+    # over some functionality, the only thing it really does is defining helper methods.
+    #
+    # For example
+    #
+    #   devise_group :bloggers, includes: [:users, :admins]
+    #
+    # will define: current_blogger, current_bloggers, authenticate_blogger! and blogger_signed_in?
+    #
+    def devise_group(group_name, opts={})
+      Devise.add_group(group_name.to_s.singularize, opts[:includes])
+    end
+
     protected
 
       def devise_session(mapping, controllers) #:nodoc:

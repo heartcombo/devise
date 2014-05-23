@@ -128,7 +128,7 @@ Devise will create some helpers to use inside your controllers and views. To set
 before_action :authenticate_user!
 ```
 
-If your devise MODEL is something other than User, replace "_user" with "_yourmodel". The same logic applies to the instructions below.
+If your devise model is something other than User, replace "_user" with "_yourmodel". The same logic applies to the instructions below.
 
 To verify if a user is signed in, use the following helper:
 

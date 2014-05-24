@@ -122,11 +122,13 @@ You should restart your application after changing Devise's configuration option
 
 ### Controller filters and helpers
 
-Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_action:
+Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_action (assuming your devise model is 'User'):
 
 ```ruby
 before_action :authenticate_user!
 ```
+
+If your devise model is something other than User, replace "_user" with "_yourmodel". The same logic applies to the instructions below.
 
 To verify if a user is signed in, use the following helper:
 

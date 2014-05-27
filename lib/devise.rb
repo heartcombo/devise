@@ -256,10 +256,6 @@ module Devise
   mattr_reader :mappings
   @@mappings = ActiveSupport::OrderedHash.new
 
-  # Store groups.
-  mattr_reader :groups
-  @@groups = {}
-
   # Omniauth configurations.
   mattr_reader :omniauth_configs
   @@omniauth_configs = ActiveSupport::OrderedHash.new
@@ -337,15 +333,6 @@ module Devise
     @@default_scope ||= mapping.name
     @@helpers.each { |h| h.define_helpers(mapping) }
     mapping
-  end
-
-  # Adds a group to Devise.
-  def self.add_group(group_name, resources)
-    singular_sym = lambda { |thing| thing.to_s.singularize.to_sym }
-
-    group_name = singular_sym.call(group_name)
-    Devise.groups[group_name] = resources.map!(&singular_sym)
-    @@helpers.each { |h| h.define_group_helpers(group_name) }
   end
 
   # Make Devise aware of an 3rd party Devise-module (like invitable). For convenience.

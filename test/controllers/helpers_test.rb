@@ -26,7 +26,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
 
   test 'proxy [group]_signed_in? to authenticate? with each scope' do
-    Devise.groups[:commenter].each do |scope|
+    [:user, :admin].each do |scope|
       @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
     end
     @controller.commenter_signed_in?
@@ -43,14 +43,14 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
 
   test 'proxy current_[group] to authenticate with each scope' do
-    Devise.groups[:commenter].each do |scope|
+    [:user, :admin].each do |scope|
       @mock_warden.expects(:authenticate).with(scope: scope).returns(nil)
     end
     @controller.current_commenter
   end
 
   test 'proxy current_[plural_group] to authenticate with each scope' do
-    Devise.groups[:commenter].each do |scope|
+    [:user, :admin].each do |scope|
       @mock_warden.expects(:authenticate).with(scope: scope)
     end
     @controller.current_commenters
@@ -77,7 +77,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
 
   test 'proxy authenticate_[group]! to authenticate!? with each scope' do
-    Devise.groups[:commenter].each do |scope|
+    [:user, :admin].each do |scope|
       @mock_warden.expects(:authenticate!).with(scope: scope)
       @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
     end

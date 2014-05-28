@@ -14,10 +14,6 @@ module Devise
     #   # resets the user password and save the record, true if valid passwords are given, otherwise false
     #   User.find(1).reset_password!('password123', 'password123')
     #
-    #   # only resets the user password, without saving the record
-    #   user = User.find(1)
-    #   user.reset_password('password123', 'password123')
-    #
     #   # creates a new token and send it with instructions about how to reset the password
     #   User.find(1).send_reset_password_instructions
     #
@@ -28,18 +24,26 @@ module Devise
         [:reset_password_sent_at, :reset_password_token]
       end
 
+      def valid_attributes?(*attribute_names)
+        valid?
+        attribute_names.all? {|_| errors[_].blank? }
+      end
+
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.
       def reset_password!(new_password, new_password_confirmation)
         self.password = new_password
         self.password_confirmation = new_password_confirmation
 
-        if valid?
+        if valid_attributes?(:password, :password_confirmation)
           clear_reset_password_token
           after_password_reset
+          save(:validate => false)
+          errors.clear
+          true
+        else
+          false
         end
-
-        save
       end
 
       # Resets reset password token and send reset password instructions by email.

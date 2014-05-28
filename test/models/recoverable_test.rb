@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'test_models'
 
 class RecoverableTest < ActiveSupport::TestCase
 
@@ -50,10 +51,34 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_present user.reset_password_token
   end
 
-  test 'should not reset password with invalid data' do
+  test 'should still be able to reset password if only non-password fields are invalid (using stubs)' do
     user = create_user
     user.stubs(:valid?).returns(false)
+    assert user.reset_password!('123456789', '987654321')
+  end
+
+  test 'should still be able to reset password if only non-password fields are invalid' do
+    user = UserWithValidation.create!(valid_attributes)
+    user.update_column :username, nil
+    user.valid?
+    assert_equal "can't be blank", user.errors[:username].join
+    assert user.reset_password!('123456789', '123456789')
+    assert user.errors.empty?
+  end
+
+  test 'should not reset password if any password fields are invalid (using stubs)' do
+    user = create_user
+    user.stubs(:valid_attributes?).returns(false)
     assert_not user.reset_password!('123456789', '987654321')
+  end
+
+  test 'should not reset password if any password fields are invalid' do
+    user = create_user
+    assert_not user.reset_password!('123', '123')
+    assert_equal "is too short (minimum is 6 characters)", user.errors[:password].join
+
+    assert_not user.reset_password!('123', 'other')
+    assert_equal "doesn't match Password", user.errors[:password_confirmation].join
   end
 
   test 'should reset reset password token and send instructions by email' do

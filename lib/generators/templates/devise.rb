@@ -13,8 +13,19 @@ Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
-  # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  # with default "from" parameter or with the default set in ActionMailer::Base
+<% if rails_4? -%>
+  # You can set the application-wide default sender in your application config:
+  # config.action_mailer.default_options = { sender: "email@example.com" }
+  unless Rails.application.config.action_mailer.default_options.try(:[], :sender)
+    config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  end
+<% else -%>
+  # ActionMailer::Base.default :sender => "email@example.com"
+  unless Rails.application.config.action_mailer.default_options.try(:[], :sender)
+    config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  end
+<% end -%>
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'

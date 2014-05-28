@@ -98,7 +98,7 @@ module Devise
           opts[:contains].map! { |m| ":#{m}" }
           mappings = "[#{ opts[:contains].join(',') }]"
 
-          ActionController::Base.class_eval <<-METHODS, __FILE__, __LINE__ + 1
+          class_eval <<-METHODS, __FILE__, __LINE__ + 1
             def authenticate_#{group_name}!(favourite=nil, opts={})
               unless #{group_name}_signed_in?
                 mappings = #{mappings}

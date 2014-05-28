@@ -22,7 +22,7 @@ Devise.setup do |config|
   end
 <% else -%>
   # ActionMailer::Base.default :sender => "email@example.com"
-  unless Rails.application.config.action_mailer.default_options.try(:[], :sender)
+  unless ActionMailer::Base.default.try(:[], :sender)
     config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
   end
 <% end -%>

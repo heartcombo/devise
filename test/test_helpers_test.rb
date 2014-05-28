@@ -72,12 +72,9 @@ class TestHelpersTest < ActionController::TestCase
   end
 
   test "respects custom failure app" do
-    begin
-      Devise.warden_config.failure_app = CustomFailureApp
+    swap Devise.warden_config, failure_app: CustomFailureApp do
       get :index
       assert_response 306
-    ensure
-      Devise.warden_config.failure_app = Devise::FailureApp
     end
   end
 

@@ -202,7 +202,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-The above works for any additional fields where the parameters are simple scalar types. If you have nested attributes (say you're using `accepts_nested_parameters_for`), then you will need to tell devise about those nestings and types. Devise allows you to completely change Devise defaults or invoke custom behaviour by passing a block:
+The above works for any additional fields where the parameters are simple scalar types. If you have nested attributes (say you're using `accepts_nested_attributes_for`), then you will need to tell devise about those nestings and types. Devise allows you to completely change Devise defaults or invoke custom behaviour by passing a block:
 
 To permit simple scalar values for username and email, use this
 

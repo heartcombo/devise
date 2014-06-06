@@ -8,9 +8,6 @@ require "rails_app/config/environment"
 require "rails/test_help"
 require "orm/#{DEVISE_ORM}"
 
-AdminAdapter = Admin.to_adapter unless Admin.is_a?(OrmAdapter::Base)
-UserAdapter  = User.to_adapter unless User.is_a?(OrmAdapter::Base)
-
 I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__)
 
 require 'mocha/setup'

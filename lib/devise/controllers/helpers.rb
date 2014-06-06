@@ -6,8 +6,12 @@ module Devise
       include Devise::Controllers::SignInOut
       include Devise::Controllers::StoreLocation
 
-      included do
+      included do |base|
         helper_method :warden, :signed_in?, :devise_controller?
+
+        base.class_eval do
+          extend GroupHelpers
+        end
       end
 
       module ClassMethods
@@ -65,6 +69,73 @@ module Devise
 
         ActiveSupport.on_load(:action_controller) do
           helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
+        end
+      end
+
+      module GroupHelpers
+        # Define authentication filters and accessor helpers for a group of mappings.
+        # These methods are useful when you are working with multiple mappings that
+        # share some functionality. They are pretty much the same as the ones
+        # defined for normal mappings.
+        #
+        # Example:
+        #
+        #   inside BlogsController (or any other controller, it doesn't matter which):
+        #     devise_helpers_for :blogger, contains: [:user, :admin]
+        #
+        #   Generated methods:
+        #     authenticate_blogger!  # Redirects unless user or admin are signed in
+        #     blogger_signed_in?     # Checks whether there is either a user or an admin signed in
+        #     current_blogger        # Currently signed in user or admin
+        #     current_bloggers       # Currently signed in user and admin
+        #
+        #   Use:
+        #     before_filter :authenticate_blogger!              # Redirects unless either a user or an admin are authenticated
+        #     before_filter ->{ authenticate_blogger! :admin }  # Redirects to the admin login page
+        #     current_blogger :user                             # Preferably returns a User if one is signed in
+        #
+        def devise_group(group_name, opts={})
+          opts[:contains].map! { |m| ":#{m}" }
+          mappings = "[#{ opts[:contains].join(',') }]"
+
+          class_eval <<-METHODS, __FILE__, __LINE__ + 1
+            def authenticate_#{group_name}!(favourite=nil, opts={})
+              unless #{group_name}_signed_in?
+                mappings = #{mappings}
+                mappings.unshift mappings.delete(favourite.to_sym) if favourite
+                mappings.each do |mapping|
+                  opts[:scope] = mapping
+                  warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
+                end
+              end
+            end
+
+            def #{group_name}_signed_in?
+              #{mappings}.any? do |mapping|
+                warden.authenticate?(scope: mapping)
+              end
+            end
+
+            def current_#{group_name}(favourite=nil)
+              mappings = #{mappings}
+              mappings.unshift mappings.delete(favourite.to_sym) if favourite
+              mappings.each do |mapping|
+                current = warden.authenticate(scope: mapping)
+                return current if current
+              end
+              nil
+            end
+
+            def current_#{group_name.to_s.pluralize}
+              records = []
+              #{mappings}.each do |mapping|
+                records << warden.authenticate(scope: mapping)
+              end
+              records.compact
+            end
+
+            helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"
+          METHODS
         end
       end
 

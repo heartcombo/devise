@@ -385,6 +385,8 @@ Take a look at our locale file to check all available messages. You may also be 
 
 https://github.com/plataformatec/devise/wiki/I18n
 
+Caution: Devise Controllers inherit from ApplicationController. If your app uses multiple locales, you should be sure to set I18n.locale in ApplicationController
+
 ### Test helpers
 
 Devise includes some test helpers for functional specs. In order to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file:

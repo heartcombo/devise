@@ -39,6 +39,13 @@ module Devise
         after_update  :send_reconfirmation_instructions,  if: :reconfirmation_required?
       end
 
+      ##
+      # Store the raw confirmation token after the creation of
+      # a record or using the public methods like send_confirmation_instructions and
+      # send_reconfirmation_instructions
+
+      attr_accessor :raw_confirmation_token
+
       def initialize(*args, &block)
         @bypass_confirmation_postpone = false
         @reconfirmation_required = false

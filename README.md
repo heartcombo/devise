@@ -110,9 +110,9 @@ The generator will install an initializer which describes ALL Devise's configura
 rails generate devise MODEL
 ```
 
-Replace MODEL by the class name used for the applications users, it's frequently `User` but could also be `Admin`. This will create a model (if one does not exist) and configure it with default Devise modules. Next, you'll usually run `rake db:migrate` as the generator will have created a migration file (if your ORM supports them). This generator also configures your `config/routes.rb` file to point to the Devise controller.
+Replace MODEL with the class name used for the application’s users (it’s frequently `User` but could also be `Admin`). This will create a model (if one does not exist) and configure it with default Devise modules. Next, you’ll usually run `rake db:migrate` as the generator will have created a migration file (if your ORM supports them). This generator also configures your `config/routes.rb` file to point to the Devise controller.
 
-Next, you need to set up the default url options for the Devise mailer in each environment. Here is a possible configuration for `config/environments/development.rb`:
+Next, you need to set up the default URL options for the Devise mailer in each environment. Here is a possible configuration for `config/environments/development.rb`:
 
 ```ruby
 config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }

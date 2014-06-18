@@ -467,7 +467,7 @@ admin_session
 
 Alternatively, you can simply run the Devise generator.
 
-Keep in mind that those models will have completely different routes. They **do not** and **cannot** share the same controller for sign in, sign out and so on. In case you want to have different roles sharing the same actions, we recommend you to use a role-based approach, by either providing a role column or using [CanCan](https://github.com/ryanb/cancan).
+Keep in mind that those models will have completely different routes. They **do not** and **cannot** share the same controller for sign in, sign out and so on. In case you want to have different roles sharing the same actions, we recommend you to use a role-based approach, by either providing a role column or using a dedicated gem for authorization.
 
 ### Other ORMs
 

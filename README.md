@@ -415,11 +415,11 @@ sign_out :user         # sign_out(scope)
 sign_out @user         # sign_out(resource)
 ```
 
-There are two things that is important to keep in mind:
+There are two things that are important to keep in mind:
 
 1. These helpers are not going to work for integration tests driven by Capybara or Webrat. They are meant to be used with functional tests only. Instead, fill in the form or explicitly set the user in session;
 
-2. If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from router, but since functional tests do not pass through the router, it needs to be told explicitly. For example, if you are testing the user scope, simply do:
+2. If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from the router, but since functional tests do not pass through the router, it needs to be told explicitly. For example, if you are testing the user scope, simply do:
 
     ```ruby
     @request.env["devise.mapping"] = Devise.mappings[:user]

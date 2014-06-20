@@ -4,7 +4,7 @@ install: script/cached-bundle install --deployment --path vendor/bundle
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.1
+  - 2.1.2
 env:
   matrix:
     - DEVISE_ORM=mongoid

@@ -2,8 +2,9 @@
 
 * enhancements
   * Support multiple warden configuration blocks on devise configuration. (by @rossta)
-  * Add the `expire_all_remember_me_on_sign_out` configuration to invalidate
-    all the remember me tokens when the user signs out. (by @laurocaetano)
+  * Previously, when a user signed out, all remember me tokens for all sessions/browsers would be
+    invalidated, and this behavior could not be changed. This behavior is now configurable via
+    `expire_all_remember_me_on_sign_out`. The default continues to be true. (by @laurocaetano)
   * Default email messages was updated with grammar fixes, check the diff on
     #2906 for the updated copy (by @p-originate)
   * Allow a resource to be found based on its encrypted password token (by @karlentwistle)

@@ -142,6 +142,7 @@ module Devise
     end
 
     def recall_app(app)
+      return app unless app.is_a?(String)
       controller, action = app.split("#")
       controller_name  = ActiveSupport::Inflector.camelize(controller)
       controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")

@@ -11,7 +11,7 @@ group :test do
   gem "omniauth-facebook"
   gem "omniauth-openid", "~> 1.0.1"
   gem "webrat", "0.7.3", require: false
-  gem "mocha", "~> 1.0.0", require: false
+  gem "mocha", "~> 1.1", require: false
 end
 
 platforms :jruby do
@@ -25,5 +25,5 @@ platforms :ruby do
 end
 
 group :mongoid do
-  gem "mongoid", github: "mongoid/mongoid", branch: "master"
+  gem "mongoid", "~> 4.0.0"
 end

@@ -44,7 +44,7 @@ class DeviseController < Devise.parent_controller.constantize
   # loaded before even having a request object.
   def _prefixes #:nodoc:
     @_prefixes ||= if self.class.scoped_views? && request && devise_mapping
-      super.unshift("#{devise_mapping.scoped_path}/#{controller_name}")
+      ["#{devise_mapping.scoped_path}/#{controller_name}"] + super
     else
       super
     end

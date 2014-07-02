@@ -11,7 +11,7 @@ class Devise::PasswordsController < DeviseController
   # POST /resource/password
   def create
     self.resource = resource_class.send_reset_password_instructions(resource_params)
-    yield resource if block_given?
+    after_reset_password_instructions_sent(resource)
 
     if successfully_sent?(resource)
       respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))
@@ -29,15 +29,16 @@ class Devise::PasswordsController < DeviseController
   # PUT /resource/password
   def update
     self.resource = resource_class.reset_password_by_token(resource_params)
-    yield resource if block_given?
 
     if resource.errors.empty?
+      after_password_update_success(resource)
       resource.unlock_access! if unlockable?(resource)
       flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
       set_flash_message(:notice, flash_message) if is_flashing_format?
       sign_in(resource_name, resource)
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
+      after_password_update_fails(resource)
       respond_with resource
     end
   end
@@ -51,6 +52,15 @@ class Devise::PasswordsController < DeviseController
     def after_sending_reset_password_instructions_path_for(resource_name)
       new_session_path(resource_name) if is_navigational_format?
     end
+
+    # Method excecuted after reset password instructions sent.
+    def after_reset_password_instructions_sent(resource); end
+
+    # Method excecuted after password update success.
+    def after_password_update_success(resource); end
+
+    # Method excecuted after password update fails.
+    def after_password_update_fails(resource); end
 
     # Check if a reset_password_token is provided in the request
     def assert_reset_token_passed

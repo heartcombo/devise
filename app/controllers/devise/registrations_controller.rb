@@ -12,9 +12,8 @@ class Devise::RegistrationsController < DeviseController
   def create
     build_resource(sign_up_params)
 
-    resource_saved = resource.save
-    yield resource if block_given?
-    if resource_saved
+    if resource.save
+      after_sign_up_success(resource)
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -25,6 +24,7 @@ class Devise::RegistrationsController < DeviseController
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
     else
+      after_sign_up_fails(resource)
       clean_up_passwords resource
       respond_with resource
     end
@@ -42,9 +42,8 @@ class Devise::RegistrationsController < DeviseController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    resource_updated = update_resource(resource, account_update_params)
-    yield resource if block_given?
-    if resource_updated
+    if update_resource(resource, account_update_params)
+      after_account_update_success(resource)
       if is_flashing_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
           :update_needs_confirmation : :updated
@@ -53,6 +52,7 @@ class Devise::RegistrationsController < DeviseController
       sign_in resource_name, resource, bypass: true
       respond_with resource, location: after_update_path_for(resource)
     else
+      after_account_update_fails(resource)
       clean_up_passwords resource
       respond_with resource
     end
@@ -62,8 +62,8 @@ class Devise::RegistrationsController < DeviseController
   def destroy
     resource.destroy
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    after_account_destroyed(resource)
     set_flash_message :notice, :destroyed if is_flashing_format?
-    yield resource if block_given?
     respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
   end
 
@@ -102,6 +102,21 @@ class Devise::RegistrationsController < DeviseController
   def sign_up(resource_name, resource)
     sign_in(resource_name, resource)
   end
+
+  # Method excecuted after user sign up success.
+  def after_sign_up_success(resource); end
+
+  # Method excecuted after user sign up fails.
+  def after_sign_up_fails(resource); end
+
+  # Method excecuted after account update success.
+  def after_account_update_success(resource); end
+
+  # Method excecuted after account update fails.
+  def after_account_update_fails(resource); end
+
+  # Method excecuted after account destroyed.
+  def after_account_destroyed(resource); end
 
   # The path used after sign up. You need to overwrite this method
   # in your own RegistrationsController.

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: 50b633c8baf2fa467e8c36b18a013a2cd50e0454
+  revision: e01daa73623520716d62b7513bda10e978e0d583
   branch: master
   specs:
     mongoid (4.0.0)
@@ -11,13 +11,13 @@ GIT
 
 GIT
   remote: git://github.com/rails/arel.git
-  revision: ebbd786945c12f65062ef5b4809b4f13643e3c52
+  revision: 66cee768bc163537087037a583f60639eae49fc3
   specs:
     arel (6.0.0.20140505020427)
 
 GIT
   remote: git://github.com/rails/rails.git
-  revision: d04763f43c905375d20213b020d258bab959bd51
+  revision: 03c9c0e2fa83e4ccaefb3b06970b9c3efe170be5
   specs:
     actionmailer (4.2.0.alpha)
       actionpack (= 4.2.0.alpha)

@@ -129,7 +129,8 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, module: "users"
     #
-    #  * skip: tell which controller you want to skip routes from being created:
+    #  * skip: tell which controller you want to skip routes from being created. 
+    #    It accepts :all as an option, meaning it will not generate any route at all:
     #
     #      devise_for :users, skip: :sessions
     #

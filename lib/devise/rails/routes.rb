@@ -129,7 +129,7 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, module: "users"
     #
-    #  * skip: tell which controller you want to skip routes from being created. 
+    #  * skip: tell which controller you want to skip routes from being created.
     #    It accepts :all as an option, meaning it will not generate any route at all:
     #
     #      devise_for :users, skip: :sessions
@@ -227,7 +227,7 @@ module ActionDispatch::Routing
           raise_no_devise_method_error!(mapping.class_name) unless mapping.to.respond_to?(:devise)
         rescue NameError => e
           raise unless mapping.class_name == resource.to_s.classify
-          warn "[WARNING] You provided devise_for #{resource.inspect} but there is " <<
+          warn "[WARNING] You provided devise_for #{resource.inspect} but there is " \
             "no model #{mapping.class_name} defined in your application"
           next
         rescue NoMethodError => e
@@ -237,13 +237,12 @@ module ActionDispatch::Routing
 
         if options[:controllers] && options[:controllers][:omniauth_callbacks]
           unless mapping.omniauthable?
-            msg =  "Mapping omniauth_callbacks on a resource that is not omniauthable\n"
-            msg << "Please add `devise :omniauthable` to the `#{mapping.class_name}` model"
-            raise msg
+            raise ArgumentError, "Mapping omniauth_callbacks on a resource that is not omniauthable\n" \
+              "Please add `devise :omniauthable` to the `#{mapping.class_name}` model"
           end
         end
 
-        routes  = mapping.used_routes
+        routes = mapping.used_routes
 
         devise_scope mapping.name do
           with_devise_exclusive_scope mapping.fullpath, mapping.name, options do

@@ -6,73 +6,11 @@ module Devise
       include Devise::Controllers::SignInOut
       include Devise::Controllers::StoreLocation
 
-      included do |base|
+      included do
         helper_method :warden, :signed_in?, :devise_controller?
-
-        base.class_eval do
-          extend GroupHelpers
-        end
       end
 
       module ClassMethods
-        def log_process_action(payload)
-          payload[:status] ||= 401 unless payload[:exception]
-          super
-        end
-      end
-
-      # Define authentication filters and accessor helpers based on mappings.
-      # These filters should be used inside the controllers as before_filters,
-      # so you can control the scope of the user who should be signed in to
-      # access that specific controller/action.
-      # Example:
-      #
-      #   Roles:
-      #     User
-      #     Admin
-      #
-      #   Generated methods:
-      #     authenticate_user!  # Signs user in or redirect
-      #     authenticate_admin! # Signs admin in or redirect
-      #     user_signed_in?     # Checks whether there is a user signed in or not
-      #     admin_signed_in?    # Checks whether there is an admin signed in or not
-      #     current_user        # Current signed in user
-      #     current_admin       # Current signed in admin
-      #     user_session        # Session data available only to the user scope
-      #     admin_session       # Session data available only to the admin scope
-      #
-      #   Use:
-      #     before_filter :authenticate_user!  # Tell devise to use :user map
-      #     before_filter :authenticate_admin! # Tell devise to use :admin map
-      #
-      def self.define_helpers(mapping) #:nodoc:
-        mapping = mapping.name
-
-        class_eval <<-METHODS, __FILE__, __LINE__ + 1
-          def authenticate_#{mapping}!(opts={})
-            opts[:scope] = :#{mapping}
-            warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
-          end
-
-          def #{mapping}_signed_in?
-            !!current_#{mapping}
-          end
-
-          def current_#{mapping}
-            @current_#{mapping} ||= warden.authenticate(scope: :#{mapping})
-          end
-
-          def #{mapping}_session
-            current_#{mapping} && warden.session(:#{mapping})
-          end
-        METHODS
-
-        ActiveSupport.on_load(:action_controller) do
-          helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
-        end
-      end
-
-      module GroupHelpers
         # Define authentication filters and accessor helpers for a group of mappings.
         # These methods are useful when you are working with multiple mappings that
         # share some functionality. They are pretty much the same as the ones
@@ -136,6 +74,62 @@ module Devise
 
             helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"
           METHODS
+        end
+
+        def log_process_action(payload)
+          payload[:status] ||= 401 unless payload[:exception]
+          super
+        end
+      end
+
+      # Define authentication filters and accessor helpers based on mappings.
+      # These filters should be used inside the controllers as before_filters,
+      # so you can control the scope of the user who should be signed in to
+      # access that specific controller/action.
+      # Example:
+      #
+      #   Roles:
+      #     User
+      #     Admin
+      #
+      #   Generated methods:
+      #     authenticate_user!  # Signs user in or redirect
+      #     authenticate_admin! # Signs admin in or redirect
+      #     user_signed_in?     # Checks whether there is a user signed in or not
+      #     admin_signed_in?    # Checks whether there is an admin signed in or not
+      #     current_user        # Current signed in user
+      #     current_admin       # Current signed in admin
+      #     user_session        # Session data available only to the user scope
+      #     admin_session       # Session data available only to the admin scope
+      #
+      #   Use:
+      #     before_filter :authenticate_user!  # Tell devise to use :user map
+      #     before_filter :authenticate_admin! # Tell devise to use :admin map
+      #
+      def self.define_helpers(mapping) #:nodoc:
+        mapping = mapping.name
+
+        class_eval <<-METHODS, __FILE__, __LINE__ + 1
+          def authenticate_#{mapping}!(opts={})
+            opts[:scope] = :#{mapping}
+            warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
+          end
+
+          def #{mapping}_signed_in?
+            !!current_#{mapping}
+          end
+
+          def current_#{mapping}
+            @current_#{mapping} ||= warden.authenticate(scope: :#{mapping})
+          end
+
+          def #{mapping}_session
+            current_#{mapping} && warden.session(:#{mapping})
+          end
+        METHODS
+
+        ActiveSupport.on_load(:action_controller) do
+          helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
         end
       end
 

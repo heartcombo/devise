@@ -4,12 +4,6 @@ class TestHelpersTest < ActionController::TestCase
   tests UsersController
   include Devise::TestHelpers
 
-  class CustomFailureApp < Devise::FailureApp
-    def redirect
-      self.status = 306
-    end
-  end
-
   test "redirects if attempting to access a page unauthenticated" do
     get :index
     assert_redirected_to new_user_session_path
@@ -72,9 +66,30 @@ class TestHelpersTest < ActionController::TestCase
   end
 
   test "respects custom failure app" do
-    swap Devise.warden_config, failure_app: CustomFailureApp do
+    custom_failure_app = Class.new(Devise::FailureApp) do
+      def redirect
+        self.status = 306
+      end
+    end
+
+    swap Devise.warden_config, failure_app: custom_failure_app do
       get :index
       assert_response 306
+    end
+  end
+
+  test "passes given headers from the failure app to the response" do
+    custom_failure_app = Class.new(Devise::FailureApp) do
+      def respond
+        self.status = 401
+        self.response.headers["CUSTOMHEADER"] = 1
+      end
+    end
+
+    swap Devise.warden_config, failure_app: custom_failure_app do
+      sign_in create_user
+      get :index
+      assert_equal 1, @response.headers["CUSTOMHEADER"]
     end
   end
 
@@ -144,23 +159,5 @@ class TestHelpersTest < ActionController::TestCase
     sign_in second_user
     get :index
     assert_match /User ##{second_user.id}/, @response.body
-  end
-
-  test "passes given headers from the failure app to the response" do
-    begin
-      old_failure_app = Devise.warden_config[:failure_app]
-      Devise.warden_config[:failure_app] = Class.new(Devise::FailureApp) do
-        def respond
-          self.status = 401
-          self.response.headers["CUSTOMHEADER"] = 1
-        end
-      end
-
-      sign_in create_user
-      get :index
-      assert_equal 1, @response.headers["CUSTOMHEADER"]
-    ensure
-      Devise.warden_config[:failure_app] = old_failure_app
-    end
   end
 end

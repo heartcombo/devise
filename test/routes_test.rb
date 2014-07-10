@@ -243,7 +243,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   test 'checks if mapping has proper configuration for omniauth callback' do
     e = assert_raise ArgumentError do
       @routes.dup.eval_block -> {
-        devise_for :admin, controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
+        devise_for :not_omniauthable, class_name: 'Admin', controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
       }
     end
     assert_match "Mapping omniauth_callbacks on a resource that is not omniauthable", e.message

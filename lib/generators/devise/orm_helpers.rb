@@ -4,9 +4,9 @@ module Devise
       def model_contents
         buffer = <<-CONTENT
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # :confirmable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :lockable
 
 CONTENT
         buffer += <<-CONTENT if needs_attr_accessible?

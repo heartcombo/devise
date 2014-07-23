@@ -10,6 +10,11 @@ class BaseSanitizerTest < ActiveSupport::TestCase
     sanitizer = sanitizer(user: { "email" => "jose" })
     assert_equal({ "email" => "jose" }, sanitizer.sanitize(:sign_in))
   end
+
+  test 'handles non-hash user param' do
+    sanitizer = sanitizer(user: 'this-is-a-string-not-a-hash')
+    assert_equal({}, sanitizer.sanitize(:sign_in))
+  end
 end
 
 if defined?(ActionController::StrongParameters)

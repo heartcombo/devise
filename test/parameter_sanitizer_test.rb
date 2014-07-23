@@ -69,6 +69,11 @@ if defined?(ActionController::StrongParameters)
       end
     end
 
+    test 'handles non-hash user param' do
+      sanitizer = sanitizer(user: 'this-is-a-string-not-a-hash')
+      assert_equal({}, sanitizer.sanitize(:sign_in))
+    end
+
     test 'passes parameters to filter as arguments to sanitizer' do
       params = {user: stub}
       sanitizer = Devise::ParameterSanitizer.new(User, :user, params)

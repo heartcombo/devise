@@ -3,7 +3,9 @@ require 'test_helper'
 class DeviseHelperTest < ActionDispatch::IntegrationTest
   setup do
     model_labels = { models: { user: "utilisateur" } }
-
+    # TODO: Remove this hack that fixes the I18n performance safeguards that
+    # breaks the custom locale.
+    I18n.available_locales += [:fr]
     I18n.backend.store_translations :fr,
     {
       errors: { messages: { not_saved: {
@@ -48,4 +50,3 @@ class DeviseHelperTest < ActionDispatch::IntegrationTest
     assert_contain "Erreur lors de l'enregistrement de 'utilisateur': 2 erreurs"
   end
 end
-

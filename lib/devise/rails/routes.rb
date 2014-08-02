@@ -342,6 +342,19 @@ module ActionDispatch::Routing
     #
     # Notice and be aware of the differences above between :user and :users
     def devise_scope(scope)
+      unless Devise.mappings.has_key?(scope)
+        options = {}
+        options[:as]            = @scope[:as]     if @scope[:as].present?
+        options[:module]        = @scope[:module] if @scope[:module].present?
+        options[:path_prefix]   = @scope[:path]   if @scope[:path].present?
+        options[:path_names]    = @scope[:path_names] || {}
+        options[:constraints]   = @scope[:constraints] || {}
+        options[:defaults]      = @scope[:defaults] || {}
+        options[:options]       = @scope[:options] || {}
+        options[:options][:format] = false if options[:format] == false
+        Devise.add_mapping(scope, options)
+      end
+      
       constraint = lambda do |request|
         request.env["devise.mapping"] = Devise.mappings[scope]
         true

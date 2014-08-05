@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   end
 
   def edit_form
-    user_session['last_request_at'] = 31.minutes.ago.utc
+    user_session['last_request_at'] = params.fetch(:last_request_at, 31.minutes.ago.utc)
   end
 
   def update_form

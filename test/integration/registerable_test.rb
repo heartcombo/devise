@@ -8,8 +8,6 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_template 'registrations/new'
 
-    assert_contain "#{Devise.password_length.min} characters minimum"
-
     fill_in 'email', with: 'new_user@test.com'
     fill_in 'password', with: 'new_user123'
     fill_in 'password confirmation', with: 'new_user123'

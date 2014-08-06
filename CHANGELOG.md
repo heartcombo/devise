@@ -8,6 +8,7 @@
   * Default email messages was updated with grammar fixes, check the diff on
     #2906 for the updated copy (by @p-originate)
   * Allow a resource to be found based on its encrypted password token (by @karlentwistle)
+  * Adds `devise_group`, a macro to define controller helpers for multiple mappings at once. (by @dropletzz)
 
 * bug fix
   * Check if there is a signed in user before executing the `SessionsController#destroy`.

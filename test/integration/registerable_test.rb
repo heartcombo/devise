@@ -36,6 +36,12 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url "/?custom=1"
   end
 
+  test 'a guest admin should not see a warning about minimum password length' do
+    get new_admin_session_path
+    assert_not_contain 'characters minimum'
+  end
+
+
   def user_sign_up
     ActionMailer::Base.deliveries.clear
 
@@ -45,6 +51,11 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     fill_in 'password', with: 'new_user123'
     fill_in 'password confirmation', with: 'new_user123'
     click_button 'Sign up'
+  end
+
+  test 'a guest user should see a warning about minimum password length' do
+    get new_user_registration_path
+    assert_contain '7 characters minimum'
   end
 
   test 'a guest user should be able to sign up successfully and be blocked by confirmation' do

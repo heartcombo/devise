@@ -5,8 +5,10 @@ class Devise::RegistrationsController < DeviseController
   # GET /resource/sign_up
   def new
     build_resource({})
-    @validatable = Devise.mappings[resource_name].modules.include?(:validatable)
-    @minimum_password_length = Devise.password_length.min
+    @validatable = devise_mapping.validatable?
+    if @validatable
+      @minimum_password_length = resource_class.password_length.min
+    end
     respond_with self.resource
   end
 

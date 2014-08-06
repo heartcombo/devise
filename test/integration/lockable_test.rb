@@ -225,11 +225,11 @@ class LockTest < ActionDispatch::IntegrationTest
       visit new_user_session_path
       fill_in 'email', with: user.email
       fill_in 'password', with: "abadpassword"
-      click_button 'Sign in'
+      click_button 'Log in'
 
       fill_in 'email', with: user.email
       fill_in 'password', with: "abadpassword"
-      click_button 'Sign in'
+      click_button 'Log in'
 
       assert_current_url "/users/sign_in"
       assert_not_contain "locked"

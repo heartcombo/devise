@@ -40,7 +40,7 @@ class ActionDispatch::IntegrationTest
     fill_in 'password', with: options[:password] || '12345678'
     check 'remember me' if options[:remember_me] == true
     yield if block_given?
-    click_button 'Sign In'
+    click_button 'Log In'
     user
   end
 
@@ -50,7 +50,7 @@ class ActionDispatch::IntegrationTest
     fill_in 'email', with: 'admin@test.com'
     fill_in 'password', with: '123456'
     yield if block_given?
-    click_button 'Sign In'
+    click_button 'Log In'
     admin
   end
 

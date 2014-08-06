@@ -19,7 +19,7 @@ module Devise
         # Example:
         #
         #   inside BlogsController (or any other controller, it doesn't matter which):
-        #     devise_helpers_for :blogger, contains: [:user, :admin]
+        #     devise_group :blogger, contains: [:user, :admin]
         #
         #   Generated methods:
         #     authenticate_blogger!  # Redirects unless user or admin are signed in

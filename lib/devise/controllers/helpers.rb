@@ -33,8 +33,7 @@ module Devise
         #     current_blogger :user                             # Preferably returns a User if one is signed in
         #
         def devise_group(group_name, opts={})
-          opts[:contains].map! { |m| ":#{m}" }
-          mappings = "[#{ opts[:contains].join(',') }]"
+          mappings = "[#{ opts[:contains].map { |m| ":#{m}" }.join(',') }]"
 
           class_eval <<-METHODS, __FILE__, __LINE__ + 1
             def authenticate_#{group_name}!(favourite=nil, opts={})

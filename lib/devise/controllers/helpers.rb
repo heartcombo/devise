@@ -65,11 +65,9 @@ module Devise
             end
 
             def current_#{group_name.to_s.pluralize}
-              records = []
-              #{mappings}.each do |mapping|
-                records << warden.authenticate(scope: mapping)
-              end
-              records.compact
+              #{mappings}.map do |mapping|
+                warden.authenticate(scope: mapping)
+              end.compact
             end
 
             helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"

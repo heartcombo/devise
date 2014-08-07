@@ -54,7 +54,7 @@ class LockTest < ActionDispatch::IntegrationTest
   end
 
   test 'unlocked pages should not be available if email strategy is disabled' do
-    visit "/admin_area/sign_in"
+    visit "/admin_area/log_in"
 
     assert_raise Webrat::NotFoundError do
       click_link "Didn't receive unlock instructions?"
@@ -83,7 +83,7 @@ class LockTest < ActionDispatch::IntegrationTest
     raw  = user.lock_access!
     visit_user_unlock_with_token(raw)
 
-    assert_current_url "/users/sign_in"
+    assert_current_url "/users/log_in"
     assert_contain 'Your account has been unlocked successfully. Please sign in to continue.'
     assert_not user.reload.access_locked?
   end
@@ -181,7 +181,7 @@ class LockTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: user.email
       click_button 'Resend unlock instructions'
 
-      assert_current_url "/users/sign_in"
+      assert_current_url "/users/log_in"
       assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
     end
   end
@@ -196,7 +196,7 @@ class LockTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: user.email
       click_button 'Resend unlock instructions'
 
-      assert_current_url "/users/sign_in"
+      assert_current_url "/users/log_in"
       assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
     end
   end
@@ -211,7 +211,7 @@ class LockTest < ActionDispatch::IntegrationTest
 
       assert_not_contain "1 error prohibited this user from being saved:"
       assert_not_contain "Email not found"
-      assert_current_url "/users/sign_in"
+      assert_current_url "/users/log_in"
 
       assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
 
@@ -231,7 +231,7 @@ class LockTest < ActionDispatch::IntegrationTest
       fill_in 'password', with: "abadpassword"
       click_button 'Log in'
 
-      assert_current_url "/users/sign_in"
+      assert_current_url "/users/log_in"
       assert_not_contain "locked"
     end
   end

@@ -39,7 +39,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "can access omniauth.auth in the env hash" do
-    visit "/users/sign_in"
+    visit "/users/log_in"
     click_link "Sign in with Facebook"
 
     json = ActiveSupport::JSON.decode(response.body)
@@ -53,7 +53,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
 
   test "cleans up session on sign up" do
     assert_no_difference "User.count" do
-      visit "/users/sign_in"
+      visit "/users/log_in"
       click_link "Sign in with Facebook"
     end
 
@@ -74,7 +74,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
 
   test "cleans up session on cancel" do
     assert_no_difference "User.count" do
-      visit "/users/sign_in"
+      visit "/users/log_in"
       click_link "Sign in with Facebook"
     end
 
@@ -85,7 +85,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
 
   test "cleans up session on sign in" do
     assert_no_difference "User.count" do
-      visit "/users/sign_in"
+      visit "/users/log_in"
       click_link "Sign in with Facebook"
     end
 
@@ -95,13 +95,13 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "sign in and send remember token if configured" do
-    visit "/users/sign_in"
+    visit "/users/log_in"
     click_link "Sign in with Facebook"
     assert_nil warden.cookies["remember_user_token"]
 
     stub_action!(:sign_in_facebook) do
       create_user
-      visit "/users/sign_in"
+      visit "/users/log_in"
       click_link "Sign in with Facebook"
       assert warden.authenticated?(:user)
       assert warden.cookies["remember_user_token"]
@@ -110,24 +110,24 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
 
   test "generates a proper link when SCRIPT_NAME is set" do
     header 'SCRIPT_NAME', '/q'
-    visit "/users/sign_in"
+    visit "/users/log_in"
     assert_select "a", href: "/q/users/auth/facebook"
   end
 
   test "handles callback error parameter according to the specification" do
     OmniAuth.config.mock_auth[:facebook] = :access_denied
     visit "/users/auth/facebook/callback?error=access_denied"
-    assert_current_url "/users/sign_in"
+    assert_current_url "/users/log_in"
     assert_contain 'Could not authenticate you from Facebook because "Access denied".'
   end
 
   test "handles other exceptions from omniauth" do
     OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
 
-    visit "/users/sign_in"
+    visit "/users/log_in"
     click_link "Sign in with Facebook"
 
-    assert_current_url "/users/sign_in"
+    assert_current_url "/users/log_in"
     assert_contain 'Could not authenticate you from Facebook because "Invalid credentials".'
   end
 end

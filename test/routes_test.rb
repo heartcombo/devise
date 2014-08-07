@@ -4,18 +4,18 @@ ExpectedRoutingError = Devise.rails4? ? MiniTest::Assertion : ActionController::
 
 class DefaultRoutingTest < ActionController::TestCase
   test 'map new user session' do
-    assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: 'users/sign_in', method: :get})
-    assert_named_route "/users/sign_in", :new_user_session_path
+    assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: 'users/log_in', method: :get})
+    assert_named_route "/users/log_in", :new_user_session_path
   end
 
   test 'map create user session' do
-    assert_recognizes({controller: 'devise/sessions', action: 'create'}, {path: 'users/sign_in', method: :post})
-    assert_named_route "/users/sign_in", :user_session_path
+    assert_recognizes({controller: 'devise/sessions', action: 'create'}, {path: 'users/log_in', method: :post})
+    assert_named_route "/users/log_in", :user_session_path
   end
 
   test 'map destroy user session' do
-    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: 'users/sign_out', method: :get})
-    assert_named_route "/users/sign_out", :destroy_user_session_path
+    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: 'users/log_out', method: :get})
+    assert_named_route "/users/log_out", :destroy_user_session_path
   end
 
   test 'map new user confirmation' do
@@ -121,7 +121,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map admin with :controllers option' do
-    assert_recognizes({controller: 'admins/sessions', action: 'new'}, {path: 'admin_area/sign_in', method: :get})
+    assert_recognizes({controller: 'admins/sessions', action: 'new'}, {path: 'admin_area/log_in', method: :get})
   end
 
   test 'does not map admin password' do
@@ -131,7 +131,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'subdomain admin' do
-    assert_recognizes({"host"=>"sub.example.com", controller: 'devise/sessions', action: 'new'}, {host: "sub.example.com", path: '/sub_admin/sign_in', method: :get})
+    assert_recognizes({"host"=>"sub.example.com", controller: 'devise/sessions', action: 'new'}, {host: "sub.example.com", path: '/sub_admin/log_in', method: :get})
   end
 
   test 'does only map reader password' do
@@ -166,24 +166,24 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map deletes with :sign_out_via option' do
-    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/deletes/sign_out', method: :delete})
+    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/deletes/log_out', method: :delete})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/deletes/sign_out', method: :get})
+      assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/deletes/log_out', method: :get})
     end
   end
 
   test 'map posts with :sign_out_via option' do
-    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/posts/sign_out', method: :post})
+    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/posts/log_out', method: :post})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/posts/sign_out', method: :get})
+      assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/posts/log_out', method: :get})
     end
   end
 
   test 'map delete_or_posts with :sign_out_via option' do
-    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/delete_or_posts/sign_out', method: :post})
-    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/delete_or_posts/sign_out', method: :delete})
+    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/delete_or_posts/log_out', method: :post})
+    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/delete_or_posts/log_out', method: :delete})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/delete_or_posts/sign_out', method: :get})
+      assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: '/sign_out_via/delete_or_posts/log_out', method: :get})
     end
   end
 
@@ -202,9 +202,9 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map with format false for sessions' do
-    assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: '/htmlonly_admin/sign_in', method: :get})
+    assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: '/htmlonly_admin/log_in', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: '/htmlonly_admin/sign_in.xml', method: :get})
+      assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: '/htmlonly_admin/log_in.xml', method: :get})
     end
   end
 

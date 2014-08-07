@@ -95,7 +95,7 @@ class TestHelpersTest < ActionController::TestCase
 
   test "returns the body of a failure app" do
     get :index
-    assert_equal response.body, "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>"
+    assert_equal response.body, "<html><body>You are being <a href=\"http://test.host/users/log_in\">redirected</a>.</body></html>"
   end
 
   test "defined Warden after_authentication callback should not be called when sign_in is called" do

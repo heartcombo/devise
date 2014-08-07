@@ -38,7 +38,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: 'foo@bar.com'
     end
 
-    assert_current_url '/users/sign_in'
+    assert_current_url '/users/log_in'
     assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
   end
 
@@ -77,7 +77,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: ' foo@bar.com '
     end
 
-    assert_current_url '/users/sign_in'
+    assert_current_url '/users/log_in'
     assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
   end
 
@@ -110,7 +110,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     create_user
     request_forgot_password
 
-    assert_current_url '/users/sign_in'
+    assert_current_url '/users/log_in'
     assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
   end
 
@@ -136,7 +136,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
   test 'not authenticated user without a reset password token should not be able to visit the page' do
     get edit_user_password_path
     assert_response :redirect
-    assert_redirected_to "/users/sign_in"
+    assert_redirected_to "/users/log_in"
   end
 
   test 'not authenticated user with invalid reset password token should not be able to change their password' do
@@ -303,7 +303,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       assert_not_contain "1 error prohibited this user from being saved:"
       assert_not_contain "Email not found"
       assert_contain "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
-      assert_current_url "/users/sign_in"
+      assert_current_url "/users/log_in"
     end
   end
 
@@ -315,7 +315,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       click_button 'Send me reset password instructions'
 
       assert_contain "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
-      assert_current_url "/users/sign_in"
+      assert_current_url "/users/log_in"
     end
   end
 

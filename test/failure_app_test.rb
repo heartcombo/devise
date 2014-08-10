@@ -51,20 +51,20 @@ class FailureTest < ActiveSupport::TestCase
       call_failure
       assert_equal 302, @response.first
       assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
-      assert_equal 'http://test.host/users/log_in', @response.second['Location']
+      assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
     test 'returns to the default redirect location considering subdomain' do
       call_failure('warden.options' => { scope: :subdomain_user })
       assert_equal 302, @response.first
       assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
-      assert_equal 'http://sub.test.host/subdomain_users/log_in', @response.second['Location']
+      assert_equal 'http://sub.test.host/subdomain_users/sign_in', @response.second['Location']
     end
 
     test 'returns to the default redirect location for wildcard requests' do
       call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
       assert_equal 302, @response.first
-      assert_equal 'http://test.host/users/log_in', @response.second['Location']
+      assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
     test 'returns to the root path if no session path is available' do
@@ -90,7 +90,7 @@ class FailureTest < ActiveSupport::TestCase
         swap Rails.application.config, relative_url_root: "/sample" do
           call_failure
           assert_equal 302, @response.first
-          assert_equal 'http://test.host/sample/users/log_in', @response.second['Location']
+          assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
         end
       end
 
@@ -98,7 +98,7 @@ class FailureTest < ActiveSupport::TestCase
         swap Rails.application.config, relative_url_root: "/sample" do
           call_failure('warden.options' => { scope: :subdomain_user })
           assert_equal 302, @response.first
-          assert_equal 'http://sub.test.host/sample/subdomain_users/log_in', @response.second['Location']
+          assert_equal 'http://sub.test.host/sample/subdomain_users/sign_in', @response.second['Location']
         end
       end
     end
@@ -106,7 +106,7 @@ class FailureTest < ActiveSupport::TestCase
     test 'uses the proxy failure message as symbol' do
       call_failure('warden' => OpenStruct.new(message: :invalid))
       assert_equal 'Invalid email or password.', @request.flash[:alert]
-      assert_equal 'http://test.host/users/log_in', @response.second["Location"]
+      assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
     test 'uses custom i18n options' do
@@ -117,7 +117,7 @@ class FailureTest < ActiveSupport::TestCase
     test 'uses the proxy failure message as string' do
       call_failure('warden' => OpenStruct.new(message: 'Hello world'))
       assert_equal 'Hello world', @request.flash[:alert]
-      assert_equal 'http://test.host/users/log_in', @response.second["Location"]
+      assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
     test 'set content type to default text/html' do
@@ -129,7 +129,7 @@ class FailureTest < ActiveSupport::TestCase
       call_failure
       assert_match(/You are being/, @response.last.body)
       assert_match(/redirected/, @response.last.body)
-      assert_match(/users\/log_in/, @response.last.body)
+      assert_match(/users\/sign_in/, @response.last.body)
     end
 
     test 'works for any navigational format' do
@@ -142,7 +142,7 @@ class FailureTest < ActiveSupport::TestCase
     test 'redirects the correct format if it is a non-html format request' do
       swap Devise, navigational_formats: [:js] do
         call_failure('formats' => Mime::JS)
-        assert_equal 'http://test.host/users/log_in.js', @response.second["Location"]
+        assert_equal 'http://test.host/users/sign_in.js', @response.second["Location"]
       end
     end
   end
@@ -200,7 +200,7 @@ class FailureTest < ActiveSupport::TestCase
           swap Devise, http_authenticatable_on_xhr: false do
             call_failure('formats' => Mime::HTML, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
             assert_equal 302, @response.first
-            assert_equal 'http://test.host/users/log_in', @response.second["Location"]
+            assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
           end
         end
 
@@ -208,7 +208,7 @@ class FailureTest < ActiveSupport::TestCase
           swap Devise, http_authenticatable_on_xhr: false do
             call_failure('formats' => Mime::JSON, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
             assert_equal 302, @response.first
-            assert_equal 'http://test.host/users/log_in.json', @response.second["Location"]
+            assert_equal 'http://test.host/users/sign_in.json', @response.second["Location"]
           end
         end
       end
@@ -234,7 +234,7 @@ class FailureTest < ActiveSupport::TestCase
   context 'With recall' do
     test 'calls the original controller if invalid email or password' do
       env = {
-        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/log_in" },
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in" },
         "devise.mapping" => Devise.mappings[:user],
         "warden" => stub_everything
       }
@@ -245,7 +245,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'calls the original controller if not confirmed email' do
       env = {
-        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/log_in", message: :unconfirmed },
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in", message: :unconfirmed },
         "devise.mapping" => Devise.mappings[:user],
         "warden" => stub_everything
       }
@@ -256,7 +256,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'calls the original controller if inactive account' do
       env = {
-        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/log_in", message: :inactive },
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in", message: :inactive },
         "devise.mapping" => Devise.mappings[:user],
         "warden" => stub_everything
       }

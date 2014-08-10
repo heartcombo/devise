@@ -20,7 +20,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
   test 'user should be able to request a new confirmation' do
     resend_confirmation
 
-    assert_current_url '/users/log_in'
+    assert_current_url '/users/sign_in'
     assert_contain 'You will receive an email with instructions for how to confirm your email address in a few minutes'
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert_equal ['please-change-me@config-initializers-devise.com'], ActionMailer::Base.deliveries.first.from
@@ -88,7 +88,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
       assert_contain 'Your email address has been successfully confirmed.'
-      assert_current_url '/users/log_in'
+      assert_current_url '/users/sign_in'
       assert user.reload.confirmed?
     end
   end
@@ -170,7 +170,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     user = create_user(confirm: false)
     visit_user_confirmation_with_token(user.raw_confirmation_token)
 
-    assert_current_url '/users/log_in'
+    assert_current_url '/users/sign_in'
   end
 
   test 'error message is configurable by resource name' do
@@ -228,7 +228,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       click_button 'Resend confirmation instructions'
 
       assert_contain "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
-      assert_current_url "/users/log_in"
+      assert_current_url "/users/sign_in"
     end
   end
 
@@ -244,7 +244,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_not_contain "Email not found"
 
       assert_contain "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
-      assert_current_url "/users/log_in"
+      assert_current_url "/users/sign_in"
     end
   end
 end
@@ -271,7 +271,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
       click_button 'Resend confirmation instructions'
     end
 
-    assert_current_url '/admin_area/log_in'
+    assert_current_url '/admin_area/sign_in'
     assert_contain 'You will receive an email with instructions for how to confirm your email address in a few minutes'
   end
 
@@ -282,7 +282,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
 
     assert_contain 'Your email address has been successfully confirmed.'
-    assert_current_url '/admin_area/log_in'
+    assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?
   end
@@ -304,7 +304,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
 
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
     assert_contain 'Your email address has been successfully confirmed.'
-    assert_current_url '/admin_area/log_in'
+    assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?
   end

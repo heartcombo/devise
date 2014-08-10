@@ -94,13 +94,13 @@ Rails.application.routes.draw do
   end
 
   namespace :publisher, path_names: { sign_in: "i_dont_care", sign_out: "get_out" } do
-    devise_for :accounts, class_name: "Admin", path_names: { log_in: "get_in" }
+    devise_for :accounts, class_name: "Admin", path_names: { sign_in: "get_in" }
   end
 
   scope ":locale", module: :invalid do
     devise_for :accounts, singular: "manager", class_name: "Admin",
       path_names: {
-        log_in: "login", log_out: "logout",
+        sign_in: "login", sign_out: "logout",
         password: "secret", confirmation: "verification",
         unlock: "unblock", sign_up: "register",
         registration: "management",

@@ -9,6 +9,8 @@
     #2906 for the updated copy (by @p-originate)
   * Allow a resource to be found based on its encrypted password token (by @karlentwistle)
   * Adds `devise_group`, a macro to define controller helpers for multiple mappings at once. (by @dropletzz)
+  * The default views now use `Log in` instead of `Sign in` and have a hint about the minimum password length if
+    the current scope is using the `validatable` module (by @alexsoble)
 
 * bug fix
   * Check if there is a signed in user before executing the `SessionsController#destroy`.

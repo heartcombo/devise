@@ -41,7 +41,6 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_not_contain 'characters minimum'
   end
 
-
   def user_sign_up
     ActionMailer::Base.deliveries.clear
 

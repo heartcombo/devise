@@ -12,7 +12,7 @@ class PasswordsControllerTest < ActionController::TestCase
 
   def put_update_with_params
     put :update, "user" => {
-      "reset_password_token" => @raw, "password" => "123456", "password_confirmation" => "123456"
+      "reset_password_token" => @raw, "password" => "1234567", "password_confirmation" => "1234567"
     }
   end
 

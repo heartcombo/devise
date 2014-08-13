@@ -1,4 +1,9 @@
-### 3.3.0 (unreleased)
+### Unreleased
+
+* enhancements
+* bug fixes
+
+### 3.3.0
 
 * enhancements
   * Support multiple warden configuration blocks on devise configuration. (by @rossta)

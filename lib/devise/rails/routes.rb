@@ -442,19 +442,16 @@ ERROR
         @scope[:path] = path
       end
 
-      DEVISE_SCOPE_KEYS = [:as, :path, :module, :constraints, :defaults, :options]
-
       def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
-        old = {}
-        DEVISE_SCOPE_KEYS.each { |k| old[k] = @scope[k] }
+        current_scope = @scope.dup
 
-        new = { as: new_as, path: new_path, module: nil }
-        new.merge!(options.slice(:constraints, :defaults, :options))
+        exclusive = { as: new_as, path: new_path, module: nil }
+        exclusive.merge!(options.slice(:constraints, :defaults, :options))
 
-        @scope.merge!(new)
+        exclusive.each_pair { |key, value| @scope[key] = value }
         yield
       ensure
-        @scope.merge!(old)
+        @scope = current_scope
       end
 
       def constraints_for(method_to_apply, scope=nil, block=nil)

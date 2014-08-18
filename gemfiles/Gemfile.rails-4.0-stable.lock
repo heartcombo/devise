@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rails/rails.git
-  revision: 6d95e04c6968fb7597ea5dbd08b31f271fb87c9c
+  revision: ca152fc80ea14f41f0a9a53a0ed901a5c8eadccf
   branch: 4-0-stable
   specs:
     actionmailer (4.0.8)
@@ -134,7 +134,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    tzinfo (0.3.40)
+    tzinfo (0.3.41)
     warden (1.2.3)
       rack (>= 1.0)
     webrat (0.7.3)

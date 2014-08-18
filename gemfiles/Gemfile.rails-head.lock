@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: 8cb17e9839973b76295cf87189e91a5ffcc03ab0
+  revision: 5ba2e1fb4cb8189c9890e29c19cf4e16c25e4bc5
   branch: master
   specs:
     mongoid (4.0.0)
@@ -17,34 +17,39 @@ GIT
 
 GIT
   remote: git://github.com/rails/arel.git
-  revision: 66cee768bc163537087037a583f60639eae49fc3
+  revision: c93f6bd8abc800ba31950f719f7c1006062051ae
   specs:
-    arel (6.0.0.20140505020427)
+    arel (6.0.0.beta1.20140817224534)
 
 GIT
   remote: git://github.com/rails/rails.git
-  revision: d5be08347fb7ff758572775ec93247a3ca886004
+  revision: 6d92dcc7bd25f1533d3fc282dd4909ac8ed1a2dc
   specs:
     actionmailer (4.2.0.alpha)
       actionpack (= 4.2.0.alpha)
       actionview (= 4.2.0.alpha)
       mail (~> 2.5, >= 2.5.4)
+      rails-dom-testing
     actionpack (4.2.0.alpha)
       actionview (= 4.2.0.alpha)
       activesupport (= 4.2.0.alpha)
       rack (~> 1.6.0.alpha)
       rack-test (~> 0.6.2)
+      rails-deprecated_sanitizer
     actionview (4.2.0.alpha)
       activesupport (= 4.2.0.alpha)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+      rails-deprecated_sanitizer
+    activejob (4.2.0.alpha)
+      globalid
     activemodel (4.2.0.alpha)
       activesupport (= 4.2.0.alpha)
       builder (~> 3.1)
     activerecord (4.2.0.alpha)
       activemodel (= 4.2.0.alpha)
       activesupport (= 4.2.0.alpha)
-      arel (~> 6.0.0)
+      arel (>= 6.0.0.beta1, < 6.1)
     activesupport (4.2.0.alpha)
       i18n (>= 0.7.0.dev, < 0.8)
       json (~> 1.7, >= 1.7.7)
@@ -55,6 +60,7 @@ GIT
       actionmailer (= 4.2.0.alpha)
       actionpack (= 4.2.0.alpha)
       actionview (= 4.2.0.alpha)
+      activejob (= 4.2.0.alpha)
       activemodel (= 4.2.0.alpha)
       activerecord (= 4.2.0.alpha)
       activesupport (= 4.2.0.alpha)
@@ -69,7 +75,7 @@ GIT
 
 GIT
   remote: git://github.com/svenfuchs/i18n.git
-  revision: cb679b8cdbab675703a3f88de4d48a48f7b50e06
+  revision: a715d7aeed8903bf4b91b8b9005bc14cfc9f83cb
   specs:
     i18n (0.7.0.dev)
 
@@ -93,6 +99,8 @@ GEM
     erubis (2.7.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    globalid (0.2.0)
+      activesupport (>= 4.1.0)
     hashie (3.2.0)
     hike (1.2.3)
     json (1.8.1)
@@ -141,6 +149,11 @@ GEM
       ruby-openid (>= 2.1.8)
     rack-test (0.6.2)
       rack (>= 1.0)
+    rails-deprecated_sanitizer (1.0.0)
+      activesupport (>= 4.2.0.alpha)
+    rails-dom-testing (1.0.0)
+      activesupport
+      nokogiri (~> 1.6.0)
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
@@ -158,7 +171,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    tzinfo (1.2.1)
+    tzinfo (1.2.2)
       thread_safe (~> 0.1)
     warden (1.2.3)
       rack (>= 1.0)

@@ -138,7 +138,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.40)
+    tzinfo (0.3.41)
     warden (1.2.3)
       rack (>= 1.0)
     webrat (0.7.3)

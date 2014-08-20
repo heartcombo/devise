@@ -435,7 +435,7 @@ ERROR
 
         match "#{path_prefix}/:action/callback",
           constraints: { action: providers },
-          to: controllers[:omniauth_callbacks],
+          to: "#{controllers[:omniauth_callbacks]}#:action",
           as: :omniauth_callback,
           via: [:get, :post]
       ensure

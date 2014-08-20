@@ -17,7 +17,7 @@ env:
     # AMAZON_SECRET_ACCESS_KEY
     - secure: "VJ4qiWMzoleLojCcluX+w0RtaFVc9ybRNo6NODkGhHSaao8+4EX4rETBQG67tNSInk1iuNqCcZAGwC8V/12RXdao3PguRSLD5IiKeT+D78dqFEoP0+yHg4PbmZ6TJXADW3gUv/IOqkW7f/UYGinRaPu7hloyiC498FpQdmMWSNI="
 gemfile:
-  - gemfiles/Gemfile.rails-head
+  - gemfiles/Gemfile.rails-4.1-stable
   - gemfiles/Gemfile.rails-4.0-stable
   - gemfiles/Gemfile.rails-3.2-stable
   - Gemfile

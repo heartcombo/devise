@@ -3,7 +3,6 @@ source "https://rubygems.org"
 gemspec path: '..'
 
 gem "rails", "4.2.0.beta1"
-gem "responders", "~> 2.0"
 gem "omniauth", "~> 1.2.0"
 gem "omniauth-oauth2", "~> 1.1.0"
 gem "rdoc"

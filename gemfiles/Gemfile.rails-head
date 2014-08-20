@@ -3,9 +3,7 @@ source "https://rubygems.org"
 gemspec path: '..'
 
 gem "rails", github: "rails/rails"
-gem "arel", github: "rails/arel"
-gem "rack", github: "rack/rack"
-gem "i18n", github: "svenfuchs/i18n"
+gem "responders", "~> 2.0"
 gem "omniauth", "~> 1.2.0"
 gem "omniauth-oauth2", "~> 1.1.0"
 gem "rdoc"

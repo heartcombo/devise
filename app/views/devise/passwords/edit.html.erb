@@ -1,16 +1,16 @@
-<h2>Change your password</h2>
+<h2><%= t('.header')%></h2>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
 
-  <div><%= f.label :password, "New password" %><br />
+  <div><%= f.label :password, t(".new_password_label") %><br />
     <%= f.password_field :password, autofocus: true, autocomplete: "off" %></div>
 
-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
+  <div><%= f.label :password_confirmation, t('confirm_new_password_label') %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
 
-  <div><%= f.submit "Change my password" %></div>
+  <div><%= f.submit t('.submit_button') %></div>
 <% end %>
 
 <%= render "devise/shared/links" %>

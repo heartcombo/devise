@@ -8,6 +8,9 @@ class DeviseHelperTest < ActionDispatch::IntegrationTest
     I18n.available_locales += [:fr]
     I18n.backend.store_translations :fr,
     {
+      devise: { registrations: { new: {
+        submit_button: "Signer"
+      } } },
       errors: { messages: { not_saved: {
         one: "Erreur lors de l'enregistrement de '%{resource}': 1 erreur.",
         other: "Erreur lors de l'enregistrement de '%{resource}': %{count} erreurs."
@@ -28,7 +31,7 @@ class DeviseHelperTest < ActionDispatch::IntegrationTest
 
     fill_in 'password', with: 'new_user123'
     fill_in 'password confirmation', with: 'new_user123'
-    click_button 'Sign up'
+    click_button 'Signer'
 
     assert_have_selector '#error_explanation'
     assert_contain "Erreur lors de l'enregistrement de 'utilisateur': 1 erreur"
@@ -44,7 +47,7 @@ class DeviseHelperTest < ActionDispatch::IntegrationTest
     fill_in 'email', with: 'invalid_email'
     fill_in 'password', with: 'new_user123'
     fill_in 'password confirmation', with: 'new_user321'
-    click_button 'Sign up'
+    click_button 'Signer'
 
     assert_have_selector '#error_explanation'
     assert_contain "Erreur lors de l'enregistrement de 'utilisateur': 2 erreurs"

@@ -6,6 +6,9 @@ en:
       confirmed: "Your email address has been successfully confirmed."
       send_instructions: "You will receive an email with instructions for how to confirm your email address in a few minutes."
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
+      new:
+        header: "Resend confirmation instructions"
+        submit_button: "Resend confirmation instructions"
     failure:
       already_authenticated: "You are already signed in."
       inactive: "Your account is not activated yet."
@@ -56,10 +59,25 @@ en:
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."
+      new:
+        header: "Log in"
+        remember_me_label: "Remember me"
+        submit_button: "Log in"
+    shared:
+      links:
+        forgot_password_link: "Forgot your password?"
+        log_in_link: "Log in"
+        no_confirmation_instructions_link: "Didn't receive confirmation instructions?"
+        no_unlock_instructions_link: "Didn't receive unlock instructions?"
+        sign_in_with_link: "Sign in with %{provider}"
+        sign_up_link: "Sign up"
     unlocks:
       send_instructions: "You will receive an email with instructions for how to unlock your account in a few minutes."
       send_paranoid_instructions: "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
       unlocked: "Your account has been unlocked successfully. Please sign in to continue."
+      new:
+        header: "Resend unlock instructions"
+        submit_button: "Resend unlock instructions"
   errors:
     messages:
       already_confirmed: "was already confirmed, please try signing in"

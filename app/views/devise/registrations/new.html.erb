@@ -1,4 +1,4 @@
-<h2>Sign up</h2>
+<h2><%= t('.header')%></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
@@ -6,13 +6,13 @@
   <div><%= f.label :email %><br />
   <%= f.email_field :email, autofocus: true %></div>
 
-  <div><%= f.label :password %> <% if @validatable %><i>(<%= @minimum_password_length %> characters minimum)</i><% end %><br />
+<div><%= f.label :password %> <% if @validatable %><i><%= t('.password_minimum_label', length: @minimum_password_length) %>)</i><% end %><br />
     <%= f.password_field :password, autocomplete: "off" %></div>
 
   <div><%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
 
-  <div><%= f.submit "Sign up" %></div>
+  <div><%= f.submit t(".submit_button") %></div>
 <% end %>
 
 <%= render "devise/shared/links" %>

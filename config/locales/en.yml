@@ -47,6 +47,14 @@ en:
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
       updated: "Your password has been changed successfully. You are now signed in."
       updated_not_active: "Your password has been changed successfully."
+      edit:
+        confirm_new_password_label: "Confirm new password"
+        header: "Change your password"
+        new_password_label: "New password"
+        submit_button: "Change my password"
+      new:
+        header: "Forgot your password?"
+        submit_button: "Send me reset password instructions"
     registrations:
       destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
       signed_up: "Welcome! You have signed up successfully."
@@ -55,6 +63,20 @@ en:
       signed_up_but_unconfirmed: "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
       update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address."
       updated: "Your account has been updated successfully."
+      edit:
+        cancel_account_button: "Cancel my account"
+        cancel_account_header: "Cancel my account"
+        cancel_account_reason: "Unhappy?"
+        confirm_password_change_info: "(we need your current password to confirm your changes)"
+        header: "Edit %{name}"
+        optional_password_change_info: "(leave blank if you don't want to change it)"
+        return_link: "Back"
+        submit_button: "Update"
+        waiting_for_text: "Currently waiting confirmation for: %{email}"
+      new:
+        header: "Sign up"
+        password_minimum_label: "(%{length} characters minimum)"
+        submit_button: "Sign up"
     sessions:
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."

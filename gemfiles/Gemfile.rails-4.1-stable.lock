@@ -1,21 +1,12 @@
-PATH
-  remote: .
-  specs:
-    devise (3.3.0)
-      bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
-      responders
-      thread_safe (~> 0.1)
-      warden (~> 1.2.3)
-
-GEM
-  remote: https://rubygems.org/
+GIT
+  remote: git://github.com/rails/rails.git
+  revision: 90b70cd453e6b88b2ad484861ad9913f70bd15c9
+  branch: 4-1-stable
   specs:
     actionmailer (4.1.5)
       actionpack (= 4.1.5)
       actionview (= 4.1.5)
-      mail (~> 2.5.4)
+      mail (~> 2.5, >= 2.5.4)
     actionpack (4.1.5)
       actionview (= 4.1.5)
       activesupport (= 4.1.5)
@@ -38,6 +29,36 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    rails (4.1.5)
+      actionmailer (= 4.1.5)
+      actionpack (= 4.1.5)
+      actionview (= 4.1.5)
+      activemodel (= 4.1.5)
+      activerecord (= 4.1.5)
+      activesupport (= 4.1.5)
+      bundler (>= 1.3.0, < 2.0)
+      railties (= 4.1.5)
+      sprockets-rails (~> 2.0)
+    railties (4.1.5)
+      actionpack (= 4.1.5)
+      activesupport (= 4.1.5)
+      rake (>= 0.8.7)
+      thor (>= 0.18.1, < 2.0)
+
+PATH
+  remote: ..
+  specs:
+    devise (3.3.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      responders
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
     bson (2.3.0)
@@ -51,11 +72,10 @@ GEM
     i18n (0.6.11)
     json (1.8.1)
     jwt (1.0.0)
-    mail (2.5.4)
-      mime-types (~> 1.16)
-      treetop (~> 1.4.8)
+    mail (2.6.1)
+      mime-types (>= 1.16, < 3)
     metaclass (0.0.4)
-    mime-types (1.25.1)
+    mime-types (2.3)
     mini_portile (0.6.0)
     minitest (5.4.0)
     mocha (1.1.0)
@@ -96,33 +116,17 @@ GEM
     optionable (0.2.0)
     origin (2.1.1)
     orm_adapter (0.5.0)
-    polyglot (0.3.5)
     rack (1.5.2)
     rack-openid (1.3.1)
       rack (>= 1.1.0)
       ruby-openid (>= 2.1.8)
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails (4.1.5)
-      actionmailer (= 4.1.5)
-      actionpack (= 4.1.5)
-      actionview (= 4.1.5)
-      activemodel (= 4.1.5)
-      activerecord (= 4.1.5)
-      activesupport (= 4.1.5)
-      bundler (>= 1.3.0, < 2.0)
-      railties (= 4.1.5)
-      sprockets-rails (~> 2.0)
-    railties (4.1.5)
-      actionpack (= 4.1.5)
-      activesupport (= 4.1.5)
-      rake (>= 0.8.7)
-      thor (>= 0.18.1, < 2.0)
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
-    responders (1.1.0)
-      railties (>= 3.2, < 5)
+    responders (1.1.1)
+      railties (>= 3.2, < 4.2)
     ruby-openid (2.5.0)
     sprockets (2.12.1)
       hike (~> 1.2)
@@ -137,9 +141,6 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    treetop (1.4.15)
-      polyglot
-      polyglot (>= 0.3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     warden (1.2.3)
@@ -163,7 +164,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-oauth2 (~> 1.1.0)
   omniauth-openid (~> 1.0.1)
-  rails (~> 4.1.0)
+  rails!
   rdoc
   sqlite3
   webrat (= 0.7.3)

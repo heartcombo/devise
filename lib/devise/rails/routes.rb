@@ -445,16 +445,24 @@ ERROR
       DEVISE_SCOPE_KEYS = [:as, :path, :module, :constraints, :defaults, :options]
 
       def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
-        old = {}
-        DEVISE_SCOPE_KEYS.each { |k| old[k] = @scope[k] }
-
         new = { as: new_as, path: new_path, module: nil }
         new.merge!(options.slice(:constraints, :defaults, :options))
 
-        @scope.merge!(new)
+        if Rails::VERSION::MAJOR >= 4 && Rails::VERSION::MINOR >= 2
+          @scope = @scope.new(new)
+        else
+          old = {}
+          DEVISE_SCOPE_KEYS.each { |k| old[k] = @scope[k] }
+
+          @scope.merge!(new)
+        end
         yield
       ensure
-        @scope.merge!(old)
+        if Rails::VERSION::MAJOR >= 4 && Rails::VERSION::MINOR >= 2
+          @scope = @scope.parent
+        else
+          @scope.merge!(old)
+        end
       end
 
       def constraints_for(method_to_apply, scope=nil, block=nil)

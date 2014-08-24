@@ -1,4 +1,4 @@
-class Users::RegistrationsController < Devise::RegistrationsController
+class <%= @scope_module %>::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     super

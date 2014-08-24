@@ -1,4 +1,4 @@
-class Users::UnlocksController < Devise::UnlocksController
+class <%= @scope_module %>::UnlocksController < Devise::UnlocksController
   # GET /resource/unlock/new
   def new
     super

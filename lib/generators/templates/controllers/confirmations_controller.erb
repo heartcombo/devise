@@ -1,4 +1,4 @@
-class Users::ConfirmationsController < Devise::ConfirmationsController
+class <%= @scope_module %>::ConfirmationsController < Devise::ConfirmationsController
   # GET /resource/confirmation/new
   def new
     super

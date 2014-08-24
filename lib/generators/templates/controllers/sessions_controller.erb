@@ -1,4 +1,4 @@
-class Users::SessionsController < Devise::SessionsController
+module <%= @scope_module %>::SessionsController < Devise::SessionsController
   # GET /resource/sign_in
   def new
     super

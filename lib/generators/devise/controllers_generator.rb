@@ -7,11 +7,31 @@ module Devise
         @@controllers ||= %w(confirmations passwords registrations sessions unlocks omniauth_callbacks)
       end
 
-      desc "Create inherited Devise controllers in your application."
+      desc <<-DESC
+Create inherited Devise controllers in your app/controllers folder.
+
+User -c to specify which controller you want to overwrite.
+If you do no specify a controller, all controllers will be created.
+
+Usage example: rails generate devise:controllers users -c=sessions
+This will create a controller class at app/controllers/users/sessions_controller.rb like this:
+> class Users::ConfirmationsController < Devise::ConfirmationsController
+>   content...
+> end
+
+Note: you MUST specify a scope(like users here) and config your route.rb file accordingly like this:
+> Rails.application.routes.draw do
+>   content...
+>   devise_for :users, controllers: {
+>     sessions: 'users/sessions',
+>     other controller...
+>   }
+> end
+      DESC
       source_root File.expand_path("../../templates/controllers", __FILE__)
       argument :scope, required: true,
                        desc: "The scope to create controllers in, e.g. users, admins"
-      class_option :controllers, aliases: "-c", type: :array, desc: "Select specific controllers to generate (#{all_controllers})"
+      class_option :controllers, aliases: "-c", type: :array, desc: "Select specific controllers to generate (#{all_controllers.join(', ')})"
 
       def create_controllers
         @scope_module = scope.camelize

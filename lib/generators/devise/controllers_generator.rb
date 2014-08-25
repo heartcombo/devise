@@ -19,7 +19,8 @@ This will create a controller class at app/controllers/users/sessions_controller
 >   content...
 > end
 
-Note: you MUST specify a scope(like users here) and config your route.rb file accordingly like this:
+Note: you also need to override routes in your route.rb file accordingly.
+For example, you can do it like this:
 > Rails.application.routes.draw do
 >   content...
 >   devise_for :users, controllers: {

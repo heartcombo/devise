@@ -29,12 +29,12 @@ Note: you MUST specify a scope(like users here) and config your route.rb file ac
 > end
       DESC
       source_root File.expand_path("../../templates/controllers", __FILE__)
-      argument :scope, required: true,
+      argument :scope, required: false, default: nil,
                        desc: "The scope to create controllers in, e.g. users, admins"
       class_option :controllers, aliases: "-c", type: :array, desc: "Select specific controllers to generate (#{all_controllers.join(', ')})"
 
       def create_controllers
-        @scope_module = scope.camelize
+        @scope_prefix = scope.blank? ? '' : (scope.camelize + '::')
         controllers = options[:controllers] || self.class.all_controllers
         controllers.each do |name|
           template "#{name}_controller.erb",

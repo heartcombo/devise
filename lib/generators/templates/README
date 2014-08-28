@@ -32,4 +32,8 @@ Some setup you must do manually if you haven't yet:
 
        rails g devise:views
 
+  6. You can generate inherited controller templates by running:
+
+       rails g devise:controllers
+
 ===============================================================================

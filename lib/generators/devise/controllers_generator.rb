@@ -12,23 +12,17 @@ Create inherited Devise controllers in your app/controllers folder.
 
 User -c to specify which controller you want to overwrite.
 If you do no specify a controller, all controllers will be created.
+For example:
 
-Usage example: rails generate devise:controllers users -c=sessions
+  rails generate devise:controllers users -c=sessions
+
 This will create a controller class at app/controllers/users/sessions_controller.rb like this:
-> class Users::ConfirmationsController < Devise::ConfirmationsController
->   content...
-> end
 
-Note: you also need to override routes in your route.rb file accordingly.
-For example, you can do it like this:
-> Rails.application.routes.draw do
->   content...
->   devise_for :users, controllers: {
->     sessions: 'users/sessions',
->     other controller...
->   }
-> end
+  class Users::ConfirmationsController < Devise::ConfirmationsController
+    content...
+  end
       DESC
+
       source_root File.expand_path("../../templates/controllers", __FILE__)
       argument :scope, required: false, default: nil,
                        desc: "The scope to create controllers in, e.g. users, admins"
@@ -41,6 +35,10 @@ For example, you can do it like this:
           template "#{name}_controller.erb",
                    "app/controllers/#{scope}/#{name}_controller.rb"
         end
+      end
+
+      def show_readme
+        readme "README" if behavior == :invoke
       end
     end
   end

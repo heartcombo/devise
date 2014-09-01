@@ -1,6 +1,9 @@
 ### Unreleased
 
 * enhancements
+  * The Simple Form templates follow the same change from 3.3.0 by using `Log in` and adding
+    a hint about the minimum password length when `validatable` is enabled (by @aried3r)
+
 * bug fixes
 
 ### 3.3.0

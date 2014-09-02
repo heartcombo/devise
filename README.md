@@ -471,6 +471,18 @@ Alternatively, you can simply run the Devise generator.
 
 Keep in mind that those models will have completely different routes. They **do not** and **cannot** share the same controller for sign in, sign out and so on. In case you want to have different roles sharing the same actions, we recommend you to use a role-based approach, by either providing a role column or using a dedicated gem for authorization.
 
+### ActiveJob Integration
+
+If you are using Rails 4.2 and ActiveJob to deliver ActionMailer messages in the
+background through a queueing backend, you can send Devise emails through your
+existing queue by overriding the `send_devise_notification` method in your model.
+
+```ruby
+def send_devise_notification(notification, *args)
+  devise_mailer.send(notification, self, *args).deliver_later
+end
+```
+
 ### Other ORMs
 
 Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you just need to require it in the initializer file.

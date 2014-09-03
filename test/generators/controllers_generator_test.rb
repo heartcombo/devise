@@ -34,14 +34,16 @@ class ControllersGeneratorTest < Rails::Generators::TestCase
     assert_no_file "app/controllers/users/confirmations_controller.rb"
   end
 
-  def assert_class_names(scope = nil, options = {})
-    base_dir = "app/controllers#{scope.blank? ? '' : ('/' + scope)}"
-    scope_prefix = scope.blank? ? '' : (scope.camelize + '::')
-    controllers = options[:controllers] ||
-      %w(confirmations passwords registrations sessions unlocks omniauth_callbacks)
+  private
 
-    controllers.each do |c|
-      assert_file "#{base_dir}/#{c}_controller.rb", /#{scope_prefix + c.camelize}/
+    def assert_class_names(scope = nil, options = {})
+      base_dir = "app/controllers#{scope.blank? ? '' : ('/' + scope)}"
+      scope_prefix = scope.blank? ? '' : (scope.camelize + '::')
+      controllers = options[:controllers] ||
+        %w(confirmations passwords registrations sessions unlocks omniauth_callbacks)
+
+      controllers.each do |c|
+        assert_file "#{base_dir}/#{c}_controller.rb", /#{scope_prefix + c.camelize}/
+      end
     end
-  end
 end

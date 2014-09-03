@@ -65,6 +65,10 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal :user, Devise::Mapping.find_scope!(User.new)
   end
 
+  test 'find scope for a given object, use string instead of symbol' do
+    assert_equal :user, Devise::Mapping.find_scope!('user')
+  end
+
   test 'find scope works with single table inheritance' do
     assert_equal :user, Devise::Mapping.find_scope!(Class.new(User))
     assert_equal :user, Devise::Mapping.find_scope!(Class.new(User).new)

@@ -22,7 +22,7 @@ module Devise
       DESC
 
       source_root File.expand_path("../../templates/controllers", __FILE__)
-      argument :scope, required: false, default: nil,
+      argument :scope, required: true,
         desc: "The scope to create controllers in, e.g. users, admins"
       class_option :controllers, aliases: "-c", type: :array,
         desc: "Select specific controllers to generate (#{CONTROLLERS.join(', ')})"

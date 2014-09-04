@@ -5,6 +5,8 @@
     a hint about the minimum password length when `validatable` is enabled (by @aried3r)
 
 * bug fixes
+  * Fixed a regression where the devise generator would fail with a `ConnectionNotEstablished`
+    exception when executed inside a mountable engine.
 
 ### 3.3.0
 

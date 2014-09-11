@@ -2,25 +2,22 @@ require 'test_helper'
 
 class DeviseHelperTest < ActionDispatch::IntegrationTest
   setup do
-    model_labels = { models: { user: "utilisateur" } }
-    # TODO: Remove this hack that fixes the I18n performance safeguards that
-    # breaks the custom locale.
-    I18n.available_locales += [:fr]
-    I18n.backend.store_translations :fr,
-    {
+    model_labels = { models: { user: "the user" } }
+    translations = {
       errors: { messages: { not_saved: {
-        one: "Erreur lors de l'enregistrement de '%{resource}': 1 erreur.",
-        other: "Erreur lors de l'enregistrement de '%{resource}': %{count} erreurs."
+        one: "Can't save %{resource} because of 1 error",
+        other: "Can't save %{resource} because of %{count} errors",
       } } },
       activerecord: model_labels,
       mongoid: model_labels
     }
 
-    I18n.locale = 'fr'
+    I18n.available_locales
+    I18n.backend.store_translations(:en, translations)
   end
 
   teardown do
-    I18n.locale = 'en'
+    I18n.reload!
   end
 
   test 'test errors.messages.not_saved with single error from i18n' do
@@ -31,7 +28,7 @@ class DeviseHelperTest < ActionDispatch::IntegrationTest
     click_button 'Sign up'
 
     assert_have_selector '#error_explanation'
-    assert_contain "Erreur lors de l'enregistrement de 'utilisateur': 1 erreur"
+    assert_contain "Can't save the user because of 1 error"
   end
 
   test 'test errors.messages.not_saved with multiple errors from i18n' do
@@ -47,6 +44,6 @@ class DeviseHelperTest < ActionDispatch::IntegrationTest
     click_button 'Sign up'
 
     assert_have_selector '#error_explanation'
-    assert_contain "Erreur lors de l'enregistrement de 'utilisateur': 2 erreurs"
+    assert_contain "Can't save the user because of 2 errors"
   end
 end

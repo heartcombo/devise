@@ -64,6 +64,7 @@ module Devise
 
         before_validation :downcase_keys
         before_validation :strip_whitespace
+        before_validation :squeeze_whitespace
       end
 
       def self.required_fields(klass)
@@ -181,24 +182,28 @@ module Devise
         self.class.strip_whitespace_keys.each { |k| apply_to_attribute_or_variable(k, :strip) }
       end
 
-      def apply_to_attribute_or_variable(attr, method)
+      def squeeze_whitespace
+        self.class.squeeze_whitespace_keys.each { |k| apply_to_attribute_or_variable(k, :squeeze, ' ') }
+      end
+
+      def apply_to_attribute_or_variable(attr, method, *params)
         if self[attr]
-          self[attr] = self[attr].try(method)
+          self[attr] = self[attr].try(method, *params)
 
         # Use respond_to? here to avoid a regression where globally
-        # configured strip_whitespace_keys or case_insensitive_keys were
-        # attempting to strip or downcase when a model didn't have the
+        # configured squeeze_whitespace_keys or strip_whitespace_keys or case_insensitive_keys
+        # were attempting to squeeze or strip or downcase when a model didn't have the
         # globally configured key.
         elsif respond_to?(attr) && respond_to?("#{attr}=")
-          new_value = send(attr).try(method)
+          new_value = send(attr).try(method, *params)
           send("#{attr}=", new_value)
         end
       end
 
       module ClassMethods
-        Devise::Models.config(self, :authentication_keys, :request_keys, :strip_whitespace_keys,
-          :case_insensitive_keys, :http_authenticatable, :params_authenticatable, :skip_session_storage,
-          :http_authentication_key)
+        Devise::Models.config(self, :authentication_keys, :request_keys, :squeeze_whitespace_keys,
+          :strip_whitespace_keys, :case_insensitive_keys, :http_authenticatable, :params_authenticatable,
+          :skip_session_storage, :http_authentication_key)
 
         def serialize_into_session(record)
           [record.to_key, record.authenticatable_salt]
@@ -276,7 +281,8 @@ module Devise
         protected
 
         def devise_parameter_filter
-          @devise_parameter_filter ||= Devise::ParameterFilter.new(case_insensitive_keys, strip_whitespace_keys)
+          @devise_parameter_filter ||= Devise::ParameterFilter.new(case_insensitive_keys, strip_whitespace_keys,
+                                                                   squeeze_whitespace_keys)
         end
       end
     end

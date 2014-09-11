@@ -64,22 +64,54 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should squeeze whitespace from squeeze whitespace keys when saving' do
+    Devise.squeeze_whitespace_keys = [ :name ]
+    name = 'foo    bar'
+    user = new_user(name: name)
+
+    assert_equal name, user.name
+    user.save!
+    assert_equal name.squeeze(' '), user.name
+  end
+
+  test 'should not mutate value assigned to squeeze whitespace key' do
+    Devise.squeeze_whitespace_keys = [ :name ]
+    name           = 'foo    bar'
+    original_name  = name.dup
+    user           = new_user(name: name)
+
+    user.save!
+    assert_equal original_name, name
+  end
+
+  test "doesn't throw exception when globally configured squeeze_whitespace_keys are not present on a model" do
+    swap Devise, squeeze_whitespace_keys: [:fake_key] do
+      assert_nothing_raised { create_user }
+    end
+  end
+
   test "param filter should not convert booleans and integer to strings" do
     conditions = { "login" => "foo@bar.com", "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
-    conditions = Devise::ParameterFilter.new([], []).filter(conditions)
+    conditions = Devise::ParameterFilter.new([], [], []).filter(conditions)
     assert_equal( { "login" => "foo@bar.com", "bool1" => "true", "bool2" => "false", "fixnum" => "123", "will_be_converted" => "1..10" }, conditions)
   end
 
   test 'param filter should filter case_insensitive_keys as insensitive' do
     conditions = {'insensitive' => 'insensitive_VAL', 'sensitive' => 'sensitive_VAL'}
-    conditions = Devise::ParameterFilter.new(['insensitive'], []).filter(conditions)
+    conditions = Devise::ParameterFilter.new(['insensitive'], [], []).filter(conditions)
     assert_equal( {'insensitive' => 'insensitive_val', 'sensitive' => 'sensitive_VAL'}, conditions )
   end
 
   test 'param filter should filter strip_whitespace_keys stripping whitespaces' do
     conditions = {'strip_whitespace' => ' strip_whitespace_val ', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}
-    conditions = Devise::ParameterFilter.new([], ['strip_whitespace']).filter(conditions)
+    conditions = Devise::ParameterFilter.new([], ['strip_whitespace'], []).filter(conditions)
     assert_equal( {'strip_whitespace' => 'strip_whitespace_val', 'do_not_strip_whitespace' => ' do_not_strip_whitespace_val '}, conditions )
+  end
+
+  test 'param filter should filter squeeze_whitespace_keys squeezing whitespaces' do
+    conditions = {'squeeze_whitespace' => '  squeeze   whitespace   val  ', 'do_not_squeeze_whitespace' => '  do  not  squeeze  whitespace  val  '}
+    conditions = Devise::ParameterFilter.new([], [], ['squeeze_whitespace']).filter(conditions)
+    assert_equal( {'squeeze_whitespace' => ' squeeze whitespace val ', 'do_not_squeeze_whitespace' => '  do  not  squeeze  whitespace  val  '}, conditions )
   end
 
   test 'should respond to password and password confirmation' do

@@ -1,8 +1,9 @@
 module Devise
   class ParameterFilter
-    def initialize(case_insensitive_keys, strip_whitespace_keys)
+    def initialize(case_insensitive_keys, strip_whitespace_keys, squeeze_whitespace_keys)
       @case_insensitive_keys = case_insensitive_keys || []
       @strip_whitespace_keys = strip_whitespace_keys || []
+      @squeeze_whitespace_keys = squeeze_whitespace_keys || []
     end
 
     def filter(conditions)
@@ -10,14 +11,15 @@ module Devise
 
       conditions.merge!(filtered_hash_by_method_for_given_keys(conditions.dup, :downcase, @case_insensitive_keys))
       conditions.merge!(filtered_hash_by_method_for_given_keys(conditions.dup, :strip, @strip_whitespace_keys))
+      conditions.merge!(filtered_hash_by_method_for_given_keys(conditions.dup, :squeeze, @squeeze_whitespace_keys, ' '))
 
       conditions
     end
 
-    def filtered_hash_by_method_for_given_keys(conditions, method, condition_keys)
+    def filtered_hash_by_method_for_given_keys(conditions, method, condition_keys, *params)
       condition_keys.each do |k|
         value = conditions[k]
-        conditions[k] = value.send(method) if value.respond_to?(method)
+        conditions[k] = value.send(method, *params) if value.respond_to?(method)
       end
 
       conditions

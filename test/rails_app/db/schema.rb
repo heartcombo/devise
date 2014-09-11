@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20100401102949) do
 
   create_table "users", force: true do |t|
     t.string   "username"
+    t.string   "name"
     t.string   "facebook_token"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false

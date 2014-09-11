@@ -100,6 +100,10 @@ module Devise
   mattr_accessor :strip_whitespace_keys
   @@strip_whitespace_keys = []
 
+  # Keys that should have whitespace squeezed.
+  mattr_accessor :squeeze_whitespace_keys
+  @@squeeze_whitespace_keys = []
+
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
   @@http_authenticatable = false

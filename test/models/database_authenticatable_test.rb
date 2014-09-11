@@ -65,23 +65,25 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should squeeze whitespace from squeeze whitespace keys when saving' do
-    Devise.squeeze_whitespace_keys = [ :name ]
-    name = 'foo    bar'
-    user = new_user(name: name)
-
-    assert_equal name, user.name
-    user.save!
-    assert_equal name.squeeze(' '), user.name
+    swap Devise, squeeze_whitespace_keys: [:name] do
+      name = 'foo    bar'
+      user = new_user(name: name)
+      
+      assert_equal name, user.name
+      user.save!
+      assert_equal name.squeeze(' '), user.name
+    end
   end
 
   test 'should not mutate value assigned to squeeze whitespace key' do
-    Devise.squeeze_whitespace_keys = [ :name ]
-    name           = 'foo    bar'
-    original_name  = name.dup
-    user           = new_user(name: name)
-
-    user.save!
-    assert_equal original_name, name
+    swap Devise, squeeze_whitespace_keys: [:name] do
+      name           = 'foo    bar'
+      original_name  = name.dup
+      user           = new_user(name: name)
+      
+      user.save!
+      assert_equal original_name, name
+    end
   end
 
   test "doesn't throw exception when globally configured squeeze_whitespace_keys are not present on a model" do

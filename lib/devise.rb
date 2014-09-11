@@ -17,6 +17,14 @@ module Devise
   autoload :TokenGenerator,     'devise/token_generator'
 
   module Controllers
+    autoload :Base, 'devise/controllers/base'
+    autoload :Confirmations, 'devise/controllers/confirmations'
+    autoload :OmniauthCallbacks, 'devise/controllers/omniauth_callbacks'
+    autoload :Passwords, 'devise/controllers/passwords'
+    autoload :Registrations, 'devise/controllers/registrations'
+    autoload :Sessions, 'devise/controllers/sessions'
+    autoload :Unlocks, 'devise/controllers/unlocks'
+
     autoload :Helpers, 'devise/controllers/helpers'
     autoload :Rememberable, 'devise/controllers/rememberable'
     autoload :ScopedViews, 'devise/controllers/scoped_views'

@@ -23,12 +23,6 @@ OmniAuth.config.logger = Logger.new('/dev/null')
 $:.unshift File.expand_path('../support', __FILE__)
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-if ActiveSupport::TestCase.respond_to?(:my_tests_are_order_dependent!)
-  # Devise test suite is order dependent, and we need to ensure that same order
-  # in Rails 4.2.0.
-  ActiveSupport::TestCase.my_tests_are_order_dependent!
-end
-
 # For generators
 require "rails/generators/test_case"
 require "generators/devise/install_generator"

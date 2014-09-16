@@ -184,7 +184,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/01/security-announc
   * All mailer methods now expect a second argument with delivery options
   * Default minimum password length is now 8 (by @carlosgaldino)
   * Support alternate sign in error message when email record does not exist (this adds a new I18n key to the locale file) (by @gabetax)
-  * DeviseController responds only to HTML requests by default (call `DeviseController.respond_to` or `ApplicationController.respond_to` to add new formats)
+  * Devise::BaseController responds only to HTML requests by default (call `Devise::BaseController.respond_to` or `ApplicationController.respond_to` to add new formats)
   * Support Mongoid 3 onwards (by @durran)
 
 * enhancements

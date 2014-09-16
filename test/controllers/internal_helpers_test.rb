@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MyController < DeviseController
+class MyController < Devise::BaseController
 end
 
 class HelpersTest < ActionController::TestCase
@@ -38,7 +38,7 @@ class HelpersTest < ActionController::TestCase
 
     params = if Devise.rails4?
       # Stub controller name so strong parameters can filter properly.
-      # DeviseController does not allow any parameters by default.
+      # Devise::BaseController does not allow any parameters by default.
       @controller.stubs(:controller_name).returns(:sessions_controller)
 
       ActionController::Parameters.new({'user' => user_params})

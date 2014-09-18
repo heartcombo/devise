@@ -253,7 +253,7 @@ module Devise
 
         # Find an initialize a group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
-          attributes = attributes.slice(*required_attributes)
+          attributes = attributes.slice(*required_attributes).with_indifferent_access
           attributes.delete_if { |key, value| value.blank? }
 
           if attributes.size == required_attributes.size

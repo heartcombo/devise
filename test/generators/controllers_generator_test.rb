@@ -6,7 +6,7 @@ class ControllersGeneratorTest < Rails::Generators::TestCase
   setup :prepare_destination
 
   test "Assert no controllers are created with no params" do
-    run_generator
+    capture(:stderr) { run_generator }
     assert_no_file "app/controllers/sessions_controller.rb"
     assert_no_file "app/controllers/registrations_controller.rb"
     assert_no_file "app/controllers/confirmations_controller.rb"

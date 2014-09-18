@@ -83,7 +83,8 @@ RUBY
       end
 
       def postgresql?
-        ActiveRecord::Base.connection.adapter_name.downcase == "postgresql"
+        config = ActiveRecord::Base.configurations[Rails.env]
+        config && config['adapter'] == 'postgresql'
       end
     end
   end

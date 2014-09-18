@@ -186,7 +186,7 @@ When you customize your own views, you may end up adding new attributes to forms
 
 There are just three actions in Devise that allows any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and the permitted parameters by default are:
 
-* `sign_in` (`Devise::SessionsController#new`) - Permits only the authentication keys (like `email`)
+* `sign_in` (`Devise::SessionsController#create`) - Permits only the authentication keys (like `email`)
 * `sign_up` (`Devise::RegistrationsController#create`) - Permits authentication keys plus `password` and `password_confirmation`
 * `account_update` (`Devise::RegistrationsController#update`) - Permits authentication keys plus `password`, `password_confirmation` and `current_password`
 
@@ -282,14 +282,24 @@ rails generate devise:views -v registrations confirmations
 
 If the customization at the views level is not enough, you can customize each controller by following these steps:
 
-1. Create your custom controller, for example a `Admins::SessionsController`:
+1. Create your custom controllers using the generator which requires a scope:
+
+    ```console
+    rails generate devise:controllers [scope]
+    ```
+
+    If you specify `admins` as the scope, controllers will be created in `app/controllers/admins/`.
+    And the sessions controller will look like this:
 
     ```ruby
     class Admins::SessionsController < Devise::SessionsController
+      # GET /resource/sign_in
+      # def new
+      #   super
+      # end
+      ...
     end
     ```
-
-    Note that in the above example, the controller needs to be created in the `app/controllers/admins/` directory.
 
 2. Tell the router to use this controller:
 

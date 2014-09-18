@@ -9,6 +9,7 @@ module Devise
         encrypted = false
 
         if validate(resource){ encrypted = true; resource.valid_password?(password) }
+          remember_me(resource)
           resource.after_database_authentication
           success!(resource)
         end

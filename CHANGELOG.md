@@ -4,7 +4,8 @@
   * The Simple Form templates follow the same change from 3.3.0 by using `Log in` and adding
     a hint about the minimum password length when `validatable` is enabled (by @aried3r)
   * Remove reloading of routes when eager loading is enabled. This change was added during Rails 3 and it doesn't seem to be relevant to currently supported Rails versions (by @fgro)
-
+  * Controller generator added as `devise:controllers SCOPE`. You can use the `-c` flag
+    to pick which controllers (`unlocks`, `confirmations`, etc) you want to generate. (by @Chun-Yang)
 * bug fix
   * Fixed a regression where the devise generator would fail with a `ConnectionNotEstablished`
     exception when executed inside a mountable engine

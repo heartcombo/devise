@@ -36,7 +36,6 @@ module Devise
         result = resource && resource.valid_for_authentication?(&block)
 
         if result
-          decorate(resource)
           true
         else
           if resource
@@ -47,7 +46,7 @@ module Devise
       end
 
       # Get values from params and set in the resource.
-      def decorate(resource)
+      def remember_me(resource)
         resource.remember_me = remember_me? if resource.respond_to?(:remember_me=)
       end
 

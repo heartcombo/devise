@@ -25,15 +25,18 @@ module Devise
         end
 
         if validate(resource)
+          remember_me(resource)
+          extend_remember_me_period(resource)
           success!(resource)
         end
       end
 
     private
 
-      def decorate(resource)
-        super
-        resource.extend_remember_period = mapping.to.extend_remember_period if resource.respond_to?(:extend_remember_period=)
+      def extend_remember_me_period(resource)
+        if resource.respond_to?(:extend_remember_period=)
+          resource.extend_remember_period = mapping.to.extend_remember_period
+        end
       end
 
       def remember_me?

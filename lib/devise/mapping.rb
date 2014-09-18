@@ -33,7 +33,7 @@ module Devise
     def self.find_scope!(obj)
       case obj
       when String, Symbol
-        return obj
+        return obj.to_sym
       when Class
         Devise.mappings.each_value { |m| return m.name if obj <= m.to }
       else

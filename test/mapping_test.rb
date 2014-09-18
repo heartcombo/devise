@@ -62,6 +62,7 @@ class MappingTest < ActiveSupport::TestCase
   test 'find scope for a given object' do
     assert_equal :user, Devise::Mapping.find_scope!(User)
     assert_equal :user, Devise::Mapping.find_scope!(:user)
+    assert_equal :user, Devise::Mapping.find_scope!("user")
     assert_equal :user, Devise::Mapping.find_scope!(User.new)
   end
 

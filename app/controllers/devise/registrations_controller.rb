@@ -6,9 +6,7 @@ class Devise::RegistrationsController < DeviseController
   def new
     build_resource({})
     @validatable = devise_mapping.validatable?
-    if @validatable
-      @minimum_password_length = resource_class.password_length.min
-    end
+    @minimum_password_length = resource_class.password_length.min if @validatable
     respond_with self.resource
   end
 
@@ -31,9 +29,7 @@ class Devise::RegistrationsController < DeviseController
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
-      if @validatable
-        @minimum_password_length = resource_class.password_length.min
-      end
+      @minimum_password_length = resource_class.password_length.min if @validatable
       respond_with resource
     end
   end

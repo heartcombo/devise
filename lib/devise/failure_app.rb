@@ -78,8 +78,7 @@ module Devise
         options[:resource_name] = scope
         options[:scope] = "devise.failure"
         options[:default] = [message]
-        authentication_keys = Devise.mappings[scope].to.authentication_keys
-        options[:authentication_keys] = authentication_keys.join(I18n.translate(:"support.array.words_connector"))
+        options[:authentication_keys] = scope_class.authentication_keys.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)
@@ -146,7 +145,7 @@ module Devise
     # It does not make sense to send authenticate headers in ajax requests
     # or if the user disabled them.
     def http_auth_header?
-      Devise.mappings[scope].to.http_authenticatable && !request.xhr?
+      scope_class.http_authenticatable && !request.xhr?
     end
 
     def http_auth_body
@@ -182,6 +181,10 @@ module Devise
 
     def scope
       @scope ||= warden_options[:scope] || Devise.default_scope
+    end
+
+    def scope_class
+      @scope_class ||= Devise.mappings[scope].to
     end
 
     def attempted_path

@@ -79,7 +79,7 @@ module Devise
         options[:scope] = "devise.failure"
         options[:default] = [message]
         authentication_keys = Devise.mappings[scope].to.authentication_keys
-        options[:authentication_keys] = authentication_keys.join(", ")
+        options[:authentication_keys] = authentication_keys.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)

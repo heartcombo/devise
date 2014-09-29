@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", "4.2.0.beta1"
+gem "rails", "4.2.0.beta2"
 gem "omniauth", "~> 1.2.0"
 gem "omniauth-oauth2", "~> 1.1.0"
 gem "rdoc"

@@ -78,6 +78,7 @@ module Devise
         options[:resource_name] = scope
         options[:scope] = "devise.failure"
         options[:default] = [message]
+        options[:authentication_keys] = Devise.authentication_keys.join(", ")
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)

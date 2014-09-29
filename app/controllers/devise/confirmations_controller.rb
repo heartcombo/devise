@@ -33,7 +33,7 @@ class Devise::ConfirmationsController < DeviseController
 
     # The path used after resending confirmation instructions.
     def after_resending_confirmation_instructions_path_for(resource_name)
-      new_session_path(resource_name) if is_navigational_format?
+      is_navigational_format? ? new_session_path(resource_name) : '/'
     end
 
     # The path used after confirmation.

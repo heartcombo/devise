@@ -51,6 +51,15 @@ module Devise
         token
       end
 
+      # Resets reset password token and send new account instructions by email.
+      # Returns the token sent in the e-mail.
+      def send_new_account_instructions
+        token = set_reset_password_token
+        send_new_account_instructions_notification(token)
+
+        token
+      end
+
       # Checks if the reset password token sent is within the limit time.
       # We do this by calculating if the difference between today and the
       # sending date does not exceed the confirm in time configured.
@@ -97,6 +106,10 @@ module Devise
 
         def send_reset_password_instructions_notification(token)
           send_devise_notification(:reset_password_instructions, token, {})
+        end
+
+        def send_new_account_instructions_notification(token)
+          send_devise_notification(:new_account_instructions, token, {})
         end
 
       module ClassMethods

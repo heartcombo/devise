@@ -117,7 +117,7 @@ module Devise
           super
         elsif access_locked? || (lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?)
           :locked
-        elsif lock_strategy_enabled?(:failed_attempts) && last_attempt?
+        elsif lock_strategy_enabled?(:failed_attempts) && last_attempt? && self.class.last_attempt_warning
           :last_attempt
         else
           super
@@ -189,7 +189,7 @@ module Devise
           self.lock_strategy == strategy
         end
 
-        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in, :unlock_keys)
+        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in, :unlock_keys, :last_attempt_warning)
       end
     end
   end

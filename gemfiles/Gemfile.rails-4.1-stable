@@ -2,10 +2,7 @@ source "https://rubygems.org"
 
 gemspec path: '..'
 
-gem "rails", github: "rails/rails"
-gem "arel", github: "rails/arel"
-gem "rack", github: "rack/rack"
-gem "i18n", github: "svenfuchs/i18n"
+gem "rails", github: 'rails/rails', branch: '4-1-stable'
 gem "omniauth", "~> 1.2.0"
 gem "omniauth-oauth2", "~> 1.1.0"
 gem "rdoc"
@@ -28,5 +25,5 @@ platforms :ruby do
 end
 
 group :mongoid do
-  gem "mongoid", github: "mongoid/mongoid", branch: "master"
+  gem "mongoid", "~> 4.0.0"
 end

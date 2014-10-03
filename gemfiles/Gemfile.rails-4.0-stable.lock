@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rails/rails.git
-  revision: d01651a360a0ecea6eb78dcb03fc44120bd83495
+  revision: 2d8886e05104316273a0f95dfbcd171d3b12678b
   branch: 4-0-stable
   specs:
     actionmailer (4.0.9)
@@ -47,6 +47,7 @@ PATH
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
+      responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
 
@@ -120,6 +121,8 @@ GEM
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
+    responders (1.1.1)
+      railties (>= 3.2, < 4.2)
     ruby-openid (2.5.0)
     sprockets (2.12.1)
       hike (~> 1.2)

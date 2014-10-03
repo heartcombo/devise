@@ -17,6 +17,10 @@ Webrat.configure do |config|
   config.open_error_files = false
 end
 
+if ActiveSupport.respond_to?(:test_order)
+  ActiveSupport.test_order = :random
+end
+
 OmniAuth.config.logger = Logger.new('/dev/null')
 
 # Add support to load paths so we can overwrite broken webrat setup

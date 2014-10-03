@@ -11,6 +11,9 @@
     exception when executed inside a mountable engine
   * Ensure to return symbols in find_scope! fixing a previous regression from 3.3.0 (by @micat)
   * Ensure all causes of failed login have the same error message (by @pjungwir)
+  * The `last_attempt_warning` now takes effect when generating the unauthenticated
+    message for your users. To keep the current behavior, this flag is now `true`
+    by default. (by @lucasmazza) 
 
 ### 3.3.0
 

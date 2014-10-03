@@ -280,7 +280,7 @@ module Devise
 
   # When true, warn user if they just used next-to-last attempt of authentication
   mattr_accessor :last_attempt_warning
-  @@last_attempt_warning = false
+  @@last_attempt_warning = true
 
   # Stores the token generator
   mattr_accessor :token_generator

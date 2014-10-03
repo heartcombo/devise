@@ -21,6 +21,8 @@ en:
         subject: "Confirmation instructions"
       reset_password_instructions:
         subject: "Reset password instructions"
+      new_account_instructions:
+        subject: "Welcome"
       unlock_instructions:
         subject: "Unlock instructions"
     omniauth_callbacks:

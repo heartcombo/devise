@@ -1,0 +1,5 @@
+Hello <%= @resource.email %>!
+
+An account has been created for you. Please use the link below to set your password.
+
+<%= link_to 'Set my password', edit_password_url(@resource, reset_password_token: @token) %>

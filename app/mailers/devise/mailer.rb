@@ -12,6 +12,11 @@ if defined?(ActionMailer)
       devise_mail(record, :reset_password_instructions, opts)
     end
 
+    def new_account_instructions(record, token, opts={})
+      @token = token
+      devise_mail(record, :new_account_instructions, opts)
+    end
+
     def unlock_instructions(record, token, opts={})
       @token = token
       devise_mail(record, :unlock_instructions, opts)

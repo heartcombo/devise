@@ -65,6 +65,15 @@ class RecoverableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should reset reset password token and send new account instructions by email' do
+    user = create_user
+    assert_email_sent do
+      token = user.reset_password_token
+      user.send_new_account_instructions
+      assert_not_equal token, user.reset_password_token
+    end
+  end
+
   test 'should find a user to send instructions by email' do
     user = create_user
     reset_password_user = User.send_reset_password_instructions(email: user.email)

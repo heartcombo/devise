@@ -72,6 +72,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/confirmations/new.html.erb"
     assert_file "app/views/#{scope}/mailer/confirmation_instructions.#{mail_template_engine}"
     assert_file "app/views/#{scope}/mailer/reset_password_instructions.#{mail_template_engine}"
+    assert_file "app/views/#{scope}/mailer/new_account_instructions.#{mail_template_engine}"
     assert_file "app/views/#{scope}/mailer/unlock_instructions.#{mail_template_engine}"
     assert_file "app/views/#{scope}/passwords/edit.html.erb"
     assert_file "app/views/#{scope}/passwords/new.html.erb"

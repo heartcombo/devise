@@ -100,7 +100,7 @@ module Devise
         end
 
         opts.merge!(pending_reconfirmation? ? { to: unconfirmed_email } : { })
-        opts.merge!(:host => self.email_host)
+        opts.merge!(host: (self.email_host || opts[:host]))
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 

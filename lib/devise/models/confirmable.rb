@@ -186,6 +186,8 @@ module Devise
         #   confirmation_period_valid?   # will always return true
         #
         def confirmation_period_valid?
+          return false if self.class.allow_unconfirmed_access_for == 0.days
+
           self.class.allow_unconfirmed_access_for.nil? || (confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago)
         end
 

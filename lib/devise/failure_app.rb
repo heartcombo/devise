@@ -78,7 +78,7 @@ module Devise
         options[:resource_name] = scope
         options[:scope] = "devise.failure"
         options[:default] = [message]
-        options[:authentication_keys] = scope_class.authentication_keys.join(I18n.translate(:"support.array.words_connector"))
+        options[:authentication_keys] = scope_class.authentication_keys.map { |key| scope_class.human_attribute_name(key) }.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)

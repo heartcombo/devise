@@ -8,7 +8,7 @@ module Devise
       desc <<-DESC.strip_heredoc
         Create inherited Devise controllers in your app/controllers folder.
 
-        User -c to specify which controller you want to overwrite.
+        Use -c to specify which controller you want to overwrite.
         If you do no specify a controller, all controllers will be created.
         For example:
 

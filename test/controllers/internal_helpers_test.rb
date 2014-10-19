@@ -99,6 +99,12 @@ class HelpersTest < ActionController::TestCase
     assert_equal 'non-blank', flash[:notice]
   end
 
+  test 'issues non-blank flash.now messages normally' do
+    I18n.stubs(:t).returns('non-blank')
+    @controller.send :set_flash_message, :notice, :send_instructions, { now: true }
+    assert_equal 'non-blank', flash.now[:notice]
+  end
+
   test 'uses custom i18n options' do
     @controller.stubs(:devise_i18n_options).returns(default: "devise custom options")
     @controller.send :set_flash_message, :notice, :invalid_i18n_messagesend_instructions

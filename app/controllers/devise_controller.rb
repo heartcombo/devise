@@ -129,8 +129,11 @@ MESSAGE
   end
 
   # Sets the flash message with :key, using I18n. By default you are able
-  # to setup your messages using specific resource scope, and if no one is
-  # found we look to default scope.
+  # to setup your messages using specific resource scope, and if no message is
+  # found we look to the default scope. Set the "now" options key to a true
+  # value to populate the flash.now hash in lieu of the default flash hash (so
+  # the flash message will be available to the current action instead of the
+  # next action).
   # Example (i18n locale file):
   #
   #   en:
@@ -144,7 +147,11 @@ MESSAGE
   # available.
   def set_flash_message(key, kind, options = {})
     message = find_message(kind, options)
-    flash[key] = message if message.present?
+    if options[:now]
+      flash.now[key] = message if message.present?
+    else
+      flash[key] = message if message.present?
+    end
   end
 
   def devise_i18n_options(options)

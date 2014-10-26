@@ -289,11 +289,11 @@ If the customization at the views level is not enough, you can customize each co
     rails generate devise:controllers [scope]
     ```
 
-    If you specify `admins` as the scope, controllers will be created in `app/controllers/admins/`.
+    If you specify `users` as the scope, controllers will be created in `app/controllers/users/`.
     And the sessions controller will look like this:
 
     ```ruby
-    class Admins::SessionsController < Devise::SessionsController
+    class Users::SessionsController < Devise::SessionsController
       # GET /resource/sign_in
       # def new
       #   super
@@ -305,17 +305,17 @@ If the customization at the views level is not enough, you can customize each co
 2. Tell the router to use this controller:
 
     ```ruby
-    devise_for :admins, controllers: { sessions: "admins/sessions" }
+    devise_for :users, controllers: { sessions: "users/sessions" }
     ```
 
-3. Copy the views from `devise/sessions` to `admins/sessions`. Since the controller was changed, it won't use the default views located in `devise/sessions`.
+3. Copy the views from `devise/sessions` to `users/sessions`. Since the controller was changed, it won't use the default views located in `devise/sessions`.
 
 4. Finally, change or extend the desired controller actions.
 
     You can completely override a controller action:
 
     ```ruby
-    class Admins::SessionsController < Devise::SessionsController
+    class Users::SessionsController < Devise::SessionsController
       def create
         # custom sign-in code
       end
@@ -325,7 +325,7 @@ If the customization at the views level is not enough, you can customize each co
     Or you can simply add new behaviour to it:
 
     ```ruby
-    class Admins::SessionsController < Devise::SessionsController
+    class Users::SessionsController < Devise::SessionsController
       def create
         super do |resource|
           BackgroundWorker.trigger(resource)

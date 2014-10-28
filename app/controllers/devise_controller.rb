@@ -180,4 +180,6 @@ MESSAGE
   def resource_params
     params.fetch(resource_name, {})
   end
+
+  ActiveSupport.run_load_hooks(:devise_controller, self)
 end

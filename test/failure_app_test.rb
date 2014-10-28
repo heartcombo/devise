@@ -109,6 +109,13 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
+    test 'supports authentication_keys as a Hash for the flash message' do
+      swap Devise, authentication_keys: { email: true, login: true } do
+        call_failure('warden' => OpenStruct.new(message: :invalid))
+        assert_equal 'Invalid email, login or password.', @request.flash[:alert]
+      end
+    end
+
     test 'uses custom i18n options' do
       call_failure('warden' => OpenStruct.new(message: :does_not_exist), app: FailureWithI18nOptions)
       assert_equal 'User Steve does not exist', @request.flash[:alert]

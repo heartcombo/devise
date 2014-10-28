@@ -1,7 +1,12 @@
 ### Unreleased
 
 * enhancements
+  * Devise default views now have a similar markup to Rails scaffold views. (by @udaysinghcode, @cllns)
+  * Passing `now: true` to the `set_flash_message` helper now sets the message into
+    the `flash.now` Hash. (by @hbriggs)
 * bugfixes
+  * Fixed an regression with translation of flash messages for when the `authentication_keys`
+  config is a Hash. (by @lucasmazza)
 
 ### 3.4.0
 

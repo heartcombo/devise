@@ -1,6 +1,6 @@
 ### Unreleased
 
-### 3.4.1
+### 3.4.1 - 2014-10-29
 
 * enhancements
   * Devise default views now have a similar markup to Rails scaffold views. (by @udaysinghcode, @cllns)
@@ -10,7 +10,7 @@
   * Fixed an regression with translation of flash messages for when the `authentication_keys`
   config is a Hash. (by @lucasmazza)
 
-### 3.4.0
+### 3.4.0 - 2014-10-03
 
 * enhancements
   * Support added for Rails 4.2. Devise now depends on the `responders` gem due
@@ -31,7 +31,7 @@
     message for your users. To keep the current behavior, this flag is now `true`
     by default. (by @lucasmazza)
 
-### 3.3.0
+### 3.3.0 - 2014-08-13
 
 * enhancements
   * Support multiple warden configuration blocks on devise configuration. (by @rossta)
@@ -55,13 +55,13 @@
   * Ensure registration controller block yields happen on failure in addition to success (by @dpehrson)
   * Only valid paths will be stored for redirections (by @parallel588)
 
-### 3.2.4
+### 3.2.4 - 2014-03-17
 
 * enhancements
   * `bcrypt` dependency updated due https://github.com/codahale/bcrypt-ruby/pull/86.
   * View generator now can generate specific views with the `-v` flag, like `rails g devise:views -v sessions` (by @kayline)
 
-### 3.2.3
+### 3.2.3 - 2014-02-20
 
 * enhancements
   * Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`.
@@ -70,14 +70,14 @@
 * bug fix
   * Migrations will be properly generated when using rails 4.1.0.
 
-### 3.2.2
+### 3.2.2 - 2013-11-25
 
 * bug fix
   * Ensure timeoutable works when `sign_out_all_scopes` is false (by @louman)
   * Keep the query string when storing location (by @csexton)
   * Require rails generator base class in devise generators
 
-### 3.2.1
+### 3.2.1 - 2013-11-13
 
 Security announcement: http://blog.plataformatec.com.br/2013/11/e-mail-enumeration-in-devise-in-paranoid-mode
 
@@ -89,7 +89,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/11/e-mail-enumerati
   * Bring `password_digest` back to fix compatibility with `devise-encryptable`
   * Avoid e-mail enumeration on sign in when in paranoid mode
 
-### 3.2.0
+### 3.2.0 - 2013-11-06
 
 * enhancements
   * Previously deprecated token authenticatable and insecure lookups have been removed
@@ -108,13 +108,13 @@ Security announcement: http://blog.plataformatec.com.br/2013/11/e-mail-enumerati
 * deprecations
   * `expire_session_data_after_sign_in!` has been deprecated in favor of `expire_data_after_sign_in!`
 
-### 3.1.1
+### 3.1.1 - 2013-10-01
 
 * bug fix
   * Improve default message which asked users to sign in even when they were already signed (by @gregates)
   * Improve error message for when the config.secret_key is missing
 
-### 3.1.0
+### 3.1.0 - 2013-09-05
 
 Security announcement: http://blog.plataformatec.com.br/2013/08/devise-3-1-now-with-more-secure-defaults/
 
@@ -137,12 +137,12 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/devise-3-1-now-w
   * Do not compare directly against confirmation, unlock and reset password tokens
   * Skip storage for cookies on unverified requests
 
-### 3.0.2
+### 3.0.2 - 2013-08-09
 
 * bug fix
   * Skip storage for cookies on unverified requests
 
-### 3.0.1
+### 3.0.1 - 2013-08-02
 
 Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixation-attacks-in-devise/
 
@@ -153,7 +153,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixat
   * When using rails 3.2, the generator adds 'attr_accessible' to the model (by @jcoyne)
   * Clean up CSRF token after authentication (by @homakov). Notice this change will clean up the CSRF Token after authentication (sign in, sign up, etc). So if you are using AJAX for such features, you will need to fetch a new CSRF token from the server.
 
-### 3.0.0
+### 3.0.0 - 2013-07-14
 
 * enhancements
   * Rails 4 and Strong Parameters compatibility (by @carlosantoniodasilva, @josevalim, @latortuga, @lucasmazza, @nashby, @rafaelfranca, @spastorino)
@@ -163,7 +163,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixat
 * bug fix
   * Errors on unlock are now properly reflected on the first `unlock_keys`
 
-### 2.2.4
+### 2.2.4 - 2013-05-07
 
 * enhancements
   * Add `destroy_with_password` to `DatabaseAuthenticatable`. Allows destroying a record when `:current_password` matches, similarly to how `update_with_password` works. (by @michiel3)
@@ -182,25 +182,25 @@ Security announcement: http://blog.plataformatec.com.br/2013/08/csrf-token-fixat
 * backwards incompatible changes
   * Changes on session storage will expire all existing sessions on upgrade. For those storing the session in the DB, they can be upgraded according to this gist: https://gist.github.com/moll/6417606
 
-### 2.2.3
+### 2.2.3 - 2013-01-26
 
 Security announcement: http://blog.plataformatec.com.br/2013/01/security-announcement-devise-v2-2-3-v2-1-3-v2-0-5-and-v1-5-3-released/
 
 * bug fix
   * Require string conversion for all values
 
-### 2.2.2
+### 2.2.2 - 2013-01-15
 
 * bug fix
   * Fix bug when checking for reconfirmable in templates
 
-### 2.2.1
+### 2.2.1 - 2013-01-11
 
 * bug fix
   * Fix regression with case_insensitive_keys
   * Fix regression when password is blank when it is invalid
 
-### 2.2.0
+### 2.2.0 - 2013-01-08
 
 * backwards incompatible changes
   * `headers_for` is deprecated, customize the mailer directly instead
@@ -231,17 +231,17 @@ Security announcement: http://blog.plataformatec.com.br/2013/01/security-announc
   * `update_with_password` doesn't change encrypted password when it is invalid (by @nashby)
   * Properly handle namespaced models on Active Record generator (by @nashby)
 
-### 2.1.4
+### 2.1.4 - 2013-08-18
 
 * bugfix
   * Do not confirm account after reset password
 
-### 2.1.3
+### 2.1.3 - 2013-01-26
 
 * bugfix
   * Require string conversion for all values
 
-### 2.1.2
+### 2.1.2 - 2012-06-19
 
 * enhancements
   * Handle backwards incompatibility between Rails 3.2.6 and Thor 0.15.x
@@ -249,7 +249,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/01/security-announc
 * bug fix
   * Fix regression on strategy validation on previous release
 
-### 2.1.1 (yanked)
+### 2.1.1 - 2012-06-15 (yanked)
 
 * enhancements
   * `sign_out_all_scopes` now locks warden and does not allow new logins in the same action
@@ -266,7 +266,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/01/security-announc
 * deprecations
   * Strategy#validate() no longer validates nil resources
 
-### 2.1.0
+### 2.1.0 - 2012-05-15
 
 * enhancements
   * Add `check_fields!(model_class)` method on Devise::Models to check if the model includes the fields that Devise uses
@@ -293,7 +293,7 @@ Security announcement: http://blog.plataformatec.com.br/2013/01/security-announc
   * Return `head :no_content` in SessionsController now that most JS libraries handle it (by @julianvargasalvarez)
   * Reverted moving devise/shared/_links.erb to devise/_links.erb
 
-### 2.0.4
+### 2.0.4 - 2012-02-17
 
 Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.0
 
@@ -301,7 +301,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Fix when :host is used with devise_for  (by @mreinsch)
   * Fix a regression that caused Warden to be initialized too late
 
-### 2.0.3 (yanked)
+### 2.0.3 - 2012-06-16 (yanked)
 
 * bug fix
   * Ensure warning is not shown by mistake on apps with mounted engines
@@ -309,7 +309,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Ensure serializable_hash does not depend on accessible attributes
   * Ensure that timeout callback does not run on sign out action
 
-### 2.0.2
+### 2.0.2 - 2012-02-14
 
 * enhancements
   * Add devise_i18n_options to customize I18n message
@@ -321,7 +321,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Show a warning in case someone gives a pluralized name to devise generator
   * Fix test behavior for rspec subject requests (by @sj26)
 
-### 2.0.1
+### 2.0.1 - 2012-02-09
 
 * enhancements
   * Improved error messages on deprecation warnings
@@ -330,7 +330,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Removed tmp and log files from gem
 
-### 2.0.0
+### 2.0.0 - 2012-01-26
 
 * enhancements
   * Add support for e-mail reconfirmation on change (by @Mandaryn and @heimidal)
@@ -356,14 +356,14 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Deprecated support to devise.registrations.reasons and devise.registrations.inactive_signed_up in favor of devise.registrations.signed_up_but_*
   * Protected method render_with_scope was removed.
 
-### 1.5.3
+### 1.5.3 - 2011-12-19
 
 * bug fix
   * Ensure delegator converts scope to symbol (by @dmitriy-kiriyenko)
   * Ensure passing :format => false to devise_for is not permanent
   * Ensure path checker does not check invalid routes
 
-### 1.5.2
+### 1.5.2 - 2011-11-30
 
 * enhancements
   * Add support for Rails 3.1 new mass assignment conventions (by @kirs)
@@ -372,12 +372,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * OmniAuth error message now shows the proper option (:strategy_class instead of :klass)
 
-### 1.5.1
+### 1.5.1 - 2011-11-22
 
 * bug fix
   * Devise should not attempt to load OmniAuth strategies. Strategies should be loaded before hand by the developer or explicitly given to Devise.
 
-### 1.5.0
+### 1.5.0 - 2011-11-13
 
 * enhancements
   * Timeoutable also skips tracking if skip_trackable is given
@@ -398,12 +398,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * redirect_location is deprecated, please use after_sign_in_path_for
   * after_sign_in_path_for now redirects to session[scope_return_to] if any value is stored in it
 
-### 1.4.9
+### 1.4.9 - 2011-10-19
 
 * bug fix
   * url helpers were not being set under some circumstances
 
-### 1.4.8
+### 1.4.8 - 2011-10-09
 
 * enhancements
   * Add docs for assets pipeline and Heroku
@@ -411,12 +411,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * confirmation_url was not being set under some circumstances
 
-### 1.4.7
+### 1.4.7 - 2011-09-21
 
 * bug fix
   * Fix backward incompatible change from 1.4.6 for those using custom controllers
 
-### 1.4.6 (yanked)
+### 1.4.6 - 2011-09-19 (yanked)
 
 * enhancements
   * Allow devise_for :skip => :all
@@ -424,7 +424,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Allow --skip-routes to devise generator
   * Add allow_params_authentication! to make it explicit when params authentication is allowed in a controller
 
-### 1.4.5
+### 1.4.5 - 2011-09-07
 
 * bug fix
   * Failure app tries the root path if a session one does not exist
@@ -432,12 +432,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Reset password shows proper message if user is not active
   * `clean_up_passwords` sets the accessors to nil to skip validations
 
-### 1.4.4
+### 1.4.4 - 2011-08-30
 
 * bug fix
   * Do not always skip helpers, instead provide :skip_helpers as option to trigger it manually
 
-### 1.4.3
+### 1.4.3 - 2011-08-29
 
 * enhancements
   * Improve Rails 3.1 compatibility
@@ -453,12 +453,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * deprecations
   * Loosened the used email regexp to simply assert the existent of "@". If someone relies on a more strict regexp, they may use https://github.com/SixArm/sixarm_ruby_email_address_validation
 
-### 1.4.2
+### 1.4.2 - 2011-06-30
 
 * bug fix
   * Provide a more robust behavior to serializers and add :force_except option
 
-### 1.4.1
+### 1.4.1 - 2011-06-29
 
 * enhancements
   * Add :defaults and :format support on router
@@ -469,7 +469,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Ensure to_xml is properly white listened
   * Ensure handle_unverified_request clean up any cached signed-in user
 
-### 1.4.0
+### 1.4.0 - 2011-06-23
 
 * enhancements
   * Added authenticated and unauthenticated to the router to route the used based on their status (by @sj26)
@@ -487,22 +487,22 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Devise now honors routes constraints (by @macmartine)
   * Do not return the user resource when requesting instructions (by @rodrigoflores)
 
-### 1.3.4
+### 1.3.4 - 2011-04-28
 
 * bug fix
   * Do not add formats if html or "*/*"
 
-### 1.3.3
+### 1.3.3 - 2011-04-20
 
 * bug fix
   * Explicitly mark the token as expired if so
 
-### 1.3.2
+### 1.3.2 - 2011-04-20
 
 * bug fix
   * Fix another regression related to reset_password_sent_at (by @alexdreher)
 
-### 1.3.1
+### 1.3.1 - 2011-04-18
 
 * enhancements
   * Improve failure_app responses (by @indirect)
@@ -511,7 +511,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Fix a regression that occurred if reset_password_sent_at is not present (by @stevehodgkiss)
 
-### 1.3.0
+### 1.3.0 - 2011-04-15
 
 * enhancements
   * All controllers can now handle different mime types than html using Responders (by @sikachu)
@@ -531,19 +531,19 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * backward incompatible changes
   * authentication_keys are no longer considered when creating the e-mail validations, the previous behavior was buggy. You must double check if you were relying on such behavior.
 
-### 1.2.1
+### 1.2.1 - 2011-03-27
 
 * enhancements
   * Improve update path messages
 
-### 1.2.0
+### 1.2.0 - 2011-03-24
 
 * bug fix
   * Properly ignore path prefix on omniauthable
   * Faster uniqueness queries
   * Rename active? to active_for_authentication? to avoid conflicts
 
-### 1.2.rc2
+### 1.2.rc2 - 2011-03-10
 
 * enhancements
   * Make friendly_token 20 chars long
@@ -573,7 +573,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Removed --haml and --slim view templates
   * Devise::OmniAuth helpers were deprecated and removed in favor of Omniauth.config.test_mode
 
-### 1.2.rc
+### 1.2.rc - 2010-10-25
 
 * deprecations
   * cookie_domain is deprecated in favor of cookie_options
@@ -611,13 +611,13 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Ensure namespaces has proper scoped views
   * Ensure Devise does not set empty flash messages (by @sxross)
 
-### 1.1.6
+### 1.1.6 - 2011-02-14
 
 * Use a more secure e-mail regexp
 * Implement Rails 3.0.4 handle unverified request
 * Use secure_compare to compare passwords
 
-### 1.1.5
+### 1.1.5 - 2010-11-26
 
 * bugfix
   * Ensure to convert keys on indifferent hash
@@ -625,12 +625,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * defaults
   * Set config.http_authenticatable to false to avoid confusion
 
-### 1.1.4
+### 1.1.4 - 2010-11-25
 
 * bugfix
   * Avoid session fixation attacks
 
-### 1.1.3
+### 1.1.3 - 2010-09-23
 
 * bugfix
   * Add reply-to to e-mail headers by default
@@ -641,17 +641,17 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Fix for failed first-ever logins on PostgreSQL where column default is nil (by @bensie)
   * :default options is now honored in migrations
 
-### 1.1.2
+### 1.1.2 - 2010-08-25
 
 * bugfix
   * Compatibility with latest Rails routes schema
 
-### 1.1.1
+### 1.1.1 - 2010-07-26
 
 * bugfix
   * Fix a small bug where generated locale file was empty on devise:install
 
-### 1.1.0
+### 1.1.0 - 2010-07-25
 
 * enhancements
   * Rememberable module allows user to be remembered across browsers and is enabled by default (by @trevorturk)
@@ -671,7 +671,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * deprecations
   * use_default_scope is deprecated and has no effect. Use :as or :devise_scope in the router instead
 
-### 1.1.rc2
+### 1.1.rc2 - 2010-06-22
 
 * enhancements
   * Allow to set cookie domain for the remember token. (by @mantas)
@@ -689,7 +689,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * devise.mailer.user.confirmations_instructions now should be devise.mailer.confirmations_instructions.user_subject
   * Generators now use Rails 3 syntax (devise:install) instead of devise_install
 
-### 1.1.rc1
+### 1.1.rc1 - 2010-04-14
 
 * enhancements
   * Rails 3 compatibility
@@ -721,7 +721,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * All messages under devise.sessions, except :signed_in and :signed_out, should be moved to devise.failure
   * :as and :scope in routes is deprecated. Use :path and :singular instead
 
-### 1.0.8
+### 1.0.8 - 2010-06-22
 
 * enhancements
   * Support for latest MongoMapper
@@ -730,7 +730,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * confirmation_required? is properly honored on active? calls. (by @paulrosania)
 
-### 1.0.7
+### 1.0.7 - 2010-05-02
 
 * bug fix
   * Ensure password confirmation is always required
@@ -739,14 +739,14 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * authenticatable was deprecated and renamed to database_authenticatable
   * confirmable is not included by default on generation
 
-### 1.0.6
+### 1.0.6 - 2010-04-02
 
 * bug fix
   * Do not allow unlockable strategies based on time to access a controller.
   * Do not send unlockable email several times.
   * Allow controller to upstram custom! failures to Warden.
 
-### 1.0.5
+### 1.0.5 - 2010-03-25
 
 * bug fix
   * Use prepend_before_filter in require_no_authentication.
@@ -754,19 +754,19 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Fix a bug when giving an association proxy to devise.
   * Do not use lock! on lockable since it's part of ActiveRecord API.
 
-### 1.0.4
+### 1.0.4 - 2010-03-02
 
 * bug fix
   * Fixed a bug when deleting an account with rememberable
   * Fixed a bug with custom controllers
 
-### 1.0.3
+### 1.0.3 - 2010-02-22
 
 * enhancements
   * HTML e-mails now have proper formatting
   * Do not remove MongoMapper options in find
 
-### 1.0.2
+### 1.0.2 - 2010-02-17
 
 * enhancements
   * Allows you set mailer content type (by @glennr)
@@ -774,7 +774,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Uses the same content type as request on http authenticatable 401 responses
 
-### 1.0.1
+### 1.0.1 - 2010-02-16
 
 * enhancements
   * HttpAuthenticatable is not added by default automatically.
@@ -783,7 +783,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Fixed encryptors autoload
 
-### 1.0.0
+### 1.0.0 - 2010-02-08
 
 * deprecation
   * :old_password in update_with_password is deprecated, use :current_password instead
@@ -794,7 +794,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Allow scoped_views to be customized per controller/mailer class
   * Allow authenticatable to used in change_table statements
 
-### 0.9.2
+### 0.9.2 - 2010-02-04
 
 * bug fix
   * Ensure inactive user cannot sign in
@@ -804,13 +804,13 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Added gemspec to repo
   * Added token authenticatable (by @grimen)
 
-### 0.9.1
+### 0.9.1 - 2010-01-24
 
 * bug fix
   * Allow bigger salt size (by @jgeiger)
   * Fix relative url root
 
-### 0.9.0
+### 0.9.0 - 2010-01-20
 
 * deprecation
   * devise :all is deprecated
@@ -827,7 +827,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Accept path prefix not starting with slash
   * url helpers should rely on find_scope!
 
-### 0.8.2
+### 0.8.2 - 2010-01-12
 
 * enhancements
   * Allow Devise.mailer_sender to be a proc (by @grimen)
@@ -835,7 +835,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Fix bug with passenger, update is required to anyone deploying on passenger (by @dvdpalm)
 
-### 0.8.1
+### 0.8.1 - 2010-01-07
 
 * enhancements
   * Move salt to encryptors
@@ -845,7 +845,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Bcrypt generator was not being loaded neither setting the proper salt
 
-### 0.8.0
+### 0.8.0 - 2010-01-06
 
 * enhancements
   * Warden 0.8.0 compatibility
@@ -859,19 +859,19 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * deprecation
   * Removed DeviseMailer.sender
 
-### 0.7.5
+### 0.7.5 - 2010-01-01
 
 * enhancements
   * Set a default value for mailer to avoid find_template issues
   * Add models configuration to MongoMapper::EmbeddedDocument as well
 
-### 0.7.4
+### 0.7.4 - 2009-12-21
 
 * enhancements
   * Extract Activatable from Confirmable
   * Decouple Serializers from Devise modules
 
-### 0.7.3
+### 0.7.3 - 2009-12-15
 
 * bug fix
   * Give scope to the proper model validation
@@ -881,7 +881,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Added update_with_password for authenticatable
   * Allow render_with_scope to accept :controller option
 
-### 0.7.2
+### 0.7.2 - 2009-12-14
 
 * deprecation
   * Renamed reset_confirmation! to resend_confirmation!
@@ -891,12 +891,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Fixed render_with_scope to work with all controllers
   * Allow sign in with two different users in Devise::TestHelpers
 
-### 0.7.1
+### 0.7.1 - 2009-12-09
 
 * enhancements
   * Small enhancements for other plugins compatibility (by @grimen)
 
-### 0.7.0
+### 0.7.0 - 2009-12-08
 
 * deprecations
   * :authenticatable is not included by default anymore
@@ -905,25 +905,25 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Improve loading process
   * Extract SessionSerializer from Authenticatable
 
-### 0.6.3
+### 0.6.3 - 2009-12-02
 
 * bug fix
   * Added trackable to migrations
   * Allow inflections to work
 
-### 0.6.2
+### 0.6.2 - 2009-11-25
 
 * enhancements
   * More DataMapper compatibility
   * Devise::Trackable - track sign in count, timestamps and ips
 
-### 0.6.1
+### 0.6.1 - 2009-11-24
 
 * enhancements
   * Devise::Timeoutable - timeout sessions without activity
   * DataMapper now accepts conditions
 
-### 0.6.0
+### 0.6.0 - 2009-11-22
 
 * deprecations
   * :authenticatable is still included by default, but yields a deprecation warning
@@ -934,19 +934,19 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Allow a strategy to be placed after authenticatable
   * Do not rely attribute? methods, since they are not added on Datamapper
 
-### 0.5.6
+### 0.5.6 - 2009-11-21
 
 * enhancements
   * Do not send nil to build (DataMapper compatibility)
   * Allow to have scoped views
 
-### 0.5.5
+### 0.5.5 - 2009-11-20
 
 * enhancements
   * Allow overwriting find for authentication method
   * Remove Ruby 1.8.7 dependency
 
-### 0.5.4
+### 0.5.4 - 2009-11-19
 
 * deprecations
   * Deprecate :singular in devise_for and use :scope instead
@@ -957,7 +957,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Create sign_in_and_redirect and sign_out_and_redirect helpers
   * Warden::Manager.default_scope is automatically configured to the first given scope
 
-### 0.5.3
+### 0.5.3 - 2009-11-18
 
 * bug fix
   * MongoMapper now converts DateTime to Time
@@ -969,20 +969,20 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Added Devise.apply_schema, so you can turn it to false in Datamapper or MongoMapper
     in cases you don't want it be handlded automatically
 
-### 0.5.2
+### 0.5.2 - 2009-11-17
 
 * enhancements
   * Improved sign_in and sign_out helpers to accepts resources
   * Added stored_location_for as a helper
   * Added test helpers
 
-### 0.5.1
+### 0.5.1 - 2009-11-15
 
 * enhancements
   * Added serializers based on Warden ones
   * Allow authentication keys to be set
 
-### 0.5.0
+### 0.5.0 - 2009-11-13
 
 * bug fix
   * Fixed a bug where remember me module was not working properly
@@ -992,13 +992,13 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Implemented encryptors for Clearance, Authlogic and Restful-Authentication (by @mhfs)
   * Added support for MongoMapper (by @shingara)
 
-### 0.4.3
+### 0.4.3 - 2009-11-10
 
 * bug fix
   * Authentication just fails if user cannot be serialized from session, without raising errors;
   * Default configuration values should not overwrite user values;
 
-### 0.4.2
+### 0.4.2 - 2009-11-06
 
 * deprecations
   * Renamed mail_sender to mailer_sender
@@ -1010,12 +1010,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Allow :path_prefix to be given to devise_for
   * Allow default_url_options to be configured through devise (:path_prefix => "/:locale" is now supported)
 
-### 0.4.1
+### 0.4.1 - 2009-11-04
 
 * bug fix
   * Ensure options can be set even if models were not loaded
 
-### 0.4.0
+### 0.4.0 - 2009-11-03
 
 * deprecations
   * Notifier is deprecated, use DeviseMailer instead. Remember to rename
@@ -1028,7 +1028,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Allow Warden::Manager to be configured through Devise
   * Created a generator which creates an initializer
 
-### 0.3.0
+### 0.3.0 - 2009-10-30
 
 * bug fix
   * Allow yml messages to be configured by not using engine locales
@@ -1038,7 +1038,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Do not send confirmation messages when user changes their e-mail
   * Renamed authenticable to authenticatable and added deprecation warnings
 
-### 0.2.3
+### 0.2.3 - 2009-10-29
 
 * enhancements
   * Ensure fail! works inside strategies
@@ -1048,12 +1048,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
   * Do not redirect on invalid authenticate
   * Allow model configuration to be set to nil
 
-### 0.2.2
+### 0.2.2 - 2009-10-28
 
 * bug fix
   * Fix a bug when using customized resources
 
-### 0.2.1
+### 0.2.1 - 2009-10-27
 
 * refactor
   * Clean devise_views generator to use devise existing views
@@ -1065,7 +1065,7 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fix
   * Fix a bug with Mongrel and Ruby 1.8.6
 
-### 0.2.0
+### 0.2.0 - 2009-10-24
 
 * enhancements
   * Allow option :null => true in authenticable migration
@@ -1080,12 +1080,12 @@ Notes: https://github.com/plataformatec/devise/wiki/How-To:-Upgrade-to-Devise-2.
 * bug fixes
   * Fixed requiring devise strategies
 
-### 0.1.1
+### 0.1.1 - 2009-10-21
 
 * bug fixes
   * Fixed requiring devise mapping
 
-### 0.1.0
+### 0.1.0 - 2009-10-21
 
 * Devise::Authenticable
 * Devise::Confirmable

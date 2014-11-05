@@ -35,7 +35,9 @@ module Devise
         session_key = stored_location_key_for(resource_or_scope)
         uri = parse_uri(location)
         if uri
-          session[session_key] = [uri.path.sub(/\A\/+/, '/'), uri.query].compact.join('?')
+          path = [uri.path.sub(/\A\/+/, '/'), uri.query].compact.join('?')
+          path = [path, uri.fragment].compact.join('#')
+          session[session_key] = path
         end
       end
 

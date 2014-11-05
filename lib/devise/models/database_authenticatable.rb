@@ -42,7 +42,7 @@ module Devise
         self.encrypted_password = password_digest(@password) if @password.present?
       end
 
-      # Verifies whether an password (ie from sign in) is the user password.
+      # Verifies whether a password (ie from sign in) is the user password.
       def valid_password?(password)
         return false if encrypted_password.blank?
         bcrypt   = ::BCrypt::Password.new(encrypted_password)

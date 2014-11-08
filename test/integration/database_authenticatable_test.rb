@@ -81,4 +81,15 @@ class DatabaseAuthenticationTest < ActionDispatch::IntegrationTest
       assert_contain 'Invalid credentials'
     end
   end
+
+  test 'valid sign in calls after_database_authentication callback' do
+    user = create_user(email: ' foo@bar.com ')
+
+    User.expects(:find_for_database_authentication).returns user
+    user.expects :after_database_authentication
+
+    sign_in_as_user do
+      fill_in 'email', with: 'foo@bar.com'
+    end
+  end
 end

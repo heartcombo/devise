@@ -89,6 +89,19 @@ module Devise
         self.class.rememberable_options
       end
 
+      # A callback initiated after successfully being remembered. This can be
+      # used to insert your own logic that is only run after the user is
+      # remembered.
+      #
+      # Example:
+      #
+      #   def after_remembered
+      #     self.update_attribute(:invite_code, nil)
+      #   end
+      #
+      def after_remembered
+      end
+
     protected
 
       def generate_remember_token? #:nodoc:

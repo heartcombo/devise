@@ -249,6 +249,16 @@ module Devise
           confirmation_required? && !@skip_confirmation_notification && self.email.present?
         end
 
+        # A callback initiated after successfully confirming. This can be
+        # used to insert your own logic that is only run after the user successfully
+        # confirms.
+        #
+        # Example:
+        #
+        #   def after_confirmation
+        #     self.update_attribute(:invite_code, nil)
+        #   end
+        #
         def after_confirmation
         end
 

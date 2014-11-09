@@ -83,6 +83,16 @@ module Devise
           self.reset_password_sent_at = nil
         end
 
+        # A callback initiated after password is successfully reset. This can
+        # be used to insert your own logic that is only run after the user
+        # successfully resets their password.
+        #
+        # Example:
+        #
+        #   def after_password_reset
+        #     self.update_attribute(:invite_code, nil)
+        #   end
+        #
         def after_password_reset
         end
 

@@ -27,6 +27,7 @@ module Devise
         if validate(resource)
           remember_me(resource)
           extend_remember_me_period(resource)
+          resource.after_remembered
           success!(resource)
         end
       end

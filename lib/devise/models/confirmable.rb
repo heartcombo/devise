@@ -93,7 +93,11 @@ module Devise
             save(validate: args[:ensure_valid] == true)
           end
 
-          after_confirmation if saved
+          if saved
+            instrument 'confirm!.confirmable.devise'
+            after_confirmation
+          end
+
           saved
         end
       end

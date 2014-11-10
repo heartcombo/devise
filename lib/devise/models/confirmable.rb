@@ -120,6 +120,8 @@ module Devise
       end
 
       def send_reconfirmation_instructions
+        instrument 'send_reconfirmation_instructions.confirmable.devise'
+
         @reconfirmation_required = false
 
         unless @skip_confirmation_notification

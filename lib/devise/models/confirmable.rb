@@ -133,6 +133,7 @@ module Devise
       # Regenerates the token if the period is expired.
       def resend_confirmation_instructions
         pending_any_confirmation do
+          instrument 'resend_confirmation_instructions.confirmable.devise'
           send_confirmation_instructions
         end
       end

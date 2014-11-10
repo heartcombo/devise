@@ -257,7 +257,9 @@ module Devise
         end
 
         def generate_confirmation_token!
-          generate_confirmation_token && save(validate: false)
+          instrument 'generate_confirmation_token.confirmable.devise' do
+            generate_confirmation_token && save(validate: false)
+          end
         end
 
         def postpone_email_change_until_confirmation_and_regenerate_confirmation_token

@@ -154,6 +154,7 @@ module Devise
       # If you don't want confirmation to be sent on create, neither a code
       # to be generated, call skip_confirmation!
       def skip_confirmation!
+        instrument 'skip_confirmation!.confirmable.devise'
         self.confirmed_at = Time.now.utc
       end
 

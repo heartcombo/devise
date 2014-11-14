@@ -121,7 +121,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
     assert_contain 'Could not authenticate you from Facebook because "Access denied".'
   end
 
-  test "handles other exceptions from omniauth" do
+  test "handles other exceptions from OmniAuth" do
     OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
 
     visit "/users/sign_in"

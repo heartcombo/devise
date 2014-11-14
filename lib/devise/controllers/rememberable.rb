@@ -2,7 +2,7 @@ module Devise
   module Controllers
     # A module that may be optionally included in a controller in order
     # to provide remember me behavior. Useful when signing in is done
-    # through a callback, like in Omniauth.
+    # through a callback, like in OmniAuth.
     module Rememberable
       # Return default cookie values retrieved from session options.
       def self.cookie_values

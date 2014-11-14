@@ -246,7 +246,7 @@ module Devise
   mattr_accessor :router_name
   @@router_name = nil
 
-  # Set the omniauth path prefix so it can be overridden when
+  # Set the OmniAuth path prefix so it can be overridden when
   # Devise is used in a mountable engine
   mattr_accessor :omniauth_path_prefix
   @@omniauth_path_prefix = nil
@@ -261,7 +261,7 @@ module Devise
   mattr_reader :mappings
   @@mappings = ActiveSupport::OrderedHash.new
 
-  # Omniauth configurations.
+  # OmniAuth configurations.
   mattr_reader :omniauth_configs
   @@omniauth_configs = ActiveSupport::OrderedHash.new
 
@@ -417,7 +417,7 @@ module Devise
     @@warden_config_blocks << block
   end
 
-  # Specify an omniauth provider.
+  # Specify an OmniAuth provider.
   #
   #   config.omniauth :github, APP_ID, APP_SECRET
   #

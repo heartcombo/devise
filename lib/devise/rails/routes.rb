@@ -402,7 +402,7 @@ module ActionDispatch::Routing
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         if mapping.fullpath =~ /:[a-zA-Z_]/
           raise <<-ERROR
-Devise does not support scoping omniauth callbacks under a dynamic segment
+Devise does not support scoping OmniAuth callbacks under a dynamic segment
 and you have set #{mapping.fullpath.inspect}. You can work around by passing
 `skip: :omniauth_callbacks` and manually defining the routes. Here is an example:
 

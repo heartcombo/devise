@@ -165,7 +165,7 @@ module Devise
 
       if options[:skip_helpers] == true
         @used_helpers = @used_routes
-      elsif skip = options[:skip_helpers]
+      elsif skip == options[:skip_helpers]
         @used_helpers = self.routes - Array(skip).map(&singularizer)
       else
         @used_helpers = self.routes

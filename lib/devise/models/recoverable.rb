@@ -146,7 +146,7 @@ module Devise
             end
           end
 
-          recoverable.reset_password_token = original_token
+          recoverable.reset_password_token = original_token if recoverable.reset_password_token.present?
           recoverable
         end
 

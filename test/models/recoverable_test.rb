@@ -135,6 +135,7 @@ class RecoverableTest < ActiveSupport::TestCase
     reset_password_user = User.reset_password_by_token(reset_password_token: raw, password: '')
     assert_not reset_password_user.errors.empty?
     assert_match "can't be blank", reset_password_user.errors[:password].join
+    assert_equal raw, reset_password_user.reset_password_token
   end
 
   test 'should reset successfully user password given the new password and confirmation' do
@@ -142,15 +143,17 @@ class RecoverableTest < ActiveSupport::TestCase
     old_password = user.password
     raw  = user.send_reset_password_instructions
 
-    User.reset_password_by_token(
+    reset_password_user = User.reset_password_by_token(
       reset_password_token: raw,
       password: 'new_password',
       password_confirmation: 'new_password'
     )
-    user.reload
+    assert_nil reset_password_user.reset_password_token
 
+    user.reload
     assert_not user.valid_password?(old_password)
     assert user.valid_password?('new_password')
+    assert_nil user.reset_password_token
   end
 
   test 'should not reset password after reset_password_within time' do

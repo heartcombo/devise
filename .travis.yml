@@ -16,12 +16,16 @@ services:
 
 sudo: false
 
+cache: bundler
+
 env:
   matrix:
     - DEVISE_ORM=mongoid
     - DEVISE_ORM=active_record
 
 before_install: "rm ${BUNDLE_GEMFILE}.lock"
+
+before_script: "bundle update"
 
 script: "bundle exec rake test"
 

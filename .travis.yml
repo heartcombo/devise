@@ -21,7 +21,7 @@ env:
     - DEVISE_ORM=mongoid
     - DEVISE_ORM=active_record
 
-before_install: "rm Gemfile.lock"
+before_install: "rm ${BUNDLE_GEMFILE}.lock"
 
 script: "bundle exec rake test"
 

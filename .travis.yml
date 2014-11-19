@@ -1,31 +1,35 @@
 language: ruby
-script: "bundle exec rake test"
-install: script/cached-bundle install --deployment --path vendor/bundle
+
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.2
-env:
-  matrix:
-    - DEVISE_ORM=mongoid
-    - DEVISE_ORM=active_record
-  global:
-    # AMAZON_S3_BUCKET
-    - secure: "qkeYGn2mpgsgU5tKS9GWvFp/utUF/9O8++Shch24DMnq8OB01TrV5QQ2Elj7sSjMWqw2Pbe56nUCA9eOWXhPglGyIq2AI9E0umsEGZxdRlqqobpiMWs5wl8KZ0cFD1rZm6CwfL8atmcNfTt5TnvsaQ2l/k3TerOT2e66R/Mibk8="
-    # AMAZON_ACCESS_KEY_ID
-    - secure: "rTYGUFH9SPN0L7QtdE6Liyy/1z7nGKxqDF9LMRsmNsIfsqxoTPKZ8bCctQ4ksuk9svynGQsLfsda5pA+YvuALzjdWmGcID6ENgOGvoFnhZO5LuJ5f6t0k8gFpV9oBquQgDWzhzrcPYvCUrUYg3GSlHjFSXdPdht3SoYn7PiDaNs="
-    # AMAZON_SECRET_ACCESS_KEY
-    - secure: "VJ4qiWMzoleLojCcluX+w0RtaFVc9ybRNo6NODkGhHSaao8+4EX4rETBQG67tNSInk1iuNqCcZAGwC8V/12RXdao3PguRSLD5IiKeT+D78dqFEoP0+yHg4PbmZ6TJXADW3gUv/IOqkW7f/UYGinRaPu7hloyiC498FpQdmMWSNI="
+  - 2.1
+
 gemfile:
   - gemfiles/Gemfile.rails-4.1-stable
   - gemfiles/Gemfile.rails-4.0-stable
   - gemfiles/Gemfile.rails-3.2-stable
+  - gemfiles/Gemfile.rails-head
   - Gemfile
+
+services:
+  - mongodb
+
+sudo: false
+
+env:
+  matrix:
+    - DEVISE_ORM=mongoid
+    - DEVISE_ORM=active_record
+
+before_install: "rm Gemfile.lock"
+
+script: "bundle exec rake test"
+
 matrix:
   allow_failures:
     - gemfile: gemfiles/Gemfile.rails-head
-services:
-  - mongodb
+
 notifications:
   email: false
   campfire:

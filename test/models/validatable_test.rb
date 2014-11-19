@@ -92,10 +92,10 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'is too short (minimum is 7 characters)', user.errors[:password].join
   end
 
-  test 'should require a password with maximum of 128 characters long' do
-    user = new_user(password: 'x'*129, password_confirmation: 'x'*129)
+  test 'should require a password with maximum of 72 characters long' do
+    user = new_user(password: 'x'*73, password_confirmation: 'x'*73)
     assert user.invalid?
-    assert_equal 'is too long (maximum is 128 characters)', user.errors[:password].join
+    assert_equal 'is too long (maximum is 72 characters)', user.errors[:password].join
   end
 
   test 'should not require password length when it\'s not changed' do
@@ -109,10 +109,10 @@ class ValidatableTest < ActiveSupport::TestCase
   end
 
   test 'should complain about length even if password is not required' do
-    user = new_user(password: 'x'*129, password_confirmation: 'x'*129)
+    user = new_user(password: 'x'*73, password_confirmation: 'x'*73)
     user.stubs(:password_required?).returns(false)
     assert user.invalid?
-    assert_equal 'is too long (maximum is 128 characters)', user.errors[:password].join
+    assert_equal 'is too long (maximum is 72 characters)', user.errors[:password].join
   end
 
   test 'should not be included in objects with invalid API' do

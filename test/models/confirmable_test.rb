@@ -315,6 +315,12 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not user.confirm!
     assert_equal user.username, old
   end
+
+  test 'should always perform validations upon confirm when ensure valid true' do
+    admin = create_admin
+    admin.stubs(:valid?).returns(false)
+    assert_not admin.confirm!(ensure_valid: true)
+  end
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase

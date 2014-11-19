@@ -56,7 +56,7 @@ module Devise
       # Confirm a user by setting it's confirmed_at to actual time. If the user
       # is already confirmed, add an error to email field. If the user is invalid
       # add errors
-      def confirm!(ensure_valid=false)
+      def confirm!(ensure_valid: false)
         pending_any_confirmation do
           if confirmation_period_expired?
             self.errors.add(:email, :confirmation_period_expired,

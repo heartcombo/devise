@@ -9,6 +9,7 @@ class Devise::RegistrationsController < DeviseController
     if @validatable
       @minimum_password_length = resource_class.password_length.min
     end
+    yield resource if block_given?
     respond_with self.resource
   end
 

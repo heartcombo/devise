@@ -9,7 +9,6 @@ gemfile:
   - gemfiles/Gemfile.rails-4.1-stable
   - gemfiles/Gemfile.rails-4.0-stable
   - gemfiles/Gemfile.rails-3.2-stable
-  - gemfiles/Gemfile.rails-head
   - Gemfile
 
 services:
@@ -25,10 +24,6 @@ env:
 before_install: "rm Gemfile.lock"
 
 script: "bundle exec rake test"
-
-matrix:
-  allow_failures:
-    - gemfile: gemfiles/Gemfile.rails-head
 
 notifications:
   email: false

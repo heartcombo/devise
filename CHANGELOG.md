@@ -1,5 +1,13 @@
 ### Unreleased
 
+* enhancements
+  * Added an ActiveSupport load hook for `:devise_controller` (by @nakhli)
+  * Location fragments are now preserved between requests (by @jbourassa)
+  * Added an `after_remembered` callback for the Rememerable module (by @BM5k)
+  * `RegistrationsController#new` and `SessionsController#new` now yields the
+    current resource (by @mtarnovan, @deivid-rodriguez)
+  * Password length validation is now limited to 72 characters for newer apps (by @lleger)
+
 ### 3.4.1 - 2014-10-29
 
 * enhancements

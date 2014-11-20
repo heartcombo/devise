@@ -363,11 +363,7 @@ module Devise
   def self.add_module(module_name, options = {})
     options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input, :insert_at)
     
-    if insert_at = options[:insert_at]
-      ALL.insert insert_at, module_name
-    else
-      ALL << module_name
-    end
+    ALL.insert (options[:insert_at] || -1), module_name
 
     if strategy = options[:strategy]
       strategy = (strategy == true ? module_name : strategy)

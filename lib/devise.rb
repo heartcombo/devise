@@ -348,6 +348,7 @@ module Devise
   #   +controller+ - Symbol representing the name of an existing or custom *controller* for this module.
   #   +route+      - Symbol representing the named *route* helper for this module.
   #   +strategy+   - Symbol representing if this module got a custom *strategy*.
+  #   +insert_at+  - Integer representing the order in which this module's model will be included
   #
   # All values, except :model, accept also a boolean and will have the same name as the given module
   # name.
@@ -357,10 +358,16 @@ module Devise
   #   Devise.add_module(:party_module)
   #   Devise.add_module(:party_module, strategy: true, controller: :sessions)
   #   Devise.add_module(:party_module, model: 'party_module/model')
+  #   Devise.add_module(:party_module, insert_at: 0)
   #
   def self.add_module(module_name, options = {})
-    ALL << module_name
-    options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input)
+    options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input, :insert_at)
+    
+    if insert_at = options[:insert_at]
+      ALL.insert insert_at, module_name
+    else
+      ALL << module_name
+    end
 
     if strategy = options[:strategy]
       strategy = (strategy == true ? module_name : strategy)

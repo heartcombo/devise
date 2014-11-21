@@ -60,6 +60,10 @@ module Devise
         !!locked_at && !lock_expired?
       end
 
+      def access_unlocked?
+        !access_locked?
+      end
+
       # Send unlock instructions by email
       def send_unlock_instructions
         raw, enc = Devise.token_generator.generate(self.class, :unlock_token)

@@ -47,8 +47,10 @@ class LockableTest < ActiveSupport::TestCase
   test "should verify whether a user is locked or not" do
     user = create_user
     assert_not user.access_locked?
+    assert     user.access_unlocked?
     user.lock_access!
-    assert user.access_locked?
+    assert_not user.access_unlocked?
+    assert     user.access_locked?
   end
 
   test "active_for_authentication? should be the opposite of locked?" do

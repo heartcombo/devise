@@ -46,7 +46,7 @@ module Devise
       end
 
       # Generate a new remember token and save the record without validations
-      # unless remember_across_browsers is true and the user already has a valid token.
+      # if remember expired (token is no longer valid) or extend_remember_period is true
       def remember_me!(extend_period=false)
         self.remember_token = self.class.remember_token if generate_remember_token?
         self.remember_created_at = Time.now.utc if generate_remember_timestamp?(extend_period)

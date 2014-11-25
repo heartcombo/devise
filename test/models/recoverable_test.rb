@@ -189,6 +189,12 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_equal User.with_reset_password_token(raw), user
   end
 
+  test 'should return the same reset password token as generated' do
+    user = create_user
+    raw  = user.send_reset_password_instructions
+    assert_equal raw, user.reset_password_token
+  end
+
   test 'should return nil if a user based on the raw token is not found' do
     assert_equal User.with_reset_password_token('random-token'), nil
   end

@@ -306,7 +306,7 @@ class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
   end
 
   test 'does not store return_to if it would cause a CookieOverflow error' do
-    get users_path, x: 'x' * ActionDispatch::Cookies::MAX_COOKIE_SIZE
+    get users_path, x: 'x' * 4096
     assert_redirected_to new_user_session_path
     assert_nil session[:"user_return_to"]
   end

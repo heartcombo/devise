@@ -6,6 +6,10 @@ module Devise
     # Used to redirect back to a desired path after sign in.
     # Included by default in all controllers.
     module StoreLocation
+      # Storing an excessively large location can cause a CookieOverflow error
+      # if the app is using cookies for session storage
+      MAX_LOCATION_SIZE = 2048
+
       # Returns and delete (if it's navigational format) the url stored in the session for
       # the given scope. Useful for giving redirect backs after sign up:
       #
@@ -32,6 +36,7 @@ module Devise
       #   redirect_to user_omniauth_authorize_path(:facebook)
       #
       def store_location_for(resource_or_scope, location)
+        return if location.size > MAX_LOCATION_SIZE
         session_key = stored_location_key_for(resource_or_scope)
         uri = parse_uri(location)
         if uri

@@ -305,6 +305,12 @@ class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
     assert_nil session[:"user_return_to"]
   end
 
+  test 'does not store return_to if it would cause a CookieOverflow error' do
+    get users_path, x: 'x' * ActionDispatch::Cookies::MAX_COOKIE_SIZE
+    assert_redirected_to new_user_session_path
+    assert_nil session[:"user_return_to"]
+  end
+
   test 'redirect to configured home path for a given scope after sign in' do
     sign_in_as_admin
     assert_equal "/admin_area/home", @request.path

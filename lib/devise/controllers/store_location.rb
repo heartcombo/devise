@@ -36,7 +36,7 @@ module Devise
       #   redirect_to user_omniauth_authorize_path(:facebook)
       #
       def store_location_for(resource_or_scope, location)
-        return if location.size > MAX_LOCATION_SIZE
+        return if location && location.size > MAX_LOCATION_SIZE
         session_key = stored_location_key_for(resource_or_scope)
         uri = parse_uri(location)
         if uri

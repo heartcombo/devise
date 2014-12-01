@@ -37,7 +37,7 @@ module Devise
     # calling model.active_for_authentication?. This method is overwritten by other devise modules. For instance,
     # :confirmable overwrites .active_for_authentication? to only return true if your model was confirmed.
     #
-    # You overwrite this method yourself, but if you do, don't forget to call super:
+    # You can overwrite this method yourself, but if you do, don't forget to call super:
     #
     #   def active_for_authentication?
     #     super && special_condition_is_valid?

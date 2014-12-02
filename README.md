@@ -13,7 +13,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Is Rack based;
 * Is a complete MVC solution based on Rails engines;
 * Allows you to have multiple models signed in at the same time;
-* Is based on a modularity concept: use just what you really need.
+* Is based on a modularity concept: use only what you really need.
 
 It's composed of 10 modules:
 
@@ -24,7 +24,7 @@ It's composed of 10 modules:
 * [Registerable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
 * [Rememberable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
 * [Trackable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
-* [Timeoutable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Timeoutable): expires sessions that have no activity in a specified period of time.
+* [Timeoutable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
 * [Validatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * [Lockable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
@@ -44,7 +44,7 @@ If you discover a problem with Devise, we would like to know about it. However, 
 
 https://github.com/plataformatec/devise/wiki/Bug-reports
 
-If you found a security bug, do *NOT* use the GitHub issue tracker. Send an email to opensource@plataformatec.com.br.
+If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to opensource@plataformatec.com.br.
 
 ### Mailing list
 
@@ -82,12 +82,12 @@ You will usually want to write tests for your changes.  To run the test suite, g
 
 ## Starting with Rails?
 
-If you are building your first Rails application, we recommend you to *not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch, today we have two resources:
+If you are building your first Rails application, we recommend you *do not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch. Today we have two resources that should help you get started:
 
 * Michael Hartl's online book: https://www.railstutorial.org/book/modeling_users
 * Ryan Bates' Railscast: http://railscasts.com/episodes/250-authentication-from-scratch
 
-Once you have solidified your understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :)
+Once you have solidified your understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :smiley:
 
 ## Getting started
 
@@ -105,7 +105,7 @@ After you install Devise and add it to your Gemfile, you need to run the generat
 rails generate devise:install
 ```
 
-The generator will install an initializer which describes ALL Devise's configuration options and you MUST take a look at it. When you are done, you are ready to add Devise to any of your models using the generator:
+The generator will install an initializer which describes ALL of Devise's configuration options. It is *imperative* that you take a look at it. When you are done, you are ready to add Devise to any of your models using the generator:
 
 ```console
 rails generate devise MODEL
@@ -121,7 +121,7 @@ Next, you need to set up the default URL options for the Devise mailer in each e
 config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 ```
 
-You should restart your application after changing Devise's configuration options. Otherwise you'll run into strange errors like users being unable to login and route helpers being undefined.
+You should restart your application after changing Devise's configuration options. Otherwise, you will run into strange errors, for example, users being unable to login and route helpers being undefined.
 
 ### Controller filters and helpers
 
@@ -151,7 +151,7 @@ You can access the session for this scope:
 user_session
 ```
 
-After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect. For instance, for a `:user` resource, the `user_root_path` will be used if it exists, otherwise the default `root_path` will be used. This means that you need to set the root inside your routes:
+After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect to. For instance, when using a `:user` resource, the `user_root_path` will be used if it exists; otherwise, the default `root_path` will be used. This means that you need to set the root inside your routes:
 
 ```ruby
 root to: "home#index"
@@ -179,7 +179,7 @@ The Devise method in your models also accepts some options to configure its modu
 devise :database_authenticatable, :registerable, :confirmable, :recoverable, stretches: 20
 ```
 
-Besides `:stretches`, you can define `:pepper`, `:encryptor`, `:confirm_within`, `:remember_for`, `:timeout_in`, `:unlock_in` among other options. For more details, see the initializer file that was created when you invoked the "devise:install" generator described above.
+Besides `:stretches`, you can define `:pepper`, `:encryptor`, `:confirm_within`, `:remember_for`, `:timeout_in`, `:unlock_in` among other options. For more details, see the initializer file that was created when you invoked the "devise:install" generator described above. This file is usually located at `/config/initializers/devise.rb`.
 
 ### Strong Parameters
 
@@ -191,7 +191,7 @@ There are just three actions in Devise that allows any set of parameters to be p
 * `sign_up` (`Devise::RegistrationsController#create`) - Permits authentication keys plus `password` and `password_confirmation`
 * `account_update` (`Devise::RegistrationsController#update`) - Permits authentication keys plus `password`, `password_confirmation` and `current_password`
 
-In case you want to permit additional parameters (the lazy way™) you can do with a simple before filter in your `ApplicationController`:
+In case you want to permit additional parameters (the lazy way™), you can do so using a simple before filter in your `ApplicationController`:
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -215,7 +215,7 @@ def configure_permitted_parameters
 end
 ```
 
-If you have some checkboxes that express the roles a user may take on registration, the browser will send those selected checkboxes as an array. An array is not one of Strong Parameters permitted scalars, so we need to configure Devise thusly:
+If you have some checkboxes that express the roles a user may take on registration, the browser will send those selected checkboxes as an array. An array is not one of Strong Parameters' permitted scalars, so we need to configure Devise in the following way:
 
 ```ruby
 def configure_permitted_parameters
@@ -226,7 +226,7 @@ For the list of permitted scalars, and how to declare permitted keys in nested h
 
 https://github.com/rails/strong_parameters#nested-parameters
 
-If you have multiple Devise models, you may want to set up different parameter sanitizer per model. In this case, we recommend inheriting from `Devise::ParameterSanitizer` and add your own logic:
+If you have multiple Devise models, you may want to set up a different parameter sanitizer per model. In this case, we recommend inheriting from `Devise::ParameterSanitizer` and adding your own logic:
 
 ```ruby
 class User::ParameterSanitizer < Devise::ParameterSanitizer
@@ -272,7 +272,7 @@ After doing so, you will be able to have views based on the role like `users/ses
 rails generate devise:views users
 ```
 
-If you want to generate only a few set of views, like the ones for the `registrable` and `confirmable` module,
+If you would like to generate only a few sets of views, like the ones for the `registerable` and `confirmable` module,
 you can pass a list of modules to the generator with the `-v` flag.
 
 ```console
@@ -336,7 +336,7 @@ If the customization at the views level is not enough, you can customize each co
 
     This is useful for triggering background jobs or logging events during certain actions.
 
-Remember that Devise uses flash messages to let users know if sign in was successful or failed. Devise expects your application to call `flash[:notice]` and `flash[:alert]` as appropriate. Do not print the entire flash hash, print only specific keys. In some circumstances, Devise adds a `:timedout` key to the flash hash, which is not meant for display. Remove this key from the hash if you intend to print the entire hash.
+Remember that Devise uses flash messages to let users know if sign in was successful or unsuccessful. Devise expects your application to call `flash[:notice]` and `flash[:alert]` as appropriate. Do not print the entire flash hash, print only specific keys. In some circumstances, Devise adds a `:timedout` key to the flash hash, which is not meant for display. Remove this key from the hash if you intend to print the entire hash.
 
 ### Configuring routes
 
@@ -356,11 +356,11 @@ devise_scope :user do
 end
 ```
 
-This way you tell Devise to use the scope `:user` when "/sign_in" is accessed. Notice `devise_scope` is also aliased as `as` in your router.
+This way, you tell Devise to use the scope `:user` when "/sign_in" is accessed. Notice `devise_scope` is also aliased as `as` in your router.
 
 ### I18n
 
-Devise uses flash messages with I18n with the flash keys :notice and :alert. To customize your app, you can set up your locale file:
+Devise uses flash messages with I18n, in conjunction with the flash keys :notice and :alert. To customize your app, you can set up your locale file:
 
 ```yaml
 en:
@@ -398,7 +398,7 @@ Take a look at our locale file to check all available messages. You may also be 
 
 https://github.com/plataformatec/devise/wiki/I18n
 
-Caution: Devise Controllers inherit from ApplicationController. If your app uses multiple locales, you should be sure to set I18n.locale in ApplicationController
+Caution: Devise Controllers inherit from ApplicationController. If your app uses multiple locales, you should be sure to set I18n.locale in ApplicationController.
 
 ### Test helpers
 
@@ -432,7 +432,7 @@ There are two things that are important to keep in mind:
 
 1. These helpers are not going to work for integration tests driven by Capybara or Webrat. They are meant to be used with functional tests only. Instead, fill in the form or explicitly set the user in session;
 
-2. If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from the router, but since functional tests do not pass through the router, it needs to be told explicitly. For example, if you are testing the user scope, simply do:
+2. If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from the router, but since functional tests do not pass through the router, it needs to be stated explicitly. For example, if you are testing the user scope, simply use:
 
     ```ruby
     @request.env["devise.mapping"] = Devise.mappings[:user]
@@ -441,7 +441,7 @@ There are two things that are important to keep in mind:
 
 ### OmniAuth
 
-Devise comes with OmniAuth support out of the box to authenticate with other providers. To use it, just specify your OmniAuth configuration in `config/initializers/devise.rb`:
+Devise comes with OmniAuth support out of the box to authenticate with other providers. To use it, simply specify your OmniAuth configuration in `config/initializers/devise.rb`:
 
 ```ruby
 config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
@@ -480,12 +480,12 @@ admin_session
 
 Alternatively, you can simply run the Devise generator.
 
-Keep in mind that those models will have completely different routes. They **do not** and **cannot** share the same controller for sign in, sign out and so on. In case you want to have different roles sharing the same actions, we recommend you to use a role-based approach, by either providing a role column or using a dedicated gem for authorization.
+Keep in mind that those models will have completely different routes. They **do not** and **cannot** share the same controller for sign in, sign out and so on. In case you want to have different roles sharing the same actions, we recommend that you use a role-based approach, by either providing a role column or using a dedicated gem for authorization.
 
 ### ActiveJob Integration
 
 If you are using Rails 4.2 and ActiveJob to deliver ActionMailer messages in the
-background through a queueing backend, you can send Devise emails through your
+background through a queuing back-end, you can send Devise emails through your
 existing queue by overriding the `send_devise_notification` method in your model.
 
 ```ruby
@@ -496,7 +496,7 @@ end
 
 ### Other ORMs
 
-Devise supports ActiveRecord (default) and Mongoid. To choose other ORM, you just need to require it in the initializer file.
+Devise supports ActiveRecord (default) and Mongoid. To select another ORM, simply require it in the initializer file.
 
 ## Additional information
 
@@ -526,4 +526,4 @@ https://github.com/plataformatec/devise/graphs/contributors
 
 MIT License. Copyright 2009-2014 Plataformatec. http://plataformatec.com.br
 
-You are not granted rights or licenses to the trademarks of the Plataformatec, including without limitation the Devise name or logo.
+You are not granted rights or licenses to the trademarks of Plataformatec, including without limitation the Devise name or logo.

@@ -252,12 +252,12 @@ module Devise
           to_adapter.find_first(devise_parameter_filter.filter(tainted_conditions).merge(opts))
         end
 
-        # Find an initialize a record setting an error if it can't be found.
+        # Find or initialize a record setting an error if it can't be found.
         def find_or_initialize_with_error_by(attribute, value, error=:invalid) #:nodoc:
           find_or_initialize_with_errors([attribute], { attribute => value }, error)
         end
 
-        # Find an initialize a group of attributes based on a list of required attributes.
+        # Find or initialize a record with group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
           attributes = attributes.slice(*required_attributes).with_indifferent_access
           attributes.delete_if { |key, value| value.blank? }

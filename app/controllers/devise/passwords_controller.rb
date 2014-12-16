@@ -23,10 +23,7 @@ class Devise::PasswordsController < DeviseController
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
     self.resource = resource_class.new
-    @validatable = devise_mapping.validatable?
-    if @validatable
-      @minimum_password_length = resource_class.password_length.min
-    end
+    set_minimum_password_length
     resource.reset_password_token = params[:reset_password_token]
   end
 

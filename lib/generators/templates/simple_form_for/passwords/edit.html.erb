@@ -7,7 +7,7 @@
   <%= f.full_error :reset_password_token %>
 
   <div class="form-inputs">
-    <%= f.input :password, label: "New password", required: true, autofocus: true %>
+    <%= f.input :password, label: "New password", required: true, autofocus: true, hint: ("#{@minimum_password_length} characters minimum" if @validatable) %>
     <%= f.input :password_confirmation, label: "Confirm your new password", required: true %>
   </div>
 

@@ -121,7 +121,7 @@ module Devise
   # an one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
   mattr_accessor :email_regexp
-  @@email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
+  @@email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\s\<]+\z/
 
   # Range validation for password length
   mattr_accessor :password_length
@@ -362,7 +362,7 @@ module Devise
   #
   def self.add_module(module_name, options = {})
     options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input, :insert_at)
-    
+
     ALL.insert (options[:insert_at] || -1), module_name
 
     if strategy = options[:strategy]

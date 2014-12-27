@@ -1,6 +1,9 @@
 ### Unreleased
 
 * enhancements
+  * The hint about minimum password length required both `@validatable` and `@minimum_password_length`
+    variables on the views, it now uses only the latter. If you have generated the views
+    relying on the `@validatable` variable, replace it with `@minimum_password_length`.
   * Added an ActiveSupport load hook for `:devise_controller` (by @nakhli)
   * Location fragments are now preserved between requests (by @jbourassa)
   * Added an `after_remembered` callback for the Rememerable module (by @BM5k)

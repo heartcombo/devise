@@ -156,8 +156,7 @@ MESSAGE
 
   # Sets minimum password length to show to user
   def set_minimum_password_length
-    @validatable = devise_mapping.validatable?
-    if @validatable
+    if devise_mapping.validatable?
       @minimum_password_length = resource_class.password_length.min
     end
   end

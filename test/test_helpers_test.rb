@@ -160,4 +160,19 @@ class TestHelpersTest < ActionController::TestCase
     get :index
     assert_match /User ##{second_user.id}/, @response.body
   end
+
+  test "creates a new warden proxy if the request object has changed" do
+    old_warden_proxy = warden
+    @request = ActionController::TestRequest.new
+    new_warden_proxy = warden
+
+    assert_not_equal old_warden_proxy, new_warden_proxy
+  end
+
+  test "doesn't create a new warden proxy if the request object hasn't changed" do
+    old_warden_proxy = warden
+    new_warden_proxy = warden
+
+    assert_equal old_warden_proxy, new_warden_proxy
+  end
 end

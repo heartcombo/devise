@@ -17,7 +17,10 @@ module Devise
       Devise.include_helpers(Devise::Controllers)
     end
 
-    initializer "devise.omniauth" do |app|
+    initializer "devise.omniauth",
+      after: :load_config_initializers,
+      before: :build_middleware_stack do |app|
+
       Devise.omniauth_configs.each do |provider, config|
         app.middleware.use config.strategy_class, *config.args do |strategy|
           config.strategy = strategy

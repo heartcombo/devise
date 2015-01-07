@@ -167,11 +167,18 @@ MESSAGE
 
   # Get message for given
   def find_message(kind, options = {})
-    options[:scope] ||= "devise.#{controller_name}"
+    options[:scope] ||= translation_scope
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
     options = devise_i18n_options(options)
     I18n.t("#{options[:resource_name]}.#{kind}", options)
+  end
+
+  # Controllers inheriting DeviseController are advised to override this
+  # method so that other controllers inheriting from them would use
+  # existing translations.
+  def translation_scope
+    "devise.#{controller_name}"
   end
 
   def clean_up_passwords(object)

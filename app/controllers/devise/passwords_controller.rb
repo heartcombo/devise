@@ -68,4 +68,8 @@ class Devise::PasswordsController < DeviseController
         resource.respond_to?(:unlock_strategy_enabled?) &&
         resource.unlock_strategy_enabled?(:email)
     end
+
+    def translation_scope
+      'devise.passwords'
+    end
 end

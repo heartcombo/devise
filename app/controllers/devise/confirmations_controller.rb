@@ -44,4 +44,8 @@ class Devise::ConfirmationsController < DeviseController
         new_session_path(resource_name)
       end
     end
+
+    def translation_scope
+      'devise.confirmations'
+    end
 end

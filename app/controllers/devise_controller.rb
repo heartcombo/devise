@@ -167,7 +167,7 @@ MESSAGE
 
   # Get message for given
   def find_message(kind, options = {})
-    options[:scope] = "devise.#{controller_name}" unless options[:scope]
+    options[:scope] ||= "devise.#{controller_name}"
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
     options = devise_i18n_options(options)

@@ -30,8 +30,7 @@ module Devise
 
       def update_tracked_fields!(request)
         update_tracked_fields(request)
-        save(validate: false) or raise "Devise trackable could not save #{inspect}." \
-          "Please make sure a model using trackable can be saved at sign in."
+        save(validate: false)
       end
     end
   end

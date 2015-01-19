@@ -64,7 +64,6 @@ module Devise
             return false
           end
 
-          self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
           saved = if self.class.reconfirmable && unconfirmed_email.present?

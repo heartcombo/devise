@@ -27,13 +27,6 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_nil user.confirmed_at
   end
 
-  test 'should clear confirmation token while confirming a user' do
-    user = create_user
-    assert_present user.confirmation_token
-    user.confirm!
-    assert_nil user.confirmation_token
-  end
-
   test 'should verify whether a user is confirmed or not' do
     assert_not new_user.confirmed?
     user = create_user
@@ -77,6 +70,16 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.save
     confirmed_user = User.confirm_by_token(user.raw_confirmation_token)
     assert confirmed_user.confirmed?
+    assert_equal "was already confirmed, please try signing in", confirmed_user.errors[:email].join
+  end
+
+  test 'should show error when a token has already been used' do
+    user = create_user
+    raw  = user.raw_confirmation_token
+    User.confirm_by_token(raw)
+    assert user.reload.confirmed?
+
+    confirmed_user = User.confirm_by_token(raw)
     assert_equal "was already confirmed, please try signing in", confirmed_user.errors[:email].join
   end
 
@@ -165,13 +168,14 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'should not reset confirmation status or token when updating email' do
     user = create_user
+    original_token = user.confirmation_token
     user.confirm!
     user.email = 'new_test@example.com'
     user.save!
 
     user.reload
     assert user.confirmed?
-    assert_nil user.confirmation_token
+    assert_equal original_token, user.confirmation_token
   end
 
   test 'should not be able to send instructions if the user is already confirmed' do
@@ -333,17 +337,20 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should generate confirmation token after changing email' do
     admin = create_admin
     assert admin.confirm!
-    assert_nil admin.confirmation_token
+    residual_token = admin.confirmation_token
     assert admin.update_attributes(email: 'new_test@example.com')
-    assert_not_nil admin.confirmation_token
+    assert_not_equal residual_token, admin.confirmation_token
   end
 
-  test 'should not generate confirmation token if skipping reconfirmation after changing email' do
+  test 'should not regenerate confirmation token or require reconfirmation if skipping reconfirmation after changing email' do
     admin = create_admin
+    original_token = admin.confirmation_token
     assert admin.confirm!
     admin.skip_reconfirmation!
     assert admin.update_attributes(email: 'new_test@example.com')
-    assert_nil admin.confirmation_token
+    assert admin.confirmed?
+    assert_not admin.pending_reconfirmation?
+    assert_equal original_token, admin.confirmation_token
   end
 
   test 'should skip sending reconfirmation email when email is changed and skip_confirmation_notification! is invoked' do

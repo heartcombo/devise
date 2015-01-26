@@ -10,6 +10,8 @@
   * `RegistrationsController#new` and `SessionsController#new` now yields the
     current resource (by @mtarnovan, @deivid-rodriguez)
   * Password length validation is now limited to 72 characters for newer apps (by @lleger)
+  * Controllers inheriting from any Devise core controller will now use appropriate translations.
+    The i18n scope can be overridden in `translation_scope`.
 
 ### 3.4.1 - 2014-10-29
 

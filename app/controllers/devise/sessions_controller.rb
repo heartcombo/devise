@@ -46,6 +46,10 @@ class Devise::SessionsController < DeviseController
     { scope: resource_name, recall: "#{controller_path}#new" }
   end
 
+  def translation_scope
+    'devise.sessions'
+  end
+
   private
 
   # Check if there is no signed in user before doing the sign out.

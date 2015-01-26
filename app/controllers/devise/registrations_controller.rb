@@ -140,4 +140,8 @@ class Devise::RegistrationsController < DeviseController
   def account_update_params
     devise_parameter_sanitizer.sanitize(:account_update)
   end
+
+  def translation_scope
+    'devise.registrations'
+  end
 end

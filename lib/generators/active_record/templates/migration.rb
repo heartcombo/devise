@@ -7,7 +7,7 @@ class DeviseCreate<%= table_name.camelize %> < ActiveRecord::Migration
       t.<%= attribute.type %> :<%= attribute.name %>
 <% end -%>
 
-      t.timestamps
+      t.timestamps, null: false
     end
 
     add_index :<%= table_name %>, :email,                unique: true

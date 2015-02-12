@@ -105,9 +105,13 @@ module Devise
       end
     end
 
+    def route(scope)
+      :"new_#{scope}_session_url"
+    end
+
     def scope_url
       opts  = {}
-      route = :"new_#{scope}_session_url"
+      route = route(scope)
       opts[:format] = request_format unless skip_format?
 
       config = Rails.application.config

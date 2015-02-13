@@ -39,6 +39,7 @@ class Devise::PasswordsController < DeviseController
       sign_in(resource_name, resource)
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
+      set_flash_message(:alert, :invalid_token) if is_flashing_format? && resource.errors[:reset_password_token].present?
       respond_with resource
     end
   end

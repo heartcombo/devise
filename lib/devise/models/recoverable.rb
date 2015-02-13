@@ -8,6 +8,8 @@ module Devise
     # Recoverable adds the following options to devise_for:
     #
     #   * +reset_password_keys+: the keys you want to use when recovering the password for an account
+    #   * +reset_password_within+: the time period within which the password must be reset or the token expires.
+    #   * +sign_in_after_reset_password+: whether or not to sign in the user automatically after a password reset.
     #
     # == Examples
     #
@@ -150,7 +152,7 @@ module Devise
           recoverable
         end
 
-        Devise::Models.config(self, :reset_password_keys, :reset_password_within)
+        Devise::Models.config(self, :reset_password_keys, :reset_password_within, :sign_in_after_reset_password)
       end
     end
   end

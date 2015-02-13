@@ -204,6 +204,10 @@ module Devise
   mattr_accessor :reset_password_within
   @@reset_password_within = 6.hours
 
+  # When set to false, resetting a password does not automatically sign in a user
+  mattr_accessor :sign_in_after_reset_password
+  @@sign_in_after_reset_password = true
+
   # The default scope which is used by warden.
   mattr_accessor :default_scope
   @@default_scope = nil
@@ -362,7 +366,7 @@ module Devise
   #
   def self.add_module(module_name, options = {})
     options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input, :insert_at)
-    
+
     ALL.insert (options[:insert_at] || -1), module_name
 
     if strategy = options[:strategy]

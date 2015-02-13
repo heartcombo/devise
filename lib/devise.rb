@@ -287,6 +287,10 @@ module Devise
   mattr_accessor :token_generator
   @@token_generator = nil
 
+  # Stores number of iterations for KeyGenerator
+  mattr_accessor :key_generator_iterations
+  @@key_generator_iterations = nil
+
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup
@@ -362,7 +366,7 @@ module Devise
   #
   def self.add_module(module_name, options = {})
     options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input, :insert_at)
-    
+
     ALL.insert (options[:insert_at] || -1), module_name
 
     if strategy = options[:strategy]

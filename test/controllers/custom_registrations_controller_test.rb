@@ -32,4 +32,9 @@ class CustomRegistrationsControllerTest < ActionController::TestCase
     put :update, { user: { } }
     assert @controller.update_block_called?, "update failed to yield resource to provided block"
   end
+
+  test "yield resource to block on new" do
+    get :new
+    assert @controller.new_block_called?, "new failed to yield resource to provided block"
+  end
 end

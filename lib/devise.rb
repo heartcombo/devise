@@ -87,7 +87,7 @@ module Devise
 
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
-  @@authentication_keys = [ :email ]
+  @@authentication_keys = [:email]
 
   # Request keys used when authenticating a user.
   mattr_accessor :request_keys
@@ -95,7 +95,7 @@ module Devise
 
   # Keys that should be case-insensitive.
   mattr_accessor :case_insensitive_keys
-  @@case_insensitive_keys = [ :email ]
+  @@case_insensitive_keys = [:email]
 
   # Keys that should have whitespace stripped.
   mattr_accessor :strip_whitespace_keys
@@ -150,7 +150,7 @@ module Devise
 
   # Defines which key will be used when confirming an account.
   mattr_accessor :confirmation_keys
-  @@confirmation_keys = [ :email ]
+  @@confirmation_keys = [:email]
 
   # Defines if email should be reconfirmable.
   # False by default for backwards compatibility.
@@ -181,7 +181,7 @@ module Devise
 
   # Defines which key will be used when locking and unlocking an account
   mattr_accessor :unlock_keys
-  @@unlock_keys = [ :email ]
+  @@unlock_keys = [:email]
 
   # Defines which strategy can be used to unlock an account.
   # Values: :email, :time, :both
@@ -198,7 +198,7 @@ module Devise
 
   # Defines which key will be used when recovering the password for an account
   mattr_accessor :reset_password_keys
-  @@reset_password_keys = [ :email ]
+  @@reset_password_keys = [:email]
 
   # Time interval you can reset your password with a reset password key
   mattr_accessor :reset_password_within

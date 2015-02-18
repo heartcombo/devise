@@ -83,7 +83,7 @@ module Devise
 
       devise_modules_hook! do
         include Devise::Models::Authenticatable
-        include Devise::Models::Notifiable
+        include Devise::Models::Instrumentation
 
         selected_modules.each do |m|
           mod = Devise::Models.const_get(m.to_s.classify)
@@ -118,4 +118,4 @@ module Devise
 end
 
 require 'devise/models/authenticatable'
-require 'devise/models/notifiable'
+require 'devise/models/instrumentation'

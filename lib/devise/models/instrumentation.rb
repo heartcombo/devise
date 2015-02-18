@@ -5,8 +5,8 @@ module Devise
 
       protected
 
-        def instrument name, payload = nil, &block
-          payload ||= default_instrument_payload
+        def instrument name, payload = {}, &block
+          payload.reverse_merge! default_instrument_payload
           ActiveSupport::Notifications.instrument name, payload, &block
         end
 

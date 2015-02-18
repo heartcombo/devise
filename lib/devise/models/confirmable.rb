@@ -118,7 +118,7 @@ module Devise
         end
 
         opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
-        instrument 'send_confirmation_instructions.confirmable.devise', default_instrument_payload.merge(opts)
+        instrument 'send_confirmation_instructions.confirmable.devise', opts
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 

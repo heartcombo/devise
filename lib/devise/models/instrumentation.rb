@@ -1,7 +1,7 @@
 module Devise
   module Models
     # Gather methods used for blasting ActiveSupport::Notifications
-    module Notifiable
+    module Instrumentation
 
       protected
 

@@ -207,10 +207,7 @@ module Devise
           :http_authentication_key)
 
         def serialize_into_session(record)
-          # This is a work around a mongoid bug, that's why we do
-          # the whole *record.to_key dance. Hopefully we can remove
-          # this once mongoid generates proper to_key ids.
-          [[*record.to_key].first.to_s, record.authenticatable_salt]
+          [record.to_key, record.authenticatable_salt]
         end
 
         def serialize_from_session(key, salt)

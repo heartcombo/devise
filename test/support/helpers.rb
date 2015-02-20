@@ -70,4 +70,17 @@ class ActiveSupport::TestCase
       end
     end
   end
+
+  def with_subscription_to notification_name, &block
+    @sent_notifications = []
+
+    subscription = ActiveSupport::Notifications.subscribe(notification_name) do |*args|
+      @sent_notifications << ActiveSupport::Notifications::Event.new(*args)
+    end
+
+    yield
+  ensure
+    ActiveSupport::Notifications.unsubscribe(subscription)
+    @sent_notifications = nil
+  end
 end

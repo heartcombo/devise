@@ -185,7 +185,7 @@ module Devise
       #     end
       #
       def send_devise_notification(notification, *args)
-        instrument "send.#{notification}.notification.devise", default_instrument_payload do
+        instrument "send.#{notification}.notification.devise" do
           message = devise_mailer.send(notification, self, *args)
           # Remove once we move to Rails 4.2+ only.
           if message.respond_to?(:deliver_now)

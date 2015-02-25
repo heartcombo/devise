@@ -1,3 +1,4 @@
+require 'active_model/version'
 require 'devise/hooks/activatable'
 require 'devise/hooks/csrf_cleaner'
 
@@ -97,7 +98,7 @@ module Devise
 
       array = %w(serializable_hash)
       # to_xml does not call serializable_hash on 3.1
-      array << "to_xml" if Rails::VERSION::STRING[0,3] == "3.1"
+      array << "to_xml" if ActiveModel::VERSION::STRING[0,3] == "3.1"
 
       array.each do |method|
         class_eval <<-RUBY, __FILE__, __LINE__

@@ -6,11 +6,12 @@ class DeviseController < Devise.parent_controller.constantize
 
   helpers = %w(resource scope_name resource_name signed_in_resource
                resource_class resource_params devise_mapping)
-  hide_action(*helpers)
   helper_method(*helpers)
 
   prepend_before_filter :assert_is_devise_resource!
   respond_to :html if mimes_for_respond_to.empty?
+
+  protected
 
   # Gets the actual resource stored in the instance variable
   def resource
@@ -38,6 +39,7 @@ class DeviseController < Devise.parent_controller.constantize
     @devise_mapping ||= request.env["devise.mapping"]
   end
 
+
   # Override prefixes to consider the scoped view.
   # Notice we need to check for the request due to a bug in
   # Action Controller tests that forces _prefixes to be
@@ -50,9 +52,6 @@ class DeviseController < Devise.parent_controller.constantize
     end
   end
 
-  hide_action :_prefixes
-
-  protected
 
   # Checks whether it's a devise mapped resource or not.
   def assert_is_devise_resource! #:nodoc:

@@ -111,7 +111,7 @@ module Devise
       # Generate a timestamp if extend_remember_period is true, if no remember_token
       # exists, or if an existing remember token has expired.
       def generate_remember_timestamp?(extend_period) #:nodoc:
-        extend_period || remember_created_at.nil? || remember_expired?
+        extend_period || remember_expired?
       end
 
       module ClassMethods

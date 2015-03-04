@@ -71,6 +71,12 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal :user, Devise::Mapping.find_scope!(Class.new(User).new)
   end
 
+  test 'find scope uses devise_scope' do
+    user = User.new
+    def user.devise_scope; :special_scope; end
+    assert_equal :special_scope, Devise::Mapping.find_scope!(user)
+  end
+
   test 'find scope raises an error if cannot be found' do
     assert_raise RuntimeError do
       Devise::Mapping.find_scope!(String)

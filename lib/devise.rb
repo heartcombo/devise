@@ -57,22 +57,6 @@ module Devise
   mattr_accessor :secret_key
   @@secret_key = nil
 
-  [ :allow_insecure_token_lookup,
-    :allow_insecure_sign_in_after_confirmation,
-    :token_authentication_key ].each do |method|
-    class_eval <<-RUBY
-    def self.#{method}
-      ActiveSupport::Deprecation.warn "Devise.#{method} is deprecated " \
-        "and has no effect"
-    end
-
-    def self.#{method}=(val)
-      ActiveSupport::Deprecation.warn "Devise.#{method}= is deprecated " \
-        "and has no effect"
-    end
-    RUBY
-  end
-
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}

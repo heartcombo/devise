@@ -6,7 +6,7 @@ module Devise
       # Return true if the given scope is signed in session. If no scope given, return
       # true if any scope is signed in. Does not run authentication hooks.
       def signed_in?(scope=nil)
-        [ scope || Devise.mappings.keys ].flatten.any? do |_scope|
+        [scope || Devise.mappings.keys].flatten.any? do |_scope|
           warden.authenticate?(scope: _scope)
         end
       end

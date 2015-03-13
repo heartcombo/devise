@@ -8,7 +8,7 @@ class DeviseController < Devise.parent_controller.constantize
                resource_class resource_params devise_mapping)
   helper_method(*helpers)
 
-  prepend_before_filter :assert_is_devise_resource!
+  prepend_before_action :assert_is_devise_resource!
   respond_to :html if mimes_for_respond_to.empty?
 
   protected

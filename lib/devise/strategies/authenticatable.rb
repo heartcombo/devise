@@ -108,7 +108,10 @@ module Devise
         params_auth_hash.is_a?(Hash)
       end
 
-      # Check if password is present.
+      # Note: unlike `Model.valid_password?`, this method does not actually
+      # ensure that the password in the params matches the password stored in
+      # the database. It only checks if the password is *present*. Do not rely
+      # on this method for validating that a given password is correct.
       def valid_password?
         password.present?
       end

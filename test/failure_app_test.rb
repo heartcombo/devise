@@ -26,6 +26,22 @@ class FailureTest < ActiveSupport::TestCase
     end
   end
 
+  class FakeEngineApp < Devise::FailureApp
+    class FakeEngine
+      def new_user_on_engine_session_url _
+        '/user_on_engines/sign_in'
+      end
+    end
+
+    def main_app
+      raise 'main_app router called instead of fake_engine'
+    end
+
+    def fake_engine
+      @fake_engine ||= FakeEngine.new
+    end
+  end
+
   def self.context(name, &block)
     instance_eval(&block)
   end
@@ -83,6 +99,13 @@ class FailureTest < ActiveSupport::TestCase
         assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
         assert_equal 'http://sub.test.host/', @response.second['Location']
       end
+    end
+
+    test 'returns to the default redirect location considering the router for supplied scope' do
+      call_failure app: FakeEngineApp, 'warden.options' => { scope: :user_on_engine }
+      assert_equal 302, @response.first
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://test.host/user_on_engines/sign_in', @response.second['Location']
     end
 
     if Rails.application.config.respond_to?(:relative_url_root)

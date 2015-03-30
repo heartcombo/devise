@@ -120,7 +120,8 @@ module Devise
         opts[:script_name] = config.relative_url_root
       end
 
-      context = send(Devise.available_router_name)
+      router_name = Devise.mappings[scope].router_name || Devise.available_router_name
+      context = send(router_name)
 
       if context.respond_to?(route)
         context.send(route, opts)

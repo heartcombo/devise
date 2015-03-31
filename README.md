@@ -516,7 +516,7 @@ Devise supports ActiveRecord (default) and Mongoid. To select another ORM, simpl
 
 ### Heroku
 
-Using Devise on Heroku with Ruby on Rails 3.1 requires setting:
+Using Devise on Heroku with Ruby on Rails 3.2 requires setting:
 
 ```ruby
 config.assets.initialize_on_precompile = false

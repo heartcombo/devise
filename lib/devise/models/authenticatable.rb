@@ -96,29 +96,22 @@ module Devise
       def authenticatable_salt
       end
 
-      array = %w(serializable_hash)
-      # to_xml does not call serializable_hash on 3.1
-      array << "to_xml" if ActiveModel::VERSION::STRING[0,3] == "3.1"
+      # Redefine serializable_hash in models for more secure defaults.
+      # By default, it removes from the serializable model all attributes that
+      # are *not* accessible. You can remove this default by using :force_except
+      # and passing a new list of attributes you want to exempt. All attributes
+      # given to :except will simply add names to exempt to Devise internal list.
+      def serializable_hash(options = nil)
+        options ||= {}
+        options[:except] = Array(options[:except])
 
-      array.each do |method|
-        class_eval <<-RUBY, __FILE__, __LINE__
-          # Redefine to_xml and serializable_hash in models for more secure defaults.
-          # By default, it removes from the serializable model all attributes that
-          # are *not* accessible. You can remove this default by using :force_except
-          # and passing a new list of attributes you want to exempt. All attributes
-          # given to :except will simply add names to exempt to Devise internal list.
-          def #{method}(options=nil)
-            options ||= {}
-            options[:except] = Array(options[:except])
+        if options[:force_except]
+          options[:except].concat Array(options[:force_except])
+        else
+          options[:except].concat BLACKLIST_FOR_SERIALIZATION
+        end
 
-            if options[:force_except]
-              options[:except].concat Array(options[:force_except])
-            else
-              options[:except].concat BLACKLIST_FOR_SERIALIZATION
-            end
-            super(options)
-          end
-        RUBY
+        super(options)
       end
 
       protected

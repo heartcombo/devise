@@ -201,7 +201,7 @@ module Devise
         #   confirmation_period_expired?  # will always return false
         #
         def confirmation_period_expired?
-          self.class.confirm_within && (Time.now > self.confirmation_sent_at + self.class.confirm_within)
+          self.class.confirm_within && self.confirmation_sent_at && (Time.now > self.confirmation_sent_at + self.class.confirm_within)
         end
 
         # Checks whether the record requires any confirmation.

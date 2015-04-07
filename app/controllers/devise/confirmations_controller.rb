@@ -1,4 +1,6 @@
 class Devise::ConfirmationsController < DeviseController
+  prepend_before_filter :require_no_authentication
+
   # GET /resource/confirmation/new
   def new
     self.resource = resource_class.new

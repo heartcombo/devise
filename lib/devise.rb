@@ -466,7 +466,8 @@ module Devise
 
   # Generate a friendly string randomly to be used as token.
   def self.friendly_token
-    SecureRandom.urlsafe_base64(15).tr('lIO0', 'sxyz').last.tr('-', '4')
+    token = SecureRandom.urlsafe_base64(15).tr('lIO0', 'sxyz')
+    (token.last == '-') ? token.chop + '4' : token
   end
 
   # constant-time comparison algorithm to prevent timing attacks

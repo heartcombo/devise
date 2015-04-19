@@ -15,7 +15,7 @@ class ActionDispatch::IntegrationTest
         created_at: Time.now.utc
       )
       user.update_attribute(:confirmation_sent_at, options[:confirmation_sent_at]) if options[:confirmation_sent_at]
-      user.confirm! unless options[:confirm] == false
+      user.confirm unless options[:confirm] == false
       user.lock_access! if options[:locked] == true
       user
     end
@@ -28,7 +28,7 @@ class ActionDispatch::IntegrationTest
         password: '123456', password_confirmation: '123456',
         active: options[:active]
       )
-      admin.confirm! unless options[:confirm] == false
+      admin.confirm unless options[:confirm] == false
       admin
     end
   end

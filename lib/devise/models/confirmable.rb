@@ -24,7 +24,7 @@ module Devise
     #
     # == Examples
     #
-    #   User.find(1).confirm!      # returns true unless it's already confirmed
+    #   User.find(1).confirm       # returns true unless it's already confirmed
     #   User.find(1).confirmed?    # true/false
     #   User.find(1).send_confirmation_instructions # manually send instructions
     #
@@ -56,7 +56,7 @@ module Devise
       # Confirm a user by setting it's confirmed_at to actual time. If the user
       # is already confirmed, add an error to email field. If the user is invalid
       # add errors
-      def confirm!(args={})
+      def confirm(args={})
         pending_any_confirmation do
           if confirmation_period_expired?
             self.errors.add(:email, :confirmation_period_expired,
@@ -80,6 +80,11 @@ module Devise
           after_confirmation if saved
           saved
         end
+      end
+
+      def confirm!(args={})
+        ActiveSupport::Deprecation.warn "confirm! is deprecated in favor of confirm"
+        confirm(args)
       end
 
       # Verifies whether a user is confirmed or not
@@ -284,7 +289,7 @@ module Devise
           confirmation_token = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
 
           confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
-          confirmable.confirm! if confirmable.persisted?
+          confirmable.confirm if confirmable.persisted?
           confirmable.confirmation_token = original_token
           confirmable
         end

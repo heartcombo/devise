@@ -36,7 +36,7 @@ class SessionsControllerTest < ActionController::TestCase
     request.session["user_return_to"] = 'foo.bar'
 
     user = create_user
-    user.confirm!
+    user.confirm
     post :create, user: {
       email: user.email,
       password: user.password
@@ -50,7 +50,7 @@ class SessionsControllerTest < ActionController::TestCase
     request.session["user_return_to"] = 'foo.bar'
 
     user = create_user
-    user.confirm!
+    user.confirm
     post :create, format: 'json', user: {
       email: user.email,
       password: user.password
@@ -72,7 +72,7 @@ class SessionsControllerTest < ActionController::TestCase
   test "#destroy doesn't set the flash if the requested format is not navigational" do
     request.env["devise.mapping"] = Devise.mappings[:user]
     user = create_user
-    user.confirm!
+    user.confirm
     post :create, format: 'json', user: {
       email: user.email,
       password: user.password

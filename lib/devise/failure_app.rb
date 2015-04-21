@@ -49,17 +49,19 @@ module Devise
 
     def recall
       env["PATH_INFO"]  = attempted_path
-      flash.now[:alert] = i18n_message(:invalid)
+      flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
       self.response = recall_app(warden_options[:recall]).call(env)
     end
 
     def redirect
       store_location!
-      if flash[:timedout] && flash[:alert]
-        flash.keep(:timedout)
-        flash.keep(:alert)
-      else
-        flash[:alert] = i18n_message
+      if is_flashing_format?
+        if flash[:timedout] && flash[:alert]
+          flash.keep(:timedout)
+          flash.keep(:alert)
+        else
+          flash[:alert] = i18n_message
+        end
       end
       redirect_to redirect_url
     end
@@ -91,7 +93,7 @@ module Devise
 
     def redirect_url
       if warden_message == :timeout
-        flash[:timedout] = true
+        flash[:timedout] = true if is_flashing_format?
 
         path = if request.get?
           attempted_path
@@ -210,6 +212,12 @@ module Devise
 
     def is_navigational_format?
       Devise.navigational_formats.include?(request_format)
+    end
+
+    # Check if flash messages should be emitted. Default is to do it on
+    # navigational formats
+    def is_flashing_format?
+      is_navigational_format?
     end
 
     def request_format

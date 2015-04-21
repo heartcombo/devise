@@ -414,7 +414,7 @@ and you have set #{mapping.fullpath.inspect}. You can work around by passing
 
     match "/users/auth/:action/callback",
       constraints: { action: /google|facebook/ },
-      to: "devise/omniauth_callbacks",
+      to: "devise/omniauth_callbacks#:action",
       as: :omniauth_callback,
       via: [:get, :post]
 ERROR

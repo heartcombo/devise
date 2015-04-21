@@ -23,13 +23,13 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should reset password and password confirmation from params' do
     user = create_user
-    user.reset_password!('123456789', '987654321')
+    user.reset_password('123456789', '987654321')
     assert_equal '123456789', user.password
     assert_equal '987654321', user.password_confirmation
   end
 
   test 'should reset password and save the record' do
-    assert create_user.reset_password!('123456789', '123456789')
+    assert create_user.reset_password('123456789', '123456789')
   end
 
   test 'should clear reset password token while reseting the password' do
@@ -38,7 +38,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
     user.send_reset_password_instructions
     assert_present user.reset_password_token
-    assert user.reset_password!('123456789', '123456789')
+    assert user.reset_password('123456789', '123456789')
     assert_nil user.reset_password_token
   end
 
@@ -46,14 +46,14 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     user.send_reset_password_instructions
     assert_present user.reset_password_token
-    assert_not user.reset_password!('123456789', '987654321')
+    assert_not user.reset_password('123456789', '987654321')
     assert_present user.reset_password_token
   end
 
   test 'should not reset password with invalid data' do
     user = create_user
     user.stubs(:valid?).returns(false)
-    assert_not user.reset_password!('123456789', '987654321')
+    assert_not user.reset_password('123456789', '987654321')
   end
 
   test 'should reset reset password token and send instructions by email' do

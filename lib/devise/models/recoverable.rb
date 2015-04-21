@@ -14,7 +14,7 @@ module Devise
     # == Examples
     #
     #   # resets the user password and save the record, true if valid passwords are given, otherwise false
-    #   User.find(1).reset_password!('password123', 'password123')
+    #   User.find(1).reset_password('password123', 'password123')
     #
     #   # only resets the user password, without saving the record
     #   user = User.find(1)
@@ -32,7 +32,7 @@ module Devise
 
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.
-      def reset_password!(new_password, new_password_confirmation)
+      def reset_password(new_password, new_password_confirmation)
         self.password = new_password
         self.password_confirmation = new_password_confirmation
 
@@ -42,6 +42,11 @@ module Devise
         end
 
         save
+      end
+
+      def reset_password!(new_password, new_password_confirmation)
+        ActiveSupport::Deprecation.warn "reset_password! is deprecated in favor of reset_password"
+        reset_password(new_password, new_password_confirmation)
       end
 
       # Resets reset password token and send reset password instructions by email.
@@ -142,7 +147,7 @@ module Devise
 
           if recoverable.persisted?
             if recoverable.reset_password_period_valid?
-              recoverable.reset_password!(attributes[:password], attributes[:password_confirmation])
+              recoverable.reset_password(attributes[:password], attributes[:password_confirmation])
             else
               recoverable.errors.add(:reset_password_token, :expired)
             end

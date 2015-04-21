@@ -8,7 +8,7 @@ class CustomRegistrationsControllerTest < ActionController::TestCase
   setup do
     request.env["devise.mapping"] = Devise.mappings[:user]
     @password = 'password'
-    @user = create_user(password: @password, password_confirmation: @password).tap(&:confirm!)
+    @user = create_user(password: @password, password_confirmation: @password).tap(&:confirm)
   end
 
   test "yield resource to block on create success" do

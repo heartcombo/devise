@@ -13,6 +13,10 @@
   * Controllers inheriting from any Devise core controller will now use appropriate translations.
     The i18n scope can be overridden in `translation_scope`.
 
+* deprecations
+  * `confirm!` has been deprecated in favor of `confirm`.
+  * `reset_password!` has been deprecated in favor of `reset_password`.
+
 ### 3.4.1 - 2014-10-29
 
 * enhancements

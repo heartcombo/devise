@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.3'
 
   s.add_dependency("warden", "~> 1.2.3")
-  s.add_dependency("orm_adapter", "~> 0.1")
+  s.add_dependency("orm_adapter", "~> 0.6")
   s.add_dependency("bcrypt", "~> 3.0")
   s.add_dependency("thread_safe", "~> 0.1")
   s.add_dependency("railties", ">= 3.2.6", "< 5")

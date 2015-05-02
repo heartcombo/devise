@@ -91,7 +91,7 @@ class LockTest < ActionDispatch::IntegrationTest
   test "user should not send a new e-mail if already locked" do
     user = create_user(locked: true)
     user.failed_attempts = User.maximum_attempts + 1
-    user.save!
+    user.class.to_adapter.save!(user)
 
     ActionMailer::Base.deliveries.clear
 
@@ -107,7 +107,7 @@ class LockTest < ActionDispatch::IntegrationTest
 
       user = create_user(locked: true)
       user.failed_attempts = User.maximum_attempts + 1
-      user.save!
+      user.class.to_adapter.save!(user)
 
       sign_in_as_user(password: "invalid")
       assert_contain "You are locked!"
@@ -121,7 +121,7 @@ class LockTest < ActionDispatch::IntegrationTest
 
       user = create_user(locked: true)
       user.failed_attempts = User.maximum_attempts + 1
-      user.save!
+      user.class.to_adapter.save!(user)
 
       sign_in_as_user(password: "123456")
       assert_contain "You are locked!"

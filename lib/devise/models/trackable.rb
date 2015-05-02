@@ -30,7 +30,7 @@ module Devise
 
       def update_tracked_fields!(request)
         update_tracked_fields(request)
-        save(validate: false)
+        self.class.to_adapter.save(self, validate: false)
       end
     end
   end

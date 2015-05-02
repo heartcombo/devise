@@ -81,7 +81,7 @@ class RememberableTest < ActiveSupport::TestCase
   test 'forget_me should not try to update resource if it has been destroyed' do
     resource = create_resource
     resource.expects(:remember_created_at).never
-    resource.expects(:save).never
+    resource.class.to_adapter.expects(:save).never
 
     resource.destroy
     resource.forget_me!
@@ -133,7 +133,7 @@ class RememberableTest < ActiveSupport::TestCase
       resource = create_resource
       resource.remember_me!
       resource.remember_created_at = 2.days.ago
-      resource.save
+      resource.class.to_adapter.save(resource)
       assert resource.remember_expired?
     end
   end
@@ -143,7 +143,7 @@ class RememberableTest < ActiveSupport::TestCase
       resource = create_resource
       resource.remember_me!
       resource.remember_created_at = (30.days.ago + 2.minutes)
-      resource.save
+      resource.class.to_adapter.save(resource)
       assert_not resource.remember_expired?
     end
   end
@@ -155,7 +155,7 @@ class RememberableTest < ActiveSupport::TestCase
       assert resource.remember_created_at
 
       resource.remember_created_at = old = 10.minutes.ago
-      resource.save
+      resource.class.to_adapter.save(resource)
 
       resource.remember_me!(false)
       assert_not_equal old.to_i, resource.remember_created_at.to_i
@@ -169,7 +169,7 @@ class RememberableTest < ActiveSupport::TestCase
       assert resource.remember_created_at
 
       resource.remember_created_at = old = 10.minutes.ago.utc
-      resource.save
+      resource.class.to_adapter.save(resource)
 
       resource.remember_me!(false)
       assert_equal old.to_i, resource.remember_created_at.to_i
@@ -183,7 +183,7 @@ class RememberableTest < ActiveSupport::TestCase
       assert resource.remember_created_at
 
       resource.remember_created_at = old = 10.minutes.ago
-      resource.save
+      resource.class.to_adapter.save(resource)
 
       resource.remember_me!(true)
       assert_not_equal old, resource.remember_created_at

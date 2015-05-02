@@ -67,7 +67,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should generate errors for a user email if user is already confirmed' do
     user = create_user
     user.confirmed_at = Time.now
-    user.save
+    user.class.to_adapter.save(user)
     confirmed_user = User.confirm_by_token(user.raw_confirmation_token)
     assert confirmed_user.confirmed?
     assert_equal "was already confirmed, please try signing in", confirmed_user.errors[:email].join
@@ -93,7 +93,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_email_not_sent do
       user = new_user
       user.stubs(:valid?).returns(false)
-      user.save
+      user.class.to_adapter.save(user)
     end
   end
 
@@ -102,7 +102,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.skip_confirmation!
 
     assert_email_not_sent do
-      user.save!
+      user.class.to_adapter.save!(user)
       assert_nil user.confirmation_token
       assert_not_nil user.confirmed_at
     end
@@ -113,7 +113,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.skip_confirmation_notification!
 
     assert_email_not_sent do
-      user.save!
+      user.class.to_adapter.save!(user)
       assert !user.confirmed?
     end
   end
@@ -122,7 +122,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_email_not_sent do
       user = new_user
       user.email = ''
-      user.save(validate: false)
+      user.class.to_adapter.save(user, validate: false)
     end
   end
 
@@ -153,7 +153,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should always have confirmation token when email is sent' do
     user = new_user
     user.instance_eval { def confirmation_required?; false end }
-    user.save
+    user.class.to_adapter.save(user)
     user.send_confirmation_instructions
     assert_not_nil user.reload.confirmation_token
   end
@@ -162,7 +162,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     user.email = 'new_test@example.com'
     assert_email_not_sent do
-      user.save!
+      user.class.to_adapter.save!(user)
     end
   end
 
@@ -171,7 +171,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     original_token = user.confirmation_token
     user.confirm
     user.email = 'new_test@example.com'
-    user.save!
+    user.class.to_adapter.save!(user)
 
     user.reload
     assert user.confirmed?
@@ -238,7 +238,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should not be active without confirmation' do
     user = create_user
     user.confirmation_sent_at = nil
-    user.save
+    user.class.to_adapter.save(user)
     assert_not user.reload.active_for_authentication?
   end
 
@@ -246,7 +246,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     user.instance_eval { def confirmation_required?; false end }
     user.confirmation_sent_at = nil
-    user.save
+    user.class.to_adapter.save(user)
     assert user.reload.active_for_authentication?
   end
 
@@ -393,7 +393,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert admin.confirm
     assert_email_not_sent do
       admin.email = ''
-      admin.save(validate: false)
+      admin.class.to_adapter.save(admin, validate: false)
     end
   end
 
@@ -444,7 +444,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should find admin with email in unconfirmed_emails' do
     admin = create_admin
     admin.unconfirmed_email = "new_test@email.com"
-    assert admin.save
+    assert admin.class.to_adapter.save(admin)
     admin = Admin.find_by_unconfirmed_email_with_errors(email: "new_test@email.com")
     assert admin.persisted?
   end

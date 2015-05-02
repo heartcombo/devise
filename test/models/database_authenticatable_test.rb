@@ -9,7 +9,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = new_user(email: email)
 
     assert_equal email, user.email
-    user.save!
+    user.class.to_adapter.save!(user)
     assert_equal email.downcase, user.email
   end
 
@@ -20,7 +20,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = UserWithVirtualAttributes.new(attributes)
 
     assert_equal confirmation, user.email_confirmation
-    user.save!
+    user.class.to_adapter.save!(user)
     assert_equal confirmation.downcase, user.email_confirmation
   end
 
@@ -29,7 +29,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     original_email = email.dup
     user           = new_user(email: email)
 
-    user.save!
+    user.class.to_adapter.save!(user)
     assert_equal original_email, email
   end
 
@@ -39,7 +39,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = new_user(email: email)
 
     assert_equal email, user.email
-    user.save!
+    user.class.to_adapter.save!(user)
     assert_equal email.strip, user.email
   end
 
@@ -48,7 +48,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     original_email = email.dup
     user           = new_user(email: email)
 
-    user.save!
+    user.class.to_adapter.save!(user)
     assert_equal original_email, email
   end
 
@@ -113,7 +113,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = create_user
     encrypted_password = user.encrypted_password
     user.password = user.password_confirmation = 'new_password'
-    user.save!
+    user.class.to_adapter.save!(user)
     assert_not_equal encrypted_password, user.encrypted_password
   end
 
@@ -164,7 +164,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'should run validations even when current password is invalid or blank' do
     user = UserWithValidation.create!(valid_attributes)
-    user.save
+    user.class.to_adapter.save(user)
     assert user.persisted?
     assert_not user.update_with_password(username: "")
     assert_match "usertest", user.reload.username

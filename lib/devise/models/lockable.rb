@@ -43,7 +43,7 @@ module Devise
         if unlock_strategy_enabled?(:email) && opts.fetch(:send_instructions, true)
           send_unlock_instructions
         else
-          save(validate: false)
+          self.class.to_adapter.save(self, validate: false)
         end
       end
 
@@ -52,7 +52,7 @@ module Devise
         self.locked_at = nil
         self.failed_attempts = 0 if respond_to?(:failed_attempts=)
         self.unlock_token = nil  if respond_to?(:unlock_token=)
-        save(validate: false)
+        self.class.to_adapter.save(self, validate: false)
       end
 
       # Verifies whether a user is locked or not.
@@ -64,7 +64,7 @@ module Devise
       def send_unlock_instructions
         raw, enc = Devise.token_generator.generate(self.class, :unlock_token)
         self.unlock_token = enc
-        self.save(validate: false)
+        self.class.to_adapter.save(self, validate: false)
         send_devise_notification(:unlock_instructions, raw, {})
         raw
       end
@@ -104,7 +104,7 @@ module Devise
           if attempts_exceeded?
             lock_access! unless access_locked?
           else
-            save(validate: false)
+            self.class.to_adapter.save(self, validate: false)
           end
           false
         end

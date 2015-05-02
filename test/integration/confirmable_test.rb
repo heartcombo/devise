@@ -105,7 +105,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
   test 'already confirmed user should not be able to confirm the account again' do
     user = create_user(confirm: false)
     user.confirmed_at = Time.now
-    user.save
+    user.class.to_adapter.save(user)
     visit_user_confirmation_with_token(user.raw_confirmation_token)
 
     assert_have_selector '#error_explanation'
@@ -115,7 +115,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
   test 'already confirmed user should not be able to confirm the account again neither request confirmation' do
     user = create_user(confirm: false)
     user.confirmed_at = Time.now
-    user.save
+    user.class.to_adapter.save(user)
 
     visit_user_confirmation_with_token(user.raw_confirmation_token)
     assert_contain 'already confirmed'

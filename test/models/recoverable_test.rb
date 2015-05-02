@@ -163,7 +163,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
       old_password = user.password
       user.reset_password_sent_at = 2.days.ago
-      user.save!
+      user.class.to_adapter.save!(user)
 
       reset_password_user = User.reset_password_by_token(
         reset_password_token: raw,

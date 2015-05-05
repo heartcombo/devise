@@ -5,6 +5,14 @@ module Devise
     # Confirmation instructions are sent to the user email after creating a
     # record and when manually requested by a new confirmation instruction request.
     #
+    # Confirmable tracks the following columns:
+    #
+    # * confirmation_token   - An OpenSSL::HMAC.hexdigest of @raw_confirmation_token
+    # * confirmed_at         - A timestamp when the user clicked the confirmation link
+    # * confirmation_sent_at - A timestamp when the confirmation_token was generated (not sent)
+    # * unconfirmed_email    - An email address copied from the email attr. After confirmation
+    #                          this value is copied to the email attr then cleared
+    #
     # == Options
     #
     # Confirmable adds the following options to +devise+:
@@ -220,7 +228,7 @@ module Devise
         end
 
         # Generates a new random token for confirmation, and stores
-        # the time this token is being generated
+        # the time this token is being generated in confirmation_sent_at
         def generate_confirmation_token
           raw, enc = Devise.token_generator.generate(self.class, :confirmation_token)
           @raw_confirmation_token   = raw

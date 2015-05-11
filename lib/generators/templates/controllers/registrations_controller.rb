@@ -38,12 +38,12 @@ class <%= @scope_prefix %>RegistrationsController < Devise::RegistrationsControl
 
   # protected
 
-  # You can put the params you want to permit in the empty array.
+  # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
   #   devise_parameter_sanitizer.for(:sign_up) << :attribute
   # end
 
-  # You can put the params you want to permit in the empty array.
+  # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
   #   devise_parameter_sanitizer.for(:account_update) << :attribute
   # end

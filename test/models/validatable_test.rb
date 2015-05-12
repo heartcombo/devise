@@ -20,7 +20,7 @@ class ValidatableTest < ActiveSupport::TestCase
     assert user.invalid?
     assert_match(/taken/, user.errors[:email].join)
 
-    user.save(validate: false)
+    user.class.to_adapter.save(user, validate: false)
     assert user.valid?
   end
 
@@ -35,7 +35,7 @@ class ValidatableTest < ActiveSupport::TestCase
       assert_equal 'is invalid', user.errors[:email].join
     end
 
-    user.save(validate: false)
+    user.class.to_adapter.save(user, validate: false)
     assert user.valid?
   end
 

@@ -41,7 +41,7 @@ module Devise
           after_password_reset
         end
 
-        save
+        self.class.to_adapter.save(self)
       end
 
       def reset_password!(new_password, new_password_confirmation)
@@ -108,7 +108,7 @@ module Devise
 
           self.reset_password_token   = enc
           self.reset_password_sent_at = Time.now.utc
-          self.save(validate: false)
+          self.class.to_adapter.save(self, validate: false)
           raw
         end
 

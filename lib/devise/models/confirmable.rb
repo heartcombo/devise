@@ -80,9 +80,9 @@ module Devise
             self.unconfirmed_email = nil
 
             # We need to validate in such cases to enforce e-mail uniqueness
-            save(validate: true)
+            self.class.to_adapter.save(self, validate: true)
           else
-            save(validate: args[:ensure_valid] == true)
+            self.class.to_adapter.save(self, validate: args[:ensure_valid] == true)
           end
 
           after_confirmation if saved
@@ -237,7 +237,7 @@ module Devise
         end
 
         def generate_confirmation_token!
-          generate_confirmation_token && save(validate: false)
+          generate_confirmation_token && self.class.to_adapter.save(self, validate: false)
         end
 
         def postpone_email_change_until_confirmation_and_regenerate_confirmation_token

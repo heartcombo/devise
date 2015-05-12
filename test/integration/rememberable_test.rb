@@ -108,7 +108,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
       user.remember_me!
 
       user.remember_created_at = old = 10.days.ago
-      user.save
+      user.class.to_adapter.save(user)
 
       sign_in_as_user remember_me: true
       user.reload
@@ -159,7 +159,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
     user = create_user_and_remember
     user.password = "another_password"
     user.password_confirmation = "another_password"
-    user.save!
+    user.class.to_adapter.save!(user)
 
     get users_path
     assert_not warden.authenticated?(:user)

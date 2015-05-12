@@ -57,7 +57,7 @@ module Devise
 
       # Check if this is a valid strategy for http authentication by:
       #
-      #   * Validating if the model allows params authentication;
+      #   * Validating if the model allows http authentication;
       #   * If any of the authorization headers were sent;
       #   * If all authentication keys are present;
       #

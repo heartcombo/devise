@@ -465,9 +465,12 @@ module Devise
   end
 
   # Generate a friendly string randomly to be used as token.
-  # By default, length is 15 characters.
-  def self.friendly_token(length = 15)
-    SecureRandom.urlsafe_base64(length).tr('lIO0', 'sxyz')
+  # By default, length is 20 characters.
+  def self.friendly_token(length = 20)
+    # To calculate real characters, we must perform this operation.
+    # See SecureRandom.urlsafe_base64
+    rlength = (length * 3) / 4
+    SecureRandom.urlsafe_base64(rlength).tr('lIO0', 'sxyz')
   end
 
   # constant-time comparison algorithm to prevent timing attacks

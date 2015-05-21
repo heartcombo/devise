@@ -243,6 +243,10 @@ module Devise
   mattr_accessor :clean_up_csrf_token_on_authentication
   @@clean_up_csrf_token_on_authentication = true
 
+  # Set a layout that only devise controllers would use
+  mattr_accessor :layout
+  @@layout = nil
+
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.

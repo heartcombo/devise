@@ -91,6 +91,7 @@ class DeviseTest < ActiveSupport::TestCase
       assert_not Devise.secure_compare(empty, empty)
     end
     assert_not Devise.secure_compare("size_1", "size_four")
+    assert Devise.secure_compare("size_four", "size_four")
   end
 
   test 'Devise.email_regexp should match valid email addresses' do

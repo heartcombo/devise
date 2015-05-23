@@ -1,21 +1,25 @@
-### Unreleased
+### 3.5.0 - 2015-05-23
 
 * enhancements
-  * The hint about minimum password length required both `@validatable` and `@minimum_password_length`
-    variables on the views, it now uses only the latter. If you have generated the views
-    relying on the `@validatable` variable, replace it with `@minimum_password_length`.
-  * Added an ActiveSupport load hook for `:devise_controller` (by @nakhli)
-  * Location fragments are now preserved between requests (by @jbourassa)
-  * Added an `after_remembered` callback for the Rememerable module (by @BM5k)
+  * The hint about minimum password length required both `@validatable` and `@minimum_password_length` variables on the views, it now uses only the latter. If you have generated the views relying on the `@validatable` variable, replace it with `@minimum_password_length`.
+  * Added an ActiveSupport load hook for `:devise_controller`. (by @nakhli)
+  * Location fragments are now preserved between requests. (by @jbourassa)
+  * Added an `after_remembered` callback for the Rememerable module. (by @BM5k)
   * `RegistrationsController#new` and `SessionsController#new` now yields the
-    current resource (by @mtarnovan, @deivid-rodriguez)
-  * Password length validation is now limited to 72 characters for newer apps (by @lleger)
-  * Controllers inheriting from any Devise core controller will now use appropriate translations.
-    The i18n scope can be overridden in `translation_scope`.
+    current resource. (by @mtarnovan, @deivid-rodriguez)
+  * Password length validation is now limited to 72 characters for newer apps. (by @lleger)
+  * Controllers inheriting from any Devise core controller will now use appropriate translations. The i18n scope can be overridden in `translation_scope`.
+  * Allow the user to set the length of friendly token. (by @Angelmmiguel)
+
+* bug fixes
+  * Use router_name from scope if one is available to support isolated engines. (by @cipater)
+  * Do not clean up CSRF on rememberable.
+  * Only use flash if it has been configured in failure app. (by @alex88)
 
 * deprecations
   * `confirm!` has been deprecated in favor of `confirm`.
   * `reset_password!` has been deprecated in favor of `reset_password`.
+  * `Devise.bcrypt` has been deprecated in favor of `Devise::Encryptor.digest`".
 
 ### 3.4.1 - 2014-10-29
 

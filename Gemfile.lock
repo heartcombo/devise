@@ -1,3 +1,14 @@
+PATH
+  remote: .
+  specs:
+    devise (3.5.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      responders
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
+
 GIT
   remote: git://github.com/mongoid/mongoid.git
   revision: a4365d7ecfa8221bfcf36a4e7ce7993142fc5940
@@ -8,17 +19,6 @@ GIT
       moped (~> 2.0.0)
       origin (~> 2.1)
       tzinfo (>= 0.3.37)
-
-PATH
-  remote: .
-  specs:
-    devise (3.4.1)
-      bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
-      responders
-      thread_safe (~> 0.1)
-      warden (~> 1.2.3)
 
 GEM
   remote: https://rubygems.org/

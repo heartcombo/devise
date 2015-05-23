@@ -418,6 +418,8 @@ RSpec.configure do |config|
 end
 ```
 
+Just be sure that this inclusion is made *after* the `require 'rspec/rails'` directive.
+
 Now you are ready to use the `sign_in` and `sign_out` methods. Such methods have the same signature as in controllers:
 
 ```ruby
@@ -438,6 +440,10 @@ There are two things that are important to keep in mind:
     @request.env["devise.mapping"] = Devise.mappings[:user]
     get :new
     ```
+
+You can read more about testing your Rails 3 - Rails 4 controllers with RSpec in the wiki:
+
+* https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
 
 ### OmniAuth
 

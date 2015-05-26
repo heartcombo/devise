@@ -11,6 +11,21 @@ class DeviseController < Devise.parent_controller.constantize
   prepend_before_filter :assert_is_devise_resource!
   respond_to :html if mimes_for_respond_to.empty?
 
+  # Override prefixes to consider the scoped view.
+  # Notice we need to check for the request due to a bug in
+  # Action Controller tests that forces _prefixes to be
+  # loaded before even having a request object.
+  #
+  # This method should be public as it is is in ActionPack
+  # itself. Changing its visibility may break other gems.
+  def _prefixes #:nodoc:
+    @_prefixes ||= if self.class.scoped_views? && request && devise_mapping
+      ["#{devise_mapping.scoped_path}/#{controller_name}"] + super
+    else
+      super
+    end
+  end
+
   protected
 
   # Gets the actual resource stored in the instance variable
@@ -38,20 +53,6 @@ class DeviseController < Devise.parent_controller.constantize
   def devise_mapping
     @devise_mapping ||= request.env["devise.mapping"]
   end
-
-
-  # Override prefixes to consider the scoped view.
-  # Notice we need to check for the request due to a bug in
-  # Action Controller tests that forces _prefixes to be
-  # loaded before even having a request object.
-  def _prefixes #:nodoc:
-    @_prefixes ||= if self.class.scoped_views? && request && devise_mapping
-      ["#{devise_mapping.scoped_path}/#{controller_name}"] + super
-    else
-      super
-    end
-  end
-
 
   # Checks whether it's a devise mapped resource or not.
   def assert_is_devise_resource! #:nodoc:

@@ -30,14 +30,18 @@ module Devise
         [:reset_password_sent_at, :reset_password_token]
       end
 
+      included do
+        before_update :clear_reset_password_token, if: :encrypted_password_changed?
+      end
+
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.
       def reset_password(new_password, new_password_confirmation)
         self.password = new_password
         self.password_confirmation = new_password_confirmation
 
-        if valid?
-          clear_reset_password_token
+        if respond_to?(:after_password_reset) && valid?
+          ActiveSupport::Deprecation.warn "after_password_reset is deprecated"
           after_password_reset
         end
 
@@ -88,19 +92,6 @@ module Devise
         def clear_reset_password_token
           self.reset_password_token = nil
           self.reset_password_sent_at = nil
-        end
-
-        # A callback initiated after password is successfully reset. This can
-        # be used to insert your own logic that is only run after the user
-        # successfully resets their password.
-        #
-        # Example:
-        #
-        #   def after_password_reset
-        #     self.update_attribute(:invite_code, nil)
-        #   end
-        #
-        def after_password_reset
         end
 
         def set_reset_password_token

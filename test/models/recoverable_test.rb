@@ -54,6 +54,17 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_nil user.reset_password_token
   end
 
+  test 'should clear reset password token if changing email' do
+    user = create_user
+    assert_nil user.reset_password_token
+
+    user.send_reset_password_instructions
+    assert_present user.reset_password_token
+    user.email = "another@example.com"
+    user.save!
+    assert_nil user.reset_password_token
+  end
+
   test 'should not clear reset password token if record is invalid' do
     user = create_user
     user.send_reset_password_instructions

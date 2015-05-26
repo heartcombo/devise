@@ -31,7 +31,11 @@ module Devise
       end
 
       included do
-        before_update :clear_reset_password_token, if: :encrypted_password_changed?
+        before_save do
+          if email_changed? || encrypted_password_changed?
+            clear_reset_password_token
+          end
+        end
       end
 
       # Update password saving the record and clearing token. Returns true if

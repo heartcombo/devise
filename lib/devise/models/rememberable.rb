@@ -75,7 +75,7 @@ module Devise
       def rememberable_value
         if respond_to?(:remember_token)
           remember_token
-        elsif respond_to?(:authenticatable_salt) && (salt = authenticatable_salt)
+        elsif respond_to?(:authenticatable_salt) && (salt = authenticatable_salt.presence)
           salt
         else
           raise "authenticable_salt returned nil for the #{self.class.name} model. " \

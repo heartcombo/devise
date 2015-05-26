@@ -1,4 +1,10 @@
-### 3.5.0 - 2015-05-23
+### 3.5.1 - 2015-05-24
+
+Note: 3.5.0 has been yanked due to a regression
+
+* security improvements
+  * Clean up reset password token whenever e-mail or password changes. thanks to George Deglin & Dennis Charles Hackethal for reporting this bug
+  * Ensure empty `authenticable_salt` cannot be used as remember token. This bug can only affect users who manually implement their own `authenticable_salt` and allow empty values as salt
 
 * enhancements
   * The hint about minimum password length required both `@validatable` and `@minimum_password_length` variables on the views, it now uses only the latter. If you have generated the views relying on the `@validatable` variable, replace it with `@minimum_password_length`.

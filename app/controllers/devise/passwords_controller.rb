@@ -10,8 +10,16 @@ class Devise::PasswordsController < DeviseController
 
   # POST /resource/password
   def create
-    self.resource = resource_class.send_reset_password_instructions(resource_params)
+    self.resource = resource_class.find_or_initialize_with_errors(resource_class.reset_password_keys, resource_params, :not_found)
+
     yield resource if block_given?
+
+    if resource.access_locked? && !unlockable?(resource)
+      set_flash_message(:alert, :user_locked) if is_flashing_format?
+      respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name)) and return
+    end
+
+    resource.send_reset_password_instructions
 
     if successfully_sent?(resource)
       respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))

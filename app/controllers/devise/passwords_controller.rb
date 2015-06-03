@@ -11,6 +11,7 @@ class Devise::PasswordsController < DeviseController
   # POST /resource/password
   def create
     self.resource = resource_class.find_or_initialize_with_errors(resource_class.reset_password_keys, resource_params, :not_found)
+    return respond_with(resource) unless resource.persisted?
 
     yield resource if block_given?
 

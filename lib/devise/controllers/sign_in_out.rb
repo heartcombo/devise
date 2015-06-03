@@ -90,13 +90,7 @@ module Devise
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
 
-      def expire_data_after_sign_out!
-        # session.keys will return an empty array if the session is not yet loaded.
-        # This is a bug in both Rack and Rails.
-        # A call to #empty? forces the session to be loaded.
-        session.empty?
-        session.keys.grep(/^devise\./).each { |k| session.delete(k) }
-      end
+      alias :expire_data_after_sign_out! :expire_data_after_sign_in!
     end
   end
 end

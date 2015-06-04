@@ -225,4 +225,17 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_equal User.with_reset_password_token('random-token'), nil
   end
 
+  test 'should not reset password and remove token if password confirmation is nil' do
+    user = create_user
+    token = user.send_reset_password_instructions
+    reset_password_user = User.reset_password_by_token(
+        reset_password_token: token,
+        password: 'random_password',
+        password_confirmation: nil
+    )
+    assert_present reset_password_user.reset_password_token
+    assert_not reset_password_user.valid_password?('random_password')
+    assert_match "can't be blank", reset_password_user.errors[:password_confirmation].join
+  end
+
 end

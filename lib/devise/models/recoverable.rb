@@ -141,7 +141,11 @@ module Devise
           recoverable = find_or_initialize_with_error_by(:reset_password_token, reset_password_token)
 
           if recoverable.persisted?
-            if recoverable.reset_password_period_valid?
+            if attributes[:password].blank?
+              recoverable.errors.add(:password, :blank_password)
+            elsif attributes[:password_confirmation].blank?
+              recoverable.errors.add(:password_confirmation, :blank_password)
+            elsif recoverable.reset_password_period_valid?
               recoverable.reset_password(attributes[:password], attributes[:password_confirmation])
             else
               recoverable.errors.add(:reset_password_token, :expired)

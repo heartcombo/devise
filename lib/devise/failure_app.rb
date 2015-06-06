@@ -118,7 +118,7 @@ module Devise
 
       config = Rails.application.config
 
-      if config.respond_to?(:relative_url_root) && config.relative_url_root.present?
+      if config.respond_to?(:relative_url_root)
         opts[:script_name] = config.relative_url_root
       end
 

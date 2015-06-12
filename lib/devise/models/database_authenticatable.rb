@@ -1,5 +1,4 @@
 require 'devise/strategies/database_authenticatable'
-require 'devise/encryptor'
 
 module Devise
   def self.bcrypt(klass, password)

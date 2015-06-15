@@ -86,7 +86,6 @@ If you are building your first Rails application, we recommend you *do not* use 
 
 * Michael Hartl's online book: https://www.railstutorial.org/book/modeling_users
 * Ryan Bates' Railscast: http://railscasts.com/episodes/250-authentication-from-scratch
-* Chris Oliver's GoRails Episode 12: https://gorails.com/episodes/user-authentication-with-devise
 * Codecademy's Ruby on Rails: Authentication and Authorization: http://www.codecademy.com/en/learn/rails-auth
 
 Once you have solidified your understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :smiley:

@@ -154,6 +154,10 @@ module Devise
   mattr_accessor :pepper
   @@pepper = nil
 
+  # Used to encrypt password. Please generate one with rake secret.
+  mattr_accessor :send_password_change_notification
+  @@send_password_change_notification = false
+
   # Scoped views. Since it relies on fallbacks to render default views, it's
   # turned off by default.
   mattr_accessor :scoped_views

@@ -96,9 +96,10 @@ class CheckFieldsTest < ActiveSupport::TestCase
   test 'checks if the class respond_to the required fields' do
     Player = Class.new do
       extend Devise::Models
+      extend StubModelFilters
 
-      def self.before_validation(instance)
-      end
+      stub_filter :before_validation
+      stub_filter :after_update
 
       devise :database_authenticatable
 
@@ -113,9 +114,10 @@ class CheckFieldsTest < ActiveSupport::TestCase
   test 'raises Devise::Models::MissingAtrribute and shows the missing attribute if the class doesn\'t respond_to one of the attributes' do
     Clown = Class.new do
       extend Devise::Models
+      extend StubModelFilters
 
-      def self.before_validation(instance)
-      end
+      stub_filter :before_validation
+      stub_filter :after_update
 
       devise :database_authenticatable
 
@@ -130,9 +132,10 @@ class CheckFieldsTest < ActiveSupport::TestCase
   test 'raises Devise::Models::MissingAtrribute with all the missing attributes if there is more than one' do
     Magician = Class.new do
       extend Devise::Models
+      extend StubModelFilters
 
-      def self.before_validation(instance)
-      end
+      stub_filter :before_validation
+      stub_filter :after_update
 
       devise :database_authenticatable
     end

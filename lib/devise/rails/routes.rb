@@ -2,11 +2,12 @@ require "active_support/core_ext/object/try"
 require "active_support/core_ext/hash/slice"
 
 module ActionDispatch::Routing
-  class RouteSet #:nodoc:
+
+  module DeviseRoutesFinalizer
     # Ensure Devise modules are included only after loading routes, because we
     # need devise_for mappings already declared to create filters and helpers.
-    def finalize_with_devise!
-      result = finalize_without_devise!
+    def finalize!
+      result = super
 
       @devise_finalized ||= begin
         if Devise.router_name.nil? && defined?(@devise_finalized) && self != Rails.application.try(:routes)
@@ -24,7 +25,10 @@ module ActionDispatch::Routing
 
       result
     end
-    alias_method_chain :finalize!, :devise
+  end
+
+  class RouteSet #:nodoc:
+    prepend DeviseRoutesFinalizer
   end
 
   class Mapper

@@ -477,7 +477,7 @@ devise :database_authenticatable, :timeoutable
 devise_for :admins
 
 # Inside your protected controller
-before_filter :authenticate_admin!
+before_action :authenticate_admin!
 
 # Inside your controllers and views
 admin_signed_in?

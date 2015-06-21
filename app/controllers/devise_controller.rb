@@ -8,7 +8,7 @@ class DeviseController < Devise.parent_controller.constantize
                resource_class resource_params devise_mapping)
   helper_method(*helpers)
 
-  prepend_before_filter :assert_is_devise_resource!
+  prepend_before_action :assert_is_devise_resource!
   respond_to :html if mimes_for_respond_to.empty?
 
   # Override prefixes to consider the scoped view.
@@ -89,10 +89,10 @@ MESSAGE
     instance_variable_set(:"@#{resource_name}", new_resource)
   end
 
-  # Helper for use in before_filters where no authentication is required.
+  # Helper for use in before_actions where no authentication is required.
   #
   # Example:
-  #   before_filter :require_no_authentication, only: :new
+  #   before_action :require_no_authentication, only: :new
   def require_no_authentication
     assert_is_devise_resource!
     return unless is_navigational_format?

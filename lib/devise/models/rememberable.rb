@@ -46,7 +46,7 @@ module Devise
       end
 
       # Generate a new remember token and save the record without validations
-      # unless remember_across_browsers is true and the user already has a valid token.
+      # if remember expired (token is no longer valid) or extend_remember_period is true
       def remember_me!(extend_period=false)
         self.remember_token = self.class.remember_token if generate_remember_token?
         self.remember_created_at = Time.now.utc if generate_remember_timestamp?(extend_period)
@@ -75,7 +75,7 @@ module Devise
       def rememberable_value
         if respond_to?(:remember_token)
           remember_token
-        elsif respond_to?(:authenticatable_salt) && (salt = authenticatable_salt)
+        elsif respond_to?(:authenticatable_salt) && (salt = authenticatable_salt.presence)
           salt
         else
           raise "authenticable_salt returned nil for the #{self.class.name} model. " \
@@ -89,6 +89,19 @@ module Devise
         self.class.rememberable_options
       end
 
+      # A callback initiated after successfully being remembered. This can be
+      # used to insert your own logic that is only run after the user is
+      # remembered.
+      #
+      # Example:
+      #
+      #   def after_remembered
+      #     self.update_attribute(:invite_code, nil)
+      #   end
+      #
+      def after_remembered
+      end
+
     protected
 
       def generate_remember_token? #:nodoc:
@@ -98,7 +111,7 @@ module Devise
       # Generate a timestamp if extend_remember_period is true, if no remember_token
       # exists, or if an existing remember token has expired.
       def generate_remember_timestamp?(extend_period) #:nodoc:
-        extend_period || remember_created_at.nil? || remember_expired?
+        extend_period || remember_expired?
       end
 
       module ClassMethods

@@ -5,6 +5,14 @@ module Devise
     # Confirmation instructions are sent to the user email after creating a
     # record and when manually requested by a new confirmation instruction request.
     #
+    # Confirmable tracks the following columns:
+    #
+    # * confirmation_token   - An OpenSSL::HMAC.hexdigest of @raw_confirmation_token
+    # * confirmed_at         - A timestamp when the user clicked the confirmation link
+    # * confirmation_sent_at - A timestamp when the confirmation_token was generated (not sent)
+    # * unconfirmed_email    - An email address copied from the email attr. After confirmation
+    #                          this value is copied to the email attr then cleared
+    #
     # == Options
     #
     # Confirmable adds the following options to +devise+:
@@ -24,7 +32,7 @@ module Devise
     #
     # == Examples
     #
-    #   User.find(1).confirm!      # returns true unless it's already confirmed
+    #   User.find(1).confirm       # returns true unless it's already confirmed
     #   User.find(1).confirmed?    # true/false
     #   User.find(1).send_confirmation_instructions # manually send instructions
     #
@@ -57,7 +65,7 @@ module Devise
       # Confirm a user by setting it's confirmed_at to actual time. If the user
       # is already confirmed, add an error to email field. If the user is invalid
       # add errors
-      def confirm!
+      def confirm(args={})
         pending_any_confirmation do
           if confirmation_period_expired?
             self.errors.add(:email, :confirmation_period_expired,
@@ -65,7 +73,6 @@ module Devise
             return false
           end
 
-          self.confirmation_token = nil
           self.confirmed_at = Time.now.utc
 
           saved = if self.class.reconfirmable && unconfirmed_email.present?
@@ -76,12 +83,17 @@ module Devise
             # We need to validate in such cases to enforce e-mail uniqueness
             save(validate: true)
           else
-            save(validate: false)
+            save(validate: args[:ensure_valid] == true)
           end
 
           after_confirmation if saved
           saved
         end
+      end
+
+      def confirm!(args={})
+        ActiveSupport::Deprecation.warn "confirm! is deprecated in favor of confirm"
+        confirm(args)
       end
 
       # Verifies whether a user is confirmed or not
@@ -204,7 +216,7 @@ module Devise
         #   confirmation_period_expired?  # will always return false
         #
         def confirmation_period_expired?
-          self.class.confirm_within && (Time.now > self.confirmation_sent_at + self.class.confirm_within )
+          self.class.confirm_within && (Time.now > self.confirmation_sent_at + self.class.confirm_within)
         end
 
         # Checks whether the record requires any confirmation.
@@ -218,7 +230,7 @@ module Devise
         end
 
         # Generates a new random token for confirmation, and stores
-        # the time this token is being generated
+        # the time this token is being generated in confirmation_sent_at
         def generate_confirmation_token
           raw, enc = Devise.token_generator.generate(self.class, :confirmation_token)
           @raw_confirmation_token   = raw
@@ -251,6 +263,16 @@ module Devise
           confirmation_required? && !@skip_confirmation_notification && self.email.present?
         end
 
+        # A callback initiated after successfully confirming. This can be
+        # used to insert your own logic that is only run after the user successfully
+        # confirms.
+        #
+        # Example:
+        #
+        #   def after_confirmation
+        #     self.update_attribute(:invite_code, nil)
+        #   end
+        #
         def after_confirmation
         end
 
@@ -277,7 +299,7 @@ module Devise
           confirmation_token = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
 
           confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
-          confirmable.confirm! if confirmable.persisted?
+          confirmable.confirm if confirmable.persisted?
           confirmable.confirmation_token = original_token
           confirmable
         end

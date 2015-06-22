@@ -42,9 +42,15 @@ class RememberableTest < ActiveSupport::TestCase
     assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt)
   end
 
-  test 'raises a RuntimeError if authenticatable_salt is nil' do
+  test 'raises a RuntimeError if authenticatable_salt is nil or empty' do
     user = User.new
-    user.encrypted_password = nil
+    def user.authenticable_salt; nil; end
+    assert_raise RuntimeError do
+      user.rememberable_value
+    end
+
+    user = User.new
+    def user.authenticable_salt; ""; end
     assert_raise RuntimeError do
       user.rememberable_value
     end

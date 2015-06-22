@@ -8,11 +8,13 @@ module Devise
     # Recoverable adds the following options to devise_for:
     #
     #   * +reset_password_keys+: the keys you want to use when recovering the password for an account
+    #   * +reset_password_within+: the time period within which the password must be reset or the token expires.
+    #   * +sign_in_after_reset_password+: whether or not to sign in the user automatically after a password reset.
     #
     # == Examples
     #
     #   # resets the user password and save the record, true if valid passwords are given, otherwise false
-    #   User.find(1).reset_password!('password123', 'password123')
+    #   User.find(1).reset_password('password123', 'password123')
     #
     #   # only resets the user password, without saving the record
     #   user = User.find(1)
@@ -28,31 +30,40 @@ module Devise
         [:reset_password_sent_at, :reset_password_token]
       end
 
+      included do
+        before_save do
+          if email_changed? || encrypted_password_changed?
+            clear_reset_password_token
+          end
+        end
+      end
+
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.
-      def reset_password!(new_password, new_password_confirmation)
+      def reset_password(new_password, new_password_confirmation)
         self.password = new_password
         self.password_confirmation = new_password_confirmation
 
-        if valid?
-          clear_reset_password_token
+        if respond_to?(:after_password_reset) && valid?
+          ActiveSupport::Deprecation.warn "after_password_reset is deprecated"
           after_password_reset
         end
 
         save
       end
 
+      def reset_password!(new_password, new_password_confirmation)
+        ActiveSupport::Deprecation.warn "reset_password! is deprecated in favor of reset_password"
+        reset_password(new_password, new_password_confirmation)
+      end
+
       # Resets reset password token and send reset password instructions by email.
       # Returns the token sent in the e-mail.
       def send_reset_password_instructions(opts={})
-        raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
+        token = set_reset_password_token
+        send_reset_password_instructions_notification(token, opts)
 
-        self.reset_password_token   = enc
-        self.reset_password_sent_at = Time.now.utc
-        self.save(validate: false)
-
-        send_devise_notification(:reset_password_instructions, raw, opts)
-        raw
+        token
       end
 
       # Checks if the reset password token sent is within the limit time.
@@ -87,7 +98,17 @@ module Devise
           self.reset_password_sent_at = nil
         end
 
-        def after_password_reset
+        def set_reset_password_token
+          raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
+
+          self.reset_password_token   = enc
+          self.reset_password_sent_at = Time.now.utc
+          self.save(validate: false)
+          raw
+        end
+
+        def send_reset_password_instructions_notification(token, opts={})
+          send_devise_notification(:reset_password_instructions, token, opts)
         end
 
       module ClassMethods
@@ -121,17 +142,17 @@ module Devise
 
           if recoverable.persisted?
             if recoverable.reset_password_period_valid?
-              recoverable.reset_password!(attributes[:password], attributes[:password_confirmation])
+              recoverable.reset_password(attributes[:password], attributes[:password_confirmation])
             else
               recoverable.errors.add(:reset_password_token, :expired)
             end
           end
 
-          recoverable.reset_password_token = original_token
+          recoverable.reset_password_token = original_token if recoverable.reset_password_token.present?
           recoverable
         end
 
-        Devise::Models.config(self, :reset_password_keys, :reset_password_within)
+        Devise::Models.config(self, :reset_password_keys, :reset_password_within, :sign_in_after_reset_password)
       end
     end
   end

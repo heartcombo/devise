@@ -12,6 +12,8 @@ Warden::Manager.after_set_user do |record, warden, options|
 
     if last_request_at.is_a? Integer
       last_request_at = Time.at(last_request_at).utc
+    elsif last_request_at.is_a? String
+      last_request_at = Time.parse(last_request_at)
     end
 
     proxy = Devise::Hooks::Proxy.new(warden)

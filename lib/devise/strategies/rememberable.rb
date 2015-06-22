@@ -25,15 +25,28 @@ module Devise
         end
 
         if validate(resource)
+          remember_me(resource)
+          extend_remember_me_period(resource)
+          resource.after_remembered
           success!(resource)
         end
       end
 
+      # No need to clean up the CSRF when using rememberable.
+      # In fact, cleaning it up here would be a bug because
+      # rememberable is triggered on GET requests which means
+      # we would render a page on first access with all csrf
+      # tokens expired.
+      def clean_up_csrf?
+        false
+      end
+
     private
 
-      def decorate(resource)
-        super
-        resource.extend_remember_period = mapping.to.extend_remember_period if resource.respond_to?(:extend_remember_period=)
+      def extend_remember_me_period(resource)
+        if resource.respond_to?(:extend_remember_period=)
+          resource.extend_remember_period = mapping.to.extend_remember_period
+        end
       end
 
       def remember_me?

@@ -5,6 +5,8 @@ class Devise::RegistrationsController < DeviseController
   # GET /resource/sign_up
   def new
     build_resource({})
+    set_minimum_password_length
+    yield resource if block_given?
     respond_with self.resource
   end
 
@@ -12,9 +14,9 @@ class Devise::RegistrationsController < DeviseController
   def create
     build_resource(sign_up_params)
     resource.email_host = request.host_with_port
-    resource_saved = resource.save
+    resource.save
     yield resource if block_given?
-    if resource_saved
+    if resource.persisted?
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -26,6 +28,7 @@ class Devise::RegistrationsController < DeviseController
       end
     else
       clean_up_passwords resource
+      set_minimum_password_length
       respond_with resource
     end
   end

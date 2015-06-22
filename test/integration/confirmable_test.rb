@@ -47,6 +47,37 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_have_selector '#error_explanation'
       assert_contain /needs to be confirmed within 3 days/
       assert_not user.reload.confirmed?
+      assert_current_url "/users/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired and with application router_name set to a different engine it should raise an error' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days, router_name: :fake_engine do
+      assert_raise ActionView::Template::Error do
+        visit_user_confirmation_with_token(user.raw_confirmation_token)
+      end
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired and with application router_name set to a different engine and route overrides back to main it shows the path' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days, router_name: :fake_engine do
+      visit user_on_main_app_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+      assert_current_url "/user_on_main_apps/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired with router overrides different engine it shows the path' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days do
+      visit user_on_engine_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+      assert_current_url "/user_on_engines/confirmation?confirmation_token=#{user.raw_confirmation_token}"
     end
   end
 
@@ -131,6 +162,15 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_contain 'Your email address has been successfully confirmed.'
       assert_current_url '/'
     end
+  end
+
+  test 'user should be redirected to sign in page whenever signed in as another resource at same session already' do
+    sign_in_as_admin
+
+    user = create_user(confirm: false)
+    visit_user_confirmation_with_token(user.raw_confirmation_token)
+
+    assert_current_url '/users/sign_in'
   end
 
   test 'error message is configurable by resource name' do

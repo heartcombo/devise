@@ -4,9 +4,11 @@ require 'active_support/dependencies'
 require 'orm_adapter'
 require 'set'
 require 'securerandom'
+require 'responders'
 
 module Devise
   autoload :Delegator,          'devise/delegator'
+  autoload :Encryptor,          'devise/encryptor'
   autoload :FailureApp,         'devise/failure_app'
   autoload :OmniAuth,           'devise/omniauth'
   autoload :ParameterFilter,    'devise/parameter_filter'
@@ -56,22 +58,6 @@ module Devise
   mattr_accessor :secret_key
   @@secret_key = nil
 
-  [ :allow_insecure_token_lookup,
-    :allow_insecure_sign_in_after_confirmation,
-    :token_authentication_key ].each do |method|
-    class_eval <<-RUBY
-    def self.#{method}
-      ActiveSupport::Deprecation.warn "Devise.#{method} is deprecated " \
-        "and has no effect"
-    end
-
-    def self.#{method}=(val)
-      ActiveSupport::Deprecation.warn "Devise.#{method}= is deprecated " \
-        "and has no effect"
-    end
-    RUBY
-  end
-
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}
@@ -86,7 +72,7 @@ module Devise
 
   # Keys used when authenticating a user.
   mattr_accessor :authentication_keys
-  @@authentication_keys = [ :email ]
+  @@authentication_keys = [:email]
 
   # Request keys used when authenticating a user.
   mattr_accessor :request_keys
@@ -94,7 +80,7 @@ module Devise
 
   # Keys that should be case-insensitive.
   mattr_accessor :case_insensitive_keys
-  @@case_insensitive_keys = [ :email ]
+  @@case_insensitive_keys = [:email]
 
   # Keys that should have whitespace stripped.
   mattr_accessor :strip_whitespace_keys
@@ -149,7 +135,7 @@ module Devise
 
   # Defines which key will be used when confirming an account.
   mattr_accessor :confirmation_keys
-  @@confirmation_keys = [ :email ]
+  @@confirmation_keys = [:email]
 
   # Defines if email should be reconfirmable.
   # False by default for backwards compatibility.
@@ -180,7 +166,7 @@ module Devise
 
   # Defines which key will be used when locking and unlocking an account
   mattr_accessor :unlock_keys
-  @@unlock_keys = [ :email ]
+  @@unlock_keys = [:email]
 
   # Defines which strategy can be used to unlock an account.
   # Values: :email, :time, :both
@@ -197,11 +183,15 @@ module Devise
 
   # Defines which key will be used when recovering the password for an account
   mattr_accessor :reset_password_keys
-  @@reset_password_keys = [ :email ]
+  @@reset_password_keys = [:email]
 
   # Time interval you can reset your password with a reset password key
   mattr_accessor :reset_password_within
   @@reset_password_within = 6.hours
+
+  # When set to false, resetting a password does not automatically sign in a user
+  mattr_accessor :sign_in_after_reset_password
+  @@sign_in_after_reset_password = true
 
   # The default scope which is used by warden.
   mattr_accessor :default_scope
@@ -245,7 +235,7 @@ module Devise
   mattr_accessor :router_name
   @@router_name = nil
 
-  # Set the omniauth path prefix so it can be overridden when
+  # Set the OmniAuth path prefix so it can be overridden when
   # Devise is used in a mountable engine
   mattr_accessor :omniauth_path_prefix
   @@omniauth_path_prefix = nil
@@ -263,7 +253,7 @@ module Devise
   mattr_reader :mappings
   @@mappings = ActiveSupport::OrderedHash.new
 
-  # Omniauth configurations.
+  # OmniAuth configurations.
   mattr_reader :omniauth_configs
   @@omniauth_configs = ActiveSupport::OrderedHash.new
 
@@ -283,7 +273,7 @@ module Devise
 
   # When true, warn user if they just used next-to-last attempt of authentication
   mattr_accessor :last_attempt_warning
-  @@last_attempt_warning = false
+  @@last_attempt_warning = true
 
   # Stores the token generator
   mattr_accessor :token_generator
@@ -351,6 +341,7 @@ module Devise
   #   +controller+ - Symbol representing the name of an existing or custom *controller* for this module.
   #   +route+      - Symbol representing the named *route* helper for this module.
   #   +strategy+   - Symbol representing if this module got a custom *strategy*.
+  #   +insert_at+  - Integer representing the order in which this module's model will be included
   #
   # All values, except :model, accept also a boolean and will have the same name as the given module
   # name.
@@ -360,10 +351,12 @@ module Devise
   #   Devise.add_module(:party_module)
   #   Devise.add_module(:party_module, strategy: true, controller: :sessions)
   #   Devise.add_module(:party_module, model: 'party_module/model')
+  #   Devise.add_module(:party_module, insert_at: 0)
   #
   def self.add_module(module_name, options = {})
-    ALL << module_name
-    options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input)
+    options.assert_valid_keys(:strategy, :model, :controller, :route, :no_input, :insert_at)
+
+    ALL.insert (options[:insert_at] || -1), module_name
 
     if strategy = options[:strategy]
       strategy = (strategy == true ? module_name : strategy)
@@ -408,7 +401,7 @@ module Devise
   # Sets warden configuration using a block that will be invoked on warden
   # initialization.
   #
-  #  Devise.initialize do |config|
+  #  Devise.setup do |config|
   #    config.allow_unconfirmed_access_for = 2.days
   #
   #    config.warden do |manager|
@@ -420,7 +413,7 @@ module Devise
     @@warden_config_blocks << block
   end
 
-  # Specify an omniauth provider.
+  # Specify an OmniAuth provider.
   #
   #   config.omniauth :github, APP_ID, APP_SECRET
   #
@@ -477,8 +470,12 @@ module Devise
   end
 
   # Generate a friendly string randomly to be used as token.
-  def self.friendly_token
-    SecureRandom.urlsafe_base64(15).tr('lIO0', 'sxyz')
+  # By default, length is 20 characters.
+  def self.friendly_token(length = 20)
+    # To calculate real characters, we must perform this operation.
+    # See SecureRandom.urlsafe_base64
+    rlength = (length * 3) / 4
+    SecureRandom.urlsafe_base64(rlength).tr('lIO0', 'sxyz')
   end
 
   # constant-time comparison algorithm to prevent timing attacks

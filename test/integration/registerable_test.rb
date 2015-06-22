@@ -17,7 +17,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert warden.authenticated?(:admin)
     assert_current_url "/admin_area/home"
 
-    admin = Admin.order(:id).last
+    admin = Admin.to_adapter.find_first(order: [:id, :desc])
     assert_equal admin.email, 'new_user@test.com'
   end
 
@@ -36,6 +36,11 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url "/?custom=1"
   end
 
+  test 'a guest admin should not see a warning about minimum password length' do
+    get new_admin_session_path
+    assert_not_contain 'characters minimum'
+  end
+
   def user_sign_up
     ActionMailer::Base.deliveries.clear
 
@@ -47,6 +52,11 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     click_button 'Sign up'
   end
 
+  test 'a guest user should see a warning about minimum password length' do
+    get new_user_registration_path
+    assert_contain '7 characters minimum'
+  end
+
   test 'a guest user should be able to sign up successfully and be blocked by confirmation' do
     user_sign_up
 
@@ -56,7 +66,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_not warden.authenticated?(:user)
 
-    user = User.order(:id).last
+    user = User.to_adapter.find_first(order: [:id, :desc])
     assert_equal user.email, 'new_user@test.com'
     assert_not user.confirmed?
   end
@@ -103,7 +113,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_contain Devise.rails4? ?
       "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
     assert_contain "2 errors prohibited"
-    assert_nil User.first
+    assert_nil User.to_adapter.find_first
 
     assert_not warden.authenticated?(:user)
   end
@@ -151,7 +161,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url '/'
     assert_contain 'Your account has been updated successfully.'
 
-    assert_equal "user.new@example.com", User.first.email
+    assert_equal "user.new@example.com", User.to_adapter.find_first.email
   end
 
   test 'a signed in user should still be able to use the website after changing their password' do
@@ -180,7 +190,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_contain 'user@test.com'
     assert_have_selector 'form input[value="user.new@example.com"]'
 
-    assert_equal "user@test.com", User.first.email
+    assert_equal "user@test.com", User.to_adapter.find_first.email
   end
 
   test 'a signed in user should be able to edit their password' do
@@ -195,7 +205,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url '/'
     assert_contain 'Your account has been updated successfully.'
 
-    assert User.first.valid_password?('pass1234')
+    assert User.to_adapter.find_first.valid_password?('pass1234')
   end
 
   test 'a signed in user should not be able to edit their password with invalid confirmation' do
@@ -209,7 +219,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_contain Devise.rails4? ?
       "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
-    assert_not User.first.valid_password?('pas123')
+    assert_not User.to_adapter.find_first.valid_password?('pas123')
   end
 
   test 'a signed in user should be able to cancel their account' do
@@ -219,7 +229,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     click_button "Cancel my account"
     assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
 
-    assert User.all.empty?
+    assert User.to_adapter.find_all.empty?
   end
 
   test 'a user should be able to cancel sign up by deleting data in the session' do
@@ -253,7 +263,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
 
-    admin = Admin.order(:id).last
+    admin = Admin.to_adapter.find_first(order: [:id, :desc])
     assert_equal admin.email, 'new_user@test.com'
   end
 
@@ -262,7 +272,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
 
-    user = User.order(:id).last
+    user = User.to_adapter.find_first(order: [:id, :desc])
     assert_equal user.email, 'new_user@test.com'
   end
 
@@ -290,7 +300,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     delete user_registration_path(format: 'xml')
     assert_response :success
-    assert_equal User.count, 0
+    assert_equal User.to_adapter.find_all.size, 0
   end
 end
 
@@ -305,7 +315,7 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
 
     assert_current_url '/admin_area/home'
     assert_contain 'but we need to verify your new email address'
-    assert_equal 'admin.new@example.com', Admin.first.unconfirmed_email
+    assert_equal 'admin.new@example.com', Admin.to_adapter.find_first.unconfirmed_email
 
     get edit_admin_registration_path
     assert_contain 'Currently waiting confirmation for: admin.new@example.com'
@@ -323,7 +333,7 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url '/admin_area/home'
     assert_contain 'Your account has been updated successfully.'
 
-    assert Admin.first.valid_password?('pas123')
+    assert Admin.to_adapter.find_first.valid_password?('pas123')
   end
 
   test 'a signed in admin should not see a reconfirmation message if they did not change their email, despite having an unconfirmed email' do
@@ -343,7 +353,7 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url '/admin_area/home'
     assert_contain 'Your account has been updated successfully.'
 
-    assert_equal "admin.new@example.com", Admin.first.unconfirmed_email
-    assert Admin.first.valid_password?('pas123')
+    assert_equal "admin.new@example.com", Admin.to_adapter.find_first.unconfirmed_email
+    assert Admin.to_adapter.find_first.valid_password?('pas123')
   end
 end

@@ -8,7 +8,7 @@ class CustomRegistrationsControllerTest < ActionController::TestCase
   setup do
     request.env["devise.mapping"] = Devise.mappings[:user]
     @password = 'password'
-    @user = create_user(password: @password, password_confirmation: @password).tap(&:confirm!)
+    @user = create_user(password: @password, password_confirmation: @password).tap(&:confirm)
   end
 
   test "yield resource to block on create success" do
@@ -31,5 +31,10 @@ class CustomRegistrationsControllerTest < ActionController::TestCase
     sign_in @user
     put :update, { user: { } }
     assert @controller.update_block_called?, "update failed to yield resource to provided block"
+  end
+
+  test "yield resource to block on new" do
+    get :new
+    assert @controller.new_block_called?, "new failed to yield resource to provided block"
   end
 end

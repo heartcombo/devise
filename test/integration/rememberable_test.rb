@@ -164,4 +164,13 @@ class RememberMeTest < ActionDispatch::IntegrationTest
     get users_path
     assert_not warden.authenticated?(:user)
   end
+
+  test 'valid sign in calls after_remembered callback' do
+    user = create_user_and_remember
+
+    User.expects(:serialize_from_cookie).returns user
+    user.expects :after_remembered
+
+    get new_user_registration_path
+  end
 end

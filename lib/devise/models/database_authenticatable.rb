@@ -1,10 +1,9 @@
 require 'devise/strategies/database_authenticatable'
-require 'bcrypt'
 
 module Devise
-  # Digests the password using bcrypt.
   def self.bcrypt(klass, password)
-    ::BCrypt::Password.create("#{password}#{klass.pepper}", cost: klass.stretches).to_s
+    ActiveSupport::Deprecation.warn "Devise.bcrypt is deprecated; use Devise::Encryptor.digest instead"
+    Devise::Encryptor.digest(klass, password)
   end
 
   module Models
@@ -42,12 +41,9 @@ module Devise
         self.encrypted_password = password_digest(@password) if @password.present?
       end
 
-      # Verifies whether an password (ie from sign in) is the user password.
+      # Verifies whether a password (ie from sign in) is the user password.
       def valid_password?(password)
-        return false if encrypted_password.blank?
-        bcrypt   = ::BCrypt::Password.new(encrypted_password)
-        password = ::BCrypt::Engine.hash_secret("#{password}#{self.class.pepper}", bcrypt.salt)
-        Devise.secure_compare(password, encrypted_password)
+        Devise::Encryptor.compare(self.class, encrypted_password, password)
       end
 
       # Set password and password confirmation to nil
@@ -145,7 +141,7 @@ module Devise
       # See https://github.com/plataformatec/devise-encryptable for examples
       # of other encryption engines.
       def password_digest(password)
-        Devise.bcrypt(self.class, password)
+        Devise::Encryptor.digest(self.class, password)
       end
 
       module ClassMethods

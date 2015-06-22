@@ -119,7 +119,7 @@ module ActionDispatch::Routing
     #  * sign_out_via: the HTTP method(s) accepted for the :sign_out action (default: :get),
     #    if you wish to restrict this to accept only :post or :delete requests you should do:
     #
-    #      devise_for :users, sign_out_via: [ :post, :delete ]
+    #      devise_for :users, sign_out_via: [:post, :delete]
     #
     #    You need to make sure that your sign_out controls trigger a request with a matching HTTP method.
     #
@@ -129,7 +129,8 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, module: "users"
     #
-    #  * skip: tell which controller you want to skip routes from being created:
+    #  * skip: tell which controller you want to skip routes from being created.
+    #    It accepts :all as an option, meaning it will not generate any route at all:
     #
     #      devise_for :users, skip: :sessions
     #
@@ -152,6 +153,8 @@ module ActionDispatch::Routing
     #  * constraints: works the same as Rails' constraints
     #
     #  * defaults: works the same as Rails' defaults
+    #
+    #  * router_name: allows application level router name to be overwritten for the current scope
     #
     # ==== Scoping
     #
@@ -224,7 +227,7 @@ module ActionDispatch::Routing
           raise_no_devise_method_error!(mapping.class_name) unless mapping.to.respond_to?(:devise)
         rescue NameError => e
           raise unless mapping.class_name == resource.to_s.classify
-          warn "[WARNING] You provided devise_for #{resource.inspect} but there is " <<
+          warn "[WARNING] You provided devise_for #{resource.inspect} but there is " \
             "no model #{mapping.class_name} defined in your application"
           next
         rescue NoMethodError => e
@@ -234,13 +237,12 @@ module ActionDispatch::Routing
 
         if options[:controllers] && options[:controllers][:omniauth_callbacks]
           unless mapping.omniauthable?
-            msg =  "Mapping omniauth_callbacks on a resource that is not omniauthable\n"
-            msg << "Please add `devise :omniauthable` to the `#{mapping.class_name}` model"
-            raise msg
+            raise ArgumentError, "Mapping omniauth_callbacks on a resource that is not omniauthable\n" \
+              "Please add `devise :omniauthable` to the `#{mapping.class_name}` model"
           end
         end
 
-        routes  = mapping.used_routes
+        routes = mapping.used_routes
 
         devise_scope mapping.name do
           with_devise_exclusive_scope mapping.fullpath, mapping.name, options do
@@ -400,7 +402,7 @@ module ActionDispatch::Routing
       def devise_omniauth_callback(mapping, controllers) #:nodoc:
         if mapping.fullpath =~ /:[a-zA-Z_]/
           raise <<-ERROR
-Devise does not support scoping omniauth callbacks under a dynamic segment
+Devise does not support scoping OmniAuth callbacks under a dynamic segment
 and you have set #{mapping.fullpath.inspect}. You can work around by passing
 `skip: :omniauth_callbacks` and manually defining the routes. Here is an example:
 
@@ -412,7 +414,7 @@ and you have set #{mapping.fullpath.inspect}. You can work around by passing
 
     match "/users/auth/:action/callback",
       constraints: { action: /google|facebook/ },
-      to: "devise/omniauth_callbacks",
+      to: "devise/omniauth_callbacks#:action",
       as: :omniauth_callback,
       via: [:get, :post]
 ERROR
@@ -433,26 +435,23 @@ ERROR
 
         match "#{path_prefix}/:action/callback",
           constraints: { action: providers },
-          to: controllers[:omniauth_callbacks],
+          to: "#{controllers[:omniauth_callbacks]}#:action",
           as: :omniauth_callback,
           via: [:get, :post]
       ensure
         @scope[:path] = path
       end
 
-      DEVISE_SCOPE_KEYS = [:as, :path, :module, :constraints, :defaults, :options]
-
       def with_devise_exclusive_scope(new_path, new_as, options) #:nodoc:
-        old = {}
-        DEVISE_SCOPE_KEYS.each { |k| old[k] = @scope[k] }
+        current_scope = @scope.dup
 
-        new = { as: new_as, path: new_path, module: nil }
-        new.merge!(options.slice(:constraints, :defaults, :options))
+        exclusive = { as: new_as, path: new_path, module: nil }
+        exclusive.merge!(options.slice(:constraints, :defaults, :options))
 
-        @scope.merge!(new)
+        exclusive.each_pair { |key, value| @scope[key] = value }
         yield
       ensure
-        @scope.merge!(old)
+        @scope = current_scope
       end
 
       def constraints_for(method_to_apply, scope=nil, block=nil)

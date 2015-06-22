@@ -10,8 +10,8 @@ class TrackableHooksTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     user.reload
 
-    assert_kind_of Time, user.current_sign_in_at
-    assert_kind_of Time, user.last_sign_in_at
+    assert user.current_sign_in_at.acts_like?(:time)
+    assert user.last_sign_in_at.acts_like?(:time)
 
     assert_equal user.current_sign_in_at, user.last_sign_in_at
     assert user.current_sign_in_at >= user.created_at

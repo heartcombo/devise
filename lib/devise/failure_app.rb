@@ -49,17 +49,19 @@ module Devise
 
     def recall
       env["PATH_INFO"]  = attempted_path
-      flash.now[:alert] = i18n_message(:invalid)
+      flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
       self.response = recall_app(warden_options[:recall]).call(env)
     end
 
     def redirect
       store_location!
-      if flash[:timedout] && flash[:alert]
-        flash.keep(:timedout)
-        flash.keep(:alert)
-      else
-        flash[:alert] = i18n_message
+      if is_flashing_format?
+        if flash[:timedout] && flash[:alert]
+          flash.keep(:timedout)
+          flash.keep(:alert)
+        else
+          flash[:alert] = i18n_message
+        end
       end
       redirect_to redirect_url
     end
@@ -78,6 +80,9 @@ module Devise
         options[:resource_name] = scope
         options[:scope] = "devise.failure"
         options[:default] = [message]
+        auth_keys = scope_class.authentication_keys
+        keys = auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys
+        options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)
@@ -88,7 +93,7 @@ module Devise
 
     def redirect_url
       if warden_message == :timeout
-        flash[:timedout] = true
+        flash[:timedout] = true if is_flashing_format?
 
         path = if request.get?
           attempted_path
@@ -102,15 +107,23 @@ module Devise
       end
     end
 
+    def route(scope)
+      :"new_#{scope}_session_url"
+    end
+
     def scope_url
       opts  = {}
-      route = :"new_#{scope}_session_url"
+      route = route(scope)
       opts[:format] = request_format unless skip_format?
 
       config = Rails.application.config
-      opts[:script_name] = (config.relative_url_root if config.respond_to?(:relative_url_root))
 
-      context = send(Devise.available_router_name)
+      if config.respond_to?(:relative_url_root) && config.relative_url_root.present?
+        opts[:script_name] = config.relative_url_root
+      end
+
+      router_name = Devise.mappings[scope].router_name || Devise.available_router_name
+      context = send(router_name)
 
       if context.respond_to?(route)
         context.send(route, opts)
@@ -144,7 +157,7 @@ module Devise
     # It does not make sense to send authenticate headers in ajax requests
     # or if the user disabled them.
     def http_auth_header?
-      Devise.mappings[scope].to.http_authenticatable && !request.xhr?
+      scope_class.http_authenticatable && !request.xhr?
     end
 
     def http_auth_body
@@ -182,6 +195,10 @@ module Devise
       @scope ||= warden_options[:scope] || Devise.default_scope
     end
 
+    def scope_class
+      @scope_class ||= Devise.mappings[scope].to
+    end
+
     def attempted_path
       warden_options[:attempted_path]
     end
@@ -196,6 +213,12 @@ module Devise
 
     def is_navigational_format?
       Devise.navigational_formats.include?(request_format)
+    end
+
+    # Check if flash messages should be emitted. Default is to do it on
+    # navigational formats
+    def is_flashing_format?
+      is_navigational_format?
     end
 
     def request_format

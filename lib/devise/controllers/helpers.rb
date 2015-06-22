@@ -11,6 +11,68 @@ module Devise
       end
 
       module ClassMethods
+        # Define authentication filters and accessor helpers for a group of mappings.
+        # These methods are useful when you are working with multiple mappings that
+        # share some functionality. They are pretty much the same as the ones
+        # defined for normal mappings.
+        #
+        # Example:
+        #
+        #   inside BlogsController (or any other controller, it doesn't matter which):
+        #     devise_group :blogger, contains: [:user, :admin]
+        #
+        #   Generated methods:
+        #     authenticate_blogger!  # Redirects unless user or admin are signed in
+        #     blogger_signed_in?     # Checks whether there is either a user or an admin signed in
+        #     current_blogger        # Currently signed in user or admin
+        #     current_bloggers       # Currently signed in user and admin
+        #
+        #   Use:
+        #     before_filter :authenticate_blogger!              # Redirects unless either a user or an admin are authenticated
+        #     before_filter ->{ authenticate_blogger! :admin }  # Redirects to the admin login page
+        #     current_blogger :user                             # Preferably returns a User if one is signed in
+        #
+        def devise_group(group_name, opts={})
+          mappings = "[#{ opts[:contains].map { |m| ":#{m}" }.join(',') }]"
+
+          class_eval <<-METHODS, __FILE__, __LINE__ + 1
+            def authenticate_#{group_name}!(favourite=nil, opts={})
+              unless #{group_name}_signed_in?
+                mappings = #{mappings}
+                mappings.unshift mappings.delete(favourite.to_sym) if favourite
+                mappings.each do |mapping|
+                  opts[:scope] = mapping
+                  warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
+                end
+              end
+            end
+
+            def #{group_name}_signed_in?
+              #{mappings}.any? do |mapping|
+                warden.authenticate?(scope: mapping)
+              end
+            end
+
+            def current_#{group_name}(favourite=nil)
+              mappings = #{mappings}
+              mappings.unshift mappings.delete(favourite.to_sym) if favourite
+              mappings.each do |mapping|
+                current = warden.authenticate(scope: mapping)
+                return current if current
+              end
+              nil
+            end
+
+            def current_#{group_name.to_s.pluralize}
+              #{mappings}.map do |mapping|
+                warden.authenticate(scope: mapping)
+              end.compact
+            end
+
+            helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"
+          METHODS
+        end
+
         def log_process_action(payload)
           payload[:status] ||= 401 unless payload[:exception]
           super
@@ -102,9 +164,16 @@ module Devise
       # tries to find a resource_root_path, otherwise it uses the root_path.
       def signed_in_root_path(resource_or_scope)
         scope = Devise::Mapping.find_scope!(resource_or_scope)
+        router_name = Devise.mappings[scope].router_name
+
         home_path = "#{scope}_root_path"
-        if respond_to?(home_path, true)
-          send(home_path)
+
+        context = router_name ? send(router_name) : self
+
+        if context.respond_to?(home_path, true)
+          context.send(home_path)
+        elsif context.respond_to?(:root_path)
+          context.root_path
         elsif respond_to?(:root_path)
           root_path
         else
@@ -150,7 +219,10 @@ module Devise
       #
       # By default it is the root_path.
       def after_sign_out_path_for(resource_or_scope)
-        respond_to?(:root_path) ? root_path : "/"
+        scope = Devise::Mapping.find_scope!(resource_or_scope)
+        router_name = Devise.mappings[scope].router_name
+        context = router_name ? send(router_name) : self
+        context.respond_to?(:root_path) ? context.root_path : "/"
       end
 
       # Sign in a user and tries to redirect first to the stored location and

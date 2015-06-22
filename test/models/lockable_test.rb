@@ -7,7 +7,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "should respect maximum attempts configuration" do
     user = create_user
-    user.confirm!
+    user.confirm
     swap Devise, maximum_attempts: 2 do
       2.times { user.valid_for_authentication?{ false } }
       assert user.reload.access_locked?
@@ -16,7 +16,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "should increment failed_attempts on successfull validation if the user is already locked" do
     user = create_user
-    user.confirm!
+    user.confirm
 
     swap Devise, maximum_attempts: 2 do
       2.times { user.valid_for_authentication?{ false } }
@@ -29,7 +29,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "should not touch failed_attempts if lock_strategy is none" do
     user = create_user
-    user.confirm!
+    user.confirm
     swap Devise, lock_strategy: :none, maximum_attempts: 2 do
       3.times { user.valid_for_authentication?{ false } }
       assert !user.access_locked?
@@ -53,7 +53,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "active_for_authentication? should be the opposite of locked?" do
     user = create_user
-    user.confirm!
+    user.confirm
     assert user.active_for_authentication?
     user.lock_access!
     assert_not user.active_for_authentication?
@@ -233,7 +233,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'should unlock account if lock has expired and increase attempts on failure' do
     swap Devise, unlock_in: 1.minute do
       user = create_user
-      user.confirm!
+      user.confirm
 
       user.failed_attempts = 2
       user.locked_at = 2.minutes.ago
@@ -246,7 +246,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'should unlock account if lock has expired on success' do
     swap Devise, unlock_in: 1.minute do
       user = create_user
-      user.confirm!
+      user.confirm
 
       user.failed_attempts = 2
       user.locked_at = 2.minutes.ago
@@ -302,18 +302,30 @@ class LockableTest < ActiveSupport::TestCase
   end
 
   test 'should return last attempt message if user made next-to-last attempt of password entering' do
-    swap Devise, last_attempt_warning: :true do
-      swap Devise, lock_strategy: :failed_attempts do
-        user = create_user
-        user.failed_attempts = Devise.maximum_attempts - 2
-        assert_equal :invalid, user.unauthenticated_message
+    swap Devise, last_attempt_warning: true, lock_strategy: :failed_attempts do
+      user = create_user
+      user.failed_attempts = Devise.maximum_attempts - 2
+      assert_equal :invalid, user.unauthenticated_message
 
-        user.failed_attempts = Devise.maximum_attempts - 1
-        assert_equal :last_attempt, user.unauthenticated_message
+      user.failed_attempts = Devise.maximum_attempts - 1
+      assert_equal :last_attempt, user.unauthenticated_message
 
-        user.failed_attempts = Devise.maximum_attempts
-        assert_equal :locked, user.unauthenticated_message
-      end
+      user.failed_attempts = Devise.maximum_attempts
+      assert_equal :locked, user.unauthenticated_message
     end
+  end
+
+  test 'should not return last attempt message if last_attempt_warning is disabled' do
+    swap Devise, last_attempt_warning: false, lock_strategy: :failed_attempts do
+      user = create_user
+      user.failed_attempts = Devise.maximum_attempts - 1
+      assert_equal :invalid, user.unauthenticated_message
+    end
+  end
+
+  test 'should return locked message if user was programatically locked' do
+    user = create_user
+    user.lock_access!
+    assert_equal :locked, user.unauthenticated_message
   end
 end

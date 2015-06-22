@@ -44,4 +44,7 @@ class Devise::UnlocksController < DeviseController
       new_session_path(resource)  if is_navigational_format?
     end
 
+    def translation_scope
+      'devise.unlocks'
+    end
 end

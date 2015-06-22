@@ -14,11 +14,11 @@ class DeviseTest < ActiveSupport::TestCase
   test 'bcrypt on the class' do
     password = "super secret"
     klass    = Struct.new(:pepper, :stretches).new("blahblah", 2)
-    hash     = Devise.bcrypt(klass, password)
+    hash     = Devise::Encryptor.digest(klass, password)
     assert_equal ::BCrypt::Password.create(hash), hash
 
     klass    = Struct.new(:pepper, :stretches).new("bla", 2)
-    hash     = Devise.bcrypt(klass, password)
+    hash     = Devise::Encryptor.digest(klass, password)
     assert_not_equal ::BCrypt::Password.new(hash), hash
   end
 
@@ -42,31 +42,27 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'warden manager user configuration through a block' do
     Devise.yield_and_restore do
-      @executed = false
+      executed = false
       Devise.warden do |config|
-        @executed = true
+        executed = true
         assert_kind_of Warden::Config, config
       end
 
       Devise.configure_warden!
-      assert @executed
+      assert executed
     end
   end
 
   test 'warden manager user configuration through multiple blocks' do
     Devise.yield_and_restore do
-      @first_executed = false
-      @second_executed = false
-      Devise.warden do |config|
-        @first_executed = true
-      end
-      Devise.warden do |config|
-        @second_executed = true
+      executed = 0
+
+      3.times do
+        Devise.warden { |config| executed += 1 }
       end
 
       Devise.configure_warden!
-      assert @first_executed
-      assert @second_executed
+      assert_equal 3, executed
     end
   end
 

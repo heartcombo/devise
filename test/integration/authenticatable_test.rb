@@ -448,7 +448,7 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
 
   test 'uses the custom controller with the custom controller view' do
     get '/admin_area/sign_in'
-    assert_contain 'Sign in'
+    assert_contain 'Log in'
     assert_contain 'Welcome to "admins/sessions" controller!'
     assert_contain 'Welcome to "sessions/new" view!'
   end
@@ -580,7 +580,7 @@ class AuthenticationKeysTest < ActionDispatch::IntegrationTest
   test 'missing authentication keys cause authentication to abort' do
     swap Devise, authentication_keys: [:subdomain] do
       sign_in_as_user
-      assert_contain "Invalid email or password."
+      assert_contain "Invalid subdomain or password."
       assert_not warden.authenticated?(:user)
     end
   end

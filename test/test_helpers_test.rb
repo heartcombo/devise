@@ -4,12 +4,6 @@ class TestHelpersTest < ActionController::TestCase
   tests UsersController
   include Devise::TestHelpers
 
-  class CustomFailureApp < Devise::FailureApp
-    def redirect
-      self.status = 306
-    end
-  end
-
   test "redirects if attempting to access a page unauthenticated" do
     get :index
     assert_redirected_to new_user_session_path
@@ -40,7 +34,7 @@ class TestHelpersTest < ActionController::TestCase
 
   test "does not redirect with valid user" do
     user = create_user
-    user.confirm!
+    user.confirm
 
     sign_in user
     get :index
@@ -52,7 +46,7 @@ class TestHelpersTest < ActionController::TestCase
     assert_response :redirect
 
     user = create_user
-    user.confirm!
+    user.confirm
 
     sign_in user
     get :index
@@ -61,7 +55,7 @@ class TestHelpersTest < ActionController::TestCase
 
   test "redirects if valid user signed out" do
     user = create_user
-    user.confirm!
+    user.confirm
 
     sign_in user
     get :index
@@ -72,12 +66,30 @@ class TestHelpersTest < ActionController::TestCase
   end
 
   test "respects custom failure app" do
-    begin
-      Devise.warden_config.failure_app = CustomFailureApp
+    custom_failure_app = Class.new(Devise::FailureApp) do
+      def redirect
+        self.status = 306
+      end
+    end
+
+    swap Devise.warden_config, failure_app: custom_failure_app do
       get :index
       assert_response 306
-    ensure
-      Devise.warden_config.failure_app = Devise::FailureApp
+    end
+  end
+
+  test "passes given headers from the failure app to the response" do
+    custom_failure_app = Class.new(Devise::FailureApp) do
+      def respond
+        self.status = 401
+        self.response.headers["CUSTOMHEADER"] = 1
+      end
+    end
+
+    swap Devise.warden_config, failure_app: custom_failure_app do
+      sign_in create_user
+      get :index
+      assert_equal 1, @response.headers["CUSTOMHEADER"]
     end
   end
 
@@ -93,7 +105,7 @@ class TestHelpersTest < ActionController::TestCase
       end
 
       user = create_user
-      user.confirm!
+      user.confirm
       sign_in user
     ensure
       Warden::Manager._after_set_user.pop
@@ -106,7 +118,7 @@ class TestHelpersTest < ActionController::TestCase
         flunk "callback was called while it should not"
       end
       user = create_user
-      user.confirm!
+      user.confirm
 
       sign_in user
       sign_out user
@@ -134,7 +146,7 @@ class TestHelpersTest < ActionController::TestCase
 
   test "allows to sign in with different users" do
     first_user = create_user
-    first_user.confirm!
+    first_user.confirm
 
     sign_in first_user
     get :index
@@ -142,32 +154,25 @@ class TestHelpersTest < ActionController::TestCase
     sign_out first_user
 
     second_user = create_user
-    second_user.confirm!
+    second_user.confirm
 
     sign_in second_user
     get :index
     assert_match /User ##{second_user.id}/, @response.body
   end
 
+  test "creates a new warden proxy if the request object has changed" do
+    old_warden_proxy = warden
+    @request = ActionController::TestRequest.new
+    new_warden_proxy = warden
 
-  test "passes  given headers from the failure app to the response" do
-
-    begin
-      old_failure_app = Devise.warden_config[:failure_app]
-      class CustomTestFailureApp < Devise::FailureApp
-        def respond
-          self.status = 401
-          self.response.headers["CUSTOMHEADER"] = 1
-        end
-      end
-      Devise.warden_config[:failure_app] = CustomTestFailureApp
-      user = create_user
-      sign_in user
-      get :index
-      assert_equal 1, @response.headers["CUSTOMHEADER"]
-    ensure
-      Devise.warden_config[:failure_app] = old_failure_app
-    end
+    assert_not_equal old_warden_proxy, new_warden_proxy
   end
 
+  test "doesn't create a new warden proxy if the request object hasn't changed" do
+    old_warden_proxy = warden
+    new_warden_proxy = warden
+
+    assert_equal old_warden_proxy, new_warden_proxy
+  end
 end

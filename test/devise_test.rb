@@ -95,7 +95,7 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'Devise.email_regexp should match valid email addresses' do
     valid_emails = ["test@example.com", "jo@jo.co", "f4$_m@you.com", "testing.example@example.com.ua"]
-    non_valid_emails = ["rex", "test@go,com", "test user@example.com", "test_user@example server.com"]
+    non_valid_emails = ["rex", "test@go,com", "test user@example.com", "test_user@example server.com", "test_user@example.com."]
 
     valid_emails.each do |email|
       assert_match Devise.email_regexp, email

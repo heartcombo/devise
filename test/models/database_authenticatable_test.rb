@@ -237,10 +237,11 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should email on password change when configured' do
-    User.stubs(:send_password_change_notification).returns(true)
-    user = create_user
-    assert_email_sent user.email do
-      assert user.update_attributes(password: 'newpass', password_confirmation: 'newpass')
+    swap Devise, send_password_change_notification: true do
+      user = create_user
+      assert_email_sent user.email do
+        assert user.update_attributes(password: 'newpass', password_confirmation: 'newpass')
+      end
     end
   end
 

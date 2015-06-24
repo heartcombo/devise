@@ -92,6 +92,12 @@ class ActiveRecordTest < ActiveSupport::TestCase
   end
 end
 
+module StubModelFilters
+  def stub_filter(name)
+    define_singleton_method(name) { |*| nil }
+  end
+end
+
 class CheckFieldsTest < ActiveSupport::TestCase
   test 'checks if the class respond_to the required fields' do
     Player = Class.new do

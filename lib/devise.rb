@@ -154,7 +154,7 @@ module Devise
   mattr_accessor :pepper
   @@pepper = nil
 
-  # Used to encrypt password. Please generate one with rake secret.
+  # Used to enable sending notification to user when their password is changed
   mattr_accessor :send_password_change_notification
   @@send_password_change_notification = false
 

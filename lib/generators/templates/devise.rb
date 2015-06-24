@@ -105,7 +105,7 @@ Devise.setup do |config|
   # Setup a pepper to generate the encrypted password.
   # config.pepper = '<%= SecureRandom.hex(64) %>'
 
-  # Send a notification email on password change
+  # Send a notification email when the user's password is changed
   # config.send_password_change_notification = false
 
   # ==> Configuration for :confirmable

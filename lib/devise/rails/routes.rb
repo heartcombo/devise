@@ -404,19 +404,14 @@ module ActionDispatch::Routing
           raise <<-ERROR
 Devise does not support scoping OmniAuth callbacks under a dynamic segment
 and you have set #{mapping.fullpath.inspect}. You can work around by passing
-`skip: :omniauth_callbacks` and manually defining the routes. Here is an example:
+`skip: :omniauth_callbacks` to the `devise_for` call and extract omniauth
+options to another `devise_for` call outside the scope. Here is an example:
 
-    match "/users/auth/:provider",
-      constraints: { provider: /google|facebook/ },
-      to: "devise/omniauth_callbacks#passthru",
-      as: :omniauth_authorize,
-      via: [:get, :post]
+    devise_for :users, only: :omniauth_callbacks, controllers: {omniauth_callbacks: 'users/omniauth_callbacks'}
 
-    match "/users/auth/:action/callback",
-      constraints: { action: /google|facebook/ },
-      to: "devise/omniauth_callbacks#:action",
-      as: :omniauth_callback,
-      via: [:get, :post]
+    scope '/(:locale)', locale: /ru|en/ do
+      devise_for :users, skip: :omniauth_callbacks
+    end
 ERROR
         end
 

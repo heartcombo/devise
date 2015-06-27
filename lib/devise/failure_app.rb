@@ -118,8 +118,13 @@ module Devise
 
       config = Rails.application.config
 
-      if config.respond_to?(:relative_url_root) && config.relative_url_root.present?
-        opts[:script_name] = config.relative_url_root
+      # Rails 4.2 goes into an infinite loop if opts[:script_name] is unset
+      if (Rails::VERSION::MAJOR >= 4) && (Rails::VERSION::MINOR >= 2)
+        opts[:script_name] = (config.relative_url_root if config.respond_to?(:relative_url_root))
+      else
+        if config.respond_to?(:relative_url_root) && config.relative_url_root.present?
+          opts[:script_name] = config.relative_url_root
+        end
       end
 
       router_name = Devise.mappings[scope].router_name || Devise.available_router_name

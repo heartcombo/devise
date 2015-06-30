@@ -25,5 +25,5 @@ platforms :ruby do
 end
 
 group :mongoid do
-  gem "mongoid", github: "mongoid/mongoid", branch: "master"
+  gem "mongoid", "~> 4.0"
 end

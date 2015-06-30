@@ -7,7 +7,7 @@ module Devise
     #
     # Confirmable tracks the following columns:
     #
-    # * confirmation_token   - An OpenSSL::HMAC.hexdigest of @raw_confirmation_token
+    # * confirmation_token   - A unique random token
     # * confirmed_at         - A timestamp when the user clicked the confirmation link
     # * confirmation_sent_at - A timestamp when the confirmation_token was generated (not sent)
     # * unconfirmed_email    - An email address copied from the email attr. After confirmation
@@ -29,6 +29,8 @@ module Devise
     #     confirmation.
     #   * +confirm_within+: the time before a sent confirmation token becomes invalid.
     #     You can use this to force the user to confirm within a set period of time.
+    #     Confirmable will not generate a new token if a repeat confirmation is requested
+    #     during this time frame, unless the user's email changed too.
     #
     # == Examples
     #
@@ -230,10 +232,13 @@ module Devise
         # Generates a new random token for confirmation, and stores
         # the time this token is being generated in confirmation_sent_at
         def generate_confirmation_token
-          raw, enc = Devise.token_generator.generate(self.class, :confirmation_token)
-          @raw_confirmation_token   = raw
-          self.confirmation_token   = enc
-          self.confirmation_sent_at = Time.now.utc
+          if self.confirmation_token && !confirmation_period_expired?
+            @raw_confirmation_token = self.confirmation_token
+          else
+            raw, _ = Devise.token_generator.generate(self.class, :confirmation_token)
+            self.confirmation_token = @raw_confirmation_token = raw
+            self.confirmation_sent_at = Time.now.utc
+          end
         end
 
         def generate_confirmation_token!
@@ -244,6 +249,7 @@ module Devise
           @reconfirmation_required = true
           self.unconfirmed_email = self.email
           self.email = self.email_was
+          self.confirmation_token = nil
           generate_confirmation_token
         end
 
@@ -293,12 +299,17 @@ module Devise
         # If the user is already confirmed, create an error for the user
         # Options must have the confirmation_token
         def confirm_by_token(confirmation_token)
-          original_token     = confirmation_token
-          confirmation_token = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
+          confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token)
+          unless confirmable
+            confirmation_digest = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
+            confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_digest)
+          end
 
-          confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
+          # TODO: replace above lines with
+          # confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
+          # after enough time has passed that Devise clients do not use digested tokens
+
           confirmable.confirm if confirmable.persisted?
-          confirmable.confirmation_token = original_token
           confirmable
         end
 

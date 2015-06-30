@@ -291,12 +291,23 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'always generate a new token on resend' do
+  test 'do not generate a new token on resend' do
     user = create_user
     old  = user.confirmation_token
     user = User.find(user.id)
     user.resend_confirmation_instructions
-    assert_not_equal user.confirmation_token, old
+    assert_equal user.confirmation_token, old
+  end
+
+  test 'generate a new token after first has expired' do
+    swap Devise, confirm_within: 3.days do
+      user = create_user
+      old = user.confirmation_token
+      user.update_attribute(:confirmation_sent_at, 4.days.ago)
+      user = User.find(user.id)
+      user.resend_confirmation_instructions
+      assert_not_equal user.confirmation_token, old
+    end
   end
 
   test 'should call after_confirmation if confirmed' do

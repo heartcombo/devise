@@ -48,7 +48,7 @@ class FailureTest < ActiveSupport::TestCase
 
   def call_failure(env_params={})
     env = {
-      'REQUEST_URI' => 'http://test.host/',
+      'REQUEST_URI' => 'http://test.host',
       'HTTP_HOST' => 'test.host',
       'REQUEST_METHOD' => 'GET',
       'warden.options' => { scope: :user },
@@ -57,7 +57,6 @@ class FailureTest < ActiveSupport::TestCase
       'rack.input' => "",
       'warden' => OpenStruct.new(message: nil)
     }.merge!(env_params)
-
     @response = (env.delete(:app) || Devise::FailureApp).call(env).to_a
     @request  = ActionDispatch::Request.new(env)
   end
@@ -67,6 +66,22 @@ class FailureTest < ActiveSupport::TestCase
       call_failure
       assert_equal 302, @response.first
       assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://test.host/users/sign_in', @response.second['Location']
+    end
+
+    # Mounted app examples: Sidekiq::Web, Split::Dashboard.
+    test 'returns to the default Rails app redirect location ignoring mounted app prefix' do
+      call_failure({
+        'REQUEST_URI' => 'http://test.host/sidekiq',
+        'SCRIPT_NAME' => '/sidekiq' # Set by mounted app.
+      })
+
+      # Work in progress.
+      # Setting SCRIPT_NAME doesn't seem to be enough to
+      # simulate real URL generation which uses script name as path prefix.
+      raise "Test not failing when it should."
+
+      assert_equal 302, @response.first
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 

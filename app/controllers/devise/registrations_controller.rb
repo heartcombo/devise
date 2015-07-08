@@ -1,5 +1,5 @@
 class Devise::RegistrationsController < DeviseController
-  prepend_before_filter :require_no_authentication, only: [:new, :create, :cancel]
+  prepend_before_filter :require_no_authentication, only: [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy]
 
   # GET /resource/sign_up
@@ -13,7 +13,7 @@ class Devise::RegistrationsController < DeviseController
   # POST /resource
   def create
     build_resource(sign_up_params)
-
+    resource.email_host = request.host_with_port
     resource.save
     yield resource if block_given?
     if resource.persisted?
@@ -115,10 +115,7 @@ class Devise::RegistrationsController < DeviseController
   # The path used after sign up for inactive accounts. You need to overwrite
   # this method in your own RegistrationsController.
   def after_inactive_sign_up_path_for(resource)
-    scope = Devise::Mapping.find_scope!(resource)
-    router_name = Devise.mappings[scope].router_name
-    context = router_name ? send(router_name) : self
-    context.respond_to?(:root_path) ? context.root_path : "/"
+    respond_to?(:root_path) ? root_path : "/"
   end
 
   # The default url to be used after updating a resource. You need to overwrite
@@ -139,9 +136,5 @@ class Devise::RegistrationsController < DeviseController
 
   def account_update_params
     devise_parameter_sanitizer.sanitize(:account_update)
-  end
-
-  def translation_scope
-    'devise.registrations'
   end
 end

@@ -45,6 +45,7 @@ module Devise
         after_create  :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
         before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, if: :postpone_email_change?
         after_update  :send_reconfirmation_instructions,  if: :reconfirmation_required?
+        attr_accessor :email_host
       end
 
       def initialize(*args, &block)
@@ -105,28 +106,29 @@ module Devise
       end
 
       # Send confirmation instructions by email
-      def send_confirmation_instructions
+      def send_confirmation_instructions(opts={})
         unless @raw_confirmation_token
           generate_confirmation_token!
         end
 
-        opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+        opts.merge!(pending_reconfirmation? ? { to: unconfirmed_email } : { })
+        opts.merge!(host: (self.email_host || opts[:host]))
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 
-      def send_reconfirmation_instructions
+      def send_reconfirmation_instructions(opts={})
         @reconfirmation_required = false
 
         unless @skip_confirmation_notification
-          send_confirmation_instructions
+          send_confirmation_instructions(opts)
         end
       end
 
       # Resend confirmation token.
       # Regenerates the token if the period is expired.
-      def resend_confirmation_instructions
+      def resend_confirmation_instructions(opts={})
         pending_any_confirmation do
-          send_confirmation_instructions
+          send_confirmation_instructions(opts)
         end
       end
 
@@ -166,8 +168,8 @@ module Devise
         # A callback method used to deliver confirmation
         # instructions on creation. This can be overridden
         # in models to map to a nice sign up e-mail.
-        def send_on_create_confirmation_instructions
-          send_confirmation_instructions
+        def send_on_create_confirmation_instructions(opts={})
+          send_confirmation_instructions(opts)
         end
 
         # Callback to overwrite if confirmation is required or not.
@@ -284,7 +286,7 @@ module Devise
           unless confirmable.try(:persisted?)
             confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)
           end
-          confirmable.resend_confirmation_instructions if confirmable.persisted?
+          confirmable.resend_confirmation_instructions(attributes) if confirmable.persisted?
           confirmable
         end
 

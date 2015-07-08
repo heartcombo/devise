@@ -244,6 +244,9 @@ module Devise
   mattr_accessor :clean_up_csrf_token_on_authentication
   @@clean_up_csrf_token_on_authentication = true
 
+  mattr_accessor :email_host
+  @@email_host = :default
+
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.
@@ -275,6 +278,7 @@ module Devise
   # Stores the token generator
   mattr_accessor :token_generator
   @@token_generator = nil
+
 
   # Default way to setup Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.

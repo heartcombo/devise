@@ -15,7 +15,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   def user
     @user ||= begin
       user = create_user
-      user.send_reset_password_instructions
+      user.send_reset_password_instructions ({host: "localhost"})
       user
     end
   end

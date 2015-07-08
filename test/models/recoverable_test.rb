@@ -14,7 +14,7 @@ class RecoverableTest < ActiveSupport::TestCase
     reset_password_tokens = []
     3.times do
       user = create_user
-      user.send_reset_password_instructions
+      user.send_reset_password_instructions(host: "localhost")
       token = user.reset_password_token
       assert !reset_password_tokens.include?(token)
       reset_password_tokens << token
@@ -36,7 +36,7 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     assert_nil user.reset_password_token
 
-    user.send_reset_password_instructions
+    user.send_reset_password_instructions host: "localhost"
     assert_present user.reset_password_token
     assert user.reset_password('123456789', '123456789')
     assert_nil user.reset_password_token
@@ -67,7 +67,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should not clear reset password token if record is invalid' do
     user = create_user
-    user.send_reset_password_instructions
+    user.send_reset_password_instructions host: "localhost"
     assert_present user.reset_password_token
     assert_not user.reset_password('123456789', '987654321')
     assert_present user.reset_password_token
@@ -83,19 +83,20 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     assert_email_sent do
       token = user.reset_password_token
-      user.send_reset_password_instructions
+      user.send_reset_password_instructions host: "localhost"
       assert_not_equal token, user.reset_password_token
     end
   end
 
   test 'should find a user to send instructions by email' do
     user = create_user
-    reset_password_user = User.send_reset_password_instructions(email: user.email)
+    reset_password_user = User.send_reset_password_instructions({email: user.email}, {host: "localhost"})
     assert_equal reset_password_user, user
   end
 
   test 'should return a new record with errors if user was not found by e-mail' do
-    reset_password_user = User.send_reset_password_instructions(email: "invalid@example.com")
+    reset_password_user = User.send_reset_password_instructions({email: "invalid@example.com"},
+                                                                {host: "localhost"})
     assert_not reset_password_user.persisted?
     assert_equal "not found", reset_password_user.errors[:email].join
   end
@@ -103,7 +104,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should find a user to send instructions by authentication_keys' do
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user
-      reset_password_user = User.send_reset_password_instructions(email: user.email, username: user.username)
+      reset_password_user = User.send_reset_password_instructions({email: user.email, username: user.username}, {host: "localhost"})
       assert_equal reset_password_user, user
     end
   end
@@ -111,7 +112,8 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should require all reset_password_keys' do
       swap Devise, reset_password_keys: [:username, :email] do
           user = create_user
-          reset_password_user = User.send_reset_password_instructions(email: user.email)
+          reset_password_user = User.send_reset_password_instructions({email: user.email},
+                                                                      {host: "localhost"})
           assert_not reset_password_user.persisted?
           assert_equal "can't be blank", reset_password_user.errors[:username].join
       end
@@ -120,20 +122,20 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should reset reset_password_token before send the reset instructions email' do
     user = create_user
     token = user.reset_password_token
-    User.send_reset_password_instructions(email: user.email)
+    User.send_reset_password_instructions({email: user.email}, {host: "localhost"})
     assert_not_equal token, user.reload.reset_password_token
   end
 
   test 'should send email instructions to the user reset their password' do
     user = create_user
     assert_email_sent do
-      User.send_reset_password_instructions(email: user.email)
+      User.send_reset_password_instructions({email: user.email}, {host: "localhost"})
     end
   end
 
   test 'should find a user to reset their password based on the raw token' do
     user = create_user
-    raw  = user.send_reset_password_instructions
+    raw  = user.send_reset_password_instructions(host: "localhost")
 
     reset_password_user = User.reset_password_by_token(reset_password_token: raw)
     assert_equal reset_password_user, user
@@ -153,7 +155,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should return a new record with errors if password is blank' do
     user = create_user
-    raw  = user.send_reset_password_instructions
+    raw  = user.send_reset_password_instructions(host: "localhost")
 
     reset_password_user = User.reset_password_by_token(reset_password_token: raw, password: '')
     assert_not reset_password_user.errors.empty?
@@ -164,7 +166,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should reset successfully user password given the new password and confirmation' do
     user = create_user
     old_password = user.password
-    raw  = user.send_reset_password_instructions
+    raw  = user.send_reset_password_instructions(host: "localhost")
 
     reset_password_user = User.reset_password_by_token(
       reset_password_token: raw,
@@ -182,7 +184,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should not reset password after reset_password_within time' do
     swap Devise, reset_password_within: 1.hour do
       user = create_user
-      raw  = user.send_reset_password_instructions
+      raw  = user.send_reset_password_instructions(host: "localhost")
 
       old_password = user.password
       user.reset_password_sent_at = 2.days.ago
@@ -210,7 +212,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should return a user based on the raw token' do
     user = create_user
-    raw  = user.send_reset_password_instructions
+    raw  = user.send_reset_password_instructions(host: "localhost")
 
     assert_equal User.with_reset_password_token(raw), user
   end

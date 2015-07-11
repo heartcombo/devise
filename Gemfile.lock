@@ -1,14 +1,3 @@
-GIT
-  remote: git://github.com/mongoid/mongoid.git
-  revision: a4365d7ecfa8221bfcf36a4e7ce7993142fc5940
-  branch: master
-  specs:
-    mongoid (4.0.0)
-      activemodel (~> 4.0)
-      moped (~> 2.0.0)
-      origin (~> 2.1)
-      tzinfo (>= 0.3.37)
-
 PATH
   remote: .
   specs:
@@ -60,9 +49,9 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.0)
     bcrypt (3.1.10)
-    bson (2.3.0)
+    bson (3.1.2)
     builder (3.2.2)
-    connection_pool (2.1.3)
+    connection_pool (2.2.0)
     erubis (2.7.0)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
@@ -82,8 +71,13 @@ GEM
     minitest (5.7.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
-    moped (2.0.4)
-      bson (~> 2.2)
+    mongoid (4.0.2)
+      activemodel (~> 4.0)
+      moped (~> 2.0.0)
+      origin (~> 2.1)
+      tzinfo (>= 0.3.37)
+    moped (2.0.6)
+      bson (~> 3.0)
       connection_pool (~> 2.0)
       optionable (~> 0.2.0)
     multi_json (1.11.1)
@@ -175,7 +169,7 @@ DEPENDENCIES
   devise!
   jruby-openssl
   mocha (~> 1.1)
-  mongoid!
+  mongoid (~> 4.0)
   omniauth (~> 1.2.0)
   omniauth-facebook
   omniauth-oauth2 (~> 1.1.0)
@@ -184,3 +178,6 @@ DEPENDENCIES
   rdoc
   sqlite3
   webrat (= 0.7.3)
+
+BUNDLED WITH
+   1.10.5

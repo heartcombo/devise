@@ -110,23 +110,6 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     assert_contain 'You are signed in'
   end
 
-  test 'admin does not explode on time out' do
-    admin = sign_in_as_admin
-    get expire_admin_path(admin)
-
-    Admin.send :define_method, :reset_authentication_token! do
-      nil
-    end
-
-    begin
-      get admins_path
-      assert_redirected_to admins_path
-      assert_not warden.authenticated?(:admin)
-    ensure
-      Admin.send(:remove_method, :reset_authentication_token!)
-    end
-  end
-
   test 'user configured timeout limit' do
     swap Devise, timeout_in: 8.minutes do
       user = sign_in_as_user

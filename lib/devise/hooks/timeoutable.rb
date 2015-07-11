@@ -21,10 +21,6 @@ Warden::Manager.after_set_user do |record, warden, options|
     if record.timedout?(last_request_at) && !env['devise.skip_timeout']
       Devise.sign_out_all_scopes ? proxy.sign_out : proxy.sign_out(scope)
 
-      if record.respond_to?(:expire_auth_token_on_timeout) && record.expire_auth_token_on_timeout
-        record.reset_authentication_token!
-      end
-
       throw :warden, scope: scope, message: :timeout
     end
 

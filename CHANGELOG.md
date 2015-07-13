@@ -2,6 +2,7 @@
 
 * enhancements
   * Upon setting `Devise.send_password_change_notification = true` a user will receive notification when their password has been changed.
+  * reset_password_token can now be set before saving a new record. (@betesh, #3673)
 
 ### 3.5.2 - 2015-08-10
 

@@ -88,6 +88,18 @@ class RecoverableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should allow setting reset_password_token before saving record' do
+    user = new_user
+    user.set_reset_password_token
+    token = user.reset_password_token
+    user.save!
+
+    assert_email_sent do
+      user.send_reset_password_instructions
+      assert_equal token, user.reset_password_token
+    end
+  end
+
   test 'should find a user to send instructions by email' do
     user = create_user
     reset_password_user = User.send_reset_password_instructions(email: user.email)
@@ -133,7 +145,8 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should find a user to reset their password based on the raw token' do
     user = create_user
-    raw  = user.send_reset_password_instructions
+    user.send_reset_password_instructions
+    raw  = user.instance_variable_get("@raw_reset_password_token")
 
     reset_password_user = User.reset_password_by_token(reset_password_token: raw)
     assert_equal reset_password_user, user
@@ -153,7 +166,8 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should return a new record with errors if password is blank' do
     user = create_user
-    raw  = user.send_reset_password_instructions
+    user.send_reset_password_instructions
+    raw  = user.instance_variable_get("@raw_reset_password_token")
 
     reset_password_user = User.reset_password_by_token(reset_password_token: raw, password: '')
     assert_not reset_password_user.errors.empty?
@@ -164,7 +178,8 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should reset successfully user password given the new password and confirmation' do
     user = create_user
     old_password = user.password
-    raw  = user.send_reset_password_instructions
+    user.send_reset_password_instructions
+    raw  = user.instance_variable_get("@raw_reset_password_token")
 
     reset_password_user = User.reset_password_by_token(
       reset_password_token: raw,
@@ -182,7 +197,8 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should not reset password after reset_password_within time' do
     swap Devise, reset_password_within: 1.hour do
       user = create_user
-      raw  = user.send_reset_password_instructions
+      user.send_reset_password_instructions
+      raw  = user.instance_variable_get("@raw_reset_password_token")
 
       old_password = user.password
       user.reset_password_sent_at = 2.days.ago
@@ -210,14 +226,16 @@ class RecoverableTest < ActiveSupport::TestCase
 
   test 'should return a user based on the raw token' do
     user = create_user
-    raw  = user.send_reset_password_instructions
+    user.send_reset_password_instructions
+    raw  = user.instance_variable_get("@raw_reset_password_token")
 
     assert_equal User.with_reset_password_token(raw), user
   end
 
   test 'should return the same reset password token as generated' do
     user = create_user
-    raw  = user.send_reset_password_instructions
+    user.send_reset_password_instructions
+    raw  = user.instance_variable_get("@raw_reset_password_token")
     assert_equal Devise.token_generator.digest(self.class, :reset_password_token, raw), user.reset_password_token
   end
 

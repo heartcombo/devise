@@ -269,7 +269,7 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Log in</h2>')
+      assert @response.third.body.include?('<h2>Sign in</h2>')
       assert @response.third.body.include?('Invalid email or password.')
     end
 
@@ -280,7 +280,7 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Log in</h2>')
+      assert @response.third.body.include?('<h2>Sign in</h2>')
       assert @response.third.body.include?('You have to confirm your email address before continuing.')
     end
 
@@ -291,7 +291,7 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Log in</h2>')
+      assert @response.third.body.include?('<h2>Sign in</h2>')
       assert @response.third.body.include?('Your account is not activated yet.')
     end
   end

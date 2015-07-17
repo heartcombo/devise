@@ -198,7 +198,7 @@ module Devise
         #   confirmation_period_valid?   # will always return true
         #
         def confirmation_period_valid?
-          self.class.allow_unconfirmed_access_for.nil? || (confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago)
+          self.class.allow_unconfirmed_access_for.nil? || (created_at && created_at.utc >= self.class.allow_unconfirmed_access_for.ago)
         end
 
         # Checks if the user confirmation happens before the token becomes invalid

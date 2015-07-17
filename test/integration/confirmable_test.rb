@@ -154,6 +154,29 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'not confirmed user should not be able to extend unconfirmed access period by requesting resend confirmation instructions' do
+    swap Devise, allow_unconfirmed_access_for: 1.day do
+      user = create_user(confirm: false, confirmation_sent_at: 2.days.ago)
+      user.update_attribute(:created_at, 2.days.ago)
+
+      # resend confirmation instructions
+      visit new_user_session_path
+      click_link "Didn't receive confirmation instructions?"
+
+      fill_in 'email', with: user.email
+      click_button 'Resend confirmation instructions'
+
+      # login
+      visit new_user_session_path
+      fill_in 'email', with: user.email
+      fill_in 'password', with: user.password
+      click_button 'Log In'
+
+      assert_contain 'You have to confirm your email address before continuing'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'unconfirmed but signed in user should be redirected to their root path' do
     swap Devise, allow_unconfirmed_access_for: 1.day do
       user = sign_in_as_user(confirm: false)

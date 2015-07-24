@@ -41,7 +41,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_blank user.errors[:email]
 
     assert_not user.confirm
-    assert_equal "was already confirmed, please try signing in", user.errors[:email].join
+    assert_equal 'was already confirmed, please try signing in', user.errors[:email].join
   end
 
   test 'should find and confirm a user automatically based on the raw token' do
@@ -55,7 +55,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should return a new record with errors when a invalid token is given' do
     confirmed_user = User.confirm_by_token('invalid_confirmation_token')
     assert_not confirmed_user.persisted?
-    assert_equal "is invalid", confirmed_user.errors[:confirmation_token].join
+    assert_equal 'is invalid', confirmed_user.errors[:confirmation_token].join
   end
 
   test 'should return a new record with errors when a blank token is given' do
@@ -70,7 +70,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user.save
     confirmed_user = User.confirm_by_token(user.raw_confirmation_token)
     assert confirmed_user.confirmed?
-    assert_equal "was already confirmed, please try signing in", confirmed_user.errors[:email].join
+    assert_equal 'was already confirmed, please try signing in', confirmed_user.errors[:email].join
   end
 
   test 'should show error when a token has already been used' do
@@ -80,12 +80,12 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert user.reload.confirmed?
 
     confirmed_user = User.confirm_by_token(raw)
-    assert_equal "was already confirmed, please try signing in", confirmed_user.errors[:email].join
+    assert_equal 'was already confirmed, please try signing in', confirmed_user.errors[:email].join
   end
 
   test 'should send confirmation instructions by email' do
-    assert_email_sent "mynewuser@example.com" do
-      create_user email: "mynewuser@example.com"
+    assert_email_sent 'mynewuser@example.com' do
+      create_user email: 'mynewuser@example.com'
     end
   end
 
@@ -133,14 +133,14 @@ class ConfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should return a new user if no email was found' do
-    confirmation_user = User.send_confirmation_instructions(email: "invalid@example.com")
+    confirmation_user = User.send_confirmation_instructions(email: 'invalid@example.com')
     assert_not confirmation_user.persisted?
   end
 
   test 'should add error to new user email if no email was found' do
-    confirmation_user = User.send_confirmation_instructions(email: "invalid@example.com")
+    confirmation_user = User.send_confirmation_instructions(email: 'invalid@example.com')
     assert confirmation_user.errors[:email]
-    assert_equal "not found", confirmation_user.errors[:email].join
+    assert_equal 'not found', confirmation_user.errors[:email].join
   end
 
   test 'should send email instructions for the user confirm its email' do
@@ -330,7 +330,7 @@ end
 class ReconfirmableTest < ActiveSupport::TestCase
   test 'should not worry about validations on confirm even with reconfirmable' do
     admin = create_admin
-    admin.reset_password_token = "a"
+    admin.reset_password_token = 'a'
     assert admin.confirm
   end
 
@@ -374,10 +374,10 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should send confirmation instructions by email after changing email' do
     admin = create_admin
     assert admin.confirm
-    assert_email_sent "new_test@example.com" do
+    assert_email_sent 'new_test@example.com' do
       assert admin.update_attributes(email: 'new_test@example.com')
     end
-    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
+    assert_match 'new_test@example.com', ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should not send confirmation by email after changing password' do
@@ -431,21 +431,21 @@ class ReconfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should return a new admin if no email or unconfirmed_email was found' do
-    confirmation_admin = Admin.send_confirmation_instructions(email: "invalid@email.com")
+    confirmation_admin = Admin.send_confirmation_instructions(email: 'invalid@email.com')
     assert_not confirmation_admin.persisted?
   end
 
   test 'should add error to new admin email if no email or unconfirmed_email was found' do
-    confirmation_admin = Admin.send_confirmation_instructions(email: "invalid@email.com")
+    confirmation_admin = Admin.send_confirmation_instructions(email: 'invalid@email.com')
     assert confirmation_admin.errors[:email]
-    assert_equal "not found", confirmation_admin.errors[:email].join
+    assert_equal 'not found', confirmation_admin.errors[:email].join
   end
 
   test 'should find admin with email in unconfirmed_emails' do
     admin = create_admin
-    admin.unconfirmed_email = "new_test@email.com"
+    admin.unconfirmed_email = 'new_test@email.com'
     assert admin.save
-    admin = Admin.find_by_unconfirmed_email_with_errors(email: "new_test@email.com")
+    admin = Admin.find_by_unconfirmed_email_with_errors(email: 'new_test@email.com')
     assert admin.persisted?
   end
 

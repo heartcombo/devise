@@ -50,7 +50,8 @@ class RememberableTest < ActiveSupport::TestCase
     end
 
     user = User.new
-    def user.authenticable_salt; ""; end
+    def user.authenticable_salt; ''
+    ; end
     assert_raise RuntimeError do
       user.rememberable_value
     end
@@ -98,12 +99,12 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'serialize should return nil if no resource is found' do
-    assert_nil resource_class.serialize_from_cookie([0], "123")
+    assert_nil resource_class.serialize_from_cookie([0], '123')
   end
 
   test 'remember me return nil if is a valid resource with invalid token' do
     resource = create_resource
-    assert_nil resource_class.serialize_from_cookie([resource.id], "123")
+    assert_nil resource_class.serialize_from_cookie([resource.id], '123')
   end
 
   test 'remember for should fallback to devise remember for default configuration' do

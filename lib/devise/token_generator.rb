@@ -5,7 +5,7 @@ require 'securerandom'
 
 module Devise
   class TokenGenerator
-    def initialize(key_generator, digest="SHA256")
+    def initialize(key_generator, digest='SHA256')
       @key_generator = key_generator
       @digest = digest
     end

@@ -79,9 +79,9 @@ module Devise
           salt
         else
           raise "authenticable_salt returned nil for the #{self.class.name} model. " \
-            "In order to use rememberable, you must ensure a password is always set " \
-            "or have a remember_token column in your model or implement your own " \
-            "rememberable_value in the model with custom logic."
+            'In order to use rememberable, you must ensure a password is always set ' \
+            'or have a remember_token column in your model or implement your own ' \
+            'rememberable_value in the model with custom logic.'
         end
       end
 

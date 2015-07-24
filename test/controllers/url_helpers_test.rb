@@ -14,9 +14,9 @@ class RoutesTest < ActionController::TestCase
                  send(:"#{prepend_path}user_#{name}_url")
 
     # With string
-    assert_equal @controller.send(:"#{prepend_path}#{name}_path", "user"),
+    assert_equal @controller.send(:"#{prepend_path}#{name}_path", 'user'),
                  send(:"#{prepend_path}user_#{name}_path")
-    assert_equal @controller.send(:"#{prepend_path}#{name}_url", "user"),
+    assert_equal @controller.send(:"#{prepend_path}#{name}_url", 'user'),
                  send(:"#{prepend_path}user_#{name}_url")
 
     # Default url params

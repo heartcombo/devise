@@ -1,5 +1,5 @@
-require "active_support/core_ext/object/try"
-require "active_support/core_ext/hash/slice"
+require 'active_support/core_ext/object/try'
+require 'active_support/core_ext/hash/slice'
 
 module ActionDispatch::Routing
   class RouteSet #:nodoc:
@@ -10,11 +10,11 @@ module ActionDispatch::Routing
 
       @devise_finalized ||= begin
         if Devise.router_name.nil? && defined?(@devise_finalized) && self != Rails.application.try(:routes)
-          warn "[DEVISE] We have detected that you are using devise_for inside engine routes. " \
-            "In this case, you probably want to set Devise.router_name = MOUNT_POINT, where "   \
-            "MOUNT_POINT is a symbol representing where this engine will be mounted at. For "   \
-            "now Devise will default the mount point to :main_app. You can explicitly set it"   \
-            " to :main_app as well in case you want to keep the current behavior."
+          warn '[DEVISE] We have detected that you are using devise_for inside engine routes. ' \
+            'In this case, you probably want to set Devise.router_name = MOUNT_POINT, where '   \
+            'MOUNT_POINT is a symbol representing where this engine will be mounted at. For '   \
+            'now Devise will default the mount point to :main_app. You can explicitly set it'   \
+            ' to :main_app as well in case you want to keep the current behavior.'
         end
 
         Devise.configure_warden!
@@ -311,7 +311,7 @@ module ActionDispatch::Routing
     #
     def unauthenticated(scope=nil)
       constraint = lambda do |request|
-        not request.env["warden"].authenticate? scope: scope
+        not request.env['warden'].authenticate? scope: scope
       end
 
       constraints(constraint) do
@@ -343,7 +343,7 @@ module ActionDispatch::Routing
     # Notice and be aware of the differences above between :user and :users
     def devise_scope(scope)
       constraint = lambda do |request|
-        request.env["devise.mapping"] = Devise.mappings[scope]
+        request.env['devise.mapping'] = Devise.mappings[scope]
         true
       end
 
@@ -356,10 +356,10 @@ module ActionDispatch::Routing
     protected
 
       def devise_session(mapping, controllers) #:nodoc:
-        resource :session, only: [], controller: controllers[:sessions], path: "" do
-          get   :new,     path: mapping.path_names[:sign_in],  as: "new"
+        resource :session, only: [], controller: controllers[:sessions], path: '' do
+          get   :new,     path: mapping.path_names[:sign_in],  as: 'new'
           post  :create,  path: mapping.path_names[:sign_in]
-          match :destroy, path: mapping.path_names[:sign_out], as: "destroy", via: mapping.sign_out_via
+          match :destroy, path: mapping.path_names[:sign_out], as: 'destroy', via: mapping.sign_out_via
         end
       end
 
@@ -416,7 +416,7 @@ ERROR
         end
 
         path, @scope[:path] = @scope[:path], nil
-        path_prefix = Devise.omniauth_path_prefix || "/#{mapping.fullpath}/auth".squeeze("/")
+        path_prefix = Devise.omniauth_path_prefix || "/#{mapping.fullpath}/auth".squeeze('/')
 
         set_omniauth_path_prefix!(path_prefix)
 
@@ -452,7 +452,7 @@ ERROR
       def constraints_for(method_to_apply, scope=nil, block=nil)
         constraint = lambda do |request|
           request.env['warden'].send(method_to_apply, scope: scope) &&
-            (block.nil? || block.call(request.env["warden"].user(scope)))
+            (block.nil? || block.call(request.env['warden'].user(scope)))
         end
 
         constraints(constraint) do

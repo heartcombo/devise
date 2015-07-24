@@ -7,7 +7,7 @@ module Mongoid
       include Devise::Generators::OrmHelpers
 
       def generate_model
-        invoke "mongoid:model", [name] unless model_exists? && behavior == :invoke
+        invoke 'mongoid:model', [name] unless model_exists? && behavior == :invoke
       end
 
       def inject_field_types

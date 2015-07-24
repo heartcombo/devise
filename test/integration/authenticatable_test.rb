@@ -128,8 +128,8 @@ class AuthenticationSanityTest < ActionDispatch::IntegrationTest
   end
 
   test 'scope uses custom failure app' do
-    put "/en/accounts/management"
-    assert_equal "Oops, not found", response.body
+    put '/en/accounts/management'
+    assert_equal 'Oops, not found', response.body
     assert_equal 404, response.status
   end
 end
@@ -167,7 +167,7 @@ class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
     assert_not warden.authenticated?(:user)
 
     assert_raises ActionController::RoutingError do
-      get "/private/active"
+      get '/private/active'
     end
   end
 
@@ -219,7 +219,7 @@ class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
     assert_not warden.authenticated?(:user)
 
     assert_raises ActionController::RoutingError do
-      get "/dashboard/active"
+      get '/dashboard/active'
     end
   end
 
@@ -268,52 +268,52 @@ class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
   test 'redirect to default url if no other was configured' do
     sign_in_as_user
     assert_template 'home/index'
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:'user_return_to']
   end
 
   test 'redirect to requested url after sign in' do
     get users_path
     assert_redirected_to new_user_session_path
-    assert_equal users_path, session[:"user_return_to"]
+    assert_equal users_path, session[:'user_return_to']
 
     follow_redirect!
     sign_in_as_user visit: false
 
     assert_current_url '/users'
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:'user_return_to']
   end
 
   test 'redirect to last requested url overwriting the stored return_to option' do
     get expire_user_path(create_user)
     assert_redirected_to new_user_session_path
-    assert_equal expire_user_path(create_user), session[:"user_return_to"]
+    assert_equal expire_user_path(create_user), session[:'user_return_to']
 
     get users_path
     assert_redirected_to new_user_session_path
-    assert_equal users_path, session[:"user_return_to"]
+    assert_equal users_path, session[:'user_return_to']
 
     follow_redirect!
     sign_in_as_user visit: false
 
     assert_current_url '/users'
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:'user_return_to']
   end
 
   test 'xml http requests does not store urls for redirect' do
     get users_path, {}, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
     assert_equal 401, response.status
-    assert_nil session[:"user_return_to"]
+    assert_nil session[:'user_return_to']
   end
 
   test 'redirect to configured home path for a given scope after sign in' do
     sign_in_as_admin
-    assert_equal "/admin_area/home", @request.path
+    assert_equal '/admin_area/home', @request.path
   end
 
   test 'require_no_authentication should set the already_authenticated flash message' do
     sign_in_as_user
     visit new_user_session_path
-    assert_equal flash[:alert], I18n.t("devise.failure.already_authenticated")
+    assert_equal flash[:alert], I18n.t('devise.failure.already_authenticated')
   end
 end
 
@@ -344,7 +344,7 @@ class AuthenticationSessionTest < ActionDispatch::IntegrationTest
   test 'allows session to be set for a given scope' do
     sign_in_as_user
     get '/users'
-    assert_equal "Cart", @controller.user_session[:cart]
+    assert_equal 'Cart', @controller.user_session[:cart]
   end
 
   test 'does not explode when class name is still stored in session' do
@@ -380,13 +380,13 @@ class AuthenticationSessionTest < ActionDispatch::IntegrationTest
 
   test 'session id is changed on sign in' do
     get '/users'
-    session_id = request.session["session_id"]
+    session_id = request.session['session_id']
 
     get '/users'
-    assert_equal session_id, request.session["session_id"]
+    assert_equal session_id, request.session['session_id']
 
     sign_in_as_user
-    assert_not_equal session_id, request.session["session_id"]
+    assert_not_equal session_id, request.session['session_id']
   end
 end
 
@@ -442,7 +442,7 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
 
       post exhibit_user_url(1)
       assert_not warden.authenticated?(:user)
-      assert_equal "User is not authenticated", response.body
+      assert_equal 'User is not authenticated', response.body
     end
   end
 
@@ -472,8 +472,8 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
 
   test 'sign in with script name' do
     assert_nothing_raised do
-      get new_user_session_path, {}, "SCRIPT_NAME" => "/omg"
-      fill_in "email", with: "user@test.com"
+      get new_user_session_path, {}, 'SCRIPT_NAME' => '/omg'
+      fill_in 'email', with: 'user@test.com'
     end
   end
 
@@ -502,14 +502,14 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   end
 
   test 'uses the mapping from router' do
-    sign_in_as_user visit: "/as/sign_in"
+    sign_in_as_user visit: '/as/sign_in'
     assert warden.authenticated?(:user)
     assert_not warden.authenticated?(:admin)
   end
 
   test 'sign in with xml format returns xml response' do
     create_user
-    post user_session_path(format: 'xml'), user: {email: "user@test.com", password: '12345678'}
+    post user_session_path(format: 'xml'), user: {email: 'user@test.com', password: '12345678'}
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
@@ -519,13 +519,13 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     create_user
-    post user_session_path(format: 'xml'), user: {email: "user@test.com", password: '12345678'}
+    post user_session_path(format: 'xml'), user: {email: 'user@test.com', password: '12345678'}
     assert_response :success
 
     get new_user_session_path(format: 'xml')
     assert_response :success
 
-    post user_session_path(format: 'xml'), user: {email: "user@test.com", password: '12345678'}
+    post user_session_path(format: 'xml'), user: {email: 'user@test.com', password: '12345678'}
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
@@ -559,7 +559,7 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   test 'sign out with non-navigational format via XHR does not redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
       sign_in_as_user
-      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
+      xml_http_request :get, destroy_user_session_path, {}, {'HTTP_ACCEPT' => 'application/json,text/javascript,*/*'} # NOTE: Bug is triggered by combination of XHR and */*.
       assert_response :no_content
       assert_not warden.authenticated?(:user)
     end
@@ -569,7 +569,7 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   test 'sign out with navigational format via XHR does redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
       sign_in_as_user
-      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "text/html,*/*" }
+      xml_http_request :get, destroy_user_session_path, {}, {'HTTP_ACCEPT' => 'text/html,*/*'}
       assert_response :redirect
       assert_not warden.authenticated?(:user)
     end
@@ -580,7 +580,7 @@ class AuthenticationKeysTest < ActionDispatch::IntegrationTest
   test 'missing authentication keys cause authentication to abort' do
     swap Devise, authentication_keys: [:subdomain] do
       sign_in_as_user
-      assert_contain "Invalid subdomain or password."
+      assert_contain 'Invalid subdomain or password.'
       assert_not warden.authenticated?(:user)
     end
   end
@@ -619,7 +619,7 @@ class AuthenticationRequestKeysTest < ActionDispatch::IntegrationTest
 
     swap Devise, request_keys: [:subdomain] do
       sign_in_as_user
-      assert_contain "Invalid email or password."
+      assert_contain 'Invalid email or password.'
       assert_not warden.authenticated?(:user)
     end
   end

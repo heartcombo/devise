@@ -21,11 +21,11 @@ module Devise
           end
       DESC
 
-      source_root File.expand_path("../../templates/controllers", __FILE__)
+      source_root File.expand_path('../../templates/controllers', __FILE__)
       argument :scope, required: true,
-        desc: "The scope to create controllers in, e.g. users, admins"
-      class_option :controllers, aliases: "-c", type: :array,
-        desc: "Select specific controllers to generate (#{CONTROLLERS.join(', ')})"
+        desc: 'The scope to create controllers in, e.g. users, admins'
+      class_option :controllers, aliases: '-c', type: :array,
+                   desc: "Select specific controllers to generate (#{CONTROLLERS.join(', ')})"
 
       def create_controllers
         @scope_prefix = scope.blank? ? '' : (scope.camelize + '::')
@@ -37,7 +37,7 @@ module Devise
       end
 
       def show_readme
-        readme "README" if behavior == :invoke
+        readme 'README' if behavior == :invoke
       end
     end
   end

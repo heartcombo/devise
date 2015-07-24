@@ -1,4 +1,4 @@
-<h2>Log in</h2>
+<h2><%= t('devise.shared.sign_in') %></h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
@@ -8,7 +8,7 @@
 
   <div class="field">
     <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+    <%= f.password_field :password, autocomplete: 'off' %>
   </div>
 
   <% if devise_mapping.rememberable? -%>
@@ -19,8 +19,8 @@
   <% end -%>
 
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= f.submit t('devise.shared.sign_in') %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<%= render 'devise/shared/links' %>

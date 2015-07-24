@@ -67,8 +67,8 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
 
   test 'proxy authenticate_user! options to authenticate with user scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :user, recall: "foo")
-    @controller.authenticate_user!(recall: "foo")
+    @mock_warden.expects(:authenticate!).with(scope: :user, recall: 'foo')
+    @controller.authenticate_user!(recall: 'foo')
   end
 
   test 'proxy authenticate_admin! to authenticate with admin scope' do
@@ -90,7 +90,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
 
   test 'proxy user_signed_in? to authenticate with user scope' do
-    @mock_warden.expects(:authenticate).with(scope: :user).returns("user")
+    @mock_warden.expects(:authenticate).with(scope: :user).returns('user')
     assert @controller.user_signed_in?
   end
 
@@ -200,26 +200,26 @@ class ControllerAuthenticatableTest < ActionController::TestCase
 
   test 'stored location for returns the location for a given scope' do
     assert_nil @controller.stored_location_for(:user)
-    @controller.session[:"user_return_to"] = "/foo.bar"
-    assert_equal "/foo.bar", @controller.stored_location_for(:user)
+    @controller.session[:'user_return_to'] = '/foo.bar'
+    assert_equal '/foo.bar', @controller.stored_location_for(:user)
   end
 
   test 'stored location for accepts a resource as argument' do
     assert_nil @controller.stored_location_for(:user)
-    @controller.session[:"user_return_to"] = "/foo.bar"
-    assert_equal "/foo.bar", @controller.stored_location_for(User.new)
+    @controller.session[:'user_return_to'] = '/foo.bar'
+    assert_equal '/foo.bar', @controller.stored_location_for(User.new)
   end
 
   test 'stored location cleans information after reading' do
-    @controller.session[:"user_return_to"] = "/foo.bar"
-    assert_equal "/foo.bar", @controller.stored_location_for(:user)
-    assert_nil @controller.session[:"user_return_to"]
+    @controller.session[:'user_return_to'] = '/foo.bar'
+    assert_equal '/foo.bar', @controller.stored_location_for(:user)
+    assert_nil @controller.session[:'user_return_to']
   end
 
   test 'store location for stores a location to redirect back to' do
     assert_nil @controller.stored_location_for(:user)
-    @controller.store_location_for(:user, "/foo.bar")
-    assert_equal "/foo.bar", @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, '/foo.bar')
+    assert_equal '/foo.bar', @controller.stored_location_for(:user)
   end
 
   test 'store bad location for stores a location to redirect back to' do
@@ -229,25 +229,25 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   end
 
   test 'store location for accepts a resource as argument' do
-    @controller.store_location_for(User.new, "/foo.bar")
-    assert_equal "/foo.bar", @controller.stored_location_for(User.new)
+    @controller.store_location_for(User.new, '/foo.bar')
+    assert_equal '/foo.bar', @controller.stored_location_for(User.new)
   end
 
   test 'store location for stores paths' do
-    @controller.store_location_for(:user, "//host/foo.bar")
-    assert_equal "/foo.bar", @controller.stored_location_for(:user)
-    @controller.store_location_for(:user, "///foo.bar")
-    assert_equal "/foo.bar", @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, '//host/foo.bar')
+    assert_equal '/foo.bar', @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, '///foo.bar')
+    assert_equal '/foo.bar', @controller.stored_location_for(:user)
   end
 
   test 'store location for stores query string' do
-    @controller.store_location_for(:user, "/foo?bar=baz")
-    assert_equal "/foo?bar=baz", @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, '/foo?bar=baz')
+    assert_equal '/foo?bar=baz', @controller.stored_location_for(:user)
   end
 
   test 'store location for stores fragments' do
-    @controller.store_location_for(:user, "/foo#bar")
-    assert_equal "/foo#bar", @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, '/foo#bar')
+    assert_equal '/foo#bar', @controller.stored_location_for(:user)
   end
 
   test 'after sign in path defaults to root path if none by was specified for the given scope' do
@@ -265,10 +265,10 @@ class ControllerAuthenticatableTest < ActionController::TestCase
 
   test 'sign in and redirect uses the stored location' do
     user = User.new
-    @controller.session[:user_return_to] = "/foo.bar"
+    @controller.session[:user_return_to] = '/foo.bar'
     @mock_warden.expects(:user).with(:user).returns(nil)
     @mock_warden.expects(:set_user).with(user, scope: :user).returns(true)
-    @controller.expects(:redirect_to).with("/foo.bar")
+    @controller.expects(:redirect_to).with('/foo.bar')
     @controller.sign_in_and_redirect(user)
   end
 
@@ -294,7 +294,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
       @mock_warden.expects(:logout).with(:admin).returns(true)
       @mock_warden.expects(:clear_strategies_cache!).with(scope: :admin).returns(true)
       @controller.expects(:redirect_to).with(admin_root_path)
-      @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
+      @controller.instance_eval 'def after_sign_out_path_for(resource); admin_root_path; end'
       @controller.sign_out_and_redirect(:admin)
     end
   end
@@ -305,7 +305,7 @@ class ControllerAuthenticatableTest < ActionController::TestCase
       @mock_warden.expects(:logout).with().returns(true)
       @mock_warden.expects(:clear_strategies_cache!).with().returns(true)
       @controller.expects(:redirect_to).with(admin_root_path)
-      @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
+      @controller.instance_eval 'def after_sign_out_path_for(resource); admin_root_path; end'
       @controller.sign_out_and_redirect(:admin)
     end
   end

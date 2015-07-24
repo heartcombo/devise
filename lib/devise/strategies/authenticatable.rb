@@ -100,7 +100,7 @@ module Devise
 
       # By default, a request is valid if the controller set the proper env variable.
       def valid_params_request?
-        !!env["devise.allow_params_authentication"]
+        !!env['devise.allow_params_authentication']
       end
 
       # If the request is valid, finally check if params_auth_hash returns a hash.
@@ -168,8 +168,8 @@ module Devise
       # becomes simply :database.
       def authenticatable_name
         @authenticatable_name ||=
-          ActiveSupport::Inflector.underscore(self.class.name.split("::").last).
-            sub("_authenticatable", "").to_sym
+          ActiveSupport::Inflector.underscore(self.class.name.split('::').last).
+            sub('_authenticatable', '').to_sym
       end
     end
   end

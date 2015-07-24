@@ -6,7 +6,7 @@ module Devise
       end
 
       def message
-        "The following attribute(s) is (are) missing on your model: #{@attributes.join(", ")}"
+        "The following attribute(s) is (are) missing on your model: #{@attributes.join(', ')}"
       end
     end
 
@@ -87,8 +87,8 @@ module Devise
         selected_modules.each do |m|
           mod = Devise::Models.const_get(m.to_s.classify)
 
-          if mod.const_defined?("ClassMethods")
-            class_mod = mod.const_get("ClassMethods")
+          if mod.const_defined?('ClassMethods')
+            class_mod = mod.const_get('ClassMethods')
             extend class_mod
 
             if class_mod.respond_to?(:available_configs)

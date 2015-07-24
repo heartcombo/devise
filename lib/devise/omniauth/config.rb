@@ -4,7 +4,7 @@ module Devise
       def initialize(strategy)
         @strategy = strategy
         super("Could not find a strategy with name `#{strategy}'. " \
-          "Please ensure it is required or explicitly set it using the :strategy_class option.")
+          'Please ensure it is required or explicitly set it using the :strategy_class option.')
       end
     end
 

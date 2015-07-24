@@ -48,8 +48,8 @@ class RecoverableTest < ActiveSupport::TestCase
 
     user.send_reset_password_instructions
     assert_present user.reset_password_token
-    user.password = "123456678"
-    user.password_confirmation = "123456678"
+    user.password = '123456678'
+    user.password_confirmation = '123456678'
     user.save!
     assert_nil user.reset_password_token
   end
@@ -60,7 +60,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
     user.send_reset_password_instructions
     assert_present user.reset_password_token
-    user.email = "another@example.com"
+    user.email = 'another@example.com'
     user.save!
     assert_nil user.reset_password_token
   end
@@ -95,9 +95,9 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should return a new record with errors if user was not found by e-mail' do
-    reset_password_user = User.send_reset_password_instructions(email: "invalid@example.com")
+    reset_password_user = User.send_reset_password_instructions(email: 'invalid@example.com')
     assert_not reset_password_user.persisted?
-    assert_equal "not found", reset_password_user.errors[:email].join
+    assert_equal 'not found', reset_password_user.errors[:email].join
   end
 
   test 'should find a user to send instructions by authentication_keys' do
@@ -142,7 +142,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should return a new record with errors if no reset_password_token is found' do
     reset_password_user = User.reset_password_by_token(reset_password_token: 'invalid_token')
     assert_not reset_password_user.persisted?
-    assert_equal "is invalid", reset_password_user.errors[:reset_password_token].join
+    assert_equal 'is invalid', reset_password_user.errors[:reset_password_token].join
   end
 
   test 'should return a new record with errors if reset_password_token is blank' do
@@ -197,7 +197,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
       assert user.valid_password?(old_password)
       assert_not user.valid_password?('new_password')
-      assert_equal "has expired, please request a new one", reset_password_user.errors[:reset_password_token].join
+      assert_equal 'has expired, please request a new one', reset_password_user.errors[:reset_password_token].join
     end
   end
 

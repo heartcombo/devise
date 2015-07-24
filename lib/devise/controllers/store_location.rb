@@ -1,4 +1,4 @@
-require "uri"
+require 'uri'
 
 module Devise
   module Controllers

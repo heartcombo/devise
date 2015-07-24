@@ -91,7 +91,7 @@ module Devise
       end
 
       def confirm!(args={})
-        ActiveSupport::Deprecation.warn "confirm! is deprecated in favor of confirm"
+        ActiveSupport::Deprecation.warn 'confirm! is deprecated in favor of confirm'
         confirm(args)
       end
 

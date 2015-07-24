@@ -122,7 +122,7 @@ class CheckFieldsTest < ActiveSupport::TestCase
       attr_accessor :encrypted_password
     end
 
-    assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: email" do
+    assert_raise_with_message Devise::Models::MissingAttribute, 'The following attribute(s) is (are) missing on your model: email' do
       Devise::Models.check_fields!(Clown)
     end
   end
@@ -137,7 +137,7 @@ class CheckFieldsTest < ActiveSupport::TestCase
       devise :database_authenticatable
     end
 
-    assert_raise_with_message Devise::Models::MissingAttribute, "The following attribute(s) is (are) missing on your model: encrypted_password, email" do
+    assert_raise_with_message Devise::Models::MissingAttribute, 'The following attribute(s) is (are) missing on your model: encrypted_password, email' do
       Devise::Models.check_fields!(Magician)
     end
   end

@@ -13,7 +13,7 @@ class LockTest < ActionDispatch::IntegrationTest
     visit new_user_session_path
     click_link "Didn't receive unlock instructions?"
 
-    Devise.stubs(:friendly_token).returns("abcdef")
+    Devise.stubs(:friendly_token).returns('abcdef')
     fill_in 'email', with: user.email
     click_button 'Resend unlock instructions'
   end
@@ -54,7 +54,7 @@ class LockTest < ActionDispatch::IntegrationTest
   end
 
   test 'unlocked pages should not be available if email strategy is disabled' do
-    visit "/admin_area/sign_in"
+    visit '/admin_area/sign_in'
 
     assert_raise Webrat::NotFoundError do
       click_link "Didn't receive unlock instructions?"
@@ -65,7 +65,7 @@ class LockTest < ActionDispatch::IntegrationTest
     end
 
     assert_raise ActionController::RoutingError do
-      visit "/admin_area/unlock/new"
+      visit '/admin_area/unlock/new'
     end
   end
 
@@ -78,53 +78,53 @@ class LockTest < ActionDispatch::IntegrationTest
     assert_contain /Unlock token(.*)invalid/
   end
 
-  test "locked user should be able to unlock account" do
+  test 'locked user should be able to unlock account' do
     user = create_user
     raw  = user.lock_access!
     visit_user_unlock_with_token(raw)
 
-    assert_current_url "/users/sign_in"
+    assert_current_url '/users/sign_in'
     assert_contain 'Your account has been unlocked successfully. Please sign in to continue.'
     assert_not user.reload.access_locked?
   end
 
-  test "user should not send a new e-mail if already locked" do
+  test 'user should not send a new e-mail if already locked' do
     user = create_user(locked: true)
     user.failed_attempts = User.maximum_attempts + 1
     user.save!
 
     ActionMailer::Base.deliveries.clear
 
-    sign_in_as_user(password: "invalid")
+    sign_in_as_user(password: 'invalid')
     assert_contain 'Your account is locked.'
     assert ActionMailer::Base.deliveries.empty?
   end
 
   test 'error message is configurable by resource name' do
     store_translations :en, devise: {
-        failure: {user: {locked: "You are locked!"}}
+        failure: {user: {locked: 'You are locked!'}}
     } do
 
       user = create_user(locked: true)
       user.failed_attempts = User.maximum_attempts + 1
       user.save!
 
-      sign_in_as_user(password: "invalid")
-      assert_contain "You are locked!"
+      sign_in_as_user(password: 'invalid')
+      assert_contain 'You are locked!'
     end
   end
 
-  test "user should not be able to sign in when locked" do
+  test 'user should not be able to sign in when locked' do
     store_translations :en, devise: {
-        failure: {user: {locked: "You are locked!"}}
+        failure: {user: {locked: 'You are locked!'}}
     } do
 
       user = create_user(locked: true)
       user.failed_attempts = User.maximum_attempts + 1
       user.save!
 
-      sign_in_as_user(password: "123456")
-      assert_contain "You are locked!"
+      sign_in_as_user(password: '123456')
+      assert_contain 'You are locked!'
     end
   end
 
@@ -164,14 +164,14 @@ class LockTest < ActionDispatch::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
-  test "when using json to ask a unlock request, should not return the user" do
+  test 'when using json to ask a unlock request, should not return the user' do
     user = create_user(locked: true)
-    post user_unlock_path(format: "json", user: {email: user.email})
+    post user_unlock_path(format: 'json', user: {email: user.email})
     assert_response :success
     assert_equal response.body, {}.to_json
   end
 
-  test "in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is locked" do
+  test 'in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is locked' do
     swap Devise, paranoid: true do
       user = create_user(locked: true)
 
@@ -181,12 +181,12 @@ class LockTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: user.email
       click_button 'Resend unlock instructions'
 
-      assert_current_url "/users/sign_in"
-      assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
+      assert_current_url '/users/sign_in'
+      assert_contain 'If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.'
     end
   end
 
-  test "in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is not locked" do
+  test 'in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is not locked' do
     swap Devise, paranoid: true do
       user = create_user(locked: false)
 
@@ -196,43 +196,43 @@ class LockTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: user.email
       click_button 'Resend unlock instructions'
 
-      assert_current_url "/users/sign_in"
-      assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
+      assert_current_url '/users/sign_in'
+      assert_contain 'If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.'
     end
   end
 
-  test "in paranoid mode, when trying to unlock an user that does not exists it should not say that it does not exists" do
+  test 'in paranoid mode, when trying to unlock an user that does not exists it should not say that it does not exists' do
     swap Devise, paranoid: true do
       visit new_user_session_path
       click_link "Didn't receive unlock instructions?"
 
-      fill_in 'email', with: "arandomemail@hotmail.com"
+      fill_in 'email', with: 'arandomemail@hotmail.com'
       click_button 'Resend unlock instructions'
 
-      assert_not_contain "1 error prohibited this user from being saved:"
-      assert_not_contain "Email not found"
-      assert_current_url "/users/sign_in"
+      assert_not_contain '1 error prohibited this user from being saved:'
+      assert_not_contain 'Email not found'
+      assert_current_url '/users/sign_in'
 
-      assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
+      assert_contain 'If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.'
 
     end
   end
 
-  test "in paranoid mode, when locking a user that exists it should not say that the user was locked" do
+  test 'in paranoid mode, when locking a user that exists it should not say that the user was locked' do
     swap Devise, paranoid: true, maximum_attempts: 1 do
       user = create_user(locked: false)
 
       visit new_user_session_path
       fill_in 'email', with: user.email
-      fill_in 'password', with: "abadpassword"
+      fill_in 'password', with: 'abadpassword'
       click_button 'Log in'
 
       fill_in 'email', with: user.email
-      fill_in 'password', with: "abadpassword"
+      fill_in 'password', with: 'abadpassword'
       click_button 'Log in'
 
-      assert_current_url "/users/sign_in"
-      assert_not_contain "locked"
+      assert_current_url '/users/sign_in'
+      assert_not_contain 'locked'
     end
   end
 

@@ -98,7 +98,7 @@ module Devise
     end
 
     def fullpath
-      "/#{@path_prefix}/#{@path}".squeeze("/")
+      "/#{@path_prefix}/#{@path}".squeeze('/')
     end
 
     # Create magic predicates for verifying what module is activated by this map.
@@ -127,7 +127,7 @@ module Devise
     end
 
     def default_controllers(options)
-      mod = options[:module] || "devise"
+      mod = options[:module] || 'devise'
       @controllers = Hash.new { |h,k| h[k] = "#{mod}/#{k}" }
       @controllers.merge!(options[:controllers]) if options[:controllers]
       @controllers.each { |k,v| @controllers[k] = v.to_s }
@@ -135,7 +135,7 @@ module Devise
 
     def default_path_names(options)
       @path_names = Hash.new { |h,k| h[k] = k.to_s }
-      @path_names[:registration] = ""
+      @path_names[:registration] = ''
       @path_names.merge!(options[:path_names]) if options[:path_names]
     end
 

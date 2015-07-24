@@ -15,13 +15,13 @@ class PasswordTest < ActionDispatch::IntegrationTest
     fill_in 'email', with: 'user@test.com'
     yield if block_given?
 
-    Devise.stubs(:friendly_token).returns("abcdef")
+    Devise.stubs(:friendly_token).returns('abcdef')
     click_button 'Send me reset password instructions'
   end
 
   def reset_password(options={}, &block)
     unless options[:visit] == false
-      visit edit_user_password_path(reset_password_token: options[:reset_password_token] || "abcdef")
+      visit edit_user_password_path(reset_password_token: options[:reset_password_token] || 'abcdef')
       assert_response :success
     end
 
@@ -136,7 +136,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
   test 'not authenticated user without a reset password token should not be able to visit the page' do
     get edit_user_password_path
     assert_response :redirect
-    assert_redirected_to "/users/sign_in"
+    assert_redirected_to '/users/sign_in'
   end
 
   test 'not authenticated user with invalid reset password token should not be able to change their password' do
@@ -251,14 +251,14 @@ class PasswordTest < ActionDispatch::IntegrationTest
 
   test 'reset password request with valid E-Mail in XML format should return valid response' do
     create_user
-    post user_password_path(format: 'xml'), user: {email: "user@test.com"}
+    post user_password_path(format: 'xml'), user: {email: 'user@test.com'}
     assert_response :success
     assert_equal response.body, { }.to_xml
   end
 
   test 'reset password request with invalid E-Mail in XML format should return valid response' do
     create_user
-    post user_password_path(format: 'xml'), user: {email: "invalid.test@test.com"}
+    post user_password_path(format: 'xml'), user: {email: 'invalid.test@test.com'}
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
@@ -266,7 +266,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
   test 'reset password request with invalid E-Mail in XML format should return empty and valid response' do
     swap Devise, paranoid: true do
       create_user
-      post user_password_path(format: 'xml'), user: {email: "invalid@test.com"}
+      post user_password_path(format: 'xml'), user: {email: 'invalid@test.com'}
       assert_response :success
       assert_equal response.body, { }.to_xml
     end
@@ -298,41 +298,41 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
-  test "when using json requests to ask a confirmable request, should not return the object" do
+  test 'when using json requests to ask a confirmable request, should not return the object' do
     user = create_user(confirm: false)
 
     post user_password_path(format: :json), user: { email: user.email }
 
     assert_response :success
-    assert_equal response.body, "{}"
+    assert_equal response.body, '{}'
   end
 
-  test "when in paranoid mode and with an invalid e-mail, asking to reset a password should display a message that does not indicates that the e-mail does not exists in the database" do
+  test 'when in paranoid mode and with an invalid e-mail, asking to reset a password should display a message that does not indicates that the e-mail does not exists in the database' do
     swap Devise, paranoid: true do
       visit_new_password_path
-      fill_in "email", with: "arandomemail@test.com"
+      fill_in 'email', with: 'arandomemail@test.com'
       click_button 'Send me reset password instructions'
 
-      assert_not_contain "1 error prohibited this user from being saved:"
-      assert_not_contain "Email not found"
-      assert_contain "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
-      assert_current_url "/users/sign_in"
+      assert_not_contain '1 error prohibited this user from being saved:'
+      assert_not_contain 'Email not found'
+      assert_contain 'If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.'
+      assert_current_url '/users/sign_in'
     end
   end
 
-  test "when in paranoid mode and with a valid e-mail, asking to reset password should display a message that does not indicates that the email exists in the database and redirect to the failure route" do
+  test 'when in paranoid mode and with a valid e-mail, asking to reset password should display a message that does not indicates that the email exists in the database and redirect to the failure route' do
     swap Devise, paranoid: true do
       user = create_user
       visit_new_password_path
       fill_in 'email', with: user.email
       click_button 'Send me reset password instructions'
 
-      assert_contain "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
-      assert_current_url "/users/sign_in"
+      assert_contain 'If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.'
+      assert_current_url '/users/sign_in'
     end
   end
 
-  test "after recovering a password, should set failed attempts to 0" do
+  test 'after recovering a password, should set failed attempts to 0' do
     user = create_user
     user.update_attribute(:failed_attempts, 10)
 

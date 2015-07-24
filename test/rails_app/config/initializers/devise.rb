@@ -1,19 +1,19 @@
-require "omniauth-facebook"
-require "omniauth-openid"
+require 'omniauth-facebook'
+require 'omniauth-openid'
 
 # Use this hook to configure devise mailer, warden hooks and so forth. The first
 # four configuration values can also be set straight in your models.
 Devise.setup do |config|
-  config.secret_key = "d9eb5171c59a4c817f68b0de27b8c1e340c2341b52cdbc60d3083d4e8958532" \
-                      "18dcc5f589cafde048faec956b61f864b9b5513ff9ce29bf9e5d58b0f234f8e3b"
+  config.secret_key = 'd9eb5171c59a4c817f68b0de27b8c1e340c2341b52cdbc60d3083d4e8958532' \
+                      '18dcc5f589cafde048faec956b61f864b9b5513ff9ce29bf9e5d58b0f234f8e3b'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
-  config.mailer_sender = "please-change-me@config-initializers-devise.com"
+  config.mailer_sender = 'please-change-me@config-initializers-devise.com'
 
 
-  config.parent_controller = "ApplicationWithFakeEngine"
+  config.parent_controller = 'ApplicationWithFakeEngine'
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
 
@@ -136,7 +136,7 @@ Devise.setup do |config|
   # config.sign_in_after_reset_password = true
 
   # Setup a pepper to generate the encrypted password.
-  config.pepper = "d142367154e5beacca404b1a6a4f8bc52c6fdcfa3ccc3cf8eb49f3458a688ee6ac3b9fae488432a3bfca863b8a90008368a9f3a3dfbe5a962e64b6ab8f3a3a1a"
+  config.pepper = 'd142367154e5beacca404b1a6a4f8bc52c6fdcfa3ccc3cf8eb49f3458a688ee6ac3b9fae488432a3bfca863b8a90008368a9f3a3dfbe5a962e64b6ab8f3a3a1a'
 
   # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for

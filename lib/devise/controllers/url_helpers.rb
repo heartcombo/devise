@@ -41,7 +41,7 @@ module Devise
         routes.each do |module_name, actions|
           [:path, :url].each do |path_or_url|
             actions.each do |action|
-              action = action ? "#{action}_" : ""
+              action = action ? "#{action}_" : ''
               method = :"#{action}#{module_name}_#{path_or_url}"
 
               define_method method do |resource_or_scope, *args|

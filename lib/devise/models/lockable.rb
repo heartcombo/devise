@@ -1,4 +1,4 @@
-require "devise/hooks/lockable"
+require 'devise/hooks/lockable'
 
 module Devise
   module Models
@@ -22,7 +22,7 @@ module Devise
     module Lockable
       extend  ActiveSupport::Concern
 
-      delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, to: "self.class"
+      delegate :lock_strategy_enabled?, :unlock_strategy_enabled?, to: 'self.class'
 
       def self.required_fields(klass)
         attributes = []

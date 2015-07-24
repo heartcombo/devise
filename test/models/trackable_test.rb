@@ -14,7 +14,7 @@ class TrackableTest < ActiveSupport::TestCase
   test 'update_tracked_fields should only set attributes but not save the record' do
     user = create_user
     request = mock
-    request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:remote_ip).returns('127.0.0.1')
 
     assert_nil user.current_sign_in_ip
     assert_nil user.last_sign_in_ip
@@ -24,8 +24,8 @@ class TrackableTest < ActiveSupport::TestCase
 
     user.update_tracked_fields(request)
 
-    assert_equal "127.0.0.1", user.current_sign_in_ip
-    assert_equal "127.0.0.1", user.last_sign_in_ip
+    assert_equal '127.0.0.1', user.current_sign_in_ip
+    assert_equal '127.0.0.1', user.last_sign_in_ip
     assert_not_nil user.current_sign_in_at
     assert_not_nil user.last_sign_in_at
     assert_equal 1, user.sign_in_count

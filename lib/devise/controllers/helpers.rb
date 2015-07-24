@@ -157,7 +157,7 @@ module Devise
 
       # Tell warden that params authentication is allowed for that specific page.
       def allow_params_authentication!
-        request.env["devise.allow_params_authentication"] = true
+        request.env['devise.allow_params_authentication'] = true
       end
 
       # The scope root url to be used when they're signed in. By default, it first
@@ -177,7 +177,7 @@ module Devise
         elsif respond_to?(:root_path)
           root_path
         else
-          "/"
+          '/'
         end
       end
 
@@ -222,7 +222,7 @@ module Devise
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         router_name = Devise.mappings[scope].router_name
         context = router_name ? send(router_name) : self
-        context.respond_to?(:root_path) ? context.root_path : "/"
+        context.respond_to?(:root_path) ? context.root_path : '/'
       end
 
       # Sign in a user and tries to redirect first to the stored location and
@@ -249,7 +249,7 @@ module Devise
       # clear run strategies and remove cached variables.
       def handle_unverified_request
         super # call the default behaviour which resets/nullifies/raises
-        request.env["devise.skip_storage"] = true
+        request.env['devise.skip_storage'] = true
         sign_out_all_scopes(false)
       end
 
@@ -270,8 +270,8 @@ module Devise
       private
 
       def expire_session_data_after_sign_in!
-        ActiveSupport::Deprecation.warn "expire_session_data_after_sign_in! is deprecated " \
-          "in favor of expire_data_after_sign_in!"
+        ActiveSupport::Deprecation.warn 'expire_session_data_after_sign_in! is deprecated ' \
+          'in favor of expire_data_after_sign_in!'
         expire_data_after_sign_in!
       end
 

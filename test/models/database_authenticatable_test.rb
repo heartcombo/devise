@@ -64,10 +64,10 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     end
   end
 
-  test "param filter should not convert booleans and integer to strings" do
-    conditions = { "login" => "foo@bar.com", "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
+  test 'param filter should not convert booleans and integer to strings' do
+    conditions = {'login' => 'foo@bar.com', 'bool1' => true, 'bool2' => false, 'fixnum' => 123, 'will_be_converted' => (1..10) }
     conditions = Devise::ParameterFilter.new([], []).filter(conditions)
-    assert_equal( { "login" => "foo@bar.com", "bool1" => "true", "bool2" => "false", "fixnum" => "123", "will_be_converted" => "1..10" }, conditions)
+    assert_equal({'login' => 'foo@bar.com', 'bool1' => 'true', 'bool2' => 'false', 'fixnum' => '123', 'will_be_converted' => '1..10'}, conditions)
   end
 
   test 'param filter should filter case_insensitive_keys as insensitive' do
@@ -151,7 +151,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_not user.update_with_password(current_password: 'other',
       password: 'pass4321', password_confirmation: 'pass4321')
     assert user.reload.valid_password?('12345678')
-    assert_match "is invalid", user.errors[:current_password].join
+    assert_match 'is invalid', user.errors[:current_password].join
   end
 
   test 'should add an error to current password when it is blank' do
@@ -166,15 +166,15 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = UserWithValidation.create!(valid_attributes)
     user.save
     assert user.persisted?
-    assert_not user.update_with_password(username: "")
-    assert_match "usertest", user.reload.username
+    assert_not user.update_with_password(username: '')
+    assert_match 'usertest', user.reload.username
     assert_match "can't be blank", user.errors[:username].join
   end
 
   test 'should ignore password and its confirmation if they are blank' do
     user = create_user
-    assert user.update_with_password(current_password: '12345678', email: "new@example.com")
-    assert_equal "new@example.com", user.email
+    assert user.update_with_password(current_password: '12345678', email: 'new@example.com')
+    assert_equal 'new@example.com', user.email
   end
 
   test 'should not update password with invalid confirmation' do
@@ -215,7 +215,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = create_user
     assert_not user.destroy_with_password('other')
     assert user.persisted?
-    assert_match "is invalid", user.errors[:current_password].join
+    assert_match 'is invalid', user.errors[:current_password].join
   end
 
   test 'should not destroy user with blank password' do
@@ -226,8 +226,8 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'downcase_keys with validation' do
-    User.create(email: "HEllO@example.com", password: "123456")
-    user = User.create(email: "HEllO@example.com", password: "123456")
+    User.create(email: 'HEllO@example.com', password: '123456')
+    user = User.create(email: 'HEllO@example.com', password: '123456')
     assert !user.valid?
   end
 

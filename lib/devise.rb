@@ -100,7 +100,7 @@ module Devise
 
   # The realm used in Http Basic Authentication.
   mattr_accessor :http_authentication_realm
-  @@http_authentication_realm = "Application"
+  @@http_authentication_realm = 'Application'
 
   # Email regex used to validate email formats. It simply asserts that
   # an one (and only one) @ exists in the given string. This is mainly
@@ -203,7 +203,7 @@ module Devise
 
   # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
-  @@navigational_formats = ["*/*", :html]
+  @@navigational_formats = ['*/*', :html]
 
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
@@ -217,13 +217,13 @@ module Devise
   # Defaults to ApplicationController. This should be set early
   # in the initialization process and should be set to a string.
   mattr_accessor :parent_controller
-  @@parent_controller = "ApplicationController"
+  @@parent_controller = 'ApplicationController'
 
   # The parent mailer all Devise mailers inherit from.
   # Defaults to ActionMailer::Base. This should be set early
   # in the initialization process and should be set to a string.
   mattr_accessor :parent_mailer
-  @@parent_mailer = "ActionMailer::Base"
+  @@parent_mailer = 'ActionMailer::Base'
 
   # The router Devise should use to generate routes. Defaults
   # to :main_app. Should be overridden by engines in order
@@ -314,7 +314,7 @@ module Devise
   def self.mailer=(class_name)
     @@mailer_ref = ref(class_name)
   end
-  self.mailer = "Devise::Mailer"
+  self.mailer = 'Devise::Mailer'
 
   # Small method that adds a mapping to Devise.
   def self.add_mapping(resource, options)
@@ -371,7 +371,7 @@ module Devise
       when Hash
         key, value = route.keys.first, route.values.flatten
       else
-        raise ArgumentError, ":route should be true, a Symbol or a Hash"
+        raise ArgumentError, ':route should be true, a Symbol or a Hash'
       end
 
       URL_HELPERS[key] ||= []

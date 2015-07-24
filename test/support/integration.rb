@@ -61,7 +61,7 @@ class ActionDispatch::IntegrationTest
     assert [301, 302].include?(@integration_session.status),
            "Expected status to be 301 or 302, got #{@integration_session.status}"
 
-    assert_url url, @integration_session.headers["Location"]
+    assert_url url, @integration_session.headers['Location']
   end
 
   def assert_current_url(expected)

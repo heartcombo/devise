@@ -45,7 +45,7 @@ module Devise
         self.password_confirmation = new_password_confirmation
 
         if respond_to?(:after_password_reset) && valid?
-          ActiveSupport::Deprecation.warn "after_password_reset is deprecated"
+          ActiveSupport::Deprecation.warn 'after_password_reset is deprecated'
           after_password_reset
         end
 
@@ -53,7 +53,7 @@ module Devise
       end
 
       def reset_password!(new_password, new_password_confirmation)
-        ActiveSupport::Deprecation.warn "reset_password! is deprecated in favor of reset_password"
+        ActiveSupport::Deprecation.warn 'reset_password! is deprecated in favor of reset_password'
         reset_password(new_password, new_password_confirmation)
       end
 

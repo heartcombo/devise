@@ -1,4 +1,4 @@
-require "action_controller/metal"
+require 'action_controller/metal'
 
 module Devise
   # Failure application that will be called every time :warden is thrown from
@@ -42,13 +42,13 @@ module Devise
 
     def http_auth
       self.status = 401
-      self.headers["WWW-Authenticate"] = %(Basic realm=#{Devise.http_authentication_realm.inspect}) if http_auth_header?
+      self.headers['WWW-Authenticate'] = %(Basic realm=#{Devise.http_authentication_realm.inspect}) if http_auth_header?
       self.content_type = request.format.to_s
       self.response_body = http_auth_body
     end
 
     def recall
-      env["PATH_INFO"]  = attempted_path
+      env['PATH_INFO']  = attempted_path
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
       self.response = recall_app(warden_options[:recall]).call(env)
     end
@@ -78,11 +78,11 @@ module Devise
       if message.is_a?(Symbol)
         options = {}
         options[:resource_name] = scope
-        options[:scope] = "devise.failure"
+        options[:scope] = 'devise.failure'
         options[:default] = [message]
         auth_keys = scope_class.authentication_keys
         keys = auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys
-        options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
+        options[:authentication_keys] = keys.join(I18n.translate(:'support.array.words_connector'))
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)
@@ -135,7 +135,7 @@ module Devise
       elsif respond_to?(:root_url)
         root_url(opts)
       else
-        "/"
+        '/'
       end
     end
 
@@ -168,8 +168,8 @@ module Devise
     def http_auth_body
       return i18n_message unless request_format
       method = "to_#{request_format}"
-      if method == "to_xml"
-        { error: i18n_message }.to_xml(root: "errors")
+      if method == 'to_xml'
+        { error: i18n_message }.to_xml(root: 'errors')
       elsif {}.respond_to?(method)
         { error: i18n_message }.send(method)
       else
@@ -178,7 +178,7 @@ module Devise
     end
 
     def recall_app(app)
-      controller, action = app.split("#")
+      controller, action = app.split('#')
       controller_name  = ActiveSupport::Inflector.camelize(controller)
       controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")
       controller_klass.action(action)

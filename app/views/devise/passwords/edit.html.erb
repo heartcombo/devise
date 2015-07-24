@@ -9,12 +9,12 @@
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length.to_s + ' ' + t('devise.passwords.characters_minimum') %> )</em>
     <% end %><br />
-    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
+    <%= f.password_field :password, autofocus: true, autocomplete: 'off' %>
   </div>
 
   <div class="field">
     <%= f.label :password_confirmation, t('devise.passwords.confirm_new') %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    <%= f.password_field :password_confirmation, autocomplete: 'off' %>
   </div>
 
   <div class="actions">
@@ -22,4 +22,4 @@
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<%= render 'devise/shared/links' %>

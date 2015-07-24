@@ -13,12 +13,12 @@
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length.to_s + ' ' + t('devise.registrations.characters_minimum')%>)</em>
     <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+    <%= f.password_field :password, autocomplete: 'off' %>
   </div>
 
   <div class="field">
     <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    <%= f.password_field :password_confirmation, autocomplete: 'off' %>
   </div>
 
   <div class="actions">
@@ -26,4 +26,4 @@
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<%= render 'devise/shared/links' %>

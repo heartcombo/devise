@@ -51,7 +51,7 @@ class DeviseController < Devise.parent_controller.constantize
 
   # Attempt to find the mapped route for devise based on request path
   def devise_mapping
-    @devise_mapping ||= request.env["devise.mapping"]
+    @devise_mapping ||= request.env['devise.mapping']
   end
 
   # Checks whether it's a devise mapped resource or not.
@@ -106,7 +106,7 @@ MESSAGE
     end
 
     if authenticated && resource = warden.user(resource_name)
-      flash[:alert] = I18n.t("devise.failure.already_authenticated")
+      flash[:alert] = I18n.t('devise.failure.already_authenticated')
       redirect_to after_sign_in_path_for(resource)
     end
   end

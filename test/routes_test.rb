@@ -5,27 +5,27 @@ ExpectedRoutingError = Devise.rails4? ? MiniTest::Assertion : ActionController::
 class DefaultRoutingTest < ActionController::TestCase
   test 'map new user session' do
     assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: 'users/sign_in', method: :get})
-    assert_named_route "/users/sign_in", :new_user_session_path
+    assert_named_route '/users/sign_in', :new_user_session_path
   end
 
   test 'map create user session' do
     assert_recognizes({controller: 'devise/sessions', action: 'create'}, {path: 'users/sign_in', method: :post})
-    assert_named_route "/users/sign_in", :user_session_path
+    assert_named_route '/users/sign_in', :user_session_path
   end
 
   test 'map destroy user session' do
     assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: 'users/sign_out', method: :get})
-    assert_named_route "/users/sign_out", :destroy_user_session_path
+    assert_named_route '/users/sign_out', :destroy_user_session_path
   end
 
   test 'map new user confirmation' do
     assert_recognizes({controller: 'devise/confirmations', action: 'new'}, 'users/confirmation/new')
-    assert_named_route "/users/confirmation/new", :new_user_confirmation_path
+    assert_named_route '/users/confirmation/new', :new_user_confirmation_path
   end
 
   test 'map create user confirmation' do
     assert_recognizes({controller: 'devise/confirmations', action: 'create'}, {path: 'users/confirmation', method: :post})
-    assert_named_route "/users/confirmation", :user_confirmation_path
+    assert_named_route '/users/confirmation', :user_confirmation_path
   end
 
   test 'map show user confirmation' do
@@ -34,17 +34,17 @@ class DefaultRoutingTest < ActionController::TestCase
 
   test 'map new user password' do
     assert_recognizes({controller: 'devise/passwords', action: 'new'}, 'users/password/new')
-    assert_named_route "/users/password/new", :new_user_password_path
+    assert_named_route '/users/password/new', :new_user_password_path
   end
 
   test 'map create user password' do
     assert_recognizes({controller: 'devise/passwords', action: 'create'}, {path: 'users/password', method: :post})
-    assert_named_route "/users/password", :user_password_path
+    assert_named_route '/users/password', :user_password_path
   end
 
   test 'map edit user password' do
     assert_recognizes({controller: 'devise/passwords', action: 'edit'}, 'users/password/edit')
-    assert_named_route "/users/password/edit", :edit_user_password_path
+    assert_named_route '/users/password/edit', :edit_user_password_path
   end
 
   test 'map update user password' do
@@ -53,12 +53,12 @@ class DefaultRoutingTest < ActionController::TestCase
 
   test 'map new user unlock' do
     assert_recognizes({controller: 'devise/unlocks', action: 'new'}, 'users/unlock/new')
-    assert_named_route "/users/unlock/new", :new_user_unlock_path
+    assert_named_route '/users/unlock/new', :new_user_unlock_path
   end
 
   test 'map create user unlock' do
     assert_recognizes({controller: 'devise/unlocks', action: 'create'}, {path: 'users/unlock', method: :post})
-    assert_named_route "/users/unlock", :user_unlock_path
+    assert_named_route '/users/unlock', :user_unlock_path
   end
 
   test 'map show user unlock' do
@@ -67,17 +67,17 @@ class DefaultRoutingTest < ActionController::TestCase
 
   test 'map new user registration' do
     assert_recognizes({controller: 'devise/registrations', action: 'new'}, 'users/sign_up')
-    assert_named_route "/users/sign_up", :new_user_registration_path
+    assert_named_route '/users/sign_up', :new_user_registration_path
   end
 
   test 'map create user registration' do
     assert_recognizes({controller: 'devise/registrations', action: 'create'}, {path: 'users', method: :post})
-    assert_named_route "/users", :user_registration_path
+    assert_named_route '/users', :user_registration_path
   end
 
   test 'map edit user registration' do
     assert_recognizes({controller: 'devise/registrations', action: 'edit'}, {path: 'users/edit', method: :get})
-    assert_named_route "/users/edit", :edit_user_registration_path
+    assert_named_route '/users/edit', :edit_user_registration_path
   end
 
   test 'map update user registration' do
@@ -90,18 +90,18 @@ class DefaultRoutingTest < ActionController::TestCase
 
   test 'map cancel user registration' do
     assert_recognizes({controller: 'devise/registrations', action: 'cancel'}, {path: 'users/cancel', method: :get})
-    assert_named_route "/users/cancel", :cancel_user_registration_path
+    assert_named_route '/users/cancel', :cancel_user_registration_path
   end
 
   test 'map omniauth callbacks' do
     assert_recognizes({controller: 'users/omniauth_callbacks', action: 'facebook'}, {path: 'users/auth/facebook/callback', method: :get})
     assert_recognizes({controller: 'users/omniauth_callbacks', action: 'facebook'}, {path: 'users/auth/facebook/callback', method: :post})
-    assert_named_route "/users/auth/facebook/callback", :user_omniauth_callback_path, :facebook
+    assert_named_route '/users/auth/facebook/callback', :user_omniauth_callback_path, :facebook
 
     # named open_id
     assert_recognizes({controller: 'users/omniauth_callbacks', action: 'google'}, {path: 'users/auth/google/callback', method: :get})
     assert_recognizes({controller: 'users/omniauth_callbacks', action: 'google'}, {path: 'users/auth/google/callback', method: :post})
-    assert_named_route "/users/auth/google/callback", :user_omniauth_callback_path, :google
+    assert_named_route '/users/auth/google/callback', :user_omniauth_callback_path, :google
 
     assert_raise ExpectedRoutingError do
       assert_recognizes({controller: 'ysers/omniauth_callbacks', action: 'twitter'}, {path: 'users/auth/twitter/callback', method: :get})
@@ -131,7 +131,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'subdomain admin' do
-    assert_recognizes({"host"=>"sub.example.com", controller: 'devise/sessions', action: 'new'}, {host: "sub.example.com", path: '/sub_admin/sign_in', method: :get})
+    assert_recognizes({'host' => 'sub.example.com', controller: 'devise/sessions', action: 'new'}, {host: 'sub.example.com', path: '/sub_admin/sign_in', method: :get})
   end
 
   test 'does only map reader password' do
@@ -237,17 +237,17 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map with format false is not permanent' do
-    assert_equal "/set.xml", @routes.url_helpers.set_path(:xml)
+    assert_equal '/set.xml', @routes.url_helpers.set_path(:xml)
   end
 
   test 'checks if mapping has proper configuration for omniauth callback' do
     e = assert_raise ArgumentError do
       routes = ActionDispatch::Routing::RouteSet.new
       routes.draw do
-        devise_for :not_omniauthable, class_name: 'Admin', controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
+        devise_for :not_omniauthable, class_name: 'Admin', controllers: {omniauth_callbacks: 'users/omniauth_callbacks'}
       end
     end
-    assert_match "Mapping omniauth_callbacks on a resource that is not omniauthable", e.message
+    assert_match 'Mapping omniauth_callbacks on a resource that is not omniauthable', e.message
   end
 end
 

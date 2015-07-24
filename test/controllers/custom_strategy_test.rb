@@ -18,8 +18,8 @@ end
 # strategy that return a custom response with Devise.
 class CustomStrategy < Warden::Strategies::Base
   def authenticate!
-    custom_headers = { "X-FOO" => "BAR" }
-    response = Rack::Response.new("BAD REQUEST", 400, custom_headers)
+    custom_headers = {'X-FOO' => 'BAR'}
+    response = Rack::Response.new('BAD REQUEST', 400, custom_headers)
     custom! response.finish
   end
 end
@@ -37,7 +37,7 @@ class CustomStrategyTest < ActionController::TestCase
     Warden::Strategies._strategies.delete(:custom_strategy)
   end
 
-  test "custom strategy can return its own status code" do
+  test 'custom strategy can return its own status code' do
     ret = get :new
 
     # check the returned rack array
@@ -49,7 +49,7 @@ class CustomStrategyTest < ActionController::TestCase
     assert_response 400
   end
 
-  test "custom strategy can return custom headers" do
+  test 'custom strategy can return custom headers' do
     ret = get :new
 
     # check the returned rack array

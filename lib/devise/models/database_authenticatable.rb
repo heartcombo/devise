@@ -2,7 +2,7 @@ require 'devise/strategies/database_authenticatable'
 
 module Devise
   def self.bcrypt(klass, password)
-    ActiveSupport::Deprecation.warn "Devise.bcrypt is deprecated; use Devise::Encryptor.digest instead"
+    ActiveSupport::Deprecation.warn 'Devise.bcrypt is deprecated; use Devise::Encryptor.digest instead'
     Devise::Encryptor.digest(klass, password)
   end
 

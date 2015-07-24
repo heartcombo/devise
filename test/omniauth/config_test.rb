@@ -20,7 +20,7 @@ class OmniAuthConfigTest < ActiveSupport::TestCase
     assert_equal :github, config.strategy_name
   end
 
-  test "finds contrib strategies" do
+  test 'finds contrib strategies' do
     config = Devise::OmniAuth::Config.new :facebook, [{}]
     assert_equal OmniAuth::Strategies::Facebook, config.strategy_class
   end

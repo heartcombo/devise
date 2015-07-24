@@ -21,18 +21,18 @@ class SerializableTest < ActiveSupport::TestCase
   end
 
   test 'should not include unsafe keys on JSON' do
-    keys = from_json().keys.select{ |key| !key.include?("id") }
+    keys = from_json().keys.select{ |key| !key.include?('id') }
     assert_equal %w(created_at email facebook_token updated_at username), keys.sort
   end
 
   test 'should not include unsafe keys on JSON even if a new except is provided' do
-    assert_no_key "email", from_json(except: :email)
-    assert_no_key "confirmation_token", from_json(except: :email)
+    assert_no_key 'email', from_json(except: :email)
+    assert_no_key 'confirmation_token', from_json(except: :email)
   end
 
   test 'should include unsafe keys on JSON if a force_except is provided' do
-    assert_no_key "email", from_json(force_except: :email)
-    assert_key "confirmation_token", from_json(force_except: :email)
+    assert_no_key 'email', from_json(force_except: :email)
+    assert_key 'confirmation_token', from_json(force_except: :email)
   end
 
   def assert_key(key, subject)
@@ -44,6 +44,6 @@ class SerializableTest < ActiveSupport::TestCase
   end
 
   def from_json(options=nil)
-    ActiveSupport::JSON.decode(@user.to_json(options))["user"]
+    ActiveSupport::JSON.decode(@user.to_json(options))['user']
   end
 end

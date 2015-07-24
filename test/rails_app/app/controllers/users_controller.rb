@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   respond_to :html, :xml
 
   def index
-    user_session[:cart] = "Cart"
+    user_session[:cart] = 'Cart'
     respond_with(current_user)
   end
 
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def exhibit
-    render text: current_user ? "User is authenticated" : "User is not authenticated"
+    render text: current_user ? 'User is authenticated' : 'User is not authenticated'
   end
 
   def expire

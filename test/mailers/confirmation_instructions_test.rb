@@ -88,7 +88,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/confirmation\?confirmation_token=([^"]+)">}
       assert_equal Devise.token_generator.digest(user.class, :confirmation_token, $1), user.confirmation_token
     else
-      flunk "expected confirmation url regex to match"
+      flunk 'expected confirmation url regex to match'
     end
   end
 
@@ -108,7 +108,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'mailer sender accepts a proc' do
-    swap Devise, mailer_sender: proc { "another@example.com" } do
+    swap Devise, mailer_sender: proc { 'another@example.com' } do
       assert_equal ['another@example.com'], mail.from
     end
   end

@@ -1,7 +1,7 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
-    data = env["omniauth.auth"]
-    session["devise.facebook_data"] = data["extra"]["user_hash"]
+    data = env['omniauth.auth']
+    session['devise.facebook_data'] = data['extra']['user_hash']
     render json: data
   end
 
@@ -9,6 +9,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user = User.to_adapter.find_first(email: 'user@test.com')
     user.remember_me = true
     sign_in user
-    render text: ""
+    render text: ''
   end
 end

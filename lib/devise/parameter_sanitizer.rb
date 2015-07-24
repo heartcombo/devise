@@ -28,7 +28,7 @@ module Devise
     private
 
     def default_for(kind)
-      raise ArgumentError, "a block is expected in Devise base sanitizer"
+      raise ArgumentError, 'a block is expected in Devise base sanitizer'
     end
 
     def default_sanitize(kind)

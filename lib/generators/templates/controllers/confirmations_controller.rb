@@ -1,4 +1,4 @@
-class <%= @scope_prefix %>ConfirmationsController < Devise::ConfirmationsController
+class <' @scope_prefix %>ConfirmationsController < Devise::ConfirmationsController
   # GET /resource/confirmation/new
   # def new
   #   super
@@ -9,7 +9,8 @@ class <%= @scope_prefix %>ConfirmationsController < Devise::ConfirmationsControl
   #   super
   # end
 
-  # GET /resource/confirmation?confirmation_token=abcdef
+  # GET /resource/confirmation?confirmation_token'
+  abcdef
   # def show
   #   super
   # end

@@ -1,4 +1,4 @@
-class <%= @scope_prefix %>PasswordsController < Devise::PasswordsController
+class <' @scope_prefix %>PasswordsController < Devise::PasswordsController
   # GET /resource/password/new
   # def new
   #   super
@@ -9,7 +9,8 @@ class <%= @scope_prefix %>PasswordsController < Devise::PasswordsController
   #   super
   # end
 
-  # GET /resource/password/edit?reset_password_token=abcdef
+  # GET /resource/password/edit?reset_password_token'
+  abcdef
   # def edit
   #   super
   # end

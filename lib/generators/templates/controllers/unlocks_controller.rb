@@ -1,4 +1,4 @@
-class <%= @scope_prefix %>UnlocksController < Devise::UnlocksController
+class <' @scope_prefix %>UnlocksController < Devise::UnlocksController
   # GET /resource/unlock/new
   # def new
   #   super
@@ -9,7 +9,8 @@ class <%= @scope_prefix %>UnlocksController < Devise::UnlocksController
   #   super
   # end
 
-  # GET /resource/unlock?unlock_token=abcdef
+  # GET /resource/unlock?unlock_token'
+  abcdef
   # def show
   #   super
   # end

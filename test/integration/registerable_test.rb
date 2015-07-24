@@ -15,14 +15,14 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_contain 'You have signed up successfully'
     assert warden.authenticated?(:admin)
-    assert_current_url "/admin_area/home"
+    assert_current_url '/admin_area/home'
 
     admin = Admin.to_adapter.find_first(order: [:id, :desc])
     assert_equal admin.email, 'new_user@test.com'
   end
 
   test 'a guest admin should be able to sign in and be redirected to a custom location' do
-    Devise::RegistrationsController.any_instance.stubs(:after_sign_up_path_for).returns("/?custom=1")
+    Devise::RegistrationsController.any_instance.stubs(:after_sign_up_path_for).returns('/?custom=1')
     get new_admin_session_path
     click_link 'Sign up'
 
@@ -33,7 +33,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_contain 'Welcome! You have signed up successfully.'
     assert warden.authenticated?(:admin)
-    assert_current_url "/?custom=1"
+    assert_current_url '/?custom=1'
   end
 
   test 'a guest admin should not see a warning about minimum password length' do
@@ -62,7 +62,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_contain 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.'
     assert_not_contain 'You have to confirm your account before continuing'
-    assert_current_url "/"
+    assert_current_url '/'
 
     assert_not warden.authenticated?(:user)
 
@@ -83,7 +83,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'a guest user should be blocked by confirmation and redirected to a custom path' do
-    Devise::RegistrationsController.any_instance.stubs(:after_inactive_sign_up_path_for).returns("/?custom=1")
+    Devise::RegistrationsController.any_instance.stubs(:after_inactive_sign_up_path_for).returns('/?custom=1')
     get new_user_registration_path
 
     fill_in 'email', with: 'new_user@test.com'
@@ -91,14 +91,14 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     fill_in 'password confirmation', with: 'new_user123'
     click_button 'Sign up'
 
-    assert_current_url "/?custom=1"
+    assert_current_url '/?custom=1'
     assert_not warden.authenticated?(:user)
   end
 
   test 'a guest user cannot sign up with invalid information' do
     # Dirty tracking behavior prevents email validations from being applied:
     #    https://github.com/mongoid/mongoid/issues/756
-    (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
+    (pending 'Fails on Mongoid < 2.1'; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
 
     get new_user_registration_path
 
@@ -109,10 +109,10 @@ class RegistrationTest < ActionDispatch::IntegrationTest
 
     assert_template 'registrations/new'
     assert_have_selector '#error_explanation'
-    assert_contain "Email is invalid"
+    assert_contain 'Email is invalid'
     assert_contain Devise.rails4? ?
       "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
-    assert_contain "2 errors prohibited"
+    assert_contain '2 errors prohibited'
     assert_nil User.to_adapter.find_first
 
     assert_not warden.authenticated?(:user)
@@ -121,7 +121,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   test 'a guest should not sign up with email/password that already exists' do
     # Dirty tracking behavior prevents email validations from being applied:
     #    https://github.com/mongoid/mongoid/issues/756
-    (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
+    (pending 'Fails on Mongoid < 2.1'; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
 
     create_user
     get new_user_registration_path
@@ -161,7 +161,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url '/'
     assert_contain 'Your account has been updated successfully.'
 
-    assert_equal "user.new@example.com", User.to_adapter.find_first.email
+    assert_equal 'user.new@example.com', User.to_adapter.find_first.email
   end
 
   test 'a signed in user should still be able to use the website after changing their password' do
@@ -190,7 +190,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_contain 'user@test.com'
     assert_have_selector 'form input[value="user.new@example.com"]'
 
-    assert_equal "user@test.com", User.to_adapter.find_first.email
+    assert_equal 'user@test.com', User.to_adapter.find_first.email
   end
 
   test 'a signed in user should be able to edit their password' do
@@ -226,21 +226,21 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     sign_in_as_user
     get edit_user_registration_path
 
-    click_button "Cancel my account"
-    assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
+    click_button 'Cancel my account'
+    assert_contain 'Bye! Your account has been successfully cancelled. We hope to see you again soon.'
 
     assert User.to_adapter.find_all.empty?
   end
 
   test 'a user should be able to cancel sign up by deleting data in the session' do
-    get "/set"
-    assert_equal "something", @request.session["devise.foo_bar"]
+    get '/set'
+    assert_equal 'something', @request.session['devise.foo_bar']
 
-    get "/users/sign_up"
-    assert_equal "something", @request.session["devise.foo_bar"]
+    get '/users/sign_up'
+    assert_equal 'something', @request.session['devise.foo_bar']
 
-    get "/users/cancel"
-    assert_nil @request.session["devise.foo_bar"]
+    get '/users/cancel'
+    assert_nil @request.session['devise.foo_bar']
     assert_redirected_to new_user_registration_path
   end
 
@@ -254,7 +254,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   test 'a user with JSON sign up stub' do
     get new_user_registration_path(format: 'json')
     assert_response :success
-    assert_match %({"user":), response.body
+    assert_match '{"user":', response.body
     assert_no_match(/"confirmation_token"/, response.body)
   end
 
@@ -353,7 +353,7 @@ class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
     assert_current_url '/admin_area/home'
     assert_contain 'Your account has been updated successfully.'
 
-    assert_equal "admin.new@example.com", Admin.to_adapter.find_first.unconfirmed_email
+    assert_equal 'admin.new@example.com', Admin.to_adapter.find_first.unconfirmed_email
     assert Admin.to_adapter.find_first.valid_password?('pas123')
   end
 end

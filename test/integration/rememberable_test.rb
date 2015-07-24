@@ -20,14 +20,14 @@ class RememberMeTest < ActionDispatch::IntegrationTest
   end
 
   def cookie_expires(key)
-    cookie  = response.headers["Set-Cookie"].split("\n").grep(/^#{key}/).first
-    expires = cookie.split(";").map(&:strip).grep(/^expires=/).first
+    cookie  = response.headers['Set-Cookie'].split("\n").grep(/^#{key}/).first
+    expires = cookie.split(';').map(&:strip).grep(/^expires=/).first
     Time.parse(expires).utc
   end
 
   test 'do not remember the user if they have not checked remember me option' do
     sign_in_as_user
-    assert_nil request.cookies["remember_user_cookie"]
+    assert_nil request.cookies['remember_user_cookie']
   end
 
   test 'handle unverified requests gets rid of caches' do
@@ -37,7 +37,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
 
       create_user_and_remember
       post exhibit_user_url(1)
-      assert_equal "User is not authenticated", response.body
+      assert_equal 'User is not authenticated', response.body
       assert_not warden.authenticated?(:user)
     end
   end
@@ -47,8 +47,8 @@ class RememberMeTest < ActionDispatch::IntegrationTest
       get new_user_session_path
       assert request.session[:_csrf_token]
 
-      post user_session_path, authenticity_token: "oops", user:
-           { email: "jose.valim@gmail.com", password: "123456", remember_me: "1" }
+      post user_session_path, authenticity_token: 'oops', user:
+           {email: 'jose.valim@gmail.com', password: '123456', remember_me: '1'}
       assert_not warden.authenticated?(:user)
       assert_not request.cookies['remember_user_token']
     end
@@ -63,24 +63,24 @@ class RememberMeTest < ActionDispatch::IntegrationTest
     # We test this by asserting the cookie is not sent after the redirect
     # since we changed the domain. This is the only difference with the
     # previous test.
-    swap Devise, rememberable_options: { domain: "omg.somewhere.com" } do
+    swap Devise, rememberable_options: { domain: 'omg.somewhere.com'} do
       sign_in_as_user remember_me: true
-      assert_nil request.cookies["remember_user_token"]
+      assert_nil request.cookies['remember_user_token']
     end
   end
 
   test 'generate remember token with a custom key' do
-    swap Devise, rememberable_options: { key: "v1lat_token" } do
+    swap Devise, rememberable_options: { key: 'v1lat_token'} do
       sign_in_as_user remember_me: true
-      assert request.cookies["v1lat_token"]
+      assert request.cookies['v1lat_token']
     end
   end
 
   test 'generate remember token after sign in setting session options' do
     begin
-      Rails.configuration.session_options[:domain] = "omg.somewhere.com"
+      Rails.configuration.session_options[:domain] = 'omg.somewhere.com'
       sign_in_as_user remember_me: true
-      assert_nil request.cookies["remember_user_token"]
+      assert_nil request.cookies['remember_user_token']
     ensure
       Rails.configuration.session_options.delete(:domain)
     end
@@ -92,7 +92,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert warden.authenticated?(:user)
     assert warden.user(:user) == user
-    assert_match /remember_user_token[^\n]*HttpOnly/, response.headers["Set-Cookie"], "Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie."
+    assert_match /remember_user_token[^\n]*HttpOnly/, response.headers['Set-Cookie'], 'Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie.'
   end
 
   test 'remember the user before sign up and redirect them to their home' do
@@ -157,8 +157,8 @@ class RememberMeTest < ActionDispatch::IntegrationTest
 
   test 'changing user password expires remember me token' do
     user = create_user_and_remember
-    user.password = "another_password"
-    user.password_confirmation = "another_password"
+    user.password = 'another_password'
+    user.password_confirmation = 'another_password'
     user.save!
 
     get users_path

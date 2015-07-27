@@ -23,5 +23,5 @@ Gem::Specification.new do |s|
   s.add_dependency("bcrypt", "~> 3.0")
   s.add_dependency("thread_safe", "~> 0.1")
   s.add_dependency("railties", ">= 3.2.6", "< 5")
-  s.add_dependency("responders")
+  s.add_dependency("responders", "~> 2.0")
 end

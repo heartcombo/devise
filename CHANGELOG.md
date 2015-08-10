@@ -3,7 +3,7 @@
 * enhancements
   * Perform case insensitive basic authorization matching
 
-* Big fixes
+* bug fixes
   * Do not use digests for password confirmation token
   * Fix infinite redirect in Rails 4.2 authenticated routes
   * Autoload Devise::Encryptor to avoid errors on thread-safe mode

@@ -92,6 +92,7 @@ module Devise
       #   end
       #
       def update_without_password(params, *options)
+        params.delete(:current_password)
         params.delete(:password)
         params.delete(:password_confirmation)
 

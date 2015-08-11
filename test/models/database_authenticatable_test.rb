@@ -198,6 +198,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_equal 'new@example.com', user.email
   end
 
+  test 'should update the user without password with current_password' do
+    user = create_user
+    user.update_without_password(email: 'new@example.com', current_password: '')
+    assert_equal 'new@example.com', user.email
+  end
+
   test 'should not update password without password' do
     user = create_user
     user.update_without_password(password: 'pass4321', password_confirmation: 'pass4321')

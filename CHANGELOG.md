@@ -8,6 +8,9 @@
   * Fix infinite redirect in Rails 4.2 authenticated routes
   * Autoload Devise::Encryptor to avoid errors on thread-safe mode
 
+* deprecations
+  * `config.expire_auth_token_on_timeout` was removed
+
 ### 3.5.1 - 2015-05-24
 
 Note: 3.5.0 has been yanked due to a regression

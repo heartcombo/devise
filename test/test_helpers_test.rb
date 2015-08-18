@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestHelpersTest < ActionController::TestCase
+class TestHelpersTest < Devise::ControllerTestCase
   tests UsersController
   include Devise::TestHelpers
 
@@ -27,7 +27,7 @@ class TestHelpersTest < ActionController::TestCase
       assert !user.active_for_authentication?
 
       sign_in user
-      get :accept, id: user
+      get :accept, params: { id: user }
       assert_nil assigns(:current_user)
     end
   end
@@ -163,7 +163,7 @@ class TestHelpersTest < ActionController::TestCase
 
   test "creates a new warden proxy if the request object has changed" do
     old_warden_proxy = warden
-    @request = ActionController::TestRequest.new
+    @request = Devise.rails5? ? ActionController::TestRequest.create : ActionController::TestRequest.new
     new_warden_proxy = warden
 
     assert_not_equal old_warden_proxy, new_warden_proxy

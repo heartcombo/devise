@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'ostruct'
 
-class ControllerAuthenticatableTest < ActionController::TestCase
+class ControllerAuthenticatableTest < Devise::ControllerTestCase
   tests ApplicationController
 
   def setup

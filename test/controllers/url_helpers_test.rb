@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RoutesTest < ActionController::TestCase
+class RoutesTest < Devise::ControllerTestCase
   tests ApplicationController
 
   def assert_path_and_url(name, prepend_path=nil)

@@ -1,5 +1,5 @@
 class Devise::OmniauthCallbacksController < DeviseController
-  prepend_before_filter { request.env["devise.skip_timeout"] = true }
+  prepend_before_action { request.env["devise.skip_timeout"] = true }
 
   def passthru
     render status: 404, text: "Not found. Authentication passthru."
@@ -13,14 +13,14 @@ class Devise::OmniauthCallbacksController < DeviseController
   protected
 
   def failed_strategy
-    env["omniauth.error.strategy"]
+    request.respond_to?(:get_header) ? request.get_header("omniauth.error.strategy") : env["omniauth.error.strategy"]
   end
 
   def failure_message
-    exception = env["omniauth.error"]
+    exception = request.respond_to?(:get_header) ? request.get_header("omniauth.error") : env["omniauth.error"]
     error   = exception.error_reason if exception.respond_to?(:error_reason)
     error ||= exception.error        if exception.respond_to?(:error)
-    error ||= env["omniauth.error.type"].to_s
+    error ||= (request.respond_to?(:get_header) ? request.get_header("omniauth.error.type") : env["omniauth.error.type"]).to_s
     error.to_s.humanize if error
   end
 

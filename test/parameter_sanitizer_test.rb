@@ -23,43 +23,57 @@ if defined?(ActionController::StrongParameters)
 
     test 'filters some parameters on sign in by default' do
       sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid", "remember_me" => "1" })
-      assert_equal({ "email" => "jose", "password" => "invalid", "remember_me" => "1" }, sanitizer.sanitize(:sign_in))
+      sanitized = sanitizer.sanitize(:sign_in)
+      sanitized = sanitized.to_h if sanitized.respond_to? :to_h
+      assert_equal({ "email" => "jose", "password" => "invalid", "remember_me" => "1" }, sanitized)
     end
 
     test 'handles auth keys as a hash' do
       swap Devise, authentication_keys: {email: true} do
         sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
-        assert_equal({ "email" => "jose", "password" => "invalid" }, sanitizer.sanitize(:sign_in))
+        sanitized = sanitizer.sanitize(:sign_in)
+        sanitized = sanitized.to_h if sanitized.respond_to? :to_h
+        assert_equal({ "email" => "jose", "password" => "invalid" }, sanitized)
       end
     end
 
     test 'filters some parameters on sign up by default' do
       sanitizer = sanitizer(user: { "email" => "jose", "role" => "invalid" })
-      assert_equal({ "email" => "jose" }, sanitizer.sanitize(:sign_up))
+      sanitized = sanitizer.sanitize(:sign_up)
+      sanitized = sanitized.to_h if sanitized.respond_to? :to_h
+      assert_equal({ "email" => "jose" }, sanitized)
     end
 
     test 'filters some parameters on account update by default' do
       sanitizer = sanitizer(user: { "email" => "jose", "role" => "invalid" })
-      assert_equal({ "email" => "jose" }, sanitizer.sanitize(:account_update))
+      sanitized = sanitizer.sanitize(:account_update)
+      sanitized = sanitized.to_h if sanitized.respond_to? :to_h
+      assert_equal({ "email" => "jose" }, sanitized)
     end
 
     test 'allows custom hooks' do
       sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid" })
       sanitizer.for(:sign_in) { |user| user.permit(:email, :password) }
-      assert_equal({ "email" => "jose", "password" => "invalid" }, sanitizer.sanitize(:sign_in))
+      sanitized = sanitizer.sanitize(:sign_in)
+      sanitized = sanitized.to_h if sanitized.respond_to? :to_h
+      assert_equal({ "email" => "jose", "password" => "invalid" }, sanitized)
     end
 
     test 'adding multiple permitted parameters' do
       sanitizer = sanitizer(user: { "email" => "jose", "username" => "jose1", "role" => "valid" })
       sanitizer.for(:sign_in).concat([:username, :role])
-      assert_equal({ "email" => "jose", "username" => "jose1", "role" => "valid" }, sanitizer.sanitize(:sign_in))
+      sanitized = sanitizer.sanitize(:sign_in)
+      sanitized = sanitized.to_h if sanitized.respond_to? :to_h
+      assert_equal({ "email" => "jose", "username" => "jose1", "role" => "valid" }, sanitized)
     end
 
     test 'removing multiple default parameters' do
       sanitizer = sanitizer(user: { "email" => "jose", "password" => "invalid", "remember_me" => "1" })
       sanitizer.for(:sign_in).delete(:email)
       sanitizer.for(:sign_in).delete(:password)
-      assert_equal({ "remember_me" => "1" }, sanitizer.sanitize(:sign_in))
+      sanitized = sanitizer.sanitize(:sign_in)
+      sanitized = sanitized.to_h if sanitized.respond_to? :to_h
+      assert_equal({ "remember_me" => "1" }, sanitized)
     end
 
     test 'raises on unknown hooks' do

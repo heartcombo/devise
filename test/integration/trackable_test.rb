@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TrackableHooksTest < ActionDispatch::IntegrationTest
+class TrackableHooksTest < Devise::IntegrationTest
 
   test "current and last sign in timestamps are updated on each sign in" do
     user = create_user

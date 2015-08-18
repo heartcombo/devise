@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RegistrationTest < ActionDispatch::IntegrationTest
+class RegistrationTest < Devise::IntegrationTest
 
   test 'a guest admin should be able to sign in successfully' do
     get new_admin_session_path
@@ -110,8 +110,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_template 'registrations/new'
     assert_have_selector '#error_explanation'
     assert_contain "Email is invalid"
-    assert_contain Devise.rails4? ?
-      "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
+    assert_contain "Password confirmation doesn't match Password"
     assert_contain "2 errors prohibited"
     assert_nil User.to_adapter.find_first
 
@@ -217,8 +216,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     fill_in 'current password', with: '12345678'
     click_button 'Update'
 
-    assert_contain Devise.rails4? ?
-      "Password confirmation doesn't match Password" : "Password doesn't match confirmation"
+    assert_contain "Password confirmation doesn't match Password"
     assert_not User.to_adapter.find_first.valid_password?('pas123')
   end
 
@@ -259,7 +257,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'an admin sign up with valid information in XML format should return valid response' do
-    post admin_registration_path(format: 'xml'), admin: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' }
+    post admin_registration_path(format: 'xml'), params: { admin: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
 
@@ -268,7 +266,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'a user sign up with valid information in XML format should return valid response' do
-    post user_registration_path(format: 'xml'), user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' }
+    post user_registration_path(format: 'xml'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
 
@@ -277,21 +275,21 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'a user sign up with invalid information in XML format should return invalid response' do
-    post user_registration_path(format: 'xml'), user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'invalid' }
+    post user_registration_path(format: 'xml'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'invalid' } }
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test 'a user update information with valid data in XML format should return valid response' do
     user = sign_in_as_user
-    put user_registration_path(format: 'xml'), user: { current_password: '12345678', email: 'user.new@test.com' }
+    put user_registration_path(format: 'xml'), params: { user: { current_password: '12345678', email: 'user.new@test.com' } }
     assert_response :success
     assert_equal user.reload.email, 'user.new@test.com'
   end
 
   test 'a user update information with invalid data in XML format should return invalid response' do
     user = sign_in_as_user
-    put user_registration_path(format: 'xml'), user: { current_password: 'invalid', email: 'user.new@test.com' }
+    put user_registration_path(format: 'xml'), params: { user: { current_password: 'invalid', email: 'user.new@test.com' } }
     assert_response :unprocessable_entity
     assert_equal user.reload.email, 'user@test.com'
   end
@@ -304,7 +302,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
   end
 end
 
-class ReconfirmableRegistrationTest < ActionDispatch::IntegrationTest
+class ReconfirmableRegistrationTest < Devise::IntegrationTest
   test 'a signed in admin should see a more appropriate flash message when editing their account if reconfirmable is enabled' do
     sign_in_as_admin
     get edit_admin_registration_path

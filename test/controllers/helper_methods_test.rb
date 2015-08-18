@@ -4,7 +4,7 @@ class ApiController < ActionController::Metal
   include Devise::Controllers::Helpers
 end
 
-class HelperMethodsTest < ActionController::TestCase
+class HelperMethodsTest < Devise::ControllerTestCase
   tests ApiController
 
   test 'includes Devise::Controllers::Helpers' do

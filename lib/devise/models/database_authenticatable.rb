@@ -39,6 +39,7 @@ module Devise
 
       # Generates password encryption based on the given value.
       def password=(new_password)
+        attribute_will_change! 'password'
         @password = new_password
         self.encrypted_password = password_digest(@password) if @password.present?
       end

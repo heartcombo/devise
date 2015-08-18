@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DeviseHelperTest < ActionDispatch::IntegrationTest
+class DeviseHelperTest < Devise::IntegrationTest
   setup do
     model_labels = { models: { user: "the user" } }
     translations = {

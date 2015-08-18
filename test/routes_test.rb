@@ -1,6 +1,6 @@
 require 'test_helper'
 
-ExpectedRoutingError = Devise.rails4? ? MiniTest::Assertion : ActionController::RoutingError
+ExpectedRoutingError = MiniTest::Assertion
 
 class DefaultRoutingTest < ActionController::TestCase
   test 'map new user session' do
@@ -202,37 +202,52 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map with format false for sessions' do
-    assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: '/htmlonly_admin/sign_in', method: :get})
+    expected_params = {controller: 'devise/sessions', action: 'new'}
+    expected_params[:format] = false if Devise.rails5?
+
+    assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_in', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/sessions', action: 'new'}, {path: '/htmlonly_admin/sign_in.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_in.xml', method: :get})
     end
   end
 
   test 'map with format false for passwords' do
-    assert_recognizes({controller: 'devise/passwords', action: 'create'}, {path: '/htmlonly_admin/password', method: :post})
+    expected_params = {controller: 'devise/passwords', action: 'create'}
+    expected_params[:format] = false if Devise.rails5?
+
+    assert_recognizes(expected_params, {path: '/htmlonly_admin/password', method: :post})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/passwords', action: 'create'}, {path: '/htmlonly_admin/password.xml', method: :post})
+      assert_recognizes(expected_params, {path: '/htmlonly_admin/password.xml', method: :post})
     end
   end
 
   test 'map with format false for registrations' do
-    assert_recognizes({controller: 'devise/registrations', action: 'new'}, {path: '/htmlonly_admin/sign_up', method: :get})
+    expected_params = {controller: 'devise/registrations', action: 'new'}
+    expected_params[:format] = false if Devise.rails5?
+
+    assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_up', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/registrations', action: 'new'}, {path: '/htmlonly_admin/sign_up.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_up.xml', method: :get})
     end
   end
 
   test 'map with format false for confirmations' do
-    assert_recognizes({controller: 'devise/confirmations', action: 'show'}, {path: '/htmlonly_users/confirmation', method: :get})
+    expected_params = {controller: 'devise/confirmations', action: 'show'}
+    expected_params[:format] = false if Devise.rails5?
+
+    assert_recognizes(expected_params, {path: '/htmlonly_users/confirmation', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/confirmations', action: 'show'}, {path: '/htmlonly_users/confirmation.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_users/confirmation.xml', method: :get})
     end
   end
 
   test 'map with format false for unlocks' do
-    assert_recognizes({controller: 'devise/unlocks', action: 'show'}, {path: '/htmlonly_users/unlock', method: :get})
+    expected_params = {controller: 'devise/unlocks', action: 'show'}
+    expected_params[:format] = false if Devise.rails5?
+
+    assert_recognizes(expected_params, {path: '/htmlonly_users/unlock', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes({controller: 'devise/unlocks', action: 'show'}, {path: '/htmlonly_users/unlock.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_users/unlock.xml', method: :get})
     end
   end
 

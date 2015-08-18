@@ -19,7 +19,12 @@ RailsApp::Application.configure do
   else
     config.serve_static_assets = true
   end
-  config.static_cache_control = "public, max-age=3600"
+
+  if Rails.version >= "5.0.0"
+    config.public_file_server.headers = {'Cache-Control' => 'public, max-age=3600'}
+  else
+    config.static_cache_control = "public, max-age=3600"
+  end
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true

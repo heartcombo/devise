@@ -1,23 +1,21 @@
 language: ruby
 
 rvm:
-  - 1.9.3
-  - 2.0.0
   - 2.1
   - 2.2
 
 gemfile:
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
-  - gemfiles/Gemfile.rails-4.0-stable
-  - gemfiles/Gemfile.rails-3.2-stable
   - Gemfile
 
 matrix:
-  exclude:
-    - rvm: 2.2
-      gemfile: gemfiles/Gemfile.rails-3.2-stable
-
+  include:
+    - rvm: 2.2.2
+      gemfile: gemfiles/Gemfile.rails-5.0-alpha
+  allow_failures:
+    - rvm: 2.2.2
+      gemfile: gemfiles/Gemfile.rails-5.0-alpha
 services:
   - mongodb
 

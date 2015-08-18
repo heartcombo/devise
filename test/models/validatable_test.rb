@@ -57,11 +57,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user = new_user(password: 'new_password', password_confirmation: 'blabla')
     assert user.invalid?
 
-    if Devise.rails4?
-      assert_equal 'doesn\'t match Password', user.errors[:password_confirmation].join
-    else
-      assert_equal 'doesn\'t match confirmation', user.errors[:password].join
-    end
+    assert_equal 'doesn\'t match Password', user.errors[:password_confirmation].join
   end
 
   test 'should require password when updating/resetting password' do
@@ -79,11 +75,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user.password_confirmation = 'another_password'
     assert user.invalid?
 
-    if Devise.rails4?
-      assert_equal 'doesn\'t match Password', user.errors[:password_confirmation].join
-    else
-      assert_equal 'doesn\'t match confirmation', user.errors[:password].join
-    end
+    assert_equal 'doesn\'t match Password', user.errors[:password_confirmation].join
   end
 
   test 'should require a password with minimum of 7 characters' do

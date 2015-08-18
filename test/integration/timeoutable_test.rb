@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SessionTimeoutTest < ActionDispatch::IntegrationTest
+class SessionTimeoutTest < Devise::IntegrationTest
 
   def last_request_at
     @controller.user_session['last_request_at']
@@ -20,7 +20,7 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     old_last_request = last_request_at
     assert_not_nil last_request_at
 
-    get users_path, {}, 'devise.skip_trackable' => true
+    get users_path, headers: { 'devise.skip_trackable' => true }
     assert_equal old_last_request, last_request_at
   end
 
@@ -32,7 +32,7 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     new_time = 2.seconds.from_now
     Time.stubs(:now).returns(new_time)
 
-    get users_path, {}, 'devise.skip_timeoutable' => true
+    get users_path, headers: { 'devise.skip_timeoutable' => true }
     assert_equal old_last_request, last_request_at
   end
 
@@ -115,7 +115,7 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     user = sign_in_as_user
     get expire_user_path(user)
 
-    post "/users/sign_in", email: user.email, password: "123456"
+    post "/users/sign_in", params: { email: user.email, password: "123456" }
 
     assert_response :redirect
     follow_redirect!

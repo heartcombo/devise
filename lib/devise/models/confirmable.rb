@@ -237,8 +237,8 @@ module Devise
           else
             raw, _ = Devise.token_generator.generate(self.class, :confirmation_token)
             self.confirmation_token = @raw_confirmation_token = raw
-            self.confirmation_sent_at = Time.now.utc
           end
+          self.confirmation_sent_at = Time.now.utc
         end
 
         def generate_confirmation_token!

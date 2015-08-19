@@ -433,8 +433,8 @@ module Devise
     Devise::Controllers::UrlHelpers.generate_helpers!
   end
 
-  # A method used internally to setup warden manager from the Rails initialize
-  # block.
+  # A method used internally to complete the setup of warden manager after routes are loaded.
+  # See lib/devise/rails/routes.rb - ActionDispatch::Routing::RouteSet#finalize_with_devise!
   def self.configure_warden! #:nodoc:
     @@warden_configured ||= begin
       warden_config.failure_app   = Devise::Delegator.new

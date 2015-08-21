@@ -12,7 +12,7 @@ module Devise
 
     # Creates configuration values for Devise and for the given module.
     #
-    #   Devise::Models.config(Devise::Authenticatable, :stretches, 10)
+    #   Devise::Models.config(Devise::DatabaseAuthenticatable, :stretches)
     #
     # The line above creates:
     #

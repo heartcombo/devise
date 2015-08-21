@@ -52,6 +52,14 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert user.reload.confirmed?
   end
 
+  test 'should not modify the token when confirming by token' do
+    user = create_user
+    digest_token = user.confirmation_token
+    raw_token  = user.raw_confirmation_token
+    confirmed_user = User.confirm_by_token(raw_token)
+    assert_equal digest_token, confirmed_user.confirmation_token
+  end
+
   test 'should return a new record with errors when a invalid token is given' do
     confirmed_user = User.confirm_by_token('invalid_confirmation_token')
     assert_not confirmed_user.persisted?
@@ -205,7 +213,7 @@ class ConfirmableTest < ActiveSupport::TestCase
       user.confirmation_sent_at = 4.days.ago
       assert user.active_for_authentication?
 
-      user.confirmation_sent_at = 5.days.ago
+      user.confirmation_sent_at = (5.days + 1.second).ago
       assert_not user.active_for_authentication?
     end
   end

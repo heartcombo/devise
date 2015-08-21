@@ -22,9 +22,12 @@ module Devise
       @respond.call(env)
     end
 
+    # Try retrieving the URL options from the parent controller (usually 
+    # ApplicationController). Instance methods are not supported at the moment,
+    # so only the class-level attribute is used.
     def self.default_url_options(*args)
-      if defined?(ApplicationController)
-        ApplicationController.default_url_options(*args)
+      if defined?(Devise.parent_controller.constantize)
+        Devise.parent_controller.constantize.try(:default_url_options) || {}
       else
         {}
       end

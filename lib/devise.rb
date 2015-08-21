@@ -325,7 +325,12 @@ module Devise
     mapping
   end
 
-  # Make Devise aware of an 3rd party Devise-module (like invitable). For convenience.
+  # Register available devise modules. For the standard modules that Devise provides, this method is
+  # called from lib/devise/modules.rb. Third-party modules need to be added explicitly using this method.
+  #
+  # Note that adding a module using this method does not cause it to be used in the authentication
+  # process. That requires that the module be listed in the arguments passed to the 'devise' method
+  # in the model class definition.
   #
   # == Options:
   #

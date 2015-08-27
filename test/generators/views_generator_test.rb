@@ -46,6 +46,13 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_no_file "app/views/devise/mailer/confirmation_instructions.html.erb"
   end
 
+  test "Assert only mailer" do
+    run_generator %w(-v mailer)
+    assert_file "app/views/#{scope}/mailer/confirmation_instructions.html.erb"
+    assert_file "app/views/#{scope}/mailer/reset_password_instructions.html.erb"
+    assert_file "app/views/#{scope}/mailer/unlock_instructions.html.erb"
+  end
+
   test "Assert specified directories with scope" do
     run_generator %w(users -v sessions)
     assert_file "app/views/users/sessions/new.html.erb"

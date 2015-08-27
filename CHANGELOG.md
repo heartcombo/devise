@@ -1,3 +1,8 @@
+### Unreleased
+
+* enhancements
+  * Upon setting `Devise.send_password_change_notification = true` a user will receive notification when their password has been changed.
+
 ### 3.5.2 - 2015-08-10
 
 * enhancements

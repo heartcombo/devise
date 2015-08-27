@@ -16,5 +16,9 @@ if defined?(ActionMailer)
       @token = token
       devise_mail(record, :unlock_instructions, opts)
     end
+
+    def password_change(record, opts={})
+      devise_mail(record, :password_change, opts)
+    end
   end
 end

@@ -3,6 +3,10 @@ require 'test_models'
 require 'digest/sha1'
 
 class DatabaseAuthenticatableTest < ActiveSupport::TestCase
+  def setup
+    setup_mailer
+  end
+
   test 'should downcase case insensitive keys when saving' do
     # case_insensitive_keys is set to :email by default.
     email = 'Foo@Bar.com'
@@ -223,6 +227,22 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_not user.destroy_with_password(nil)
     assert user.persisted?
     assert_match "can't be blank", user.errors[:current_password].join
+  end
+
+  test 'should not email on password change' do
+    user = create_user
+    assert_email_not_sent do
+      assert user.update_attributes(password: 'newpass', password_confirmation: 'newpass')
+    end
+  end
+
+  test 'should email on password change when configured' do
+    swap Devise, send_password_change_notification: true do
+      user = create_user
+      assert_email_sent user.email do
+        assert user.update_attributes(password: 'newpass', password_confirmation: 'newpass')
+      end
+    end
   end
 
   test 'downcase_keys with validation' do

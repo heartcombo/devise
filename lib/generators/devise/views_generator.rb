@@ -83,6 +83,13 @@ module Devise
       source_root File.expand_path("../../templates/simple_form_for", __FILE__)
       desc "Copies simple form enabled views to your application."
       hide!
+
+      def copy_views
+        if options[:views]
+          options[:views].delete('mailer')
+        end
+        super
+      end
     end
 
     class ErbGenerator < Rails::Generators::Base #:nodoc:

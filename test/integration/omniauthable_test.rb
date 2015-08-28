@@ -24,6 +24,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   teardown do
+    OmniAuth.config.camelizations.delete('facebook')
     OmniAuth.config.test_mode = false
   end
 

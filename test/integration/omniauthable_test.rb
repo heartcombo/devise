@@ -20,6 +20,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
       "credentials" => {"token" => 'plataformatec'},
       "extra" => {"user_hash" => FACEBOOK_INFO}
     }
+    OmniAuth.config.add_camelization 'facebook', 'FaceBook'
   end
 
   teardown do
@@ -40,7 +41,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
 
   test "can access omniauth.auth in the env hash" do
     visit "/users/sign_in"
-    click_link "Sign in with Facebook"
+    click_link "Sign in with FaceBook"
 
     json = ActiveSupport::JSON.decode(response.body)
 
@@ -54,7 +55,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   test "cleans up session on sign up" do
     assert_no_difference "User.count" do
       visit "/users/sign_in"
-      click_link "Sign in with Facebook"
+      click_link "Sign in with FaceBook"
     end
 
     assert session["devise.facebook_data"]
@@ -75,7 +76,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   test "cleans up session on cancel" do
     assert_no_difference "User.count" do
       visit "/users/sign_in"
-      click_link "Sign in with Facebook"
+      click_link "Sign in with FaceBook"
     end
 
     assert session["devise.facebook_data"]
@@ -86,7 +87,7 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
   test "cleans up session on sign in" do
     assert_no_difference "User.count" do
       visit "/users/sign_in"
-      click_link "Sign in with Facebook"
+      click_link "Sign in with FaceBook"
     end
 
     assert session["devise.facebook_data"]
@@ -96,13 +97,13 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
 
   test "sign in and send remember token if configured" do
     visit "/users/sign_in"
-    click_link "Sign in with Facebook"
+    click_link "Sign in with FaceBook"
     assert_nil warden.cookies["remember_user_token"]
 
     stub_action!(:sign_in_facebook) do
       create_user
       visit "/users/sign_in"
-      click_link "Sign in with Facebook"
+      click_link "Sign in with FaceBook"
       assert warden.authenticated?(:user)
       assert warden.cookies["remember_user_token"]
     end
@@ -118,16 +119,16 @@ class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
     OmniAuth.config.mock_auth[:facebook] = :access_denied
     visit "/users/auth/facebook/callback?error=access_denied"
     assert_current_url "/users/sign_in"
-    assert_contain 'Could not authenticate you from Facebook because "Access denied".'
+    assert_contain 'Could not authenticate you from FaceBook because "Access denied".'
   end
 
   test "handles other exceptions from OmniAuth" do
     OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
 
     visit "/users/sign_in"
-    click_link "Sign in with Facebook"
+    click_link "Sign in with FaceBook"
 
     assert_current_url "/users/sign_in"
-    assert_contain 'Could not authenticate you from Facebook because "Invalid credentials".'
+    assert_contain 'Could not authenticate you from FaceBook because "Invalid credentials".'
   end
 end

@@ -7,7 +7,9 @@ module Devise
       include Devise::Controllers::StoreLocation
 
       included do
-        helper_method :warden, :signed_in?, :devise_controller?
+        if respond_to?(:helper_method)
+          helper_method :warden, :signed_in?, :devise_controller?
+        end
       end
 
       module ClassMethods
@@ -69,7 +71,9 @@ module Devise
               end.compact
             end
 
-            helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"
+            if respond_to?(:helper_method)
+              helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"
+            end
           METHODS
         end
 
@@ -126,7 +130,9 @@ module Devise
         METHODS
 
         ActiveSupport.on_load(:action_controller) do
-          helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
+          if respond_to?(:helper_method)
+            helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
+          end
         end
       end
 

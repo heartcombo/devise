@@ -294,5 +294,22 @@ class FailureTest < ActiveSupport::TestCase
       assert @response.third.body.include?('<h2>Log in</h2>')
       assert @response.third.body.include?('Your account is not activated yet.')
     end
+
+    if Rails.application.config.respond_to?(:relative_url_root)
+      test 'calls the original controller with the proper environment considering the relative url root' do
+        swap Rails.application.config, relative_url_root: "/sample" do
+          env = {
+            "warden.options" => { recall: "devise/sessions#new", attempted_path: "/sample/users/sign_in"},
+            "devise.mapping" => Devise.mappings[:user],
+            "warden" => stub_everything
+          }
+          call_failure(env)
+          assert @response.third.body.include?('<h2>Log in</h2>')
+          assert @response.third.body.include?('Invalid email or password.')
+          assert_equal @request.env["SCRIPT_NAME"], '/sample'
+          assert_equal @request.env["PATH_INFO"], '/users/sign_in'
+        end
+      end
+    end
   end
 end

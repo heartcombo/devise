@@ -51,7 +51,18 @@ module Devise
     end
 
     def recall
-      env["PATH_INFO"]  = attempted_path
+      config = Rails.application.config
+
+      if config.try(:relative_url_root)
+        base_path = Pathname.new(config.relative_url_root)
+        full_path = Pathname.new(attempted_path)
+
+        env["SCRIPT_NAME"] = config.relative_url_root
+        env["PATH_INFO"] = '/' + full_path.relative_path_from(base_path).to_s
+      else
+        env["PATH_INFO"]  = attempted_path
+      end
+
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
       self.response = recall_app(warden_options[:recall]).call(env)
     end

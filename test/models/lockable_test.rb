@@ -14,7 +14,7 @@ class LockableTest < ActiveSupport::TestCase
     end
   end
 
-  test "should increment failed_attempts on successfull validation if the user is already locked" do
+  test "should increment failed_attempts on successful validation if the user is already locked" do
     user = create_user
     user.confirm
 

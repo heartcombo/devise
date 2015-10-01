@@ -86,7 +86,7 @@ module Devise
     end
 
     def no_input_strategies
-      self.strategies & Devise::NO_INPUT
+      strategies & Devise::NO_INPUT
     end
 
     def routes
@@ -105,13 +105,13 @@ module Devise
     # Example:
     #
     #   def confirmable?
-    #     self.modules.include?(:confirmable)
+    #     modules.include?(:confirmable)
     #   end
     #
     def self.add_module(m)
       class_eval <<-METHOD, __FILE__, __LINE__ + 1
         def #{m}?
-          self.modules.include?(:#{m})
+          modules.include?(:#{m})
         end
       METHOD
     end

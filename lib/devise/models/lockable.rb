@@ -64,7 +64,7 @@ module Devise
       def send_unlock_instructions
         raw, enc = Devise.token_generator.generate(self.class, :unlock_token)
         self.unlock_token = enc
-        self.save(validate: false)
+        save(validate: false)
         send_devise_notification(:unlock_instructions, raw, {})
         raw
       end
@@ -149,7 +149,7 @@ module Devise
           if access_locked?
             yield
           else
-            self.errors.add(Devise.unlock_keys.first, :not_locked)
+            errors.add(Devise.unlock_keys.first, :not_locked)
             false
           end
         end

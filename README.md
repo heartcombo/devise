@@ -5,6 +5,7 @@ By [Plataformatec](http://plataformatec.com.br/).
 [![Build Status](https://api.travis-ci.org/plataformatec/devise.svg?branch=master)](http://travis-ci.org/plataformatec/devise)
 [![Code Climate](https://codeclimate.com/github/plataformatec/devise.svg)](https://codeclimate.com/github/plataformatec/devise)
 [![Security](https://hakiri.io/github/plataformatec/devise/master.svg)](https://hakiri.io/github/plataformatec/devise/master)
+[![Gem Version](https://badge.fury.io/rb/devise.svg)](https://badge.fury.io/rb/devise)
 
 This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
 

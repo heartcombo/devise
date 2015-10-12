@@ -11,7 +11,7 @@ class Devise::UnlocksController < DeviseController
     self.resource = resource_class.send_unlock_instructions(resource_params)
     yield resource if block_given?
 
-    if successfully_sent?(resource)
+    if successfully_sent?
       respond_with({}, location: after_sending_unlock_instructions_path_for(resource))
     else
       respond_with(resource)

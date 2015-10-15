@@ -196,10 +196,10 @@ module Devise
       # root path. For a user scope, you can define the default url in
       # the following way:
       #
-      #   map.user_root '/users', controller: 'users' # creates user_root_path
+      #   get '/users' => 'users#index', as: :user_root # creates user_root_path
       #
-      #   map.namespace :user do |user|
-      #     user.root controller: 'users' # creates user_root_path
+      #   namespace :user do
+      #     root 'users#index' # creates user_root_path
       #   end
       #
       # If the resource root path is not defined, root_path is used. However,

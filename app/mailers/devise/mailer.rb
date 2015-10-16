@@ -9,6 +9,7 @@ if defined?(ActionMailer)
 
     def reset_password_instructions(record, token, opts={})
       @token = token
+      opts["X-MC-Important"] = true
       devise_mail(record, :reset_password_instructions, opts)
     end
 

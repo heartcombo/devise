@@ -6,7 +6,9 @@ module Devise
   # page based on current scope and mapping. If no scope is given, redirect
   # to the default_url.
   class FailureApp < ActionController::Metal
-    include ActionController::RackDelegation
+    if Rails::VERSION::MAJOR < 5
+      include ActionController::RackDelegation
+    end
     include ActionController::UrlFor
     include ActionController::Redirecting
 

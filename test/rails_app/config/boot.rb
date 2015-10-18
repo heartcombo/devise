@@ -3,9 +3,13 @@ unless defined?(DEVISE_ORM)
 end
 
 module Devise
-  # Detection for minor differences between Rails 3.2 and 4 in tests.
+  # Detection for minor differences between Rails 3.2, 4 and 5 in tests.
   def self.rails4?
     Rails.version.start_with? '4'
+  end
+
+  def self.rails5?
+    Rails.version.start_with? '5'
   end
 end
 

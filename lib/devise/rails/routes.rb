@@ -94,10 +94,24 @@ module ActionDispatch::Routing
     #
     #      devise_for :users, path: 'accounts'
     #
-    #  * singular: setup the singular name for the given resource. This is used as the instance variable
-    #    name in controller, as the name in routes and the scope given to warden.
+    #  * singular: setup the singular name for the given resource. This is used as the helper methods
+    #    names in controller ("authenticate_#{singular}!", "#{singular}_signed_in?", "current_#{singular}"
+    #    and "#{singular}_session"), as the scope name in routes and as the scope given to warden.
     #
-    #      devise_for :users, singular: :user
+    #      devise_for :admins, singular: :manager
+    #
+    #      devise_scope :manager do
+    #        ...
+    #      end
+    #
+    #      class ManagerController < ApplicationController
+    #        before_filter authenticate_manager!
+    #
+    #        def show
+    #          @manager = current_manager
+    #          ...
+    #        end
+    #      end
     #
     #  * path_names: configure different path names to overwrite defaults :sign_in, :sign_out, :sign_up,
     #    :password, :confirmation, :unlock.

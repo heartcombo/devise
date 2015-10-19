@@ -82,6 +82,10 @@ RUBY
         Rails.version.start_with? '4'
       end
 
+      def rails5?
+        Rails.version.start_with? '5'
+      end
+
       def postgresql?
         config = ActiveRecord::Base.configurations[Rails.env]
         config && config['adapter'] == 'postgresql'

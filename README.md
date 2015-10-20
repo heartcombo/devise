@@ -405,7 +405,7 @@ Caution: Devise Controllers inherit from ApplicationController. If your app uses
 
 Devise includes some options to customise devise error messages. There are two options -
 
-* `head: false` - to skip from showing error message head part (like `2 errors prohibited this user from being saved:`). default value is true.
+* `head: false` - to skip from showing error message head part (for example `"2 errors prohibited this user from being saved:"`). default value is true.
 * `full_messages: false` - to skip from adding attribute name from starting of error messages. default value is true.
 
 Use code below to skip head part from error message:

@@ -7,7 +7,8 @@ Warden::Manager.after_set_user do |record, warden, options|
   scope = options[:scope]
   env   = warden.request.env
 
-  if record && record.respond_to?(:timedout?) && warden.authenticated?(scope) && options[:store] != false
+  if record && record.respond_to?(:timedout?) && warden.authenticated?(scope) &&
+     options[:store] != false && !env['devise.skip_timeoutable']
     last_request_at = warden.session(scope)['last_request_at']
 
     if last_request_at.is_a? Integer

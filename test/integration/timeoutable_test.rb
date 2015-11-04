@@ -24,6 +24,18 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     assert_equal old_last_request, last_request_at
   end
 
+  test 'does not set last request at in user session after each request if timeoutable is disabled' do
+    sign_in_as_user
+    old_last_request = last_request_at
+    assert_not_nil last_request_at
+
+    new_time = 2.seconds.from_now
+    Time.stubs(:now).returns(new_time)
+
+    get users_path, {}, 'devise.skip_timeoutable' => true
+    assert_equal old_last_request, last_request_at
+  end
+
   test 'does not time out user session before default limit time' do
     sign_in_as_user
     assert_response :success

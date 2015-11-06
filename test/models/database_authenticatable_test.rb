@@ -113,6 +113,10 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_blank new_user(password: '').encrypted_password
   end
 
+  test 'should generate encrypted password if password has only whitespaces' do
+    assert_present new_user(password: '      ').encrypted_password
+  end
+
   test 'should encrypt password again if password has changed' do
     user = create_user
     encrypted_password = user.encrypted_password

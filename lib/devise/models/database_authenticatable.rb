@@ -40,7 +40,7 @@ module Devise
       # Generates password encryption based on the given value.
       def password=(new_password)
         @password = new_password
-        self.encrypted_password = password_digest(@password) if @password.present?
+        self.encrypted_password = password_digest(@password) unless @password.nil? || @password.empty?
       end
 
       # Verifies whether a password (ie from sign in) is the user password.

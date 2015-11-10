@@ -43,6 +43,7 @@ class Devise::PasswordsController < DeviseController
       end
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
+      set_minimum_password_length
       respond_with resource
     end
   end

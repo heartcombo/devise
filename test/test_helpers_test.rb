@@ -161,6 +161,30 @@ class TestHelpersTest < ActionController::TestCase
     assert_match /User ##{second_user.id}/, @response.body
   end
 
+  test "user_session exposed to signed in test case" do
+    first_user = create_user
+    first_user.confirm
+    sign_in first_user
+
+    user_session['test'] = 'testing'
+    assert_match /testing/, user_session['test'] 
+  end
+
+  test "custom session exposed to signed in test case" do
+    first_admin = create_admin
+    first_admin.confirm
+    sign_in :admin, first_admin
+
+    Devise::TestHelpers::define_helpers(:admin)
+
+    admin_session['test'] = 'testing'
+    assert_match /testing/, admin_session['test'] 
+  end
+
+  test "user_session fails if not logged in" do
+    assert_raises(Warden::NotAuthenticated) { user_session['test'] = 'testing' }
+  end
+
   test "creates a new warden proxy if the request object has changed" do
     old_warden_proxy = warden
     @request = ActionController::TestRequest.new

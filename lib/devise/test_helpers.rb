@@ -13,6 +13,16 @@ module Devise
       end
     end
 
+    def self.define_helpers(mapping)
+      mapping ||= :user
+
+      class_eval <<-METHODS, __FILE__, __LINE__ + 1
+        def #{mapping}_session
+          warden.session(:#{mapping})
+        end
+      METHODS
+    end
+
     # Override process to consider warden.
     def process(*)
       # Make sure we always return @response, a la ActionController::TestCase::Behaviour#process, even if warden interrupts
@@ -22,6 +32,7 @@ module Devise
     # We need to setup the environment variables and the response in the controller.
     def setup_controller_for_warden #:nodoc:
       @request.env['action_controller.instance'] = @controller
+      TestHelpers::define_helpers(:user)
     end
 
     # Quick access to Warden::Proxy.

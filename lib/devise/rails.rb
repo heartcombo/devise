@@ -1,4 +1,5 @@
 require 'devise/rails/routes'
+require 'devise/rails/route_set'
 require 'devise/rails/warden_compat'
 
 module Devise

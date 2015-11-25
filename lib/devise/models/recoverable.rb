@@ -31,10 +31,16 @@ module Devise
       end
 
       included do
+        def expire_reset_token?
+          # Expire the reset token only if the e-mail or password were changed
+          # since the last time the record was saved to the database. An admin
+          # may want to retain the token to give the newly-created user a chance
+          # to set the password for the first time.
+          persisted? && (email_changed? || encrypted_password_changed?)
+        end
+
         before_save do
-          if persisted? && (email_changed? || encrypted_password_changed?)
-            clear_reset_password_token
-          end
+          clear_reset_password_token if expire_reset_token?
         end
       end
 

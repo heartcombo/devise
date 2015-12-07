@@ -28,7 +28,7 @@ module Devise
 
       included do
         before_save do
-          if email_changed? || encrypted_password_changed?
+          if (respond_to?(:email_changed?) && email_changed?) || encrypted_password_changed?
             clear_reset_password_token
           end
         end

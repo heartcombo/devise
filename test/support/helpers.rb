@@ -46,6 +46,10 @@ class ActiveSupport::TestCase
     Admin.create!(valid_attributes)
   end
 
+  def create_user_without_email(attributes={})
+    UserWithoutEmail.create!(valid_attributes(attributes))
+  end
+
   # Execute the block setting the given values and restoring old values after
   # the block is executed.
   def swap(object, new_values)

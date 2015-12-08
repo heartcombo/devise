@@ -65,6 +65,18 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_nil user.reset_password_token
   end
 
+  test 'should clear reset password successfully even if there is no email' do
+    user = create_user_without_email
+    assert_nil user.reset_password_token
+
+    user.send_reset_password_instructions
+    assert_present user.reset_password_token
+    user.password = "123456678"
+    user.password_confirmation = "123456678"
+    user.save!
+    assert_nil user.reset_password_token
+  end
+
   test 'should not clear reset password token if record is invalid' do
     user = create_user
     user.send_reset_password_instructions

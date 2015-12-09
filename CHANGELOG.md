@@ -1,5 +1,11 @@
 ### Unreleased
 
+* bug fixes
+  * Fix password reset for records where `confirmation_required?` is disabled and
+    `confirmation_sent_at` is nil. (by @andygeers)
+  * Allow resources with no `email` field to be recoverable (and do not clear the
+    reset password token if the model was already persisted). (by @seddy, @stanhu)
+
 * enhancements
   * Upon setting `Devise.send_password_change_notification = true` a user will receive notification when their password has been changed.
 

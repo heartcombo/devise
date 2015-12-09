@@ -28,6 +28,11 @@ Rails.application.routes.draw do
     router_name: :fake_engine,
     module: :devise
 
+  devise_for :user_without_email,
+    class_name: 'UserWithoutEmail',
+    router_name: :main_app,
+    module: :devise
+
   as :user do
     get "/as/sign_in", to: "devise/sessions#new"
   end

@@ -7,7 +7,8 @@ class PasswordsControllerTest < ActionController::TestCase
   setup do
     request.env["devise.mapping"] = Devise.mappings[:user]
     @user = create_user.tap(&:confirm)
-    @raw  = @user.send_reset_password_instructions
+    @user.send_reset_password_instructions
+    @raw  = @user.instance_variable_get("@raw_reset_password_token")
   end
 
   def put_update_with_params

@@ -27,11 +27,16 @@ module Devise
       end
 
       included do
-        before_save do
+        before_update do
           if email_changed? || encrypted_password_changed?
             clear_reset_password_token
           end
         end
+      end
+
+      def initialize(*args, &block)
+        @raw_reset_password_token = nil
+        super
       end
 
       # Update password saving the record and clearing token. Returns true if
@@ -56,10 +61,15 @@ module Devise
       # Resets reset password token and send reset password instructions by email.
       # Returns the token sent in the e-mail.
       def send_reset_password_instructions
-        token = set_reset_password_token
-        send_reset_password_instructions_notification(token)
+        unless @raw_reset_password_token
+          set_reset_password_token!
+        end
+        send_reset_password_instructions_notification(@raw_reset_password_token)
 
-        token
+        # If there were a simple way to detect whether the return value was being used and log a deprecation warning only if it was,
+        # we would do so and then eventually remove the return value below.  This would match the behavior of #send_confirmation_instructions
+        # However, in the absence of that, we'll simply have to wait for the next major version change.
+        @raw_reset_password_token
       end
 
       # Checks if the reset password token sent is within the limit time.
@@ -86,6 +96,13 @@ module Devise
         reset_password_sent_at && reset_password_sent_at.utc >= self.class.reset_password_within.ago
       end
 
+      def set_reset_password_token
+        raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
+        @raw_reset_password_token   = raw
+        self.reset_password_token   = enc
+        self.reset_password_sent_at = Time.now.utc
+      end
+
       protected
 
         # Removes reset_password token
@@ -94,13 +111,8 @@ module Devise
           self.reset_password_sent_at = nil
         end
 
-        def set_reset_password_token
-          raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
-
-          self.reset_password_token   = enc
-          self.reset_password_sent_at = Time.now.utc
-          self.save(validate: false)
-          raw
+        def set_reset_password_token!
+          set_reset_password_token && self.save(validate: false)
         end
 
         def send_reset_password_instructions_notification(token)

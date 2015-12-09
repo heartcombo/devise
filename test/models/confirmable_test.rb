@@ -250,6 +250,16 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert user.reload.active_for_authentication?
   end
 
+  test 'should not break when a user tries to reset their password in the case where confirmation is not required and confirm_within is set' do
+    swap Devise, confirm_within: 3.days do
+      user = create_user
+      user.instance_eval { def confirmation_required?; false end }
+      user.confirmation_sent_at = nil
+      user.save
+      assert user.reload.confirm!
+    end
+  end
+
   test 'should find a user to send email instructions for the user confirm its email by authentication_keys' do
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user

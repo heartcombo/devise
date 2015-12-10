@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 3.5.3 - 2015-12-10
+
 * bug fixes
   * Fix password reset for records where `confirmation_required?` is disabled and
     `confirmation_sent_at` is nil. (by @andygeers)

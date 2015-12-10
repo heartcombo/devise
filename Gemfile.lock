@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise (3.5.2)
+    devise (3.5.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -153,7 +153,7 @@ GEM
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    warden (1.2.3)
+    warden (1.2.4)
       rack (>= 1.0)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)

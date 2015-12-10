@@ -49,7 +49,7 @@ GIT
 PATH
   remote: ..
   specs:
-    devise (3.4.1)
+    devise (3.5.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -142,7 +142,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.43)
-    warden (1.2.3)
+    warden (1.2.4)
       rack (>= 1.0)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
@@ -167,3 +167,6 @@ DEPENDENCIES
   rdoc
   sqlite3
   webrat (= 0.7.3)
+
+BUNDLED WITH
+   1.10.6

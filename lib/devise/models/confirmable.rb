@@ -40,7 +40,6 @@ module Devise
     #
     module Confirmable
       extend ActiveSupport::Concern
-      include ActionView::Helpers::DateHelper
 
       included do
         before_create :generate_confirmation_token, if: :confirmation_required?

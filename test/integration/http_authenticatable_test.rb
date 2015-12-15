@@ -1,10 +1,10 @@
 require 'test_helper'
 
-class HttpAuthenticationTest < ActionDispatch::IntegrationTest
+class HttpAuthenticationTest < Devise::IntegrationTest
   test 'handles unverified requests gets rid of caches but continues signed in' do
     swap ApplicationController, allow_forgery_protection: true do
       create_user
-      post exhibit_user_url(1), {}, "HTTP_AUTHORIZATION" => "Basic #{Base64.encode64("user@test.com:12345678")}"
+      post exhibit_user_url(1), headers: { "HTTP_AUTHORIZATION" => "Basic #{Base64.encode64("user@test.com:12345678")}" }
       assert warden.authenticated?(:user)
       assert_equal "User is authenticated", response.body
     end
@@ -89,17 +89,16 @@ class HttpAuthenticationTest < ActionDispatch::IntegrationTest
   end
 
   private
-
     def sign_in_as_new_user_with_http(username="user@test.com", password="12345678")
       user = create_user
-      get users_path(format: :xml), {}, "HTTP_AUTHORIZATION" => "Basic #{Base64.encode64("#{username}:#{password}")}"
+      get users_path(format: :xml), headers: { "HTTP_AUTHORIZATION" => "Basic #{Base64.encode64("#{username}:#{password}")}" }
       user
     end
 
     # Sign in with oauth2 token. This is just to test that it isn't misinterpreted as basic authentication
     def add_oauth2_header
       user = create_user
-      get users_path(format: :xml), {}, "HTTP_AUTHORIZATION" => "OAuth #{Base64.encode64("#{user.email}:12345678")}"
+      get users_path(format: :xml), headers: { "HTTP_AUTHORIZATION" => "OAuth #{Base64.encode64("#{user.email}:12345678")}" }
     end
 
 end

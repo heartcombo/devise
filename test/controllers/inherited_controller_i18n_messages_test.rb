@@ -14,7 +14,7 @@ class AnotherInheritedController < SessionsInheritedController
   end
 end
 
-class InheritedControllerTest < ActionController::TestCase
+class InheritedControllerTest < Devise::ControllerTestCase
   tests SessionsInheritedController
 
   def setup
@@ -32,7 +32,7 @@ class InheritedControllerTest < ActionController::TestCase
   end
 end
 
-class AnotherInheritedControllerTest < ActionController::TestCase
+class AnotherInheritedControllerTest < Devise::ControllerTestCase
   tests AnotherInheritedController
 
   def setup

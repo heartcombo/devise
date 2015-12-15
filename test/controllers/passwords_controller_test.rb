@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PasswordsControllerTest < ActionController::TestCase
+class PasswordsControllerTest < Devise::ControllerTestCase
   tests Devise::PasswordsController
   include Devise::TestHelpers
 
@@ -11,8 +11,9 @@ class PasswordsControllerTest < ActionController::TestCase
   end
 
   def put_update_with_params
-    put :update, "user" => {
-      "reset_password_token" => @raw, "password" => "1234567", "password_confirmation" => "1234567"
+    put :update, params: { "user" => {
+        "reset_password_token" => @raw, "password" => "1234567", "password_confirmation" => "1234567"
+      }
     }
   end
 

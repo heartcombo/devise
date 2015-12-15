@@ -16,7 +16,10 @@ module Devise
     # Override process to consider warden.
     def process(*)
       # Make sure we always return @response, a la ActionController::TestCase::Behaviour#process, even if warden interrupts
-      _catch_warden { super } || @response
+      _catch_warden { super } # || @response  # _catch_warden will setup the @response object
+
+      # process needs to return the ActionDispath::TestResponse object
+      @response
     end
 
     # We need to setup the environment variables and the response in the controller.
@@ -109,8 +112,9 @@ module Devise
 
         status, headers, response = Devise.warden_config[:failure_app].call(env).to_a
         @controller.response.headers.merge!(headers)
-        @controller.send :render, status: status, text: response.body,
-          content_type: headers["Content-Type"], location: headers["Location"]
+        r_opts = { status: status, content_type: headers["Content-Type"], location: headers["Location"] }
+        r_opts[Rails.version.start_with?('5') ? :body : :text] = response.body
+        @controller.send :render, r_opts
         nil # causes process return @response
       end
 
@@ -122,7 +126,8 @@ module Devise
         # ensure the controller response is set to our response.
         @controller.response ||= @response
         @response.status = ret.first
-        @response.headers = ret.second
+        @response.headers.clear
+        ret.second.each { |k,v| @response[k] = v }
         @response.body = ret.third
       end
 

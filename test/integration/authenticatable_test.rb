@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AuthenticationSanityTest < ActionDispatch::IntegrationTest
+class AuthenticationSanityTest < Devise::IntegrationTest
   test 'home should be accessible without sign in' do
     visit '/'
     assert_response :success
@@ -134,7 +134,7 @@ class AuthenticationSanityTest < ActionDispatch::IntegrationTest
   end
 end
 
-class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
+class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'not signed in should not be able to access private route (authenticate denied)' do
     get private_path
     assert_redirected_to new_admin_session_path
@@ -254,7 +254,7 @@ class AuthenticationRoutesRestrictions < ActionDispatch::IntegrationTest
   end
 end
 
-class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
+class AuthenticationRedirectTest < Devise::IntegrationTest
   test 'redirect from warden shows sign in or sign up message' do
     get admins_path
 
@@ -300,7 +300,7 @@ class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
   end
 
   test 'xml http requests does not store urls for redirect' do
-    get users_path, {}, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    get users_path, headers: { 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest' }
     assert_equal 401, response.status
     assert_nil session[:"user_return_to"]
   end
@@ -317,7 +317,7 @@ class AuthenticationRedirectTest < ActionDispatch::IntegrationTest
   end
 end
 
-class AuthenticationSessionTest < ActionDispatch::IntegrationTest
+class AuthenticationSessionTest < Devise::IntegrationTest
   test 'destroyed account is signed out' do
     sign_in_as_user
     get '/users'
@@ -390,7 +390,7 @@ class AuthenticationSessionTest < ActionDispatch::IntegrationTest
   end
 end
 
-class AuthenticationWithScopedViewsTest < ActionDispatch::IntegrationTest
+class AuthenticationWithScopedViewsTest < Devise::IntegrationTest
   test 'renders the scoped view if turned on and view is available' do
     swap Devise, scoped_views: true do
       assert_raise Webrat::NotFoundError do
@@ -431,7 +431,7 @@ class AuthenticationWithScopedViewsTest < ActionDispatch::IntegrationTest
   end
 end
 
-class AuthenticationOthersTest < ActionDispatch::IntegrationTest
+class AuthenticationOthersTest < Devise::IntegrationTest
   test 'handles unverified requests gets rid of caches' do
     swap ApplicationController, allow_forgery_protection: true do
       post exhibit_user_url(1)
@@ -472,7 +472,7 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
 
   test 'sign in with script name' do
     assert_nothing_raised do
-      get new_user_session_path, {}, "SCRIPT_NAME" => "/omg"
+      get new_user_session_path, headers: { "SCRIPT_NAME" => "/omg" }
       fill_in "email", with: "user@test.com"
     end
   end
@@ -509,7 +509,7 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
 
   test 'sign in with xml format returns xml response' do
     create_user
-    post user_session_path(format: 'xml'), user: {email: "user@test.com", password: '12345678'}
+    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
@@ -519,13 +519,13 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     create_user
-    post user_session_path(format: 'xml'), user: {email: "user@test.com", password: '12345678'}
+    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
 
     get new_user_session_path(format: 'xml')
     assert_response :success
 
-    post user_session_path(format: 'xml'), user: {email: "user@test.com", password: '12345678'}
+    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
@@ -559,7 +559,7 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   test 'sign out with non-navigational format via XHR does not redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
       sign_in_as_user
-      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
+      get destroy_user_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
       assert_response :no_content
       assert_not warden.authenticated?(:user)
     end
@@ -569,14 +569,14 @@ class AuthenticationOthersTest < ActionDispatch::IntegrationTest
   test 'sign out with navigational format via XHR does redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
       sign_in_as_user
-      xml_http_request :get, destroy_user_session_path, {}, { "HTTP_ACCEPT" => "text/html,*/*" }
+      get destroy_user_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "text/html,*/*" }
       assert_response :redirect
       assert_not warden.authenticated?(:user)
     end
   end
 end
 
-class AuthenticationKeysTest < ActionDispatch::IntegrationTest
+class AuthenticationKeysTest < Devise::IntegrationTest
   test 'missing authentication keys cause authentication to abort' do
     swap Devise, authentication_keys: [:subdomain] do
       sign_in_as_user
@@ -593,7 +593,7 @@ class AuthenticationKeysTest < ActionDispatch::IntegrationTest
   end
 end
 
-class AuthenticationRequestKeysTest < ActionDispatch::IntegrationTest
+class AuthenticationRequestKeysTest < Devise::IntegrationTest
   test 'request keys are used on authentication' do
     host! 'foo.bar.baz'
 
@@ -612,7 +612,17 @@ class AuthenticationRequestKeysTest < ActionDispatch::IntegrationTest
 
       assert_not warden.authenticated?(:user)
     end
-  end
+  end if Rails.version < '5.0.0'
+
+  test 'invalid request keys raises ActionController::RoutingError' do
+    swap Devise, request_keys: [:unknown_method] do
+      assert_raise ActionController::RoutingError do
+        sign_in_as_user
+      end
+
+      assert_not warden.authenticated?(:user)
+    end
+  end if Rails.version >= '5.0.0'
 
   test 'blank request keys cause authentication to abort' do
     host! 'test.com'
@@ -634,7 +644,7 @@ class AuthenticationRequestKeysTest < ActionDispatch::IntegrationTest
   end
 end
 
-class AuthenticationSignOutViaTest < ActionDispatch::IntegrationTest
+class AuthenticationSignOutViaTest < Devise::IntegrationTest
   def sign_in!(scope)
     sign_in_as_admin(visit: send("new_#{scope}_session_path"))
     assert warden.authenticated?(scope)
@@ -689,7 +699,7 @@ class AuthenticationSignOutViaTest < ActionDispatch::IntegrationTest
   end
 end
 
-class DoubleAuthenticationRedirectTest < ActionDispatch::IntegrationTest
+class DoubleAuthenticationRedirectTest < Devise::IntegrationTest
   test 'signed in as user redirects when visiting user sign in page' do
     sign_in_as_user
     get new_user_session_path(format: :html)
@@ -712,7 +722,7 @@ class DoubleAuthenticationRedirectTest < ActionDispatch::IntegrationTest
   end
 end
 
-class DoubleSignOutRedirectTest < ActionDispatch::IntegrationTest
+class DoubleSignOutRedirectTest < Devise::IntegrationTest
   test 'sign out after already having signed out redirects to sign in' do
     sign_in_as_user
 

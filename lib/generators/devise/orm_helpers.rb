@@ -9,24 +9,7 @@ module Devise
          :recoverable, :rememberable, :trackable, :validatable
 
 CONTENT
-        buffer += <<-CONTENT if needs_attr_accessible?
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-
-CONTENT
         buffer
-      end
-
-      def needs_attr_accessible?
-        rails_3? && !strong_parameters_enabled?
-      end
-
-      def rails_3?
-        Rails::VERSION::MAJOR == 3
-      end
-
-      def strong_parameters_enabled?
-        defined?(ActionController::StrongParameters)
       end
 
       private

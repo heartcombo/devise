@@ -315,6 +315,7 @@ module Devise
         # Find a record for confirmation by unconfirmed email field
         def find_by_unconfirmed_email_with_errors(attributes = {})
           unconfirmed_required_attributes = confirmation_keys.map { |k| k == :email ? :unconfirmed_email : k }
+          attributes = attributes.to_unsafe_h if attributes.respond_to? :to_unsafe_h
           unconfirmed_attributes = attributes.symbolize_keys
           unconfirmed_attributes[:unconfirmed_email] = unconfirmed_attributes.delete(:email)
           find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)

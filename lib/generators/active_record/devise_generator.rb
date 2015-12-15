@@ -75,11 +75,11 @@ RUBY
       end
 
       def inet?
-        rails4? && postgresql?
+        postgresql?
       end
 
-      def rails4?
-        Rails.version.start_with? '4'
+      def rails5?
+        Rails.version.start_with? '5'
       end
 
       def postgresql?

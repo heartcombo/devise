@@ -1,7 +1,7 @@
 require 'test_helper'
 
 
-class OmniauthableIntegrationTest < ActionDispatch::IntegrationTest
+class OmniauthableIntegrationTest < Devise::IntegrationTest
   FACEBOOK_INFO = {
     "id" => '12345',
     "link" => 'http://facebook.com/josevalim',

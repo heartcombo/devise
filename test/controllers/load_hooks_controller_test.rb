@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LoadHooksControllerTest < ActionController::TestCase
+class LoadHooksControllerTest < Devise::ControllerTestCase
   setup do
     ActiveSupport.on_load(:devise_controller) do
       define_method :defined_by_load_hook do

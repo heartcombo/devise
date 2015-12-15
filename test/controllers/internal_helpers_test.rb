@@ -3,7 +3,7 @@ require 'test_helper'
 class MyController < DeviseController
 end
 
-class HelpersTest < ActionController::TestCase
+class HelpersTest < Devise::ControllerTestCase
   tests MyController
 
   def setup
@@ -36,18 +36,17 @@ class HelpersTest < ActionController::TestCase
   test 'get resource params from request params using resource name as key' do
     user_params = {'email' => 'shirley@templar.com'}
 
-    params = if Devise.rails4?
-      # Stub controller name so strong parameters can filter properly.
-      # DeviseController does not allow any parameters by default.
-      @controller.stubs(:controller_name).returns(:sessions_controller)
+    # Stub controller name so strong parameters can filter properly.
+    # DeviseController does not allow any parameters by default.
+    @controller.stubs(:controller_name).returns(:sessions_controller)
 
-      ActionController::Parameters.new({'user' => user_params})
-    else
-      HashWithIndifferentAccess.new({'user' => user_params})
-    end
+    params = ActionController::Parameters.new({'user' => user_params})
+
     @controller.stubs(:params).returns(params)
 
-    assert_equal user_params, @controller.send(:resource_params)
+    res_params = @controller.send(:resource_params)
+    res_params = res_params.to_unsafe_h if res_params.respond_to? :to_unsafe_h
+    assert_equal user_params, res_params
   end
 
   test 'resources methods are not controller actions' do

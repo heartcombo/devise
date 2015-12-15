@@ -53,10 +53,15 @@ class FailureTest < ActiveSupport::TestCase
       'REQUEST_METHOD' => 'GET',
       'warden.options' => { scope: :user },
       'rack.session' => {},
-      'action_dispatch.request.formats' => Array(env_params.delete('formats') || Mime::HTML),
+      'action_dispatch.request.formats' => Array(env_params.delete('formats') || Mime[:html]),
       'rack.input' => "",
       'warden' => OpenStruct.new(message: nil)
     }.merge!(env_params)
+
+    # Passing nil for action_dispatch.request.formats prevents the default from being used in Rails 5, need to remove it
+    if env.has_key?('action_dispatch.request.formats') && env['action_dispatch.request.formats'].nil?
+      env.delete 'action_dispatch.request.formats' unless env['action_dispatch.request.formats']
+    end
 
     @response = (env.delete(:app) || Devise::FailureApp).call(env).to_a
     @request  = ActionDispatch::Request.new(env)
@@ -164,14 +169,14 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'works for any navigational format' do
       swap Devise, navigational_formats: [:xml] do
-        call_failure('formats' => Mime::XML)
+        call_failure('formats' => Mime[:xml])
         assert_equal 302, @response.first
       end
     end
 
     test 'redirects the correct format if it is a non-html format request' do
       swap Devise, navigational_formats: [:js] do
-        call_failure('formats' => Mime::JS)
+        call_failure('formats' => Mime[:js])
         assert_equal 'http://test.host/users/sign_in.js', @response.second["Location"]
       end
     end
@@ -179,18 +184,18 @@ class FailureTest < ActiveSupport::TestCase
 
   context 'For HTTP request' do
     test 'return 401 status' do
-      call_failure('formats' => Mime::XML)
+      call_failure('formats' => Mime[:xml])
       assert_equal 401, @response.first
     end
 
     test 'return appropriate body for xml' do
-      call_failure('formats' => Mime::XML)
+      call_failure('formats' => Mime[:xml])
       result = %(<?xml version="1.0" encoding="UTF-8"?>\n<errors>\n  <error>You need to sign in or sign up before continuing.</error>\n</errors>\n)
       assert_equal result, @response.last.body
     end
 
     test 'return appropriate body for json' do
-      call_failure('formats' => Mime::JSON)
+      call_failure('formats' => Mime[:json])
       result = %({"error":"You need to sign in or sign up before continuing."})
       assert_equal result, @response.last.body
     end
@@ -201,26 +206,26 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'return WWW-authenticate headers if model allows' do
-      call_failure('formats' => Mime::XML)
+      call_failure('formats' => Mime[:xml])
       assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]
     end
 
     test 'does not return WWW-authenticate headers if model does not allow' do
       swap Devise, http_authenticatable: false do
-        call_failure('formats' => Mime::XML)
+        call_failure('formats' => Mime[:xml])
         assert_nil @response.second["WWW-Authenticate"]
       end
     end
 
     test 'works for any non navigational format' do
       swap Devise, navigational_formats: [] do
-        call_failure('formats' => Mime::HTML)
+        call_failure('formats' => Mime[:html])
         assert_equal 401, @response.first
       end
     end
 
     test 'uses the failure message as response body' do
-      call_failure('formats' => Mime::XML, 'warden' => OpenStruct.new(message: :invalid))
+      call_failure('formats' => Mime[:xml], 'warden' => OpenStruct.new(message: :invalid))
       assert_match '<error>Invalid email or password.</error>', @response.third.body
     end
 
@@ -228,7 +233,7 @@ class FailureTest < ActiveSupport::TestCase
       context 'when http_authenticatable_on_xhr is false' do
         test 'dont return 401 with navigational formats' do
           swap Devise, http_authenticatable_on_xhr: false do
-            call_failure('formats' => Mime::HTML, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            call_failure('formats' => Mime[:html], 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
             assert_equal 302, @response.first
             assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
           end
@@ -236,7 +241,7 @@ class FailureTest < ActiveSupport::TestCase
 
         test 'dont return 401 with non navigational formats' do
           swap Devise, http_authenticatable_on_xhr: false do
-            call_failure('formats' => Mime::JSON, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            call_failure('formats' => Mime[:json], 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
             assert_equal 302, @response.first
             assert_equal 'http://test.host/users/sign_in.json', @response.second["Location"]
           end
@@ -246,14 +251,14 @@ class FailureTest < ActiveSupport::TestCase
       context 'when http_authenticatable_on_xhr is true' do
         test 'return 401' do
           swap Devise, http_authenticatable_on_xhr: true do
-            call_failure('formats' => Mime::HTML, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            call_failure('formats' => Mime[:html], 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
             assert_equal 401, @response.first
           end
         end
 
         test 'skip WWW-Authenticate header' do
           swap Devise, http_authenticatable_on_xhr: true do
-            call_failure('formats' => Mime::HTML, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
+            call_failure('formats' => Mime[:html], 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest')
             assert_nil @response.second['WWW-Authenticate']
           end
         end

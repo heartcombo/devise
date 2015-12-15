@@ -6,7 +6,6 @@ module Devise
   # page based on current scope and mapping. If no scope is given, redirect
   # to the default_url.
   class FailureApp < ActionController::Metal
-    include ActionController::RackDelegation
     include ActionController::UrlFor
     include ActionController::Redirecting
 
@@ -22,7 +21,7 @@ module Devise
       @respond.call(env)
     end
 
-    # Try retrieving the URL options from the parent controller (usually 
+    # Try retrieving the URL options from the parent controller (usually
     # ApplicationController). Instance methods are not supported at the moment,
     # so only the class-level attribute is used.
     def self.default_url_options(*args)
@@ -53,18 +52,27 @@ module Devise
     def recall
       config = Rails.application.config
 
-      if config.try(:relative_url_root)
+      header_info = if config.try(:relative_url_root)
         base_path = Pathname.new(config.relative_url_root)
         full_path = Pathname.new(attempted_path)
 
-        env["SCRIPT_NAME"] = config.relative_url_root
-        env["PATH_INFO"] = '/' + full_path.relative_path_from(base_path).to_s
+        { "SCRIPT_NAME" => config.relative_url_root,
+          "PATH_INFO" => '/' + full_path.relative_path_from(base_path).to_s }
       else
-        env["PATH_INFO"]  = attempted_path
+        { "PATH_INFO" => attempted_path }
+      end
+
+      header_info.each do | var, value|
+        if request.respond_to?(:set_header)
+          request.set_header(var, value)
+        else
+          env[var]  = value
+        end
       end
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
-      self.response = recall_app(warden_options[:recall]).call(env)
+      # self.response = recall_app(warden_options[:recall]).call(env)
+      self.response = recall_app(warden_options[:recall]).call(request.env)
     end
 
     def redirect
@@ -199,11 +207,11 @@ module Devise
     end
 
     def warden
-      env['warden']
+      request.respond_to?(:get_header) ? request.get_header("warden") : env["warden"]
     end
 
     def warden_options
-      env['warden.options']
+      request.respond_to?(:get_header) ? request.get_header("warden.options") : env["warden.options"]
     end
 
     def warden_message

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LockTest < ActionDispatch::IntegrationTest
+class LockTest < Devise::IntegrationTest
 
   def visit_user_unlock_with_token(unlock_token)
     visit user_unlock_path(unlock_token: unlock_token)
@@ -132,9 +132,10 @@ class LockTest < ActionDispatch::IntegrationTest
     user = create_user(locked: true)
     ActionMailer::Base.deliveries.clear
 
-    post user_unlock_path(format: 'xml'), user: {email: user.email}
+    post user_unlock_path(format: 'xml'), params: { user: {email: user.email} }
     assert_response :success
     assert_equal response.body, {}.to_xml
+
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
@@ -142,7 +143,7 @@ class LockTest < ActionDispatch::IntegrationTest
     user = create_user(locked: false)
     ActionMailer::Base.deliveries.clear
 
-    post user_unlock_path(format: 'xml'), user: {email: user.email}
+    post user_unlock_path(format: 'xml'), params: { user: {email: user.email} }
     assert_response :unprocessable_entity
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
     assert_equal 0, ActionMailer::Base.deliveries.size

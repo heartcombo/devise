@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SessionsControllerTest < ActionController::TestCase
+class SessionsControllerTest < Devise::ControllerTestCase
   tests Devise::SessionsController
   include Devise::TestHelpers
 
@@ -12,9 +12,10 @@ class SessionsControllerTest < ActionController::TestCase
       request.env["devise.mapping"] = Devise.mappings[:user]
       request.session["user_return_to"] = 'foo.bar'
       create_user
-      post :create, user: {
-        email: "wrong@email.com",
-        password: "wrongpassword"
+      post :create, params: { user: {
+          email: "wrong@email.com",
+          password: "wrongpassword"
+        }
       }
       assert_equal 200, @response.status
     ensure
@@ -37,11 +38,11 @@ class SessionsControllerTest < ActionController::TestCase
 
     user = create_user
     user.confirm
-    post :create, user: {
-      email: user.email,
-      password: user.password
+    post :create, params: { user: {
+        email: user.email,
+        password: user.password
+      }
     }
-
     assert_nil request.session["user_return_to"]
   end
 
@@ -51,9 +52,10 @@ class SessionsControllerTest < ActionController::TestCase
 
     user = create_user
     user.confirm
-    post :create, format: 'json', user: {
-      email: user.email,
-      password: user.password
+    post :create, params: { format: 'json', user: {
+        email: user.email,
+        password: user.password
+      }
     }
 
     assert_equal 'foo.bar', request.session["user_return_to"]
@@ -61,9 +63,10 @@ class SessionsControllerTest < ActionController::TestCase
 
   test "#create doesn't raise exception after Warden authentication fails when TestHelpers included" do
     request.env["devise.mapping"] = Devise.mappings[:user]
-    post :create, user: {
-      email: "nosuchuser@example.com",
-      password: "wevdude"
+    post :create, params: { user: {
+        email: "nosuchuser@example.com",
+        password: "wevdude"
+      }
     }
     assert_equal 200, @response.status
     assert_template "devise/sessions/new"
@@ -73,11 +76,11 @@ class SessionsControllerTest < ActionController::TestCase
     request.env["devise.mapping"] = Devise.mappings[:user]
     user = create_user
     user.confirm
-    post :create, format: 'json', user: {
-      email: user.email,
-      password: user.password
+    post :create, params: { format: 'json', user: {
+        email: user.email,
+        password: user.password
+      }
     }
-
     delete :destroy, format: 'json'
     assert flash[:notice].blank?, "flash[:notice] should be blank, not #{flash[:notice].inspect}"
     assert_equal 204, @response.status

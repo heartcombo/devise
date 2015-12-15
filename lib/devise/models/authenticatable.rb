@@ -253,7 +253,7 @@ module Devise
 
         # Find or initialize a record with group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
-          attributes = attributes.to_unsafe_h.with_indifferent_access if attributes.respond_to? :to_unsafe_h
+          attributes = attributes.permit(*required_attributes).to_h if attributes.respond_to? :permit
           attributes = attributes.slice(*required_attributes).with_indifferent_access
           attributes.delete_if { |key, value| value.blank? }
 

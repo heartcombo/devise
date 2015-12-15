@@ -44,8 +44,7 @@ class HelpersTest < Devise::ControllerTestCase
 
     @controller.stubs(:params).returns(params)
 
-    res_params = @controller.send(:resource_params)
-    res_params = res_params.to_unsafe_h if res_params.respond_to? :to_unsafe_h
+    res_params = @controller.send(:resource_params).permit!.to_h
     assert_equal user_params, res_params
   end
 

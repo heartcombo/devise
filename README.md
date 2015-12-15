@@ -92,7 +92,7 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 ## Getting started
 
-Devise 3.0 works with Rails 3.2 onwards. You can add it to your Gemfile with:
+Devise 4.0 works with Rails 4.2 onwards. You can add it to your Gemfile with:
 
 ```ruby
 gem 'devise'

@@ -253,7 +253,7 @@ module Devise
         end
 
         def postpone_email_change?
-          postpone = self.class.reconfirmable && email_changed? && !@bypass_confirmation_postpone && self.email.present?
+          postpone = self.class.reconfirmable && email_changed? && email_was.present? && !@bypass_confirmation_postpone && self.email.present?
           @bypass_confirmation_postpone = false
           postpone
         end

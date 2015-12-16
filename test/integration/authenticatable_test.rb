@@ -612,17 +612,7 @@ class AuthenticationRequestKeysTest < Devise::IntegrationTest
 
       assert_not warden.authenticated?(:user)
     end
-  end if Rails.version < '5.0.0'
-
-  test 'invalid request keys raises ActionController::RoutingError' do
-    swap Devise, request_keys: [:unknown_method] do
-      assert_raise ActionController::RoutingError do
-        sign_in_as_user
-      end
-
-      assert_not warden.authenticated?(:user)
-    end
-  end if Rails.version >= '5.0.0'
+  end
 
   test 'blank request keys cause authentication to abort' do
     host! 'test.com'

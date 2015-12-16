@@ -4,7 +4,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
   def create_user_and_remember(add_to_token='')
     user = create_user
     user.remember_me!
-    raw_cookie = User.serialize_into_cookie(user).tap { |a| a.last << add_to_token }
+    raw_cookie = User.serialize_into_cookie(user).tap { |a| a[1] << add_to_token }
     cookies['remember_user_token'] = generate_signed_cookie(raw_cookie)
     user
   end
@@ -135,7 +135,7 @@ class RememberMeTest < ActionDispatch::IntegrationTest
 
   test 'do not remember with expired token' do
     create_user_and_remember
-    swap Devise, remember_for: 0 do
+    swap Devise, remember_for: 0.days do
       get users_path
       assert_not warden.authenticated?(:user)
       assert_redirected_to new_user_session_path

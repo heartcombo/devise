@@ -13,7 +13,7 @@ module Devise
       def remember_me(resource)
         return if env["devise.skip_storage"]
         scope = Devise::Mapping.find_scope!(resource)
-        resource.remember_me!(resource.extend_remember_period)
+        resource.remember_me!
         cookies.signed[remember_key(resource, scope)] = remember_cookie_values(resource)
       end
 

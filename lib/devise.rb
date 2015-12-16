@@ -115,6 +115,7 @@ module Devise
   mattr_accessor :remember_for
   @@remember_for = 2.weeks
 
+  # TODO: extend_remember_period is no longer used
   # If true, extends the user's remember period when remembered via cookie.
   mattr_accessor :extend_remember_period
   @@extend_remember_period = false

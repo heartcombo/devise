@@ -165,16 +165,6 @@ class SessionTimeoutTest < Devise::IntegrationTest
     end
   end
 
-  test 'time out not triggered if remembered' do
-    user = sign_in_as_user remember_me: true
-    get expire_user_path(user)
-    assert_not_nil last_request_at
-
-    get users_path
-    assert_response :success
-    assert warden.authenticated?(:user)
-  end
-
   test 'does not crashes when the last_request_at is a String' do
     user = sign_in_as_user
 

@@ -2,11 +2,15 @@
 class DeviseController < Devise.parent_controller.constantize
   include Devise::Controllers::ScopedViews
 
-  helper DeviseHelper
+  if respond_to?(:helper)
+    helper DeviseHelper
+  end
 
-  helpers = %w(resource scope_name resource_name signed_in_resource
-               resource_class resource_params devise_mapping)
-  helper_method(*helpers)
+  if respond_to?(:helper_method)
+    helpers = %w(resource scope_name resource_name signed_in_resource
+                 resource_class resource_params devise_mapping)
+    helper_method(*helpers)
+  end
 
   prepend_before_action :assert_is_devise_resource!
   respond_to :html if mimes_for_respond_to.empty?

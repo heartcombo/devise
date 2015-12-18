@@ -39,7 +39,7 @@ module Devise
       Devise.token_generator ||=
         if secret_key = Devise.secret_key
           Devise::TokenGenerator.new(
-            Devise::CachingKeyGenerator.new(Devise::KeyGenerator.new(secret_key))
+            ActiveSupport::CachingKeyGenerator.new(ActiveSupport::KeyGenerator.new(secret_key))
           )
         end
     end

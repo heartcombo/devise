@@ -201,7 +201,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) << :username
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
 end
 ```
@@ -212,7 +212,9 @@ To permit simple scalar values for username and email, use this
 
 ```ruby
 def configure_permitted_parameters
-  devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:username, :email) }
+  devise_parameter_sanitizer.permit(:sign_in) do |user_params|
+    user_params.permit(:username, :email)
+  end
 end
 ```
 
@@ -220,7 +222,9 @@ If you have some checkboxes that express the roles a user may take on registrati
 
 ```ruby
 def configure_permitted_parameters
-  devise_parameter_sanitizer.for(:sign_up) { |u| u.permit({ roles: [] }, :email, :password, :password_confirmation) }
+  devise_parameter_sanitizer.permit(:sign_up) do |user_params|
+    user_params.permit({ roles: [] }, :email, :password, :password_confirmation)
+  end
 end
 ```
 For the list of permitted scalars, and how to declare permitted keys in nested hashes and arrays, see
@@ -231,8 +235,9 @@ If you have multiple Devise models, you may want to set up a different parameter
 
 ```ruby
 class User::ParameterSanitizer < Devise::ParameterSanitizer
-  def sign_in
-    default_params.permit(:username, :email)
+  def initialize(*)
+    super
+    permit(:sign_up, keys: [:username, :email])
   end
 end
 ```

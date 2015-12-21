@@ -71,7 +71,7 @@ module Devise
       # DEPRECATED: Remove this branch on Devise 4.1.
       if respond_to?(action, true)
         deprecate_instance_method_sanitization(action)
-        return send(action)
+        return cast_to_hash send(action)
       end
 
       if permissions.respond_to?(:call)

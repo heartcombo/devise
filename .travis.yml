@@ -14,7 +14,6 @@ matrix:
   exclude:
     - rvm: 2.1.5
       gemfile: gemfiles/Gemfile.rails-5.0-beta
-  exclude:
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-5.0-beta
 services:

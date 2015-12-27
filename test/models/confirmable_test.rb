@@ -395,10 +395,12 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should send confirmation instructions by email after changing email' do
     admin = create_admin
     assert admin.confirm
-    assert_email_sent "new_test@example.com" do
+    assert_difference 'ActionMailer::Base.deliveries.size', 2 do
       assert admin.update_attributes(email: 'new_test@example.com')
     end
-    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
+    assert_equal admin.unconfirmed_email, ActionMailer::Base.deliveries.last(2).first['to'].to_s
+    assert_equal admin.email, ActionMailer::Base.deliveries.last['to'].to_s
+    assert_match admin.email, ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should not send confirmation by email after changing password' do

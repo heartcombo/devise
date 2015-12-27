@@ -267,7 +267,7 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     click_link "Didn't receive confirmation instructions?"
 
     fill_in 'email', with: admin.unconfirmed_email
-    assert_difference "ActionMailer::Base.deliveries.size" do
+    assert_difference "ActionMailer::Base.deliveries.size", 2 do
       click_button 'Resend confirmation instructions'
     end
 

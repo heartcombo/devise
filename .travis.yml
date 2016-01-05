@@ -3,6 +3,7 @@ language: ruby
 rvm:
   - 2.1.5
   - 2.2.4
+  - 2.3.0
 
 gemfile:
   - gemfiles/Gemfile.rails-4.2-stable

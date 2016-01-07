@@ -352,7 +352,7 @@ Devise also ships with default routes. If you need to customize them, you should
 devise_for :users, path: "auth", path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
 ```
 
-Be sure to check `devise_for` documentation for details.
+Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/plataformatec/devise/master/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
 
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is create your routes normally and wrap them in a `devise_scope` block in the router:
 

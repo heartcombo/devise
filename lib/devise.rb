@@ -18,12 +18,12 @@ module Devise
   autoload :TokenGenerator,     'devise/token_generator'
 
   module Controllers
-    autoload :Helpers, 'devise/controllers/helpers'
-    autoload :Rememberable, 'devise/controllers/rememberable'
-    autoload :ScopedViews, 'devise/controllers/scoped_views'
-    autoload :SignInOut, 'devise/controllers/sign_in_out'
-    autoload :StoreLocation, 'devise/controllers/store_location'
-    autoload :UrlHelpers, 'devise/controllers/url_helpers'
+    autoload :Helpers,        'devise/controllers/helpers'
+    autoload :Rememberable,   'devise/controllers/rememberable'
+    autoload :ScopedViews,    'devise/controllers/scoped_views'
+    autoload :SignInOut,      'devise/controllers/sign_in_out'
+    autoload :StoreLocation,  'devise/controllers/store_location'
+    autoload :UrlHelpers,     'devise/controllers/url_helpers'
   end
 
   module Hooks
@@ -35,7 +35,7 @@ module Devise
   end
 
   module Strategies
-    autoload :Base, 'devise/strategies/base'
+    autoload :Base,            'devise/strategies/base'
     autoload :Authenticatable, 'devise/strategies/authenticatable'
   end
 

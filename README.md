@@ -184,6 +184,10 @@ Besides `:stretches`, you can define `:pepper`, `:encryptor`, `:confirm_within`,
 
 ### Strong Parameters
 
+![The Parameter Sanitizer API has changed for Devise 4](http://messages.hellobits.com/warning.svg?message=The%20Parameter%20Sanitizer%20API%20has%20changed%20for%20Devise%204)
+
+*For previous Devise versions see https://github.com/plataformatec/devise/tree/3-stable#strong-parameters*
+
 When you customize your own views, you may end up adding new attributes to forms. Rails 4 moved the parameter sanitization from the model to the controller, causing Devise to handle this concern at the controller as well.
 
 There are just three actions in Devise that allow any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and the permitted parameters by default are:

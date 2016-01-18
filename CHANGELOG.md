@@ -1,4 +1,7 @@
-### Unreleased
+### 3.5.4 - 2016-18-01
+
+* bug fixes
+  * Store creation timestamps on remember cookies
 
 ### 3.5.3 - 2015-12-10
 

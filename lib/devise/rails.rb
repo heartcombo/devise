@@ -43,14 +43,5 @@ module Devise
           )
         end
     end
-
-    initializer "devise.fix_routes_proxy_missing_respond_to_bug" do
-      # Deprecate: Remove once we move to Rails 4 only.
-      ActionDispatch::Routing::RoutesProxy.class_eval do
-        def respond_to?(method, include_private = false)
-          super || routes.url_helpers.respond_to?(method)
-        end
-      end
-    end
   end
 end

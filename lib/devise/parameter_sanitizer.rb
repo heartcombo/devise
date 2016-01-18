@@ -164,7 +164,13 @@ module Devise
     end
 
     def unknown_action!(action)
-      raise NotImplementedError, "Devise doesn't know how to sanitize parameters for #{action}"
+      raise NotImplementedError, <<-MESSAGE.strip_heredoc
+        "Devise doesn't know how to sanitize parameters for '#{action}'".
+        If you want to define a new set of parameters to be sanitized use the
+        `permit` method first:
+
+          devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, param2, param3])
+      MESSAGE
     end
 
     def deprecate_for_with_block(action)
@@ -184,7 +190,7 @@ module Devise
         Please use the `permit` method to add or remove any key:
 
           To add any new key, use the `keys` keyword argument:
-          devise_parameter_sanitizer.permit(:#{action}, keys: [:key1, key2, key3])
+          devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, param2, param3])
 
           To remove any existing key, use the `except` keyword argument:
           devise_parameter_sanitizer.permit(:#{action}, except: [:email])
@@ -199,7 +205,7 @@ module Devise
           class #{self.class.name} < Devise::ParameterSanitizer
             def initialize(*)
               super
-              permit(:#{action}, keys: [:key1, :key2, :key3])
+              permit(:#{action}, keys: [:param1, :param2, :param3])
             end
           end
       MESSAGE

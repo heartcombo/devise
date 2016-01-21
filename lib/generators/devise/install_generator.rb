@@ -22,7 +22,7 @@ module Devise
       end
 
       def rails_4?
-        Rails::VERSION::MAJOR == 4
+        Rails::VERSION::MAJOR >= 4
       end
     end
   end

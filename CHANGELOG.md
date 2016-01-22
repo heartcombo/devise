@@ -1,3 +1,9 @@
+### 3.5.5 - 2016-22-01
+
+* bug fixes
+  * Bring back remember_expired? implementation
+  * Ensure timeouts are not triggered if remember me is being used
+
 ### 3.5.4 - 2016-18-01
 
 * bug fixes

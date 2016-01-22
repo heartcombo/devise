@@ -1,3 +1,3 @@
 module Devise
-  VERSION = "3.5.4".freeze
+  VERSION = "3.5.5".freeze
 end

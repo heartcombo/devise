@@ -165,7 +165,17 @@ class SessionTimeoutTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'does not crashes when the last_request_at is a String' do
+  test 'time out not triggered if remembered' do
+    user = sign_in_as_user remember_me: true
+    get expire_user_path(user)
+    assert_not_nil last_request_at
+
+    get users_path
+    assert_response :success
+    assert warden.authenticated?(:user)
+  end
+
+  test 'does not crash when the last_request_at is a String' do
     user = sign_in_as_user
 
     get edit_form_user_path(user, last_request_at: Time.now.utc.to_s)

@@ -9,6 +9,13 @@ module Devise
         Rails.configuration.session_options.slice(:path, :domain, :secure)
       end
 
+      def remember_me_is_active?(resource)
+        return false unless resource.respond_to?(:remember_me)
+        scope = Devise::Mapping.find_scope!(resource)
+        cookie = cookies.signed[remember_key(resource, scope)]
+        resource.class.serialized_in_cookie?(resource, *cookie)
+      end
+
       # Remembers the given resource by setting up a cookie
       def remember_me(resource)
         return if env["devise.skip_storage"]

@@ -96,7 +96,6 @@ module Devise
       def after_remembered
       end
 
-    protected
 
       module ClassMethods
         # Create the cookie key using the record id and remember_token
@@ -106,6 +105,25 @@ module Devise
 
         # Recreate the user based on the stored cookie
         def serialize_from_cookie(*args)
+          serialize_from_cookie_with_or_without_record(nil, args)
+        end
+
+        # Check if the given record is the one serialized in cookie
+        def serialized_in_cookie?(record, *args)
+          !!serialize_from_cookie_with_or_without_record(record, args)
+        end
+
+        # Generate a token checking if one does not already exist in the database.
+        def remember_token #:nodoc:
+          loop do
+            token = Devise.friendly_token
+            break token unless to_adapter.find_first({ remember_token: token })
+          end
+        end
+
+        private
+
+        def serialize_from_cookie_with_or_without_record(record, args)
           id, token, generated_at = args
 
           # The token is only valid if:
@@ -117,20 +135,13 @@ module Devise
           # 6. the token matches
           if generated_at &&
              (self.remember_for.ago < generated_at) &&
-             (record = to_adapter.get(id)) &&
+             (record ||= to_adapter.get(id)) && (id == record.to_key) &&
              (generated_at > (record.remember_created_at || Time.now).utc) &&
              Devise.secure_compare(record.rememberable_value, token)
             record
           end
         end
 
-        # Generate a token checking if one does not already exist in the database.
-        def remember_token #:nodoc:
-          loop do
-            token = Devise.friendly_token
-            break token unless to_adapter.find_first({ remember_token: token })
-          end
-        end
 
         # TODO: extend_remember_period is no longer used
         Devise::Models.config(self, :remember_for, :extend_remember_period, :rememberable_options, :expire_all_remember_me_on_sign_out)

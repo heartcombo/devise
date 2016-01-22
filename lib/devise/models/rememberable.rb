@@ -62,6 +62,11 @@ module Devise
         save(validate: false)
       end
 
+      # Remember token should be expired if expiration time not overpass now.
+      def remember_expired?
+        remember_created_at.nil?
+      end
+
       def remember_expires_at
         self.class.remember_for.from_now
       end

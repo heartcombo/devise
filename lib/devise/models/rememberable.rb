@@ -138,7 +138,7 @@ module Devise
           # 4. the record has a remember_created_at date
           # 5. the token date is bigger than the remember_created_at
           # 6. the token matches
-          if generated_at &&
+          if generated_at.is_a?(Time) &&
              (self.remember_for.ago < generated_at) &&
              (record ||= to_adapter.get(id)) && (id == record.to_key) &&
              (generated_at > (record.remember_created_at || Time.now).utc) &&

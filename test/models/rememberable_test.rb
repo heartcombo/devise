@@ -46,6 +46,12 @@ class RememberableTest < ActiveSupport::TestCase
     assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt, Time.now.utc)
   end
 
+  test 'serialize from cookie should return nil with invalid datetime' do
+    user = create_user
+    user.remember_me!
+    assert_nil User.serialize_from_cookie(user.to_key, user.authenticatable_salt, "2013")
+  end
+
   test 'serialize from cookie should return nil if no resource is found' do
     assert_nil resource_class.serialize_from_cookie([0], "123", Time.now.utc)
   end

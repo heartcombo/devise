@@ -130,6 +130,7 @@ module Devise
 
         def serialize_from_cookie_with_or_without_record(record, args)
           id, token, generated_at = args
+          generated_at = Time.parse(generated_at) rescue nil if generated_at.is_a?(String)
 
           # The token is only valid if:
           # 1. we have a date

@@ -96,6 +96,18 @@ module Devise
       def after_remembered
       end
 
+      def remember_me?(token, generated_at)
+        # The token is only valid if:
+        # 1. we have a date
+        # 2. the current time does not pass the expiry period
+        # 3. the record has a remember_created_at date
+        # 4. the token date is bigger than the remember_created_at
+        # 5. the token matches
+        generated_at.is_a?(Time) &&
+         (self.class.remember_for.ago < generated_at) &&
+         (generated_at > (remember_created_at || Time.now).utc) &&
+         Devise.secure_compare(rememberable_value, token)
+      end
 
       module ClassMethods
         # Create the cookie key using the record id and remember_token
@@ -105,12 +117,10 @@ module Devise
 
         # Recreate the user based on the stored cookie
         def serialize_from_cookie(*args)
-          serialize_from_cookie_with_or_without_record(nil, args)
-        end
+          id, token, generated_at = *args
 
-        # Check if the given record is the one serialized in cookie
-        def serialized_in_cookie?(record, *args)
-          !!serialize_from_cookie_with_or_without_record(record, args)
+          record = to_adapter.get(id)
+          record if record && record.remember_me?(token, generated_at)
         end
 
         # Generate a token checking if one does not already exist in the database.
@@ -122,26 +132,6 @@ module Devise
         end
 
         private
-
-        def serialize_from_cookie_with_or_without_record(record, args)
-          id, token, generated_at = args
-
-          # The token is only valid if:
-          # 1. we have a date
-          # 2. the current time does not pass the expiry period
-          # 3. there is a record with the given id
-          # 4. the record has a remember_created_at date
-          # 5. the token date is bigger than the remember_created_at
-          # 6. the token matches
-          if generated_at.is_a?(Time) &&
-             (self.remember_for.ago < generated_at) &&
-             (record ||= to_adapter.get(id)) && (id == record.to_key) &&
-             (generated_at > (record.remember_created_at || Time.now).utc) &&
-             Devise.secure_compare(record.rememberable_value, token)
-            record
-          end
-        end
-
 
         # TODO: extend_remember_period is no longer used
         Devise::Models.config(self, :remember_for, :extend_remember_period, :rememberable_options, :expire_all_remember_me_on_sign_out)

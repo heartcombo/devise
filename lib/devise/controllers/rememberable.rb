@@ -12,8 +12,8 @@ module Devise
       def remember_me_is_active?(resource)
         return false unless resource.respond_to?(:remember_me)
         scope = Devise::Mapping.find_scope!(resource)
-        cookie = cookies.signed[remember_key(resource, scope)]
-        resource.class.serialized_in_cookie?(resource, *cookie)
+        _, token, generated_at = cookies.signed[remember_key(resource, scope)]
+        resource.remember_me?(token, generated_at)
       end
 
       # Remembers the given resource by setting up a cookie

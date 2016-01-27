@@ -1,4 +1,16 @@
 GIT
+  remote: git://github.com/intridea/oauth2.git
+  revision: 43e1fdd87e95a5b02438d5cce6a67e411afb5fec
+  branch: master
+  specs:
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0, < 1.5.2)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
+
+GIT
   remote: git://github.com/rails/activemodel-serializers-xml.git
   revision: 1f72d9507c91b1cda10d1d20eac2b74dd6d9d4b9
   specs:
@@ -6,18 +18,6 @@ GIT
       activemodel
       activerecord
       activesupport
-
-GIT
-  remote: git://github.com/twalpole/oauth2.git
-  revision: 38e5b4bfe29b7ef87e87a3f323a088914393cfb5
-  branch: rack_master
-  specs:
-    oauth2 (1.0.0)
-      faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (>= 1.2, < 2.0)
 
 PATH
   remote: ..
@@ -122,7 +122,7 @@ GEM
     hitimes (1.2.3)
     i18n (0.7.0)
     json (1.8.3)
-    jwt (1.5.2)
+    jwt (1.5.1)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)

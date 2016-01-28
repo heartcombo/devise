@@ -190,7 +190,7 @@ module Devise
         Please use the `permit` method to add or remove any key:
 
           To add any new key, use the `keys` keyword argument:
-          devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, param2, param3])
+          devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, :param2, :param3])
 
           To remove any existing key, use the `except` keyword argument:
           devise_parameter_sanitizer.permit(:#{action}, except: [:email])

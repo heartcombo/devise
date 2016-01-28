@@ -37,13 +37,19 @@ class RememberableTest < ActiveSupport::TestCase
     id, token, date = User.serialize_into_cookie(user)
     assert_equal id, user.to_key
     assert_equal token, user.authenticatable_salt
-    assert date.is_a?(Time)
+    assert date.is_a?(String)
   end
 
   test 'serialize from cookie' do
     user = create_user
     user.remember_me!
     assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt, Time.now.utc)
+  end
+
+  test 'serialize from cookie should accept a String with the datetime seconds and microseconds' do
+    user = create_user
+    user.remember_me!
+    assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt, Time.now.utc.to_f.to_json)
   end
 
   test 'serialize from cookie should return nil with invalid datetime' do

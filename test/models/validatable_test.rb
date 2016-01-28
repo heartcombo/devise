@@ -64,7 +64,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user = create_user
 
     user.password = ''
-    user.password_confirmation = ''
+    user.password_confirmation = 'x'
 
     assert user.invalid?
     assert_equal 'can\'t be blank', user.errors[:password].join
@@ -88,6 +88,12 @@ class ValidatableTest < ActiveSupport::TestCase
     user = new_user(password: 'x'*73, password_confirmation: 'x'*73)
     assert user.invalid?
     assert_equal 'is too long (maximum is 72 characters)', user.errors[:password].join
+  end
+
+  test 'should not require password length when it\'s not present' do
+    user = create_user
+    user.password = user.password_confirmation = ''
+    assert_not (user.errors[:password].join =~ /can't be blank/)
   end
 
   test 'should not require password length when it\'s not changed' do

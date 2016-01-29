@@ -126,7 +126,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should find a user to send instructions by authentication_keys' do
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user
-      reset_password_user = User.send_reset_password_instructions(email: user.email, username: user.username)
+      reset_password_user = User.send_reset_password_instructions({email: user.email, username: user.username})
       assert_equal reset_password_user, user
     end
   end

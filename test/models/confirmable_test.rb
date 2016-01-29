@@ -263,7 +263,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should find a user to send email instructions for the user confirm its email by authentication_keys' do
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user
-      confirm_user = User.send_confirmation_instructions(email: user.email, username: user.username)
+      confirm_user = User.send_confirmation_instructions({email: user.email, username: user.username})
       assert_equal confirm_user, user
     end
   end

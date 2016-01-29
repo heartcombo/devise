@@ -10,7 +10,6 @@ class Devise::PasswordsController < DeviseController
 
   # POST /resource/password
   def create
-    scope = Devise::Mapping.find_by_path!(request.fullpath).name
     self.resource = resource_class.send_reset_password_instructions(resource_params, scope)
     yield resource if block_given?
 

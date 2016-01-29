@@ -8,7 +8,6 @@ class Devise::UnlocksController < DeviseController
 
   # POST /resource/unlock
   def create
-    scope = Devise::Mapping.find_by_path!(request.fullpath).name
     self.resource = resource_class.send_unlock_instructions(resource_params, scope)
     yield resource if block_given?
 

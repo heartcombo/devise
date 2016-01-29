@@ -197,7 +197,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'should find a user to send unlock instructions by authentication_keys' do
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user
-      unlock_user = User.send_unlock_instructions(email: user.email, username: user.username)
+      unlock_user = User.send_unlock_instructions({email: user.email, username: user.username})
       assert_equal unlock_user, user
     end
   end

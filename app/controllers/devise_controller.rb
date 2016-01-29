@@ -32,6 +32,10 @@ class DeviseController < Devise.parent_controller.constantize
 
   protected
 
+  def scope
+    scope = Devise::Mapping.find_by_path!(request.fullpath).name
+  end
+
   # Gets the actual resource stored in the instance variable
   def resource
     instance_variable_get(:"@#{resource_name}")

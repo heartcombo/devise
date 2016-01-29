@@ -6,7 +6,8 @@ class Devise::ConfirmationsController < DeviseController
 
   # POST /resource/confirmation
   def create
-    self.resource = resource_class.send_confirmation_instructions(resource_params)
+    scope = Devise::Mapping.find_by_path!(request.fullpath).name
+    self.resource = resource_class.send_confirmation_instructions(resource_params, scope)
     yield resource if block_given?
 
     if successfully_sent?(resource)

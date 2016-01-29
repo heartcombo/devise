@@ -55,9 +55,9 @@ module Devise
 
       # Resets reset password token and send reset password instructions by email.
       # Returns the token sent in the e-mail.
-      def send_reset_password_instructions
+      def send_reset_password_instructions(scope=nil)
         token = set_reset_password_token
-        send_reset_password_instructions_notification(token)
+        send_reset_password_instructions_notification(token, scope)
 
         token
       end
@@ -103,8 +103,8 @@ module Devise
           raw
         end
 
-        def send_reset_password_instructions_notification(token)
-          send_devise_notification(:reset_password_instructions, token, {})
+        def send_reset_password_instructions_notification(token, scope)
+          send_devise_notification(:reset_password_instructions, token, {scope: scope})
         end
 
       module ClassMethods
@@ -119,9 +119,9 @@ module Devise
         # password instructions to it. If user is not found, returns a new user
         # with an email not found error.
         # Attributes must contain the user's email
-        def send_reset_password_instructions(attributes={})
+        def send_reset_password_instructions(attributes={}, scope)
           recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
-          recoverable.send_reset_password_instructions if recoverable.persisted?
+          recoverable.send_reset_password_instructions(scope) if recoverable.persisted?
           recoverable
         end
 

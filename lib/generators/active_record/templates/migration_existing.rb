@@ -1,6 +1,6 @@
 class AddDeviseTo<%= table_name.camelize %> < ActiveRecord::Migration
   def self.up
-    change_table(:<%= table_name %>) do |t|
+    change_table :<%= table_name %> do |t|
 <%= migration_data -%>
 
 <% attributes.each do |attribute| -%>

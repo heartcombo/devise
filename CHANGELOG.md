@@ -1,3 +1,8 @@
+### 3.5.6 - 2016-01-02
+
+* bug fixes
+  * Fix type coercion of the rememberable timestamp stored on cookies.
+
 ### 3.5.5 - 2016-22-01
 
 * bug fixes

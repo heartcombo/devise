@@ -1,16 +1,4 @@
 GIT
-  remote: git://github.com/intridea/oauth2.git
-  revision: 43e1fdd87e95a5b02438d5cce6a67e411afb5fec
-  branch: master
-  specs:
-    oauth2 (1.0.0)
-      faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0, < 1.5.2)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (>= 1.2, < 3)
-
-GIT
   remote: git://github.com/rails/activemodel-serializers-xml.git
   revision: 1f72d9507c91b1cda10d1d20eac2b74dd6d9d4b9
   specs:
@@ -139,6 +127,12 @@ GEM
     multipart-post (2.0.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    oauth2 (1.1.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0, < 1.5.2)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
@@ -226,7 +220,7 @@ DEPENDENCIES
   devise!
   jruby-openssl
   mocha (~> 1.1)
-  oauth2!
+  oauth2
   omniauth (~> 1.3.1)
   omniauth-facebook
   omniauth-oauth2 (>= 1.2.0, < 1.5.0)

@@ -133,7 +133,7 @@ MESSAGE
   end
 
   # Sets the flash message with :key, using I18n. By default you are able
-  # to setup your messages using specific resource scope, and if no message is
+  # to set up your messages using specific resource scope, and if no message is
   # found we look to the default scope. Set the "now" options key to a true
   # value to populate the flash.now hash in lieu of the default flash hash (so
   # the flash message will be available to the current action instead of the

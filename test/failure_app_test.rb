@@ -160,7 +160,7 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'text/html; charset=utf-8', @response.second['Content-Type']
     end
 
-    test 'setup a default message' do
+    test 'set up a default message' do
       call_failure
       assert_match(/You are being/, @response.last.body)
       assert_match(/redirected/, @response.last.body)

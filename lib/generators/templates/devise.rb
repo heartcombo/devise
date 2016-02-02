@@ -101,7 +101,7 @@ Devise.setup do |config|
   # a value of 20 is already extremely slow: approx. 60 seconds for 1 calculation).
   config.stretches = Rails.env.test? ? 1 : 10
 
-  # Setup a pepper to generate the encrypted password.
+  # Set up a pepper to generate the encrypted password.
   # config.pepper = '<%= SecureRandom.hex(64) %>'
 
   # Send a notification email when the user's password is changed

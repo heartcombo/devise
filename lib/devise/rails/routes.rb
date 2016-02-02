@@ -87,17 +87,17 @@ module ActionDispatch::Routing
     #
     # You can configure your routes with some options:
     #
-    #  * class_name: setup a different class to be looked up by devise, if it cannot be
+    #  * class_name: set up a different class to be looked up by devise, if it cannot be
     #    properly found by the route name.
     #
     #      devise_for :users, class_name: 'Account'
     #
-    #  * path: allows you to setup path name that will be used, as rails routes does.
-    #    The following route configuration would setup your route as /accounts instead of /users:
+    #  * path: allows you to set up path name that will be used, as rails routes does.
+    #    The following route configuration would set up your route as /accounts instead of /users:
     #
     #      devise_for :users, path: 'accounts'
     #
-    #  * singular: setup the singular name for the given resource. This is used as the helper methods
+    #  * singular: set up the singular name for the given resource. This is used as the helper methods
     #    names in controller ("authenticate_#{singular}!", "#{singular}_signed_in?", "current_#{singular}"
     #    and "#{singular}_session"), as the scope name in routes and as the scope given to warden.
     #

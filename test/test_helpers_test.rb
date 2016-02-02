@@ -68,13 +68,13 @@ class TestHelpersTest < Devise::ControllerTestCase
   test "respects custom failure app" do
     custom_failure_app = Class.new(Devise::FailureApp) do
       def redirect
-        self.status = 306
+        self.status = 300
       end
     end
 
     swap Devise.warden_config, failure_app: custom_failure_app do
       get :index
-      assert_response 306
+      assert_response 300
     end
   end
 

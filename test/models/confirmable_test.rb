@@ -256,7 +256,7 @@ class ConfirmableTest < ActiveSupport::TestCase
       user.instance_eval { def confirmation_required?; false end }
       user.confirmation_sent_at = nil
       user.save
-      assert user.reload.confirm!
+      assert user.reload.confirm
     end
   end
 

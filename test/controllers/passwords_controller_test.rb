@@ -29,4 +29,24 @@ class PasswordsControllerTest < Devise::ControllerTestCase
     put_update_with_params
     assert_redirected_to custom_path
   end
+
+  test 'redirect to http://test.host/users/sign_in after successfully sent reset password instructions' do
+    Devise::PasswordsController.any_instance.stubs(:successfully_sent?).with(@user).returns(true)
+
+    post :create, params: { "user" => { "email" => @user.email } }
+    assert_redirected_to 'http://test.host/users/sign_in'
+  end
+
+  test 'redirect to http://test.host/users/password/new after unsuccessfully sent reset password instructions' do
+    Devise::PasswordsController.any_instance.stubs(:successfully_sent?).with(@user).returns(false)
+
+    post :create, params: { "user" => { "email" => @user.email } }
+    assert_redirected_to 'http://test.host/users/password/new'
+  end
+
+  test 'nothing raised after unsuccessfully sent reset password instructions for users that exist' do
+    Devise::PasswordsController.any_instance.stubs(:successfully_sent?).with(@user).returns(false)
+
+    assert_nothing_raised(NoMethodError) { post :create, params: { "user" => { "email" => @user.email } } }
+  end
 end

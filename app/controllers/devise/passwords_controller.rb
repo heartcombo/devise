@@ -16,7 +16,7 @@ class Devise::PasswordsController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))
     else
-      respond_with(resource)
+      respond_with(resource, location: new_password_path(resource_name))
     end
   end
 

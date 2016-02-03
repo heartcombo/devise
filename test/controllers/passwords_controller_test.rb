@@ -47,6 +47,6 @@ class PasswordsControllerTest < Devise::ControllerTestCase
   test 'nothing raised after unsuccessfully sent reset password instructions for users that exist' do
     Devise::PasswordsController.any_instance.stubs(:successfully_sent?).with(@user).returns(false)
 
-    assert_nothing_raised(NoMethodError) { post :create, params: { "user" => { "email" => @user.email } } }
+    assert_nothing_raised { post :create, params: { "user" => { "email" => @user.email } } }
   end
 end

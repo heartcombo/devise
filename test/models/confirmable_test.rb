@@ -188,7 +188,7 @@ class ConfirmableTest < ActiveSupport::TestCase
 
   test 'confirm time should fallback to devise confirm in default configuration' do
     swap Devise, allow_unconfirmed_access_for: 1.day do
-      user = new_user
+      user = create_user
       user.confirmation_sent_at = 2.days.ago
       assert_not user.active_for_authentication?
 

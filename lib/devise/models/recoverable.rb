@@ -34,6 +34,10 @@ module Devise
         end
       end
 
+      def active_for_authentication?
+        super && persisted?
+      end
+
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.
       def reset_password(new_password, new_password_confirmation)
@@ -115,13 +119,13 @@ module Devise
           to_adapter.find_first(reset_password_token: reset_password_token)
         end
 
-        # Attempt to find a user by its email. If a record is found, send new
-        # password instructions to it. If user is not found, returns a new user
-        # with an email not found error.
-        # Attributes must contain the user's email
+        # Attempt to find a user by its email. If a record is active for authentication and found, send new
+        # password instructions to it.
+        # If user is not found, returns a new user with an email not found error.
+        # If user is not active for authentication, returns a user with an inactive message.
         def send_reset_password_instructions(attributes={})
           recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
-          recoverable.send_reset_password_instructions if recoverable.persisted?
+          recoverable.send_reset_password_instructions if recoverable.active_for_authentication?
           recoverable
         end
 

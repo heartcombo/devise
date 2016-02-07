@@ -132,24 +132,39 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should require all reset_password_keys' do
-      swap Devise, reset_password_keys: [:username, :email] do
-          user = create_user
-          reset_password_user = User.send_reset_password_instructions(email: user.email)
-          assert_not reset_password_user.persisted?
-          assert_equal "can't be blank", reset_password_user.errors[:username].join
-      end
+    swap Devise, reset_password_keys: [:username, :email] do
+        user = create_user
+        reset_password_user = User.send_reset_password_instructions(email: user.email)
+        assert_not reset_password_user.persisted?
+        assert_equal "can't be blank", reset_password_user.errors[:username].join
+    end
   end
 
   test 'should reset reset_password_token before send the reset instructions email' do
-    user = create_user
+    user = create_user.tap(&:confirm)
     token = user.reset_password_token
     User.send_reset_password_instructions(email: user.email)
     assert_not_equal token, user.reload.reset_password_token
   end
 
-  test 'should send email instructions to the user reset their password' do
+  test 'should not reset reset_password_token before send the reset instructions email to not active for authentication user' do
     user = create_user
+    token = user.reset_password_token
+    User.send_reset_password_instructions(email: user.email)
+    assert_equal token, user.reload.reset_password_token
+  end
+
+  test 'should send email instructions to the user reset their password' do
+    user = create_user.tap(&:confirm)
     assert_email_sent do
+      User.send_reset_password_instructions(email: user.email)
+    end
+  end
+
+
+  test 'should not send email instructions to not active for authentication user' do
+    user = create_user
+    assert_email_not_sent do
       User.send_reset_password_instructions(email: user.email)
     end
   end

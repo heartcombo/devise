@@ -16,7 +16,11 @@ class Devise::PasswordsController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))
     else
-      respond_with(resource, location: new_password_path(resource_name))
+      if resource.persisted?
+        respond_with({}, location: new_password_path(resource_name))
+      else
+        respond_with(resource, location: new_password_path(resource_name))
+      end
     end
   end
 
@@ -49,6 +53,7 @@ class Devise::PasswordsController < DeviseController
   end
 
   protected
+
     def after_resetting_password_path_for(resource)
       Devise.sign_in_after_reset_password ? after_sign_in_path_for(resource) : new_session_path(resource_name)
     end
@@ -76,5 +81,28 @@ class Devise::PasswordsController < DeviseController
 
     def translation_scope
       'devise.passwords'
+    end
+
+    # Helper for use after calling send_*_instructions methods on a resource.
+    # If we are in paranoid mode, we always act as
+    # if the resource was valid and active for authentication
+    # and instructions were sent.
+    def successfully_sent?(resource)
+      notice = if Devise.paranoid
+        resource.errors.clear
+        :send_paranoid_instructions
+      elsif resource.errors.empty? && resource.active_for_authentication?
+        :send_instructions
+      end
+
+      if notice
+        set_flash_message :notice, notice if is_flashing_format?
+        true
+      elsif !resource.persisted?
+        false
+      elsif !resource.active_for_authentication?
+        set_flash_message :alert, resource.inactive_message, scope: "devise.failure" if is_flashing_format?
+        false
+      end
     end
 end

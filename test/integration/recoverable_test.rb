@@ -7,6 +7,11 @@ class PasswordTest < Devise::IntegrationTest
     click_link 'Forgot your password?'
   end
 
+  def visit_new_unlock_path
+    visit new_user_session_path
+    click_link 'Didn\'t receive unlock instructions?'
+  end
+
   def request_forgot_password(&block)
     visit_new_password_path
     assert_response :success
@@ -17,6 +22,17 @@ class PasswordTest < Devise::IntegrationTest
 
     Devise.stubs(:friendly_token).returns("abcdef")
     click_button 'Send me reset password instructions'
+  end
+
+  def request_unlock_instructions(&block)
+    visit_new_unlock_path
+    assert_response :success
+    assert_not warden.authenticated?(:user)
+
+    fill_in 'email', with: 'user@test.com'
+    yield if block_given?
+
+    click_button 'Resend unlock instructions'
   end
 
   def reset_password(options={}, &block)
@@ -209,43 +225,30 @@ class PasswordTest < Devise::IntegrationTest
     end
   end
 
-  test 'does not sign in user automatically after changing its password if it\'s locked and unlock strategy is :none or :time' do
-    [:none, :time].each do |strategy|
-      swap Devise, unlock_strategy: strategy do
-        user = create_user(locked: true)
-        request_forgot_password
-        reset_password
+  test 'does not send the reset password instructions to not active for authentication user' do
+    User.any_instance.stubs(:active_for_authentication?).returns(false)
+    user = create_user
 
-        assert_contain 'Your password has been changed successfully.'
-        assert_not_contain 'You are now signed in.'
-        assert_equal new_user_session_path, @request.path
-        assert !warden.authenticated?(:user)
-      end
-    end
+    request_forgot_password
+    assert_contain 'Your account is not activated yet.'
   end
 
-  test 'unlocks and signs in locked user automatically after changing it\'s password if unlock strategy is :email' do
-    swap Devise, unlock_strategy: :email do
-      user = create_user(locked: true)
-      request_forgot_password
-      reset_password
+  test 'does not send the reset password instructions to not exist user' do
+    User.any_instance.stubs(:active_for_authentication?).returns(false)
+    user = new_user
 
-      assert_contain 'Your password has been changed successfully.'
-      assert !user.reload.access_locked?
-      assert warden.authenticated?(:user)
-    end
+    request_forgot_password
+    assert_contain 'Email not found'
   end
 
-  test 'unlocks and signs in locked user automatically after changing it\'s password if unlock strategy is :both' do
-    swap Devise, unlock_strategy: :both do
-      user = create_user(locked: true)
-      request_forgot_password
-      reset_password
+  test 'does not send the reset password instructions to not confirm user' do
+    User.any_instance.stubs(:active_for_authentication?).returns(false)
+    user = create_user(confirm: false)
 
-      assert_contain 'Your password has been changed successfully.'
-      assert !user.reload.access_locked?
-      assert warden.authenticated?(:user)
-    end
+    assert_not user.confirmed?
+
+    request_forgot_password
+    assert_contain 'You have to confirm your email address before continuing.'
   end
 
   test 'reset password request with valid E-Mail in XML format should return valid response' do
@@ -302,7 +305,6 @@ class PasswordTest < Devise::IntegrationTest
     user = create_user(confirm: false)
 
     post user_password_path(format: :json), params: { user: { email: user.email } }
-
     assert_response :success
     assert_equal response.body, "{}"
   end
@@ -344,4 +346,65 @@ class PasswordTest < Devise::IntegrationTest
     user.reload
     assert_equal 0, user.failed_attempts
   end
+
+  test 'unlocks locked user if unlock strategy is :none' do
+    swap Devise, unlock_strategy: :none do
+      user = create_user(locked: true)
+
+      visit new_user_session_path
+      assert_raise { click_link 'Didn\'t receive unlock instructions?' }
+    end
+  end
+
+  test 'unlocks locked user if unlock strategy is :time' do
+    swap Devise, unlock_strategy: :time do
+      user = create_user(locked: true)
+
+      visit new_user_session_path
+      assert_raise { click_link 'Didn\'t receive unlock instructions?' }
+
+      assert user.access_locked?
+      user.locked_at = (Time.now - User.unlock_in.to_i)
+      assert !user.access_locked?
+    end
+  end
+
+  test 'unlocks locked user if unlock strategy is :email' do
+    swap Devise, unlock_strategy: :email do
+      user = create_user(locked: true)
+
+      request_unlock_instructions
+      assert_contain 'You will receive an email with instructions for how to unlock your account in a few minutes.'
+
+      get user_unlock_path(unlock_token: Devise::Mailer.deliveries.last.body.match(/unlock_token=([^"]+)/)[1])
+      assert !user.reload.access_locked?
+    end
+  end
+
+  test 'unlocks locked user if unlock strategy is :both (:email)' do
+    swap Devise, unlock_strategy: :both do
+      user = create_user(locked: true)
+
+      request_unlock_instructions
+      assert_contain 'You will receive an email with instructions for how to unlock your account in a few minutes.'
+
+      get user_unlock_path(unlock_token: Devise::Mailer.deliveries.last.body.match(/unlock_token=([^"]+)/)[1])
+      assert !user.reload.access_locked?
+    end
+  end
+
+  test 'unlocks locked user if unlock strategy is :both (:time)' do
+    swap Devise, unlock_strategy: :both do
+      user = create_user(locked: true)
+
+      visit new_user_session_path
+      assert_nothing_raised { click_link 'Didn\'t receive unlock instructions?' }
+
+      assert user.access_locked?
+      user.locked_at = (Time.now - User.unlock_in.to_i)
+      assert !user.access_locked?
+    end
+  end
+
+
 end

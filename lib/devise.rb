@@ -276,7 +276,7 @@ module Devise
   mattr_accessor :token_generator
   @@token_generator = nil
 
-  # Default way to setup Devise. Run rails generate devise_install to create
+  # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup
     yield self

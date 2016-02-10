@@ -24,7 +24,7 @@ module Devise
     #     By default allow_unconfirmed_access_for is zero, it means users always have to confirm to sign in.
     #   * +reconfirmable+: requires any email changes to be confirmed (exactly the same way as
     #     initial account confirmation) to be applied. Requires additional unconfirmed_email
-    #     db field to be setup (t.reconfirmable in migrations). Until confirmed, new email is
+    #     db field to be set up (t.reconfirmable in migrations). Until confirmed, new email is
     #     stored in unconfirmed email column, and copied to email column on successful
     #     confirmation.
     #   * +confirm_within+: the time before a sent confirmation token becomes invalid.

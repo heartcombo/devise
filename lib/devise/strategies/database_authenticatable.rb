@@ -6,15 +6,15 @@ module Devise
     class DatabaseAuthenticatable < Authenticatable
       def authenticate!
         resource  = password.present? && mapping.to.find_for_database_authentication(authentication_hash)
-        encrypted = false
+        hashed = false
 
-        if validate(resource){ encrypted = true; resource.valid_password?(password) }
+        if validate(resource){ hashed = true; resource.valid_password?(password) }
           remember_me(resource)
           resource.after_database_authentication
           success!(resource)
         end
 
-        mapping.to.new.password = password if !encrypted && Devise.paranoid
+        mapping.to.new.password = password if !hashed && Devise.paranoid
         fail(:not_found_in_database) unless resource
       end
     end

@@ -1,15 +1,15 @@
 language: ruby
 
 rvm:
-  - 2.1.5
-  - 2.2.4
   - 2.3.0
+  - 2.2.4
+  - 2.1.5
 
 gemfile:
+  - Gemfile
+  - gemfiles/Gemfile.rails-5.0-beta
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
-  - gemfiles/Gemfile.rails-5.0-beta
-  - Gemfile
 
 matrix:
   exclude:
@@ -26,8 +26,8 @@ cache: bundler
 
 env:
   matrix:
-    - DEVISE_ORM=mongoid
     - DEVISE_ORM=active_record
+    - DEVISE_ORM=mongoid
 
 before_install: "rm ${BUNDLE_GEMFILE}.lock"
 

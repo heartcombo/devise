@@ -412,7 +412,7 @@ Caution: Devise Controllers inherit from ApplicationController. If your app uses
 
 ### Test helpers
 
-Devise includes some test helpers for functional specs. In order to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file (make sure you place it out of scope of ActiveSupport::TestCase which is the default class inside of 'test/test_helper.rb):
+Devise includes some test helpers for functional specs. In order to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file (make sure you place it out of scope of `ActiveSupport::TestCase` which is the default class inside of `test/test_helper.rb`):
 
 ```ruby
 class ActionController::TestCase

@@ -7,8 +7,8 @@ module Devise
   end
 
   module Models
-    # Authenticatable Module, responsible for encrypting password and validating
-    # authenticity of a user while signing in.
+    # Authenticatable Module, responsible for hashing the password and
+    # validating the authenticity of a user while signing in.
     #
     # == Options
     #
@@ -37,7 +37,9 @@ module Devise
         [:encrypted_password] + klass.authentication_keys
       end
 
-      # Generates password encryption based on the given value.
+      # Generates a hashed password based on the given value.
+      # For legacy reasons, we use `encrypted_password` to store
+      # the hashed password.
       def password=(new_password)
         attribute_will_change! 'password'
         @password = new_password
@@ -142,11 +144,11 @@ module Devise
 
     protected
 
-      # Digests the password using bcrypt. Custom encryption should override
+      # Hashes the password using bcrypt. Custom hash functions should override
       # this method to apply their own algorithm.
       #
       # See https://github.com/plataformatec/devise-encryptable for examples
-      # of other encryption engines.
+      # of other hashing engines.
       def password_digest(password)
         Devise::Encryptor.digest(self.class, password)
       end

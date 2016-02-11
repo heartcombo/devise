@@ -12,7 +12,7 @@ class UserWithValidation < User
   validates_presence_of :username
 end
 
-class UserWithCustomEncryption < User
+class UserWithCustomHashing < User
   protected
   def password_digest(password)
     password.reverse

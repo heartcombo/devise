@@ -92,28 +92,28 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.respond_to?(:password_confirmation)
   end
 
-  test 'should generate encrypted password while setting password' do
+  test 'should generate a hashed password while setting password' do
     user = new_user
     assert_present user.encrypted_password
   end
 
-  test 'should support custom encryption methods' do
-    user = UserWithCustomEncryption.new(password: '654321')
+  test 'should support custom hashing methods' do
+    user = UserWithCustomHashing.new(password: '654321')
     assert_equal user.encrypted_password, '123456'
   end
 
-  test 'allow authenticatable_salt to work even with nil encrypted password' do
+  test 'allow authenticatable_salt to work even with nil hashed password' do
     user = User.new
     user.encrypted_password = nil
     assert_nil user.authenticatable_salt
   end
 
-  test 'should not generate encrypted password if password is blank' do
+  test 'should not generate a hashed password if password is blank' do
     assert_blank new_user(password: nil).encrypted_password
     assert_blank new_user(password: '').encrypted_password
   end
 
-  test 'should encrypt password again if password has changed' do
+  test 'should hash password again if password has changed' do
     user = create_user
     encrypted_password = user.encrypted_password
     user.password = user.password_confirmation = 'new_password'

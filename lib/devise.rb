@@ -61,7 +61,7 @@ module Devise
   mattr_accessor :rememberable_options
   @@rememberable_options = {}
 
-  # The number of times to encrypt password.
+  # The number of times to hash the password.
   mattr_accessor :stretches
   @@stretches = 11
 
@@ -146,7 +146,7 @@ module Devise
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes
 
-  # Used to encrypt password. Please generate one with rake secret.
+  # Used to hash the password. Please generate one with rake secret.
   mattr_accessor :pepper
   @@pepper = nil
 

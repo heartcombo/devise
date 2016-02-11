@@ -140,11 +140,10 @@ module Devise
 
       config = Rails.application.config
 
-      # Rails 4.2 goes into an infinite loop if opts[:script_name] is unset
-      if (Rails::VERSION::MAJOR >= 4) && (Rails::VERSION::MINOR >= 2)
-        opts[:script_name] = (config.relative_url_root if config.respond_to?(:relative_url_root))
-      else
-        if config.respond_to?(:relative_url_root) && config.relative_url_root.present?
+      if config.respond_to?(:relative_url_root)
+        # Rails 4.2 goes into an infinite loop if opts[:script_name] is unset
+        rails_4_2 = (Rails::VERSION::MAJOR >= 4) && (Rails::VERSION::MINOR >= 2)
+        if config.relative_url_root.present? || rails_4_2
           opts[:script_name] = config.relative_url_root
         end
       end

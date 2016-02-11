@@ -1,3 +1,8 @@
+### Unreleased
+
+* enhancements
+  * Introduced `DeviseController#set_flash_message!` for conditional flash messages setting to reduce complexity.
+
 ### 4.0.0.rc1 - 2016-01-02
 
 * Support added to Rails 5 (by @twalpole).

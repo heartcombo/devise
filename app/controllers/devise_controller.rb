@@ -127,7 +127,7 @@ MESSAGE
     end
 
     if notice
-      set_flash_message :notice, notice if is_flashing_format?
+      set_flash_message! :notice, notice
       true
     end
   end
@@ -155,6 +155,13 @@ MESSAGE
       flash.now[key] = message if message.present?
     else
       flash[key] = message if message.present?
+    end
+  end
+
+  # Sets flash message if is_flashing_format? equals true
+  def set_flash_message!(key, kind, options = {})
+    if is_flashing_format?
+      set_flash_message(key, kind, options)
     end
   end
 

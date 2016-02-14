@@ -10,6 +10,7 @@ module Devise
       class_option :orm
 
       def copy_initializer
+        raise "An ORM must be set to install Devise" unless options[:orm]
         template "devise.rb", "config/initializers/devise.rb"
       end
 

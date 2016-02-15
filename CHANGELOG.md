@@ -1,7 +1,10 @@
 ### Unreleased
 
 * enhancements
-  * Introduced `DeviseController#set_flash_message!` for conditional flash messages setting to reduce complexity.
+  * Introduced `DeviseController#set_flash_message!` for conditional flash
+    messages setting to reduce complexity.
+  * `rails g devise:install` will fail if the app does not have a ORM configured
+    (by @arjunsharma)
 
 ### 4.0.0.rc1 - 2016-01-02
 

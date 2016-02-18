@@ -179,7 +179,7 @@ module Devise
         # Checks if the confirmation for the user is within the limit time.
         # We do this by calculating if the difference between today and the
         # confirmation sent date does not exceed the confirm in time configured.
-        # Confirm_within is a model configuration, must always be an integer value.
+        # allow_unconfirmed_access_for is a model configuration, must always be an integer value.
         #
         # Example:
         #

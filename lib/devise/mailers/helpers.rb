@@ -12,12 +12,12 @@ module Devise
 
       # Configure default email options
       def devise_mail(record, action, opts={})
-        initialize_from_record(record)
+        initialize_from_record(record, opts.fetch(:scope, nil))
         mail headers_for(action, opts)
       end
 
-      def initialize_from_record(record)
-        @scope_name = Devise::Mapping.find_scope!(record)
+      def initialize_from_record(record, scope=nil)
+        @scope_name = Devise::Mapping.find_scope!(scope || record)
         @resource   = instance_variable_set("@#{devise_mapping.name}", record)
       end
 

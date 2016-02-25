@@ -106,12 +106,13 @@ module Devise
       end
 
       # Send confirmation instructions by email
-      def send_confirmation_instructions
+      def send_confirmation_instructions(scope=nil)
         unless @raw_confirmation_token
           generate_confirmation_token!
         end
 
         opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+        opts.merge(scope: scope)
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 
@@ -125,9 +126,9 @@ module Devise
 
       # Resend confirmation token.
       # Regenerates the token if the period is expired.
-      def resend_confirmation_instructions
+      def resend_confirmation_instructions(scope=nil)
         pending_any_confirmation do
-          send_confirmation_instructions
+          send_confirmation_instructions(scope)
         end
       end
 
@@ -284,12 +285,12 @@ module Devise
         # confirmation instructions to it. If not, try searching for a user by unconfirmed_email
         # field. If no user is found, returns a new user with an email not found error.
         # Options must contain the user email
-        def send_confirmation_instructions(attributes={})
+        def send_confirmation_instructions(attributes={}, scope=nil)
           confirmable = find_by_unconfirmed_email_with_errors(attributes) if reconfirmable
           unless confirmable.try(:persisted?)
             confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)
           end
-          confirmable.resend_confirmation_instructions if confirmable.persisted?
+          confirmable.resend_confirmation_instructions(scope) if confirmable.persisted?
           confirmable
         end
 

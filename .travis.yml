@@ -33,7 +33,7 @@ before_install: "rm ${BUNDLE_GEMFILE}.lock"
 
 before_script: "bundle update"
 
-script: "bundle exec rake test"
+script: "bin/test"
 
 notifications:
   email: false

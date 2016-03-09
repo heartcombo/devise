@@ -3,8 +3,8 @@ source "https://rubygems.org"
 gemspec
 
 gem "rails", "~> 4.2.5"
-gem "omniauth", "~> 1.2.0"
-gem "omniauth-oauth2", "~> 1.1.0"
+gem "omniauth", "~> 1.3"
+gem "omniauth-oauth2", "~> 1.4"
 gem "rdoc"
 
 group :test do

@@ -5,6 +5,13 @@
     messages setting to reduce complexity.
   * `rails g devise:install` will fail if the app does not have a ORM configured
     (by @arjunsharma)
+  * Support to Rails 5 versioned migrations added.
+
+* deprecations
+  * omniauth routes are no longer defined with a wildcard `:provider` parameter,
+    and provider specific routes are defined instead, so route helpers like `user_omniauth_authorize_path(:github)` are deprecated in favor of `user_github_authorize_path`.
+    You can still use `omniauth_authorize_path(:user, :github)` if you need to
+    call the helpers dynamically.
 
 ### 4.0.0.rc1 - 2016-01-02
 

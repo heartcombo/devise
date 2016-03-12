@@ -75,7 +75,7 @@ module Devise
 
           self.confirmed_at = Time.now.utc
 
-          saved = if self.class.reconfirmable && unconfirmed_email.present?
+          saved = if pending_reconfirmation?
             skip_reconfirmation!
             self.email = unconfirmed_email
             self.unconfirmed_email = nil

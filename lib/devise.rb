@@ -118,22 +118,13 @@ module Devise
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"
 
-  # Email regex used to validate email formats. It simply asserts that
-  # an one (and only one) @ exists in the given string. This is mainly
-  # to give user feedback and not to assert the e-mail validity.
-  # TODO: 4.1 Do: @@email_regexp = [/\A[^@\s]+@[^@\s]+\z/]
-  mattr_reader :email_regexp
-  @@email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/
-
-  def self.email_regexp=(email_regexp)
-    app_set_configs << :email_regexp
-    @@email_regexp = email_regexp
-  end
-
-  def email_regexp=(email_regexp)
-    app_set_configs << :email_regexp
-    @@email_regexp = email_regexp
-  end
+  # Email regex used to validate email formats. It asserts that there
+  # are no @ symbols or whitespaces in the localpart, that there is a
+  # single @ symbol separating the localpart and the domain, and that
+  # the domain consists of sequences of one or more alphanumeric chars
+  # separated by one or more hyphens or solitary dots.
+  mattr_accessor :email_regexp
+  @@email_regexp = /\A[^@\s]+@[[:alnum:]]+((-+|\.)[[:alnum:]]+)*\z/
 
   # Range validation for password length
   mattr_accessor :password_length

@@ -3,7 +3,7 @@ language: ruby
 rvm:
   - 2.3.0
   - 2.2.4
-  - 2.1.5
+  - 2.1.8
 
 gemfile:
   - Gemfile
@@ -13,7 +13,7 @@ gemfile:
 
 matrix:
   exclude:
-    - rvm: 2.1.5
+    - rvm: 2.1.8
       gemfile: gemfiles/Gemfile.rails-5.0-beta
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-5.0-beta

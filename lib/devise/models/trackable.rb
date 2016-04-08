@@ -9,16 +9,17 @@ module Devise
     # * last_sign_in_at    - Holds the timestamp of the previous sign in
     # * current_sign_in_ip - The remote ip updated when the user sign in
     # * last_sign_in_ip    - Holds the remote ip of the previous sign in
-    #
+    # * device_type        - Gets device type (mobile, tablet, or desktop)
     module Trackable
       def self.required_fields(klass)
-        [:current_sign_in_at, :current_sign_in_ip, :last_sign_in_at, :last_sign_in_ip, :sign_in_count]
+        [:current_sign_in_at, :current_sign_in_ip, :last_sign_in_at, :last_sign_in_ip, :sign_in_count, :device_type]
       end
 
       def update_tracked_fields(request)
         old_current, new_current = self.current_sign_in_at, Time.now.utc
         self.last_sign_in_at     = old_current || new_current
         self.current_sign_in_at  = new_current
+  
 
         old_current, new_current = self.current_sign_in_ip, request.remote_ip
         self.last_sign_in_ip     = old_current || new_current
@@ -26,6 +27,10 @@ module Devise
 
         self.sign_in_count ||= 0
         self.sign_in_count += 1
+
+        #using mobvious gem--
+        type_of_device = request['mobvious.device_type']
+        self.device_type = type_of_device            
       end
 
       def update_tracked_fields!(request)

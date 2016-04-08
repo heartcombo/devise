@@ -69,6 +69,10 @@ GEM
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    mobileesp_converted (0.2.3)
+    mobvious (0.3.2)
+      mobileesp_converted (~> 0.2.0)
+      rack (>= 1.1.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mongoid (4.0.2)
@@ -168,6 +172,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   devise!
   jruby-openssl
+  mobvious
   mocha (~> 1.1)
   mongoid (~> 4.0)
   omniauth (~> 1.3)

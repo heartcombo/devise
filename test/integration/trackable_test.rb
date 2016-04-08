@@ -6,6 +6,7 @@ class TrackableHooksTest < Devise::IntegrationTest
     user = create_user
     assert_nil user.current_sign_in_at
     assert_nil user.last_sign_in_at
+    assert_nil user.device_type
 
     sign_in_as_user
     user.reload
@@ -15,6 +16,8 @@ class TrackableHooksTest < Devise::IntegrationTest
 
     assert_equal user.current_sign_in_at, user.last_sign_in_at
     assert user.current_sign_in_at >= user.created_at
+
+    
 
     visit destroy_user_session_path
     new_time = 2.seconds.from_now

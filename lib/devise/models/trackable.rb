@@ -29,7 +29,7 @@ module Devise
         self.sign_in_count += 1
 
         #using mobvious gem--
-        type_of_device = request.['mobvious.device_type']
+        type_of_device = request['mobvious.device_type']
         self.device_type = type_of_device            
       end
 

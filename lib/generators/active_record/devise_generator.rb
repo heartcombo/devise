@@ -55,6 +55,8 @@ module ActiveRecord
       t.datetime :last_sign_in_at
       t.#{ip_column} :current_sign_in_ip
       t.#{ip_column} :last_sign_in_ip
+      t.string :device_type
+
 
       ## Confirmable
       # t.string   :confirmation_token

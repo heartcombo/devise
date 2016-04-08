@@ -16,6 +16,8 @@ class TrackableHooksTest < Devise::IntegrationTest
     assert_equal user.current_sign_in_at, user.last_sign_in_at
     assert user.current_sign_in_at >= user.created_at
 
+    assert user.device_type == 'desktop'
+
     visit destroy_user_session_path
     new_time = 2.seconds.from_now
     Time.stubs(:now).returns(new_time)

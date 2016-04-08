@@ -7,7 +7,8 @@ class TrackableTest < ActiveSupport::TestCase
       :current_sign_in_ip,
       :last_sign_in_at,
       :last_sign_in_ip,
-      :sign_in_count
+      :sign_in_count,
+      :device_type
     ]
   end
 
@@ -21,6 +22,7 @@ class TrackableTest < ActiveSupport::TestCase
     assert_nil user.current_sign_in_at
     assert_nil user.last_sign_in_at
     assert_equal 0, user.sign_in_count
+    assert_nil user.device_type     
 
     user.update_tracked_fields(request)
 
@@ -29,6 +31,7 @@ class TrackableTest < ActiveSupport::TestCase
     assert_not_nil user.current_sign_in_at
     assert_not_nil user.last_sign_in_at
     assert_equal 1, user.sign_in_count
+    assert_not_nil user.device_type
 
     user.reload
 
@@ -37,5 +40,6 @@ class TrackableTest < ActiveSupport::TestCase
     assert_nil user.current_sign_in_at
     assert_nil user.last_sign_in_at
     assert_equal 0, user.sign_in_count
+    assert_nil user.device_type
   end
 end

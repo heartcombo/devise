@@ -6,6 +6,7 @@ gem "rails", "~> 4.2.5"
 gem "omniauth", "~> 1.3"
 gem "omniauth-oauth2", "~> 1.4"
 gem "rdoc"
+gem "mobvious"
 
 group :test do
   gem "omniauth-facebook"

@@ -30,11 +30,7 @@ module Devise
 
         #using mobvious gem--
         type_of_device = request.env['mobvious.device_type']
-        if type_of_device.nil?
-          self.device_type = "Unknown"
-        else
-          self.device_type = type_of_device            
-        end 
+        self.device_type = type_of_device            
       end
 
       def update_tracked_fields!(request)

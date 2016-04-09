@@ -109,7 +109,7 @@ The generator will install an initializer which describes ALL of Devise's config
 rails generate devise MODEL
 ```
 
-Replace MODEL with the class name used for the application’s users (it’s frequently `User` but could also be `Admin`). This will create a model (if one does not exist) and configure it with default Devise modules. The generator also configures your `config/routes.rb` file to point to the Devise controller.
+Replace MODEL with the class name used for the application’s users (it’s frequently `User` but could also be `Admin`). This will create a model (if one does not exist) and configure it with the default Devise modules. The generator also configures your `config/routes.rb` file to point to the Devise controller.
 
 Next, check the MODEL for any additional configuration options you might want to add, such as confirmable or lockable. If you add an option, be sure to inspect the migration file (created by the generator if your ORM supports them) and uncomment the appropriate section.  For example, if you add the confirmable option in the model, you'll need to uncomment the Confirmable section in the migration. Then run `rake db:migrate`
 
@@ -187,7 +187,7 @@ Besides `:stretches`, you can define `:pepper`, `:encryptor`, `:confirm_within`,
 
 When you customize your own views, you may end up adding new attributes to forms. Rails 4 moved the parameter sanitization from the model to the controller, causing Devise to handle this concern at the controller as well.
 
-There are just three actions in Devise that allow any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and the permitted parameters by default are:
+There are just three actions in Devise that allow any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and default permitted parameters are:
 
 * `sign_in` (`Devise::SessionsController#create`) - Permits only the authentication keys (like `email`)
 * `sign_up` (`Devise::RegistrationsController#create`) - Permits authentication keys plus `password` and `password_confirmation`

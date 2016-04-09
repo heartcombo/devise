@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Remove code supporting old session serialization format (by @fphilipe).
+
 ### 4.0.1 - 2016-04-25
 
 * bug fixes

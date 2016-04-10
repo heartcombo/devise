@@ -129,6 +129,8 @@ Devise will create some helpers to use inside your controllers and views. To set
 before_action :authenticate_user!
 ```
 
+For Rails 5, note that `protect_from_forgery` is no longer prepended to the `before_action` chain, so if you have set `authenticate_user` before `protect_from_forgery`, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use `protect_from_forgery prepend: true`.
+
 If your devise model is something other than User, replace "_user" with "_yourmodel". The same logic applies to the instructions below.
 
 To verify if a user is signed in, use the following helper:

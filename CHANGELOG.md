@@ -1,5 +1,9 @@
 ### Unreleased
 
+* deprecations
+  * removed deprecated private method Devise::Controllers::Helpers#expire_session_data_after_sign_in!
+    (by @bogdanvlviv)
+
 ### 4.0.0.rc2 - 2016-03-09
 
 * enhancements

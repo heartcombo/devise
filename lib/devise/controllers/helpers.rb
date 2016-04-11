@@ -271,12 +271,6 @@ module Devise
 
       private
 
-      def expire_session_data_after_sign_in!
-        ActiveSupport::Deprecation.warn "expire_session_data_after_sign_in! is deprecated " \
-          "in favor of expire_data_after_sign_in!"
-        expire_data_after_sign_in!
-      end
-
       def expire_data_after_sign_out!
         Devise.mappings.each { |_,m| instance_variable_set("@current_#{m.name}", nil) }
         super

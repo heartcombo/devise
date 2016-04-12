@@ -35,6 +35,33 @@ class DeviseTest < ActiveSupport::TestCase
     end
   end
 
+  test 'setup block warns about defaults changing' do
+    Devise.app_set_configs = Set.new
+
+    ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /email_regexp/ }
+    ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /reconfirmable/ }
+    ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /sign_out_via/ }
+    ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /skip_session_storage/ }
+    ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /strip_whitespace_keys/ }
+
+    Devise.setup do
+    end
+  end
+
+  test 'setup block doest not warns when the change is explicit set' do
+    ActiveSupport::Deprecation.expects(:warn).never
+
+    swap Devise,
+        email_regexp: /@/,
+        reconfirmable: false,
+        sign_out_via: :get,
+        skip_session_storage: [],
+        strip_whitespace_keys: [] do
+        Devise.setup do
+        end
+    end
+  end
+
   test 'stores warden configuration' do
     assert_kind_of Devise::Delegator, Devise.warden_config.failure_app
     assert_equal :user, Devise.warden_config.default_scope

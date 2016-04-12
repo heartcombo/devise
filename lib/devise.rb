@@ -61,9 +61,9 @@ module Devise
   mattr_accessor :rememberable_options
   @@rememberable_options = {}
 
-  # The number of times to encrypt password.
+  # The number of times to hash the password.
   mattr_accessor :stretches
-  @@stretches = 10
+  @@stretches = 11
 
   # The default key used when authenticating over http auth.
   mattr_accessor :http_authentication_key
@@ -146,7 +146,7 @@ module Devise
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes
 
-  # Used to encrypt password. Please generate one with rake secret.
+  # Used to hash the password. Please generate one with rake secret.
   mattr_accessor :pepper
   @@pepper = nil
 
@@ -276,7 +276,7 @@ module Devise
   mattr_accessor :token_generator
   @@token_generator = nil
 
-  # Default way to setup Devise. Run rails generate devise_install to create
+  # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup
     yield self

@@ -24,7 +24,7 @@ module Devise
     #     By default allow_unconfirmed_access_for is zero, it means users always have to confirm to sign in.
     #   * +reconfirmable+: requires any email changes to be confirmed (exactly the same way as
     #     initial account confirmation) to be applied. Requires additional unconfirmed_email
-    #     db field to be setup (t.reconfirmable in migrations). Until confirmed, new email is
+    #     db field to be set up (t.reconfirmable in migrations). Until confirmed, new email is
     #     stored in unconfirmed email column, and copied to email column on successful
     #     confirmation.
     #   * +confirm_within+: the time before a sent confirmation token becomes invalid.
@@ -75,7 +75,7 @@ module Devise
 
           self.confirmed_at = Time.now.utc
 
-          saved = if self.class.reconfirmable && unconfirmed_email.present?
+          saved = if pending_reconfirmation?
             skip_reconfirmation!
             self.email = unconfirmed_email
             self.unconfirmed_email = nil
@@ -179,7 +179,7 @@ module Devise
         # Checks if the confirmation for the user is within the limit time.
         # We do this by calculating if the difference between today and the
         # confirmation sent date does not exceed the confirm in time configured.
-        # Confirm_within is a model configuration, must always be an integer value.
+        # allow_unconfirmed_access_for is a model configuration, must always be an integer value.
         #
         # Example:
         #

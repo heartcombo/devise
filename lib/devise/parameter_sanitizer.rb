@@ -169,7 +169,7 @@ module Devise
         If you want to define a new set of parameters to be sanitized use the
         `permit` method first:
 
-          devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, param2, param3])
+          devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, :param2, :param3])
       MESSAGE
     end
 

@@ -7,7 +7,7 @@ module Devise
     # blocked: email and time. The former will send an email to the user when
     # the lock happens, containing a link to unlock its account. The second
     # will unlock the user automatically after some configured time (ie 2.hours).
-    # It's also possible to setup lockable to use both email and time strategies.
+    # It's also possible to set up lockable to use both email and time strategies.
     #
     # == Options
     #

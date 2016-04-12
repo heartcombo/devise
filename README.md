@@ -4,7 +4,6 @@ By [Plataformatec](http://plataformatec.com.br/).
 
 [![Build Status](https://api.travis-ci.org/plataformatec/devise.svg?branch=master)](http://travis-ci.org/plataformatec/devise)
 [![Code Climate](https://codeclimate.com/github/plataformatec/devise.svg)](https://codeclimate.com/github/plataformatec/devise)
-[![Security](https://hakiri.io/github/plataformatec/devise/master.svg)](https://hakiri.io/github/plataformatec/devise/master)
 
 This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
 
@@ -17,7 +16,7 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 It's composed of 10 modules:
 
-* [Database Authenticatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/DatabaseAuthenticatable): encrypts and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+* [Database Authenticatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
 * [Omniauthable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/intridea/omniauth) support.
 * [Confirmable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
 * [Recoverable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Recoverable): resets the user password and sends reset instructions.
@@ -27,8 +26,6 @@ It's composed of 10 modules:
 * [Timeoutable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
 * [Validatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * [Lockable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
-
-Devise is guaranteed to be thread-safe on YARV. Thread-safety support on JRuby is in progress.
 
 ## Information
 
@@ -132,6 +129,8 @@ Devise will create some helpers to use inside your controllers and views. To set
 before_action :authenticate_user!
 ```
 
+For Rails 5, note that `protect_from_forgery` is no longer prepended to the `before_action` chain, so if you have set `authenticate_user` before `protect_from_forgery`, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use `protect_from_forgery prepend: true`.
+
 If your devise model is something other than User, replace "_user" with "_yourmodel". The same logic applies to the instructions below.
 
 To verify if a user is signed in, use the following helper:
@@ -174,7 +173,7 @@ member_session
 
 ### Configuring Models
 
-The Devise method in your models also accepts some options to configure its modules. For example, you can choose the cost of the encryption algorithm with:
+The Devise method in your models also accepts some options to configure its modules. For example, you can choose the cost of the hashing algorithm with:
 
 ```ruby
 devise :database_authenticatable, :registerable, :confirmable, :recoverable, stretches: 20
@@ -412,7 +411,7 @@ Caution: Devise Controllers inherit from ApplicationController. If your app uses
 
 ### Test helpers
 
-Devise includes some test helpers for functional specs. In order to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file:
+Devise includes some test helpers for functional specs. In order to use them, you need to include Devise in your functional tests by adding the following to the bottom of your `test/test_helper.rb` file (make sure you place it out of scope of `ActiveSupport::TestCase` which is the default class inside of `test/test_helper.rb`):
 
 ```ruby
 class ActionController::TestCase

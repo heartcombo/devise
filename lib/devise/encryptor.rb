@@ -9,14 +9,14 @@ module Devise
       ::BCrypt::Password.create(password, cost: klass.stretches).to_s
     end
 
-    def self.compare(klass, encrypted_password, password)
-      return false if encrypted_password.blank?
-      bcrypt   = ::BCrypt::Password.new(encrypted_password)
+    def self.compare(klass, hashed_password, password)
+      return false if hashed_password.blank?
+      bcrypt   = ::BCrypt::Password.new(hashed_password)
       if klass.pepper.present?
         password = "#{password}#{klass.pepper}"
       end
       password = ::BCrypt::Engine.hash_secret(password, bcrypt.salt)
-      Devise.secure_compare(password, encrypted_password)
+      Devise.secure_compare(password, hashed_password)
     end
   end
 end

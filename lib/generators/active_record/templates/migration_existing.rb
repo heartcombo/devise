@@ -1,4 +1,4 @@
-class AddDeviseTo<%= table_name.camelize %> < ActiveRecord::Migration
+class AddDeviseTo<%= table_name.camelize %> < ActiveRecord::Migration<%= migration_version %>
   def self.up
     change_table :<%= table_name %> do |t|
 <%= migration_data -%>

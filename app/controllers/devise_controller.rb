@@ -127,13 +127,13 @@ MESSAGE
     end
 
     if notice
-      set_flash_message :notice, notice if is_flashing_format?
+      set_flash_message! :notice, notice
       true
     end
   end
 
   # Sets the flash message with :key, using I18n. By default you are able
-  # to setup your messages using specific resource scope, and if no message is
+  # to set up your messages using specific resource scope, and if no message is
   # found we look to the default scope. Set the "now" options key to a true
   # value to populate the flash.now hash in lieu of the default flash hash (so
   # the flash message will be available to the current action instead of the
@@ -155,6 +155,13 @@ MESSAGE
       flash.now[key] = message if message.present?
     else
       flash[key] = message if message.present?
+    end
+  end
+
+  # Sets flash message if is_flashing_format? equals true
+  def set_flash_message!(key, kind, options = {})
+    if is_flashing_format?
+      set_flash_message(key, kind, options)
     end
   end
 

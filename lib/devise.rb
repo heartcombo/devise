@@ -118,13 +118,11 @@ module Devise
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"
 
-  # Email regex used to validate email formats. It asserts that there
-  # are no @ symbols or whitespaces in the localpart, that there is a
-  # single @ symbol separating the localpart and the domain, and that
-  # the domain consists of sequences of one or more alphanumeric chars
-  # separated by one or more hyphens or solitary dots.
+  # Email regex used to validate email formats. It asserts that there are no
+  # @ symbols or whitespaces in either the localpart or the domain, and that
+  # there is a single @ symbol separating the localpart and the domain.
   mattr_accessor :email_regexp
-  @@email_regexp = /\A[^@\s]+@[[:alnum:]]+((-+|\.)[[:alnum:]]+)*\z/
+  @@email_regexp = /\A[^@\s]+@[^@\s]+\z/
 
   # Range validation for password length
   mattr_accessor :password_length

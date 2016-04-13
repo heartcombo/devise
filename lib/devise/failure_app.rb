@@ -135,21 +135,19 @@ module Devise
 
     def scope_url
       opts  = {}
+
+      # Initialize script_name with nil to prevent infinite loops in
+      # authenticated mounted engines in rails 4.2 and 5.0
+      opts[:script_name] = nil
+
       route = route(scope)
 
       opts[:format] = request_format unless skip_format?
 
       config = Rails.application.config
 
-      if config.respond_to?(:relative_url_root)
-        # Rails 4.2 goes into an infinite loop if opts[:script_name] is unset
-        rails_4_2 = (Rails::VERSION::MAJOR >= 4) && (Rails::VERSION::MINOR >= 2)
-        # so does Rails 5.0.0.beta3
-        rails_5 = Rails::VERSION::MAJOR >= 5
-
-        if config.relative_url_root.present? || rails_4_2 || rails_5
-          opts[:script_name] = config.relative_url_root
-        end
+      if config.respond_to?(:relative_url_root) && config.relative_url_root.present?
+        opts[:script_name] = config.relative_url_root
       end
 
       router_name = Devise.mappings[scope].router_name || Devise.available_router_name

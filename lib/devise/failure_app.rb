@@ -136,6 +136,7 @@ module Devise
     def scope_url
       opts  = {}
       route = route(scope)
+
       opts[:format] = request_format unless skip_format?
 
       config = Rails.application.config
@@ -143,7 +144,10 @@ module Devise
       if config.respond_to?(:relative_url_root)
         # Rails 4.2 goes into an infinite loop if opts[:script_name] is unset
         rails_4_2 = (Rails::VERSION::MAJOR >= 4) && (Rails::VERSION::MINOR >= 2)
-        if config.relative_url_root.present? || rails_4_2
+        # so does Rails 5.0.0.beta3
+        rails_5 = Rails::VERSION::MAJOR >= 5
+
+        if config.relative_url_root.present? || rails_4_2 || rails_5
           opts[:script_name] = config.relative_url_root
         end
       end

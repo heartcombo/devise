@@ -169,6 +169,7 @@ module Devise
         # in models to map to a nice sign up e-mail.
         def send_on_create_confirmation_instructions
           send_confirmation_instructions
+          skip_reconfirmation!
         end
 
         # Callback to overwrite if confirmation is required or not.

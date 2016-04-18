@@ -1,7 +1,19 @@
 ### Unreleased
 
+* bug fixes
+  * Fix the `extend_remember_period` configuration. When set to `false` it does
+    not update the cookie expiration anymore.(by @ulissesalmeida)
+
 * deprecations
-  * removed deprecated private method Devise::Controllers::Helpers#expire_session_data_after_sign_in!
+  * Added a warning of default value change in Devise 4.1 for users that uses
+    the the default configuration of the following configurations: (by @ulissesalmeida)
+    * `strip_whitespace_keys` - The default will be `[:email]`.
+    * `skip_session_storage` - The default will be `[:http_auth]`.
+    * `sign_out_via` - The default will be `:delete`.
+    * `reconfirmable` - The default will be `true`.
+    * `email_regexp` - The default will be `/\A[^@\s]+@[^@\s]+\z/`.
+  * Removed deprecated argument of `Devise::Models::Rememberable#remember_me!` (by @ulissesalmeida)
+  * Removed deprecated private method Devise::Controllers::Helpers#expire_session_data_after_sign_in!
     (by @bogdanvlviv)
 
 ### 4.0.0.rc2 - 2016-03-09

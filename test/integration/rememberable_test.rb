@@ -94,7 +94,6 @@ class RememberMeTest < Devise::IntegrationTest
     assert_response :success
     assert warden.authenticated?(:user)
     assert warden.user(:user) == user
-    assert_match /remember_user_token[^\n]*HttpOnly/, response.headers["Set-Cookie"], "Expected Set-Cookie header in response to set HttpOnly flag on remember_user_token cookie."
   end
 
   test 'remember the user before sign up and redirect them to their home' do
@@ -117,6 +116,40 @@ class RememberMeTest < Devise::IntegrationTest
 
       assert warden.user(:user) == user
       assert_equal old.to_i, user.remember_created_at.to_i
+    end
+  end
+
+  test 'extends remember period when extend remember period config is true' do
+    swap Devise, extend_remember_period: true, remember_for: 1.year do
+      user = create_user_and_remember
+      old_remember_token = nil
+
+      travel_to 1.day.ago do
+        get root_path
+        old_remember_token = request.cookies['remember_user_token']
+      end
+
+      get root_path
+      current_remember_token = request.cookies['remember_user_token']
+
+      refute_equal old_remember_token, current_remember_token
+    end
+  end
+
+  test 'does not extend remember period when extend period config is false' do
+    swap Devise, extend_remember_period: false, remember_for: 1.year do
+      user = create_user_and_remember
+      old_remember_token = nil
+
+      travel_to 1.day.ago do
+        get root_path
+        old_remember_token = request.cookies['remember_user_token']
+      end
+
+      get root_path
+      current_remember_token = request.cookies['remember_user_token']
+
+      assert_equal old_remember_token, current_remember_token
     end
   end
 

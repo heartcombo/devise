@@ -170,6 +170,7 @@ module Devise
         # in models to map to a nice sign up e-mail.
         def send_on_create_confirmation_instructions
           send_confirmation_instructions
+          skip_reconfirmation!
         end
 
         # Callback to overwrite if confirmation is required or not.
@@ -254,13 +255,13 @@ module Devise
         end
 
         def postpone_email_change?
-          postpone = self.class.reconfirmable && email_changed? && email_was.present? && !@bypass_confirmation_postpone && self.email.present?
+          postpone = self.class.reconfirmable && email_changed? && !@bypass_confirmation_postpone && self.email.present?
           @bypass_confirmation_postpone = false
           postpone
         end
 
         def reconfirmation_required?
-          self.class.reconfirmable && @reconfirmation_required && self.email.present?
+          self.class.reconfirmable && @reconfirmation_required && (self.email.present? || self.unconfirmed_email.present?)
         end
 
         def send_confirmation_notification?

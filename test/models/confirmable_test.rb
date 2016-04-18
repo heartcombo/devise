@@ -401,6 +401,14 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
 
+  test 'should send confirmation instructions by email after changing email from nil' do
+    admin = create_admin(email: nil)
+    assert_email_sent "new_test@example.com" do
+      assert admin.update_attributes(email: 'new_test@example.com')
+    end
+    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
+  end
+
   test 'should not send confirmation by email after changing password' do
     admin = create_admin
     assert admin.confirm

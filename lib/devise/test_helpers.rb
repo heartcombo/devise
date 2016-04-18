@@ -96,6 +96,7 @@ module Devise
 
     def _process_unauthenticated(env, options = {})
       options[:action] ||= :unauthenticated
+      options[:attempted_path] ||= ::Rack::Request.new(env).fullpath
       proxy = env['warden']
       result = options[:result] || proxy.result
 

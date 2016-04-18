@@ -488,8 +488,8 @@ class ReconfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should not require reconfirmation after creating a record' do
-    user = create_admin
-    assert !user.pending_reconfirmation?
+    admin = create_admin
+    assert !admin.pending_reconfirmation?
   end
 
   test 'should not require reconfirmation after creating a record with #save called in callback' do
@@ -497,7 +497,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
       after_create :save
     end
 
-    user = Admin::WithSaveInCallback.create(valid_attributes.except(:username))
-    assert !user.pending_reconfirmation?
+    admin = Admin::WithSaveInCallback.create(valid_attributes.except(:username))
+    assert !admin.pending_reconfirmation?
   end
 end

@@ -260,7 +260,7 @@ module Devise
         end
 
         def reconfirmation_required?
-          self.class.reconfirmable && @reconfirmation_required && (self.email || self.unconfirmed_email)
+          self.class.reconfirmable && @reconfirmation_required && (self.email.present? || self.unconfirmed_email.present?)
         end
 
         def send_confirmation_notification?

@@ -1,3 +1,9 @@
+### Unreleased
+
+* bug fixes
+  * Fix the `extend_remember_period` configuration. When set to `false` it does
+    not update the cookie expiration anymore.(by @ulissesalmeida)
+
 ### 3.5.6 - 2016-01-02
 
 * bug fixes

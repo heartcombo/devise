@@ -114,7 +114,7 @@ class ConfirmableTest < ActiveSupport::TestCase
 
     assert_email_not_sent do
       user.save!
-      assert !user.confirmed?
+      assert_not user.confirmed?
     end
   end
 

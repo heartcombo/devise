@@ -25,5 +25,5 @@ platforms :ruby do
 end
 
 group :mongoid do
-  gem "mongoid", "~> 4.0"
+  gem "mongoid", "~> 5.0"
 end

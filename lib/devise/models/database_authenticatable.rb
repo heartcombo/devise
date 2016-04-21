@@ -41,7 +41,6 @@ module Devise
       # For legacy reasons, we use `encrypted_password` to store
       # the hashed password.
       def password=(new_password)
-        attribute_will_change! 'password'
         @password = new_password
         self.encrypted_password = password_digest(@password) if @password.present?
       end

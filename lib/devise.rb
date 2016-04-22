@@ -330,7 +330,6 @@ module Devise
   def self.setup
     yield self
 
-    warn_default_config_changed(:email_regexp, '/\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/', '/\A[^@\s]+@[^@\s]+\z/')
     warn_default_config_changed(:reconfirmable, 'false', 'true')
     warn_default_config_changed(:sign_out_via, ':get', ':delete')
     warn_default_config_changed(:skip_session_storage, '[]', '[:http_auth]')

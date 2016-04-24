@@ -4,6 +4,9 @@ en:
   devise:
     confirmations:
       confirmed: "Your email address has been successfully confirmed."
+      new:
+        submit: "Resend confirmation instructions"
+        title: "Resend confirmation instructions"
       send_instructions: "You will receive an email with instructions for how to confirm your email address in a few minutes."
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
     failure:
@@ -18,17 +21,42 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
+        confirm_account: "Confirm my account"
+        greeting: "Welcome %{reciever}!"
+        instructions: "You can confirm your account email through the link below:"
         subject: "Confirmation instructions"
       reset_password_instructions:
+        change_password: "Change my password"
+        greeting: "Hello %{reciever}!"
+        ignore_email: "If you didn't request this, please ignore this email."
+        ignore_email_information: "Your password won't change until you access the link above and create a new one."
+        information: "Someone has requested a link to change your password. You can do this through the link below."
         subject: "Reset password instructions"
       unlock_instructions:
+        greeting: "Hello %{reciever}!"
+        information: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
+        instructions: "Click the link below to unlock your account:"
         subject: "Unlock instructions"
+        unlock_account: "Unlock my account"
       password_change:
+        greeting: "Hello %{reciever}!"
+        information: "We're contacting you to notify you that your password has been changed."
         subject: "Password Changed"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
     passwords:
+      edit:
+        hints:
+          password: "%{length} characters minimum"
+        labels:
+          password: "New password"
+          password_confirmation: "Confirm new password"
+        title: "Change your password"
+        submit: "Change my password"
+      new:
+        submit: "Send me reset password instructions"
+        title: "Forgot your password?"
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
       send_instructions: "You will receive an email with instructions on how to reset your password in a few minutes."
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
@@ -36,6 +64,24 @@ en:
       updated_not_active: "Your password has been changed successfully."
     registrations:
       destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
+      edit:
+        awaiting_confirmation: "Currently waiting confirmation for: %{email}"
+        back: "Back"
+        cancel_account:
+          action: "Cancel my account"
+          confirmation: "Are you sure?"
+          title: "Cancel my account"
+          unhappy: "Unhappy?"
+        hints:
+          current_password: "we need your current password to confirm your changes"
+          password: "leave blank if you don't want to change it"
+        submit: "Update"
+        title: "Edit %{resource}"
+      new:
+        hints:
+          password: "%{length} characters minimum"
+        submit: "Sign up"
+        title: "Sign up"
       signed_up: "Welcome! You have signed up successfully."
       signed_up_but_inactive: "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
       signed_up_but_locked: "You have signed up successfully. However, we could not sign you in because your account is locked."
@@ -43,10 +89,23 @@ en:
       update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address."
       updated: "Your account has been updated successfully."
     sessions:
+      already_signed_out: "Signed out successfully."
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
-      already_signed_out: "Signed out successfully."
+      new:
+        submit: "Log in"
+        title: "Log in"
+    shared:
+      did_not_receive_confirmation: "Didn't receive confirmation instructions?"
+      did_not_receive_unlock: "Didn't receive unlock instructions?"
+      forgot_password: "Forgot your password?"
+      log_in: "Log in"
+      omniauth_sign_in: "Sign in with %{provider}"
+      sign_up: "Sign up"
     unlocks:
+      new:
+        submit: Resend unlock instructions
+        title: Resend unlock instructions
       send_instructions: "You will receive an email with instructions for how to unlock your account in a few minutes."
       send_paranoid_instructions: "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
       unlocked: "Your account has been unlocked successfully. Please sign in to continue."

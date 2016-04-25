@@ -114,7 +114,7 @@ class ConfirmableTest < ActiveSupport::TestCase
 
     assert_email_not_sent do
       user.save!
-      assert !user.confirmed?
+      assert_not user.confirmed?
     end
   end
 
@@ -401,6 +401,14 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
 
+  test 'should send confirmation instructions by email after changing email from nil' do
+    admin = create_admin(email: nil)
+    assert_email_sent "new_test@example.com" do
+      assert admin.update_attributes(email: 'new_test@example.com')
+    end
+    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
+  end
+
   test 'should not send confirmation by email after changing password' do
     admin = create_admin
     assert admin.confirm
@@ -488,8 +496,8 @@ class ReconfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should not require reconfirmation after creating a record' do
-    user = create_admin
-    assert !user.pending_reconfirmation?
+    admin = create_admin
+    assert !admin.pending_reconfirmation?
   end
 
   test 'should not require reconfirmation after creating a record with #save called in callback' do
@@ -497,7 +505,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
       after_create :save
     end
 
-    user = Admin::WithSaveInCallback.create(valid_attributes.except(:username))
-    assert !user.pending_reconfirmation?
+    admin = Admin::WithSaveInCallback.create(valid_attributes.except(:username))
+    assert !admin.pending_reconfirmation?
   end
 end

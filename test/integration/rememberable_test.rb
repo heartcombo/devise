@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class RememberMeTest < ActionDispatch::IntegrationTest
+  if (Rails::VERSION::MAJOR < 4) || (Rails::VERSION::MAJOR >= 4 && Rails::VERSION::MINOR < 1)
+    require 'time_helpers'
+    include ActiveSupport::Testing::TimeHelpers
+  end
+
   def create_user_and_remember(add_to_token='')
     user = create_user
     user.remember_me!

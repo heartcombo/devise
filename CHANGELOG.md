@@ -1,5 +1,13 @@
 ### Unreleased
 
+### 4.0.1 - 2016-04-25
+
+* bug fixes
+  * Fix the e-mail confirmation instructions send when a user updates the email
+    address from nil. (by @lmduc)
+  * Remove unnecessary `attribute_will_change!` call. (by @cadejscroggins)
+  * Consistent `permit!` check. (by @ulissesalmeida)
+
 ### 4.0.0 - 2016-04-18
 
 * bug fixes

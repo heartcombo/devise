@@ -1,5 +1,10 @@
 ### Unreleased
 
+### 3.5.8 - 2016-04-25
+
+* bug fixes
+  * Fix the e-mail confirmation instructions send when a user updates the email address from nil
+
 ### 3.5.7 - 2016-04-18
 
 * bug fixes

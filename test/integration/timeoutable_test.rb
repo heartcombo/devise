@@ -89,7 +89,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
     user = sign_in_as_user
     get expire_user_path(user)
 
-    get destroy_user_session_path
+    delete destroy_user_session_path
 
     assert_response :redirect
     assert_redirected_to root_path

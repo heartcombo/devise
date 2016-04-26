@@ -30,7 +30,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
     swap Devise, sign_out_all_scopes: false do
       sign_in_as_user
       sign_in_as_admin
-      get destroy_user_session_path
+      delete destroy_user_session_path
       assert_not warden.authenticated?(:user)
       assert warden.authenticated?(:admin)
     end
@@ -41,7 +41,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
       sign_in_as_user
       sign_in_as_admin
 
-      get destroy_admin_session_path
+      delete destroy_admin_session_path
       assert_not warden.authenticated?(:admin)
       assert warden.authenticated?(:user)
     end
@@ -52,7 +52,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
       sign_in_as_user
       sign_in_as_admin
 
-      get destroy_user_session_path
+      delete destroy_user_session_path
       assert_not warden.authenticated?(:user)
       assert_not warden.authenticated?(:admin)
     end
@@ -63,7 +63,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
       sign_in_as_user
       sign_in_as_admin
 
-      get destroy_admin_session_path
+      delete destroy_admin_session_path
       assert_not warden.authenticated?(:admin)
       assert_not warden.authenticated?(:user)
     end
@@ -109,7 +109,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
     sign_in_as_admin
     assert warden.authenticated?(:admin)
 
-    get destroy_admin_session_path
+    delete destroy_admin_session_path
     assert_response :redirect
     assert_redirected_to root_path
 
@@ -119,7 +119,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
   end
 
   test 'unauthenticated admin set message on sign out' do
-    get destroy_admin_session_path
+    delete destroy_admin_session_path
     assert_response :redirect
     assert_redirected_to root_path
 
@@ -501,34 +501,34 @@ class AuthenticationOthersTest < Devise::IntegrationTest
 
   test 'sign out with html redirects' do
     sign_in_as_user
-    get destroy_user_session_path
+    delete destroy_user_session_path
     assert_response :redirect
     assert_current_url '/'
 
     sign_in_as_user
-    get destroy_user_session_path(format: 'html')
+    delete destroy_user_session_path(format: 'html')
     assert_response :redirect
     assert_current_url '/'
   end
 
   test 'sign out with xml format returns no content' do
     sign_in_as_user
-    get destroy_user_session_path(format: 'xml')
+    delete destroy_user_session_path(format: 'xml')
     assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
 
   test 'sign out with json format returns no content' do
     sign_in_as_user
-    get destroy_user_session_path(format: 'json')
+    delete destroy_user_session_path(format: 'json')
     assert_response :no_content
     assert_not warden.authenticated?(:user)
   end
 
   test 'sign out with non-navigational format via XHR does not redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
-      sign_in_as_user
-      get destroy_user_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
+      sign_in_as_admin
+      get destroy_sign_out_via_get_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
       assert_response :no_content
       assert_not warden.authenticated?(:user)
     end
@@ -538,7 +538,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   test 'sign out with navigational format via XHR does redirect' do
     swap Devise, navigational_formats: ['*/*', :html] do
       sign_in_as_user
-      get destroy_user_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "text/html,*/*" }
+      delete destroy_user_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "text/html,*/*" }
       assert_response :redirect
       assert_not warden.authenticated?(:user)
     end

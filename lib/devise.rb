@@ -218,19 +218,8 @@ module Devise
   @@sign_out_all_scopes = true
 
   # The default method used while signing out
-  # TODO: 4.1 Do: @@sign_out_via = :delete
-  mattr_reader :sign_out_via
-  @@sign_out_via = :get
-
-  def self.sign_out_via=(sign_out_via)
-    app_set_configs << :sign_out_via
-    @@sign_out_via = sign_out_via
-  end
-
-  def sign_out_via=(sign_out_via)
-    app_set_configs << :sign_out_via
-    @@sign_out_via = sign_out_via
-  end
+  mattr_accessor :sign_out_via
+  @@sign_out_via = :delete
 
   # The parent controller all Devise controllers inherits from.
   # Defaults to ApplicationController. This should be set early
@@ -295,8 +284,6 @@ module Devise
   # a fresh initializer with all configuration values.
   def self.setup
     yield self
-
-    warn_default_config_changed(:sign_out_via, ':get', ':delete')
   end
 
   def self.warn_default_config_changed(config, current_default, new_default)

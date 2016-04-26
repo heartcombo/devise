@@ -14,7 +14,7 @@ class DefaultRoutingTest < ActionController::TestCase
   end
 
   test 'map destroy user session' do
-    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: 'users/sign_out', method: :get})
+    assert_recognizes({controller: 'devise/sessions', action: 'destroy'}, {path: 'users/sign_out', method: :delete})
     assert_named_route "/users/sign_out", :destroy_user_session_path
   end
 
@@ -146,7 +146,7 @@ class CustomizedRoutingTest < ActionController::TestCase
   end
 
   test 'map account with custom path name for session sign out' do
-    assert_recognizes({controller: 'devise/sessions', action: 'destroy', locale: 'en'}, '/en/accounts/logout')
+    assert_recognizes({controller: 'devise/sessions', action: 'destroy', locale: 'en'}, {path: '/en/accounts/logout', method: :delete })
   end
 
   test 'map account with custom path name for password' do

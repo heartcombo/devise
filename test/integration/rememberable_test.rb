@@ -182,7 +182,7 @@ class RememberMeTest < Devise::IntegrationTest
     get users_path
     assert warden.authenticated?(:user)
 
-    get destroy_user_session_path
+    delete destroy_user_session_path
     assert_not warden.authenticated?(:user)
     assert_nil warden.cookies['remember_user_token']
 

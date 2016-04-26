@@ -11,13 +11,15 @@ class HttpAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'sign in should authenticate with http' do
-    sign_in_as_new_user_with_http
-    assert_response 200
-    assert_match '<email>user@test.com</email>', response.body
-    assert warden.authenticated?(:user)
+    swap Devise, skip_session_storage: [] do
+      sign_in_as_new_user_with_http
+      assert_response 200
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
 
-    get users_path(format: :xml)
-    assert_response 200
+      get users_path(format: :xml)
+      assert_response 200
+    end
   end
 
   test 'sign in should authenticate with http but not emit a cookie if skipping session storage' do

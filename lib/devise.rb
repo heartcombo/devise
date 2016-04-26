@@ -206,19 +206,8 @@ module Devise
   @@mailer_sender = nil
 
   # Skip session storage for the following strategies
-  # TODO: 4.1 Do: @@skip_session_storage = [:http_auth]
-  mattr_reader :skip_session_storage
-  @@skip_session_storage = []
-
-  def self.skip_session_storage=(skip_session_storage)
-    app_set_configs << :skip_session_storage
-    @@skip_session_storage = skip_session_storage
-  end
-
-  def skip_session_storage=(skip_session_storage)
-    app_set_configs << :skip_session_storage
-    @@skip_session_storage = skip_session_storage
-  end
+  mattr_accessor :skip_session_storage
+  @@skip_session_storage = [:http_auth]
 
   # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
@@ -308,7 +297,6 @@ module Devise
     yield self
 
     warn_default_config_changed(:sign_out_via, ':get', ':delete')
-    warn_default_config_changed(:skip_session_storage, '[]', '[:http_auth]')
   end
 
   def self.warn_default_config_changed(config, current_default, new_default)

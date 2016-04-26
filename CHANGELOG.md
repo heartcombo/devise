@@ -1,6 +1,13 @@
 ### Unreleased
 
-* Remove code supporting old session serialization format (by @fphilipe).
+* features
+  * Humanize authentication keys in failure flash message (by @byzg)
+    When you are configuring the translations of `devise.failure.invalid`, the
+    `authentication_keys` is translated now.
+* deprecations
+  * Remove code supporting old session serialization format (by @fphilipe).
+  * Now the `email_regexp` default uses a more permissive regex:
+    `/\A[^@\s]+@[^@\s]+\z/` (by @kimgb)
 
 ### 4.0.1 - 2016-04-25
 

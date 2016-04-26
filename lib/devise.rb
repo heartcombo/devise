@@ -143,20 +143,8 @@ module Devise
   @@confirmation_keys = [:email]
 
   # Defines if email should be reconfirmable.
-  # False by default for backwards compatibility.
-  # TODO: 4.1 Do: @@reconfirmable = true
-  mattr_reader :reconfirmable
-  @@reconfirmable = false
-
-  def self.reconfirmable=(reconfirmable)
-    app_set_configs << :reconfirmable
-    @@reconfirmable = reconfirmable
-  end
-
-  def reconfirmable=(reconfirmable)
-    app_set_configs << :reconfirmable
-    @@reconfirmable = reconfirmable
-  end
+  mattr_accessor :reconfirmable
+  @@reconfirmable = true
 
   # Time interval to timeout the user session without activity.
   mattr_accessor :timeout_in
@@ -319,7 +307,6 @@ module Devise
   def self.setup
     yield self
 
-    warn_default_config_changed(:reconfirmable, 'false', 'true')
     warn_default_config_changed(:sign_out_via, ':get', ':delete')
     warn_default_config_changed(:skip_session_storage, '[]', '[:http_auth]')
   end

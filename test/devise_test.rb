@@ -37,11 +37,10 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'setup block warns about defaults changing' do
     Devise.app_set_configs = Set.new
-    
+
     ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /reconfirmable/ }
     ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /sign_out_via/ }
     ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /skip_session_storage/ }
-    ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /strip_whitespace_keys/ }
 
     Devise.setup do
     end
@@ -53,8 +52,7 @@ class DeviseTest < ActiveSupport::TestCase
     swap Devise,
         reconfirmable: false,
         sign_out_via: :get,
-        skip_session_storage: [],
-        strip_whitespace_keys: [] do
+        skip_session_storage: [] do
         Devise.setup do
         end
     end

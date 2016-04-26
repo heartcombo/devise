@@ -88,19 +88,8 @@ module Devise
   @@case_insensitive_keys = [:email]
 
   # Keys that should have whitespace stripped.
-  # TODO: 4.1 Do: @@strip_whitespace_keys = [:email]
-  mattr_reader :strip_whitespace_keys
-  @@strip_whitespace_keys = []
-
-  def self.strip_whitespace_keys=(strip_whitespace_keys)
-    app_set_configs << :strip_whitespace_keys
-    @@strip_whitespace_keys = strip_whitespace_keys
-  end
-
-  def strip_whitespace_keys=(strip_whitespace_keys)
-    app_set_configs << :strip_whitespace_keys
-    @@strip_whitespace_keys = strip_whitespace_keys
-  end
+  mattr_accessor :strip_whitespace_keys
+  @@strip_whitespace_keys = [:email]
 
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
@@ -333,7 +322,6 @@ module Devise
     warn_default_config_changed(:reconfirmable, 'false', 'true')
     warn_default_config_changed(:sign_out_via, ':get', ':delete')
     warn_default_config_changed(:skip_session_storage, '[]', '[:http_auth]')
-    warn_default_config_changed(:strip_whitespace_keys, '[]', '[:email]')
   end
 
   def self.warn_default_config_changed(config, current_default, new_default)

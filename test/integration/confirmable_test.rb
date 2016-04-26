@@ -140,7 +140,7 @@ class ConfirmationTest < Devise::IntegrationTest
         fill_in 'password', with: 'invalid'
       end
 
-      assert_contain 'Invalid email or password'
+      assert_contain 'Invalid Email or password'
       assert_not warden.authenticated?(:user)
     end
   end

@@ -37,8 +37,7 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'setup block warns about defaults changing' do
     Devise.app_set_configs = Set.new
-
-    ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /email_regexp/ }
+    
     ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /reconfirmable/ }
     ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /sign_out_via/ }
     ActiveSupport::Deprecation.expects(:warn).with() { |value| value =~ /skip_session_storage/ }
@@ -52,7 +51,6 @@ class DeviseTest < ActiveSupport::TestCase
     ActiveSupport::Deprecation.expects(:warn).never
 
     swap Devise,
-        email_regexp: /@/,
         reconfirmable: false,
         sign_out_via: :get,
         skip_session_storage: [],
@@ -121,8 +119,8 @@ class DeviseTest < ActiveSupport::TestCase
   end
 
   test 'Devise.email_regexp should match valid email addresses' do
-    valid_emails = ["test@example.com", "jo@jo.co", "f4$_m@you.com", "testing.example@example.com.ua"]
-    non_valid_emails = ["rex", "test@go,com", "test user@example.com", "test_user@example server.com", "test_user@example.com."]
+    valid_emails = ["test@example.com", "jo@jo.co", "f4$_m@you.com", "testing.example@example.com.ua", "test@tt", "test@valid---domain.com"]
+    non_valid_emails = ["rex", "test user@example.com", "test_user@example server.com"]
 
     valid_emails.each do |email|
       assert_match Devise.email_regexp, email

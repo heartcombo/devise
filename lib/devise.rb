@@ -118,22 +118,11 @@ module Devise
   mattr_accessor :http_authentication_realm
   @@http_authentication_realm = "Application"
 
-  # Email regex used to validate email formats. It simply asserts that
-  # an one (and only one) @ exists in the given string. This is mainly
-  # to give user feedback and not to assert the e-mail validity.
-  # TODO: 4.1 Do: @@email_regexp = [/\A[^@\s]+@[^@\s]+\z/]
-  mattr_reader :email_regexp
-  @@email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/
-
-  def self.email_regexp=(email_regexp)
-    app_set_configs << :email_regexp
-    @@email_regexp = email_regexp
-  end
-
-  def email_regexp=(email_regexp)
-    app_set_configs << :email_regexp
-    @@email_regexp = email_regexp
-  end
+  # Email regex used to validate email formats. It asserts that there are no
+  # @ symbols or whitespaces in either the localpart or the domain, and that
+  # there is a single @ symbol separating the localpart and the domain.
+  mattr_accessor :email_regexp
+  @@email_regexp = /\A[^@\s]+@[^@\s]+\z/
 
   # Range validation for password length
   mattr_accessor :password_length
@@ -341,7 +330,6 @@ module Devise
   def self.setup
     yield self
 
-    warn_default_config_changed(:email_regexp, '/\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/', '/\A[^@\s]+@[^@\s]+\z/')
     warn_default_config_changed(:reconfirmable, 'false', 'true')
     warn_default_config_changed(:sign_out_via, ':get', ':delete')
     warn_default_config_changed(:skip_session_storage, '[]', '[:http_auth]')

@@ -347,37 +347,6 @@ class AuthenticationSessionTest < Devise::IntegrationTest
     assert_equal "Cart", @controller.user_session[:cart]
   end
 
-  test 'does not explode when class name is still stored in session' do
-    # In order to test that old sessions do not break with the new scoped
-    # deserialization, we need to serialize the session the old way. This is
-    # done by removing the newly used scoped serialization method
-    # (#user_serialize) and bringing back the old uncsoped #serialize method
-    # that includes the record's class name in the serialization.
-    begin
-      Warden::SessionSerializer.class_eval do
-        alias_method :original_serialize, :serialize
-        alias_method :original_user_serialize, :user_serialize
-        remove_method :user_serialize
-
-        def serialize(record)
-          klass = record.class
-          array = klass.serialize_into_session(record)
-          array.unshift(klass.name)
-        end
-      end
-
-      sign_in_as_user
-      assert warden.authenticated?(:user)
-    ensure
-      Warden::SessionSerializer.class_eval do
-        alias_method :serialize, :original_serialize
-        remove_method :original_serialize
-        alias_method :user_serialize, :original_user_serialize
-        remove_method :original_user_serialize
-      end
-    end
-  end
-
   test 'session id is changed on sign in' do
     get '/users'
     session_id = request.session["session_id"]

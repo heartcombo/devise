@@ -543,10 +543,7 @@ module Devise
           mapping.to.serialize_into_session(record)
         end
 
-        warden_config.serialize_from_session(mapping.name) do |key|
-          # Previous versions contained an additional entry at the beginning of
-          # key with the record's class name.
-          args = key[-2, 2]
+        warden_config.serialize_from_session(mapping.name) do |args|
           mapping.to.serialize_from_session(*args)
         end
       end

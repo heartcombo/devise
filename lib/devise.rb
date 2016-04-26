@@ -53,12 +53,6 @@ module Devise
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
-  # Track the configs that user explicit changed the default value. It is
-  # helpfull to not warn users about default values changing when they willing
-  # changed.
-  mattr_accessor :app_set_configs
-  @@app_set_configs = Set.new
-
   # Secret key used by the key generator
   mattr_accessor :secret_key
   @@secret_key = nil
@@ -284,26 +278,6 @@ module Devise
   # a fresh initializer with all configuration values.
   def self.setup
     yield self
-  end
-
-  def self.warn_default_config_changed(config, current_default, new_default)
-    unless app_set_configs.include?(config)
-      warn = <<-MESSAGE.strip_heredoc
-        [Devise] config.#{config} will have a new default on Devise 4.1
-        To keep the current behavior please set in your config/initializers/devise.rb the following:
-
-          Devise.setup do |config|
-            config.#{config} = #{current_default}
-          end
-
-        If you want to use the new default:
-
-          Devise.setup do |config|
-            config.#{config} = #{new_default}
-          end
-      MESSAGE
-      ActiveSupport::Deprecation.warn(warn)
-    end
   end
 
   class Getter

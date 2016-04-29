@@ -41,8 +41,8 @@ module Devise
 
   module Test
     autoload :ControllerHelpers,  'devise/test/controller_helpers'
+    autoload :IntegrationHelpers, 'devise/test/integration_helpers'
   end
-
 
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user" (this is why they are constants).

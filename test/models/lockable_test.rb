@@ -325,4 +325,26 @@ class LockableTest < ActiveSupport::TestCase
     user.lock_access!
     assert_equal :locked, user.unauthenticated_message
   end
+
+  test 'unlock_strategy_enabled? should return true for both, email, and time strategies if :both is used' do
+    swap Devise, unlock_strategy: :both do
+      user = create_user
+      assert_equal true, user.unlock_strategy_enabled?(:both)
+      assert_equal true, user.unlock_strategy_enabled?(:time)
+      assert_equal true, user.unlock_strategy_enabled?(:email)
+      assert_equal false, user.unlock_strategy_enabled?(:none)
+      assert_equal false, user.unlock_strategy_enabled?(:an_undefined_strategy)
+    end
+  end
+
+  test 'unlock_strategy_enabled? should return true only for the configured strategy' do
+    swap Devise, unlock_strategy: :email do
+      user = create_user
+      assert_equal false, user.unlock_strategy_enabled?(:both)
+      assert_equal false, user.unlock_strategy_enabled?(:time)
+      assert_equal true, user.unlock_strategy_enabled?(:email)
+      assert_equal false, user.unlock_strategy_enabled?(:none)
+      assert_equal false, user.unlock_strategy_enabled?(:an_undefined_strategy)
+    end
+  end
 end

@@ -181,7 +181,9 @@ module Devise
 
         # Is the unlock enabled for the given unlock strategy?
         def unlock_strategy_enabled?(strategy)
-          [:both, strategy].include?(self.unlock_strategy)
+          self.unlock_strategy == strategy ||
+            # only :time and :email are subsets of the :both strategy
+            (self.unlock_strategy == :both && [:time, :email].include?(strategy))
         end
 
         # Is the lock enabled for the given lock strategy?

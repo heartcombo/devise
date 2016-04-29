@@ -2,11 +2,11 @@ module Devise
   module Test
     # Devise::Test::ControllerHelpers provides a facility to test controllers in isolation
     # when using ActionController::TestCase allowing you to quickly sign_in or
-    # sign_out a user. Do not use Devise::TestHelpers in integration tests.
+    # sign_out a user. Do not use Devise::Test::ControllerHelpers in integration tests.
     #
     # Notice you should not test Warden specific behavior (like Warden callbacks)
-    # using Devise::TestHelpers since it is a stub of the actual behavior. Such
-    # callbacks should be tested in your integration suite instead.
+    # using Devise::Test::ControllerHelpers since it is a stub of the actual
+    # behavior. Such callbacks should be tested in your integration suite instead.
     module ControllerHelpers
       def self.included(base)
         base.class_eval do
@@ -41,14 +41,26 @@ module Devise
       # sign_in a given resource by storing its keys in the session.
       # This method bypass any warden authentication callback.
       #
+      # * +resource+ - The resource that should be authenticated
+      # * +scope+    - An optional +Symbol+ with the scope where the resource
+      #                should be signed in with.
       # Examples:
       #
-      #   sign_in :user, @user   # sign_in(scope, resource)
-      #   sign_in @user          # sign_in(resource)
-      #
-      def sign_in(resource_or_scope, resource=nil)
-        scope    ||= Devise::Mapping.find_scope!(resource_or_scope)
-        resource ||= resource_or_scope
+      # sign_in users(:alice)
+      # sign_in users(:alice), scope: :admin
+      def sign_in(resource, deprecated = nil, scope: nil)
+        if deprecated.present?
+          scope = resource
+          resource = deprecated
+
+          ActiveSupport::Deprecation.warn <<-DEPRECATION
+            [Devise] sign_in(:#{scope}, resource) on controller tests is deprecated and will be removed from Devise.
+            Please use sign_in(resource, scope: :#{scope}) instead.
+          DEPRECATION
+        end
+
+        scope ||= Devise::Mapping.find_scope!(resource)
+
         warden.instance_variable_get(:@users).delete(scope)
         warden.session_serializer.store(resource, scope)
       end

@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class TestHelpersTest < Devise::ControllerTestCase
+class TestControllerHelpersTest < Devise::ControllerTestCase
   tests UsersController
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   test "redirects if attempting to access a page unauthenticated" do
     get :index

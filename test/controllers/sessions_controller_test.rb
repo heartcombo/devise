@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SessionsControllerTest < Devise::ControllerTestCase
   tests Devise::SessionsController
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   test "#create doesn't raise unpermitted params when sign in fails" do
     begin

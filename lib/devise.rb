@@ -39,6 +39,11 @@ module Devise
     autoload :Authenticatable, 'devise/strategies/authenticatable'
   end
 
+  module Test
+    autoload :ControllerHelpers,  'devise/test/controller_helpers'
+  end
+
+
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user" (this is why they are constants).
   ALL         = []

@@ -9,7 +9,7 @@ module Devise
         class_eval do
           define_method("#{mapping}_omniauth_authorize_path") do |provider, *args|
             ActiveSupport::Deprecation.warn(<<-DEPRECATION.strip_heredoc)
-            [Devise] #{mapping}_omniauth_authorize_path(#{provider.inspect}) is deprecated and it will be removed from Devise 4.1.
+            [Devise] #{mapping}_omniauth_authorize_path(#{provider.inspect}) is deprecated and it will be removed from Devise 4.2.
 
             Please use #{mapping}_#{provider}_omniauth_authorize_path instead.
             DEPRECATION
@@ -18,7 +18,7 @@ module Devise
 
           define_method("#{mapping}_omniauth_authorize_url") do |provider, *args|
             ActiveSupport::Deprecation.warn(<<-DEPRECATION.strip_heredoc)
-            [Devise] #{mapping}_omniauth_authorize_url(#{provider.inspect}) is deprecated and it will be removed from Devise 4.1.
+            [Devise] #{mapping}_omniauth_authorize_url(#{provider.inspect}) is deprecated and it will be removed from Devise 4.2.
 
             Please use #{mapping}_#{provider}_omniauth_authorize_url instead.
             DEPRECATION
@@ -27,7 +27,7 @@ module Devise
 
           define_method("#{mapping}_omniauth_callback_path") do |provider, *args|
             ActiveSupport::Deprecation.warn(<<-DEPRECATION.strip_heredoc)
-            [Devise] #{mapping}_omniauth_callback_path(#{provider.inspect}) is deprecated and it will be removed from Devise 4.1.
+            [Devise] #{mapping}_omniauth_callback_path(#{provider.inspect}) is deprecated and it will be removed from Devise 4.2.
 
             Please use #{mapping}_#{provider}_omniauth_callback_path instead.
             DEPRECATION
@@ -36,7 +36,7 @@ module Devise
 
           define_method("#{mapping}_omniauth_callback_url") do |provider, *args|
             ActiveSupport::Deprecation.warn(<<-DEPRECATION.strip_heredoc)
-            [Devise] #{mapping}_omniauth_callback_url(#{provider.inspect}) is deprecated and it will be removed from Devise 4.1.
+            [Devise] #{mapping}_omniauth_callback_url(#{provider.inspect}) is deprecated and it will be removed from Devise 4.2.
 
             Please use #{mapping}_#{provider}_omniauth_callback_url instead.
             DEPRECATION

@@ -99,7 +99,7 @@ module Devise
 
           self.reset_password_token   = enc
           self.reset_password_sent_at = Time.now.utc
-          self.save(validate: false)
+          save(validate: false)
           raw
         end
 

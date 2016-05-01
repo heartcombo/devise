@@ -53,12 +53,6 @@ module Devise
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
-  # Track the configs that user explicit changed the default value. It is
-  # helpfull to not warn users about default values changing when they willing
-  # changed.
-  mattr_accessor :app_set_configs
-  @@app_set_configs = Set.new
-
   # Secret key used by the key generator
   mattr_accessor :secret_key
   @@secret_key = nil
@@ -88,19 +82,8 @@ module Devise
   @@case_insensitive_keys = [:email]
 
   # Keys that should have whitespace stripped.
-  # TODO: 4.1 Do: @@strip_whitespace_keys = [:email]
-  mattr_reader :strip_whitespace_keys
-  @@strip_whitespace_keys = []
-
-  def self.strip_whitespace_keys=(strip_whitespace_keys)
-    app_set_configs << :strip_whitespace_keys
-    @@strip_whitespace_keys = strip_whitespace_keys
-  end
-
-  def strip_whitespace_keys=(strip_whitespace_keys)
-    app_set_configs << :strip_whitespace_keys
-    @@strip_whitespace_keys = strip_whitespace_keys
-  end
+  mattr_accessor :strip_whitespace_keys
+  @@strip_whitespace_keys = [:email]
 
   # If http authentication is enabled by default.
   mattr_accessor :http_authenticatable
@@ -154,20 +137,8 @@ module Devise
   @@confirmation_keys = [:email]
 
   # Defines if email should be reconfirmable.
-  # False by default for backwards compatibility.
-  # TODO: 4.1 Do: @@reconfirmable = true
-  mattr_reader :reconfirmable
-  @@reconfirmable = false
-
-  def self.reconfirmable=(reconfirmable)
-    app_set_configs << :reconfirmable
-    @@reconfirmable = reconfirmable
-  end
-
-  def reconfirmable=(reconfirmable)
-    app_set_configs << :reconfirmable
-    @@reconfirmable = reconfirmable
-  end
+  mattr_accessor :reconfirmable
+  @@reconfirmable = true
 
   # Time interval to timeout the user session without activity.
   mattr_accessor :timeout_in
@@ -229,19 +200,8 @@ module Devise
   @@mailer_sender = nil
 
   # Skip session storage for the following strategies
-  # TODO: 4.1 Do: @@skip_session_storage = [:http_auth]
-  mattr_reader :skip_session_storage
-  @@skip_session_storage = []
-
-  def self.skip_session_storage=(skip_session_storage)
-    app_set_configs << :skip_session_storage
-    @@skip_session_storage = skip_session_storage
-  end
-
-  def skip_session_storage=(skip_session_storage)
-    app_set_configs << :skip_session_storage
-    @@skip_session_storage = skip_session_storage
-  end
+  mattr_accessor :skip_session_storage
+  @@skip_session_storage = [:http_auth]
 
   # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
@@ -252,19 +212,8 @@ module Devise
   @@sign_out_all_scopes = true
 
   # The default method used while signing out
-  # TODO: 4.1 Do: @@sign_out_via = :delete
-  mattr_reader :sign_out_via
-  @@sign_out_via = :get
-
-  def self.sign_out_via=(sign_out_via)
-    app_set_configs << :sign_out_via
-    @@sign_out_via = sign_out_via
-  end
-
-  def sign_out_via=(sign_out_via)
-    app_set_configs << :sign_out_via
-    @@sign_out_via = sign_out_via
-  end
+  mattr_accessor :sign_out_via
+  @@sign_out_via = :delete
 
   # The parent controller all Devise controllers inherits from.
   # Defaults to ApplicationController. This should be set early
@@ -329,31 +278,6 @@ module Devise
   # a fresh initializer with all configuration values.
   def self.setup
     yield self
-
-    warn_default_config_changed(:reconfirmable, 'false', 'true')
-    warn_default_config_changed(:sign_out_via, ':get', ':delete')
-    warn_default_config_changed(:skip_session_storage, '[]', '[:http_auth]')
-    warn_default_config_changed(:strip_whitespace_keys, '[]', '[:email]')
-  end
-
-  def self.warn_default_config_changed(config, current_default, new_default)
-    unless app_set_configs.include?(config)
-      warn = <<-MESSAGE.strip_heredoc
-        [Devise] config.#{config} will have a new default on Devise 4.1
-        To keep the current behavior please set in your config/initializers/devise.rb the following:
-
-          Devise.setup do |config|
-            config.#{config} = #{current_default}
-          end
-
-        If you want to use the new default:
-
-          Devise.setup do |config|
-            config.#{config} = #{new_default}
-          end
-      MESSAGE
-      ActiveSupport::Deprecation.warn(warn)
-    end
   end
 
   class Getter

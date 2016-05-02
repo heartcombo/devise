@@ -5,8 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_action :current_user, unless: :devise_controller?
   before_action :authenticate_user!, if: :devise_controller?
-  respond_to *Mime::SET.map(&:to_sym)
+  respond_to(*Mime::SET.map(&:to_sym))
 
   devise_group :commenter, contains: [:user, :admin]
 end
-

@@ -146,7 +146,7 @@ class PasswordTest < Devise::IntegrationTest
     assert_response :success
     assert_current_url '/users/password'
     assert_have_selector '#error_explanation'
-    assert_contain /Reset password token(.*)invalid/
+    assert_contain %r{Reset password token(.*)invalid}
     assert_not user.reload.valid_password?('987654321')
   end
 
@@ -212,7 +212,7 @@ class PasswordTest < Devise::IntegrationTest
   test 'does not sign in user automatically after changing its password if it\'s locked and unlock strategy is :none or :time' do
     [:none, :time].each do |strategy|
       swap Devise, unlock_strategy: strategy do
-        user = create_user(locked: true)
+        create_user(locked: true)
         request_forgot_password
         reset_password
 

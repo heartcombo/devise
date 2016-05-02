@@ -35,7 +35,7 @@ class ConfirmationTest < Devise::IntegrationTest
   test 'user with invalid confirmation token should not be able to confirm an account' do
     visit_user_confirmation_with_token('invalid_confirmation')
     assert_have_selector '#error_explanation'
-    assert_contain /Confirmation token(.*)invalid/
+    assert_contain %r{Confirmation token(.*)invalid}
   end
 
   test 'user with valid confirmation token should not be able to confirm an account after the token has expired' do
@@ -45,7 +45,7 @@ class ConfirmationTest < Devise::IntegrationTest
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
       assert_have_selector '#error_explanation'
-      assert_contain /needs to be confirmed within 3 days/
+      assert_contain %r{needs to be confirmed within 3 days}
       assert_not user.reload.confirmed?
       assert_current_url "/users/confirmation?confirmation_token=#{user.raw_confirmation_token}"
     end

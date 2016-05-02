@@ -365,7 +365,7 @@ class AuthenticationWithScopedViewsTest < Devise::IntegrationTest
       assert_raise Webrat::NotFoundError do
         sign_in_as_user
       end
-      assert_match /Special user view/, response.body
+      assert_match %r{Special user view}, response.body
     end
   end
 
@@ -376,7 +376,7 @@ class AuthenticationWithScopedViewsTest < Devise::IntegrationTest
         sign_in_as_user
       end
 
-      assert_match /Special user view/, response.body
+      assert_match %r{Special user view}, response.body
       assert !Devise::PasswordsController.scoped_views?
     ensure
       Devise::SessionsController.send :remove_instance_variable, :@scoped_views
@@ -449,7 +449,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   test 'sign in stub in xml format' do
     get new_user_session_path(format: 'xml')
     assert_match '<?xml version="1.0" encoding="UTF-8"?>', response.body
-    assert_match /<user>.*<\/user>/m, response.body
+    assert_match %r{<user>.*</user>}m, response.body
     assert_match '<email></email>', response.body
     assert_match '<password nil="true"', response.body
   end

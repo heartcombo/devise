@@ -121,7 +121,7 @@ class RememberMeTest < Devise::IntegrationTest
 
   test 'extends remember period when extend remember period config is true' do
     swap Devise, extend_remember_period: true, remember_for: 1.year do
-      user = create_user_and_remember
+      create_user_and_remember
       old_remember_token = nil
 
       travel_to 1.day.ago do
@@ -138,7 +138,7 @@ class RememberMeTest < Devise::IntegrationTest
 
   test 'does not extend remember period when extend period config is false' do
     swap Devise, extend_remember_period: false, remember_for: 1.year do
-      user = create_user_and_remember
+      create_user_and_remember
       old_remember_token = nil
 
       travel_to 1.day.ago do

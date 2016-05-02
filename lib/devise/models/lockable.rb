@@ -155,6 +155,9 @@ module Devise
         end
 
       module ClassMethods
+        # List of strategies that are enabled/supported if :both is used.
+        BOTH_STRATEGIES = [:time, :email]
+
         # Attempt to find a user by its unlock keys. If a record is found, send new
         # unlock instructions to it. If not user is found, returns a new user
         # with an email not found error.
@@ -182,8 +185,7 @@ module Devise
         # Is the unlock enabled for the given unlock strategy?
         def unlock_strategy_enabled?(strategy)
           self.unlock_strategy == strategy ||
-            # only :time and :email are subsets of the :both strategy
-            (self.unlock_strategy == :both && [:time, :email].include?(strategy))
+            (self.unlock_strategy == :both && BOTH_STRATEGIES.include?(strategy))
         end
 
         # Is the lock enabled for the given lock strategy?

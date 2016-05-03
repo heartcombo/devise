@@ -43,9 +43,15 @@ module Devise
 
       included do
         before_create :generate_confirmation_token, if: :confirmation_required?
-        after_create  :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
+        after_create :skip_reconfirmation!, if: :send_confirmation_notification?
+        if respond_to?(:after_commit) # ActiveRecord
+          after_commit :send_on_create_confirmation_instructions, on: :create, if: :send_confirmation_notification?
+          after_commit :send_reconfirmation_instructions, on: :update, if: :reconfirmation_required?
+        else # Mongoid
+          after_create :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
+          after_update :send_reconfirmation_instructions, if: :reconfirmation_required?
+        end
         before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, if: :postpone_email_change?
-        after_update  :send_reconfirmation_instructions,  if: :reconfirmation_required?
       end
 
       def initialize(*args, &block)
@@ -169,7 +175,6 @@ module Devise
         # in models to map to a nice sign up e-mail.
         def send_on_create_confirmation_instructions
           send_confirmation_instructions
-          skip_reconfirmation!
         end
 
         # Callback to overwrite if confirmation is required or not.

@@ -281,7 +281,7 @@ module Devise
   end
 
   class Getter
-    def initialize name
+    def initialize(name)
       @name = name
     end
 
@@ -291,12 +291,8 @@ module Devise
   end
 
   def self.ref(arg)
-    if defined?(ActiveSupport::Dependencies::ClassCache)
-      ActiveSupport::Dependencies::reference(arg)
-      Getter.new(arg)
-    else
-      ActiveSupport::Dependencies.ref(arg)
-    end
+    ActiveSupport::Dependencies.reference(arg)
+    Getter.new(arg)
   end
 
   def self.available_router_name

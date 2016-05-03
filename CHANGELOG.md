@@ -1,4 +1,4 @@
-### Unreleased
+### 4.1.0
 
 * bug fixes
   * Fix race condition of sending the confirmation instructions e-mail using background jobs.
@@ -33,6 +33,12 @@
   * Now the `sign_out_via` default is `:delete` (by @ulissesalmeida)
 * improvements
   * Avoids extra computation of friendly token for confirmation token (by @sbc100)
+
+### 4.0.2 - 2016-05-02
+
+* bug fixes
+  * Fix strategy checking in `Lockable#unlock_strategy_enabled?` for `:none`
+    and `:undefined` strategies. (by @f3ndot)
 
 ### 4.0.1 - 2016-04-25
 

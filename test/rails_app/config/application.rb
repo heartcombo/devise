@@ -32,6 +32,8 @@ module RailsApp
 
     config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
+    config.active_record.raise_in_transactional_callbacks = true
+
     # This was used to break devise in some situations
     config.to_prepare do
       Devise::SessionsController.layout "application"

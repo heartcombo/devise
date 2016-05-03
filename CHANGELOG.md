@@ -1,5 +1,11 @@
 ### Unreleased
 
+### 3.5.9 - 2016-05-02
+
+* bug fixes
+  * Fix strategy checking in `Lockable#unlock_strategy_enabled?` for `:none`
+  and `:undefined` strategies. (by @f3ndot)
+
 ### 3.5.8 - 2016-04-25
 
 * bug fixes

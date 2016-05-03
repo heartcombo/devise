@@ -68,12 +68,6 @@ module Devise
     def sanitize(action)
       permissions = @permitted[action]
 
-      # DEPRECATED: Remove this branch on Devise 4.2.
-      if respond_to?(action, true)
-        deprecate_instance_method_sanitization(action)
-        return cast_to_hash send(action)
-      end
-
       if permissions.respond_to?(:call)
         cast_to_hash permissions.call(default_params)
       elsif permissions.present?
@@ -127,17 +121,6 @@ module Devise
       end
     end
 
-    # DEPRECATED: Remove this method on Devise 4.2.
-    def for(action, &block) # :nodoc:
-      if block_given?
-        deprecate_for_with_block(action)
-        permit(action, &block)
-      else
-        deprecate_for_without_block(action)
-        @permitted[action] or unknown_action!(action)
-      end
-    end
-
     private
 
     # Cast a sanitized +ActionController::Parameters+ to a +HashWithIndifferentAccess+
@@ -170,44 +153,6 @@ module Devise
         `permit` method first:
 
           devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, :param2, :param3])
-      MESSAGE
-    end
-
-    def deprecate_for_with_block(action)
-      ActiveSupport::Deprecation.warn(<<-MESSAGE.strip_heredoc)
-        [Devise] Changing the sanitized parameters through "#{self.class.name}#for(#{action}) is deprecated and it will be removed from Devise 4.2.
-        Please use the `permit` method:
-
-          devise_parameter_sanitizer.permit(:#{action}) do |user|
-            # Your block here.
-          end
-      MESSAGE
-    end
-
-    def deprecate_for_without_block(action)
-      ActiveSupport::Deprecation.warn(<<-MESSAGE.strip_heredoc)
-        [Devise] Changing the sanitized parameters through "#{self.class.name}#for(#{action}) is deprecated and it will be removed from Devise 4.2.
-        Please use the `permit` method to add or remove any key:
-
-          To add any new key, use the `keys` keyword argument:
-          devise_parameter_sanitizer.permit(:#{action}, keys: [:param1, :param2, :param3])
-
-          To remove any existing key, use the `except` keyword argument:
-          devise_parameter_sanitizer.permit(:#{action}, except: [:email])
-      MESSAGE
-    end
-
-    def deprecate_instance_method_sanitization(action)
-      ActiveSupport::Deprecation.warn(<<-MESSAGE.strip_heredoc)
-        [Devise] Parameter sanitization through a "#{self.class.name}##{action}" method is deprecated and it will be removed from Devise 4.2.
-        Please use the `permit` method on your sanitizer `initialize` method.
-
-          class #{self.class.name} < Devise::ParameterSanitizer
-            def initialize(*)
-              super
-              permit(:#{action}, keys: [:param1, :param2, :param3])
-            end
-          end
       MESSAGE
     end
   end

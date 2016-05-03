@@ -65,7 +65,7 @@ class HttpAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'it uses appropriate authentication_keys when configured with hash' do
-    swap Devise, authentication_keys: ActiveSupport::OrderedHash[:username, false, :email, false] do
+    swap Devise, authentication_keys: { username: false, email: false } do
       sign_in_as_new_user_with_http("usertest")
       assert_response :success
       assert_match '<email>user@test.com</email>', response.body
@@ -74,7 +74,7 @@ class HttpAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'it uses the appropriate key when configured explicitly' do
-    swap Devise, authentication_keys: ActiveSupport::OrderedHash[:email, false, :username, false], http_authentication_key: :username do
+    swap Devise, authentication_keys: { email: false, username: false }, http_authentication_key: :username do
       sign_in_as_new_user_with_http("usertest")
       assert_response :success
       assert_match '<email>user@test.com</email>', response.body

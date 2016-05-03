@@ -42,10 +42,10 @@ module Devise
   # Constants which holds devise configuration for extensions. Those should
   # not be modified by the "end user" (this is why they are constants).
   ALL         = []
-  CONTROLLERS = ActiveSupport::OrderedHash.new
-  ROUTES      = ActiveSupport::OrderedHash.new
-  STRATEGIES  = ActiveSupport::OrderedHash.new
-  URL_HELPERS = ActiveSupport::OrderedHash.new
+  CONTROLLERS = {}
+  ROUTES      = {}
+  STRATEGIES  = {}
+  URL_HELPERS = {}
 
   # Strategies that do not require user input.
   NO_INPUT = []
@@ -246,11 +246,11 @@ module Devise
 
   # Store scopes mappings.
   mattr_reader :mappings
-  @@mappings = ActiveSupport::OrderedHash.new
+  @@mappings = {}
 
   # OmniAuth configurations.
   mattr_reader :omniauth_configs
-  @@omniauth_configs = ActiveSupport::OrderedHash.new
+  @@omniauth_configs = {}
 
   # Define a set of modules that are called when a mapping is added.
   mattr_reader :helpers

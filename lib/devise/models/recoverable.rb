@@ -48,11 +48,6 @@ module Devise
         save
       end
 
-      def reset_password!(new_password, new_password_confirmation)
-        ActiveSupport::Deprecation.warn "reset_password! is deprecated in favor of reset_password"
-        reset_password(new_password, new_password_confirmation)
-      end
-
       # Resets reset password token and send reset password instructions by email.
       # Returns the token sent in the e-mail.
       def send_reset_password_instructions

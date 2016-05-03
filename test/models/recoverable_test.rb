@@ -225,7 +225,7 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_same_content Devise::Models::Recoverable.required_fields(User), [
+    assert_equal Devise::Models::Recoverable.required_fields(User), [
       :reset_password_sent_at,
       :reset_password_token
     ]

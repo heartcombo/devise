@@ -257,7 +257,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'required_fields should contain the all the fields when all the strategies are enabled' do
     swap Devise, unlock_strategy: :both do
       swap Devise, lock_strategy: :failed_attempts do
-        assert_same_content Devise::Models::Lockable.required_fields(User), [
+        assert_equal Devise::Models::Lockable.required_fields(User), [
          :failed_attempts,
          :locked_at,
          :unlock_token
@@ -269,7 +269,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'required_fields should contain only failed_attempts and locked_at when the strategies are time and failed_attempts are enabled' do
     swap Devise, unlock_strategy: :time do
       swap Devise, lock_strategy: :failed_attempts do
-        assert_same_content Devise::Models::Lockable.required_fields(User), [
+        assert_equal Devise::Models::Lockable.required_fields(User), [
          :failed_attempts,
          :locked_at
         ]
@@ -280,7 +280,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'required_fields should contain only failed_attempts and unlock_token when the strategies are token and failed_attempts are enabled' do
     swap Devise, unlock_strategy: :email do
       swap Devise, lock_strategy: :failed_attempts do
-        assert_same_content Devise::Models::Lockable.required_fields(User), [
+        assert_equal Devise::Models::Lockable.required_fields(User), [
          :failed_attempts,
          :unlock_token
         ]

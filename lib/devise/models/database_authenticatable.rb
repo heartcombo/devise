@@ -1,11 +1,6 @@
 require 'devise/strategies/database_authenticatable'
 
 module Devise
-  def self.bcrypt(klass, password)
-    ActiveSupport::Deprecation.warn "Devise.bcrypt is deprecated; use Devise::Encryptor.digest instead"
-    Devise::Encryptor.digest(klass, password)
-  end
-
   module Models
     # Authenticatable Module, responsible for hashing the password and
     # validating the authenticity of a user while signing in.

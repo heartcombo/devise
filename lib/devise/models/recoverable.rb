@@ -40,11 +40,6 @@ module Devise
         self.password = new_password
         self.password_confirmation = new_password_confirmation
 
-        if respond_to?(:after_password_reset) && valid?
-          ActiveSupport::Deprecation.warn "after_password_reset is deprecated"
-          after_password_reset
-        end
-
         save
       end
 

@@ -1,5 +1,24 @@
 ### Unreleased
 
+* bug fixes
+  * Fix race condition of sending the confirmation instructions e-mail using background jobs.
+    Using the previous `after_create` callback, the e-mail can be sent before
+    the record be committed on database, generating a `ActiveRecord::NotFound` error.
+    Now the confirmation e-mail will be only sent after the database commit,
+    using the `after_commit` callback.
+    It may break your test suite on Rails 4 if you are testing the sent e-mails
+    or enqueued jobs using transactional fixtures enabled or `DatabaseCleaner` with `transaction` strategy.
+    You can easily fix your test suite using the gem
+    [test_after_commit](https://github.com/grosser/test_after_commit). For example, put in your Gemfile:
+
+    ```ruby
+      gem 'test_after_commit', :group => :test
+    ```
+
+    On Rails 5 `after_commit` callbacks are triggered even using transactional
+    fixtures, then this fix will not break your test suite. If you are using `DatabaseCleaner` with the `deletion` or `truncation` strategies it may not break your tests. (by @allenwq)
+  * Fix strategy checking in `Lockable#unlock_strategy_enabled?` for `:none` and
+  `:undefined` strategies. (by @f3ndot)
 * features
   * Humanize authentication keys in failure flash message (by @byzg)
     When you are configuring the translations of `devise.failure.invalid`, the
@@ -8,6 +27,12 @@
   * Remove code supporting old session serialization format (by @fphilipe).
   * Now the `email_regexp` default uses a more permissive regex:
     `/\A[^@\s]+@[^@\s]+\z/` (by @kimgb)
+  * Now the `strip_whitespace_keys` default is `[:email]` (by @ulissesalmeida)
+  * Now the `reconfirmable` default is `true` (by @ulissesalmeida)
+  * Now the `skip_session_storage` default is `[:http_auth]` (by @ulissesalmeida)
+  * Now the `sign_out_via` default is `:delete` (by @ulissesalmeida)
+* improvements
+  * Avoids extra computation of friendly token for confirmation token (by @sbc100)
 
 ### 4.0.1 - 2016-04-25
 

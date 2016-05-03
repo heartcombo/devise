@@ -97,7 +97,7 @@ class ValidatableTest < ActiveSupport::TestCase
 
     user.password_confirmation = 'confirmation'
     assert user.invalid?
-    assert_not (user.errors[:password].join =~ /is too long/)
+    refute (user.errors[:password].join =~ /is too long/)
   end
 
   test 'should complain about length even if password is not required' do

@@ -85,7 +85,7 @@ class LockTest < Devise::IntegrationTest
 
     assert_current_url "/users/sign_in"
     assert_contain 'Your account has been unlocked successfully. Please sign in to continue.'
-    assert_not user.reload.access_locked?
+    refute user.reload.access_locked?
   end
 
   test "user should not send a new e-mail if already locked" do

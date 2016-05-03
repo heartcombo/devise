@@ -10,13 +10,13 @@ class AuthenticationSanityTest < Devise::IntegrationTest
   test 'sign in as user should not authenticate admin scope' do
     sign_in_as_user
     assert warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
   end
 
   test 'sign in as admin should not authenticate user scope' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
   end
 
   test 'sign in as both user and admin at same time' do
@@ -31,7 +31,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
       sign_in_as_user
       sign_in_as_admin
       delete destroy_user_session_path
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
       assert warden.authenticated?(:admin)
     end
   end
@@ -42,7 +42,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
       sign_in_as_admin
 
       delete destroy_admin_session_path
-      assert_not warden.authenticated?(:admin)
+      refute warden.authenticated?(:admin)
       assert warden.authenticated?(:user)
     end
   end
@@ -53,8 +53,8 @@ class AuthenticationSanityTest < Devise::IntegrationTest
       sign_in_as_admin
 
       delete destroy_user_session_path
-      assert_not warden.authenticated?(:user)
-      assert_not warden.authenticated?(:admin)
+      refute warden.authenticated?(:user)
+      refute warden.authenticated?(:admin)
     end
   end
 
@@ -64,21 +64,21 @@ class AuthenticationSanityTest < Devise::IntegrationTest
       sign_in_as_admin
 
       delete destroy_admin_session_path
-      assert_not warden.authenticated?(:admin)
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:admin)
+      refute warden.authenticated?(:user)
     end
   end
 
   test 'not signed in as admin should not be able to access admins actions' do
     get admins_path
     assert_redirected_to new_admin_session_path
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
   end
 
   test 'signed in as user should not be able to access admins actions' do
     sign_in_as_user
     assert warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
 
     get admins_path
     assert_redirected_to new_admin_session_path
@@ -87,7 +87,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
   test 'signed in as admin should be able to access admin actions' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     get admins_path
 
@@ -115,7 +115,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
 
     get root_path
     assert_contain 'Signed out successfully'
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
   end
 
   test 'unauthenticated admin set message on sign out' do
@@ -138,13 +138,13 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'not signed in should not be able to access private route (authenticate denied)' do
     get private_path
     assert_redirected_to new_admin_session_path
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
   end
 
   test 'signed in as user should not be able to access private route restricted to admins (authenticate denied)' do
     sign_in_as_user
     assert warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
     get private_path
     assert_redirected_to new_admin_session_path
   end
@@ -152,7 +152,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in as admin should be able to access private route restricted to admins (authenticate accepted)' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     get private_path
 
@@ -164,7 +164,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in as inactive admin should not be able to access private/active route restricted to active admins (authenticate denied)' do
     sign_in_as_admin(active: false)
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     assert_raises ActionController::RoutingError do
       get "/private/active"
@@ -174,7 +174,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in as active admin should be able to access private/active route restricted to active admins (authenticate accepted)' do
     sign_in_as_admin(active: true)
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     get private_active_path
 
@@ -186,7 +186,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in as admin should get admin dashboard (authenticated accepted)' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     get dashboard_path
 
@@ -198,7 +198,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in as user should get user dashboard (authenticated accepted)' do
     sign_in_as_user
     assert warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
 
     get dashboard_path
 
@@ -216,7 +216,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in as inactive admin should not be able to access dashboard/active route restricted to active admins (authenticated denied)' do
     sign_in_as_admin(active: false)
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     assert_raises ActionController::RoutingError do
       get "/dashboard/active"
@@ -226,7 +226,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in as active admin should be able to access dashboard/active route restricted to active admins (authenticated accepted)' do
     sign_in_as_admin(active: true)
     assert warden.authenticated?(:admin)
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     get dashboard_active_path
 
@@ -238,7 +238,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
   test 'signed in user should not see unauthenticated page (unauthenticated denied)' do
     sign_in_as_user
     assert warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
 
     assert_raises ActionController::RoutingError do
       get join_path
@@ -404,13 +404,13 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   test 'handles unverified requests gets rid of caches' do
     swap ApplicationController, allow_forgery_protection: true do
       post exhibit_user_url(1)
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
 
       sign_in_as_user
       assert warden.authenticated?(:user)
 
       post exhibit_user_url(1)
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
       assert_equal "User is not authenticated", response.body
     end
   end
@@ -473,7 +473,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   test 'uses the mapping from router' do
     sign_in_as_user visit: "/as/sign_in"
     assert warden.authenticated?(:user)
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
   end
 
   test 'sign in with xml format returns xml response' do
@@ -515,14 +515,14 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     sign_in_as_user
     delete destroy_user_session_path(format: 'xml')
     assert_response :no_content
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
   end
 
   test 'sign out with json format returns no content' do
     sign_in_as_user
     delete destroy_user_session_path(format: 'json')
     assert_response :no_content
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
   end
 
   test 'sign out with non-navigational format via XHR does not redirect' do
@@ -530,7 +530,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
       sign_in_as_admin
       get destroy_sign_out_via_get_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "application/json,text/javascript,*/*" } # NOTE: Bug is triggered by combination of XHR and */*.
       assert_response :no_content
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 
@@ -540,7 +540,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
       sign_in_as_user
       delete destroy_user_session_path, xhr: true, headers: { "HTTP_ACCEPT" => "text/html,*/*" }
       assert_response :redirect
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 end
@@ -550,7 +550,7 @@ class AuthenticationKeysTest < Devise::IntegrationTest
     swap Devise, authentication_keys: [:subdomain] do
       sign_in_as_user
       assert_contain "Invalid Subdomain or password."
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 
@@ -579,7 +579,7 @@ class AuthenticationRequestKeysTest < Devise::IntegrationTest
         sign_in_as_user
       end
 
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 
@@ -589,7 +589,7 @@ class AuthenticationRequestKeysTest < Devise::IntegrationTest
     swap Devise, request_keys: [:subdomain] do
       sign_in_as_user
       assert_contain "Invalid Email or password."
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 
@@ -612,7 +612,7 @@ class AuthenticationSignOutViaTest < Devise::IntegrationTest
   test 'allow sign out via delete when sign_out_via provides only delete' do
     sign_in!(:sign_out_via_delete)
     delete destroy_sign_out_via_delete_session_path
-    assert_not warden.authenticated?(:sign_out_via_delete)
+    refute warden.authenticated?(:sign_out_via_delete)
   end
 
   test 'do not allow sign out via get when sign_out_via provides only delete' do
@@ -626,7 +626,7 @@ class AuthenticationSignOutViaTest < Devise::IntegrationTest
   test 'allow sign out via post when sign_out_via provides only post' do
     sign_in!(:sign_out_via_post)
     post destroy_sign_out_via_post_session_path
-    assert_not warden.authenticated?(:sign_out_via_post)
+    refute warden.authenticated?(:sign_out_via_post)
   end
 
   test 'do not allow sign out via get when sign_out_via provides only post' do
@@ -640,13 +640,13 @@ class AuthenticationSignOutViaTest < Devise::IntegrationTest
   test 'allow sign out via delete when sign_out_via provides delete and post' do
     sign_in!(:sign_out_via_delete_or_post)
     delete destroy_sign_out_via_delete_or_post_session_path
-    assert_not warden.authenticated?(:sign_out_via_delete_or_post)
+    refute warden.authenticated?(:sign_out_via_delete_or_post)
   end
 
   test 'allow sign out via post when sign_out_via provides delete and post' do
     sign_in!(:sign_out_via_delete_or_post)
     post destroy_sign_out_via_delete_or_post_session_path
-    assert_not warden.authenticated?(:sign_out_via_delete_or_post)
+    refute warden.authenticated?(:sign_out_via_delete_or_post)
   end
 
   test 'do not allow sign out via get when sign_out_via provides delete and post' do

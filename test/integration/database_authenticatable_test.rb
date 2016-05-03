@@ -19,7 +19,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
         fill_in 'email', with: 'foo@bar.com'
       end
 
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 
@@ -41,14 +41,14 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
         fill_in 'email', with: ' foo@bar.com '
       end
 
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 
   test 'sign in should not authenticate if not using proper authentication keys' do
     swap Devise, authentication_keys: [:username] do
       sign_in_as_user
-      assert_not warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
     end
   end
 
@@ -59,7 +59,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
       end
 
       assert_contain 'Invalid email address'
-      assert_not warden.authenticated?(:admin)
+      refute warden.authenticated?(:admin)
     end
   end
 
@@ -69,7 +69,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
     end
 
     assert_contain 'Invalid Email or password'
-    assert_not warden.authenticated?(:admin)
+    refute warden.authenticated?(:admin)
   end
 
   test 'error message is configurable by resource name' do

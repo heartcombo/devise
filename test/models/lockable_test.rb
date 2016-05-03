@@ -46,7 +46,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test "should verify whether a user is locked or not" do
     user = create_user
-    assert_not user.access_locked?
+    refute user.access_locked?
     user.lock_access!
     assert user.access_locked?
   end
@@ -56,7 +56,7 @@ class LockableTest < ActiveSupport::TestCase
     user.confirm
     assert user.active_for_authentication?
     user.lock_access!
-    assert_not user.active_for_authentication?
+    refute user.active_for_authentication?
   end
 
   test "should unlock a user by cleaning locked_at, failed_attempts and unlock_token" do
@@ -72,7 +72,7 @@ class LockableTest < ActiveSupport::TestCase
   end
 
   test "new user should not be locked and should have zero failed_attempts" do
-    assert_not new_user.access_locked?
+    refute new_user.access_locked?
     assert_equal 0, create_user.failed_attempts
   end
 
@@ -83,7 +83,7 @@ class LockableTest < ActiveSupport::TestCase
       assert user.access_locked?
 
       Devise.unlock_in = 1.hour
-      assert_not user.access_locked?
+      refute user.access_locked?
     end
   end
 
@@ -162,18 +162,18 @@ class LockableTest < ActiveSupport::TestCase
     raw  = user.send_unlock_instructions
     locked_user = User.unlock_access_by_token(raw)
     assert_equal locked_user, user
-    assert_not user.reload.access_locked?
+    refute user.reload.access_locked?
   end
 
   test 'should return a new record with errors when a invalid token is given' do
     locked_user = User.unlock_access_by_token('invalid_token')
-    assert_not locked_user.persisted?
+    refute locked_user.persisted?
     assert_equal "is invalid", locked_user.errors[:unlock_token].join
   end
 
   test 'should return a new record with errors when a blank token is given' do
     locked_user = User.unlock_access_by_token('')
-    assert_not locked_user.persisted?
+    refute locked_user.persisted?
     assert_equal "can't be blank", locked_user.errors[:unlock_token].join
   end
 
@@ -186,7 +186,7 @@ class LockableTest < ActiveSupport::TestCase
 
   test 'should return a new user if no email was found' do
     unlock_user = User.send_unlock_instructions(email: "invalid@example.com")
-    assert_not unlock_user.persisted?
+    refute unlock_user.persisted?
   end
 
   test 'should add error to new user email if no email was found' do
@@ -206,23 +206,23 @@ class LockableTest < ActiveSupport::TestCase
     swap Devise, unlock_keys: [:username, :email] do
       user = create_user
       unlock_user = User.send_unlock_instructions(email: user.email)
-      assert_not unlock_user.persisted?
+      refute unlock_user.persisted?
       assert_equal "can't be blank", unlock_user.errors[:username].join
     end
   end
 
   test 'should not be able to send instructions if the user is not locked' do
     user = create_user
-    assert_not user.resend_unlock_instructions
-    assert_not user.access_locked?
+    refute user.resend_unlock_instructions
+    refute user.access_locked?
     assert_equal 'was not locked', user.errors[:email].join
   end
 
   test 'should not be able to send instructions if the user if not locked and have username as unlock key' do
     swap Devise, unlock_keys: [:username] do
       user = create_user
-      assert_not user.resend_unlock_instructions
-      assert_not user.access_locked?
+      refute user.resend_unlock_instructions
+      refute user.access_locked?
       assert_equal 'was not locked', user.errors[:username].join
     end
   end

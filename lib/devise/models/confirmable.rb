@@ -97,11 +97,6 @@ module Devise
         end
       end
 
-      def confirm!(args={})
-        ActiveSupport::Deprecation.warn "confirm! is deprecated in favor of confirm"
-        confirm(args)
-      end
-
       # Verifies whether a user is confirmed or not
       def confirmed?
         !!confirmed_at

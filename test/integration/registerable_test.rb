@@ -219,6 +219,12 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "Password confirmation doesn't match Password"
     refute User.to_adapter.find_first.valid_password?('pas123')
   end
+  
+  test 'a signed in user should see a warning about minimum password length' do
+    sign_in_as_user
+    get edit_user_registration_path
+    assert_contain 'characters minimum'
+  end
 
   test 'a signed in user should be able to cancel their account' do
     sign_in_as_user

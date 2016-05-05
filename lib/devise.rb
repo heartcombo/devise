@@ -242,6 +242,10 @@ module Devise
   mattr_accessor :clean_up_csrf_token_on_authentication
   @@clean_up_csrf_token_on_authentication = true
 
+  # When false, Devise will not attempt to reload routes on eager load
+  mattr_accessor :reload_routes
+  @@reload_routes = true
+
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.

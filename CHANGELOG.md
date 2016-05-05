@@ -10,6 +10,8 @@
   * Remove the `Devise::Models::Confirmable#confirm!` method, use `confirm` instead.
   * Remove the `Devise::Models::Recoverable#reset_password!` method, use `reset_password` instead.
   * Remove the `Devise::Models::Recoverable#after_password_reset` method.
+* enhancements
+  * Display the minimum password length on `registrations/edit` view (by @Yanchek99).
 
 ### 4.1.0
 

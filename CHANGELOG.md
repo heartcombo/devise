@@ -1,3 +1,16 @@
+### Unreleased
+
+* removals
+  * Remove the deprecated `Devise::ParameterSanitizer` API from Devise 3.
+    Please use the `#permit` and `#sanitize` methods over `#for`.
+  * Remove the deprecated OmniAuth URL helpers. Use the fully qualified helpers
+    (`user_facebook_omniauth_authorize_path`) over the scope based helpers
+    ( `user_omniauth_authorize_path(:facebook)`).
+  * Remove the `Devise.bcrypt` method, use `Devise::Encryptor.digest` instead.
+  * Remove the `Devise::Models::Confirmable#confirm!` method, use `confirm` instead.
+  * Remove the `Devise::Models::Recoverable#reset_password!` method, use `reset_password` instead.
+  * Remove the `Devise::Models::Recoverable#after_password_reset` method.
+
 ### 4.1.0
 
 * bug fixes

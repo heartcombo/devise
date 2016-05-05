@@ -12,6 +12,11 @@
   * Remove the `Devise::Models::Recoverable#after_password_reset` method.
 * enhancements
   * Display the minimum password length on `registrations/edit` view (by @Yanchek99).
+  * You can disable Devise's routes reloading on boot by through the `reload_routes = false` config.
+    This can reduce the time taken to boot the application but it might trigger some errors
+    if you application (mostly your controllers) requires that Devise mappings be loaded
+    during boot time.
+    (by @sidonath).
 
 ### 4.1.0
 

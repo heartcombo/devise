@@ -233,7 +233,7 @@ class PasswordTest < Devise::IntegrationTest
     assert_contain 'Your account is not activated yet.'
   end
 
-  test 'does not send the reset password instructions to not exist user' do
+  test 'does not send the reset password instructions to non existing user' do
     User.any_instance.stubs(:active_for_authentication?).returns(false)
     user = new_user
 
@@ -241,7 +241,7 @@ class PasswordTest < Devise::IntegrationTest
     assert_contain 'Email not found'
   end
 
-  test 'does not send the reset password instructions to not confirm user' do
+  test 'does not send the reset password instructions to unconfirmed user' do
     User.any_instance.stubs(:active_for_authentication?).returns(false)
     user = create_user(confirm: false)
 

@@ -1,9 +1,10 @@
 language: ruby
 
 rvm:
-  - 2.3.0
-  - 2.2.4
-  - 2.1.8
+  - 2.1.9
+  - 2.2.5
+  - 2.3.1
+  - ruby-head
 
 gemfile:
   - Gemfile
@@ -13,10 +14,13 @@ gemfile:
 
 matrix:
   exclude:
-    - rvm: 2.1.8
+    - rvm: 2.1.9
       gemfile: gemfiles/Gemfile.rails-5.0-beta
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-5.0-beta
+  allow_failures:
+    - rvm: ruby-head
+  fast_finish: true
 services:
   - mongodb
 

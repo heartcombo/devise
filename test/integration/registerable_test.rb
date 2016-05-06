@@ -64,11 +64,11 @@ class RegistrationTest < Devise::IntegrationTest
     assert_not_contain 'You have to confirm your account before continuing'
     assert_current_url "/"
 
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
 
     user = User.to_adapter.find_first(order: [:id, :desc])
     assert_equal user.email, 'new_user@test.com'
-    assert_not user.confirmed?
+    refute user.confirmed?
   end
 
   test 'a guest user should receive the confirmation instructions from the default mailer' do
@@ -92,7 +92,7 @@ class RegistrationTest < Devise::IntegrationTest
     click_button 'Sign up'
 
     assert_current_url "/?custom=1"
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
   end
 
   test 'a guest user cannot sign up with invalid information' do
@@ -114,7 +114,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "2 errors prohibited"
     assert_nil User.to_adapter.find_first
 
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
   end
 
   test 'a guest should not sign up with email/password that already exists' do
@@ -133,7 +133,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_current_url '/users'
     assert_contain(/Email.*already.*taken/)
 
-    assert_not warden.authenticated?(:user)
+    refute warden.authenticated?(:user)
   end
 
   test 'a guest should not be able to change account' do
@@ -217,7 +217,13 @@ class RegistrationTest < Devise::IntegrationTest
     click_button 'Update'
 
     assert_contain "Password confirmation doesn't match Password"
-    assert_not User.to_adapter.find_first.valid_password?('pas123')
+    refute User.to_adapter.find_first.valid_password?('pas123')
+  end
+  
+  test 'a signed in user should see a warning about minimum password length' do
+    sign_in_as_user
+    get edit_user_registration_path
+    assert_contain 'characters minimum'
   end
 
   test 'a signed in user should be able to cancel their account' do

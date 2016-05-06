@@ -75,7 +75,7 @@ class LockTest < Devise::IntegrationTest
     assert_response :success
     assert_current_url '/users/unlock?unlock_token=invalid_token'
     assert_have_selector '#error_explanation'
-    assert_contain /Unlock token(.*)invalid/
+    assert_contain %r{Unlock token(.*)invalid}
   end
 
   test "locked user should be able to unlock account" do
@@ -85,7 +85,7 @@ class LockTest < Devise::IntegrationTest
 
     assert_current_url "/users/sign_in"
     assert_contain 'Your account has been unlocked successfully. Please sign in to continue.'
-    assert_not user.reload.access_locked?
+    refute user.reload.access_locked?
   end
 
   test "user should not send a new e-mail if already locked" do

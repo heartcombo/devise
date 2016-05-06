@@ -71,7 +71,7 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
     assert_current_url "/"
     assert_contain "You have signed up successfully."
     assert_contain "Hello User user@example.com"
-    assert_not session["devise.facebook_data"]
+    refute session["devise.facebook_data"]
   end
 
   test "cleans up session on cancel" do

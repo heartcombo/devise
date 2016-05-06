@@ -43,9 +43,15 @@ module Devise
 
       included do
         before_create :generate_confirmation_token, if: :confirmation_required?
-        after_create  :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
+        after_create :skip_reconfirmation!, if: :send_confirmation_notification?
+        if respond_to?(:after_commit) # ActiveRecord
+          after_commit :send_on_create_confirmation_instructions, on: :create, if: :send_confirmation_notification?
+          after_commit :send_reconfirmation_instructions, on: :update, if: :reconfirmation_required?
+        else # Mongoid
+          after_create :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
+          after_update :send_reconfirmation_instructions, if: :reconfirmation_required?
+        end
         before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, if: :postpone_email_change?
-        after_update  :send_reconfirmation_instructions,  if: :reconfirmation_required?
       end
 
       def initialize(*args, &block)
@@ -89,11 +95,6 @@ module Devise
           after_confirmation if saved
           saved
         end
-      end
-
-      def confirm!(args={})
-        ActiveSupport::Deprecation.warn "confirm! is deprecated in favor of confirm"
-        confirm(args)
       end
 
       # Verifies whether a user is confirmed or not
@@ -234,8 +235,7 @@ module Devise
           if self.confirmation_token && !confirmation_period_expired?
             @raw_confirmation_token = self.confirmation_token
           else
-            raw, _ = Devise.token_generator.generate(self.class, :confirmation_token)
-            self.confirmation_token = @raw_confirmation_token = raw
+            self.confirmation_token = @raw_confirmation_token = Devise.friendly_token
             self.confirmation_sent_at = Time.now.utc
           end
         end
@@ -253,13 +253,13 @@ module Devise
         end
 
         def postpone_email_change?
-          postpone = self.class.reconfirmable && email_changed? && email_was.present? && !@bypass_confirmation_postpone && self.email.present?
+          postpone = self.class.reconfirmable && email_changed? && !@bypass_confirmation_postpone && self.email.present?
           @bypass_confirmation_postpone = false
           postpone
         end
 
         def reconfirmation_required?
-          self.class.reconfirmable && @reconfirmation_required && self.email.present?
+          self.class.reconfirmable && @reconfirmation_required && (self.email.present? || self.unconfirmed_email.present?)
         end
 
         def send_confirmation_notification?

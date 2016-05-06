@@ -44,17 +44,7 @@ module Devise
         self.password = new_password
         self.password_confirmation = new_password_confirmation
 
-        if respond_to?(:after_password_reset) && valid?
-          ActiveSupport::Deprecation.warn "after_password_reset is deprecated"
-          after_password_reset
-        end
-
         save
-      end
-
-      def reset_password!(new_password, new_password_confirmation)
-        ActiveSupport::Deprecation.warn "reset_password! is deprecated in favor of reset_password"
-        reset_password(new_password, new_password_confirmation)
       end
 
       # Resets reset password token and send reset password instructions by email.
@@ -103,7 +93,7 @@ module Devise
 
           self.reset_password_token   = enc
           self.reset_password_sent_at = Time.now.utc
-          self.save(validate: false)
+          save(validate: false)
           raw
         end
 

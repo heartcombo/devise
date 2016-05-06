@@ -96,7 +96,7 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
 
   test 'proxy admin_signed_in? to authenticatewith admin scope' do
     @mock_warden.expects(:authenticate).with(scope: :admin)
-    assert_not @controller.admin_signed_in?
+    refute @controller.admin_signed_in?
   end
 
   test 'proxy publisher_account_signed_in? to authenticate with namespaced publisher account scope' do
@@ -311,6 +311,6 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
   end
 
   test 'is not a devise controller' do
-    assert_not @controller.devise_controller?
+    refute @controller.devise_controller?
   end
 end

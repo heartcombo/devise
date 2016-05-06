@@ -6,7 +6,7 @@ class SessionsControllerTest < Devise::ControllerTestCase
 
   test "#create doesn't raise unpermitted params when sign in fails" do
     begin
-      subscriber = ActiveSupport::Notifications.subscribe /unpermitted_parameters/ do |name, start, finish, id, payload|
+      subscriber = ActiveSupport::Notifications.subscribe %r{unpermitted_parameters} do |name, start, finish, id, payload|
         flunk "Unpermitted params: #{payload}"
       end
       request.env["devise.mapping"] = Devise.mappings[:user]

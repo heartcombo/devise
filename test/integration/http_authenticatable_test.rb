@@ -11,13 +11,15 @@ class HttpAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'sign in should authenticate with http' do
-    sign_in_as_new_user_with_http
-    assert_response 200
-    assert_match '<email>user@test.com</email>', response.body
-    assert warden.authenticated?(:user)
+    swap Devise, skip_session_storage: [] do
+      sign_in_as_new_user_with_http
+      assert_response 200
+      assert_match '<email>user@test.com</email>', response.body
+      assert warden.authenticated?(:user)
 
-    get users_path(format: :xml)
-    assert_response 200
+      get users_path(format: :xml)
+      assert_response 200
+    end
   end
 
   test 'sign in should authenticate with http but not emit a cookie if skipping session storage' do
@@ -42,7 +44,7 @@ class HttpAuthenticationTest < Devise::IntegrationTest
     sign_in_as_new_user_with_http("unknown")
     assert_equal 401, status
     assert_equal "application/xml; charset=utf-8", headers["Content-Type"]
-    assert_match "<error>Invalid email or password.</error>", response.body
+    assert_match "<error>Invalid Email or password.</error>", response.body
   end
 
   test 'returns a custom response with www-authenticate and chosen realm' do
@@ -63,7 +65,7 @@ class HttpAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'it uses appropriate authentication_keys when configured with hash' do
-    swap Devise, authentication_keys: ActiveSupport::OrderedHash[:username, false, :email, false] do
+    swap Devise, authentication_keys: { username: false, email: false } do
       sign_in_as_new_user_with_http("usertest")
       assert_response :success
       assert_match '<email>user@test.com</email>', response.body
@@ -72,7 +74,7 @@ class HttpAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'it uses the appropriate key when configured explicitly' do
-    swap Devise, authentication_keys: ActiveSupport::OrderedHash[:email, false, :username, false], http_authentication_key: :username do
+    swap Devise, authentication_keys: { email: false, username: false }, http_authentication_key: :username do
       sign_in_as_new_user_with_http("usertest")
       assert_response :success
       assert_match '<email>user@test.com</email>', response.body

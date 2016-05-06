@@ -74,7 +74,7 @@ if DEVISE_ORM == :active_record
 
         assert_file "app/models/rails_engine/monster.rb", /devise/
         assert_file "app/models/rails_engine/monster.rb" do |content|
-          assert_no_match /attr_accessible :email/, content
+          assert_no_match %r{attr_accessible :email}, content
         end
       end
     end

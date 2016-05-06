@@ -12,6 +12,7 @@ group :test do
   gem "omniauth-openid", "~> 1.0.1"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 1.1", require: false
+  gem 'test_after_commit', require: false
 end
 
 platforms :jruby do
@@ -25,5 +26,5 @@ platforms :ruby do
 end
 
 group :mongoid do
-  gem "mongoid", "~> 4.0"
+  gem "mongoid", "~> 5.0"
 end

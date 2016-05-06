@@ -39,15 +39,13 @@ module Devise
     module Rememberable
       extend ActiveSupport::Concern
 
-      attr_accessor :remember_me, :extend_remember_period
+      attr_accessor :remember_me
 
       def self.required_fields(klass)
         [:remember_created_at]
       end
 
-      # TODO: We were used to receive a extend period argument but we no longer do.
-      # Remove this for Devise 4.0.
-      def remember_me!(*)
+      def remember_me!
         self.remember_token = self.class.remember_token if respond_to?(:remember_token)
         self.remember_created_at ||= Time.now.utc
         save(validate: false) if self.changed?
@@ -64,6 +62,10 @@ module Devise
 
       def remember_expires_at
         self.class.remember_for.from_now
+      end
+
+      def extend_remember_period
+        self.class.extend_remember_period
       end
 
       def rememberable_value
@@ -147,9 +149,6 @@ module Devise
           end
         end
 
-        private
-
-        # TODO: extend_remember_period is no longer used
         Devise::Models.config(self, :remember_for, :extend_remember_period, :rememberable_options, :expire_all_remember_me_on_sign_out)
       end
     end

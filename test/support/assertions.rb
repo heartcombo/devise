@@ -1,10 +1,6 @@
 require 'active_support/test_case'
 
 class ActiveSupport::TestCase
-  def assert_not(assertion)
-    assert !assertion
-  end
-
   def assert_blank(assertion)
     assert assertion.blank?
   end
@@ -22,13 +18,6 @@ class ActiveSupport::TestCase
 
   def assert_email_not_sent(&block)
     assert_no_difference('ActionMailer::Base.deliveries.size', &block)
-  end
-
-  def assert_same_content(result, expected)
-    assert expected.size == result.size, "the arrays doesn't have the same size"
-    expected.each do |element|
-      assert result.include?(element), "The array doesn't include '#{element}'."
-    end
   end
 
   def assert_raise_with_message(exception_klass, message, &block)

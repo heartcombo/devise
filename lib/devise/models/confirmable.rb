@@ -97,9 +97,14 @@ module Devise
         end
       end
 
-      # Verifies whether a user is confirmed or not
+      # Verifies whether a user is confirmed
       def confirmed?
         !!confirmed_at
+      end
+
+      # Verifies whether a user is unconfirmedt
+      def unconfirmed?
+        !confirmed_at
       end
 
       def pending_reconfirmation?
@@ -142,7 +147,7 @@ module Devise
 
       # The message to be shown if the account is inactive.
       def inactive_message
-        !confirmed? ? :unconfirmed : super
+        unconfirmed? ? :unconfirmed : super
       end
 
       # If you don't want confirmation to be sent on create, neither a code
@@ -174,7 +179,7 @@ module Devise
 
         # Callback to overwrite if confirmation is required or not.
         def confirmation_required?
-          !confirmed?
+          unconfirmed?
         end
 
         # Checks if the confirmation for the user is within the limit time.
@@ -221,7 +226,7 @@ module Devise
 
         # Checks whether the record requires any confirmation.
         def pending_any_confirmation
-          if (!confirmed? || pending_reconfirmation?)
+          if (unconfirmed? || pending_reconfirmation?)
             yield
           else
             self.errors.add(:email, :already_confirmed)

@@ -11,6 +11,7 @@
   * Remove the `Devise::Models::Recoverable#reset_password!` method, use `reset_password` instead.
   * Remove the `Devise::Models::Recoverable#after_password_reset` method.
 * enhancements
+  * Add the `Devise::Models::Confirmable#unconfirmed?` method (by @bogdanvlviv).
   * Display the minimum password length on `registrations/edit` view (by @Yanchek99).
   * You can disable Devise's routes reloading on boot by through the `reload_routes = false` config.
     This can reduce the time taken to boot the application but it might trigger some errors

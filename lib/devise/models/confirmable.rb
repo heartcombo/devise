@@ -102,7 +102,7 @@ module Devise
         !!confirmed_at
       end
 
-      # Verifies whether a user is unconfirmedt
+      # Verifies whether a user is unconfirmed
       def unconfirmed?
         !confirmed_at
       end

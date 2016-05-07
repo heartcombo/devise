@@ -161,7 +161,6 @@ class RecoverableTest < ActiveSupport::TestCase
     end
   end
 
-
   test 'should not send email instructions to not active for authentication user' do
     user = create_user
     assert_email_not_sent do

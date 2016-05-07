@@ -405,6 +405,4 @@ class PasswordTest < Devise::IntegrationTest
       assert !user.access_locked?
     end
   end
-
-
 end

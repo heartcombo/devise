@@ -154,7 +154,7 @@ user_session
 After signing in a user, confirming the account or updating the password, Devise will look for a scoped root path to redirect to. For instance, when using a `:user` resource, the `user_root_path` will be used if it exists; otherwise, the default `root_path` will be used. This means that you need to set the root inside your routes:
 
 ```ruby
-root to: "home#index"
+root to: 'home#index'
 ```
 
 You can also override `after_sign_in_path_for` and `after_sign_out_path_for` to customize your redirect hooks.
@@ -314,7 +314,7 @@ If the customization at the views level is not enough, you can customize each co
 2. Tell the router to use this controller:
 
     ```ruby
-    devise_for :users, controllers: { sessions: "users/sessions" }
+    devise_for :users, controllers: { sessions: 'users/sessions' }
     ```
 
 3. Copy the views from `devise/sessions` to `users/sessions`. Since the controller was changed, it won't use the default views located in `devise/sessions`.
@@ -352,7 +352,7 @@ Remember that Devise uses flash messages to let users know if sign in was succes
 Devise also ships with default routes. If you need to customize them, you should probably be able to do it through the devise_for method. It accepts several options like :class_name, :path_prefix and so on, including the possibility to change path names for I18n:
 
 ```ruby
-devise_for :users, path: "auth", path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
+devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
 ```
 
 Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/plataformatec/devise/master/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
@@ -361,7 +361,7 @@ If you have the need for more deep customization, for instance to also allow "/s
 
 ```ruby
 devise_scope :user do
-  get "sign_in", to: "devise/sessions#new"
+  get 'sign_in', to: 'devise/sessions#new'
 end
 ```
 
@@ -447,7 +447,7 @@ There are two things that are important to keep in mind:
 2. If you are testing Devise internal controllers or a controller that inherits from Devise's, you need to tell Devise which mapping should be used before a request. This is necessary because Devise gets this information from the router, but since functional tests do not pass through the router, it needs to be stated explicitly. For example, if you are testing the user scope, simply use:
 
     ```ruby
-    @request.env["devise.mapping"] = Devise.mappings[:user]
+    @request.env['devise.mapping'] = Devise.mappings[:user]
     get :new
     ```
 

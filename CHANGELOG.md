@@ -1,4 +1,7 @@
-### Unreleased
+### 3.5.10 - 2016-05-15
+
+* bug fixes
+  * Fix overwriting the remember_token when a valid one already exists (by @ralinchimev).
 
 ### 3.5.9 - 2016-05-02
 

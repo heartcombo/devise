@@ -150,11 +150,11 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     @controller.sign_in(user, force: true)
   end
 
-  test 'sign in accepts bypass as option' do
+  test 'bypass the sign in' do
     user = User.new
     @mock_warden.expects(:session_serializer).returns(serializer = mock())
     serializer.expects(:store).with(user, :user)
-    @controller.sign_in(user, bypass: true)
+    @controller.bypass_sign_in(user)
   end
 
   test 'sign out clears up any signed in user from all scopes' do

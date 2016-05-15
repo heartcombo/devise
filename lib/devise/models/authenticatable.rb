@@ -143,13 +143,25 @@ module Devise
       #         if new_record? || changed?
       #           pending_notifications << [notification, args]
       #         else
-      #           devise_mailer.send(notification, self, *args).deliver
+      #           message = devise_mailer.send(notification, self, *args)
+      #           Remove once we move to Rails 4.2+ only.
+      #           if message.respond_to?(:deliver_now)
+      #             message.deliver_now
+      #           else
+      #             message.deliver
+      #           end
       #         end
       #       end
       #
       #       def send_pending_notifications
       #         pending_notifications.each do |notification, args|
-      #           devise_mailer.send(notification, self, *args).deliver
+      #           message = devise_mailer.send(notification, self, *args)
+      #           Remove once we move to Rails 4.2+ only.
+      #           if message.respond_to?(:deliver_now)
+      #             message.deliver_now
+      #           else
+      #             message.deliver
+      #           end
       #         end
       #
       #         # Empty the pending notifications array because the

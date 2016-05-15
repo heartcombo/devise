@@ -48,7 +48,7 @@ module Devise
       # TODO: We were used to receive a extend period argument but we no longer do.
       # Remove this for Devise 4.0.
       def remember_me!(*)
-        self.remember_token = self.class.remember_token if respond_to?(:remember_token)
+        self.remember_token ||= self.class.remember_token if respond_to?(:remember_token)
         self.remember_created_at ||= Time.now.utc
         save(validate: false) if self.changed?
       end

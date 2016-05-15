@@ -46,7 +46,7 @@ module Devise
       end
 
       def remember_me!
-        self.remember_token = self.class.remember_token if respond_to?(:remember_token)
+        self.remember_token ||= self.class.remember_token if respond_to?(:remember_token)
         self.remember_created_at ||= Time.now.utc
         save(validate: false) if self.changed?
       end

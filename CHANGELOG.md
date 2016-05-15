@@ -24,6 +24,11 @@
   * Fix overwriting the remember_token when a valid one already exists
     (by @ralinchimev).
 
+### 4.1.1 - 2016-05-15
+
+* bug fixes
+  * Fix overwriting the remember_token when a valid one already exists (by @ralinchimev).
+
 ### 4.1.0
 
 * bug fixes
@@ -59,6 +64,11 @@
   * Now the `sign_out_via` default is `:delete` (by @ulissesalmeida)
 * improvements
   * Avoids extra computation of friendly token for confirmation token (by @sbc100)
+
+### 4.0.3 - 2016-05-15
+
+  * bug fixes
+    * Fix overwriting the remember_token when a valid one already exists (by @ralinchimev).
 
 ### 4.0.2 - 2016-05-02
 

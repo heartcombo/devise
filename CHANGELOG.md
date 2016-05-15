@@ -20,9 +20,6 @@
   * The option `bypass` of `Devise::Controllers::SignInOut#sign_in` method is
     deprecated in favor of `Devise::Controllers::SignInOut#bypass_sign_in`
     method (by @ulissesalmeida).
-* bug fixes
-  * Fix overwriting the remember_token when a valid one already exists
-    (by @ralinchimev).
 
 ### 4.1.1 - 2016-05-15
 

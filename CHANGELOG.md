@@ -1,3 +1,8 @@
+### 4.1.1 - 2016-05-15
+
+* bug fixes
+  * Fix overwriting the remember_token when a valid one already exists (by @ralinchimev).
+
 ### 4.1.0
 
 * bug fixes

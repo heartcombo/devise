@@ -13,10 +13,16 @@
 * enhancements
   * Display the minimum password length on `registrations/edit` view (by @Yanchek99).
   * You can disable Devise's routes reloading on boot by through the `reload_routes = false` config.
-    This can reduce the time taken to boot the application but it might trigger some errors
-    if you application (mostly your controllers) requires that Devise mappings be loaded
-    during boot time.
-    (by @sidonath).
+    This can reduce the time taken to boot the application but it might trigger
+    some errors if you application (mostly your controllers) requires that
+    Devise mappings be loaded during boot time (by @sidonath).
+* deprecations
+  * The option `bypass` of `Devise::Controllers::SignInOut#sign_in` method is
+    deprecated in favor of `Devise::Controllers::SignInOut#bypass_sign_in`
+    method (by @ulissesalmeida).
+* bug fixes
+  * Fix overwriting the remember_token when a valid one already exists
+    (by @ralinchimev).
 
 ### 4.1.0
 

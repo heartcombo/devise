@@ -8,8 +8,8 @@ end
 gemfile(true) do
   source 'https://rubygems.org'
   # Activate the gem you are reporting the issue against.
-  gem 'rails', '4.2.0'
-  gem 'devise'
+  gem 'rails', '~> 4.2.0'
+  gem 'devise', '~> 4.0'
   gem 'sqlite3'
   gem 'byebug'
 end

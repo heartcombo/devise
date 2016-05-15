@@ -16,6 +16,18 @@ class RememberableTest < ActiveSupport::TestCase
     assert user.remember_created_at
   end
 
+  test 'remember_me should not generate a new token if valid token exists' do
+    user = create_user
+    user.singleton_class.send(:attr_accessor, :remember_token)
+    User.to_adapter.expects(:find_first).returns(nil)
+
+    user.remember_me!
+    existing_token = user.remember_token
+
+    user.remember_me!
+    assert_equal existing_token, user.remember_token
+  end
+
   test 'forget_me should not clear remember token if using salt' do
     user = create_user
     user.remember_me!

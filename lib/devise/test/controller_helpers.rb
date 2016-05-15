@@ -1,25 +1,37 @@
 module Devise
   module Test
-    # Devise::Test::ControllerHelpers provides a facility to test controllers in isolation
-    # when using ActionController::TestCase allowing you to quickly sign_in or
-    # sign_out a user. Do not use Devise::Test::ControllerHelpers in integration tests.
+    # `Devise::Test::ControllerHelpers` provides a facility to test controllers
+    # in isolation when using `ActionController::TestCase` allowing you to
+    # quickly sign_in or sign_out a user. Do not use
+    # `Devise::Test::ControllerHelpers` in integration tests.
     #
-    # Notice you should not test Warden specific behavior (like Warden callbacks)
-    # using Devise::Test::ControllerHelpers since it is a stub of the actual
+    # Examples
+    #
+    #  class PostsTest < ActionController::TestCase
+    #    include Devise::Test::ControllerHelpers
+    #
+    #    test 'authenticated users can GET index' do
+    #      sign_in users(:bob)
+    #
+    #      get :index
+    #      assert_response :success
+    #    end
+    #  end
+    #
+    # Important: you should not test Warden specific behavior (like callbacks)
+    # using `Devise::Test::ControllerHelpers` since it is a stub of the actual
     # behavior. Such callbacks should be tested in your integration suite instead.
     module ControllerHelpers
-      def self.included(base)
-        base.class_eval do
-          setup :setup_controller_for_warden, :warden if respond_to?(:setup)
-        end
+      extend ActiveSupport::Concern
+
+      included do
+        setup :setup_controller_for_warden, :warden
       end
 
       # Override process to consider warden.
       def process(*)
-        # Make sure we always return @response, a la ActionController::TestCase::Behaviour#process, even if warden interrupts
-        _catch_warden { super } # || @response  # _catch_warden will setup the @response object
+        _catch_warden { super }
 
-        # process needs to return the ActionDispath::TestResponse object
         @response
       end
 

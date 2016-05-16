@@ -16,7 +16,14 @@
     This can reduce the time taken to boot the application but it might trigger
     some errors if you application (mostly your controllers) requires that
     Devise mappings be loaded during boot time (by @sidonath).
+  * Added `Devise::Test::IntegrationHelpers` to bypass the sign in process using
+    Warden test API (by @lucasmazza).
 * deprecations
+  * `Devise::TestHelpers` is deprecated in favor of `Devise::Test::ControllerHelpers`
+    (by @lucasmazza).
+  * The `sign_in` test helper has changed to use keyword arguments when passing
+    a scope. `sign_in :admin, users(:alice)` should be rewritten as
+    `sign_in users(:alice), scope: :admin` (by @lucasmazza).
   * The option `bypass` of `Devise::Controllers::SignInOut#sign_in` method is
     deprecated in favor of `Devise::Controllers::SignInOut#bypass_sign_in`
     method (by @ulissesalmeida).

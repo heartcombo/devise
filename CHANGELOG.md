@@ -20,18 +20,18 @@
   * Fix the `extend_remember_period` configuration. When set to `false` it does
     not update the cookie expiration anymore.(by @ulissesalmeida)
 
-### 3.5.6 - 2016-01-02
+### 3.5.6 - 2016-02-01
 
 * bug fixes
   * Fix type coercion of the rememberable timestamp stored on cookies.
 
-### 3.5.5 - 2016-22-01
+### 3.5.5 - 2016-01-22
 
 * bug fixes
   * Bring back remember_expired? implementation
   * Ensure timeouts are not triggered if remember me is being used
 
-### 3.5.4 - 2016-18-01
+### 3.5.4 - 2016-01-18
 
 * bug fixes
   * Store creation timestamps on remember cookies

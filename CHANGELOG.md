@@ -121,7 +121,7 @@
     You can still use `omniauth_authorize_path(:user, :github)` if you need to
     call the helpers dynamically.
 
-### 4.0.0.rc1 - 2016-01-02
+### 4.0.0.rc1 - 2016-02-01
 
 * Support added to Rails 5 (by @twalpole).
 * Devise no longer supports Rails 3.2 and 4.0.

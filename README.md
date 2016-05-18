@@ -472,8 +472,7 @@ end
 Integration test helpers are available by including the
 `Devise::Test::IntegrationHelpers` module.
 
-```
-ruby
+```ruby
 class PostsTests < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 end

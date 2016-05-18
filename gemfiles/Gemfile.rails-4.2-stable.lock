@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rails/rails.git
-  revision: 2aa27582c202148296bb169159b0bf9a47a7bd80
+  revision: 5be7cfa46e055148c8b74ac5d48982a3435f477c
   branch: 4-2-stable
   specs:
     actionmailer (4.2.6)
@@ -58,7 +58,7 @@ GIT
 PATH
   remote: ..
   specs:
-    devise (4.0.1)
+    devise (4.1.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -72,25 +72,27 @@ GEM
     bcrypt (3.1.11)
     bson (3.2.6)
     builder (3.2.2)
-    concurrent-ruby (1.0.1)
+    concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     erubis (2.7.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
-    hashie (3.4.3)
+    hashie (3.4.4)
     i18n (0.7.0)
     json (1.8.3)
     jwt (1.5.1)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
-    mail (2.6.3)
-      mime-types (>= 1.16, < 3)
+    mail (2.6.4)
+      mime-types (>= 1.16, < 4)
     metaclass (0.0.4)
-    mime-types (2.99.1)
+    mime-types (3.0)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0221)
     mini_portile2 (2.0.0)
-    minitest (5.8.4)
+    minitest (5.9.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mongoid (4.0.2)
@@ -102,7 +104,7 @@ GEM
       bson (~> 3.0)
       connection_pool (~> 2.0)
       optionable (~> 0.2.0)
-    multi_json (1.11.2)
+    multi_json (1.12.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nokogiri (1.6.7.2)
@@ -141,13 +143,13 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rake (11.0.1)
+    rake (11.1.2)
     rdoc (4.2.2)
       json (~> 1.4)
-    responders (2.1.2)
+    responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     ruby-openid (2.7.0)
-    sprockets (3.5.2)
+    sprockets (3.6.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.0.4)
@@ -177,11 +179,11 @@ DEPENDENCIES
   devise!
   jruby-openssl
   mocha (~> 1.1)
-  mongoid (~> 4.0.0)
-  omniauth (~> 1.3)
+  mongoid (~> 4.0)
+  omniauth
   omniauth-facebook
-  omniauth-oauth2 (~> 1.4)
-  omniauth-openid (~> 1.0.1)
+  omniauth-oauth2
+  omniauth-openid
   rails!
   rdoc
   sqlite3

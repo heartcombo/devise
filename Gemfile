@@ -3,13 +3,13 @@ source "https://rubygems.org"
 gemspec
 
 gem "rails", "~> 4.2.6"
-gem "omniauth", "~> 1.3"
-gem "omniauth-oauth2", "~> 1.4"
+gem "omniauth"
+gem "omniauth-oauth2"
 gem "rdoc"
 
 group :test do
   gem "omniauth-facebook"
-  gem "omniauth-openid", "~> 1.0.1"
+  gem "omniauth-openid"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 1.1", require: false
   gem 'test_after_commit', require: false

@@ -89,7 +89,7 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 ## Getting started
 
-Devise 4.0 works with Rails 4.2 onwards. You can add it to your Gemfile with:
+Devise 4.0 works with Rails 4.1 onwards. You can add it to your Gemfile with:
 
 ```ruby
 gem 'devise'

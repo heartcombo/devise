@@ -8,16 +8,16 @@ rvm:
 
 gemfile:
   - Gemfile
-  - gemfiles/Gemfile.rails-5.0-beta
+  - gemfiles/Gemfile.rails-5.0
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
 
 matrix:
   exclude:
     - rvm: 2.1.9
-      gemfile: gemfiles/Gemfile.rails-5.0-beta
+      gemfile: gemfiles/Gemfile.rails-5.0
     - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-5.0-beta
+      gemfile: gemfiles/Gemfile.rails-5.0
   allow_failures:
     - rvm: ruby-head
   fast_finish: true

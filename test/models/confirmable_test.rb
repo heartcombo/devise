@@ -508,4 +508,12 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin = Admin::WithSaveInCallback.create(valid_attributes.except(:username))
     assert !admin.pending_reconfirmation?
   end
+
+  test 'should require reconfirmation after creating a record and updating the email' do
+    admin = create_admin
+    assert !admin.instance_variable_get(:@bypass_confirmation_postpone)
+    admin.email = "new_test@email.com"
+    admin.save
+    assert admin.pending_reconfirmation?
+  end
 end

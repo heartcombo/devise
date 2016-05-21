@@ -166,7 +166,7 @@ module Devise
 
       protected
 
-        # To not require reoncfirmation after creating with #save called in a
+        # To not require reconfirmation after creating with #save called in a
         # callback call skip_create_confirmation!
         def skip_create_confirmation!
           @skip_create_confirmation = true

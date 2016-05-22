@@ -43,7 +43,7 @@ module Devise
 
       included do
         before_create :generate_confirmation_token, if: :confirmation_required?
-        after_create :skip_create_confirmation!, if: :send_confirmation_notification?
+        after_create :skip_reconfirmation_in_callback!, if: :send_confirmation_notification?
         if respond_to?(:after_commit) # ActiveRecord
           after_commit :send_on_create_confirmation_instructions, on: :create, if: :send_confirmation_notification?
           after_commit :send_reconfirmation_instructions, on: :update, if: :reconfirmation_required?
@@ -56,7 +56,7 @@ module Devise
 
       def initialize(*args, &block)
         @bypass_confirmation_postpone = false
-        @skip_create_confirmation = false
+        @skip_reconfirmation_in_callback = false
         @reconfirmation_required = false
         @skip_confirmation_notification = false
         @raw_confirmation_token = nil
@@ -168,8 +168,8 @@ module Devise
 
         # To not require reconfirmation after creating with #save called in a
         # callback call skip_create_confirmation!
-        def skip_create_confirmation!
-          @skip_create_confirmation = true
+        def skip_reconfirmation_in_callback!
+          @skip_reconfirmation_in_callback = true
         end
 
         # A callback method used to deliver confirmation
@@ -264,7 +264,7 @@ module Devise
             email_changed? &&
             !@bypass_confirmation_postpone &&
             self.email.present? &&
-            (!@skip_create_confirmation || !self.email_was.nil?)
+            (!@skip_reconfirmation_in_callback || !self.email_was.nil?)
           @bypass_confirmation_postpone = false
           postpone
         end

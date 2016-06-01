@@ -20,7 +20,9 @@ RailsApp::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  if Rails.version >= "4.2.0"
+  if Rails.version >= "5.0.0"
+    config.public_file_server.enabled = false
+  elsif Rails.version >= "4.2.0"
     config.serve_static_files = false
   else
     config.serve_static_assets = false

@@ -35,6 +35,11 @@ class SerializableTest < ActiveSupport::TestCase
     assert_key "confirmation_token", from_json(force_except: :email)
   end
 
+  test 'should not include unsafe keys in inspect' do
+    assert_match(/email/, @user.inspect)
+    assert_no_match(/confirmation_token/, @user.inspect)
+  end
+
   def assert_key(key, subject)
     assert subject.key?(key), "Expected #{subject.inspect} to have key #{key.inspect}"
   end

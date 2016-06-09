@@ -131,6 +131,24 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
 
+    if Rails.application.config.action_controller.respond_to?(:relative_url_root)
+      test "returns to the default redirect location considering action_controller's relative url root" do
+        swap Rails.application.config.action_controller, relative_url_root: "/sample" do
+          call_failure
+          assert_equal 302, @response.first
+          assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
+        end
+      end
+
+      test "returns to the default redirect location considering action_controller's relative url root and subdomain" do
+        swap Rails.application.config.action_controller, relative_url_root: "/sample" do
+          call_failure('warden.options' => { scope: :subdomain_user })
+          assert_equal 302, @response.first
+          assert_equal 'http://sub.test.host/sample/subdomain_users/sign_in', @response.second['Location']
+        end
+      end
+    end
+
     test 'uses the proxy failure message as symbol' do
       call_failure('warden' => OpenStruct.new(message: :invalid))
       assert_equal 'Invalid Email or password.', @request.flash[:alert]

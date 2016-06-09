@@ -252,5 +252,17 @@ module Devise
     def request_format
       @request_format ||= request.format.try(:ref)
     end
+
+    def relative_url_root
+      @relative_url_root ||= begin
+        config = Rails.application.config
+
+        config.try(:relative_url_root) || config.action_controller.try(:relative_url_root)
+      end
+    end
+
+    def relative_url_root?
+      relative_url_root.present?
+    end
   end
 end

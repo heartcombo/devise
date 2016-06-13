@@ -74,7 +74,6 @@ module Devise
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         user = warden.user(scope: scope, run_callbacks: false) # If there is no user
 
-        warden.raw_session.inspect # Without this inspect here. The session does not clear.
         warden.logout(scope)
         warden.clear_strategies_cache!(scope: scope)
         instance_variable_set(:"@current_#{scope}", nil)

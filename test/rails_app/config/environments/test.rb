@@ -14,15 +14,14 @@ RailsApp::Application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  if Rails.version >= "4.2.0"
+  if Rails.version >= "5.0.0"
+    config.public_file_server.enabled = true
+    config.public_file_server.headers = {'Cache-Control' => 'public, max-age=3600'}
+  elsif Rails.version >= "4.2.0"
     config.serve_static_files = true
+    config.static_cache_control = "public, max-age=3600"
   else
     config.serve_static_assets = true
-  end
-
-  if Rails.version >= "5.0.0"
-    config.public_file_server.headers = {'Cache-Control' => 'public, max-age=3600'}
-  else
     config.static_cache_control = "public, max-age=3600"
   end
 

@@ -114,6 +114,15 @@ module Devise
         super(options)
       end
 
+      # Redefine inspect using serializable_hash, to ensure we don't accidentally
+      # leak passwords into exceptions.
+      def inspect
+        inspection = serializable_hash.collect do |k,v|
+          "#{k}: #{respond_to?(:attribute_for_inspect) ? attribute_for_inspect(k) : v.inspect}"
+        end
+        "#<#{self.class} #{inspection.join(", ")}>"
+      end
+
       protected
 
       def devise_mailer

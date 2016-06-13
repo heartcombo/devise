@@ -18,6 +18,8 @@
     Devise mappings be loaded during boot time (by @sidonath).
   * Added `Devise::Test::IntegrationHelpers` to bypass the sign in process using
     Warden test API (by @lucasmazza).
+  * Define `inspect` in `Devise::Models::Authenticatable` to help ensure password hashes
+    aren't included in exceptions or otherwise accidentally serialized (by @tkrajcar).
 * deprecations
   * `Devise::TestHelpers` is deprecated in favor of `Devise::Test::ControllerHelpers`
     (by @lucasmazza).

@@ -121,7 +121,7 @@ module Devise
 
       def _process_unauthenticated(env, options = {})
         options[:action] ||= :unauthenticated
-        proxy = env['warden']
+        proxy = request.env['warden']
         result = options[:result] || proxy.result
 
         ret = case result
@@ -131,8 +131,8 @@ module Devise
         when :custom
           proxy.custom_response
         else
-          env["PATH_INFO"] = "/#{options[:action]}"
-          env["warden.options"] = options
+          request.env["PATH_INFO"] = "/#{options[:action]}"
+          request.env["warden.options"] = options
           Warden::Manager._run_callbacks(:before_failure, env, options)
 
           status, headers, response = Devise.warden_config[:failure_app].call(env).to_a

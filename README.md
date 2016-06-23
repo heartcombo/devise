@@ -432,8 +432,8 @@ If you're using RSpec, you can put the following inside a file named
 
 ```ruby
 RSpec.configure do |config|
-  config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include Devise::Test::ControllerHelpers, type: :view
+  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::TestHelpers, type: :view
 end
 ```
 

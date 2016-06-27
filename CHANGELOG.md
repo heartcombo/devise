@@ -10,6 +10,8 @@
   * Remove the `Devise::Models::Confirmable#confirm!` method, use `confirm` instead.
   * Remove the `Devise::Models::Recoverable#reset_password!` method, use `reset_password` instead.
   * Remove the `Devise::Models::Recoverable#after_password_reset` method.
+* bug fixes
+  * Fix an `ActionDispatch::IllegalStateError` when testing controllers with Rails 5 rc 2(by @hamadata).
 * enhancements
   * Display the minimum password length on `registrations/edit` view (by @Yanchek99).
   * You can disable Devise's routes reloading on boot by through the `reload_routes = false` config.
@@ -20,6 +22,7 @@
     Warden test API (by @lucasmazza).
   * Define `inspect` in `Devise::Models::Authenticatable` to help ensure password hashes
     aren't included in exceptions or otherwise accidentally serialized (by @tkrajcar).
+  * Add missing support of `Rails.application.config.action_controller.relative_url_root` (by @kosdiamantis).
 * deprecations
   * `Devise::TestHelpers` is deprecated in favor of `Devise::Test::ControllerHelpers`
     (by @lucasmazza).

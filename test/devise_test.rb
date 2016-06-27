@@ -67,18 +67,18 @@ class DeviseTest < ActiveSupport::TestCase
   end
 
   test 'add new module using the helper method' do
-    assert_nothing_raised(Exception) { Devise.add_module(:coconut) }
+    Devise.add_module(:coconut)
     assert_equal 1, Devise::ALL.select { |v| v == :coconut }.size
     refute Devise::STRATEGIES.include?(:coconut)
     refute defined?(Devise::Models::Coconut)
     Devise::ALL.delete(:coconut)
 
-    assert_nothing_raised(Exception) { Devise.add_module(:banana, strategy: :fruits) }
+    Devise.add_module(:banana, strategy: :fruits)
     assert_equal :fruits, Devise::STRATEGIES[:banana]
     Devise::ALL.delete(:banana)
     Devise::STRATEGIES.delete(:banana)
 
-    assert_nothing_raised(Exception) { Devise.add_module(:kivi, controller: :fruits) }
+    Devise.add_module(:kivi, controller: :fruits)
     assert_equal :fruits, Devise::CONTROLLERS[:kivi]
     Devise::ALL.delete(:kivi)
     Devise::CONTROLLERS.delete(:kivi)

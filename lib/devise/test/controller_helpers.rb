@@ -137,9 +137,8 @@ module Devise
 
           status, headers, response = Devise.warden_config[:failure_app].call(env).to_a
           @controller.response.headers.merge!(headers)
-          r_opts = { status: status, content_type: headers["Content-Type"], location: headers["Location"] }
-          r_opts[Rails.version.start_with?('5') ? :body : :text] = response.body
-          @controller.send :render, r_opts
+          @controller.status = status
+          @controller.response.body = response.body
           nil # causes process return @response
         end
 

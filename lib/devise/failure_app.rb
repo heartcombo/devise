@@ -64,7 +64,7 @@ module Devise
         if request.respond_to?(:set_header)
           request.set_header(var, value)
         else
-          env[var]  = value
+          request.env[var]  = value
         end
       end
 
@@ -202,11 +202,11 @@ module Devise
     end
 
     def warden
-      request.respond_to?(:get_header) ? request.get_header("warden") : env["warden"]
+      request.respond_to?(:get_header) ? request.get_header("warden") : request.env["warden"]
     end
 
     def warden_options
-      request.respond_to?(:get_header) ? request.get_header("warden.options") : env["warden.options"]
+      request.respond_to?(:get_header) ? request.get_header("warden.options") : request.env["warden.options"]
     end
 
     def warden_message

@@ -147,12 +147,12 @@ module Devise
         # testing time, we want the response to be available to the testing
         # framework to verify what would be returned to rack.
         if ret.is_a?(Array)
+          status, headers, body = *ret
           # ensure the controller response is set to our response.
           @controller.response ||= @response
-          @response.status = ret.first
-          @response.headers.clear
-          ret.second.each { |k,v| @response[k] = v }
-          @response.body = ret.third
+          @response.status = status
+          @response.headers.merge!(headers)
+          @response.body = body
         end
 
         ret

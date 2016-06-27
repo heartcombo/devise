@@ -20,7 +20,6 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-5.0
   allow_failures:
     - rvm: ruby-head
-  fast_finish: true
 services:
   - mongodb
 

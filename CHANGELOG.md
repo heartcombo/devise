@@ -12,6 +12,8 @@
   * Remove the `Devise::Models::Recoverable#after_password_reset` method.
 * bug fixes
   * Fix an `ActionDispatch::IllegalStateError` when testing controllers with Rails 5 rc 2(by @hamadata).
+  * Use `ActiveSupport.on_load` hooks to include Devise on `ActiveRecord` and `Mongoid`,
+    avoiding autoloading these constants too soon (by @lucasmazza, @rafaelfranca).
 * enhancements
   * Display the minimum password length on `registrations/edit` view (by @Yanchek99).
   * You can disable Devise's routes reloading on boot by through the `reload_routes = false` config.

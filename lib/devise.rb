@@ -145,6 +145,10 @@ module Devise
   mattr_accessor :reconfirmable
   @@reconfirmable = true
 
+  #TODO- we should turn it true on a future major release
+  mattr_accessor :send_reconfirmation_instructions
+  @@send_reconfirmation_instructions = false
+
   # Time interval to timeout the user session without activity.
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes

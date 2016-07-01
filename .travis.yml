@@ -8,16 +8,15 @@ rvm:
 
 gemfile:
   - Gemfile
-  - gemfiles/Gemfile.rails-5.0
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
 
 matrix:
   exclude:
     - rvm: 2.1.9
-      gemfile: gemfiles/Gemfile.rails-5.0
+      gemfile: Gemfile
     - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-5.0
+      gemfile: Gemfile
   allow_failures:
     - rvm: ruby-head
 services:

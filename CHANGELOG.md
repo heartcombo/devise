@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 4.2.0 - 2016-07-01
+
 * removals
   * Remove the deprecated `Devise::ParameterSanitizer` API from Devise 3.
     Please use the `#permit` and `#sanitize` methods over `#for`.

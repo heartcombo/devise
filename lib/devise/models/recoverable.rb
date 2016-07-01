@@ -27,11 +27,7 @@ module Devise
       end
 
       included do
-        before_update do
-          if (respond_to?(:email_changed?) && email_changed?) || encrypted_password_changed?
-            clear_reset_password_token
-          end
-        end
+        before_update :clear_reset_password_token, if: :clear_reset_password_token?
       end
 
       # Update password saving the record and clearing token. Returns true if
@@ -95,6 +91,15 @@ module Devise
 
         def send_reset_password_instructions_notification(token)
           send_devise_notification(:reset_password_instructions, token, {})
+        end
+
+        def clear_reset_password_token?
+          encrypted_password_changed = respond_to?(:encrypted_password_changed?) && encrypted_password_changed?
+          authentication_keys_changed = self.class.authentication_keys.any? do |attribute|
+            respond_to?("#{attribute}_changed?") && send("#{attribute}_changed?")
+          end
+
+          authentication_keys_changed || encrypted_password_changed
         end
 
       module ClassMethods

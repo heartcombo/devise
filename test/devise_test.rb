@@ -105,23 +105,23 @@ class DeviseTest < ActiveSupport::TestCase
     end
   end
 
-  test 'authenticating using sha1 validly' do 
-    klass = User 
+  test 'authenticating using sha1 validly' do
+    klass = User
     salt = "707562507601"
-    node_hashed_password = "b8428a97a64dc781be7d162a6929959c329da00f"
-    hashed_password = nil 
+    node_hashed_password = "1b476b9f196d1bdd56cb4a18b5ec603b09c38607"
+    hashed_password = nil
     password = "Wildebeest1"
 
-    assert_true Devise::Encryptor.compare(klass, salt, node_hashed_password, hashed_password, password)
+    assert_equal true, Devise::Encryptor.compare(klass, salt, node_hashed_password, hashed_password, password)
   end
 
-  test 'authenticating using sha1 invalidly' do 
-    klass = User 
+  test 'authenticating using sha1 invalidly' do
+    klass = User
     salt = "707562507601"
-    node_hashed_password = "b8428a97a64dc781be7d162a6929959c329da00f"
-    hashed_password = nil 
+    node_hashed_password = "1b476b9f196d1bdd56cb4a18b5ec603b09c38607"
+    hashed_password = nil
     password = "Wildebeest2"
 
-    assert_false Devise::Encryptor.compare(klass, salt, node_hashed_password, hashed_password, password)
+    assert_equal false, Devise::Encryptor.compare(klass, salt, node_hashed_password, hashed_password, password)
   end
 end

@@ -37,6 +37,9 @@ class CreateTables < superclass
       t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
 
+      t.string    :salt
+      t.string    :node_hashed_password
+
       t.timestamps null: false
     end
 
@@ -60,6 +63,9 @@ class CreateTables < superclass
 
       ## Lockable
       t.datetime :locked_at
+
+      t.string    :salt
+      t.string    :node_hashed_password
 
       ## Attribute for testing route blocks
       t.boolean :active, default: false

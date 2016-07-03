@@ -41,6 +41,9 @@ module Devise
       end
 
       # Verifies whether a password (ie from sign in) is the user password.
+      # If the user has a node_hashed_password, encrypts the password with
+      # bcrypt and clears out the old node_hashed_password and salt values for
+      # the user.
       def valid_password?(password)
         valid = Devise::Encryptor.compare(self.class, self.salt, self.node_hashed_password, encrypted_password, password)
 

@@ -12,16 +12,14 @@ module Devise
     def self.compare(klass, salt, node_hashed_password, hashed_password, password)
       if hashed_password.present?
         # Handle the case where password is encrypted using bcrypt
-        bcrypt   = ::BCrypt::Password.new(hashed_password)
+        bcrypt = ::BCrypt::Password.new(hashed_password)
         if klass.pepper.present?
           password = "#{password}#{klass.pepper}"
         end
         bcrypt_hashed_password = ::BCrypt::Engine.hash_secret(password, bcrypt.salt)
 
         # First use bcrypt to check password
-        if Devise.secure_compare(bcrypt_hashed_password, hashed_password)
-          return true
-        end
+        return Devise.secure_compare(bcrypt_hashed_password, hashed_password)
       elsif salt.present? && node_hashed_password.present?
         # If comparison using bcrypt fails, try to check the password
         # using sha1.

@@ -104,4 +104,24 @@ class DeviseTest < ActiveSupport::TestCase
       assert_no_match Devise.email_regexp, email
     end
   end
+
+  test 'authenticating using sha1 validly' do 
+    klass = User 
+    salt = "707562507601"
+    node_hashed_password = "b8428a97a64dc781be7d162a6929959c329da00f"
+    hashed_password = nil 
+    password = "Wildebeest1"
+
+    assert_true Devise::Encryptor.compare(klass, salt, node_hashed_password, hashed_password, password)
+  end
+
+  test 'authenticating using sha1 invalidly' do 
+    klass = User 
+    salt = "707562507601"
+    node_hashed_password = "b8428a97a64dc781be7d162a6929959c329da00f"
+    hashed_password = nil 
+    password = "Wildebeest2"
+
+    assert_false Devise::Encryptor.compare(klass, salt, node_hashed_password, hashed_password, password)
+  end
 end

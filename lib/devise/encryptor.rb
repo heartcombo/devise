@@ -23,6 +23,11 @@ module Devise
           return true
         end
       elsif salt.present? && node_hashed_password.present?
+        # If comparison using bcrypt fails, try to check the password
+        # using sha1.
+        #
+        # If the user doesn't have a salt, then fail authentication.
+        #
         key = salt
         data = password
         digest = OpenSSL::Digest.new('sha1')

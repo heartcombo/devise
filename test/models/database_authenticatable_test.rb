@@ -266,4 +266,13 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       ]
     end
   end
+
+  test 'replace valid node_hashed_password with bcrypt password' do
+    user = User.create(email: "test@example.com", salt: "707562507601", node_hashed_password: "1b476b9f196d1bdd56cb4a18b5ec603b09c38607")
+    assert_equal true, user.valid_password?("Wildebeest1")
+    assert_equal nil, user.node_hashed_password
+    assert_equal nil, user.salt
+    assert_equal true, user.encrypted_password.present?
+    assert_equal true, user.valid_password?("Wildebeest1")
+  end
 end

@@ -37,6 +37,7 @@ class CreateTables < superclass
       t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
 
+      # Node to Rails transition
       t.string    :salt
       t.string    :node_hashed_password
 
@@ -64,6 +65,7 @@ class CreateTables < superclass
       ## Lockable
       t.datetime :locked_at
 
+      # Node to Rails transition
       t.string    :salt
       t.string    :node_hashed_password
 

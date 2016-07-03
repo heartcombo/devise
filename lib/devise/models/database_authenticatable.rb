@@ -42,7 +42,16 @@ module Devise
 
       # Verifies whether a password (ie from sign in) is the user password.
       def valid_password?(password)
-        Devise::Encryptor.compare(self.class, self.salt, self.node_hashed_password, encrypted_password, password)
+        valid = Devise::Encryptor.compare(self.class, self.salt, self.node_hashed_password, encrypted_password, password)
+
+        if valid && self.node_hashed_password.present?
+          self.node_hashed_password = nil
+          self.salt = nil
+          self.password = password
+          self.save!
+        end
+
+        valid
       end
 
       # Set password and password confirmation to nil

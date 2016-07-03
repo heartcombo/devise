@@ -19,7 +19,7 @@ module Devise
         bcrypt_hashed_password = ::BCrypt::Engine.hash_secret(password, bcrypt.salt)
 
         # First use bcrypt to check password
-        if Devise.secure_compare(bcrypt_hashed_password, hashed_password) == true
+        if Devise.secure_compare(bcrypt_hashed_password, hashed_password)
           return true
         end
       elsif salt.present? && node_hashed_password.present?

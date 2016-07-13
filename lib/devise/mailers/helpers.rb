@@ -11,9 +11,9 @@ module Devise
       protected
 
       # Configure default email options
-      def devise_mail(record, action, opts={})
+      def devise_mail(record, action, opts = {}, &block)
         initialize_from_record(record)
-        mail headers_for(action, opts)
+        mail headers_for(action, opts), &block
       end
 
       def initialize_from_record(record)

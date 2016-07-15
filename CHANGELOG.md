@@ -1,5 +1,9 @@
 ### Unreleased
 
+* removals
+  * `Devise::Mailer#scope_name` and `Devise::Mailer#resource` are now protected
+    methods instead of public.
+
 ### 4.2.0 - 2016-07-01
 
 * removals

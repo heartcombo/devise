@@ -5,10 +5,11 @@ module Devise
 
       included do
         include Devise::Controllers::ScopedViews
-        attr_reader :scope_name, :resource
       end
 
       protected
+
+      attr_reader :scope_name, :resource
 
       # Configure default email options
       def devise_mail(record, action, opts={})

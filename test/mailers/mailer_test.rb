@@ -11,8 +11,7 @@ class MailerTest < ActionMailer::TestCase
       end
     end
 
-    TestMailer.confirmation_instructions(create_user, "confirmation-token").deliver_now
-    mail = ActionMailer::Base.deliveries.first
+    mail = TestMailer.confirmation_instructions(create_user, "confirmation-token")
 
     assert mail.content_transfer_encoding, "7bit"
   end

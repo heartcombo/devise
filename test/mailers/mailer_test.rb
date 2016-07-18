@@ -11,8 +11,7 @@ class MailerTest < ActionMailer::TestCase
       end
     end
 
-    Devise.mailer = TestMailer
-    create_user
+    TestMailer.confirmation_instructions(create_user, "confirmation-token").deliver_now
     mail = ActionMailer::Base.deliveries.first
 
     assert mail.content_transfer_encoding, "7bit"

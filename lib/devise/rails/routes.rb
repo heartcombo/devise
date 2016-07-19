@@ -338,7 +338,7 @@ module ActionDispatch::Routing
 
     # Sets the devise scope to be used in the controller. If you have custom routes,
     # you are required to call this method (also aliased as :as) in order to specify
-    # to which controller it is targetted.
+    # to which controller it is targeted.
     #
     #   as :user do
     #     get "sign_in", to: "devise/sessions#new"

@@ -286,6 +286,10 @@ module Devise
   mattr_accessor :token_generator
   @@token_generator = nil
 
+  # Store devise notification delivery method, default is deliver now
+  mattr_accessor :delivery_method
+  @@delivery_method = :deliver_now
+
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

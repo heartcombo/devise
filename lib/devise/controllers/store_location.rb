@@ -29,7 +29,7 @@ module Devise
       # Example:
       #
       #   store_location_for(:user, dashboard_path)
-      #   redirect_to user_omniauth_authorize_path(:facebook)
+      #   redirect_to user_facebook_omniauth_authorize_path
       #
       def store_location_for(resource_or_scope, location)
         session_key = stored_location_key_for(resource_or_scope)

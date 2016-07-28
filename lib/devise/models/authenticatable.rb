@@ -130,7 +130,7 @@ module Devise
       end
 
       def delivery_method
-        Devise.delivery_method
+        Devise.deliver_later_option ? :deliver_later : :deliver_now
       end
 
       # This is an internal method called every time Devise needs
@@ -192,7 +192,7 @@ module Devise
         message = devise_mailer.send(notification, self, *args)
         # Remove once we move to Rails 4.2+ only.
 
-        if delivery_method == :deliver_now || delivery_method == :deliver_later
+        if message.respond_to?(:deliver_now)
           message.send(delivery_method)
         else
           message.deliver

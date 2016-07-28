@@ -287,8 +287,8 @@ module Devise
   @@token_generator = nil
 
   # Store devise notification delivery method, default is deliver now
-  mattr_accessor :delivery_method
-  @@delivery_method = :deliver_now
+  mattr_accessor :deliver_later_option
+  @@deliver_later_option = false
 
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.

@@ -245,7 +245,7 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
     end
   end
 
-  test 'not signed in users should see unautheticated page (unauthenticated accepted)' do
+  test 'not signed in users should see unauthenticated page (unauthenticated accepted)' do
     get join_path
 
     assert_response :success

@@ -102,7 +102,7 @@ class LockTest < Devise::IntegrationTest
 
   test 'error message is configurable by resource name' do
     store_translations :en, devise: {
-        failure: {user: {locked: "You are locked!"}}
+        failure: {user: {locked: { both: "You are locked!" }}}
     } do
 
       user = create_user(locked: true)
@@ -116,7 +116,7 @@ class LockTest < Devise::IntegrationTest
 
   test "user should not be able to sign in when locked" do
     store_translations :en, devise: {
-        failure: {user: {locked: "You are locked!"}}
+        failure: {user: {locked: {both: "You are locked!"}}}
     } do
 
       user = create_user(locked: true)

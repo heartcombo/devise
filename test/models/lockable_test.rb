@@ -299,7 +299,7 @@ class LockableTest < ActiveSupport::TestCase
   end
 
   test 'should return last attempt message if user made next-to-last attempt of password entering' do
-    swap Devise, last_attempt_warning: true, lock_strategy: :failed_attempts do
+    swap Devise, last_attempt_warning: true, lock_strategy: :failed_attempts, unlock_strategy: :none do
       user = create_user
       user.failed_attempts = Devise.maximum_attempts - 2
       assert_equal :invalid, user.unauthenticated_message
@@ -308,7 +308,7 @@ class LockableTest < ActiveSupport::TestCase
       assert_equal :last_attempt, user.unauthenticated_message
 
       user.failed_attempts = Devise.maximum_attempts
-      assert_equal :locked, user.unauthenticated_message
+      assert_equal :'locked.none', user.unauthenticated_message
     end
   end
 
@@ -323,7 +323,22 @@ class LockableTest < ActiveSupport::TestCase
   test 'should return locked message if user was programatically locked' do
     user = create_user
     user.lock_access!
-    assert_equal :locked, user.unauthenticated_message
+
+    swap Devise, unlock_strategy: :none do
+      assert_equal :'locked.none', user.unauthenticated_message
+    end
+
+    swap Devise, unlock_strategy: :both do
+      assert_equal :'locked.both', user.unauthenticated_message
+    end
+
+    swap Devise, unlock_strategy: :email do
+      assert_equal :'locked.email', user.unauthenticated_message
+    end
+
+    swap Devise, unlock_strategy: :time do
+      assert_equal :'locked.time', user.unauthenticated_message
+    end
   end
 
   test 'unlock_strategy_enabled? should return true for both, email, and time strategies if :both is used' do

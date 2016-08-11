@@ -116,7 +116,15 @@ module Devise
         if Devise.paranoid
           super
         elsif access_locked? || (lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?)
-          :locked
+          if unlock_strategy_enabled?(:both)
+            'locked.both'.to_sym
+          elsif unlock_strategy_enabled?(:email)
+            'locked.email'.to_sym
+          elsif unlock_strategy_enabled?(:time)
+            'locked.time'.to_sym
+          else
+            'locked.none'.to_sym
+          end
         elsif lock_strategy_enabled?(:failed_attempts) && last_attempt? && self.class.last_attempt_warning
           :last_attempt
         else

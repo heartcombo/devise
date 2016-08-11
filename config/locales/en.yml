@@ -10,7 +10,11 @@ en:
       already_authenticated: "You are already signed in."
       inactive: "Your account is not activated yet."
       invalid: "Invalid %{authentication_keys} or password."
-      locked: "Your account is locked."
+      locked:                                                                                                 
+        none: "Your account is locked."                                                                       
+        email: "Your account is locked. An email has been sent with instructions on how to unlock your account."
+        time: "Your account is locked. Your account will become available after a certain amount of time."       
+        both: "Your account is locked. An email has been sent with instructions on how to unlock your account, or wait a certain amount of time and try again."
       last_attempt: "You have one more attempt before your account is locked."
       not_found_in_database: "Invalid %{authentication_keys} or password."
       timeout: "Your session expired. Please sign in again to continue."

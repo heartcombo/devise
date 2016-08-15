@@ -2,9 +2,9 @@ require "action_controller/metal"
 
 module Devise
   # Failure application that will be called every time :warden is thrown from
-  # any strategy or hook. Responsible for redirect the user to the sign in
-  # page based on current scope and mapping. If no scope is given, redirect
-  # to the default_url.
+  # any strategy or hook. It is responsible for redirecting the user to the sign
+  # in page based on current scope and mapping. If no scope is given, it
+  # redirects to the default_url.
   class FailureApp < ActionController::Metal
     include ActionController::UrlFor
     include ActionController::Redirecting
@@ -160,12 +160,12 @@ module Devise
       %w(html */*).include? request_format.to_s
     end
 
-    # Choose whether we should respond in a http authentication fashion,
+    # Choose whether we should respond in an HTTP authentication fashion,
     # including 401 and optional headers.
     #
-    # This method allows the user to explicitly disable http authentication
-    # on ajax requests in case they want to redirect on failures instead of
-    # handling the errors on their own. This is useful in case your ajax API
+    # This method allows the user to explicitly disable HTTP authentication
+    # on AJAX requests in case they want to redirect on failures instead of
+    # handling the errors on their own. This is useful in case your AJAX API
     # is the same as your public API and uses a format like JSON (so you
     # cannot mark JSON as a navigational format).
     def http_auth?
@@ -176,7 +176,7 @@ module Devise
       end
     end
 
-    # It does not make sense to send authenticate headers in ajax requests
+    # It doesn't make sense to send authenticate headers in AJAX requests
     # or if the user disabled them.
     def http_auth_header?
       scope_class.http_authenticatable && !request.xhr?
@@ -225,10 +225,10 @@ module Devise
       warden_options[:attempted_path]
     end
 
-    # Stores requested uri to redirect the user after signing in. We cannot use
-    # scoped session provided by warden here, since the user is not authenticated
-    # yet, but we still need to store the uri based on scope, so different scopes
-    # would never use the same uri to redirect.
+    # Stores requested URI to redirect the user after signing in. We can't use
+    # the scoped session provided by warden here, since the user is not
+    # authenticated yet, but we still need to store the URI based on scope, so
+    # different scopes would never use the same URI to redirect.
     def store_location!
       store_location_for(scope, attempted_path) if request.get? && !http_auth?
     end

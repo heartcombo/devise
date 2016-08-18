@@ -37,11 +37,12 @@ module Devise
       # the hashed password.
       def password=(new_password)
         @password = new_password
-        self.encrypted_password = password_digest(@password) if @password.present?
+        self.encrypted_password = password_digest(@password)
       end
 
       # Verifies whether a password (ie from sign in) is the user password.
       def valid_password?(password)
+        return false if password.blank?
         Devise::Encryptor.compare(self.class, encrypted_password, password)
       end
 

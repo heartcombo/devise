@@ -266,4 +266,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       ]
     end
   end
+
+  test 'rehash encrypt password if password is nil' do
+    user = User.create(email: "HEllO@example.com", password: "12345678")
+    user.password = nil
+    user.save
+    refute user.valid_password?('12345678')
+    refute user.valid_password?(nil)
+  end
 end

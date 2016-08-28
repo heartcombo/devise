@@ -15,4 +15,12 @@ class MailerTest < ActionMailer::TestCase
 
     assert mail.content_transfer_encoding, "7bit"
   end
+
+  test "devise mailer should use deliver_later if deliver_later_option is true" do
+    swap Devise, deliver_later_option: true do
+      user = create_user
+      deliver_method = user.send(:delivery_method).to_s
+      assert_equal deliver_method, "deliver_later"
+    end
+  end
 end

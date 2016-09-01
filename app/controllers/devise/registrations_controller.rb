@@ -29,7 +29,7 @@ class Devise::RegistrationsController < DeviseController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      respond_with resource, location: after_sign_up_path_for(resource)
     end
   end
 
@@ -57,7 +57,7 @@ class Devise::RegistrationsController < DeviseController
       respond_with resource, location: after_update_path_for(resource)
     else
       clean_up_passwords resource
-      respond_with resource
+      respond_with resource, location: after_update_path_for(resource)
     end
   end
 

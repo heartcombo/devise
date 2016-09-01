@@ -68,11 +68,15 @@ module Devise
         result = false
 
         if !valid_password?(current_password)
+          self.assign_attributes(params, *options)
+          self.valid?
           self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
         elsif current_password == params[:password]
+          self.assign_attributes(params, *options)
+          self.valid?
           self.errors.add(:password, :same_password)
         else
-          result = update_attributes(params)
+          result = self.update_attributes(params, *options)
         end
 
         clean_up_passwords

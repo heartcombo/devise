@@ -266,4 +266,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       ]
     end
   end
+
+  test 'should add an error to password when it is same as current_password' do
+    user = create_user({:password => '12345678'})
+    refute user.update_with_password(current_password: '12345678',
+      password: '12345678', password_confirmation: '12345678')
+    assert user.reload.valid_password?('12345678')
+    assert_match "same as current password", user.errors[:password].join
+  end
 end

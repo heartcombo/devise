@@ -48,7 +48,7 @@ module Devise
 
       # Set password and password confirmation to nil
       def clean_up_passwords
-        self.password = self.password_confirmation = nil
+        @password = @password_confirmation = nil
       end
 
       # Update record attributes when :current_password matches, otherwise

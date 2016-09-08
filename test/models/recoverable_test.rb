@@ -158,7 +158,7 @@ class RecoverableTest < ActiveSupport::TestCase
     user = create_user
     raw  = user.send_reset_password_instructions
 
-    reset_password_user = User.reset_password_by_token(reset_password_token: raw)
+    reset_password_user = User.reset_password_by_token(reset_password_token: raw, password: '1234567')
     assert_equal reset_password_user, user
   end
 

@@ -270,7 +270,6 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'nil password should be invalid if password is set to nil' do
     user = User.create(email: "HEllO@example.com", password: "12345678")
     user.password = nil
-    user.save
     refute user.valid_password?('12345678')
     refute user.valid_password?(nil)
   end

@@ -447,7 +447,7 @@ tests:
 
 ```ruby
 sign_in @user
-sign_in @user, scope: admin
+sign_in @user, scope: :admin
 ```
 
 If you are testing Devise internal controllers or a controller that inherits

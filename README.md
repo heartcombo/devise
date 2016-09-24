@@ -95,7 +95,7 @@ Devise 4.0 works with Rails 4.1 onwards. You can add it to your Gemfile with:
 gem 'devise'
 ```
 
-Run the bundle command to install it.
+Then run `bundle install`
 
 Next, you need to run the generator:
 

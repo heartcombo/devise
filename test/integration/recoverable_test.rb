@@ -22,7 +22,7 @@ class PasswordTest < Devise::IntegrationTest
   def reset_password(options={}, &block)
     unless options[:visit] == false
       visit edit_user_password_path(reset_password_token: options[:reset_password_token] || "abcdef")
-      assert_response :success
+      assert_current_url '/users/password/edit'
     end
 
     fill_in 'New password', with: '987654321'

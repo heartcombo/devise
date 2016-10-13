@@ -115,4 +115,11 @@ class DeviseTest < ActiveSupport::TestCase
       assert_equal Devise::friendly_token(length).length, length
     end
   end
+
+  test 'Devise.token_length should match length of return value of #friendly_token' do
+    changed_default_length = 30
+    swap Devise, token_length: changed_default_length do
+      assert_equal Devise::friendly_token.length, changed_default_length
+    end
+  end
 end

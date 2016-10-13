@@ -104,4 +104,15 @@ class DeviseTest < ActiveSupport::TestCase
       assert_no_match Devise.email_regexp, email
     end
   end
+
+  test '#friendly_token should return token of specific length' do
+    # Without param.
+    default_length = 20
+    assert_equal Devise::friendly_token.length, default_length
+
+    # With specific length.
+    100.times do |length|
+      assert_equal Devise::friendly_token(length).length, length
+    end
+  end
 end

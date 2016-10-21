@@ -94,7 +94,7 @@ module Devise
           end
 
           if saved
-            instrument 'confirm!.confirmable.devise'
+            instrument 'confirm.confirmable.devise'
             after_confirmation
           end
 

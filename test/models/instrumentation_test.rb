@@ -35,8 +35,8 @@ class ConfirmableInstrumentationTest < ActiveSupport::TestCase
 
   test 'should send ActiveSupport::Notification when the user confirms their account' do
     user = new_user
-    with_subscription_to 'confirm!.confirmable.devise' do
-      user.confirm!
+    with_subscription_to 'confirm.confirmable.devise' do
+      user.confirm
       assert_equal @sent_notifications.size, 1
     end
   end
@@ -96,7 +96,7 @@ class RecoverableInstrumentationTest < ActiveSupport::TestCase
   test 'should send ActiveSupport::Notification when password is reset' do
     user = create_user
     with_subscription_to 'reset_password.recoverable.devise' do
-      user.reset_password! 'a_new_password', 'a_new_password'
+      user.reset_password 'a_new_password', 'a_new_password'
       assert_equal @sent_notifications.size, 1
     end
   end

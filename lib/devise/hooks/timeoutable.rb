@@ -10,7 +10,7 @@ Warden::Manager.after_set_user do |record, warden, options|
   if record && record.respond_to?(:timedout?) && warden.authenticated?(scope) && options[:store] != false
     last_request_at = warden.session(scope)['last_request_at']
 
-    if record.timedout?(last_request_at) && !env['devise.skip_timeout']
+    if record.timedout?(last_request_at, warden.request) && !env['devise.skip_timeout']
       warden.logout(scope)
       if record.respond_to?(:expire_auth_token_on_timeout) && record.expire_auth_token_on_timeout
         record.reset_authentication_token!

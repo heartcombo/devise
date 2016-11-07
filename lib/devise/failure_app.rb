@@ -156,6 +156,10 @@ module Devise
       env['warden.options']
     end
 
+    def record
+      warden_options[:record]
+    end
+
     def warden_message
       @message ||= warden.message || warden_options[:message]
     end

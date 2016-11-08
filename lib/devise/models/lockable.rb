@@ -99,8 +99,7 @@ module Devise
         if super && !access_locked?
           true
         else
-          self.failed_attempts ||= 0
-          self.failed_attempts += 1
+          increment_failed_attempts
           if attempts_exceeded?
             lock_access! unless access_locked?
           else
@@ -108,6 +107,11 @@ module Devise
           end
           false
         end
+      end
+      
+      def increment_failed_attempts
+        self.failed_attempts ||= 0
+        self.failed_attempts += 1
       end
 
       def unauthenticated_message

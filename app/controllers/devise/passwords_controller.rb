@@ -2,6 +2,8 @@ class Devise::PasswordsController < DeviseController
   prepend_before_action :require_no_authentication
   # Render the #edit only if coming from a reset password email link
   append_before_action :assert_reset_token_passed, only: :edit
+  # Store reset token in session so that it is not in Referer
+  before_action :move_reset_token_to_session, only: [:edit]
 
   # GET /resource/password/new
   def new
@@ -29,7 +31,7 @@ class Devise::PasswordsController < DeviseController
 
   # PUT /resource/password
   def update
-    self.resource = resource_class.reset_password_by_token(resource_params)
+    self.resource = resource_class.reset_password_by_token(resource_params_with_session_token)
     yield resource if block_given?
 
     if resource.errors.empty?
@@ -60,7 +62,7 @@ class Devise::PasswordsController < DeviseController
 
     # Check if a reset_password_token is provided in the request
     def assert_reset_token_passed
-      if params[:reset_password_token].blank?
+      if params[:reset_password_token].blank? && session[:reset_password_token].blank?
         set_flash_message(:alert, :no_token)
         redirect_to new_session_path(resource_name)
       end
@@ -76,5 +78,22 @@ class Devise::PasswordsController < DeviseController
 
     def translation_scope
       'devise.passwords'
+    end
+
+    def move_reset_token_to_session
+      token = params.delete(:reset_password_token)
+
+      if token
+        session[:reset_password_token] = token
+        redirect_to edit_password_path(resource_class.new)
+      end
+    end
+
+    def resource_params_with_session_token
+      rsource_params.merge(reset_token_hash_from_session)
+    end
+
+    def reset_token_hash_from_session
+      resource_class.name.underscore.to_sym => session.delete(:reset_password_token)
     end
 end

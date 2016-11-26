@@ -1,9 +1,9 @@
 language: ruby
 
 rvm:
-  - 2.1.9
-  - 2.2.5
-  - 2.3.1
+  - 2.1.10
+  - 2.2.6
+  - 2.3.3
   - ruby-head
 
 gemfile:
@@ -13,7 +13,7 @@ gemfile:
 
 matrix:
   exclude:
-    - rvm: 2.1.9
+    - rvm: 2.1.10
       gemfile: Gemfile
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile

@@ -31,7 +31,7 @@ class Devise::PasswordsController < DeviseController
 
   # PUT /resource/password
   def update
-    self.resource = resource_class.reset_password_by_token(resource_params_with_session_token)
+    self.resource = resource_class.reset_password_by_token(resource_params_with_reset_token)
     yield resource if block_given?
 
     if resource.errors.empty?
@@ -43,6 +43,7 @@ class Devise::PasswordsController < DeviseController
       else
         set_flash_message!(:notice, :updated_not_active)
       end
+      delete_reset_token_from_session
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
       set_minimum_password_length
@@ -89,11 +90,19 @@ class Devise::PasswordsController < DeviseController
       end
     end
 
-    def resource_params_with_session_token
-      rsource_params.merge(reset_token_hash_from_session)
+    def resource_params_with_reset_token
+      token = session[:reset_password_token]
+      modified_resource_params = resource_params.dup
+      modified_resource_params["reset_password_token"] = token if token
+
+      if token && modified_resource_params[resource_class.name.underscore].present?
+        modified_resource_params[resource_class.name.underscore][:reset_password_token] = token
+      end
+
+      modified_resource_params
     end
 
-    def reset_token_hash_from_session
-      resource_class.name.underscore.to_sym => session.delete(:reset_password_token)
+    def delete_reset_token_from_session
+      session.delete(:reset_password_token)
     end
 end

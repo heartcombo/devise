@@ -110,7 +110,7 @@ module Devise
   # @ symbols or whitespaces in either the localpart or the domain, and that
   # there is a single @ symbol separating the localpart and the domain.
   mattr_accessor :email_regexp
-  @@email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  @@email_regexp = URI::MailTo::EMAIL_REGEXP
 
   # Range validation for password length
   mattr_accessor :password_length

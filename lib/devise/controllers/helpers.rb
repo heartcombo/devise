@@ -10,6 +10,11 @@ module Devise
         if respond_to?(:helper_method)
           helper_method :warden, :signed_in?, :devise_controller?
         end
+
+        def append_info_to_payload(payload)
+          super
+          payload[:status] ||= 401 unless payload[:exception]
+        end
       end
 
       module ClassMethods
@@ -75,11 +80,6 @@ module Devise
               helper_method "current_#{group_name}", "current_#{group_name.to_s.pluralize}", "#{group_name}_signed_in?"
             end
           METHODS
-        end
-
-        def log_process_action(payload)
-          payload[:status] ||= 401 unless payload[:exception]
-          super
         end
       end
 

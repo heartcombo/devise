@@ -43,9 +43,13 @@ https://github.com/plataformatec/devise/wiki/Bug-reports
 
 If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to opensource@plataformatec.com.br.
 
-### Mailing list
+### StackOverflow and Mailing List
 
-If you have any questions, comments, or concerns, please use the Google Group instead of the GitHub issue tracker:
+If you have any questions, comments, or concerns, please use StackOverflow instead of the GitHub issue tracker:
+
+http://stackoverflow.com/questions/tagged/devise
+
+The deprecated mailing list can still be read on
 
 https://groups.google.com/group/plataformatec-devise
 

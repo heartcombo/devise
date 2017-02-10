@@ -33,6 +33,8 @@ module Devise
       # Update password saving the record and clearing token. Returns true if
       # the passwords are valid and the record was saved, false otherwise.
       def reset_password(new_password, new_password_confirmation)
+        instrument 'reset_password.recoverable.devise'
+
         self.password = new_password
         self.password_confirmation = new_password_confirmation
 
@@ -42,10 +44,12 @@ module Devise
       # Resets reset password token and send reset password instructions by email.
       # Returns the token sent in the e-mail.
       def send_reset_password_instructions
-        token = set_reset_password_token
-        send_reset_password_instructions_notification(token)
+        instrument 'send_reset_password_instructions.recoverable.devise' do
+          token = set_reset_password_token
+          send_reset_password_instructions_notification(token)
 
-        token
+          token
+        end
       end
 
       # Checks if the reset password token sent is within the limit time.

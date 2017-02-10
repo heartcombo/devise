@@ -1,4 +1,4 @@
-<h2>Sign up</h2>
+<h2><%= t('devise.registrations.new.title') %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
@@ -11,7 +11,7 @@
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <em>(<%= t('devise.registrations.new.hints.password', length: @minimum_password_length) %>)</em>
     <% end %><br />
     <%= f.password_field :password, autocomplete: "off" %>
   </div>
@@ -22,7 +22,7 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit t('devise.registrations.new.submit') %>
   </div>
 <% end %>
 

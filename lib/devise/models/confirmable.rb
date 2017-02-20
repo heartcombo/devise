@@ -44,7 +44,7 @@ module Devise
       included do
         before_create :generate_confirmation_token, if: :confirmation_required?
         after_create :skip_reconfirmation_in_callback!, if: :send_confirmation_notification?
-        if respond_to?(:after_commit) # ActiveRecord
+        if is_a?(ActiveRecord::Base)
           after_commit :send_on_create_confirmation_instructions, on: :create, if: :send_confirmation_notification?
           after_commit :send_reconfirmation_instructions, on: :update, if: :reconfirmation_required?
         else # Mongoid
@@ -270,7 +270,9 @@ module Devise
         end
 
         def reconfirmation_required?
-          self.class.reconfirmable && @reconfirmation_required && (self.email.present? || self.unconfirmed_email.present?)
+          result = self.class.reconfirmable && @reconfirmation_required && self.unconfirmed_email.present? && !@skip_reconfirmation_in_callback
+          @skip_reconfirmation_in_callback = false
+          result
         end
 
         def send_confirmation_notification?

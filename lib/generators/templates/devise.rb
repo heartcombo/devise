@@ -207,14 +207,19 @@ Devise.setup do |config|
   # config.sign_in_after_reset_password = true
 
   # ==> Configuration for :encryptable
-  # Allow you to use another hashing or encryption algorithm besides bcrypt (default).
-  # You can use :sha1, :sha512 or algorithms from others authentication tools as
-  # :clearance_sha1, :authlogic_sha512 (then you should set stretches above to 20
-  # for default behavior) and :restful_authentication_sha1 (then you should set
-  # stretches to 10, and copy REST_AUTH_SITE_KEY to pepper).
+  # We highly recommend bcrypt (default) as your password hashing strategy.
+  # None of the other password hashing options (e.g., :authlogic_sha512,
+  # :clearance_sha1, # :restful_authentication_sha1, :sha1, :sha512) provide an
+  # important feature called key stretching which make brute force attacks difficult.
+  # At this time of writing, SHA-1 is not safe to use, not only for password hashing,
+  # but also for applicable uses of a cryptographic hash function.
   #
-  # Require the `devise-encryptable` gem when using anything other than bcrypt
-  # config.encryptor = :sha512
+  # Resources:
+  # http://shattered.io/
+  #
+  # If you have read the warnings above and must use any of the other password
+  # hashing options, require the `devise-encryptable` gem
+  # config.encryptor = :bcrypt
 
   # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for

@@ -25,19 +25,21 @@ class OmniAuthConfigTest < ActiveSupport::TestCase
     assert_equal OmniAuth::Strategies::Facebook, config.strategy_class
   end
 
-  test "finds the strategy in OmniAuth's list by name" do
-    NamedTestStrategy = Class.new
-    NamedTestStrategy.send :include, OmniAuth::Strategy
-    NamedTestStrategy.option :name, :the_one
+  class NamedTestStrategy
+    include OmniAuth::Strategy
+    option :name, :the_one
+  end
 
+  test "finds the strategy in OmniAuth's list by name" do
     config = Devise::OmniAuth::Config.new :the_one, [{}]
     assert_equal NamedTestStrategy, config.strategy_class
   end
 
-  test "finds the strategy in OmniAuth's list by class name" do
-    UnNamedTestStrategy = Class.new
-    UnNamedTestStrategy.send :include, OmniAuth::Strategy
+  class UnNamedTestStrategy
+    include OmniAuth::Strategy
+  end
 
+  test "finds the strategy in OmniAuth's list by class name" do
     config = Devise::OmniAuth::Config.new :un_named_test_strategy, [{}]
     assert_equal UnNamedTestStrategy, config.strategy_class
   end

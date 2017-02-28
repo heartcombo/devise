@@ -55,7 +55,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
 
   test 'custom mailer renders parent mailer template' do
     Devise.mailer = 'Users::Mailer'
-    assert_not_blank mail.body.encoded
+    assert_present mail.body.encoded
   end
 
   test 'setup reply to as copy from sender' do
@@ -79,9 +79,9 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   end
 
   test 'body should have link to confirm the account' do
-    host = ActionMailer::Base.default_url_options[:host]
+    host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 
-    if mail.body.encoded =~ %r{<a href=\"http://#{host}/users/password/edit\?reset_password_token=([^"]+)">}
+    if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/password/edit\?reset_password_token=([^"]+)">}
       assert_equal Devise.token_generator.digest(user.class, :reset_password_token, $1), user.reset_password_token
     else
       flunk "expected reset password url regex to match"

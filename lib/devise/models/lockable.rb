@@ -115,10 +115,10 @@ module Devise
         # leaks the existence of an account.
         if Devise.paranoid
           super
-        elsif lock_strategy_enabled?(:failed_attempts) && last_attempt?
-          :last_attempt
-        elsif lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?
+        elsif access_locked? || (lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?)
           :locked
+        elsif lock_strategy_enabled?(:failed_attempts) && last_attempt? && self.class.last_attempt_warning
+          :last_attempt
         else
           super
         end
@@ -155,6 +155,9 @@ module Devise
         end
 
       module ClassMethods
+        # List of strategies that are enabled/supported if :both is used.
+        BOTH_STRATEGIES = [:time, :email]
+
         # Attempt to find a user by its unlock keys. If a record is found, send new
         # unlock instructions to it. If not user is found, returns a new user
         # with an email not found error.
@@ -181,7 +184,8 @@ module Devise
 
         # Is the unlock enabled for the given unlock strategy?
         def unlock_strategy_enabled?(strategy)
-          [:both, strategy].include?(self.unlock_strategy)
+          self.unlock_strategy == strategy ||
+            (self.unlock_strategy == :both && BOTH_STRATEGIES.include?(strategy))
         end
 
         # Is the lock enabled for the given lock strategy?
@@ -189,7 +193,7 @@ module Devise
           self.lock_strategy == strategy
         end
 
-        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in, :unlock_keys)
+        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in, :unlock_keys, :last_attempt_warning)
       end
     end
   end

@@ -17,6 +17,12 @@ Webrat.configure do |config|
   config.open_error_files = false
 end
 
+if ActiveSupport.respond_to?(:test_order)
+  ActiveSupport.test_order = :random
+end
+
+OmniAuth.config.logger = Logger.new('/dev/null')
+
 # Add support to load paths so we can overwrite broken webrat setup
 $:.unshift File.expand_path('../support', __FILE__)
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
@@ -25,3 +31,4 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 require "rails/generators/test_case"
 require "generators/devise/install_generator"
 require "generators/devise/views_generator"
+require "generators/devise/controllers_generator"

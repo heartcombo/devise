@@ -46,6 +46,13 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_no_file "app/views/devise/mailer/confirmation_instructions.html.erb"
   end
 
+  test "Assert mailer specific directory with simple form" do
+    run_generator %w(-v mailer -b simple_form_for)
+    assert_file "app/views/devise/mailer/confirmation_instructions.html.erb"
+    assert_file "app/views/devise/mailer/reset_password_instructions.html.erb"
+    assert_file "app/views/devise/mailer/unlock_instructions.html.erb"
+  end
+
   test "Assert specified directories with scope" do
     run_generator %w(users -v sessions)
     assert_file "app/views/users/sessions/new.html.erb"
@@ -78,7 +85,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/registrations/new.html.erb"
     assert_file "app/views/#{scope}/registrations/edit.html.erb"
     assert_file "app/views/#{scope}/sessions/new.html.erb"
-    assert_file "app/views/#{scope}/shared/_links.erb"
+    assert_file "app/views/#{scope}/shared/_links.html.erb"
     assert_file "app/views/#{scope}/unlocks/new.html.erb"
   end
 

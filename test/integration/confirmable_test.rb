@@ -21,7 +21,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     resend_confirmation
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
+    assert_contain 'You will receive an email with instructions for how to confirm your email address in a few minutes'
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert_equal ['please-change-me@config-initializers-devise.com'], ActionMailer::Base.deliveries.first.from
   end
@@ -47,6 +47,37 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_have_selector '#error_explanation'
       assert_contain /needs to be confirmed within 3 days/
       assert_not user.reload.confirmed?
+      assert_current_url "/users/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired and with application router_name set to a different engine it should raise an error' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days, router_name: :fake_engine do
+      assert_raise ActionView::Template::Error do
+        visit_user_confirmation_with_token(user.raw_confirmation_token)
+      end
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired and with application router_name set to a different engine and route overrides back to main it shows the path' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days, router_name: :fake_engine do
+      visit user_on_main_app_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+      assert_current_url "/user_on_main_apps/confirmation?confirmation_token=#{user.raw_confirmation_token}"
+    end
+  end
+
+  test 'user with valid confirmation token where the token has expired with router overrides different engine it shows the path' do
+    user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
+
+    swap Devise, confirm_within: 3.days do
+      visit user_on_engine_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+      assert_current_url "/user_on_engines/confirmation?confirmation_token=#{user.raw_confirmation_token}"
     end
   end
 
@@ -56,7 +87,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_not user.confirmed?
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
-      assert_contain 'Your account was successfully confirmed.'
+      assert_contain 'Your email address has been successfully confirmed.'
       assert_current_url '/users/sign_in'
       assert user.reload.confirmed?
     end
@@ -98,7 +129,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
     swap Devise, allow_unconfirmed_access_for: 0.days do
       sign_in_as_user(confirm: false)
 
-      assert_contain 'You have to confirm your account before continuing'
+      assert_contain 'You have to confirm your email address before continuing'
       assert_not warden.authenticated?(:user)
     end
   end
@@ -128,9 +159,18 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       user = sign_in_as_user(confirm: false)
 
       visit_user_confirmation_with_token(user.raw_confirmation_token)
-      assert_contain 'Your account was successfully confirmed.'
+      assert_contain 'Your email address has been successfully confirmed.'
       assert_current_url '/'
     end
+  end
+
+  test 'user should be redirected to sign in page whenever signed in as another resource at same session already' do
+    sign_in_as_admin
+
+    user = create_user(confirm: false)
+    visit_user_confirmation_with_token(user.raw_confirmation_token)
+
+    assert_current_url '/users/sign_in'
   end
 
   test 'error message is configurable by resource name' do
@@ -187,7 +227,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       fill_in 'email', with: user.email
       click_button 'Resend confirmation instructions'
 
-      assert_contain "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_contain "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
       assert_current_url "/users/sign_in"
     end
   end
@@ -203,7 +243,7 @@ class ConfirmationTest < ActionDispatch::IntegrationTest
       assert_not_contain "1 error prohibited this user from being saved:"
       assert_not_contain "Email not found"
 
-      assert_contain "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      assert_contain "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
       assert_current_url "/users/sign_in"
     end
   end
@@ -232,7 +272,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     end
 
     assert_current_url '/admin_area/sign_in'
-    assert_contain 'You will receive an email with instructions about how to confirm your account in a few minutes'
+    assert_contain 'You will receive an email with instructions for how to confirm your email address in a few minutes'
   end
 
   test 'admin with valid confirmation token should be able to confirm email after email changed' do
@@ -241,7 +281,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     assert_equal 'new_test@example.com', admin.unconfirmed_email
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
 
-    assert_contain 'Your account was successfully confirmed.'
+    assert_contain 'Your email address has been successfully confirmed.'
     assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?
@@ -263,7 +303,7 @@ class ConfirmationOnChangeTest < ActionDispatch::IntegrationTest
     assert_contain(/Confirmation token(.*)invalid/)
 
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
-    assert_contain 'Your account was successfully confirmed.'
+    assert_contain 'Your email address has been successfully confirmed.'
     assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
     assert_not admin.reload.pending_reconfirmation?

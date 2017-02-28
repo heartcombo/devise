@@ -12,8 +12,13 @@ RailsApp::Application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
-  # Configure static asset server for tests with Cache-Control for performance.
-  config.serve_static_assets = true
+  # Disable serving static files from the `/public` folder by default since
+  # Apache or NGINX already handles this.
+  if Rails.version >= "4.2.0"
+    config.serve_static_files = true
+  else
+    config.serve_static_assets = true
+  end
   config.static_cache_control = "public, max-age=3600"
 
   # Show full error reports and disable caching.

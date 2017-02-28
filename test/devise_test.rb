@@ -3,10 +3,10 @@ require 'test_helper'
 module Devise
   def self.yield_and_restore
     @@warden_configured = nil
-    c, b = @@warden_config, @@warden_config_block
+    c, b = @@warden_config, @@warden_config_blocks
     yield
   ensure
-    @@warden_config, @@warden_config_block = c, b
+    @@warden_config, @@warden_config_blocks = c, b
   end
 end
 
@@ -14,11 +14,11 @@ class DeviseTest < ActiveSupport::TestCase
   test 'bcrypt on the class' do
     password = "super secret"
     klass    = Struct.new(:pepper, :stretches).new("blahblah", 2)
-    hash     = Devise.bcrypt(klass, password)
+    hash     = Devise::Encryptor.digest(klass, password)
     assert_equal ::BCrypt::Password.create(hash), hash
 
     klass    = Struct.new(:pepper, :stretches).new("bla", 2)
-    hash     = Devise.bcrypt(klass, password)
+    hash     = Devise::Encryptor.digest(klass, password)
     assert_not_equal ::BCrypt::Password.new(hash), hash
   end
 
@@ -42,14 +42,27 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'warden manager user configuration through a block' do
     Devise.yield_and_restore do
-      @executed = false
+      executed = false
       Devise.warden do |config|
-        @executed = true
+        executed = true
         assert_kind_of Warden::Config, config
       end
 
       Devise.configure_warden!
-      assert @executed
+      assert executed
+    end
+  end
+
+  test 'warden manager user configuration through multiple blocks' do
+    Devise.yield_and_restore do
+      executed = 0
+
+      3.times do
+        Devise.warden { |config| executed += 1 }
+      end
+
+      Devise.configure_warden!
+      assert_equal 3, executed
     end
   end
 
@@ -82,7 +95,7 @@ class DeviseTest < ActiveSupport::TestCase
 
   test 'Devise.email_regexp should match valid email addresses' do
     valid_emails = ["test@example.com", "jo@jo.co", "f4$_m@you.com", "testing.example@example.com.ua"]
-    non_valid_emails = ["rex", "test@go,com", "test user@example.com", "test_user@example server.com"]
+    non_valid_emails = ["rex", "test@go,com", "test user@example.com", "test_user@example server.com", "test_user@example.com."]
 
     valid_emails.each do |email|
       assert_match Devise.email_regexp, email

@@ -16,11 +16,18 @@ module Devise
         valid_for_params_auth? || valid_for_http_auth?
       end
 
+      # Override and set to false for things like OmniAuth that technically
+      # run through Authentication (user_set) very often, which would normally
+      # reset CSRF data in the session
+      def clean_up_csrf?
+        true
+      end
+
     private
 
       # Receives a resource and check if it is valid by calling valid_for_authentication?
       # An optional block that will be triggered while validating can be optionally
-      # given as parameter. Check Devise::Models::Authenticable.valid_for_authentication?
+      # given as parameter. Check Devise::Models::Authenticatable.valid_for_authentication?
       # for more information.
       #
       # In case the resource can't be validated, it will fail with the given
@@ -29,7 +36,6 @@ module Devise
         result = resource && resource.valid_for_authentication?(&block)
 
         if result
-          decorate(resource)
           true
         else
           if resource
@@ -40,7 +46,7 @@ module Devise
       end
 
       # Get values from params and set in the resource.
-      def decorate(resource)
+      def remember_me(resource)
         resource.remember_me = remember_me? if resource.respond_to?(:remember_me=)
       end
 
@@ -51,7 +57,7 @@ module Devise
 
       # Check if this is a valid strategy for http authentication by:
       #
-      #   * Validating if the model allows params authentication;
+      #   * Validating if the model allows http authentication;
       #   * If any of the authorization headers were sent;
       #   * If all authentication keys are present;
       #
@@ -102,14 +108,17 @@ module Devise
         params_auth_hash.is_a?(Hash)
       end
 
-      # Check if password is present.
+      # Note: unlike `Model.valid_password?`, this method does not actually
+      # ensure that the password in the params matches the password stored in
+      # the database. It only checks if the password is *present*. Do not rely
+      # on this method for validating that a given password is correct.
       def valid_password?
         password.present?
       end
 
       # Helper to decode credentials from HTTP.
       def decode_credentials
-        return [] unless request.authorization && request.authorization =~ /^Basic (.*)/m
+        return [] unless request.authorization && request.authorization =~ /^Basic (.*)/mi
         Base64.decode64($1).split(/:/, 2)
       end
 

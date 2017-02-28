@@ -27,4 +27,8 @@ class Devise::OmniauthCallbacksController < DeviseController
   def after_omniauth_failure_path_for(scope)
     new_session_path(scope)
   end
+
+  def translation_scope
+    'devise.omniauth_callbacks'
+  end
 end

@@ -1,10 +1,9 @@
 require 'devise/strategies/database_authenticatable'
-require 'bcrypt'
 
 module Devise
-  # Digests the password using bcrypt.
   def self.bcrypt(klass, password)
-    ::BCrypt::Password.create("#{password}#{klass.pepper}", cost: klass.stretches).to_s
+    ActiveSupport::Deprecation.warn "Devise.bcrypt is deprecated; use Devise::Encryptor.digest instead"
+    Devise::Encryptor.digest(klass, password)
   end
 
   module Models
@@ -13,7 +12,7 @@ module Devise
     #
     # == Options
     #
-    # DatabaseAuthenticable adds the following options to devise_for:
+    # DatabaseAuthenticatable adds the following options to devise_for:
     #
     #   * +pepper+: a random string used to provide a more secure hash. Use
     #     `rake secret` to generate new keys.
@@ -28,6 +27,8 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
+        after_update :send_password_change_notification, if: :send_password_change_notification?
+
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
       end
@@ -42,12 +43,9 @@ module Devise
         self.encrypted_password = password_digest(@password) if @password.present?
       end
 
-      # Verifies whether an password (ie from sign in) is the user password.
+      # Verifies whether a password (ie from sign in) is the user password.
       def valid_password?(password)
-        return false if encrypted_password.blank?
-        bcrypt   = ::BCrypt::Password.new(encrypted_password)
-        password = ::BCrypt::Engine.hash_secret("#{password}#{self.class.pepper}", bcrypt.salt)
-        Devise.secure_compare(password, encrypted_password)
+        Devise::Encryptor.compare(self.class, encrypted_password, password)
       end
 
       # Set password and password confirmation to nil
@@ -55,9 +53,13 @@ module Devise
         self.password = self.password_confirmation = nil
       end
 
-      # Update record attributes when :current_password matches, otherwise returns
-      # error on :current_password. It also automatically rejects :password and
-      # :password_confirmation if they are blank.
+      # Update record attributes when :current_password matches, otherwise
+      # returns error on :current_password.
+      #
+      # This method also rejects the password field if it is blank (allowing
+      # users to change relevant information like the e-mail without changing
+      # their password). In case the password field is rejected, the confirmation
+      # is also rejected as long as it is also blank.
       def update_with_password(params, *options)
         current_password = params.delete(:current_password)
 
@@ -133,6 +135,10 @@ module Devise
         encrypted_password[0,29] if encrypted_password
       end
 
+      def send_password_change_notification
+        send_devise_notification(:password_change)
+      end
+
     protected
 
       # Digests the password using bcrypt. Custom encryption should override
@@ -141,11 +147,15 @@ module Devise
       # See https://github.com/plataformatec/devise-encryptable for examples
       # of other encryption engines.
       def password_digest(password)
-        Devise.bcrypt(self.class, password)
+        Devise::Encryptor.digest(self.class, password)
+      end
+
+      def send_password_change_notification?
+        self.class.send_password_change_notification && encrypted_password_changed?
       end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :stretches)
+        Devise::Models.config(self, :pepper, :stretches, :send_password_change_notification)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on

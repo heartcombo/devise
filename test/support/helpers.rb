@@ -8,12 +8,15 @@ class ActiveSupport::TestCase
   end
 
   def store_translations(locale, translations, &block)
-    begin
-      I18n.backend.store_translations(locale, translations)
-      yield
-    ensure
-      I18n.reload!
-    end
+    # Calling 'available_locales' before storing the translations to ensure
+    # that the I18n backend will be initialized before we store our custom
+    # translations, so they will always override the translations for the
+    # YML file.
+    I18n.available_locales
+    I18n.backend.store_translations(locale, translations)
+    yield
+  ensure
+    I18n.reload!
   end
 
   def generate_unique_email
@@ -41,6 +44,10 @@ class ActiveSupport::TestCase
     valid_attributes = valid_attributes(attributes)
     valid_attributes.delete(:username)
     Admin.create!(valid_attributes)
+  end
+
+  def create_user_without_email(attributes={})
+    UserWithoutEmail.create!(valid_attributes(attributes))
   end
 
   # Execute the block setting the given values and restoring old values after

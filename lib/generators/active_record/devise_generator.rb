@@ -53,8 +53,8 @@ module ActiveRecord
       t.integer  :sign_in_count, default: 0, null: false
       t.datetime :current_sign_in_at
       t.datetime :last_sign_in_at
-      t.string   :current_sign_in_ip
-      t.string   :last_sign_in_ip
+      t.#{ip_column} :current_sign_in_ip
+      t.#{ip_column} :last_sign_in_ip
 
       ## Confirmable
       # t.string   :confirmation_token
@@ -67,6 +67,24 @@ module ActiveRecord
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 RUBY
+      end
+
+      def ip_column
+        # Padded with spaces so it aligns nicely with the rest of the columns.
+        "%-8s" % (inet? ? "inet" : "string")
+      end
+
+      def inet?
+        rails4? && postgresql?
+      end
+
+      def rails4?
+        Rails.version.start_with? '4'
+      end
+
+      def postgresql?
+        config = ActiveRecord::Base.configurations[Rails.env]
+        config && config['adapter'] == 'postgresql'
       end
     end
   end

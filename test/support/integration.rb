@@ -15,7 +15,7 @@ class ActionDispatch::IntegrationTest
         created_at: Time.now.utc
       )
       user.update_attribute(:confirmation_sent_at, options[:confirmation_sent_at]) if options[:confirmation_sent_at]
-      user.confirm! unless options[:confirm] == false
+      user.confirm unless options[:confirm] == false
       user.lock_access! if options[:locked] == true
       user
     end
@@ -28,7 +28,7 @@ class ActionDispatch::IntegrationTest
         password: '123456', password_confirmation: '123456',
         active: options[:active]
       )
-      admin.confirm! unless options[:confirm] == false
+      admin.confirm unless options[:confirm] == false
       admin
     end
   end
@@ -40,7 +40,7 @@ class ActionDispatch::IntegrationTest
     fill_in 'password', with: options[:password] || '12345678'
     check 'remember me' if options[:remember_me] == true
     yield if block_given?
-    click_button 'Sign In'
+    click_button 'Log In'
     user
   end
 
@@ -50,7 +50,7 @@ class ActionDispatch::IntegrationTest
     fill_in 'email', with: 'admin@test.com'
     fill_in 'password', with: '123456'
     yield if block_given?
-    click_button 'Sign In'
+    click_button 'Log In'
     admin
   end
 

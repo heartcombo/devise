@@ -13,16 +13,16 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'get resource name from env' do
-    assert_equal :user, @controller.resource_name
+    assert_equal :user, @controller.send(:resource_name)
   end
 
   test 'get resource class from env' do
-    assert_equal User, @controller.resource_class
+    assert_equal User, @controller.send(:resource_class)
   end
 
   test 'get resource instance variable from env' do
     @controller.instance_variable_set(:@user, user = User.new)
-    assert_equal user, @controller.resource
+    assert_equal user, @controller.send(:resource)
   end
 
   test 'set resource instance variable from env' do
@@ -51,7 +51,7 @@ class HelpersTest < ActionController::TestCase
   end
 
   test 'resources methods are not controller actions' do
-    assert @controller.class.action_methods.empty?
+    assert @controller.class.action_methods.delete_if { |m| m.include? 'commenter' }.empty?
   end
 
   test 'require no authentication tests current mapping' do
@@ -80,7 +80,7 @@ class HelpersTest < ActionController::TestCase
 
   test 'signed in resource returns signed in resource for current scope' do
     @mock_warden.expects(:authenticate).with(scope: :user).returns(User.new)
-    assert_kind_of User, @controller.signed_in_resource
+    assert_kind_of User, @controller.send(:signed_in_resource)
   end
 
   test 'is a devise controller' do
@@ -97,6 +97,12 @@ class HelpersTest < ActionController::TestCase
     I18n.stubs(:t).returns('non-blank')
     @controller.send :set_flash_message, :notice, :send_instructions
     assert_equal 'non-blank', flash[:notice]
+  end
+
+  test 'issues non-blank flash.now messages normally' do
+    I18n.stubs(:t).returns('non-blank')
+    @controller.send :set_flash_message, :notice, :send_instructions, { now: true }
+    assert_equal 'non-blank', flash.now[:notice]
   end
 
   test 'uses custom i18n options' do

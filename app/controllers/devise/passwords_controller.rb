@@ -23,6 +23,7 @@ class Devise::PasswordsController < DeviseController
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
     self.resource = resource_class.new
+    set_minimum_password_length
     resource.reset_password_token = params[:reset_password_token]
   end
 
@@ -33,18 +34,23 @@ class Devise::PasswordsController < DeviseController
 
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
-      flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
-      set_flash_message(:notice, flash_message) if is_flashing_format?
-      sign_in(resource_name, resource)
+      if Devise.sign_in_after_reset_password
+        flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
+        set_flash_message(:notice, flash_message) if is_flashing_format?
+        sign_in(resource_name, resource)
+      else
+        set_flash_message(:notice, :updated_not_active) if is_flashing_format?
+      end
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
+      set_minimum_password_length
       respond_with resource
     end
   end
 
   protected
     def after_resetting_password_path_for(resource)
-      after_sign_in_path_for(resource)
+      Devise.sign_in_after_reset_password ? after_sign_in_path_for(resource) : new_session_path(resource_name)
     end
 
     # The path used after sending reset password instructions
@@ -66,5 +72,9 @@ class Devise::PasswordsController < DeviseController
       resource.respond_to?(:unlock_access!) &&
         resource.respond_to?(:unlock_strategy_enabled?) &&
         resource.unlock_strategy_enabled?(:email)
+    end
+
+    def translation_scope
+      'devise.passwords'
     end
 end

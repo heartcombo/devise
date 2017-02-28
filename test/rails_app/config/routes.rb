@@ -13,18 +13,34 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :admins, only: [:index] do
-    get :expire, on: :member
-  end
+  resources :admins, only: [:index]
 
   # Users scope
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+
+  devise_for :user_on_main_apps,
+    class_name: 'UserOnMainApp',
+    router_name: :main_app,
+    module: :devise
+
+  devise_for :user_on_engines,
+    class_name: 'UserOnEngine',
+    router_name: :fake_engine,
+    module: :devise
+
+  devise_for :user_without_email,
+    class_name: 'UserWithoutEmail',
+    router_name: :main_app,
+    module: :devise
 
   as :user do
     get "/as/sign_in", to: "devise/sessions#new"
   end
 
   get "/sign_in", to: "devise/sessions#new"
+
+  # Routes for custom controller testing
+  devise_for :user, only: [:registrations], controllers: { registrations: "custom/registrations" }, as: :custom, path: :custom
 
   # Admin scope
   devise_for :admin, path: "admin_area", controllers: { sessions: :"admins/sessions" }, skip: :passwords
@@ -61,6 +77,10 @@ Rails.application.routes.draw do
 
   constraints(host: /192\.168\.1\.\d\d\d/) do
     devise_for :homebase_admin, class_name: "Admin", path: "homebase"
+  end
+
+  scope(subdomain: 'sub') do
+    devise_for :subdomain_users, class_name: "User", only: [:sessions]
   end
 
   devise_for :skip_admin, class_name: "Admin", skip: :all

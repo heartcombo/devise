@@ -56,7 +56,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
 
   test 'custom mailer renders parent mailer template' do
     Devise.mailer = 'Users::Mailer'
-    assert_not_blank mail.body.encoded
+    assert_present mail.body.encoded
   end
 
   test 'setup reply to as copy from sender' do
@@ -80,9 +80,9 @@ class UnlockInstructionsTest < ActionMailer::TestCase
   end
 
   test 'body should have link to unlock the account' do
-    host = ActionMailer::Base.default_url_options[:host]
+    host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 
-    if mail.body.encoded =~ %r{<a href=\"http://#{host}/users/unlock\?unlock_token=([^"]+)">}
+    if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/unlock\?unlock_token=([^"]+)">}
       assert_equal Devise.token_generator.digest(user.class, :unlock_token, $1), user.unlock_token
     else
       flunk "expected unlock url regex to match"

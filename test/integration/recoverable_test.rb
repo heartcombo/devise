@@ -171,7 +171,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     reset_password
 
     assert_current_url '/'
-    assert_contain 'Your password was changed successfully. You are now signed in.'
+    assert_contain 'Your password has been changed successfully. You are now signed in.'
     assert user.reload.valid_password?('987654321')
   end
 
@@ -185,7 +185,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert_not user.reload.valid_password?('987654321')
 
     reset_password visit: false
-    assert_contain 'Your password was changed successfully.'
+    assert_contain 'Your password has been changed successfully.'
     assert user.reload.valid_password?('987654321')
   end
 
@@ -197,6 +197,19 @@ class PasswordTest < ActionDispatch::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'does not sign in user automatically after changing its password if config.sign_in_after_reset_password is false' do
+    swap Devise, sign_in_after_reset_password: false do
+      create_user
+      request_forgot_password
+      reset_password
+
+      assert_contain 'Your password has been changed successfully.'
+      assert_not_contain 'You are now signed in.'
+      assert_equal new_user_session_path, @request.path
+      assert !warden.authenticated?(:user)
+    end
+  end
+
   test 'does not sign in user automatically after changing its password if it\'s locked and unlock strategy is :none or :time' do
     [:none, :time].each do |strategy|
       swap Devise, unlock_strategy: strategy do
@@ -204,7 +217,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
         request_forgot_password
         reset_password
 
-        assert_contain 'Your password was changed successfully.'
+        assert_contain 'Your password has been changed successfully.'
         assert_not_contain 'You are now signed in.'
         assert_equal new_user_session_path, @request.path
         assert !warden.authenticated?(:user)
@@ -218,7 +231,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       request_forgot_password
       reset_password
 
-      assert_contain 'Your password was changed successfully.'
+      assert_contain 'Your password has been changed successfully.'
       assert !user.reload.access_locked?
       assert warden.authenticated?(:user)
     end
@@ -230,7 +243,7 @@ class PasswordTest < ActionDispatch::IntegrationTest
       request_forgot_password
       reset_password
 
-      assert_contain 'Your password was changed successfully.'
+      assert_contain 'Your password has been changed successfully.'
       assert !user.reload.access_locked?
       assert warden.authenticated?(:user)
     end

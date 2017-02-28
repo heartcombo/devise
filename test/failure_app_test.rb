@@ -8,9 +8,37 @@ class FailureTest < ActiveSupport::TestCase
     end
   end
 
+  class FailureWithSubdomain < RootFailureApp
+    routes = ActionDispatch::Routing::RouteSet.new
+
+    routes.draw do
+      scope subdomain: 'sub' do
+        root to: 'foo#bar'
+      end
+    end
+
+    include routes.url_helpers
+  end
+
   class FailureWithI18nOptions < Devise::FailureApp
     def i18n_options(options)
       options.merge(name: 'Steve')
+    end
+  end
+
+  class FakeEngineApp < Devise::FailureApp
+    class FakeEngine
+      def new_user_on_engine_session_url _
+        '/user_on_engines/sign_in'
+      end
+    end
+
+    def main_app
+      raise 'main_app router called instead of fake_engine'
+    end
+
+    def fake_engine
+      @fake_engine ||= FakeEngine.new
     end
   end
 
@@ -42,6 +70,13 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
+    test 'returns to the default redirect location considering subdomain' do
+      call_failure('warden.options' => { scope: :subdomain_user })
+      assert_equal 302, @response.first
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://sub.test.host/subdomain_users/sign_in', @response.second['Location']
+    end
+
     test 'returns to the default redirect location for wildcard requests' do
       call_failure 'action_dispatch.request.formats' => nil, 'HTTP_ACCEPT' => '*/*'
       assert_equal 302, @response.first
@@ -57,6 +92,22 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
 
+    test 'returns to the root path considering subdomain if no session path is available' do
+      swap Devise, router_name: :fake_app do
+        call_failure app: FailureWithSubdomain
+        assert_equal 302, @response.first
+        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+        assert_equal 'http://sub.test.host/', @response.second['Location']
+      end
+    end
+
+    test 'returns to the default redirect location considering the router for supplied scope' do
+      call_failure app: FakeEngineApp, 'warden.options' => { scope: :user_on_engine }
+      assert_equal 302, @response.first
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://test.host/user_on_engines/sign_in', @response.second['Location']
+    end
+
     if Rails.application.config.respond_to?(:relative_url_root)
       test 'returns to the default redirect location considering the relative url root' do
         swap Rails.application.config, relative_url_root: "/sample" do
@@ -65,12 +116,27 @@ class FailureTest < ActiveSupport::TestCase
           assert_equal 'http://test.host/sample/users/sign_in', @response.second['Location']
         end
       end
+
+      test 'returns to the default redirect location considering the relative url root and subdomain' do
+        swap Rails.application.config, relative_url_root: "/sample" do
+          call_failure('warden.options' => { scope: :subdomain_user })
+          assert_equal 302, @response.first
+          assert_equal 'http://sub.test.host/sample/subdomain_users/sign_in', @response.second['Location']
+        end
+      end
     end
 
     test 'uses the proxy failure message as symbol' do
       call_failure('warden' => OpenStruct.new(message: :invalid))
       assert_equal 'Invalid email or password.', @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+    end
+
+    test 'supports authentication_keys as a Hash for the flash message' do
+      swap Devise, authentication_keys: { email: true, login: true } do
+        call_failure('warden' => OpenStruct.new(message: :invalid))
+        assert_equal 'Invalid email, login or password.', @request.flash[:alert]
+      end
     end
 
     test 'uses custom i18n options' do
@@ -203,7 +269,7 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Sign in</h2>')
+      assert @response.third.body.include?('<h2>Log in</h2>')
       assert @response.third.body.include?('Invalid email or password.')
     end
 
@@ -214,8 +280,8 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Sign in</h2>')
-      assert @response.third.body.include?('You have to confirm your account before continuing.')
+      assert @response.third.body.include?('<h2>Log in</h2>')
+      assert @response.third.body.include?('You have to confirm your email address before continuing.')
     end
 
     test 'calls the original controller if inactive account' do
@@ -225,8 +291,25 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Sign in</h2>')
+      assert @response.third.body.include?('<h2>Log in</h2>')
       assert @response.third.body.include?('Your account is not activated yet.')
+    end
+
+    if Rails.application.config.respond_to?(:relative_url_root)
+      test 'calls the original controller with the proper environment considering the relative url root' do
+        swap Rails.application.config, relative_url_root: "/sample" do
+          env = {
+            "warden.options" => { recall: "devise/sessions#new", attempted_path: "/sample/users/sign_in"},
+            "devise.mapping" => Devise.mappings[:user],
+            "warden" => stub_everything
+          }
+          call_failure(env)
+          assert @response.third.body.include?('<h2>Log in</h2>')
+          assert @response.third.body.include?('Invalid email or password.')
+          assert_equal @request.env["SCRIPT_NAME"], '/sample'
+          assert_equal @request.env["PATH_INFO"], '/users/sign_in'
+        end
+      end
     end
   end
 end

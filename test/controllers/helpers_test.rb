@@ -25,6 +25,13 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     @controller.signed_in?
   end
 
+  test 'proxy [group]_signed_in? to authenticate? with each scope' do
+    [:user, :admin].each do |scope|
+      @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
+    end
+    @controller.commenter_signed_in?
+  end
+
   test 'proxy current_user to authenticate with user scope' do
     @mock_warden.expects(:authenticate).with(scope: :user)
     @controller.current_user
@@ -33,6 +40,20 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   test 'proxy current_admin to authenticate with admin scope' do
     @mock_warden.expects(:authenticate).with(scope: :admin)
     @controller.current_admin
+  end
+
+  test 'proxy current_[group] to authenticate with each scope' do
+    [:user, :admin].each do |scope|
+      @mock_warden.expects(:authenticate).with(scope: scope).returns(nil)
+    end
+    @controller.current_commenter
+  end
+
+  test 'proxy current_[plural_group] to authenticate with each scope' do
+    [:user, :admin].each do |scope|
+      @mock_warden.expects(:authenticate).with(scope: scope)
+    end
+    @controller.current_commenters
   end
 
   test 'proxy current_publisher_account to authenticate with namespaced publisher account scope' do
@@ -53,6 +74,14 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   test 'proxy authenticate_admin! to authenticate with admin scope' do
     @mock_warden.expects(:authenticate!).with(scope: :admin)
     @controller.authenticate_admin!
+  end
+
+  test 'proxy authenticate_[group]! to authenticate!? with each scope' do
+    [:user, :admin].each do |scope|
+      @mock_warden.expects(:authenticate!).with(scope: scope)
+      @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
+    end
+    @controller.authenticate_commenter!
   end
 
   test 'proxy authenticate_publisher_account! to authenticate with namespaced publisher account scope' do
@@ -193,6 +222,12 @@ class ControllerAuthenticatableTest < ActionController::TestCase
     assert_equal "/foo.bar", @controller.stored_location_for(:user)
   end
 
+  test 'store bad location for stores a location to redirect back to' do
+    assert_nil @controller.stored_location_for(:user)
+    @controller.store_location_for(:user, "/foo.bar\">Carry")
+    assert_nil @controller.stored_location_for(:user)
+  end
+
   test 'store location for accepts a resource as argument' do
     @controller.store_location_for(User.new, "/foo.bar")
     assert_equal "/foo.bar", @controller.stored_location_for(User.new)
@@ -208,6 +243,11 @@ class ControllerAuthenticatableTest < ActionController::TestCase
   test 'store location for stores query string' do
     @controller.store_location_for(:user, "/foo?bar=baz")
     assert_equal "/foo?bar=baz", @controller.stored_location_for(:user)
+  end
+
+  test 'store location for stores fragments' do
+    @controller.store_location_for(:user, "/foo#bar")
+    assert_equal "/foo#bar", @controller.stored_location_for(:user)
   end
 
   test 'after sign in path defaults to root path if none by was specified for the given scope' do

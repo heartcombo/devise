@@ -8,6 +8,8 @@
 
 4) When reporting an issue, include Rails, Devise and Warden versions. If you are getting exceptions, please include the full backtrace.
 
+5) Notice that all of your interactions in the project are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md)
+
 That's it! The more information you give, the easier it becomes for us to track it down and fix it.
 Ideally, you should provide an application that reproduces the error or a test case to Devise's suite.
 

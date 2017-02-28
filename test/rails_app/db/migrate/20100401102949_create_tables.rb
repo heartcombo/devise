@@ -33,7 +33,7 @@ class CreateTables < ActiveRecord::Migration
       t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     create_table :admins do |t|
@@ -60,7 +60,7 @@ class CreateTables < ActiveRecord::Migration
       ## Attribute for testing route blocks
       t.boolean :active, default: false
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 

@@ -245,7 +245,7 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should return nil if a user based on the raw token is not found' do
-    assert_equal User.with_reset_password_token('random-token'), nil
+    assert_nil User.with_reset_password_token('random-token')
   end
 
 end

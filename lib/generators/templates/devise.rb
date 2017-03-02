@@ -135,6 +135,11 @@ Devise.setup do |config|
   # unconfirmed_email column, and copied to email column on successful confirmation.
   config.reconfirmable = true
 
+  #If true, requires any email changes to be confirmed (exactly the same way as
+  # initial account confirmation) to be applied.
+
+  config.send_reconfirmation_instructions = false
+
   # Defines which key will be used when confirming an account
   # config.confirmation_keys = [:email]
 

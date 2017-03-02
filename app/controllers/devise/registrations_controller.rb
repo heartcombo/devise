@@ -86,7 +86,8 @@ class Devise::RegistrationsController < DeviseController
   def update_needs_confirmation?(resource, previous)
     resource.respond_to?(:pending_reconfirmation?) &&
       resource.pending_reconfirmation? &&
-      previous != resource.unconfirmed_email
+      previous != resource.unconfirmed_email &&
+      resource.can_send_reconfirmation?
   end
 
   # By default we want to require a password checks on update.

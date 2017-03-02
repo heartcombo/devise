@@ -19,6 +19,8 @@ en:
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
+      new_email_confirmation_instructions:
+        subject: "New Email Confirmation instructions"
       reset_password_instructions:
         subject: "Reset password instructions"
       unlock_instructions:

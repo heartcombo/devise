@@ -107,6 +107,10 @@ module Devise
         self.class.reconfirmable && unconfirmed_email.present?
       end
 
+      def can_send_reconfirmation?
+        Devise.send_reconfirmation_instructions && pending_reconfirmation? 
+      end
+
       # Send confirmation instructions by email
       def send_confirmation_instructions
         unless @raw_confirmation_token
@@ -123,6 +127,16 @@ module Devise
         unless @skip_confirmation_notification
           send_confirmation_instructions
         end
+      end
+
+      def send_new_email_confirmation_instructions
+        unless @raw_confirmation_token
+          generate_confirmation_token!
+        end
+
+        opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+        send_devise_notification(:new_email_confirmation_instructions, @raw_confirmation_token, opts) if 
+          can_send_reconfirmation?
       end
 
       # Resend confirmation token.

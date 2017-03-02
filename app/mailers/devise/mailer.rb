@@ -7,6 +7,11 @@ if defined?(ActionMailer)
       devise_mail(record, :confirmation_instructions, opts)
     end
 
+    def new_email_confirmation_instructions(record, token, opts={})
+      @token = token
+      devise_mail(record, :new_email_confirmation_instructions, opts)
+    end
+
     def reset_password_instructions(record, token, opts={})
       @token = token
       devise_mail(record, :reset_password_instructions, opts)

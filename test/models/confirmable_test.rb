@@ -393,20 +393,24 @@ class ReconfirmableTest < ActiveSupport::TestCase
   end
 
   test 'should send confirmation instructions by email after changing email' do
-    admin = create_admin
-    assert admin.confirm
-    assert_email_sent "new_test@example.com" do
-      assert admin.update_attributes(email: 'new_test@example.com')
+    swap Devise, reconfirmable: true, send_reconfirmation_instructions: true do
+      admin = create_admin
+      assert admin.confirm
+      assert_email_sent "new_test@example.com" do
+        assert admin.update_attributes(email: 'new_test@example.com')
+      end
+      assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
     end
-    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should send confirmation instructions by email after changing email from nil' do
-    admin = create_admin(email: nil)
-    assert_email_sent "new_test@example.com" do
-      assert admin.update_attributes(email: 'new_test@example.com')
+    swap Devise, reconfirmable: true, send_reconfirmation_instructions: true do
+      admin = create_admin(email: nil)
+      assert_email_sent "new_test@example.com" do
+        assert admin.update_attributes(email: 'new_test@example.com')
+      end
+      assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
     end
-    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should not send confirmation by email after changing password' do
@@ -515,5 +519,15 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin.email = "new_test@email.com"
     admin.save
     assert admin.pending_reconfirmation?
+  end
+
+  test 'should send reconfirmation instructions to new email after updating the email' do
+    swap Devise, reconfirmable: true, send_reconfirmation_instructions: true do
+      admin = create_admin
+      assert_email_sent "new_test@example.com" do
+        assert admin.update_attributes(email: 'new_test@example.com')
+      end
+      assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
+    end
   end
 end

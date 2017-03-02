@@ -309,8 +309,24 @@ class RegistrationTest < Devise::IntegrationTest
 end
 
 class ReconfirmableRegistrationTest < Devise::IntegrationTest
-  test 'a signed in admin should see a more appropriate flash message when editing their account if reconfirmable is enabled' do
+  test 'a signed in admin should see a more appropriate flash message when editing their account if reconfirmable is enabled and confirmation is disabled' do
     sign_in_as_admin
+    get edit_admin_registration_path
+
+    fill_in 'email', with: 'admin.new@example.com'
+    fill_in 'current password', with: '123456'
+    click_button 'Update'
+
+    assert_current_url '/admin_area/home'
+    assert_contain 'account has been updated successfully'
+    assert_equal 'admin.new@example.com', Admin.to_adapter.find_first.unconfirmed_email
+
+    get edit_admin_registration_path
+  end
+
+  test 'a signed in admin should see a more appropriate flash message when editing their account if reconfirmable and confiramtion are enabled' do
+    sign_in_as_admin
+    Admin.any_instance.stubs(:can_send_reconfirmation?).returns(true)    
     get edit_admin_registration_path
 
     fill_in 'email', with: 'admin.new@example.com'

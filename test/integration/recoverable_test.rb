@@ -211,6 +211,7 @@ class PasswordTest < Devise::IntegrationTest
 
   test 'does not sign in user automatically after changing its password if it\'s locked and unlock strategy is :none or :time' do
     [:none, :time].each do |strategy|
+      User.any_instance.stubs(:active_for_authentication?).returns(true)
       swap Devise, unlock_strategy: strategy do
         create_user(locked: true)
         request_forgot_password
@@ -225,6 +226,7 @@ class PasswordTest < Devise::IntegrationTest
   end
 
   test 'unlocks and signs in locked user automatically after changing it\'s password if unlock strategy is :email' do
+    User.any_instance.stubs(:active_for_authentication?).returns(true)
     swap Devise, unlock_strategy: :email do
       user = create_user(locked: true)
       request_forgot_password
@@ -237,6 +239,7 @@ class PasswordTest < Devise::IntegrationTest
   end
 
   test 'unlocks and signs in locked user automatically after changing it\'s password if unlock strategy is :both' do
+    User.any_instance.stubs(:active_for_authentication?).returns(true)
     swap Devise, unlock_strategy: :both do
       user = create_user(locked: true)
       request_forgot_password

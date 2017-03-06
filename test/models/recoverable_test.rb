@@ -147,6 +147,7 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should reset reset_password_token before send the reset instructions email' do
+    User.any_instance.stubs(:active_for_authentication?).returns(true)
     user = create_user
     token = user.reset_password_token
     User.send_reset_password_instructions(email: user.email)
@@ -154,6 +155,7 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should send email instructions to the user reset their password' do
+    User.any_instance.stubs(:active_for_authentication?).returns(true)
     user = create_user
     assert_email_sent do
       User.send_reset_password_instructions(email: user.email)

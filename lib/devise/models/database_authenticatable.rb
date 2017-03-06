@@ -22,6 +22,7 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
+        after_update :send_email_change_notification, if: :send_email_change_notification?
         after_update :send_password_change_notification, if: :send_password_change_notification?
 
         attr_reader :password, :current_password
@@ -132,6 +133,12 @@ module Devise
         encrypted_password[0,29] if encrypted_password
       end
 
+      # Send notification to user when email changes.
+      def send_email_change_notification
+        send_devise_notification(:email_change, to: email_was)
+      end
+
+      # Send notification to user when password changes.
       def send_password_change_notification
         send_devise_notification(:password_change)
       end
@@ -147,12 +154,16 @@ module Devise
         Devise::Encryptor.digest(self.class, password)
       end
 
+      def send_email_change_notification?
+        self.class.send_email_change_notification && email_changed?
+      end
+
       def send_password_change_notification?
         self.class.send_password_change_notification && encrypted_password_changed?
       end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :stretches, :send_password_change_notification)
+        Devise::Models.config(self, :pepper, :stretches, :send_email_change_notification, :send_password_change_notification)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on

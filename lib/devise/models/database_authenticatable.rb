@@ -14,6 +14,10 @@ module Devise
     #
     #   * +stretches+: the cost given to bcrypt.
     #
+    #   * +send_email_change_notification+: notify original email when it changes.
+    #
+    #   * +send_password_change_notification+: notify email when password changes.
+    #
     # == Examples
     #
     #    User.find(1).valid_password?('password123')         # returns true/false

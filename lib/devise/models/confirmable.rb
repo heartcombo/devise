@@ -26,7 +26,9 @@ module Devise
     #     initial account confirmation) to be applied. Requires additional unconfirmed_email
     #     db field to be set up (t.reconfirmable in migrations). Until confirmed, new email is
     #     stored in unconfirmed email column, and copied to email column on successful
-    #     confirmation.
+    #     confirmation. Also, when used in conjunction with `send_email_change_notification`,
+    #     the notification is sent to the original email when the change is requested,
+    #     not when the unconfirmed email is confirmed.
     #   * +confirm_within+: the time before a sent confirmation token becomes invalid.
     #     You can use this to force the user to confirm within a set period of time.
     #     Confirmable will not generate a new token if a repeat confirmation is requested

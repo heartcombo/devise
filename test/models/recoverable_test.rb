@@ -184,6 +184,16 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_equal raw, reset_password_user.reset_password_token
   end
 
+  test 'should return a new record with errors if password is not provided' do
+    user = create_user
+    raw  = user.send_reset_password_instructions
+
+    reset_password_user = User.reset_password_by_token(reset_password_token: raw)
+    refute reset_password_user.errors.empty?
+    assert_match "can't be blank", reset_password_user.errors[:password].join
+    assert_equal raw, reset_password_user.reset_password_token
+  end
+
   test 'should reset successfully user password given the new password and confirmation' do
     user = create_user
     old_password = user.password

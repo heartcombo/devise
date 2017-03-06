@@ -16,6 +16,8 @@ module Devise
 
     def filtered_hash_by_method_for_given_keys(conditions, method, condition_keys)
       condition_keys.each do |k|
+        next unless conditions.key?(k)
+
         value = conditions[k]
         conditions[k] = value.send(method) if value.respond_to?(method)
       end

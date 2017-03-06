@@ -277,6 +277,16 @@ module Devise
           confirmation_required? && !@skip_confirmation_notification && self.email.present?
         end
 
+        # With reconfirmable, notify the original email when the user first
+        # requests the email change, instead of when the change is confirmed.
+        def send_email_change_notification?
+          if self.class.reconfirmable
+            self.class.send_email_change_notification && reconfirmation_required?
+          else
+            super
+          end
+        end
+
         # A callback initiated after successfully confirming. This can be
         # used to insert your own logic that is only run after the user successfully
         # confirms.

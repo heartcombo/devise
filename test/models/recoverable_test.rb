@@ -117,6 +117,12 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_equal reset_password_user, user
   end
 
+  test 'should not send instructions by email if record is not active_for_authentication?' do
+    user = create_user
+    reset_password_user = User.send_reset_password_instructions(email: user.email)
+    assert_nil reset_password_user.reset_password_token
+  end
+
   test 'should return a new record with errors if user was not found by e-mail' do
     reset_password_user = User.send_reset_password_instructions(email: "invalid@example.com")
     refute reset_password_user.persisted?

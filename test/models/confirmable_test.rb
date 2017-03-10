@@ -516,4 +516,21 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin.save
     assert admin.pending_reconfirmation?
   end
+
+  test 'should notify previous email on email change when configured' do
+    swap Devise, send_email_changed_notification: true do
+      admin = create_admin
+      original_email = admin.email
+
+      assert_difference 'ActionMailer::Base.deliveries.size', 2 do
+        assert admin.update_attributes(email: 'new-email@example.com')
+      end
+      assert_equal original_email, ActionMailer::Base.deliveries[-2]['to'].to_s
+      assert_equal 'new-email@example.com', ActionMailer::Base.deliveries[-1]['to'].to_s
+
+      assert_email_not_sent do
+        assert admin.confirm
+      end
+    end
+  end
 end

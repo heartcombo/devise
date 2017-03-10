@@ -153,7 +153,11 @@ module Devise
   mattr_accessor :pepper
   @@pepper = nil
 
-  # Used to enable sending notification to user when their password is changed
+  # Used to send notification to the original user email when their email is changed.
+  mattr_accessor :send_email_changed_notification
+  @@send_email_changed_notification = false
+
+  # Used to enable sending notification to user when their password is changed.
   mattr_accessor :send_password_change_notification
   @@send_password_change_notification = false
 

@@ -95,7 +95,11 @@ module Devise
             save(validate: args[:ensure_valid] == true)
           end
 
-          after_confirmation if saved
+          if saved
+            instrument 'confirm.confirmable.devise'
+            after_confirmation
+          end
+
           saved
         end
       end
@@ -116,10 +120,13 @@ module Devise
         end
 
         opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+        instrument 'send_confirmation_instructions.confirmable.devise', opts
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 
       def send_reconfirmation_instructions
+        instrument 'send_reconfirmation_instructions.confirmable.devise'
+
         @reconfirmation_required = false
 
         unless @skip_confirmation_notification
@@ -131,6 +138,7 @@ module Devise
       # Regenerates the token if the period is expired.
       def resend_confirmation_instructions
         pending_any_confirmation do
+          instrument 'resend_confirmation_instructions.confirmable.devise'
           send_confirmation_instructions
         end
       end
@@ -151,6 +159,7 @@ module Devise
       # If you don't want confirmation to be sent on create, neither a code
       # to be generated, call skip_confirmation!
       def skip_confirmation!
+        instrument 'skip_confirmation!.confirmable.devise'
         self.confirmed_at = Time.now.utc
       end
 
@@ -250,7 +259,9 @@ module Devise
         end
 
         def generate_confirmation_token!
-          generate_confirmation_token && save(validate: false)
+          instrument 'generate_confirmation_token.confirmable.devise' do
+            generate_confirmation_token && save(validate: false)
+          end
         end
 
         def postpone_email_change_until_confirmation_and_regenerate_confirmation_token

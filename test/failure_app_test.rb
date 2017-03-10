@@ -155,6 +155,13 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
+    test 'does not set timedout key on flash hash' do
+      call_failure('warden' => OpenStruct.new(message: :timeout))
+      assert_nil @request.flash[:timedout]
+      assert_equal 'Your session expired. Please sign in again to continue.', @request.flash[:alert]
+      assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+    end
+
     test 'supports authentication_keys as a Hash for the flash message' do
       swap Devise, authentication_keys: { email: true, login: true } do
         call_failure('warden' => OpenStruct.new(message: :invalid))

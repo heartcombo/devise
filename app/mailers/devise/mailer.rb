@@ -17,8 +17,8 @@ if defined?(ActionMailer)
       devise_mail(record, :unlock_instructions, opts)
     end
 
-    def email_change(record, opts={})
-      devise_mail(record, :email_change, opts)
+    def email_changed(record, opts={})
+      devise_mail(record, :email_changed, opts)
     end
 
     def password_change(record, opts={})

@@ -23,7 +23,7 @@ en:
         subject: "Reset password instructions"
       unlock_instructions:
         subject: "Unlock instructions"
-      email_change:
+      email_changed:
         subject: "Email Changed"
       password_change:
         subject: "Password Changed"

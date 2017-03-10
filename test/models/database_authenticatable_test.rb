@@ -237,7 +237,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should notify previous email on email change when configured' do
-    swap Devise, send_email_change_notification: true do
+    swap Devise, send_email_changed_notification: true do
       user = create_user
       original_email = user.email
       assert_email_sent original_email do

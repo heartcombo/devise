@@ -3,6 +3,10 @@
 * removals
   * `Devise::Mailer#scope_name` and `Devise::Mailer#resource` are now protected
     methods instead of public.
+* bug fixes
+  * Attempt to reset password without the password field in the request now results in a `:blank` validation error.
+    Before this change, Devise would accept the reset password request and log the user in, without validating/changing
+    the password. (by @victor-am)
 * enhancements
   * Notify the original email when it is changed with a new `Devise.send_email_changed_notification` setting.
     When using `reconfirmable`, the notification will be sent right away instead of when the unconfirmed email is confirmed.

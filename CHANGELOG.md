@@ -1,4 +1,4 @@
-### Unreleased
+### 4.2.1 - 2017-03-15
 
 * removals
   * `Devise::Mailer#scope_name` and `Devise::Mailer#resource` are now protected

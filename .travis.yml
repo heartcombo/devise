@@ -9,6 +9,7 @@ rvm:
 
 gemfile:
   - Gemfile
+  - gemfiles/Gemfile.rails-5.1-beta
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
 
@@ -20,8 +21,12 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-5.1-beta
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile
+    - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-5.1-beta
   allow_failures:
     - rvm: ruby-head
 services:

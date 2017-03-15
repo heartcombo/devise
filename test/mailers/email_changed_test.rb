@@ -84,7 +84,47 @@ class EmailChangedTest < ActionMailer::TestCase
 
   test 'body should have user info' do
     body = mail.body.encoded
-    assert_match @original_user_email, body
-    assert_match user.email, body
+    assert_match "Hello #{@original_user_email}", body
+    assert_match "has been changed to #{user.email}", body
+  end
+end
+
+class EmailChangedReconfirmationTest < ActionMailer::TestCase
+  def setup
+    setup_mailer
+    Devise.mailer = 'Devise::Mailer'
+    Devise.mailer_sender = 'test@example.com'
+    Devise.send_email_changed_notification = true
+  end
+
+  def teardown
+    Devise.mailer = 'Devise::Mailer'
+    Devise.mailer_sender = 'please-change-me@config-initializers-devise.com'
+    Devise.send_email_changed_notification = false
+  end
+
+  def admin
+    @admin ||= create_admin.tap { |u|
+      @original_admin_email = u.email
+      u.update_attributes!(email: 'new-email@example.com')
+    }
+  end
+
+  def mail
+    @mail ||= begin
+      admin
+      ActionMailer::Base.deliveries[-2]
+    end
+  end
+
+  test 'send email changed to the original user email' do
+    mail
+    assert_equal [@original_admin_email], mail.to
+  end
+
+  test 'body should have unconfirmed user info' do
+    body = mail.body.encoded
+    assert_match admin.email, body
+    assert_match "is being changed to #{admin.unconfirmed_email}", body
   end
 end

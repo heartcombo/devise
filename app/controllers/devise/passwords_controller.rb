@@ -13,7 +13,7 @@ class Devise::PasswordsController < DeviseController
     self.resource = resource_class.send_reset_password_instructions(resource_params)
     yield resource if block_given?
 
-    if successfully_sent?(resource)
+    if successfully_sent?
       respond_with({}, location: after_sending_reset_password_instructions_path_for(resource_name))
     else
       respond_with(resource)
@@ -33,7 +33,7 @@ class Devise::PasswordsController < DeviseController
     yield resource if block_given?
 
     if resource.errors.empty?
-      resource.unlock_access! if unlockable?(resource)
+      resource.unlock_access! if unlockable?
       if Devise.sign_in_after_reset_password
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message!(:notice, flash_message)
@@ -68,7 +68,7 @@ class Devise::PasswordsController < DeviseController
 
     # Check if proper Lockable module methods are present & unlock strategy
     # allows to unlock resource on password reset
-    def unlockable?(resource)
+    def unlockable?
       resource.respond_to?(:unlock_access!) &&
         resource.respond_to?(:unlock_strategy_enabled?) &&
         resource.unlock_strategy_enabled?(:email)

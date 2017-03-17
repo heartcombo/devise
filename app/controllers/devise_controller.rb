@@ -118,7 +118,7 @@ MESSAGE
   # Helper for use after calling send_*_instructions methods on a resource.
   # If we are in paranoid mode, we always act as if the resource was valid
   # and instructions were sent.
-  def successfully_sent?(resource)
+  def successfully_sent?
     notice = if Devise.paranoid
       resource.errors.clear
       :send_paranoid_instructions

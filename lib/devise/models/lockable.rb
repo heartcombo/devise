@@ -149,7 +149,7 @@ module Devise
           if access_locked?
             yield
           else
-            self.errors.add(Devise.unlock_keys.first, :not_locked)
+            errors.add(Devise.unlock_keys.first, :not_locked)
             false
           end
         end

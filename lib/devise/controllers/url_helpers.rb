@@ -27,7 +27,7 @@ module Devise
     #
     module UrlHelpers
       def self.remove_helpers!
-        self.instance_methods.map(&:to_s).grep(/_(url|path)$/).each do |method|
+        instance_methods.map(&:to_s).grep(/_(url|path)$/).each do |method|
           remove_method method
         end
       end

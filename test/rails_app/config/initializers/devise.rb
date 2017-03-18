@@ -50,6 +50,13 @@ Devise.setup do |config|
   # modifying a user and when used to authenticate or find a user. Default is :email.
   config.strip_whitespace_keys = [:email]
 
+  # Configure which authentication keys should have whitespace squeezed.
+  # These keys will have consecutive occurrence of whitespace squeezed upon creating or
+  # modifying a user and when used to authenticate or find a user. For instance,
+  # if you set :squeeze_whitespace_keys and :strip_whitespace_keys to [:name], then
+  # '  xyz    abc  ' will be stored as 'xyz abc'.
+  # config.squeeze_whitespace_keys = []
+
   # Tell if authentication through request.params is enabled. True by default.
   # config.params_authenticatable = true
 

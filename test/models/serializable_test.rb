@@ -22,7 +22,7 @@ class SerializableTest < ActiveSupport::TestCase
 
   test 'should not include unsafe keys on JSON' do
     keys = from_json().keys.select{ |key| !key.include?("id") }
-    assert_equal %w(created_at email facebook_token updated_at username), keys.sort
+    assert_equal %w(created_at email facebook_token name updated_at username), keys.sort
   end
 
   test 'should not include unsafe keys on JSON even if a new except is provided' do

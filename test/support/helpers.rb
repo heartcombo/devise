@@ -26,7 +26,8 @@ class ActiveSupport::TestCase
   end
 
   def valid_attributes(attributes={})
-    { username: "usertest",
+    { username: 'usertest',
+      name: 'user test',
       email: generate_unique_email,
       password: '12345678',
       password_confirmation: '12345678' }.update(attributes)
@@ -43,6 +44,7 @@ class ActiveSupport::TestCase
   def create_admin(attributes={})
     valid_attributes = valid_attributes(attributes)
     valid_attributes.delete(:username)
+    valid_attributes.delete(:name)
     Admin.create!(valid_attributes)
   end
 
@@ -68,7 +70,8 @@ class ActiveSupport::TestCase
   end
 
   def clear_cached_variables(options)
-    if options.key?(:case_insensitive_keys) || options.key?(:strip_whitespace_keys)
+    if options.key?(:case_insensitive_keys) || options.key?(:strip_whitespace_keys) ||
+        options.key?(:squeeze_whitespace_keys)
       Devise.mappings.each do |_, mapping|
         mapping.to.instance_variable_set(:@devise_parameter_filter, nil)
       end

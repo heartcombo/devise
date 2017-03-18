@@ -6,6 +6,7 @@ class User
   include SharedUser
 
   field :username, type: String
+  field :name, type: String
   field :facebook_token, type: String
 
   ## Database authenticatable

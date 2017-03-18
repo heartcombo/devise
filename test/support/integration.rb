@@ -9,6 +9,7 @@ class ActionDispatch::IntegrationTest
     @user ||= begin
       user = User.create!(
         username: 'usertest',
+        name: 'user test',
         email: options[:email] || 'user@test.com',
         password: options[:password] || '12345678',
         password_confirmation: options[:password] || '12345678',

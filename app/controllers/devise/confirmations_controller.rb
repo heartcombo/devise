@@ -15,6 +15,7 @@ class Devise::ConfirmationsController < DeviseController
       respond_with(resource)
     end
   end
+  alias :create! :create
 
   # GET /resource/confirmation?confirmation_token=abcdef
   def show
@@ -28,8 +29,10 @@ class Devise::ConfirmationsController < DeviseController
       respond_with_navigational(resource.errors, status: :unprocessable_entity){ render :new }
     end
   end
+  alias :show! :show
 
-  protected
+  # Make aliases protected
+  protected :create!, :show!
 
     # The path used after resending confirmation instructions.
     def after_resending_confirmation_instructions_path_for(resource_name)

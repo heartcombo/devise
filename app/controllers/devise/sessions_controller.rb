@@ -20,6 +20,7 @@ class Devise::SessionsController < DeviseController
     yield resource if block_given?
     respond_with resource, location: after_sign_in_path_for(resource)
   end
+  alias :create! :create
 
   # DELETE /resource/sign_out
   def destroy
@@ -28,8 +29,10 @@ class Devise::SessionsController < DeviseController
     yield if block_given?
     respond_to_on_destroy
   end
+  alias :destroy! :destroy
 
-  protected
+  # Make aliases protected
+  protected :create!, :destroy!
 
   def sign_in_params
     devise_parameter_sanitizer.sanitize(:sign_in)

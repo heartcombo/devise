@@ -19,6 +19,7 @@ class Devise::PasswordsController < DeviseController
       respond_with(resource)
     end
   end
+  alias :create! :create
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
@@ -47,8 +48,11 @@ class Devise::PasswordsController < DeviseController
       respond_with resource
     end
   end
+  alias :update! :update
 
-  protected
+  # Make aliases protected
+  protected :create!, :update!
+
     def after_resetting_password_path_for(resource)
       Devise.sign_in_after_reset_password ? after_sign_in_path_for(resource) : new_session_path(resource_name)
     end

@@ -17,6 +17,7 @@ class Devise::UnlocksController < DeviseController
       respond_with(resource)
     end
   end
+  alias :create! :create
 
   # GET /resource/unlock?unlock_token=abcdef
   def show
@@ -30,8 +31,10 @@ class Devise::UnlocksController < DeviseController
       respond_with_navigational(resource.errors, status: :unprocessable_entity){ render :new }
     end
   end
+  alias :show! :show
 
-  protected
+  # Make aliases protected
+  protected :create!, :show!
 
     # The path used after sending unlock password instructions
     def after_sending_unlock_instructions_path_for(resource)

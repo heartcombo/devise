@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = "contact@plataformatec.com.br"
   s.homepage    = "https://github.com/plataformatec/devise"
   s.description = "Flexible authentication solution for Rails with Warden"
-  s.authors     = ['José Valim', 'Carlos Antônio']
+  s.authors     = ['Jose Valim', 'Carlos Antonio'] # accented name causes "ArgumentError: invalid byte sequence in US-ASCII"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- test/*`.split("\n")

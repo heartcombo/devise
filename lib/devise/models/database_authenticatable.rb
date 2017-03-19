@@ -82,6 +82,22 @@ module Devise
         clean_up_passwords
         result
       end
+      
+      # Update record attributes without checking for a :current_password match.
+      # It automatically rejects :password and :password_confirmation if they are blank.
+      # Recommended only for backend use, for example an admin can manually set a 
+      # password when creating a new user, or manually reset a password without
+      # needing to know a user's :current_password.
+      def update_with_password_unchecked(params, *options)
+        if params[:password].blank?
+          params.delete(:password)
+          params.delete(:password_confirmation) if params[:password_confirmation].blank?
+        end
+
+        result = update_attributes(params, *options)
+        clean_up_passwords
+        result
+      end
 
       # Updates record attributes without asking for the current password.
       # Never allows a change to the current password. If you are using this

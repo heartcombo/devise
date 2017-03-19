@@ -53,7 +53,12 @@ module Devise
         if default_sender.present?
           default_sender.respond_to?(:to_proc) ? instance_eval(&default_sender) : default_sender
         elsif Devise.mailer_sender.is_a?(Proc)
-          Devise.mailer_sender.call(mapping.name)
+          case Devise.mailer_sender.arity
+          when 2  
+            Devise.mailer_sender.call(mapping.name, @resource)
+          else
+            Devise.mailer_sender.call(mapping.name)
+          end
         else
           Devise.mailer_sender
         end

@@ -112,4 +112,22 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
       assert_equal ['another@example.com'], mail.from
     end
   end
+  
+  test 'mailer sender accepts a proc with mapping_name' do
+    p = Proc.new {|mapping_name|
+      mapping_name && "another@example.com"
+    }
+    swap Devise, :mailer_sender => p do
+      assert_equal ['another@example.com'], mail.from
+    end
+  end
+  
+  test 'mailer sender accepts a proc with mapping_name and resource' do
+    p = Proc.new {|mapping_name, resource|
+      mapping_name && resource && "another@example.com"
+    }
+    swap Devise, :mailer_sender => p do
+      assert_equal ['another@example.com'], mail.from
+    end
+  end
 end

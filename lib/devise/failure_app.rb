@@ -244,7 +244,11 @@ module Devise
     end
 
     def request_format
-      @request_format ||= request.format.try(:ref)
+      @request_format ||= begin
+        format = request.format.try(:ref)
+        format = :json if format == :api_json
+        format
+      end
     end
 
     def relative_url_root

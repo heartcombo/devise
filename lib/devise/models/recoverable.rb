@@ -45,9 +45,9 @@ module Devise
 
       # Resets reset password token and send reset password instructions by email.
       # Returns the token sent in the e-mail.
-      def send_reset_password_instructions
+      def send_reset_password_instructions(namespace)
         token = set_reset_password_token
-        send_reset_password_instructions_notification(token)
+        send_reset_password_instructions_notification(token, namespace)
 
         token
       end
@@ -93,8 +93,8 @@ module Devise
           raw
         end
 
-        def send_reset_password_instructions_notification(token)
-          send_devise_notification(:reset_password_instructions, token, {})
+        def send_reset_password_instructions_notification(token, namespace)
+          send_devise_notification(:reset_password_instructions, token, namespace, {})
         end
 
         def clear_reset_password_token?

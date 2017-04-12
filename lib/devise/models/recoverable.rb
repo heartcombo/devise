@@ -118,9 +118,9 @@ module Devise
         # password instructions to it. If user is not found, returns a new user
         # with an email not found error.
         # Attributes must contain the user's email
-        def send_reset_password_instructions(attributes={})
+        def send_reset_password_instructions(attributes={}, namespace)
           recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
-          recoverable.send_reset_password_instructions if recoverable.persisted?
+          recoverable.send_reset_password_instructions(namespace) if recoverable.persisted?
           recoverable
         end
 

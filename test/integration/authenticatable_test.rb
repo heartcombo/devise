@@ -544,7 +544,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     end
   end
 
-  test 'not signed in should returns notification payload with 401 status' do
+  test 'not signed in should return notification payload with 401 status' do
     begin
       subscriber = ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |_name, _start, _finish, _id, payload|
         assert_equal 401, payload[:status]

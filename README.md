@@ -126,7 +126,7 @@ Next, check the MODEL for any additional configuration options you might want to
 
 Then run `rake db:migrate`
 
-You should restart your application after changing Devise's configuration options. Otherwise, you will run into strange errors, for example, users being unable to login and route helpers being undefined.
+You should restart your application after changing Devise's configuration options (this includes stopping spring). Otherwise, you will run into strange errors, for example, users being unable to login and route helpers being undefined.
 
 ### Controller filters and helpers
 

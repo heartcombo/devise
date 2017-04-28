@@ -97,13 +97,24 @@ module Devise
           send_devise_notification(:reset_password_instructions, token, {})
         end
 
-        def clear_reset_password_token?
-          encrypted_password_changed = respond_to?(:encrypted_password_changed?) && encrypted_password_changed?
-          authentication_keys_changed = self.class.authentication_keys.any? do |attribute|
-            respond_to?("#{attribute}_changed?") && send("#{attribute}_changed?")
-          end
+        if Devise.rails51?
+          def clear_reset_password_token?
+            encrypted_password_changed = respond_to?(:will_save_change_to_encrypted_password?) && will_save_change_to_encrypted_password?
+            authentication_keys_changed = self.class.authentication_keys.any? do |attribute|
+              respond_to?("will_save_change_to_#{attribute}?") && send("will_save_change_to_#{attribute}?")
+            end
 
-          authentication_keys_changed || encrypted_password_changed
+            authentication_keys_changed || encrypted_password_changed
+          end
+        else
+          def clear_reset_password_token?
+            encrypted_password_changed = respond_to?(:encrypted_password_changed?) && encrypted_password_changed?
+            authentication_keys_changed = self.class.authentication_keys.any? do |attribute|
+              respond_to?("#{attribute}_changed?") && send("#{attribute}_changed?")
+            end
+
+            authentication_keys_changed || encrypted_password_changed
+          end
         end
 
       module ClassMethods

@@ -261,14 +261,26 @@ module Devise
           generate_confirmation_token
         end
 
-        def postpone_email_change?
-          postpone = self.class.reconfirmable &&
-            email_changed? &&
-            !@bypass_confirmation_postpone &&
-            self.email.present? &&
-            (!@skip_reconfirmation_in_callback || !self.email_was.nil?)
-          @bypass_confirmation_postpone = false
-          postpone
+        if Devise.rails51?
+          def postpone_email_change?
+            postpone = self.class.reconfirmable &&
+              will_save_change_to_email? &&
+              !@bypass_confirmation_postpone &&
+              self.email.present? &&
+              (!@skip_reconfirmation_in_callback || !self.email_in_database.nil?)
+            @bypass_confirmation_postpone = false
+            postpone
+          end
+        else
+          def postpone_email_change?
+            postpone = self.class.reconfirmable &&
+              email_changed? &&
+              !@bypass_confirmation_postpone &&
+              self.email.present? &&
+              (!@skip_reconfirmation_in_callback || !self.email_was.nil?)
+            @bypass_confirmation_postpone = false
+            postpone
+          end
         end
 
         def reconfirmation_required?

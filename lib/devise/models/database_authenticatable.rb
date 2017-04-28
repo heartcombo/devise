@@ -165,12 +165,24 @@ module Devise
         Devise::Encryptor.digest(self.class, password)
       end
 
-      def send_email_changed_notification?
-        self.class.send_email_changed_notification && email_changed?
+      if Devise.rails51?
+        def send_email_changed_notification?
+          self.class.send_email_changed_notification && saved_change_to_email?
+        end
+      else
+        def send_email_changed_notification?
+          self.class.send_email_changed_notification && email_changed?
+        end
       end
 
-      def send_password_change_notification?
-        self.class.send_password_change_notification && encrypted_password_changed?
+      if Devise.rails51?
+        def send_password_change_notification?
+          self.class.send_password_change_notification && saved_change_to_encrypted_password?
+        end
+      else
+        def send_password_change_notification?
+          self.class.send_password_change_notification && encrypted_password_changed?
+        end
       end
 
       module ClassMethods

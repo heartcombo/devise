@@ -442,6 +442,13 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_equal 'new_test@example.com', admin.email
   end
 
+  test 'should update email when updating from nil' do
+    admin = create_admin(email: nil)
+    new_email = 'new_test@example.com'
+    assert admin.update_attributes(email: new_email)
+    assert_equal new_email, admin.email
+  end
+
   test 'should not allow admin to get past confirmation email by resubmitting their new address' do
     admin = create_admin
     assert admin.confirm

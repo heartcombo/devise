@@ -45,20 +45,30 @@ module Devise
 
       included do
         before_create :generate_confirmation_token, if: :confirmation_required?
-        after_create :skip_reconfirmation_in_callback!, if: :send_confirmation_notification?
+        before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, if: :postpone_email_change?
         if respond_to?(:after_commit) # ActiveRecord
           after_commit :send_on_create_confirmation_instructions, on: :create, if: :send_confirmation_notification?
-          after_commit :send_reconfirmation_instructions, on: :update, if: :reconfirmation_required?
+          after_commit on: :update do
+            if previous_changes.include?(:email) && send_confirmation_notification?
+              send_confirmation_instructions
+            elsif reconfirmation_required?
+              send_reconfirmation_instructions
+            end
+          end
         else # Mongoid
           after_create :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
-          after_update :send_reconfirmation_instructions, if: :reconfirmation_required?
+          after_update on: :update do
+            if email_changed? && send_confirmation_notification?
+              send_confirmation_instructions
+            elsif reconfirmation_required?
+              send_reconfirmation_instructions
+            end
+          end
         end
-        before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, if: :postpone_email_change?
       end
 
       def initialize(*args, &block)
         @bypass_confirmation_postpone = false
-        @skip_reconfirmation_in_callback = false
         @reconfirmation_required = false
         @skip_confirmation_notification = false
         @raw_confirmation_token = nil
@@ -168,12 +178,6 @@ module Devise
 
       protected
 
-        # To not require reconfirmation after creating with #save called in a
-        # callback call skip_create_confirmation!
-        def skip_reconfirmation_in_callback!
-          @skip_reconfirmation_in_callback = true
-        end
-
         # A callback method used to deliver confirmation
         # instructions on creation. This can be overridden
         # in models to map to a nice sign up e-mail.
@@ -263,20 +267,18 @@ module Devise
 
         def postpone_email_change?
           postpone = self.class.reconfirmable &&
-            email_changed? &&
             !@bypass_confirmation_postpone &&
-            self.email.present? &&
-            (!@skip_reconfirmation_in_callback || !self.email_was.nil?)
+            email_changed? && email.present? && !email_was.nil?
           @bypass_confirmation_postpone = false
           postpone
         end
 
         def reconfirmation_required?
-          self.class.reconfirmable && @reconfirmation_required && (self.email.present? || self.unconfirmed_email.present?)
+          self.class.reconfirmable && @reconfirmation_required && email.present?
         end
 
         def send_confirmation_notification?
-          confirmation_required? && !@skip_confirmation_notification && self.email.present?
+          confirmation_required? && !@skip_confirmation_notification && email.present?
         end
 
         # With reconfirmable, notify the original email when the user first

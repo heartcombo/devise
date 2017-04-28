@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/plataformatec/responders.git
-  revision: 153f2c603fcbd0adb90a15021a7cba53654a78e5
-  specs:
-    responders (2.3.0)
-      railties (>= 4.2.0, < 5.3)
-
-GIT
   remote: git://github.com/rails/activemodel-serializers-xml.git
   revision: dd9c0acf26aab111ebc647cd8deb99ebc6946531
   specs:
@@ -17,7 +10,7 @@ GIT
 PATH
   remote: ..
   specs:
-    devise (4.2.0)
+    devise (4.2.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.2)
@@ -148,6 +141,9 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (12.0.0)
     rdoc (5.1.0)
+    responders (2.4.0)
+      actionpack (>= 4.2.0, < 5.3)
+      railties (>= 4.2.0, < 5.3)
     ruby-openid (2.7.0)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
@@ -187,7 +183,7 @@ DEPENDENCIES
   rails (~> 5.1.0)
   rails-controller-testing
   rdoc
-  responders!
+  responders (~> 2.1)
   sqlite3
   test_after_commit
   webrat (= 0.7.3)

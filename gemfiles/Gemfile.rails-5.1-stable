@@ -11,8 +11,7 @@ gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
 
 gem "rails-controller-testing"
 
-# Waiting on https://github.com/plataformatec/responders/issues/179
-gem "responders", github: "plataformatec/responders"
+gem "responders", "~> 2.1"
 
 group :test do
   gem "omniauth-facebook"

@@ -274,4 +274,9 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+
+  # ===> ActiveJob configuration
+  # If you want to use ActiveJob to diliver ActionMailer messages in the backgound,
+  # you can config deliver_later_option to true. Default is false
+  # config.deliver_later_option = true
 end

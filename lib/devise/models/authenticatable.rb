@@ -129,6 +129,10 @@ module Devise
         Devise.mailer
       end
 
+      def delivery_method
+        Devise.deliver_later_option ? :deliver_later : :deliver_now
+      end
+
       # This is an internal method called every time Devise needs
       # to send a notification/mail. This can be overridden if you
       # need to customize the e-mail delivery logic. For instance,
@@ -187,8 +191,9 @@ module Devise
       def send_devise_notification(notification, *args)
         message = devise_mailer.send(notification, self, *args)
         # Remove once we move to Rails 4.2+ only.
+
         if message.respond_to?(:deliver_now)
-          message.deliver_now
+          message.send(delivery_method)
         else
           message.deliver
         end

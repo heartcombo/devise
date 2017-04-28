@@ -16,6 +16,11 @@ module Devise
   autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
+  
+  # Detection for minor differences between Rails 4 and 5, and 5.1 in tests.
+  def self.rails51?
+    Rails.version.start_with? '5.1'
+  end
 
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'

@@ -137,9 +137,16 @@ module Devise
         encrypted_password[0,29] if encrypted_password
       end
 
-      # Send notification to user when email changes.
-      def send_email_changed_notification
-        send_devise_notification(:email_changed, to: email_was)
+      if Devise.rails51?
+        # Send notification to user when email changes.
+        def send_email_changed_notification
+          send_devise_notification(:email_changed, to: email_before_last_save)
+        end
+      else
+        # Send notification to user when email changes.
+        def send_email_changed_notification
+          send_devise_notification(:email_changed, to: email_was)
+        end
       end
 
       # Send notification to user when password changes.

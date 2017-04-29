@@ -9,6 +9,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user = User.to_adapter.find_first(email: 'user@test.com')
     user.remember_me = true
     sign_in user
-    render (Devise.rails5? ? :body : :text) => ""
+    render (Devise::Test.rails5? ? :body : :text) => ""
   end
 end

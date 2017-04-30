@@ -164,9 +164,9 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   test "creates a new warden proxy if the request object has changed" do
     old_warden_proxy = warden
 
-    @request = if Devise.rails51?
+    @request = if Devise::Test.rails51?
       ActionController::TestRequest.create(Class.new) # needs a "controller class"
-    elsif Devise.rails5?
+    elsif Devise::Test.rails5?
       ActionController::TestRequest.create
     else
       ActionController::TestRequest.new

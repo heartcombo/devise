@@ -416,6 +416,31 @@ https://github.com/plataformatec/devise/wiki/I18n
 
 Caution: Devise Controllers inherit from ApplicationController. If your app uses multiple locales, you should be sure to set I18n.locale in ApplicationController.
 
+### Customise error message
+
+Devise includes some options to customise devise error messages. There are two options -
+
+* `head: false` - to skip from showing error message head part (for example `"2 errors prohibited this user from being saved:"`). default value is true.
+* `full_messages: false` - to skip from adding attribute name from starting of error messages. default value is true.
+
+Use code below to skip head part from error message:
+
+```ruby
+devise_error_messages! head: false
+```
+
+User code below to skip starting attribute name from error messages (show only message from I18n yml files):
+
+```ruby
+devise_error_messages! full_messages: false
+```
+
+User code below to skip both head and starting attribute name from error messages:
+
+```ruby
+devise_error_messages! head: false, full_messages: false
+```
+
 ### Test helpers
 
 Devise includes some test helpers for controller and integration tests.

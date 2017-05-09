@@ -27,6 +27,7 @@ class Devise::RegistrationsController < DeviseController
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
     else
+      flash[:error] = resource.errors.full_messages.join('')
       clean_up_passwords resource
       set_minimum_password_length
       respond_with resource

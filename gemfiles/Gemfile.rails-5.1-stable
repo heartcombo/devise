@@ -9,7 +9,6 @@ gem "rdoc"
 
 gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
 
-gem "rails-controller-testing"
 
 gem "responders", "~> 2.1"
 
@@ -18,6 +17,7 @@ group :test do
   gem "omniauth-openid"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 1.1", require: false
+  gem "rails-controller-testing"
   gem 'test_after_commit', require: false
 end
 

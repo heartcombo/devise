@@ -57,10 +57,10 @@ GIT
 PATH
   remote: ..
   specs:
-    devise (4.2.1)
+    devise (4.3.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 5.1)
+      railties (>= 4.1.0, < 5.2)
       responders
       warden (~> 1.2.3)
 
@@ -143,8 +143,9 @@ GEM
       loofah (~> 2.0)
     rake (12.0.0)
     rdoc (5.1.0)
-    responders (2.3.0)
-      railties (>= 4.2.0, < 5.1)
+    responders (2.4.0)
+      actionpack (>= 4.2.0, < 5.3)
+      railties (>= 4.2.0, < 5.3)
     ruby-openid (2.7.0)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
@@ -188,4 +189,4 @@ DEPENDENCIES
   webrat (= 0.7.3)
 
 BUNDLED WITH
-   1.12.6
+   1.14.6

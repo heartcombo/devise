@@ -294,6 +294,10 @@ module Devise
     Rails.gem_version >= Gem::Version.new("5.1.x")
   end
 
+  def self.activerecord51? # :nodoc:
+    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
+  end
+
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

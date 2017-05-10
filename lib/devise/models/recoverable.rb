@@ -97,7 +97,7 @@ module Devise
           send_devise_notification(:reset_password_instructions, token, {})
         end
 
-        if Devise.rails51?
+        if Devise.activerecord51?
           def clear_reset_password_token?
             encrypted_password_changed = respond_to?(:will_save_change_to_encrypted_password?) && will_save_change_to_encrypted_password?
             authentication_keys_changed = self.class.authentication_keys.any? do |attribute|

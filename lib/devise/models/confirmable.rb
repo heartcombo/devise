@@ -253,7 +253,7 @@ module Devise
           generate_confirmation_token && save(validate: false)
         end
 
-        if Devise.rails51?
+        if Devise.activerecord51?
           def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
             @reconfirmation_required = true
             self.unconfirmed_email = self.email
@@ -271,7 +271,7 @@ module Devise
           end
         end
 
-        if Devise.rails51?
+        if Devise.activerecord51?
           def postpone_email_change?
             postpone = self.class.reconfirmable &&
               will_save_change_to_email? &&

@@ -25,10 +25,6 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-5.0-stable
     - rvm: 2.1.10
       gemfile: Gemfile
-    - env: DEVISE_ORM=mongoid
-      gemfile: Gemfile
-    - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-5.0-stable
   allow_failures:
     - rvm: ruby-head
 services:

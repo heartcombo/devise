@@ -59,6 +59,7 @@ GEM
       tzinfo (~> 1.1)
     arel (8.0.0)
     bcrypt (3.1.11)
+    bson (4.2.1)
     builder (3.2.3)
     concurrent-ruby (1.0.5)
     erubi (1.6.0)
@@ -82,6 +83,11 @@ GEM
     minitest (5.10.1)
     mocha (1.2.1)
       metaclass (~> 0.0.1)
+    mongo (2.4.1)
+      bson (>= 4.2.1, < 5.0.0)
+    mongoid (6.1.0)
+      activemodel (~> 5.0)
+      mongo (>= 2.4.1, < 3.0.0)
     multi_json (1.12.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -178,6 +184,7 @@ DEPENDENCIES
   jruby-openssl
   minitest (< 5.10.2)
   mocha (~> 1.1)
+  mongoid
   oauth2
   omniauth (~> 1.3)
   omniauth-facebook

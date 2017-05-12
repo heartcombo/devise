@@ -34,7 +34,6 @@ platforms :ruby do
   gem "sqlite3"
 end
 
-# TODO:
-# group :mongoid do
-#   gem "mongoid", "~> 4.0.0"
-# end
+group :mongoid do
+  gem "mongoid"
+end

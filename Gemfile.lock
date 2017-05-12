@@ -176,6 +176,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   devise!
   jruby-openssl
+  minitest (< 5.10.2)
   mocha (~> 1.1)
   oauth2
   omniauth (~> 1.3)

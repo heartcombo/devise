@@ -14,6 +14,9 @@ gem "rails-controller-testing"
 
 gem "responders", "~> 2.1"
 
+# TODO: Remove this line when Rails 5.1.1 is released
+gem "minitest", "< 5.10.2"
+
 group :test do
   gem "omniauth-facebook"
   gem "omniauth-openid"

@@ -17,7 +17,7 @@ matrix:
   exclude:
     - rvm: 2.1.10
       gemfile: Gemfile
-    - rvm: 2.4.0
+    - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable

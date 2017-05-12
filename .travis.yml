@@ -2,14 +2,14 @@ language: ruby
 
 rvm:
   - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.0
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
   - ruby-head
 
 gemfile:
   - Gemfile
-  - gemfiles/Gemfile.rails-5.1-stable
+  - gemfiles/Gemfile.rails-5.0-stable
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
 
@@ -22,11 +22,13 @@ matrix:
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: 2.1.10
-      gemfile: gemfiles/Gemfile.rails-5.1-stable
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
+    - rvm: 2.1.10
+      gemfile: Gemfile
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile
     - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-5.1-stable
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
   allow_failures:
     - rvm: ruby-head
 services:

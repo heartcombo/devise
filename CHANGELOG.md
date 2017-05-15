@@ -1,4 +1,4 @@
-### 4.3.0 - unreleased
+### 4.3.0 - 2017-05-14
 
 * Enhancements
   * Dependency support added for Rails 5.1.x.

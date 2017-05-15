@@ -35,6 +35,7 @@
   * Use `ActiveSupport.on_load` hooks to include Devise on `ActiveRecord` and `Mongoid`,
     avoiding autoloading these constants too soon (by @lucasmazza, @rafaelfranca).
 * enhancements
+  * Add the `Devise::Models::Confirmable#unconfirmed?` method (by @bogdanvlviv).
   * Display the minimum password length on `registrations/edit` view (by @Yanchek99).
   * You can disable Devise's routes reloading on boot by through the `reload_routes = false` config.
     This can reduce the time taken to boot the application but it might trigger

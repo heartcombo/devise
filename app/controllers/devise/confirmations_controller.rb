@@ -12,7 +12,7 @@ class Devise::ConfirmationsController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, location: after_resending_confirmation_instructions_path_for(resource_name))
     else
-      respond_with(resource)
+      respond_with(resource, location: new_confirmation_path(resource_name))
     end
   end
 

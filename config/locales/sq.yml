@@ -1,0 +1,60 @@
+sq:
+  devise:
+    confirmations:
+      confirmed: "Llogaria juaj është konfirmuar me sukses."
+      send_instructions: "Pas pak minutash do të pranoni një email me udhëzime në lidhje me mënyrën e konfirmimit të email adresës tuaj."
+      send_paranoid_instructions: "Nëse email adresa juaj ekziston në bazën tonë të të dhënave, pas pak minutash do të pranoni një email me udhëzime rreth mënyrës së konfirmimit të saj."
+    failure:
+      already_authenticated: "Ju tashmë jeni i kyçur"
+      inactive: "Llogaria juaj ende nuk është aktivizuar."
+      invalid: "Të dhënat për qasje janë gabim."
+      locked: "Llogaria juaj është bllokuar."
+      last_attempt: "Ju ka mbetur edhe një mundësi për të provuar para bllokimit të llogarisë tuaj."
+      not_found_in_database: "%{authentication_keys} ose fjalëkalimi i pasaktë."
+      timeout: "Sesioni i juaj ka skaduar. Ju lutemi, kyçuni përsëri për të vazhduar."
+      unauthenticated: "Ju duhet të kyçeni ose të regjistroheni para se të vazhdoni."
+      unconfirmed: "Duhet ta konfirmoni email adresën tuaj para se të vazhdoni."
+    mailer:
+      confirmation_instructions:
+        subject: "Udhëzime për konfirmim"
+      reset_password_instructions:
+        subject: "Udhëzime për rikthim të fjalëkalimit"
+      unlock_instructions:
+        subject: "Udhëzime për zhbllokim të llogarisë"
+      password_change:
+        subject: "Fjalëkalimi u ndryshua"
+    omniauth_callbacks:
+      failure: "Nuk patëm mundësi t'jua lejojmë qasjen nga %{kind} për shkak se \"%{reason}\"."
+      success: "Jeni kyçur me sukses nga llogaria %{kind}."
+    passwords:
+      no_token: "Nuk mund t'i qaseni kësaj faqeje pa ardhur nga një email për rikthim të fjalëkalimit. Nëse vini nga një email i tillë, ju lutemi, sigurohuni që ta përdorni URL-në e plotë."
+      send_instructions: "Pas pak minutash do të pranoni një email me udhëzime se si ta riktheni fjalëkalimin tuaj"
+      send_paranoid_instructions: "Nëse email adresa juaj ekziston në bazën tonë të të dhënave, pas pak minutash do të pranoni një email me udhëzime se si ta riktheni fjalëkalimin tuaj."
+      updated: "Fjalëkalimi juaj është ndryshuar me sukses. Ju tani jeni të kyçur."
+      updated_not_active: "Fjalëkalimi juaj është ndryshuar me sukses."
+    registrations:
+      destroyed: "Mirupafshim! Llogaria juaj u anulua me sukses. Shpresojmë të ju shohim sërish."
+      signed_up: "Mirëseerdhët! Jeni regjistruar me sukses."
+      signed_up_but_inactive: "Jeni regjistruar me sukses. Mirëpo, kyçja juaj nuk mund të realizohet për shkak se llogaria juaj ende nuk është aktivizuar."
+      signed_up_but_locked: "Jeni regjistruar me sukses. Mirëpo, kyçja juaj nuk mund të realizohet për shkak se llogaria juaj është e bllokuar."
+      signed_up_but_unconfirmed: "Një mesazh me një lidhje për konfirmim është dërguar në email adresën tuaj. Ju lutemi, hapeni këtë lidhje për ta konfirmuar llogarinë tuaj."
+      update_needs_confirmation: "Llogaria juaj është ndryshuar me sukses, mirëpo ne duhet ta verifikojmë email adresën tuaj. Ju lutemi, kontrolloni email adresën tuaj dhe klikoni në lidhjen për konfirmim që ta konfirmoni email adresën tuaj të re."
+      updated: "Llogaria juaj është ndryshuar me sukses."
+    sessions:
+      signed_in: "Jeni kyçur me sukses."
+      signed_out: "Jeni shkyçur me sukses."
+      already_signed_out: "Jeni shkyçur me sukses."
+    unlocks:
+      send_instructions: "Pas pak minutash do të pranoni një email me udhëzime se si ta zhbllokoni llogarinë tuaj."
+      send_paranoid_instructions: "Nëse llogaria juaj ekziston, pas pak minutash do të pranoni një email me udhëzime se si ta zhbllokoni atë."
+      unlocked: "Llogaria juaj është zhbllokuar me sukses. Ju lutemi, kyçuni për të vazhduar. "
+  errors:
+    messages:
+      already_confirmed: "është konfirmuar tashmë. Ju lutemi, provoni të kyçeni."
+      confirmation_period_expired: "duhet të konfirmohet brenda periudhës %{period}. Ju lutemi, kërkojeni një të ri"
+      expired: "ka skaduar. Ju lutemi, kërkoni një të ri"
+      not_found: "nuk u gjet"
+      not_locked: "nuk ishte e bllokuar"
+      not_saved:
+        one: "1 gabim e pengoi resursin %{resource} nga ruajtja:"
+        other: "%{count} gabime e penguan resursin %{resource} nga ruajtja:"

@@ -25,7 +25,7 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
-        setup :setup_controller_for_warden, :warden
+        setup :setup_controller_for_warden, :warden if respond_to?(:setup)
       end
 
       # Override process to consider warden.

@@ -56,6 +56,13 @@ module Devise
         before_update :postpone_email_change_until_confirmation_and_regenerate_confirmation_token, if: :postpone_email_change?
       end
 
+      ##
+      # Store the raw confirmation token after the creation of
+      # a record or using the public methods like send_confirmation_instructions and
+      # send_reconfirmation_instructions
+
+      attr_accessor :raw_confirmation_token
+
       def initialize(*args, &block)
         @bypass_confirmation_postpone = false
         @skip_reconfirmation_in_callback = false

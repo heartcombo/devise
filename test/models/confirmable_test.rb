@@ -11,6 +11,11 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_not_nil create_user.confirmation_token
   end
 
+  test 'should generate raw confirmation token after creating a record' do
+    assert_nil new_user.raw_confirmation_token
+    assert_not_nil create_user.raw_confirmation_token
+  end
+
   test 'should never generate the same confirmation token for different users' do
     confirmation_tokens = []
     3.times do

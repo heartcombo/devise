@@ -18,7 +18,8 @@ module ActiveRecord
       end
 
       def generate_model
-        invoke "active_record:model", [name], migration: false unless model_exists? && behavior == :invoke
+        invoke "active_record:model", [name], migration: false, fixture: false unless model_exists? && behavior == :invoke
+        template "fixtures.yml", File.join("test/fixtures", class_path, "#{name.pluralize}.yml")
       end
 
       def inject_devise_content

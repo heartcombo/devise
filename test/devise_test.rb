@@ -104,4 +104,14 @@ class DeviseTest < ActiveSupport::TestCase
       assert_no_match Devise.email_regexp, email
     end
   end
+  
+  test 'should complain when comparing empty or different sized passes' do
+    [nil, ""].each do |empty|
+      assert_not Devise.secure_compare(empty, "something")
+      assert_not Devise.secure_compare("something", empty)
+      assert_not Devise.secure_compare(empty, empty)
+    end
+    assert_not Devise.secure_compare("size_1", "size_four")
+  end
+  
 end

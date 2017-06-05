@@ -1,7 +1,7 @@
 class Devise::ConfirmationsController < DeviseController
   # GET /resource/confirmation/new
   def new
-    self.resource = resource_class.new
+    self.resource = send(:"current_#{resource_name}") || resource_class.new
   end
 
   # POST /resource/confirmation

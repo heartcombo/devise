@@ -16,21 +16,29 @@ module Devise
       end
 
       def update_tracked_fields(request)
-        old_current, new_current = self.current_sign_in_at, Time.now.utc
-        self.last_sign_in_at     = old_current || new_current
-        self.current_sign_in_at  = new_current
-
-        old_current, new_current = self.current_sign_in_ip, request.remote_ip
-        self.last_sign_in_ip     = old_current || new_current
-        self.current_sign_in_ip  = new_current
-
-        self.sign_in_count ||= 0
-        self.sign_in_count += 1
+        assign_attributes(tracked_attributes(request))
       end
 
       def update_tracked_fields!(request)
         update_tracked_fields(request)
         save(validate: false)
+      end
+
+      def tracked_attributes(request)
+        attrs = {}
+
+        old_current, new_current = self.current_sign_in_at, Time.now.utc
+        attrs[:last_sign_in_at]     = old_current || new_current
+        attrs[:current_sign_in_at]  = new_current
+
+        old_current, new_current = self.current_sign_in_ip, request.remote_ip
+        attrs[:last_sign_in_ip]     = old_current || new_current
+        attrs[:current_sign_in_ip]  = new_current
+
+        attrs[:sign_in_count] = self.sign_in_count || 0
+        attrs[:sign_in_count] += 1
+
+        attrs
       end
     end
   end

@@ -139,7 +139,11 @@ module Devise
                               default: defined?(SimpleForm) ? "simple_form_for" : "form_for"
 
       hook_for :markerb,  desc: "Generate markerb instead of erb mail views",
-                          default: defined?(Markerb) ? :markerb : :erb,
+                          default: defined?(Markerb),
+                          type: :boolean
+
+      hook_for :erb,      desc: "Generate erb mail views",
+                          default: !defined?(Markerb),
                           type: :boolean
     end
   end

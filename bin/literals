@@ -1,0 +1,10 @@
+if (ruby -e "exit RUBY_VERSION.to_f >= 2.4")
+then
+  echo "Automatic frozen string literals are supported"
+  gem install pragmater -v 4.0.0
+  pragmater --add app --comments "# frozen_string_literal: true" --whitelist "**/*.rb"
+  pragmater --add lib --comments "# frozen_string_literal: true" --whitelist "**/*.rb"
+  pragmater --add test --comments "# frozen_string_literal: true" --whitelist "**/*.rb"
+else
+  echo "Automatic frozen string literals are not supported."
+fi

@@ -31,7 +31,7 @@ class ValidatableTest < ActiveSupport::TestCase
 
     %w{invalid_email_format 123 $$$ () ☃}.each do |email|
       user.email = email
-      assert user.invalid?, 'should be invalid with email ' << email
+      assert user.invalid?, "should be invalid with email #{email}"
       assert_equal 'is invalid', user.errors[:email].join
     end
 
@@ -42,7 +42,7 @@ class ValidatableTest < ActiveSupport::TestCase
   test 'should accept valid emails' do
     %w(a.b.c@example.com test_mail@gmail.com any@any.net email@test.br 123@mail.test 1☃3@mail.test).each do |email|
       user = new_user(email: email)
-      assert user.valid?, 'should be valid with email ' << email
+      assert user.valid?, "should be valid with email #{email}"
       assert_blank user.errors[:email]
     end
   end

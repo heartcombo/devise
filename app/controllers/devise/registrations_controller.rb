@@ -50,12 +50,8 @@ class Devise::RegistrationsController < DeviseController
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
     if resource_updated
-      if is_flashing_format?
-        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
-          :update_needs_confirmation : :updated
-        set_flash_message :notice, flash_key
-      end
-      bypass_sign_in resource, scope: resource_name
+      set_flash_message_for_update(resource, prev_unconfirmed_email)
+      sign_in_after_change_password
       respond_with resource, location: after_update_path_for(resource)
     else
       clean_up_passwords resource
@@ -127,7 +123,7 @@ class Devise::RegistrationsController < DeviseController
   # The default url to be used after updating a resource. You need to overwrite
   # this method in your own RegistrationsController.
   def after_update_path_for(resource)
-    signed_in_root_path(resource)
+    sign_in_after_change_password? ? signed_in_root_path(resource) : new_session_path(resource_name)
   end
 
   # Authenticates the current scope and gets the current resource from the session.
@@ -146,5 +142,31 @@ class Devise::RegistrationsController < DeviseController
 
   def translation_scope
     'devise.registrations'
+  end
+
+  private
+
+  def set_flash_message_for_update(resource, prev_unconfirmed_email)
+    return unless is_flashing_format?
+    flash_key = if update_needs_confirmation?(resource, prev_unconfirmed_email)
+                  :update_needs_confirmation
+                elsif sign_in_after_change_password?
+                  :updated
+                else
+                  :updated_not_sign_in
+                end
+    set_flash_message :notice, flash_key
+  end
+
+  def sign_in_after_change_password
+    if sign_in_after_change_password?
+      bypass_sign_in resource, scope: resource_name
+    else
+      sign_out(resource)
+    end
+  end
+
+  def sign_in_after_change_password?
+    Devise.sign_in_after_change_password && account_update_params.include?(:password)
   end
 end

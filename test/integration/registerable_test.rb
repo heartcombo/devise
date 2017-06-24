@@ -179,6 +179,22 @@ class RegistrationTest < Devise::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'a signed in user should not still be able to use the website after changing their password if config.sign_in_after_change_password is false' do
+    swap Devise, sign_in_after_change_password: false do
+      sign_in_as_user
+      get edit_user_registration_path
+
+      fill_in 'password', with: '1234567890'
+      fill_in 'password confirmation', with: '1234567890'
+      fill_in 'current password', with: '12345678'
+      click_button 'Update'
+
+      assert_contain 'Your password has been changed successfully. please try signing in'
+      assert_equal new_user_session_path, @request.path
+      assert !warden.authenticated?(:user)
+    end
+  end
+
   test 'a signed in user should not change their current user with invalid password' do
     sign_in_as_user
     get edit_user_registration_path

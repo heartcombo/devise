@@ -51,7 +51,7 @@ module Devise
       def mailer_sender(mapping, sender = :from)
         default_sender = default_params[sender]
         if default_sender.present?
-          default_sender.respond_to?(:to_proc) ? instance_eval(&default_sender) : default_sender
+          default_sender.respond_to?(:to_proc) ? default_sender.call : default_sender
         elsif Devise.mailer_sender.is_a?(Proc)
           Devise.mailer_sender.call(mapping.name)
         else

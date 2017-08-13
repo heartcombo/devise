@@ -1,11 +1,11 @@
 <h2>Resend unlock instructions</h2>
 
-<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+<%= form_with model: resource, scope: resource_name, url: unlock_path(resource_name), method: :post, local: true do |f| %>
   <%= devise_error_messages! %>
 
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= f.email_field :email, autofocus: true, id: "#{resource_name}_email" %>
   </div>
 
   <div class="actions">

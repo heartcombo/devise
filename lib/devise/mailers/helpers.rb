@@ -51,7 +51,7 @@ module Devise
       def mailer_sender(mapping, sender = :from)
         default_sender = default_params[sender]
         if default_sender.present?
-          default_sender.respond_to?(:to_proc) ? instance_eval(&default_sender) : default_sender
+          compute_default_mapping_sender(default_sender)
         elsif Devise.mailer_sender.is_a?(Proc)
           Devise.mailer_sender.call(mapping.name)
         else
@@ -85,6 +85,19 @@ module Devise
       def subject_for(key)
         I18n.t(:"#{devise_mapping.name}_subject", scope: [:devise, :mailer, key],
           default: [:subject, key.to_s.humanize])
+      end
+
+      private
+
+      def compute_default_mapping_sender(default_sender)
+        return default_sender unless default_sender.respond_to?(:to_proc)
+
+        proc = default_sender.to_proc
+        if proc.arity == 1
+          instance_exec(self, &proc)
+        else
+          instance_exec(&proc)
+        end
       end
     end
   end

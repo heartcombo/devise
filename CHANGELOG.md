@@ -2,6 +2,7 @@
 
 * bug fixes
   * Validations were being ignored on singup in the `Trackable#update_tracked_fields!` method. (by @AshleyFoster)
+  * Do not modify options for `#serializable_hash`. (by @guigs)
  
 ### 4.3.0 - 2017-05-14
 

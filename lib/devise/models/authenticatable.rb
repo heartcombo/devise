@@ -102,7 +102,7 @@ module Devise
       # and passing a new list of attributes you want to exempt. All attributes
       # given to :except will simply add names to exempt to Devise internal list.
       def serializable_hash(options = nil)
-        options ||= {}
+        options = options.try(:dup) || {}
         options[:except] = Array(options[:except])
 
         if options[:force_except]

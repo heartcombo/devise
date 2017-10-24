@@ -2,9 +2,9 @@ language: ruby
 
 rvm:
   - 2.1.10
-  - 2.2.7
-  - 2.3.4
-  - 2.4.1
+  - 2.2.8
+  - 2.3.5
+  - 2.4.2
   - ruby-head
 
 gemfile:
@@ -17,7 +17,7 @@ matrix:
   exclude:
     - rvm: 2.1.10
       gemfile: Gemfile
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable

@@ -176,11 +176,20 @@ MESSAGE
     options
   end
 
+  def devise_config_options(options)
+    Devise.class_variables.each do |k|
+      key_name = k.to_s.sub('@@', '')
+      options[:"resource_#{key_name}"] = Devise.class_variable_get(k)
+    end
+    options
+  end
+
   # Get message for given
   def find_message(kind, options = {})
     options[:scope] ||= translation_scope
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
+    options = devise_config_options(options)
     options = devise_i18n_options(options)
     I18n.t("#{options[:resource_name]}.#{kind}", options)
   end

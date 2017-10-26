@@ -167,6 +167,12 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'User Steve does not exist', @request.flash[:alert]
     end
 
+    test 'uses devise config options' do
+      call_failure('warden' => OpenStruct.new(message: :locked))
+      assert_equal 'Your account is locked. Maximum amount of failed attempts(20) was reached.', @request.flash[:alert]
+      assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+    end
+
     test 'uses the proxy failure message as string' do
       call_failure('warden' => OpenStruct.new(message: 'Hello world'))
       assert_equal 'Hello world', @request.flash[:alert]

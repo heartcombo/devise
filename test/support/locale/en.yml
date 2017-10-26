@@ -1,6 +1,7 @@
 en:
   devise:
     failure:
+      locked: "Your account is locked. Maximum amount of failed attempts(%{resource_maximum_attempts}) was reached."
       user:
         does_not_exist: "User %{name} does not exist"
   errors:

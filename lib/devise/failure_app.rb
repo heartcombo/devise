@@ -92,6 +92,14 @@ module Devise
       options
     end
 
+    def config_options(options)
+      Devise.class_variables.each do |k|
+        key_name = k.to_s.sub('@@', '')
+        options[:"resource_#{key_name}"] = Devise.class_variable_get(k)
+      end
+      options
+    end
+
     def i18n_message(default = nil)
       message = warden_message || default || :unauthenticated
 
@@ -103,6 +111,7 @@ module Devise
         auth_keys = scope_class.authentication_keys
         keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key| scope_class.human_attribute_name(key) }
         options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
+        options = config_options(options)
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", options)

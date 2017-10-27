@@ -21,13 +21,6 @@ module Devise
         public_task :copy_views
       end
 
-      # TODO: Add this to Rails itself
-      module ClassMethods
-        def hide!
-          Rails::Generators.hide_namespace self.namespace
-        end
-      end
-
       def copy_views
         if options[:views]
           options[:views].each do |directory|

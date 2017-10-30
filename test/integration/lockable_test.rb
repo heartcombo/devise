@@ -172,7 +172,7 @@ class LockTest < Devise::IntegrationTest
     assert_equal response.body, {}.to_json
   end
 
-  test "in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is locked" do
+  test "in paranoid mode, when trying to unlock a user that exists it should not say that it exists if it is locked" do
     swap Devise, paranoid: true do
       user = create_user(locked: true)
 
@@ -187,7 +187,7 @@ class LockTest < Devise::IntegrationTest
     end
   end
 
-  test "in paranoid mode, when trying to unlock an user that exists it should not say that it exists if it is not locked" do
+  test "in paranoid mode, when trying to unlock a user that exists it should not say that it exists if it is not locked" do
     swap Devise, paranoid: true do
       user = create_user(locked: false)
 
@@ -202,7 +202,7 @@ class LockTest < Devise::IntegrationTest
     end
   end
 
-  test "in paranoid mode, when trying to unlock an user that does not exists it should not say that it does not exists" do
+  test "in paranoid mode, when trying to unlock a user that does not exists it should not say that it does not exists" do
     swap Devise, paranoid: true do
       visit new_user_session_path
       click_link "Didn't receive unlock instructions?"

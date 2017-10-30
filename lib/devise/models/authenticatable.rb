@@ -256,7 +256,7 @@ module Devise
         #   end
         #
         # Finally, notice that Devise also queries for users in other scenarios
-        # besides authentication, for example when retrieving an user to send
+        # besides authentication, for example when retrieving a user to send
         # an e-mail for password reset. In such cases, find_for_authentication
         # is not called.
         def find_for_authentication(tainted_conditions)

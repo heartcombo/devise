@@ -8,6 +8,6 @@ end
 
 class ActiveSupport::TestCase
   setup do
-    Mongoid.purge!
+    Mongoid.default_session.drop
   end
 end

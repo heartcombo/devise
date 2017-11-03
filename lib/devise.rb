@@ -149,7 +149,7 @@ module Devise
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes
 
-  # Used to hash the password. Please generate one with rake secret.
+  # Used to hash the password. Please generate one with rails secret.
   mattr_accessor :pepper
   @@pepper = nil
 

@@ -2,9 +2,7 @@
 class DeviseController < Devise.parent_controller.constantize
   include Devise::Controllers::ScopedViews
 
-  if respond_to?(:helper)
-    helper DeviseHelper
-  end
+  helper DeviseHelper if respond_to?(:helper)
 
   if respond_to?(:helper_method)
     helpers = %w(resource scope_name resource_name signed_in_resource
@@ -24,10 +22,10 @@ class DeviseController < Devise.parent_controller.constantize
   # itself. Changing its visibility may break other gems.
   def _prefixes #:nodoc:
     @_prefixes ||= if self.class.scoped_views? && request && devise_mapping
-      ["#{devise_mapping.scoped_path}/#{controller_name}"] + super
-    else
-      super
-    end
+                     ["#{devise_mapping.scoped_path}/#{controller_name}"] + super
+                   else
+                     super
+                   end
   end
 
   protected
@@ -55,7 +53,7 @@ class DeviseController < Devise.parent_controller.constantize
 
   # Attempt to find the mapped route for devise based on request path
   def devise_mapping
-    @devise_mapping ||= request.env["devise.mapping"]
+    @devise_mapping ||= request.env['devise.mapping']
   end
 
   # Checks whether it's a devise mapped resource or not.
@@ -120,11 +118,11 @@ MESSAGE
   # and instructions were sent.
   def successfully_sent?(resource)
     notice = if Devise.paranoid
-      resource.errors.clear
-      :send_paranoid_instructions
-    elsif resource.errors.empty?
-      :send_instructions
-    end
+               resource.errors.clear
+               :send_paranoid_instructions
+             elsif resource.errors.empty?
+               :send_instructions
+             end
 
     if notice
       set_flash_message! :notice, notice
@@ -160,9 +158,7 @@ MESSAGE
 
   # Sets flash message if is_flashing_format? equals true
   def set_flash_message!(key, kind, options = {})
-    if is_flashing_format?
-      set_flash_message(key, kind, options)
-    end
+    set_flash_message(key, kind, options) if is_flashing_format?
   end
 
   # Sets minimum password length to show to user

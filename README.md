@@ -374,6 +374,12 @@ end
 
 This way, you tell Devise to use the scope `:user` when "/sign_in" is accessed. Notice `devise_scope` is also aliased as `as` in your router.
 
+Please note: You will still need to add `devise_for` in your routes in order to use helper methods such as `current_user`.
+
+```ruby
+devise_for :users, skip: :all
+```
+
 ### I18n
 
 Devise uses flash messages with I18n, in conjunction with the flash keys :notice and :alert. To customize your app, you can set up your locale file:

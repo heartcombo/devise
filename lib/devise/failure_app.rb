@@ -148,7 +148,8 @@ module Devise
       if relative_url_root?
         opts[:script_name] = relative_url_root
       elsif defined? context.routes
-        opts[:script_name] = context.routes.url_helpers.root_path
+        rootpath = context.routes.url_helpers.root_path
+        opts[:script_name] = rootpath.chomp('/') unless rootpath.length <= 1
       end
 
       if context.respond_to?(route)

@@ -14,9 +14,9 @@ class Devise::RegistrationsController < DeviseController
   def create
     build_resource(sign_up_params)
 
-    resource.save
     yield resource if block_given?
-    if resource.persisted?
+
+    if resource.save
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         sign_up(resource_name, resource)

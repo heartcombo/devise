@@ -38,4 +38,13 @@ class TrackableTest < ActiveSupport::TestCase
     assert_nil user.last_sign_in_at
     assert_equal 0, user.sign_in_count
   end
+
+  test 'update_tracked_fields should run model validations' do
+    user = UserWithValidations.new
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+
+    assert_not user.update_tracked_fields!(request)
+    assert_not user.persisted?
+  end
 end

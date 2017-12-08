@@ -45,7 +45,9 @@ env:
 
 before_install: "rm ${BUNDLE_GEMFILE}.lock"
 
-before_script: "bundle update"
+before_script:
+  - "bundle update"
+  - ./bin/literals
 
 script: "bin/test"
 

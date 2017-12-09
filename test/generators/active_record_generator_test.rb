@@ -51,7 +51,7 @@ if DEVISE_ORM == :active_record
 
     test "add primary key type with rails 5 when specified in rails generator" do
       run_generator ["monster", "--primary_key_type=uuid"]
-      if Devise.rails5?
+      if Rails.version.start_with? '5'
         assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters, id: :uuid do/
       else
         assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters do/

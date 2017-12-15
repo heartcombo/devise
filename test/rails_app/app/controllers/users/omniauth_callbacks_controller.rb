@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
     data = request.respond_to?(:get_header) ? request.get_header("omniauth.auth") : request.env["omniauth.auth"]

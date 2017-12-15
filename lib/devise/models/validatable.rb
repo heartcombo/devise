@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Models
     # Validatable creates all needed validations for a user email and password.

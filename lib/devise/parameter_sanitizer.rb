@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   # The +ParameterSanitizer+ deals with permitting specific parameters values
   # for each +Devise+ scope in the application.

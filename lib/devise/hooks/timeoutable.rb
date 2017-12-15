@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Each time a record is set we check whether its session has already timed out
 # or not, based on last request time. If so, the record is logged out and
 # redirected to the sign in page. Also, each time the request comes and the

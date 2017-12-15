@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Test
     # `Devise::Test::ControllerHelpers` provides a facility to test controllers

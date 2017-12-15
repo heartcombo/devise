@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   # Devise::Test::IntegrationHelpers is a helper module for facilitating
   # authentication on Rails integration tests to bypass the required steps for

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 require "devise/version"

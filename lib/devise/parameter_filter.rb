@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   class ParameterFilter
     def initialize(case_insensitive_keys, strip_whitespace_keys)

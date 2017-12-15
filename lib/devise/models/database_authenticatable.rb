@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'devise/strategies/database_authenticatable'
 
 module Devise

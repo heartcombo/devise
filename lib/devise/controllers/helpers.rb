@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Controllers
     # Those helpers are convenience methods added to ApplicationController.

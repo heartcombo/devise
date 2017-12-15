@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails/generators/named_base'
 require 'generators/devise/orm_helpers'
 

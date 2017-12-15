@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 superclass = ActiveRecord::Migration
 # TODO: Inherit from the 5.0 Migration class directly when we drop support for Rails 4.
 superclass = ActiveRecord::Migration[5.0] if superclass.respond_to?(:[])

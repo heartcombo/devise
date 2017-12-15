@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Warden::Mixins::Common
   def request
     @request ||= ActionDispatch::Request.new(env)

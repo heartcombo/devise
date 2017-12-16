@@ -27,7 +27,7 @@ It's composed of 10 modules:
 * [Validatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * [Lockable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
-## Table of Content
+## Table of Contents
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 orderedList:0 -->
 

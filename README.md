@@ -27,6 +27,50 @@ It's composed of 10 modules:
 * [Validatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
 * [Lockable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
+## Table of Contents
+
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 orderedList:0 -->
+
+- [Information](#information)
+	- [The Devise wiki](#the-devise-wiki)
+	- [Bug reports](#bug-reports)
+	- [StackOverflow and Mailing List](#stackoverflow-and-mailing-list)
+	- [RDocs](#rdocs)
+	- [Example applications](#example-applications)
+	- [Extensions](#extensions)
+	- [Contributing](#contributing)
+- [Starting with Rails?](#starting-with-rails)
+- [Getting started](#getting-started)
+	- [Controller filters and helpers](#controller-filters-and-helpers)
+	- [Configuring Models](#configuring-models)
+	- [Strong Parameters](#strong-parameters)
+	- [Configuring views](#configuring-views)
+	- [Configuring controllers](#configuring-controllers)
+	- [Configuring routes](#configuring-routes)
+	- [I18n](#i18n)
+	- [Test helpers](#test-helpers)
+	- [Controller tests](#controller-tests)
+	- [Integration tests](#integration-tests)
+	- [OmniAuth](#omniauth)
+	- [Configuring multiple models](#configuring-multiple-models)
+- [Create a migration with the required fields](#create-a-migration-with-the-required-fields)
+- [Inside your Admin model](#inside-your-admin-model)
+- [Inside your routes](#inside-your-routes)
+- [Inside your protected controller](#inside-your-protected-controller)
+- [Inside your controllers and views](#inside-your-controllers-and-views)
+	- [ActiveJob Integration](#activejob-integration)
+	- [Password reset tokens and Rails logs](#password-reset-tokens-and-rails-logs)
+	- [Other ORMs](#other-orms)
+- [Additional information](#additional-information)
+	- [Heroku](#heroku)
+	- [Warden](#warden)
+	- [Contributors](#contributors)
+- [License](#license)
+
+<!-- /TOC -->
+
+
+
 ## Information
 
 ### The Devise wiki

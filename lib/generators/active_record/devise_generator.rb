@@ -13,9 +13,9 @@ module ActiveRecord
 
       def copy_devise_migration
         if (behavior == :invoke && model_exists?) || (behavior == :revoke && migration_exists?(table_name))
-          migration_template "migration_existing.rb", "db/migrate/add_devise_to_#{table_name}.rb", migration_version: migration_version
+          migration_template "migration_existing.rb", "#{migration_path}/add_devise_to_#{table_name}.rb", migration_version: migration_version
         else
-          migration_template "migration.rb", "db/migrate/devise_create_#{table_name}.rb", migration_version: migration_version
+          migration_template "migration.rb", "#{migration_path}/devise_create_#{table_name}.rb", migration_version: migration_version
         end
       end
 

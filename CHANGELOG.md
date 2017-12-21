@@ -1,5 +1,12 @@
 ### Unreleased
 
+* Enhancements
+  * Add `frozen_string_literal` pragma comment to all Ruby files. (by @pat)
+  * Use `set_flash_method!` instead of `set_flash_method` in `Devise::OmniauthCallbacksController#failure`. (by @saichander17)
+  * Clarify how `store_location_for` modifies URIs. (by @olivierlacan)
+  * Move `failed_attempts` increment into its own function. by (@mobilutz)
+  * Add `autocomplete="email"` to email fields. by (@MikeRogers0)
+
 * bug fixes
   * Validations were being ignored on singup in the `Trackable#update_tracked_fields!` method. (by @AshleyFoster)
   * Do not modify options for `#serializable_hash`. (by @guigs)

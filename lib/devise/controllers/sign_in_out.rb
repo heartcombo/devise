@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Controllers
     # Provide sign in and sign out functionality.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "shared_user_without_email"
 
 class UserWithoutEmail < ActiveRecord::Base

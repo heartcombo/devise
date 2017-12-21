@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   prepend_before_action :current_user, only: :exhibit
   before_action :authenticate_user!, except: [:accept, :exhibit]

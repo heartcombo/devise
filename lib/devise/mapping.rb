@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   # Responsible for handling devise mappings and routes configuration. Each
   # resource configured by devise_for in routes is actually creating a mapping

@@ -40,6 +40,10 @@ class SerializableTest < ActiveSupport::TestCase
     assert_no_match(/confirmation_token/, @user.inspect)
   end
 
+  test 'should accept frozen options' do
+    assert_key "username", @user.as_json({only: :username}.freeze)["user"]
+  end
+
   def assert_key(key, subject)
     assert subject.key?(key), "Expected #{subject.inspect} to have key #{key.inspect}"
   end

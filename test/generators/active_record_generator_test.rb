@@ -76,6 +76,20 @@ if DEVISE_ORM == :active_record
       assert_migration "db/migrate/devise_create_monsters.rb", /t.string   :current_sign_in_ip/
       assert_migration "db/migrate/devise_create_monsters.rb", /t.string   :last_sign_in_ip/
     end
+
+    test "do NOT add primary key type when NOT specified in rails generator" do
+      run_generator %w(monster)
+      assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters do/
+    end
+
+    test "add primary key type with rails 5 when specified in rails generator" do
+      run_generator ["monster", "--primary_key_type=uuid"]
+      if Rails.version.start_with? '5'
+        assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters, id: :uuid do/
+      else
+        assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters do/
+      end
+    end
   end
 
   module RailsEngine

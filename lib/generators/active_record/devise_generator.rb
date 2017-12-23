@@ -8,6 +8,8 @@ module ActiveRecord
     class DeviseGenerator < ActiveRecord::Generators::Base
       argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
+      class_option :primary_key_type, type: :string, desc: "The type for primary key"
+
       include Devise::Generators::OrmHelpers
       source_root File.expand_path("../templates", __FILE__)
 
@@ -93,6 +95,15 @@ RUBY
        if rails5?
          "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
        end
+     end
+
+     def primary_key_type
+       primary_key_string if rails5?
+     end
+
+     def primary_key_string
+       key_string = options[:primary_key_type]
+       ", id: :#{key_string}" if key_string
      end
     end
   end

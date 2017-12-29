@@ -162,7 +162,7 @@ DEPENDENCIES
   omniauth-oauth2
   omniauth-openid
   rails!
-  rdoc
+  rdoc (~> 5.1)
   sqlite3
   test_after_commit
   webrat (= 0.7.3)

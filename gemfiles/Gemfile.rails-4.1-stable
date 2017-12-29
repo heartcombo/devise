@@ -7,7 +7,7 @@ gemspec path: ".."
 gem "rails", github: "rails/rails", branch: "4-1-stable"
 gem "omniauth"
 gem "omniauth-oauth2"
-gem "rdoc"
+gem "rdoc", "~> 5.1"
 
 group :test do
   gem "omniauth-facebook"

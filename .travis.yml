@@ -44,7 +44,9 @@ env:
     - DEVISE_ORM=active_record
     - DEVISE_ORM=mongoid
 
-before_install: "rm ${BUNDLE_GEMFILE}.lock"
+before_install:
+  - "rm ${BUNDLE_GEMFILE}.lock"
+  - gem update --system
 
 before_script: "bundle update"
 

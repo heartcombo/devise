@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 4.4.0 - 2017-12-29
+
 * enhancements
   * Add `frozen_string_literal` pragma comment to all Ruby files. (by @pat)
   * Use `set_flash_method!` instead of `set_flash_method` in `Devise::OmniauthCallbacksController#failure`. (by @saichander17)
@@ -8,9 +10,10 @@
   * Add `autocomplete="email"` to email fields. by (@MikeRogers0)
   * Add the ability to change the default migrations path introduced in Rails 5.0.3.  (by @alexhifer)
   * Delete unnecessary condition for helper method. (by @davydovanton)
-  * Support `id: :uuid` option for migrations. (by @filip373)
+  * Support `id: :uuid` option for migrations. (by @filip373)
 
 * bug fixes
+  * Fix syntax for MRI 2.5.0. (by @pat)
   * Validations were being ignored on singup in the `Trackable#update_tracked_fields!` method. (by @AshleyFoster)
   * Do not modify options for `#serializable_hash`. (by @guigs)
   * Email confirmations were being sent on sign in/sign out for application using `mongoid` and `mongoid-paperclip` gems. This is because previously we were checking if a model is from Active Record by checking if the method `after_commit` was defined - since `mongoid` doesn' have one - but `mongoid-paperclip` gem does define one, which cause this issue. (by @fjg)

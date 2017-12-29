@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Devise
-  VERSION = "4.3.0".freeze
+  VERSION = "4.4.0".freeze
 end

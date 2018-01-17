@@ -55,4 +55,12 @@ class AuthenticatedMountedEngineTest < Devise::IntegrationTest
     assert_response :success
     assert_contain 'Inner route test successful'
   end
+
+  test 'respond properly to a non existing route of the mounted engine' do
+    sign_in_as_user
+    
+    assert_raise ActionController::RoutingError do
+      get '/mountable_engine/non-existing-route'
+    end
+  end
 end

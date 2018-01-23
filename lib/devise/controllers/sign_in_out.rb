@@ -6,7 +6,10 @@ module Devise
     # Included by default in all controllers.
     module SignInOut
       # Return true if the given scope is signed in session. If no scope given, return
-      # true if any scope is signed in. Does not run authentication hooks.
+      # true if any scope is signed in. This will run authentication hooks, which may
+      # cause exceptions to be thrown from this method; if you simply want to check
+      # if a scope has already previously been authenticated without running
+      # authentication hooks, you can directly call `warden.authenticated?(scope: scope)`
       def signed_in?(scope=nil)
         [scope || Devise.mappings.keys].flatten.any? do |_scope|
           warden.authenticate?(scope: _scope)

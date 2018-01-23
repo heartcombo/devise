@@ -1,5 +1,10 @@
 ### Unreleased
 
+* bug fixes
+  * Ensure Gemspec is loaded as utf-8. (by @segiddins)
+  * Fix `ActiveRecord` check on `Confirmable`. (by @tegon)
+  * Fix `signed_in?` docs without running auth hooks. by (@machty)
+
 ### 4.4.0 - 2017-12-29
 
 * enhancements

@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 4.4.1 - 2018-01-23
+
 * bug fixes
   * Ensure Gemspec is loaded as utf-8. (by @segiddins)
   * Fix `ActiveRecord` check on `Confirmable`. (by @tegon)

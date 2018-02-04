@@ -292,6 +292,10 @@ module Devise
   mattr_accessor :token_generator
   @@token_generator = nil
 
+  # List of providers to disable GET-based oauth passthru for
+  mattr_accessor :disable_omniauth_get
+  @@disable_omniauth_get = []
+
   def self.rails51? # :nodoc:
     Rails.gem_version >= Gem::Version.new("5.1.x")
   end

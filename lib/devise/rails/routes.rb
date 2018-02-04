@@ -447,7 +447,7 @@ ERROR
           match "#{path_prefix}/#{provider}",
             to: "#{controllers[:omniauth_callbacks]}#passthru",
             as: "#{provider}_omniauth_authorize",
-            via: [:get, :post]
+            via: Devise.disable_omniauth_get.include?(provider) ? [:get, :post] : [:post]
 
           match "#{path_prefix}/#{provider}/callback",
             to: "#{controllers[:omniauth_callbacks]}##{provider}",

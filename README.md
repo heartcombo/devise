@@ -123,7 +123,36 @@ We hope that you will consider contributing to Devise. Please read this short ov
 
 https://github.com/plataformatec/devise/wiki/Contributing
 
-You will usually want to write tests for your changes.  To run the test suite, go into Devise's top-level directory and run "bundle install" and "rake".  For the tests to pass, you will need to have a MongoDB server (version 2.0 or newer) running on your system.
+You will usually want to write tests for your changes.  To run the test suite, go into Devise's top-level directory and run `bundle install` and `bin/test`.
+Devise works with multiple Ruby and Rails versions, and ActiveRecord and Mongoid ORMs, which means you can run the test suite with some modifiers: `DEVISE_ORM` and `BUNDLE_GEMFILE`.
+
+### DEVISE_ORM
+Since Devise support both Mongoid and ActiveRecord, we rely on this variable to run specific code for each ORM.
+The default value of `DEVISE_ORM` is `active_record`. To run the tests for mongoid, you can pass `mongoid`:
+```
+DEVISE_ORM=mongoid bin/test
+
+==> Devise.orm = :mongoid
+```
+When running the tests for Mongoid, you will need to have a MongoDB server (version 2.0 or newer) running on your system.
+
+Please note that the command output will show the variable value being used.
+
+### BUNDLE_GEMFILE
+We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
+Inside the [gemfiles](https://github.com/plataformatec/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite brakes on Travis using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
+For example, if the tests broke using Ruby 2.4.2 and Rails 4.1, you can do the following:
+```bash
+rbenv shell 2.4.2 # or rvm use 2.4.2
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bin/test
+```
+
+You can also combine both of them if the tests broke for Mongoid:
+```bash
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable DEVISE_ORM=mongoid bin/test
+```
 
 ## Starting with Rails?
 

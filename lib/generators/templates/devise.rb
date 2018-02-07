@@ -166,6 +166,10 @@ Devise.setup do |config|
   # to give user feedback and not to assert the e-mail validity.
   config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
 
+  # Password regex used to validate password formats.
+  # It validates if the password only uses alphanumericals, whitespace and underscore.
+  config.password_regexp = /\A[a-zA-Z0-9 _]*\z/
+
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.

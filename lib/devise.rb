@@ -114,6 +114,11 @@ module Devise
   mattr_accessor :email_regexp
   @@email_regexp = /\A[^@\s]+@[^@\s]+\z/
 
+  # Password regex used to validate password formats.
+  # It validates if the password only uses alphanumericals, whitespace and underscore.
+  mattr_accessor :password_regexp
+  @@password_regexp = /\A[a-zA-Z0-9 _]*\z/
+
   # Range validation for password length
   mattr_accessor :password_length
   @@password_length = 6..128

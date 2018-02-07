@@ -106,4 +106,16 @@ class DeviseTest < ActiveSupport::TestCase
       assert_no_match Devise.email_regexp, email
     end
   end
+
+  test 'Devise.password_regexp should match valid passwords' do
+    valid_passwords = ["testPass123", "Hello456", "Ruby250Rails4210", "Example456"]
+    non_valid_passwords = ["rex@", "test!password", "test@user@pass", "server.com"]
+
+    valid_passwords.each do |password|
+      assert_match Devise.password_regexp, password
+    end
+    non_valid_passwords.each do |password|
+      assert_no_match Devise.password_regexp, password
+    end
+  end
 end

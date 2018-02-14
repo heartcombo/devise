@@ -22,7 +22,7 @@ module Devise
         self.last_sign_in_at     = old_current || new_current
         self.current_sign_in_at  = new_current
 
-        old_current, new_current = self.current_sign_in_ip, request.remote_ip
+        old_current, new_current = self.current_sign_in_ip, extract_ip_from(request)
         self.last_sign_in_ip     = old_current || new_current
         self.current_sign_in_ip  = new_current
 
@@ -39,6 +39,13 @@ module Devise
         update_tracked_fields(request)
         save(validate: false)
       end
+
+      protected
+
+      def extract_ip_from(request)
+        request.remote_ip
+      end
+
     end
   end
 end

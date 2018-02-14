@@ -59,4 +59,22 @@ class TrackableTest < ActiveSupport::TestCase
 
     assert_not user.update_tracked_fields!(request)
   end
+
+  test 'extract_ip_from should be overridable' do
+    class UserWithOverride < User
+      protected
+        def extract_ip_from(request)
+          "127.0.0.2"
+        end
+    end
+
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+    user = UserWithOverride.new
+
+    user.update_tracked_fields(request)
+
+    assert_equal "127.0.0.2", user.current_sign_in_ip
+    assert_equal "127.0.0.2", user.last_sign_in_ip
+  end
 end

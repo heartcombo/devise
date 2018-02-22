@@ -1,10 +1,10 @@
 ### Unreleased
 
 * enhancements
- * Support for :credentials on Rails v5.2.x. (by @gencer)
- * Improve documentation about the test suite. (by @tegon)
- * Test with Rails 5.2.rc1 on Travis. (by @jcoyne)
- * Allow test with Rails 6. (by @Fudoshiki)
+  * Support for :credentials on Rails v5.2.x. (by @gencer)
+  * Improve documentation about the test suite. (by @tegon)
+  * Test with Rails 5.2.rc1 on Travis. (by @jcoyne)
+  * Allow test with Rails 6. (by @Fudoshiki)
 
 ### 4.4.1 - 2018-01-23
 

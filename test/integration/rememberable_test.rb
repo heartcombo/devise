@@ -12,7 +12,7 @@ class RememberMeTest < Devise::IntegrationTest
   end
 
   def generate_signed_cookie(raw_cookie)
-    request = if Devise::Test.rails51?
+    request = if Devise::Test.rails51? || Devise::Test.rails52?
       ActionController::TestRequest.create(Class.new) # needs a "controller class"
     elsif Devise::Test.rails5?
       ActionController::TestRequest.create

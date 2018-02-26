@@ -4,11 +4,11 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
-  # random tokens. Changing this key will render invalid all existing
-  # confirmation, reset password and unlock tokens in the database.
-  # Devise will use the `secret_key_base` as its `secret_key`
-  # by default. You can change it below and use your own secret key.
-  # config.secret_key = '<%= SecureRandom.hex(64) %>'
+  # random tokens. Changing this key will render invalid for all existing
+  # confirmation, reset password, and unlock tokens in the database.
+  # Devise will use the `secret_key_base` as its `secret_key` by default
+  # You may change it below and use your own secret key.
+  # config.secret_key = Rails.application.secrets.devise_secret_key
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -110,7 +110,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 11
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '<%= SecureRandom.hex(64) %>'
+  # config.pepper = Rails.application.secrets.devise_pepper_key
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false

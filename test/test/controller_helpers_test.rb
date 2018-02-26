@@ -100,6 +100,11 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
     assert_equal response.body, "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>"
   end
 
+  test "returns the content type of a failure app" do
+    get :index, params: { format: :xml }
+    assert response.content_type.include?('application/xml')
+  end
+
   test "defined Warden after_authentication callback should not be called when sign_in is called" do
     begin
       Warden::Manager.after_authentication do |user, auth, opts|

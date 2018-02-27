@@ -16,7 +16,7 @@ class Devise::RegistrationsController < DeviseController
   def create
     build_resource(sign_up_params)
 
-    resource.save
+    resource.save(context: resource_validation_context)
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -142,6 +142,10 @@ class Devise::RegistrationsController < DeviseController
 
   def account_update_params
     devise_parameter_sanitizer.sanitize(:account_update)
+  end
+
+  def resource_validation_context
+    nil
   end
 
   def translation_scope

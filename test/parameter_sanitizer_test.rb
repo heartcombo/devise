@@ -16,6 +16,34 @@ class ParameterSanitizerTest < ActiveSupport::TestCase
     assert_equal({ 'email' => 'jose' }, sanitized)
   end
 
+  test 'permits empty params when received not a hash' do
+    sanitizer = sanitizer({ 'user' => 'string' })
+    sanitized = sanitizer.sanitize(:sign_in)
+
+    assert_equal({}, sanitized)
+  end
+
+  test 'does not rise error when received string instead of hash' do
+    sanitizer = sanitizer('user' => 'string')
+    assert_nothing_raised do
+      sanitizer.sanitize(:sign_in)
+    end
+  end
+
+  test 'does not rise error when received nil instead of hash' do
+    sanitizer = sanitizer('user' => nil)
+    assert_nothing_raised do
+      sanitizer.sanitize(:sign_in)
+    end
+  end
+
+  test 'permits empty params when received nil instead of hash' do
+    sanitizer = sanitizer({ 'user' => nil })
+    sanitized = sanitizer.sanitize(:sign_in)
+
+    assert_equal({}, sanitized)
+  end
+
   test 'permits the default parameters for sign up' do
     sanitizer = sanitizer('user' => { 'email' => 'jose', 'role' => 'invalid' })
     sanitized = sanitizer.sanitize(:sign_up)

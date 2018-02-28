@@ -553,6 +553,27 @@ class AuthenticationOthersTest < Devise::IntegrationTest
       end
 
       get admins_path
+      assert_redirected_to new_admin_session_path
+    ensure
+      ActiveSupport::Notifications.unsubscribe(subscriber)
+    end
+  end
+
+  test 'should not add 401 status to notification payload when response was already built' do
+    get unprocessable_entity_path
+    assert_response 422
+  end
+
+  test 'should not add 401 status to notification payload on unexpected error' do
+    begin
+      subscriber = ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |_name, _start, _finish, _id, payload|
+        assert_nil payload[:status]
+      end
+
+      exception = assert_raises(StandardError) do
+        get broken_path
+      end
+      assert_equal 'Broken action', exception.message
     ensure
       ActiveSupport::Notifications.unsubscribe(subscriber)
     end

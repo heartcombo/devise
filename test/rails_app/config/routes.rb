@@ -72,6 +72,8 @@ Rails.application.routes.draw do
 
   unauthenticated do
     get "/join", to: "home#join"
+    get "/unprocessable_entity", to: "home#unprocessable_entity"
+    get "/broken", to: "home#broken"
   end
 
   # Routes for constraints testing

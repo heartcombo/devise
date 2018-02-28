@@ -135,7 +135,19 @@ module Devise
     end
 
     def default_params
-      @params.fetch(@resource_name, {})
+      if hashable_resource_params?
+        @params.fetch(@resource_name)
+      else
+        empty_params
+      end
+    end
+
+    def hashable_resource_params?
+      @params[@resource_name].respond_to?(:permit)
+    end
+
+    def empty_params
+      ActionController::Parameters.new({})
     end
 
     def permit_keys(parameters, keys)

@@ -13,6 +13,7 @@ module Devise
     #
     #   * +email_regexp+: the regular expression used to validate e-mails;
     #   * +password_length+: a range expressing password length. Defaults to 6..128.
+    #   * +email_scope+: the option :scope for :email validator;
     #
     module Validatable
       # All validations used by this module.
@@ -30,10 +31,10 @@ module Devise
         base.class_eval do
           validates_presence_of   :email, if: :email_required?
           if Devise.activerecord51?
-            validates_uniqueness_of :email, allow_blank: true, if: :will_save_change_to_email?
+            validates_uniqueness_of :email, allow_blank: true, if: :will_save_change_to_email?, scope: email_scope
             validates_format_of     :email, with: email_regexp, allow_blank: true, if: :will_save_change_to_email?
           else
-            validates_uniqueness_of :email, allow_blank: true, if: :email_changed?
+            validates_uniqueness_of :email, allow_blank: true, if: :email_changed?, scope: email_scope
             validates_format_of     :email, with: email_regexp, allow_blank: true, if: :email_changed?
           end
 
@@ -66,7 +67,7 @@ module Devise
       end
 
       module ClassMethods
-        Devise::Models.config(self, :email_regexp, :password_length)
+        Devise::Models.config(self, :email_regexp, :password_length, :email_scope)
       end
     end
   end

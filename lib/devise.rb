@@ -118,6 +118,10 @@ module Devise
   mattr_accessor :password_length
   @@password_length = 6..128
 
+  # Option :scope for Uniqueness Validator of email
+  mattr_accessor :email_scope
+  @@email_scope = nil
+
   # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks

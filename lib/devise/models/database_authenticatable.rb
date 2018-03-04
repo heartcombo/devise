@@ -73,7 +73,7 @@ module Devise
         end
 
         result = if valid_password?(current_password)
-          update_attributes(params, *options)
+          update(params, *options)
         else
           self.assign_attributes(params, *options)
           self.valid?
@@ -101,7 +101,7 @@ module Devise
         params.delete(:password)
         params.delete(:password_confirmation)
 
-        result = update_attributes(params, *options)
+        result = update(params, *options)
         clean_up_passwords
         result
       end

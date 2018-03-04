@@ -234,7 +234,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should not email on password change' do
     user = create_user
     assert_email_not_sent do
-      assert user.update_attributes(password: 'newpass', password_confirmation: 'newpass')
+      assert user.update(password: 'newpass', password_confirmation: 'newpass')
     end
   end
 
@@ -243,7 +243,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       user = create_user
       original_email = user.email
       assert_email_sent original_email do
-        assert user.update_attributes(email: 'new-email@example.com')
+        assert user.update(email: 'new-email@example.com')
       end
       assert_match original_email, ActionMailer::Base.deliveries.last.body.encoded
     end
@@ -253,7 +253,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     swap Devise, send_password_change_notification: true do
       user = create_user
       assert_email_sent user.email do
-        assert user.update_attributes(password: 'newpass', password_confirmation: 'newpass')
+        assert user.update(password: 'newpass', password_confirmation: 'newpass')
       end
       assert_match user.email, ActionMailer::Base.deliveries.last.body.encoded
     end

@@ -263,7 +263,7 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
 
   test 'admin should be able to request a new confirmation after email changed' do
     admin = create_admin
-    admin.update_attributes(email: 'new_test@example.com')
+    admin.update(email: 'new_test@example.com')
 
     visit new_admin_session_path
     click_link "Didn't receive confirmation instructions?"
@@ -279,7 +279,7 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
 
   test 'admin with valid confirmation token should be able to confirm email after email changed' do
     admin = create_admin
-    admin.update_attributes(email: 'new_test@example.com')
+    admin.update(email: 'new_test@example.com')
     assert_equal 'new_test@example.com', admin.unconfirmed_email
     visit_admin_confirmation_with_token(admin.raw_confirmation_token)
 
@@ -291,13 +291,13 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
 
   test 'admin with previously valid confirmation token should not be able to confirm email after email changed again' do
     admin = create_admin
-    admin.update_attributes(email: 'first_test@example.com')
+    admin.update(email: 'first_test@example.com')
     assert_equal 'first_test@example.com', admin.unconfirmed_email
 
     raw_confirmation_token = admin.raw_confirmation_token
     admin = Admin.find(admin.id)
 
-    admin.update_attributes(email: 'second_test@example.com')
+    admin.update(email: 'second_test@example.com')
     assert_equal 'second_test@example.com', admin.unconfirmed_email
 
     visit_admin_confirmation_with_token(raw_confirmation_token)
@@ -313,7 +313,7 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
 
   test 'admin email should be unique also within unconfirmed_email' do
     admin = create_admin
-    admin.update_attributes(email: 'new_admin_test@example.com')
+    admin.update(email: 'new_admin_test@example.com')
     assert_equal 'new_admin_test@example.com', admin.unconfirmed_email
 
     create_second_admin(email: "new_admin_test@example.com")

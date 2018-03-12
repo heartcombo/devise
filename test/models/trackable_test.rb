@@ -41,12 +41,22 @@ class TrackableTest < ActiveSupport::TestCase
     assert_equal 0, user.sign_in_count
   end
 
-  test 'update_tracked_fields should run model validations' do
+  test "update_tracked_fields! should not persist invalid records" do
     user = UserWithValidations.new
     request = mock
     request.stubs(:remote_ip).returns("127.0.0.1")
 
     assert_not user.update_tracked_fields!(request)
     assert_not user.persisted?
+  end
+
+  test "update_tracked_fields! should not run model validations" do
+    user = User.new
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+
+    user.expects(:after_validation_callback).never
+
+    assert_not user.update_tracked_fields!(request)
   end
 end

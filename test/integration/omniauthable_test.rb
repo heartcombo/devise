@@ -42,6 +42,17 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
     end
   end
 
+  test "omniauth sign in should not run model validations" do
+    stub_action!(:sign_in_facebook) do
+      create_user
+      visit "/users/sign_in"
+      click_link "Sign in with FaceBook"
+      assert warden.authenticated?(:user)
+
+      refute User.validations_performed
+    end
+  end
+
   test "can access omniauth.auth in the env hash" do
     visit "/users/sign_in"
     click_link "Sign in with FaceBook"

@@ -19,6 +19,7 @@ class ActionDispatch::IntegrationTest
       user.update_attribute(:confirmation_sent_at, options[:confirmation_sent_at]) if options[:confirmation_sent_at]
       user.confirm unless options[:confirm] == false
       user.lock_access! if options[:locked] == true
+      User.validations_performed = false
       user
     end
   end

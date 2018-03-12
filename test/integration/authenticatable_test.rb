@@ -3,6 +3,12 @@
 require 'test_helper'
 
 class AuthenticationSanityTest < Devise::IntegrationTest
+  test 'sign in should not run model validations' do
+    sign_in_as_user
+
+    refute User.validations_performed
+  end
+
   test 'home should be accessible without sign in' do
     visit '/'
     assert_response :success

@@ -16,6 +16,14 @@ class HomeController < ApplicationController
   def join
   end
 
+  def broken
+    raise 'Broken action'
+  end
+
+  def unprocessable_entity
+    head :unprocessable_entity
+  end
+
   def set
     session["devise.foo_bar"] = "something"
     head :ok

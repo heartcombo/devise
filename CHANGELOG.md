@@ -5,6 +5,12 @@
   * Improve documentation about the test suite. (by @tegon)
   * Test with Rails 5.2.rc1 on Travis. (by @jcoyne)
   * Allow test with Rails 6. (by @Fudoshiki)
+  * Creating a new section for controller configuration on `devise.rb` template (by @Danilo-Araujo-Silva)
+
+* bug fixes
+  * Preserve content_type for unauthenticated tests (by @gmcnaughton)
+  * Check if the resource is persisted in `update_tracked_fields!` instead of performing validations (by @tegon)
+  * Revert "Replace log_process_action to append_info_to_payload" (by @tegon)
 
 ### 4.4.1 - 2018-01-23
 

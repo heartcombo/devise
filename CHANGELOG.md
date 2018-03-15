@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 4.4.2 - 2018-03-15
+
 * enhancements
   * Support for :credentials on Rails v5.2.x. (by @gencer)
   * Improve documentation about the test suite. (by @tegon)

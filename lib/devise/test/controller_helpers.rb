@@ -139,7 +139,7 @@ module Devise
 
           status, headers, response = Devise.warden_config[:failure_app].call(env).to_a
           @controller.response.headers.merge!(headers)
-          @controller.response.content_type = headers["Content-Type"] unless Devise::Test.rails5?
+          @controller.response.content_type = headers["Content-Type"] unless Rails.version.start_with?('5')
           @controller.status = status
           @controller.response.body = response.body
           nil # causes process return @response

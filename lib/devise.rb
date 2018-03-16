@@ -18,6 +18,7 @@ module Devise
   autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
+  autoload :SecretKeyFinder,    'devise/secret_key_finder'
 
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'

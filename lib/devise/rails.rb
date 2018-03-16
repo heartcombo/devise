@@ -34,13 +34,7 @@ module Devise
     end
 
     initializer "devise.secret_key" do |app|
-      if app.respond_to?(:credentials)
-        Devise.secret_key ||= app.credentials.secret_key_base
-      elsif app.respond_to?(:secrets)
-        Devise.secret_key ||= app.secrets.secret_key_base
-      elsif app.config.respond_to?(:secret_key_base)
-        Devise.secret_key ||= app.config.secret_key_base
-      end
+      Devise.secret_key ||= Devise::SecretKeyFinder.new(app).find
 
       Devise.token_generator ||=
         if secret_key = Devise.secret_key

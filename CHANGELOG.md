@@ -1,5 +1,11 @@
 ### Unreleased
 
+### 4.4.3 - 2018-03-17
+
+* bug fixes
+  * Fix undefined method `rails5?` for Devise::Test:Module (by @tegon)
+  * Fix: secret key was being required to be set inside credentials on Rails 5.2 (by @tegon)
+
 ### 4.4.2 - 2018-03-15
 
 * enhancements

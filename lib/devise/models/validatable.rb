@@ -38,7 +38,7 @@ module Devise
           end
 
           validates_presence_of     :password, if: :password_required?
-          validates_confirmation_of :password, if: :password_required?
+          validates_confirmation_of :password
           validates_length_of       :password, within: password_length, allow_blank: true
         end
       end

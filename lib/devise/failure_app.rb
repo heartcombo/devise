@@ -260,5 +260,7 @@ module Devise
     def relative_url_root?
       relative_url_root.present?
     end
+
+    ActiveSupport.run_load_hooks(:devise_failure_app, self)
   end
 end

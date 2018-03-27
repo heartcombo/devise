@@ -179,4 +179,9 @@ Devise.setup do |config|
   #   manager.failure_app = AnotherApp
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
+
+  ActiveSupport.on_load(:devise_failure_app) do
+    require "lazy_load_test_module"
+    include LazyLoadTestModule
+  end
 end

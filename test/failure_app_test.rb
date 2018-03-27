@@ -337,4 +337,10 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context "Lazy loading" do
+    test "loads" do
+      assert_equal Devise::FailureApp.new.lazy_loading_works?, "yes it does"
+    end
+  end
 end

@@ -514,6 +514,8 @@ cases/specs.
 
 Controller tests require that you include `Devise::Test::ControllerHelpers` on
 your test case or its parent `ActionController::TestCase` superclass.
+For Rails 5, include `Devise::Test::IntegrationHelpers` instead, since the superclass
+for controller tests has been changed to ActionDispatch::IntegrationTest.
 
 ```ruby
 class PostsControllerTest < ActionController::TestCase

@@ -259,6 +259,26 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not notify email on password change even when configured if skip_password_change_notification! is invoked' do
+    swap Devise, send_email_changed_notification: true do
+      user = create_user
+      user.skip_password_change_notification!
+      assert_email_not_sent do
+        assert user.update(password: 'newpass', password_confirmation: 'newpass')
+      end
+    end
+  end
+
+  test 'should not notify email on email change even when configured if skip_email_changed_notification! is invoked' do
+    swap Devise, send_email_changed_notification: true do
+      user = create_user
+      user.skip_email_changed_notification!
+      assert_email_not_sent do
+        assert user.update(email: 'new-email@example.com')
+      end
+    end
+  end
+
   test 'downcase_keys with validation' do
     User.create(email: "HEllO@example.com", password: "123456")
     user = User.create(email: "HEllO@example.com", password: "123456")

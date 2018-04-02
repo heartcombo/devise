@@ -19,6 +19,9 @@ module Devise
       # Sign in a user that already was authenticated. This helper is useful for logging
       # users in after sign up. All options given to sign_in is passed forward
       # to the set_user method in warden.
+      # If you are using a custom warden strategy and the timeoutable module, you have to
+      # set `env["devise.skip_timeout"] = true` in the request to use this method, like we do
+      # in the sessions controller: https://github.com/plataformatec/devise/blob/master/app/controllers/devise/sessions_controller.rb#L7
       #
       # Examples:
       #

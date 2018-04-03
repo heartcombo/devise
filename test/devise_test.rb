@@ -90,9 +90,12 @@ class DeviseTest < ActiveSupport::TestCase
     [nil, ""].each do |empty|
       refute Devise.secure_compare(empty, "something")
       refute Devise.secure_compare("something", empty)
-      refute Devise.secure_compare(empty, empty)
     end
     refute Devise.secure_compare("size_1", "size_four")
+  end
+
+  test 'Devise.secure_compare should return true if strings are same' do
+    assert Devise.secure_compare('', '')
   end
 
   test 'Devise.email_regexp should match valid email addresses' do

@@ -1,5 +1,9 @@
 ### Unreleased
 
+* enhancements
+  * Add `autocomplete="new-password"` to new password fields (by @gssbzn)
+  * Add `autocomplete="current-password"` to current password fields (by @gssbzn)
+
 ### 4.4.3 - 2018-03-17
 
 * bug fixes
@@ -44,7 +48,7 @@
   * Validations were being ignored on singup in the `Trackable#update_tracked_fields!` method. (by @AshleyFoster)
   * Do not modify options for `#serializable_hash`. (by @guigs)
   * Email confirmations were being sent on sign in/sign out for application using `mongoid` and `mongoid-paperclip` gems. This is because previously we were checking if a model is from Active Record by checking if the method `after_commit` was defined - since `mongoid` doesn' have one - but `mongoid-paperclip` gem does define one, which cause this issue. (by @fjg)
- 
+
 ### 4.3.0 - 2017-05-14
 
 * Enhancements

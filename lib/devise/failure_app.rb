@@ -103,11 +103,11 @@ module Devise
         options[:scope] = "devise.failure"
         options[:default] = [message]
         auth_keys = scope_class.authentication_keys
-        keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key| scope_class.human_attribute_name(key) }
+        keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key| scope_class.human_attribute_name(key).downcase }
         options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
 
-        I18n.t(:"#{scope}.#{message}", options)
+        I18n.t(:"#{scope}.#{message}", options).humanize
       else
         message.to_s
       end

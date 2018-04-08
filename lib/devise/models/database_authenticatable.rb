@@ -35,6 +35,12 @@ module Devise
         attr_accessor :password_confirmation
       end
 
+      def initialize(*args, &block)
+        @skip_email_changed_notification = false
+        @skip_password_change_notification = false
+        super 
+      end
+
       # Skips sending the email changed notification after_update
       def skip_email_changed_notification!
         @skip_email_changed_notification = true

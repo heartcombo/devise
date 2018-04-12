@@ -9,7 +9,7 @@ Devise.setup do |config|
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '<%= SecureRandom.hex(64) %>'
-  
+
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
   # config.parent_controller = 'DeviseController'
@@ -122,6 +122,8 @@ Devise.setup do |config|
   # Send a notification email when the user's password is changed.
   # config.send_password_change_notification = false
 
+  #
+
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
   # confirming their account. For instance, if set to 2.days, the user will be
@@ -146,6 +148,9 @@ Devise.setup do |config|
 
   # Defines which key will be used when confirming an account
   # config.confirmation_keys = [:email]
+
+  # If true, requires user to provide password to delete record.
+  config.require_password_to_destroy = false 
 
   # ==> Configuration for :rememberable
   # The time the user will be remembered without asking for credentials again.

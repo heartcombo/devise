@@ -293,6 +293,10 @@ module Devise
   mattr_accessor :token_generator
   @@token_generator = nil
 
+  # When true, signed in users must provide their current password to cancel account
+  mattr_accessor :require_password_to_destroy
+  @@require_password_to_destroy = false
+
   def self.rails51? # :nodoc:
     Rails.gem_version >= Gem::Version.new("5.1.x")
   end

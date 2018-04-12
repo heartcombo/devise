@@ -21,6 +21,7 @@ module Devise
         def new_with_session(params, session)
           new(params)
         end
+        Devise::Models.config(self, :require_password_to_destroy)
       end
     end
   end

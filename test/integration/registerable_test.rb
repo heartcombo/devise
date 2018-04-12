@@ -254,7 +254,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "Password confirmation doesn't match Password"
     refute User.to_adapter.find_first.valid_password?('pas123')
   end
-  
+
   test 'a signed in user should see a warning about minimum password length' do
     sign_in_as_user
     get edit_user_registration_path
@@ -269,6 +269,38 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
 
     assert User.to_adapter.find_all.empty?
+  end
+
+  test 'a signed in user should be able to cancel their account with current password if password required' do
+    swap Devise, require_password_to_destroy: true  do
+      sign_in_as_user
+      get edit_user_registration_path
+
+      within(".destroy-password") do
+        fill_in 'current password', with: '12345678'
+      end
+
+      click_button "Cancel my account"
+      assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
+    end
+    assert User.to_adapter.find_all.empty?
+  end
+
+  test 'a signed in user should not be able to cancel their account with incorrect password if password required' do
+    swap Devise, require_password_to_destroy: true  do
+      sign_in_as_user
+      get edit_user_registration_path
+
+      within(".destroy-password") do
+        fill_in 'current password', with: '87654321'
+      end
+
+      click_button "Cancel my account"
+      assert_contain "Current password is invalid"
+
+      assert_current_url '/users'
+    end
+    assert_equal "user@test.com", User.to_adapter.find_first.email
   end
 
   test 'a user should be able to cancel sign up by deleting data in the session' do

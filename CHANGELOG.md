@@ -3,6 +3,7 @@
 * enhancements
   * Add `autocomplete="new-password"` to new password fields (by @gssbzn)
   * Add `autocomplete="current-password"` to current password fields (by @gssbzn)
+  * Update `simple_form` templates with changes from 16b3d6d67c7e017d461ea17ed29ea9738dc77e83 and 6260c29a867b9a656f1e1557abe347a523178fab (by @gssbzn)
 
 ### 4.4.3 - 2018-03-17
 

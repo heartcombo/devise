@@ -32,6 +32,24 @@ class Rails52Config
   end
 end
 
+class Rails52SecretKeyBase
+  def credentials
+    OpenStruct.new(secret_key_base: nil)
+  end
+
+  def secrets
+    OpenStruct.new(secret_key_base: nil)
+  end
+
+  def config
+    OpenStruct.new(secret_key_base: nil)
+  end
+  
+  def secret_key_base
+    'secret_key_base'
+  end
+end
+
 class Rails41Secrets
   def secrets
     OpenStruct.new(secret_key_base: 'secrets')
@@ -75,6 +93,12 @@ class SecretKeyFinderTest < ActiveSupport::TestCase
     secret_key_finder = Devise::SecretKeyFinder.new(Rails52Config.new)
 
     assert_equal 'config', secret_key_finder.find
+  end
+
+  test "rails 5.2 uses secret_key_base when config is empty" do
+    secret_key_finder = Devise::SecretKeyFinder.new(Rails52SecretKeyBase.new)
+
+    assert_equal 'secret_key_base', secret_key_finder.find
   end
 
   test "rails 4.1 uses secrets" do

@@ -71,8 +71,7 @@ module Devise
       end
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
-      # self.response = recall_app(warden_options[:recall]).call(env)
-      self.response = recall_app(warden_options[:recall]).call(request.env)
+      self.response = parse_recall_response(recall_app(warden_options[:recall]).call(request.env))
     end
 
     def redirect
@@ -201,6 +200,19 @@ module Devise
       controller_name  = ActiveSupport::Inflector.camelize(controller)
       controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")
       controller_klass.action(action)
+    end
+
+    def parse_recall_response(response)
+      return response unless response.is_a?(Array)
+      body = response.third
+
+      if defined?(Rack::BodyProxy) && response.is_a?(Rack::BodyProxy)
+        body.instance_variable_get(:@body)
+      elsif defined?(ActionDispatch::Response::RackBody) && response.is_a?(ActionDispatch::Response::RackBody)
+        body.instance_variable_get(:@response)
+      else
+        response
+      end
     end
 
     def warden

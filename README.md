@@ -399,6 +399,7 @@ If the customization at the views level is not enough, you can customize each co
       ...
     end
     ```
+    (Use the -c flag to specify a controller, for example: `rails generate devise:controllers users -c=sessions`)
 
 2. Tell the router to use this controller:
 

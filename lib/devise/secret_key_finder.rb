@@ -13,6 +13,8 @@ module Devise
         @application.secrets.secret_key_base
       elsif @application.config.respond_to?(:secret_key_base) && key_exists?(@application.config)
         @application.config.secret_key_base
+      elsif @application.respond_to?(:secret_key_base) && key_exists?(@application)
+        @application.secret_key_base
       end
     end
 

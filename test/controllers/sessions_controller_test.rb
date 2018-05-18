@@ -88,6 +88,30 @@ class SessionsControllerTest < Devise::ControllerTestCase
     assert_equal 204, @response.status
   end
 
+  test "#destroy returns 204 status when an authenticated user signs out" do
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    user = create_user
+    user.confirm
+    post :create, params: { format: 'json', user: {
+        email: user.email,
+        password: user.password
+      }
+    }
+    delete :destroy
+    assert_equal 204, @response.status
+  end
+
+  test "#destroy returns 401 status if user is not signed in and the requested format is not navigational" do
+    delete :destroy, format: 'json'
+    assert_equal 401, @response.status
+  end
+
+  test "#destroy returns 302 status if user is not signed in and the requested format is navigational" do
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    delete :destroy
+    assert_equal 302, @response.status
+  end
+
   if defined?(ActiveRecord) && ActiveRecord::Base.respond_to?(:mass_assignment_sanitizer)
     test "#new doesn't raise mass-assignment exception even if sign-in key is attr_protected" do
       request.env["devise.mapping"] = Devise.mappings[:user]

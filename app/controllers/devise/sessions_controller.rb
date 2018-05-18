@@ -62,7 +62,10 @@ class Devise::SessionsController < DeviseController
     if all_signed_out?
       set_flash_message! :notice, :already_signed_out
 
-      respond_to_on_destroy
+      respond_to do |format|
+        format.all {head :unauthorized}
+        format.any(*navigational_formats) { redirect_to after_sign_out_path_for(resource_name) }
+      end
     end
   end
 

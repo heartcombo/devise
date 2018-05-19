@@ -88,7 +88,7 @@ class SessionsControllerTest < Devise::ControllerTestCase
     assert_equal 204, @response.status
   end
 
-  test "#destroy returns 204 status when an authenticated user signs out" do
+  test "#destroy returns 204 status if the requested format is not navigational" do
     request.env["devise.mapping"] = Devise.mappings[:user]
     user = create_user
     user.confirm
@@ -97,7 +97,7 @@ class SessionsControllerTest < Devise::ControllerTestCase
         password: user.password
       }
     }
-    delete :destroy
+    delete :destroy, format:'json'
     assert_equal 204, @response.status
   end
 

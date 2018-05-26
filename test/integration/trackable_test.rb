@@ -44,6 +44,18 @@ class TrackableHooksTest < Devise::IntegrationTest
     assert_equal "127.0.0.1", user.last_sign_in_ip
   end
 
+  test "current and last sign in path are updated on each sign in" do
+    user = create_user
+    assert_nil user.current_sign_in_path
+    assert_nil user.last_sign_in_path
+
+    sign_in_as_user
+    user.reload
+
+    assert_equal "/users/sign_in", user.current_sign_in_path
+    assert_equal "/users/sign_in", user.last_sign_in_path
+  end
+
   test "current remote ip returns original ip behind a non transparent proxy" do
     user = create_user
 

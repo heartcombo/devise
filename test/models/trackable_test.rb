@@ -7,8 +7,10 @@ class TrackableTest < ActiveSupport::TestCase
     assert_equal Devise::Models::Trackable.required_fields(User), [
       :current_sign_in_at,
       :current_sign_in_ip,
+      :current_sign_in_path,
       :last_sign_in_at,
       :last_sign_in_ip,
+      :last_sign_in_path,
       :sign_in_count
     ]
   end
@@ -17,11 +19,14 @@ class TrackableTest < ActiveSupport::TestCase
     user = create_user
     request = mock
     request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:path).returns("/sign_in")
 
     assert_nil user.current_sign_in_ip
     assert_nil user.last_sign_in_ip
     assert_nil user.current_sign_in_at
     assert_nil user.last_sign_in_at
+    assert_nil user.current_sign_in_path
+    assert_nil user.last_sign_in_path
     assert_equal 0, user.sign_in_count
 
     user.update_tracked_fields(request)
@@ -30,6 +35,8 @@ class TrackableTest < ActiveSupport::TestCase
     assert_equal "127.0.0.1", user.last_sign_in_ip
     assert_not_nil user.current_sign_in_at
     assert_not_nil user.last_sign_in_at
+    assert_equal "/sign_in", user.current_sign_in_path
+    assert_equal "/sign_in", user.last_sign_in_path
     assert_equal 1, user.sign_in_count
 
     user.reload
@@ -38,6 +45,8 @@ class TrackableTest < ActiveSupport::TestCase
     assert_nil user.last_sign_in_ip
     assert_nil user.current_sign_in_at
     assert_nil user.last_sign_in_at
+    assert_nil user.current_sign_in_path
+    assert_nil user.last_sign_in_path
     assert_equal 0, user.sign_in_count
   end
 
@@ -45,6 +54,7 @@ class TrackableTest < ActiveSupport::TestCase
     user = UserWithValidations.new
     request = mock
     request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:path).returns("/sign_in")
 
     assert_not user.update_tracked_fields!(request)
     assert_not user.persisted?
@@ -54,6 +64,7 @@ class TrackableTest < ActiveSupport::TestCase
     user = User.new
     request = mock
     request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:path).returns("/sign_in")
 
     user.expects(:after_validation_callback).never
 
@@ -70,6 +81,7 @@ class TrackableTest < ActiveSupport::TestCase
 
     request = mock
     request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:path).returns("/sign_in")
     user = UserWithOverride.new
 
     user.update_tracked_fields(request)

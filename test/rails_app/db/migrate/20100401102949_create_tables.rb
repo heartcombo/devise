@@ -27,6 +27,8 @@ class CreateTables < superclass
       t.datetime :last_sign_in_at
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
+      t.string   :current_sign_in_path
+      t.string   :last_sign_in_path
 
       ## Confirmable
       t.string   :confirmation_token

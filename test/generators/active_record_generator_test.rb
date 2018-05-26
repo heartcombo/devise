@@ -77,6 +77,12 @@ if DEVISE_ORM == :active_record
       assert_migration "db/migrate/devise_create_monsters.rb", /t.string   :last_sign_in_ip/
     end
 
+    test "use string column type for path" do
+      run_generator %w(monster)
+      assert_migration "db/migrate/devise_create_monsters.rb", /t.string :current_sign_in_path/
+      assert_migration "db/migrate/devise_create_monsters.rb", /t.string :last_sign_in_path/
+    end
+
     test "do NOT add primary key type when NOT specified in rails generator" do
       run_generator %w(monster)
       assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters do/

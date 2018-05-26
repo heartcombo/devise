@@ -39,6 +39,8 @@ module Mongoid
   # field :last_sign_in_at,    type: Time
   # field :current_sign_in_ip, type: String
   # field :last_sign_in_ip,    type: String
+  # field :current_sign_in_path, type: String
+  # field :last_sign_in_path,    type: String
 
   ## Confirmable
   # field :confirmation_token,   type: String

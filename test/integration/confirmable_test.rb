@@ -114,6 +114,28 @@ class ConfirmationTest < Devise::IntegrationTest
     assert_contain 'already confirmed'
   end
 
+  test 'already confirmed user with nil confirmation token should return validation error' do
+    user = create_user(confirm: false)
+    user.confirmed_at = Time.now
+    user.confirmation_token = nil
+    user.save
+    visit_user_confirmation_with_token(nil)
+
+    assert_have_selector '#error_explanation'
+    assert_contain 'Confirmation token can\'t be blank'
+  end
+
+  test 'already confirmed user with blank confirmation token should return validation error' do
+    user = create_user(confirm: false)
+    user.confirmed_at = Time.now
+    user.confirmation_token = ''
+    user.save
+    visit_user_confirmation_with_token('')
+
+    assert_have_selector '#error_explanation'
+    assert_contain 'Confirmation token can\'t be blank'
+  end
+
   test 'already confirmed user should not be able to confirm the account again neither request confirmation' do
     user = create_user(confirm: false)
     user.confirmed_at = Time.now

@@ -347,7 +347,7 @@ module Devise
         def confirm_by_token(confirmation_token)
           confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token)
           unless confirmable
-            confirmation_digest = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
+            confirmation_digest = Devise.token_generator.digest(:confirmation_token, confirmation_token)
             confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_digest)
           end
 

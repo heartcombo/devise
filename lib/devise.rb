@@ -302,7 +302,7 @@ module Devise
   end
 
   def self.activerecord? # :nodoc:
-    defined?(ActiveRecord) && Devise.orm.to_sym == :activerecord
+    defined?(ActiveRecord) && Devise.orm.to_sym == :active_record
   end
 
   def self.mongoid? # :nodoc:

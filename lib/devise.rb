@@ -63,7 +63,7 @@ module Devise
 
   # ORM used by Devise. Allowed values [:activerecord, :mongoid]
   mattr_accessor :orm
-  @@orm = :activerecord
+  @@orm = :active_record
 
   # Secret key used by the key generator
   mattr_accessor :secret_key

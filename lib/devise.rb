@@ -61,6 +61,10 @@ module Devise
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
 
+  # ORM used by Devise. Allowed values [:activerecord, :mongoid]
+  mattr_accessor :orm
+  @@orm = :active_record
+
   # Secret key used by the key generator
   mattr_accessor :secret_key
   @@secret_key = nil
@@ -298,7 +302,15 @@ module Devise
   end
 
   def self.activerecord51? # :nodoc:
-    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
+    self.activerecord? && (defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x"))
+  end
+
+  def self.activerecord? # :nodoc:
+    Devise.orm.to_sym == :active_record
+  end
+
+  def self.mongoid? # :nodoc:
+    Devise.orm.to_sym == :mongoid
   end
 
   # Default way to set up Devise. Run rails generate devise_install to create

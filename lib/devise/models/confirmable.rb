@@ -48,7 +48,7 @@ module Devise
       included do
         before_create :generate_confirmation_token, if: :confirmation_required?
         after_create :skip_reconfirmation_in_callback!, if: :send_confirmation_notification?
-        if Devise.activerecord? # ActiveRecord
+        if Devise.activerecord51? # ActiveRecord
           after_commit :send_on_create_confirmation_instructions, on: :create, if: :send_confirmation_notification?
           after_commit :send_reconfirmation_instructions, on: :update, if: :reconfirmation_required?
         else # Mongoid
@@ -255,7 +255,7 @@ module Devise
           generate_confirmation_token && save(validate: false)
         end
 
-        if Devise.activerecord?
+        if Devise.activerecord51?
           def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
             @reconfirmation_required = true
             self.unconfirmed_email = self.email
@@ -273,7 +273,7 @@ module Devise
           end
         end
 
-        if Devise.activerecord?
+        if Devise.activerecord51?
           def postpone_email_change?
             postpone = self.class.reconfirmable &&
               will_save_change_to_email? &&

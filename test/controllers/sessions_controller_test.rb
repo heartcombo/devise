@@ -88,7 +88,7 @@ class SessionsControllerTest < Devise::ControllerTestCase
     assert_equal 204, @response.status
   end
 
-  if defined?(ActiveRecord) && ActiveRecord::Base.respond_to?(:mass_assignment_sanitizer)
+  if Devise.activerecord51? && ActiveRecord::Base.respond_to?(:mass_assignment_sanitizer)
     test "#new doesn't raise mass-assignment exception even if sign-in key is attr_protected" do
       request.env["devise.mapping"] = Devise.mappings[:user]
 

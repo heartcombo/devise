@@ -345,7 +345,7 @@ module Devise
         # If the user is already confirmed, create an error for the user
         # Options must have the confirmation_token
         def confirm_by_token(confirmation_token)
-          confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token)
+          confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token) if confirmation_token.present?
           unless confirmable
             confirmation_digest = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
             confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_digest)

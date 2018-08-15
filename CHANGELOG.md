@@ -1,9 +1,24 @@
 ### Unreleased
 
 * enhancements
+  * Use `before_action` instead of `before_filter` (by @edenthecat)
+  *  Allow people to extend devise failure app, through invoking `ActiveSupport.run_load_hooks` once `Devise::FailureApp` is loaded (by @wnm)
+  * Use `update` instead of `update_attributes` (by @koic)
+  * Split IP resolution from `update_tracked_fields` (by @mckramer)
+  * upgrade dependencies for rails and responders (by @lancecarlson)
   * Add `autocomplete="new-password"` to new password fields (by @gssbzn)
   * Add `autocomplete="current-password"` to current password fields (by @gssbzn)
-  * Update `simple_form` templates with changes from 16b3d6d67c7e017d461ea17ed29ea9738dc77e83 and 6260c29a867b9a656f1e1557abe347a523178fab (by @gssbzn)
+  * Remove redundant `self` from `database_authenticatable` module (by @abhishekkanojia)
+  * Update `simple_form` templates with changes from https://github.com/plataformatec/devise/commit/16b3d6d67c7e017d461ea17ed29ea9738dc77e83 and https://github.com/plataformatec/devise/commit/6260c29a867b9a656f1e1557abe347a523178fab (by @gssbzn)
+  * Remove `:trackable` from the default modules in the generators, to be more GDPR-friendly (by @fakenine)
+
+* bug fixes
+  * Use same string on failed login regardless of whether account exists when in paranoid mode (by @TonyMK9068)
+  * Fix error when params is not a hash inside `Devise::ParameterSanitizer` (by @b0nn1e)
+  * Look for `secret_key_base` inside `Rails.application` (by @gencer)
+  * Ensure `Devise::ParameterFilter` does not add missing keys when called with a hash that has a `default` / `default_proc`
+configured (by @joshpencheon)
+  * Adds `is_navigational_format?` check to `after_sign_up_path_for` to keep consistency (by @iorme1)
 
 ### 4.4.3 - 2018-03-17
 

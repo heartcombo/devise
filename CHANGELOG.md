@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 4.5.0 - 2018-08-15
+
 * enhancements
   * Use `before_action` instead of `before_filter` (by @edenthecat)
   *  Allow people to extend devise failure app, through invoking `ActiveSupport.run_load_hooks` once `Devise::FailureApp` is loaded (by @wnm)

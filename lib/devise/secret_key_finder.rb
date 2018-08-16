@@ -2,26 +2,36 @@
 
 module Devise
   class SecretKeyFinder
+    COMMON_CONFIGURATION_LOCATIONS = [
+      'application.secret_key_base',
+      'application.credentials.secret_key_base',
+      'application.secrets.secret_key_base',
+      'application.config.secret_key_base'
+    ].freeze
+
     def initialize(application)
       @application = application
     end
 
     def find
-      if @application.respond_to?(:credentials) && key_exists?(@application.credentials)
-        @application.credentials.secret_key_base
-      elsif @application.respond_to?(:secrets) && key_exists?(@application.secrets)
-        @application.secrets.secret_key_base
-      elsif @application.config.respond_to?(:secret_key_base) && key_exists?(@application.config)
-        @application.config.secret_key_base
-      elsif @application.respond_to?(:secret_key_base) && key_exists?(@application)
-        @application.secret_key_base
+      return ENV['SECRET_KEY_BASE'] if ENV['SECRET_KEY_BASE']
+      COMMON_CONFIGURATION_LOCATIONS.find do |chain|
+        if secret_key_base = reduce_methods(chain)
+          break secret_key_base
+        end
       end
     end
 
     private
 
-    def key_exists?(object)
-      object.secret_key_base.present?
+    attr_reader :application
+
+    def reduce_methods(chain)
+      begin
+        chain.split('.').reduce(self){|obj, msg| obj.send(msg)}
+      rescue NoMethodError
+        nil
+      end
     end
   end
 end

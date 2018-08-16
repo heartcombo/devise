@@ -77,6 +77,14 @@ class Rails40Config
 end
 
 class SecretKeyFinderTest < ActiveSupport::TestCase
+  test "uses ENV when available" do
+    old_env = ENV['SECRET_KEY_BASE']
+    ENV['SECRET_KEY_BASE'] = 'Secret!'
+    secret_key_finder = Devise::SecretKeyFinder.new(Rails52SecretKeyBase.new)
+    assert_equal 'Secret!', secret_key_finder.find
+    ENV['SECRET_KEY_BASE'] = old_env
+  end
+
   test "rails 5.2 uses credentials when they're available" do
     secret_key_finder = Devise::SecretKeyFinder.new(Rails52Credentials.new)
 

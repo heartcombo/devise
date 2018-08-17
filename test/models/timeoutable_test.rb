@@ -50,4 +50,10 @@ class TimeoutableTest < ActiveSupport::TestCase
     user = create_admin(remember_created_at: Time.current)
     assert user.timedout?(31.minutes.ago)
   end
+
+  test 'should return false if rememberable is enabled and has not expired' do
+    user = create_user
+    user.remember_me!
+    refute user.timedout?(31.minutes.ago)
+  end
 end

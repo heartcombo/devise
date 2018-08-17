@@ -100,6 +100,10 @@ module Devise
       def after_remembered
       end
 
+      def remember_expired?
+        remember_created_at.nil? || (remember_expires_at <= Time.now.utc)
+      end
+
       def remember_me?(token, generated_at)
         # TODO: Normalize the JSON type coercion along with the Timeoutable hook
         # in a single place https://github.com/plataformatec/devise/blob/ffe9d6d406e79108cf32a2c6a1d0b3828849c40b/lib/devise/hooks/timeoutable.rb#L14-L18

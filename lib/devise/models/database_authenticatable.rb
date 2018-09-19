@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'devise/strategies/database_authenticatable'
 
 module Devise
@@ -10,9 +12,13 @@ module Devise
     # DatabaseAuthenticatable adds the following options to devise_for:
     #
     #   * +pepper+: a random string used to provide a more secure hash. Use
-    #     `rake secret` to generate new keys.
+    #     `rails secret` to generate new keys.
     #
     #   * +stretches+: the cost given to bcrypt.
+    #
+    #   * +send_email_changed_notification+: notify original email when it changes.
+    #
+    #   * +send_password_change_notification+: notify email when password changes.
     #
     # == Examples
     #
@@ -22,6 +28,7 @@ module Devise
       extend ActiveSupport::Concern
 
       included do
+        after_update :send_email_changed_notification, if: :send_email_changed_notification?
         after_update :send_password_change_notification, if: :send_password_change_notification?
 
         attr_reader :password, :current_password
@@ -66,11 +73,11 @@ module Devise
         end
 
         result = if valid_password?(current_password)
-          update_attributes(params, *options)
+          update(params, *options)
         else
-          self.assign_attributes(params, *options)
-          self.valid?
-          self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
+          assign_attributes(params, *options)
+          valid?
+          errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           false
         end
 
@@ -94,7 +101,7 @@ module Devise
         params.delete(:password)
         params.delete(:password_confirmation)
 
-        result = update_attributes(params, *options)
+        result = update(params, *options)
         clean_up_passwords
         result
       end
@@ -106,8 +113,8 @@ module Devise
         result = if valid_password?(current_password)
           destroy
         else
-          self.valid?
-          self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
+          valid?
+          errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           false
         end
 
@@ -132,6 +139,19 @@ module Devise
         encrypted_password[0,29] if encrypted_password
       end
 
+      if Devise.activerecord51?
+        # Send notification to user when email changes.
+        def send_email_changed_notification
+          send_devise_notification(:email_changed, to: email_before_last_save)
+        end
+      else
+        # Send notification to user when email changes.
+        def send_email_changed_notification
+          send_devise_notification(:email_changed, to: email_was)
+        end
+      end
+
+      # Send notification to user when password changes.
       def send_password_change_notification
         send_devise_notification(:password_change)
       end
@@ -147,12 +167,28 @@ module Devise
         Devise::Encryptor.digest(self.class, password)
       end
 
-      def send_password_change_notification?
-        self.class.send_password_change_notification && encrypted_password_changed?
+      if Devise.activerecord51?
+        def send_email_changed_notification?
+          self.class.send_email_changed_notification && saved_change_to_email?
+        end
+      else
+        def send_email_changed_notification?
+          self.class.send_email_changed_notification && email_changed?
+        end
+      end
+
+      if Devise.activerecord51?
+        def send_password_change_notification?
+          self.class.send_password_change_notification && saved_change_to_encrypted_password?
+        end
+      else
+        def send_password_change_notification?
+          self.class.send_password_change_notification && encrypted_password_changed?
+        end
       end
 
       module ClassMethods
-        Devise::Models.config(self, :pepper, :stretches, :send_password_change_notification)
+        Devise::Models.config(self, :pepper, :stretches, :send_email_changed_notification, :send_password_change_notification)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on

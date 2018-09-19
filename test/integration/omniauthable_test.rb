@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 
@@ -37,6 +39,17 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
   ensure
     Users::OmniauthCallbacksController.class_eval do
       alias_method :facebook, :__old_facebook
+    end
+  end
+
+  test "omniauth sign in should not run model validations" do
+    stub_action!(:sign_in_facebook) do
+      create_user
+      visit "/users/sign_in"
+      click_link "Sign in with FaceBook"
+      assert warden.authenticated?(:user)
+
+      refute User.validations_performed
     end
   end
 

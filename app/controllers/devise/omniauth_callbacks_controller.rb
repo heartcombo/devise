@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class Devise::OmniauthCallbacksController < DeviseController
   prepend_before_action { request.env["devise.skip_timeout"] = true }
 
   def passthru
-    render status: 404, text: "Not found. Authentication passthru."
+    render status: 404, plain: "Not found. Authentication passthru."
   end
 
   def failure
-    set_flash_message :alert, :failure, kind: OmniAuth::Utils.camelize(failed_strategy.name), reason: failure_message
+    set_flash_message! :alert, :failure, kind: OmniAuth::Utils.camelize(failed_strategy.name), reason: failure_message
     redirect_to after_omniauth_failure_path_for(resource_name)
   end
 

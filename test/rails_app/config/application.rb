@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path('../boot', __FILE__)
 
 require "action_controller/railtie"
@@ -31,8 +33,10 @@ module RailsApp
     # config.assets.enabled = false
 
     config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-
-    if DEVISE_ORM == :active_record && (Rails::VERSION::MAJOR >= 4 && Rails::VERSION::MINOR >= 2)
+    rails_version = Gem::Version.new(Rails.version)
+    if DEVISE_ORM == :active_record &&
+       rails_version >= Gem::Version.new('4.2.0') &&
+       rails_version < Gem::Version.new('5.1.0')
       config.active_record.raise_in_transactional_callbacks = true
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # All Devise controllers are inherited from here.
 class DeviseController < Devise.parent_controller.constantize
   include Devise::Controllers::ScopedViews
@@ -20,7 +22,7 @@ class DeviseController < Devise.parent_controller.constantize
   # Action Controller tests that forces _prefixes to be
   # loaded before even having a request object.
   #
-  # This method should be public as it is is in ActionPack
+  # This method should be public as it is in ActionPack
   # itself. Changing its visibility may break other gems.
   def _prefixes #:nodoc:
     @_prefixes ||= if self.class.scoped_views? && request && devise_mapping

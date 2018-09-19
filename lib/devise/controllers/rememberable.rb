@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Controllers
     # A module that may be optionally included in a controller in order

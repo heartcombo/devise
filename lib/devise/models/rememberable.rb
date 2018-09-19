@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'devise/strategies/rememberable'
 require 'devise/hooks/rememberable'
 require 'devise/hooks/forgetable'
 
 module Devise
   module Models
-    # Rememberable manages generating and clearing token for remember the user
+    # Rememberable manages generating and clearing token for remembering the user
     # from a saved cookie. Rememberable also has utility methods for dealing
     # with serializing the user into the cookie and back from the cookie, trying
     # to lookup the record based on the saved information.

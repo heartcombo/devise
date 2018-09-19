@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'devise/hooks/trackable'
 
 module Devise
@@ -20,7 +22,7 @@ module Devise
         self.last_sign_in_at     = old_current || new_current
         self.current_sign_in_at  = new_current
 
-        old_current, new_current = self.current_sign_in_ip, request.remote_ip
+        old_current, new_current = self.current_sign_in_ip, extract_ip_from(request)
         self.last_sign_in_ip     = old_current || new_current
         self.current_sign_in_ip  = new_current
 
@@ -29,9 +31,21 @@ module Devise
       end
 
       def update_tracked_fields!(request)
+        # We have to check if the user is already persisted before running
+        # `save` here because invalid users can be saved if we don't.
+        # See https://github.com/plataformatec/devise/issues/4673 for more details.
+        return if new_record?
+
         update_tracked_fields(request)
         save(validate: false)
       end
+
+      protected
+
+      def extract_ip_from(request)
+        request.remote_ip
+      end
+
     end
   end
 end

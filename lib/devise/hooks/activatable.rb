@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Deny user access whenever their account is not active yet.
 # We need this as hook to validate the user activity on each request
 # and in case the user is using other strategies beside Devise ones.

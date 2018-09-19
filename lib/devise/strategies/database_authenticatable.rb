@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'devise/strategies/authenticatable'
 
 module Devise
@@ -15,7 +17,9 @@ module Devise
         end
 
         mapping.to.new.password = password if !hashed && Devise.paranoid
-        fail(:not_found_in_database) unless resource
+        unless resource
+          Devise.paranoid ? fail(:invalid) : fail(:not_found_in_database)
+        end
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class <%= @scope_prefix %>UnlocksController < Devise::UnlocksController
   # GET /resource/unlock/new
   # def new

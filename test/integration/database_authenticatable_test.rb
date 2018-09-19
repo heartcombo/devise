@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DatabaseAuthenticationTest < Devise::IntegrationTest
@@ -70,6 +72,19 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
 
     assert_contain 'Invalid Email or password'
     refute warden.authenticated?(:admin)
+  end
+
+  test 'when in paranoid mode and without a valid e-mail' do
+    swap Devise, paranoid: true do
+      store_translations :en, devise: { failure: { not_found_in_database: 'Not found in database' } } do
+        sign_in_as_user do
+          fill_in 'email', with: 'wrongemail@test.com'
+        end
+        
+        assert_not_contain 'Not found in database'
+        assert_contain 'Invalid Email or password.'
+      end
+    end
   end
 
   test 'error message is configurable by resource name' do

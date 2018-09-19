@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Devise::RegistrationsController < DeviseController
   prepend_before_action :require_no_authentication, only: [:new, :create, :cancel]
   prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy]
@@ -5,7 +7,7 @@ class Devise::RegistrationsController < DeviseController
 
   # GET /resource/sign_up
   def new
-    build_resource({})
+    build_resource
     yield resource if block_given?
     respond_with resource
   end
@@ -97,8 +99,8 @@ class Devise::RegistrationsController < DeviseController
 
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
-  def build_resource(hash=nil)
-    self.resource = resource_class.new_with_session(hash || {}, session)
+  def build_resource(hash = {})
+    self.resource = resource_class.new_with_session(hash, session)
   end
 
   # Signs in a user on sign up. You can overwrite this method in your own
@@ -110,7 +112,7 @@ class Devise::RegistrationsController < DeviseController
   # The path used after sign up. You need to overwrite this method
   # in your own RegistrationsController.
   def after_sign_up_path_for(resource)
-    after_sign_in_path_for(resource)
+    after_sign_in_path_for(resource) if is_navigational_format?
   end
 
   # The path used after sign up for inactive accounts. You need to overwrite

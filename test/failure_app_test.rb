@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'ostruct'
 
@@ -333,6 +335,12 @@ class FailureTest < ActiveSupport::TestCase
           assert_equal @request.env["PATH_INFO"], '/users/sign_in'
         end
       end
+    end
+  end
+
+  context "Lazy loading" do
+    test "loads" do
+      assert_equal Devise::FailureApp.new.lazy_loading_works?, "yes it does"
     end
   end
 end

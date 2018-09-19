@@ -2,13 +2,16 @@ language: ruby
 
 rvm:
   - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.0
+  - 2.2.10
+  - 2.3.7
+  - 2.4.4
+  - 2.5.1
   - ruby-head
 
 gemfile:
   - Gemfile
+  - gemfiles/Gemfile.rails-5.2-rc1
+  - gemfiles/Gemfile.rails-5.0-stable
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
 
@@ -16,12 +19,24 @@ matrix:
   exclude:
     - rvm: 2.1.10
       gemfile: Gemfile
-    - rvm: 2.4.0
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-5.2-rc1
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
+    - rvm: 2.2.10
+      gemfile: gemfiles/Gemfile.rails-5.2-rc1
+    - rvm: 2.4.4
+      gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.5.1
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile
+    - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
+    - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-5.2-rc1
   allow_failures:
     - rvm: ruby-head
 services:
@@ -36,7 +51,10 @@ env:
     - DEVISE_ORM=active_record
     - DEVISE_ORM=mongoid
 
-before_install: "rm ${BUNDLE_GEMFILE}.lock"
+before_install:
+  - gem update --system
+  - gem install bundler
+  - "rm ${BUNDLE_GEMFILE}.lock"
 
 before_script: "bundle update"
 

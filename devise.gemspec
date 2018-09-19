@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+# frozen_string_literal: true
+
 $:.push File.expand_path("../lib", __FILE__)
 require "devise/version"
 
@@ -21,6 +23,6 @@ Gem::Specification.new do |s|
   s.add_dependency("warden", "~> 1.2.3")
   s.add_dependency("orm_adapter", "~> 0.1")
   s.add_dependency("bcrypt", "~> 3.0")
-  s.add_dependency("railties", ">= 4.1.0", "< 5.1")
+  s.add_dependency("railties", ">= 4.1.0", "< 6.0")
   s.add_dependency("responders")
 end

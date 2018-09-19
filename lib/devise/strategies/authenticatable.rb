@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'devise/strategies/base'
 
 module Devise

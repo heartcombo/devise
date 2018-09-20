@@ -4,6 +4,8 @@ By [Plataformatec](http://plataformatec.com.br/).
 
 [![Build Status](https://api.travis-ci.org/plataformatec/devise.svg?branch=master)](http://travis-ci.org/plataformatec/devise)
 [![Code Climate](https://codeclimate.com/github/plataformatec/devise.svg)](https://codeclimate.com/github/plataformatec/devise)
+[![Gem Version](https://badge.fury.io/rb/devise.svg)](https://rubygems.org/gems/devise)
+[![SemVer compatibility](https://api.dependabot.com/badges/compatibility_score?dependency-name=devise&package-manager=bundler&version-scheme=semver)](https://dependabot.com/compatibility-score.html?dependency-name=devise&package-manager=bundler&version-scheme=semver)
 
 This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
 

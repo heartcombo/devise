@@ -8,21 +8,28 @@ module Devise
     # Used to redirect back to a desired path after sign in.
     # Included by default in all controllers.
     module StoreLocation
-      # Returns and delete (if it's navigational format) the url stored in the session for
-      # the given scope. Useful for giving redirect backs after sign up:
+      # Returns the url stored in the session for the given scope. Useful for evaluating
+      # the stored_location before actually redirecting to it after sign up:
       #
       # Example:
       #
-      #   redirect_to stored_location_for(:user) || root_path
+      #   logger.debug stored_location_for(:user)
       #
       def stored_location_for(resource_or_scope)
         session_key = stored_location_key_for(resource_or_scope)
+        session[session_key]
+      end
 
-        if is_navigational_format?
-          session.delete(session_key)
-        else
-          session[session_key]
-        end
+      # Returns and delete the url stored in the session for the given scope.
+      # Useful for giving redirect backs after sign up:
+      #
+      # Example:
+      #
+      #   redirect_to pop_stored_location_for(:user) || root_path
+      #
+      def pop_stored_location_for(resource_or_scope)
+        session_key = stored_location_key_for(resource_or_scope)
+        session.delete(session_key)
       end
 
       # Stores the provided location to redirect the user after signing in.
@@ -35,7 +42,7 @@ module Devise
       #
       def store_location_for(resource_or_scope, location)
         session_key = stored_location_key_for(resource_or_scope)
-        
+
         path = extract_path_from_location(location)
         session[session_key] = path if path
       end
@@ -56,7 +63,7 @@ module Devise
       def extract_path_from_location(location)
         uri = parse_uri(location)
 
-        if uri 
+        if uri
           path = remove_domain_from_uri(uri)
           path = add_fragment_back_to_path(uri, path)
 

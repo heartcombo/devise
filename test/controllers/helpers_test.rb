@@ -212,10 +212,17 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     assert_equal "/foo.bar", @controller.stored_location_for(User.new)
   end
 
-  test 'stored location cleans information after reading' do
+  test 'stored location for does not clean information after reading' do
     @controller.session[:"user_return_to"] = "/foo.bar"
     assert_equal "/foo.bar", @controller.stored_location_for(:user)
-    assert_nil @controller.session[:"user_return_to"]
+    assert_equal "/foo.bar", @controller.session[:"user_return_to"]
+  end
+
+  test 'pop stored location for cleans information after reading' do
+    @controller.session[:"user_return_to"] = "/foo.bar"
+    assert_equal "/foo.bar", @controller.pop_stored_location_for(:user)
+    assert_equal nil, @controller.session[:"user_return_to"]
+    assert_equal nil, @controller.stored_location_for(:user)
   end
 
   test 'store location for stores a location to redirect back to' do

@@ -35,6 +35,22 @@ module Devise
         attr_accessor :password_confirmation
       end
 
+      def initialize(*args, &block)
+        @skip_email_changed_notification = false
+        @skip_password_change_notification = false
+        super 
+      end
+
+      # Skips sending the email changed notification after_update
+      def skip_email_changed_notification!
+        @skip_email_changed_notification = true
+      end
+
+      # Skips sending the password change notification after_update
+      def skip_password_change_notification!
+        @skip_password_change_notification = true
+      end
+
       def self.required_fields(klass)
         [:encrypted_password] + klass.authentication_keys
       end
@@ -169,21 +185,21 @@ module Devise
 
       if Devise.activerecord51?
         def send_email_changed_notification?
-          self.class.send_email_changed_notification && saved_change_to_email?
+          self.class.send_email_changed_notification && saved_change_to_email? && !@skip_email_changed_notification
         end
       else
         def send_email_changed_notification?
-          self.class.send_email_changed_notification && email_changed?
+          self.class.send_email_changed_notification && email_changed? && !@skip_email_changed_notification
         end
       end
 
       if Devise.activerecord51?
         def send_password_change_notification?
-          self.class.send_password_change_notification && saved_change_to_encrypted_password?
+          self.class.send_password_change_notification && saved_change_to_encrypted_password? && !@skip_password_change_notification
         end
       else
         def send_password_change_notification?
-          self.class.send_password_change_notification && encrypted_password_changed?
+          self.class.send_password_change_notification && encrypted_password_changed? && !@skip_password_change_notification
         end
       end
 

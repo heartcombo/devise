@@ -82,8 +82,8 @@ RUBY
         postgresql?
       end
 
-      def rails5?
-        Rails.version.start_with? '5'
+      def rails5_and_up?
+        Rails::VERSION::MAJOR >= 5
       end
 
       def postgresql?
@@ -92,13 +92,13 @@ RUBY
       end
 
      def migration_version
-       if rails5?
+       if rails5_and_up?
          "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
        end
      end
 
      def primary_key_type
-       primary_key_string if rails5?
+       primary_key_string if rails5_and_up?
      end
 
      def primary_key_string

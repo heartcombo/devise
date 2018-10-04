@@ -312,6 +312,16 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     end
   end
 
+  test 'is_flashing_format? depends on is_navigation_format?' do
+    @controller.expects(:is_navigational_format?).returns(true)
+    assert @controller.is_flashing_format?
+  end
+
+  test 'is_flashing_format? is guarded against flash (middleware) not being loaded' do
+    @controller.request.expects(:respond_to?).with(:flash).returns(false)
+    refute @controller.is_flashing_format?
+  end
+
   test 'is not a devise controller' do
     refute @controller.devise_controller?
   end

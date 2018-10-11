@@ -153,7 +153,7 @@ class Devise::RegistrationsController < DeviseController
                 elsif sign_in_after_change_password?
                   :updated
                 else
-                  :updated_not_sign_in
+                  :updated_but_not_signed_in
                 end
     set_flash_message :notice, flash_key
   end

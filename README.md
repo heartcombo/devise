@@ -151,13 +151,19 @@ BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable DEVISE_ORM=mongoid bin/test
 
 ## Starting with Rails?
 
-If you are building your first Rails application, we recommend you *do not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch. Today, we have three resources that should help you get started:
+If you are building your first Rails application, we recommend you *do not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch. Click on the links below to a few sources to help you get started.
 
-* Michael Hartl's online book: https://www.railstutorial.org/book/modeling_users
-* Ryan Bates' Railscast: http://railscasts.com/episodes/250-authentication-from-scratch
-* Codecademy's Ruby on Rails: Authentication and Authorization: http://www.codecademy.com/en/learn/rails-auth
+* [Michael Hartl's online book](https://www.railstutorial.org/book/modeling_users)
+		* detailed information on User models and databases
+* [Ryan Bates' Railscast](http://railscasts.com/episodes/250-authentication-from-scratch)
+		* Example codes for a basic user and password authentication
+* [Codecademy's](http://www.codecademy.com/en/learn/rails-auth)
+		* Interactive tutorial on Ruby on Rails: Authentication and Authorization:
 
-Once you have solidified your understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :smiley:
+Once you have solidified your understanding of Rails and authentication mechanisms, checkout the resource below on creating rails application with Devise.
+
+* [FreeCodeCamp](https://medium.freecodecamp.org/lets-create-an-intermediate-level-ruby-on-rails-application-d7c6e997c63f)
+		* Step by step rails tutorial in creating a full rails application using Devise gem for authentication 
 
 ## Getting started
 

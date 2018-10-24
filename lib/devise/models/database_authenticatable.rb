@@ -145,7 +145,7 @@ module Devise
       # See https://github.com/plataformatec/devise-encryptable for examples
       # of other hashing engines.
       def password_digest(password)
-        return nil if password.blank?
+        return if password.blank?
         Devise::Encryptor.digest(self.class, password)
       end
 

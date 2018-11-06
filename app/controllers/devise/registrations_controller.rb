@@ -16,7 +16,7 @@ class Devise::RegistrationsController < DeviseController
   def create
     build_resource(sign_up_params)
 
-    resource.save(context: resource_validation_context)
+    resource.save(context: resource_validation_context_on_create)
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -94,7 +94,7 @@ class Devise::RegistrationsController < DeviseController
   # By default we want to require a password checks on update.
   # You can overwrite this method in your own RegistrationsController.
   def update_resource(resource, params)
-    resource.update_with_password(params)
+    resource.update_with_password(params.merge(context: resource_validation_context_on_update))
   end
 
   # Build a devise resource passing in the session. Useful to move
@@ -144,8 +144,12 @@ class Devise::RegistrationsController < DeviseController
     devise_parameter_sanitizer.sanitize(:account_update)
   end
 
-  def resource_validation_context
+  def resource_validation_context_on_create
     nil
+  end
+
+  def resource_validation_context_on_update
+    resource_validation_context_on_create
   end
 
   def translation_scope

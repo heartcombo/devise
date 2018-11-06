@@ -38,7 +38,7 @@ module Devise
       def initialize(*args, &block)
         @skip_email_changed_notification = false
         @skip_password_change_notification = false
-        super 
+        super
       end
 
       # Skips sending the email changed notification after_update
@@ -82,6 +82,7 @@ module Devise
       # is also rejected as long as it is also blank.
       def update_with_password(params, *options)
         current_password = params.delete(:current_password)
+        context = params.delete(:context)
 
         if params[:password].blank?
           params.delete(:password)
@@ -89,10 +90,11 @@ module Devise
         end
 
         result = if valid_password?(current_password)
-          update(params, *options)
+          assign_attributes(params, *options)
+          save(context: context)
         else
           assign_attributes(params, *options)
-          valid?
+          valid?(context: context)
           errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           false
         end

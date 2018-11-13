@@ -148,6 +148,16 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     refute user.valid_password?('654321')
   end
 
+  test 'should be invalid if the password is nil' do
+    user = new_user(password: nil)
+    refute user.valid_password?(nil)
+  end
+
+  test 'should be invalid if the password is blank' do
+    user = new_user(password: '')
+    refute user.valid_password?('')
+  end
+
   test 'should respond to current password' do
     assert new_user.respond_to?(:current_password)
   end

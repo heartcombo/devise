@@ -13,6 +13,21 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert_nil User.find_first_by_auth_conditions({ email: "example@example.com" }, id: user.id.to_s.next)
   end
 
+  # assumes default configuration of
+  # config.case_insensitive_keys = [:email]
+  # config.strip_whitespace_keys = [:email]
+  test 'find_or_initialize_with_errors uses parameter filter on find' do
+    user = User.create!(email: "example@example.com", password: "1234567")
+    assert_equal User.find_or_initialize_with_errors([:email], { email: " EXAMPLE@example.com " }), user
+  end
+
+  # assumes default configuration of
+  # config.case_insensitive_keys = [:email]
+  # config.strip_whitespace_keys = [:email]
+  test 'find_or_initialize_with_errors uses parameter filter on initialize' do
+    assert_equal User.find_or_initialize_with_errors([:email], { email: " EXAMPLE@example.com " }).email, "example@example.com"
+  end
+
   if defined?(ActionController::Parameters)
     test 'does not passes an ActionController::Parameters to find_first_by_auth_conditions through find_or_initialize_with_errors' do
       user = create_user(email: 'example@example.com')

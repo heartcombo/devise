@@ -81,6 +81,15 @@ module Devise
       # their password). In case the password field is rejected, the confirmation
       # is also rejected as long as it is also blank.
       def update_with_password(params, *options)
+        if options.present?
+          ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+            [Devise] The second argument of `DatabaseAuthenticatable#update_with_password`
+            (`options`) is deprecated and it will be removed in the next major version.
+            It was added to support a feature deprecated in Rails 4, so you can safely remove it
+            from your code.
+          DEPRECATION
+        end
+
         current_password = params.delete(:current_password)
 
         if params[:password].blank?
@@ -114,6 +123,15 @@ module Devise
       #   end
       #
       def update_without_password(params, *options)
+        if options.present?
+          ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+            [Devise] The second argument of `DatabaseAuthenticatable#update_without_password`
+            (`options`) is deprecated and it will be removed in the next major version.
+            It was added to support a feature deprecated in Rails 4, so you can safely remove it
+            from your code.
+          DEPRECATION
+        end
+
         params.delete(:password)
         params.delete(:password_confirmation)
 

@@ -105,16 +105,24 @@ class EmailChangedReconfirmationTest < ActionMailer::TestCase
     Devise.send_email_changed_notification = false
   end
 
-  def admin
-    @admin ||= create_admin.tap { |u|
+  def previously_confirmed_admin
+    @previously_confirmed_admin ||= create_admin.tap { |u|
+      u.confirm
       @original_admin_email = u.email
+      u.update!(email: 'new-email@example.com')
+    }
+  end
+
+  def previously_unconfirmed_admin
+    @previously_unconfirmed_admin ||= create_admin.tap { |u|
+      @original_unadmin_email = u.email
       u.update!(email: 'new-email@example.com')
     }
   end
 
   def mail
     @mail ||= begin
-      admin
+      previously_confirmed_admin
       ActionMailer::Base.deliveries[-2]
     end
   end
@@ -126,7 +134,13 @@ class EmailChangedReconfirmationTest < ActionMailer::TestCase
 
   test 'body should have unconfirmed user info' do
     body = mail.body.encoded
-    assert_match admin.email, body
-    assert_match "is being changed to #{admin.unconfirmed_email}", body
+    assert_match previously_confirmed_admin.email, body
+    assert_match "is being changed to #{previously_confirmed_admin.unconfirmed_email}", body
+  end
+
+  test 'body should have current user info' do
+    body = mail.body.encoded
+    assert_match previously_unconfirmed_admin.email, body
+    assert_match "is being changed to #{previously_unconfirmed_admin.email}", body
   end
 end

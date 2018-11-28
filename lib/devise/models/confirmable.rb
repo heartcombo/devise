@@ -258,16 +258,20 @@ module Devise
         if Devise.activerecord51?
           def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
             @reconfirmation_required = true
-            self.unconfirmed_email = self.email
-            self.email = self.email_in_database
+            if confirmed?
+              self.unconfirmed_email = self.email
+              self.email = self.email_in_database
+            end
             self.confirmation_token = nil
             generate_confirmation_token
           end
         else
           def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
             @reconfirmation_required = true
-            self.unconfirmed_email = self.email
-            self.email = self.email_was
+            if confirmed?
+              self.unconfirmed_email = self.email
+              self.email = self.email_was
+            end
             self.confirmation_token = nil
             generate_confirmation_token
           end

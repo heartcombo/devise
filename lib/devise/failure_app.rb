@@ -232,7 +232,7 @@ module Devise
     # authenticated yet, but we still need to store the URI based on scope, so
     # different scopes would never use the same URI to redirect.
     def store_location!
-      store_location_for(scope, attempted_path) if request.get? && !http_auth?
+      store_location_for(scope, attempted_path) if request.get? && !request.xhr? && !http_auth?
     end
 
     def is_navigational_format?

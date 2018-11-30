@@ -1,3 +1,9 @@
+### 5.0.0-rc
+
+* enhancements
+  * Suport multiple translations according to unlock strategy (by @sivagollapalli)
+  * Use `ActiveSupport::SecurityUtils.secure_compare` inside `Devise.secure_compare` (by @shrirambalakrishnan)
+
 ### Unreleased
 
 ### 4.6.1 - 2019-02-11

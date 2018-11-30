@@ -1,5 +1,23 @@
 ### Unreleased
 
+* enhancements
+  * Allow to skip email and password change notifications (by @iorme1)
+  * Include the use of `nil` for `allow_unconfirmed_access_for` in the docs (by @joaumg)
+  * Ignore useless files into the `.gem` file (by @huacnlee)
+  * Explain the code that prevents enumeration attacks inside `Devise::Strategies::DatabaseAuthenticatable` (by @tegon)
+
+* bug fixes
+  * Fix missing comma in Simple Form generator (by @colinross)
+  * Fix error with migration generator in Rails 6 (by @oystersauce8)
+  * Set `encrypted_password` to `nil` when `password` is set to `nil` (by @sivagollapalli)
+  * Consider whether the request supports flash messages inside `Devise::Controllers::Helpers#is_flashing_format?` (by @colinross)
+  * Fix typo inside `Devise::Generators::ControllersGenerator` (by @kopylovvlad)
+  * Sanitize parameters inside `Devise::Models::Authenticatable#find_or_initialize_with_errors` (by @rlue)
+  * `#after_database_authentication` callback was not called after authentication on password reset (by @kanmaniselvan)
+
+* deprecations
+  * The second argument of `DatabaseAuthenticatable`'s `#update_with_password` and `#update_without_password` is deprecated and will be removed in the next major version. It was added to support a feature deprecated in Rails 4, so you can safely remove it from your code. (by @ihatov08)
+
 ### 4.5.0 - 2018-08-15
 
 * enhancements

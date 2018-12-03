@@ -101,7 +101,7 @@ module Devise
       end
 
       def remember_expired?
-        remember_created_at.nil? || (remember_expires_at <= Time.now.utc)
+        remember_created_at.nil? || (remember_expires_at <= Time.zone.now.utc)
       end
 
       def remember_me?(token, generated_at)

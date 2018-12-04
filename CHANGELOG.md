@@ -14,6 +14,7 @@
   * Fix typo inside `Devise::Generators::ControllersGenerator` (by @kopylovvlad)
   * Sanitize parameters inside `Devise::Models::Authenticatable#find_or_initialize_with_errors` (by @rlue)
   * `#after_database_authentication` callback was not called after authentication on password reset (by @kanmaniselvan)
+  * Fix corner case when `#confirmation_period_valid?` was called at the same second as `confirmation_sent_at` was set. Mostly true for date types that only have second precisions. (by @stanhu)
 
 * deprecations
   * The second argument of `DatabaseAuthenticatable`'s `#update_with_password` and `#update_without_password` is deprecated and will be removed in the next major version. It was added to support a feature deprecated in Rails 4, so you can safely remove it from your code. (by @ihatov08)

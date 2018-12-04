@@ -159,6 +159,7 @@ GEM
       activerecord (>= 3.2)
     thor (0.19.4)
     thread_safe (0.3.6)
+    timecop (0.8.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     warden (1.2.7)
@@ -186,6 +187,7 @@ DEPENDENCIES
   rdoc (~> 5.1)
   sqlite3
   test_after_commit
+  timecop
   webrat (= 0.7.3)
 
 BUNDLED WITH

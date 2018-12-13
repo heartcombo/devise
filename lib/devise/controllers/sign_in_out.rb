@@ -51,6 +51,7 @@ module Devise
           true
         else
           warden.set_user(resource, options.merge!(scope: scope))
+          resource.update_tracked_fields!(warden.request) if resource.respond_to?(:update_tracked_fields!)
         end
       end
 

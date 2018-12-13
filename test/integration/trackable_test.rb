@@ -95,5 +95,4 @@ class TrackableHooksTest < Devise::IntegrationTest
     user.reload
     assert_equal 1, user.sign_in_count
   end
-
 end

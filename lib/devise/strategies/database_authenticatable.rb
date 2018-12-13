@@ -12,6 +12,7 @@ module Devise
 
         if validate(resource){ hashed = true; resource.valid_password?(password) }
           remember_me(resource)
+          resource.update_tracked_fields!(request) if resource.respond_to?(:update_tracked_fields!)
           resource.after_database_authentication
           success!(resource)
         end

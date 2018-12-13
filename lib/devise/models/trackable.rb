@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'devise/hooks/trackable'
-
 module Devise
   module Models
     # Track information about your user sign in. It tracks the following columns:
@@ -36,6 +34,8 @@ module Devise
         # See https://github.com/plataformatec/devise/issues/4673 for more details.
         return if new_record?
 
+        return if skip_trackable_and_not_active_for_authentication?(request)
+
         update_tracked_fields(request)
         save(validate: false)
       end
@@ -46,6 +46,11 @@ module Devise
         request.remote_ip
       end
 
+      private
+
+      def skip_trackable_and_not_active_for_authentication?(request)
+        request.env['devise.skip_trackable'] || !active_for_authentication?
+      end
     end
   end
 end

@@ -60,6 +60,39 @@ class TrackableTest < ActiveSupport::TestCase
     assert_not user.update_tracked_fields!(request)
   end
 
+  test "update_tracked_fields! runs when isn't a new record and the validations are ok" do
+    user = create_user
+    user.stubs(:active_for_authentication?).returns(true)
+
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:env).returns('devise.skip_trackable' => nil)
+
+    assert user.update_tracked_fields!(request)
+  end
+
+  test "update_tracked_fields! should not run when skip trackable is turned on" do
+    user = create_user
+    user.stubs(:active_for_authentication?).returns(true)
+
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:env).returns('devise.skip_trackable' => 1)
+
+    assert_not user.update_tracked_fields!(request)
+  end
+
+  test "update_tracked_fields! should not run when the user is not active for authentication" do
+    user = create_user
+    user.stubs(:active_for_authentication?).returns(false)
+
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+    request.stubs(:env).returns('devise.skip_trackable' => nil)
+
+    assert_not user.update_tracked_fields!(request)
+  end
+
   test 'extract_ip_from should be overridable' do
     class UserWithOverride < User
       protected

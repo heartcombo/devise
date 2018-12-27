@@ -45,9 +45,7 @@ class LockableTest < ActiveSupport::TestCase
     same_user = User.find(user.id)
 
     user.increment_failed_attempts
-    user.save
     same_user.increment_failed_attempts
-    same_user.save
 
     assert_equal initial_failed_attempts + 2, user.reload.failed_attempts
   end

@@ -39,6 +39,17 @@ class LockableTest < ActiveSupport::TestCase
     end
   end
 
+  test "should read failed_attempts from database when incrementing" do
+    user = create_user
+    initial_failed_attempts = user.failed_attempts
+    same_user = User.find(user.id)
+
+    user.increment_failed_attempts
+    same_user.increment_failed_attempts
+
+    assert_equal initial_failed_attempts + 2, user.reload.failed_attempts
+  end
+
   test 'should be valid for authentication with a unlocked user' do
     user = create_user
     user.lock_access!

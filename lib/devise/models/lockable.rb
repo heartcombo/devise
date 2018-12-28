@@ -112,8 +112,8 @@ module Devise
       end
       
       def increment_failed_attempts
-        self.failed_attempts ||= 0
-        self.failed_attempts += 1
+        self.class.increment_counter(:failed_attempts, id)
+        reload
       end
 
       def unauthenticated_message

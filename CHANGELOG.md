@@ -53,6 +53,7 @@
   * Handle `on` and `ON` as true values to check params [#5514](https://github.com/heartcombo/devise/pull/5514)
   * Fix passing `format` option to `devise_for` [#5732](https://github.com/heartcombo/devise/pull/5732)
   * Use `ActiveRecord::SecurityUtils.secure_compare` in `Devise.secure_compare` to match two empty strings correctly. [#4829](https://github.com/heartcombo/devise/pull/4829)
+  * Respond with `401 Unauthorized` for non-navigational requests to destroy the session when there is no authenticated resource. [#4878](https://github.com/heartcombo/devise/pull/4878)
 
 
 Please check [4-stable](https://github.com/heartcombo/devise/blob/4-stable/CHANGELOG.md)

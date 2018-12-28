@@ -74,7 +74,7 @@ class SessionsControllerTest < Devise::ControllerTestCase
     assert_template "devise/sessions/new"
   end
 
-  test "#destroy doesn't set the flash if the requested format is not navigational" do
+  test "#destroy doesn't set the flash and returns 204 status if the requested format is not navigational" do
     request.env["devise.mapping"] = Devise.mappings[:user]
     user = create_user
     user.confirm
@@ -85,19 +85,6 @@ class SessionsControllerTest < Devise::ControllerTestCase
     }
     delete :destroy, format: 'json'
     assert flash[:notice].blank?, "flash[:notice] should be blank, not #{flash[:notice].inspect}"
-    assert_equal 204, @response.status
-  end
-
-  test "#destroy returns 204 status if the requested format is not navigational" do
-    request.env["devise.mapping"] = Devise.mappings[:user]
-    user = create_user
-    user.confirm
-    post :create, params: { format: 'json', user: {
-        email: user.email,
-        password: user.password
-      }
-    }
-    delete :destroy, format:'json'
     assert_equal 204, @response.status
   end
 

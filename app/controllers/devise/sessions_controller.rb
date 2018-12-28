@@ -28,7 +28,7 @@ class Devise::SessionsController < DeviseController
     signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
     set_flash_message! :notice, :signed_out if signed_out
     yield if block_given?
-    respond_to_on_destroy
+    respond_to_on_destroy(status: :no_content)
   end
 
   protected
@@ -62,7 +62,7 @@ class Devise::SessionsController < DeviseController
     if all_signed_out?
       set_flash_message! :notice, :already_signed_out
 
-      respond_to_on_destroy
+      respond_to_on_destroy(status: :unauthorized)
     end
   end
 
@@ -72,11 +72,11 @@ class Devise::SessionsController < DeviseController
     users.all?(&:blank?)
   end
 
-  def respond_to_on_destroy
+  def respond_to_on_destroy(status: status)
     # We actually need to hardcode this as Rails default responder doesn't
     # support returning empty response on GET request
     respond_to do |format|
-      format.all { head :no_content }
+      format.all { head status }
       format.any(*navigational_formats) { redirect_to after_sign_out_path_for(resource_name) }
     end
   end

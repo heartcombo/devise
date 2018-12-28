@@ -74,7 +74,7 @@ class SessionsControllerTest < Devise::ControllerTestCase
     assert_template "devise/sessions/new"
   end
 
-  test "#destroy doesn't set the flash if the requested format is not navigational" do
+  test "#destroy doesn't set the flash and returns 204 status if the requested format is not navigational" do
     request.env["devise.mapping"] = Devise.mappings[:user]
     user = create_user
     user.confirm
@@ -86,6 +86,17 @@ class SessionsControllerTest < Devise::ControllerTestCase
     delete :destroy, format: 'json'
     assert flash[:notice].blank?, "flash[:notice] should be blank, not #{flash[:notice].inspect}"
     assert_equal 204, @response.status
+  end
+
+  test "#destroy returns 401 status if user is not signed in and the requested format is not navigational" do
+    delete :destroy, format: 'json'
+    assert_equal 401, @response.status
+  end
+
+  test "#destroy returns 302 status if user is not signed in and the requested format is navigational" do
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    delete :destroy
+    assert_equal 302, @response.status
   end
 
   if defined?(ActiveRecord) && ActiveRecord::Base.respond_to?(:mass_assignment_sanitizer)

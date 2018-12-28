@@ -180,6 +180,12 @@ Devise.setup do |config|
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
 
+  # ==> Configuration for :registerable
+
+  # When set to false, does not sign a user in automatically after their password is
+  # changed. Defaults to true, so a user is signed in automatically after changing a password.
+  # config.sign_in_after_change_password = true
+
   ActiveSupport.on_load(:devise_failure_app) do
     require "lazy_load_test_module"
     include LazyLoadTestModule

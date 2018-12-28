@@ -293,6 +293,10 @@ module Devise
   mattr_accessor :token_generator
   @@token_generator = nil
 
+  # When set to false, changing a password does not automatically sign in a user
+  mattr_accessor :sign_in_after_change_password
+  @@sign_in_after_change_password = true
+
   def self.rails51? # :nodoc:
     Rails.gem_version >= Gem::Version.new("5.1.x")
   end

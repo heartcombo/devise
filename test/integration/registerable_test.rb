@@ -179,7 +179,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
-  test 'a signed in user should not still be able to use the website after changing their password if config.sign_in_after_change_password is false' do
+  test 'a signed in user should not be able to use the website after changing their password if config.sign_in_after_change_password is false' do
     swap Devise, sign_in_after_change_password: false do
       sign_in_as_user
       get edit_user_registration_path
@@ -191,7 +191,24 @@ class RegistrationTest < Devise::IntegrationTest
 
       assert_contain 'Your account has been updated successfully, but since your password was changed, you need to sign in again'
       assert_equal new_user_session_path, @request.path
-      assert !warden.authenticated?(:user)
+      refute warden.authenticated?(:user)
+    end
+  end
+
+  test 'a signed in user should be able to use the website after changing its email with config.sign_in_after_change_password is false' do
+    swap Devise, sign_in_after_change_password: false do
+      sign_in_as_user
+      get edit_user_registration_path
+
+      fill_in 'email', with: 'user.new@example.com'
+      fill_in 'current password', with: '12345678'
+      click_button 'Update'
+
+      assert_current_url '/'
+      assert_contain 'Your account has been updated successfully.'
+
+      assert warden.authenticated?(:user)
+      assert_equal "user.new@example.com", User.to_adapter.find_first.email
     end
   end
 

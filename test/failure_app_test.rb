@@ -180,7 +180,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'uses custom i18n options' do
       call_failure('warden' => OpenStruct.new(message: :does_not_exist), app: FailureWithI18nOptions)
-      assert_equal 'User steve does not exist', @request.flash[:alert]
+      assert_equal 'User Steve does not exist', @request.flash[:alert]
     end
 
     test 'uses the proxy failure message as string' do

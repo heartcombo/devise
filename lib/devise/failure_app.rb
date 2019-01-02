@@ -106,8 +106,11 @@ module Devise
         keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key| scope_class.human_attribute_name(key).downcase }
         options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
+        translated_message = I18n.t(:"#{scope}.#{message}", options)
 
-        I18n.t(:"#{scope}.#{message}", options).humanize
+        # only call `#humanize` when the message is `:invalid` to ensure the original format
+        # of other messages - like `:does_not_exist` - is kept.
+        message == :invalid ? translated_message.humanize : translated_message
       else
         message.to_s
       end

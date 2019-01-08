@@ -304,6 +304,7 @@ class PasswordTest < Devise::IntegrationTest
   end
 
   test "when using json requests to ask a confirmable request, should not return the object" do
+    User.any_instance.stubs(:active_for_authentication?).returns(true)
     user = create_user(confirm: false)
 
     post user_password_path(format: :json), params: { user: { email: user.email } }

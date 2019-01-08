@@ -135,6 +135,8 @@ module Devise
           recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
           if recoverable.persisted? && recoverable.active_for_authentication?
             recoverable.send_reset_password_instructions
+          elsif recoverable.persisted? && !recoverable.active_for_authentication?
+            recoverable.errors.add :reset_password_token, I18n.t('devise.passwords.inactive')
           end
           recoverable
         end

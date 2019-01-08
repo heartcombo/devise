@@ -313,6 +313,18 @@ class PasswordTest < Devise::IntegrationTest
     assert_equal response.body, "{}"
   end
 
+  test "when in paranoid mode and with an inactive e-mail, asking to reset password should display a message that does not indicate that the email exists in the database and redirect to the failure route" do
+    swap Devise, paranoid: true do
+      user = create_user
+      visit_new_password_path
+      fill_in 'email', with: user.email
+      click_button 'Send me reset password instructions'
+
+      assert_contain I18n.t('devise.passwords.send_paranoid_instructions')
+      assert_current_url "/users/sign_in"
+    end
+  end
+
   test "when in paranoid mode and with an invalid e-mail, asking to reset a password should display a message that does not indicates that the e-mail does not exists in the database" do
     swap Devise, paranoid: true do
       visit_new_password_path

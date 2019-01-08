@@ -136,7 +136,8 @@ module Devise
           if recoverable.persisted? && recoverable.active_for_authentication?
             recoverable.send_reset_password_instructions
           elsif recoverable.persisted? && !recoverable.active_for_authentication?
-            recoverable.errors.add :reset_password_token, I18n.t('devise.passwords.inactive')
+            error_key = Devise.paranoid ? 'devise.passwords.send_paranoid_instructions' : 'devise.passwords.inactive'
+            recoverable.errors.add :reset_password_token, I18n.t(error_key)
           end
           recoverable
         end

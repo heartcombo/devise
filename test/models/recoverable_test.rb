@@ -125,6 +125,12 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_nil reset_password_user.reset_password_token
   end
 
+  test 'displays inactive warning if record is not active_for_authentication?' do
+    user = create_user
+    reset_password_user = User.send_reset_password_instructions(email: user.email)
+    assert_equal I18n.t('devise.passwords.inactive'), reset_password_user.errors[:reset_password_token].join
+  end
+
   test 'should return a new record with errors if user was not found by e-mail' do
     reset_password_user = User.send_reset_password_instructions(email: "invalid@example.com")
     refute reset_password_user.persisted?

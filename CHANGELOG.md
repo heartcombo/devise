@@ -277,7 +277,7 @@ configured (by @joshpencheon)
     end
     ```
 
-    You can check more examples and explanations on the [README section](/plataformatec/devise#strong-parameters)
+    You can check more examples and explanations on the [README section](README.md#strong-parameters)
     and on the [ParameterSanitizer docs](lib/devise/parameter_sanitizer.rb).
 
 Please check [3-stable](https://github.com/plataformatec/devise/blob/3-stable/CHANGELOG.md)

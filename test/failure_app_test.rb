@@ -44,6 +44,10 @@ class FailureTest < ActiveSupport::TestCase
     end
   end
 
+  class RequestWithoutFlashSupport < ActionDispatch::Request
+    undef_method :flash
+  end
+
   def self.context(name, &block)
     instance_eval(&block)
   end
@@ -66,7 +70,7 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     @response = (env.delete(:app) || Devise::FailureApp).call(env).to_a
-    @request  = ActionDispatch::Request.new(env)
+    @request  = (env.delete(:request_klass) || ActionDispatch::Request).new(env)
   end
 
   context 'When redirecting' do
@@ -341,6 +345,13 @@ class FailureTest < ActiveSupport::TestCase
   context "Lazy loading" do
     test "loads" do
       assert_equal Devise::FailureApp.new.lazy_loading_works?, "yes it does"
+    end
+  end
+  context "Without Flash Support" do
+    test "returns to the default redirect location without a flash message" do
+      call_failure request_klass: RequestWithoutFlashSupport
+      assert_equal 302, @response.first
+      assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
   end
 end

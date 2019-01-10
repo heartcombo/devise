@@ -1,5 +1,27 @@
 ### Unreleased
 
+* enhancements
+  * Allow to skip email and password change notifications (by @iorme1)
+  * Include the use of `nil` for `allow_unconfirmed_access_for` in the docs (by @joaumg)
+  * Ignore useless files into the `.gem` file (by @huacnlee)
+  * Explain the code that prevents enumeration attacks inside `Devise::Strategies::DatabaseAuthenticatable` (by @tegon)
+  * Refactor the `devise_error_messages!` helper to render a partial (by @prograhamer)
+
+* bug fixes
+  * Fix missing comma in Simple Form generator (by @colinross)
+  * Fix error with migration generator in Rails 6 (by @oystersauce8)
+  * Set `encrypted_password` to `nil` when `password` is set to `nil` (by @sivagollapalli)
+  * Consider whether the request supports flash messages inside `Devise::Controllers::Helpers#is_flashing_format?` (by @colinross)
+  * Fix typo inside `Devise::Generators::ControllersGenerator` (by @kopylovvlad)
+  * Sanitize parameters inside `Devise::Models::Authenticatable#find_or_initialize_with_errors` (by @rlue)
+  * `#after_database_authentication` callback was not called after authentication on password reset (by @kanmaniselvan)
+  * Fix corner case when `#confirmation_period_valid?` was called at the same second as `confirmation_sent_at` was set. Mostly true for date types that only have second precisions. (by @stanhu)
+  * Fix unclosed `li` tag in `error_messages` partial (by @mracos)
+
+* deprecations
+  * The second argument of `DatabaseAuthenticatable`'s `#update_with_password` and `#update_without_password` is deprecated and will be removed in the next major version. It was added to support a feature deprecated in Rails 4, so you can safely remove it from your code. (by @ihatov08)
+  * The `DeviseHelper.devise_error_messages!` is deprecated and will be removed in the next major version. Use the `devise/shared/error_messages` partial instead. (by @mracos)
+
 ### 4.5.0 - 2018-08-15
 
 * enhancements
@@ -255,7 +277,7 @@ configured (by @joshpencheon)
     end
     ```
 
-    You can check more examples and explanations on the [README section](/plataformatec/devise#strong-parameters)
+    You can check more examples and explanations on the [README section](README.md#strong-parameters)
     and on the [ParameterSanitizer docs](lib/devise/parameter_sanitizer.rb).
 
 Please check [3-stable](https://github.com/plataformatec/devise/blob/3-stable/CHANGELOG.md)

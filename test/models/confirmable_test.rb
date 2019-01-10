@@ -240,6 +240,16 @@ class ConfirmableTest < ActiveSupport::TestCase
     refute user.active_for_authentication?
   end
 
+  test 'should not be active when confirm period is set to 0 days' do
+    Devise.allow_unconfirmed_access_for = 0.days
+    user = create_user
+
+    Timecop.freeze(Time.zone.today) do
+      user.confirmation_sent_at = Time.zone.today
+      refute user.active_for_authentication?
+    end
+  end
+
   test 'should be active when we set allow_unconfirmed_access_for to nil' do
     swap Devise, allow_unconfirmed_access_for: nil do
       user = create_user

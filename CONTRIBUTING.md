@@ -64,7 +64,7 @@ open issues to help troubleshoot and fix existing bugs on Devise. Here is what
 you can do:
 
 * Help ensure that existing issues follows the recommendations from the
-_[Reporting Issues](#reporting-issues)_ section, providing feeback to the issue's
+_[Reporting Issues](#reporting-issues)_ section, providing feedback to the issue's
 author on what might be missing.
 * Review and update the existing content of our [Wiki](https://github.com/plataformatec/devise/wiki)
 with up to date instructions and code samples - the wiki was grown with several

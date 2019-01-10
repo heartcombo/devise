@@ -21,6 +21,8 @@ module Devise
         def new_with_session(params, session)
           new(params)
         end
+
+        Devise::Models.config(self, :sign_in_after_change_password)
       end
     end
   end

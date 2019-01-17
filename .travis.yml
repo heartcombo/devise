@@ -51,7 +51,10 @@ env:
     - DEVISE_ORM=active_record
     - DEVISE_ORM=mongoid
 
-before_install: "rm ${BUNDLE_GEMFILE}.lock"
+before_install:
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
+  - "rm ${BUNDLE_GEMFILE}.lock"
 
 before_script: "bundle update"
 

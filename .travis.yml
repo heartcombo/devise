@@ -1,8 +1,6 @@
 language: ruby
 
 rvm:
-  - 2.1.10
-  - 2.2.10
   - 2.3.8
   - 2.4.5
   - 2.5.3
@@ -17,15 +15,8 @@ gemfile:
 
 matrix:
   exclude:
-      gemfile: Gemfile
-    - rvm: 2.2.10
-      gemfile: gemfiles/Gemfile.rails-6.0-beta
-    - rvm: 2.2.10
-      gemfile: gemfiles/Gemfile.rails-5.2-stable
     - rvm: 2.3.8
       gemfile: gemfiles/Gemfile.rails-6.0-beta
-    - rvm: 2.4.5
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: 2.4.5
       gemfile: gemfiles/Gemfile.rails-6.0-beta
     - rvm: 2.5.3

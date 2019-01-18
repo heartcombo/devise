@@ -136,17 +136,17 @@ Please note that the command output will show the variable value being used.
 ### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
 Inside the [gemfiles](https://github.com/plataformatec/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks on Travis using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
-For example, if the tests broke using Ruby 2.4.2 and Rails 4.1, you can do the following:
+For example, if the tests broke using Ruby 2.5.0 and Rails 5.0, you can do the following:
 ```bash
-rbenv shell 2.4.2 # or rvm use 2.4.2
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bin/test
+rbenv shell 2.5.0 # or rvm use 2.5.0
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-5.0-stable bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-5.0-stable bin/test
 ```
 
 You can also combine both of them if the tests broke for Mongoid:
 ```bash
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable DEVISE_ORM=mongoid bin/test
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-5.0-stable bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-5.0-stable DEVISE_ORM=mongoid bin/test
 ```
 
 ### Running tests
@@ -179,7 +179,7 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 ## Getting started
 
-Devise 4.0 works with Rails 4.1 onwards. Add the following line to your Gemfile:
+Devise 5.0 works with Rails 5.0 onwards. Add the following line to your Gemfile:
 
 ```ruby
 gem 'devise'

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-superclass = ActiveRecord::Migration
-# TODO: Inherit from the 5.0 Migration class directly when we drop support for Rails 4.
-superclass = ActiveRecord::Migration[5.0] if superclass.respond_to?(:[])
-
-class CreateTables < superclass
+ class CreateTables < ActiveRecord::Migration[5.0]
   def self.up
     create_table :users do |t|
       t.string :username

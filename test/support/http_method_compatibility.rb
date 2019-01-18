@@ -6,21 +6,11 @@ module Devise
     #           xhr get_via_redirect post_via_redirect
     #         ).each do |method|
     %w( get post put ).each do |method|
-      if Devise::Test.rails5_and_up?
-        define_method(method) do |url, options={}|
-          if options.empty?
-            super url
-          else
-            super url, options
-          end
-        end
-      else
-        define_method(method) do |url, options={}|
-          if options[:xhr]==true
-            xml_http_request  __method__, url, options[:params] || {}, options[:headers]
-          else
-            super url, options[:params] || {}, options[:headers]
-          end
+      define_method(method) do |url, options={}|
+        if options.empty?
+          super url
+        else
+          super url, options
         end
       end
     end
@@ -31,21 +21,11 @@ module Devise
     #           xhr get_via_redirect post_via_redirect
     #         ).each do |method|
     %w( get post put ).each do |method|
-      if Devise::Test.rails5_and_up?
-        define_method(method) do |action, options={}|
-          if options.empty?
-            super action
-          else
-            super action, options
-          end
-        end
-      else
-        define_method(method) do |action, options={}|
-          if options[:xhr]==true
-            xml_http_request  __method__, action, options[:params] || {}, options[:headers]
-          else
-            super action, options[:params] || {}, options[:headers]
-          end
+      define_method(method) do |action, options={}|
+        if options.empty?
+          super action
+        else
+          super action, options
         end
       end
     end

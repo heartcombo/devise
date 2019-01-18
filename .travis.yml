@@ -8,7 +8,7 @@ rvm:
 
 gemfile:
   - Gemfile
-  - gemfiles/Gemfile.rails-5.2-rc1
+  - gemfiles/Gemfile.rails-5.2-stable
   - gemfiles/Gemfile.rails-5.0-stable
 
 matrix:
@@ -18,7 +18,7 @@ matrix:
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-5.0-stable
     - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-5.2-rc1
+      gemfile: gemfiles/Gemfile.rails-5.2-stable
   allow_failures:
     - rvm: ruby-head
 services:

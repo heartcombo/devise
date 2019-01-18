@@ -183,11 +183,8 @@ module Devise
       #         # Deliver later with Active Job's `deliver_later`
       #         if message.respond_to?(:deliver_later)
       #           message.deliver_later
-      #         # Remove once we move to Rails 4.2+ only, as `deliver` is deprecated.
-      #         elsif message.respond_to?(:deliver_now)
-      #           message.deliver_now
       #         else
-      #           message.deliver
+      #           message.deliver_now
       #         end
       #       end
       #
@@ -195,12 +192,7 @@ module Devise
       #
       def send_devise_notification(notification, *args)
         message = devise_mailer.send(notification, self, *args)
-        # Remove once we move to Rails 4.2+ only.
-        if message.respond_to?(:deliver_now)
-          message.deliver_now
-        else
-          message.deliver
-        end
+        message.deliver_now
       end
 
       def downcase_keys

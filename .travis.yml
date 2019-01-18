@@ -1,8 +1,6 @@
 language: ruby
 
 rvm:
-  - 2.1.10
-  - 2.2.10
   - 2.3.7
   - 2.4.4
   - 2.5.1
@@ -15,14 +13,6 @@ gemfile:
 
 matrix:
   exclude:
-    - rvm: 2.1.10
-      gemfile: Gemfile
-    - rvm: 2.1.10
-      gemfile: gemfiles/Gemfile.rails-5.2-rc1
-    - rvm: 2.1.10
-      gemfile: gemfiles/Gemfile.rails-5.0-stable
-    - rvm: 2.2.10
-      gemfile: gemfiles/Gemfile.rails-5.2-rc1
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile
     - env: DEVISE_ORM=mongoid

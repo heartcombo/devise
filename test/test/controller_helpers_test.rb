@@ -173,10 +173,8 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
 
     @request = if Devise::Test.rails51? || Devise::Test.rails52?
       ActionController::TestRequest.create(Class.new) # needs a "controller class"
-    elsif Devise::Test.rails5?
-      ActionController::TestRequest.create
     else
-      ActionController::TestRequest.new
+      ActionController::TestRequest.create
     end
 
     new_warden_proxy = warden

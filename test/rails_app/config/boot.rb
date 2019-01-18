@@ -6,18 +6,14 @@ end
 
 module Devise
   module Test
-    # Detection for minor differences between Rails 4 and 5, 5.1, and 5.2 in tests.
-    
+    # Detection for minor differences between Rails 5, 5.1, and 5.2 in tests.
+
     def self.rails52?
       Rails.version.start_with? '5.2'
     end
 
     def self.rails51?
       Rails.version.start_with? '5.1'
-    end
-
-    def self.rails5?
-      Rails.version.start_with? '5'
     end
   end
 end

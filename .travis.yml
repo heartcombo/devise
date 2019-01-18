@@ -12,8 +12,6 @@ gemfile:
   - Gemfile
   - gemfiles/Gemfile.rails-5.2-rc1
   - gemfiles/Gemfile.rails-5.0-stable
-  - gemfiles/Gemfile.rails-4.2-stable
-  - gemfiles/Gemfile.rails-4.1-stable
 
 matrix:
   exclude:
@@ -25,12 +23,6 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-5.0-stable
     - rvm: 2.2.10
       gemfile: gemfiles/Gemfile.rails-5.2-rc1
-    - rvm: 2.4.4
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.5.1
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: ruby-head
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile
     - env: DEVISE_ORM=mongoid
@@ -51,10 +43,7 @@ env:
     - DEVISE_ORM=active_record
     - DEVISE_ORM=mongoid
 
-before_install:
-  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
-  - gem install bundler -v '< 2'
-  - "rm ${BUNDLE_GEMFILE}.lock"
+before_install: "rm ${BUNDLE_GEMFILE}.lock"
 
 before_script: "bundle update"
 

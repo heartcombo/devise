@@ -59,6 +59,8 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-6.0-beta
   allow_failures:
     - rvm: ruby-head
+    - gemfile: gemfiles/Gemfile.rails-6.0-beta
+
 services:
   - mongodb
 

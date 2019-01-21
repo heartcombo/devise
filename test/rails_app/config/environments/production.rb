@@ -22,7 +22,7 @@ RailsApp::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  if Rails.version >= "5.0.0"
+  if Devise::Test.rails5_and_up?
     config.public_file_server.enabled = false
   elsif Rails.version >= "4.2.0"
     config.serve_static_files = false

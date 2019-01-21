@@ -22,7 +22,7 @@ class HomeController < ApplicationController
   end
 
   def unauthenticated
-    if Devise::Test.rails5?
+    if Devise::Test.rails5_and_up?
       render body: "unauthenticated", status: :unauthorized
     else
       render text: "unauthenticated", status: :unauthorized

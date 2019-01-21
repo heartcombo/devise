@@ -4,6 +4,9 @@
   * Suport multiple translations according to unlock strategy (by @sivagollapalli)
   * Use `ActiveSupport::SecurityUtils.secure_compare` inside `Devise.secure_compare` (by @shrirambalakrishnan)
 
+* deprecations
+  * Remove Rails 4, Ruby 2.1 and Ruby 2.2 support (by @feliperenan)
+
 ### Unreleased
 
 * enhancements

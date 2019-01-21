@@ -8,6 +8,7 @@ gem "rails", github: "rails/rails", branch: "4-2-stable"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc", "~> 5.1"
+gem "nokogiri", "1.9.1"
 
 group :test do
   gem "omniauth-facebook"

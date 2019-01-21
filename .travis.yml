@@ -3,9 +3,10 @@ language: ruby
 rvm:
   - 2.1.10
   - 2.2.10
-  - 2.3.7
-  - 2.4.4
-  - 2.5.1
+  - 2.3.8
+  - 2.4.5
+  - 2.5.3
+  - 2.6.0
   - ruby-head
 
 gemfile:
@@ -30,9 +31,11 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-6.0-beta
     - rvm: 2.2.10
       gemfile: gemfiles/Gemfile.rails-5.2-stable
-    - rvm: 2.4.4
+    - rvm: 2.4.5
       gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.5.1
+    - rvm: 2.5.3
+      gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.6.0
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable

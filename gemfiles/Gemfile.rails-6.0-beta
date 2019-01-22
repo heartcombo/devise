@@ -1,14 +1,17 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
 
 gemspec path: ".."
 
-gem "rails", github: "rails/rails", branch: "4-2-stable"
+gem "rails", '6.0.0.beta1'
 gem "omniauth"
 gem "omniauth-oauth2"
-gem "rdoc", "~> 5.1"
-gem "nokogiri", "1.9.1"
+gem "rdoc"
+
+gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
+
+gem "rails-controller-testing"
+
+gem "responders", "~> 2.4"
 
 group :test do
   gem "omniauth-facebook"
@@ -19,16 +22,6 @@ group :test do
   gem 'test_after_commit', require: false
 end
 
-platforms :jruby do
-  gem "activerecord-jdbc-adapter"
-  gem "activerecord-jdbcsqlite3-adapter"
-  gem "jruby-openssl"
-end
-
 platforms :ruby do
   gem "sqlite3"
-end
-
-group :mongoid do
-  gem "mongoid", "~> 4.0"
 end

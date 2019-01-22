@@ -5,14 +5,14 @@ ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.include_root_in_json = true
 
 migrate_path = File.expand_path("../../rails_app/db/migrate/", __FILE__)
-if Devise::Test.rails52?
+if Devise::Test.rails52_and_up?
   ActiveRecord::MigrationContext.new(migrate_path).migrate
 else
   ActiveRecord::Migrator.migrate(migrate_path)
 end
 
 class ActiveSupport::TestCase
-  if Devise::Test.rails5?
+  if Devise::Test.rails5_and_up?
     self.use_transactional_tests = true
   else
     # Let `after_commit` work with transactional fixtures, however this is not needed for Rails 5.

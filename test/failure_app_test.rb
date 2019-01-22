@@ -82,7 +82,7 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'returns to the default redirect location considering subdomain' do
-      call_failure('warden.options' => { scope: :subdomain_user })
+      call_failure('warden.options' => { scope: :subdomain_user }, 'REQUEST_URI' => 'http://sub.test.host/', 'HTTP_HOST' => 'sub.test.host')
       assert_equal 302, @response.first
       assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
       assert_equal 'http://sub.test.host/subdomain_users/sign_in', @response.second['Location']
@@ -105,7 +105,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'returns to the root path considering subdomain if no session path is available' do
       swap Devise, router_name: :fake_app do
-        call_failure app: FailureWithSubdomain
+        call_failure app: FailureWithSubdomain, 'REQUEST_URI' => 'http://sub.test.host/', 'HTTP_HOST' => 'sub.test.host'
         assert_equal 302, @response.first
         assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
         assert_equal 'http://sub.test.host/', @response.second['Location']
@@ -130,7 +130,7 @@ class FailureTest < ActiveSupport::TestCase
 
       test 'returns to the default redirect location considering the relative url root and subdomain' do
         swap Rails.application.config, relative_url_root: "/sample" do
-          call_failure('warden.options' => { scope: :subdomain_user })
+          call_failure('warden.options' => { scope: :subdomain_user }, 'REQUEST_URI' => 'http://sub.test.host/', 'HTTP_HOST' => 'sub.test.host')
           assert_equal 302, @response.first
           assert_equal 'http://sub.test.host/sample/subdomain_users/sign_in', @response.second['Location']
         end
@@ -148,7 +148,7 @@ class FailureTest < ActiveSupport::TestCase
 
       test "returns to the default redirect location considering action_controller's relative url root and subdomain" do
         swap Rails.application.config.action_controller, relative_url_root: "/sample" do
-          call_failure('warden.options' => { scope: :subdomain_user })
+          call_failure('warden.options' => { scope: :subdomain_user }, 'REQUEST_URI' => 'http://sub.test.host/', 'HTTP_HOST' => 'sub.test.host')
           assert_equal 302, @response.first
           assert_equal 'http://sub.test.host/sample/subdomain_users/sign_in', @response.second['Location']
         end

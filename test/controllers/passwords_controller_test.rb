@@ -25,7 +25,7 @@ class PasswordsControllerTest < Devise::ControllerTestCase
   end
 
   test 'redirect accordingly if after_resetting_password_path_for is overridden' do
-    custom_path = "http://custom.path/"
+    custom_path = "/custom-path/"
     Devise::PasswordsController.any_instance.stubs(:after_resetting_password_path_for).with(@user).returns(custom_path)
 
     put_update_with_params

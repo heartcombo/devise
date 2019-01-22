@@ -36,7 +36,7 @@ class SessionsControllerTest < Devise::ControllerTestCase
 
   test "#create delete the url stored in the session if the requested format is navigational" do
     request.env["devise.mapping"] = Devise.mappings[:user]
-    request.session["user_return_to"] = 'foo.bar'
+    request.session["user_return_to"] = '/foo.bar'
 
     user = create_user
     user.confirm

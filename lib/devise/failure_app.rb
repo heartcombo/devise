@@ -149,9 +149,13 @@ module Devise
 
       if relative_url_root?
         opts[:script_name] = relative_url_root
-      elsif defined? context.routes
+
+      # We need to add the rootpath to `script_name` manually for applications that use a Rails
+      # version lower than 5.1. Otherwise, it is going to generate a wrong path for Engines
+      # that use Devise. Remove it when the support of Rails 5.0 is droped.
+      elsif root_path_defined?(context) && rails_5_and_down?
         rootpath = context.routes.url_helpers.root_path
-        opts[:script_name] = rootpath.chomp('/') unless rootpath.length <= 1
+        opts[:script_name] = rootpath.chomp('/') if rootpath.length > 1
       end
 
       if context.respond_to?(route)
@@ -267,5 +271,21 @@ module Devise
     end
 
     ActiveSupport.run_load_hooks(:devise_failure_app, self)
+
+    private
+
+    def root_path_defined?(context)
+      defined?(context.routes) && context.routes.url_helpers.root_path.present?
+    end
+
+    def rails_5_and_down?
+      return false if rails_5_up?
+
+      Rails::VERSION::MAJOR >= 4
+    end
+
+    def rails_5_up?
+      Rails::VERSION::MAJOR >= 5 && Rails::VERSION::MINOR > 0
+    end
   end
 end

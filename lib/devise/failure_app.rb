@@ -144,10 +144,15 @@ module Devise
 
       opts[:format] = request_format unless skip_format?
 
-      opts[:script_name] = relative_url_root if relative_url_root?
-
       router_name = Devise.mappings[scope].router_name || Devise.available_router_name
       context = send(router_name)
+
+      if relative_url_root?
+        opts[:script_name] = relative_url_root
+      elsif defined? context.routes
+        rootpath = context.routes.url_helpers.root_path
+        opts[:script_name] = rootpath.chomp('/') unless rootpath.length <= 1
+      end
 
       if context.respond_to?(route)
         context.send(route, opts)

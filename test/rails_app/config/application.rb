@@ -44,5 +44,10 @@ module RailsApp
     config.to_prepare do
       Devise::SessionsController.layout "application"
     end
+
+    # Remove this check once Rails 5.0 support is removed.
+    if Devise::Test.rails52_and_up?
+      Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
+    end
   end
 end

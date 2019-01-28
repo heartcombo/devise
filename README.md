@@ -149,6 +149,24 @@ BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
 BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable DEVISE_ORM=mongoid bin/test
 ```
 
+### Running tests
+Devise uses [Mini Test](https://github.com/seattlerb/minitest) as test framework.
+
+* Running all tests:
+```bash
+bin/test
+```
+
+* Running tests for an specific file:
+```bash
+ruby -Itest test/models/trackable_test.rb
+```
+
+* Running a specific test given a regex:
+```bash
+ruby -Itest test/models/trackable_test.rb --name /authentication/
+```
+
 ## Starting with Rails?
 
 If you are building your first Rails application, we recommend you *do not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch. Today, we have three resources that should help you get started:

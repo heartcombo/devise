@@ -33,12 +33,6 @@ module RailsApp
     # config.assets.enabled = false
 
     config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-    rails_version = Gem::Version.new(Rails.version)
-    if DEVISE_ORM == :active_record &&
-       rails_version >= Gem::Version.new('4.2.0') &&
-       rails_version < Gem::Version.new('5.1.0')
-      config.active_record.raise_in_transactional_callbacks = true
-    end
 
     # This was used to break devise in some situations
     config.to_prepare do

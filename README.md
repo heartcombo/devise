@@ -159,12 +159,12 @@ bin/test
 
 * Running tests for an specific file:
 ```bash
-ruby -Itest test/models/trackable_test.rb
+bin/test test/models/trackable_test.rb
 ```
 
 * Running a specific test given a regex:
 ```bash
-ruby -Itest test/models/trackable_test.rb --name /authentication/
+bin/test test/models/trackable_test.rb:16
 ```
 
 ## Starting with Rails?

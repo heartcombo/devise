@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 4.6.0 - 2019-02-07
+
 * enhancements
   * Allow to skip email and password change notifications (by @iorme1)
   * Include the use of `nil` for `allow_unconfirmed_access_for` in the docs (by @joaumg)

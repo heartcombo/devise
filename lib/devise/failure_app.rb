@@ -275,7 +275,7 @@ module Devise
     private
 
     def root_path_defined?(context)
-      defined?(context.routes) && context.routes.url_helpers.root_path.present?
+      defined?(context.routes) && context.routes.url_helpers.respond_to?(:root_path)
     end
 
     def rails_5_and_down?

@@ -28,6 +28,27 @@ class FailureTest < ActiveSupport::TestCase
     end
   end
 
+  class FailureWithoutRootPath < Devise::FailureApp
+    class FakeURLHelpers
+    end
+
+    class FakeRoutesWithoutRoot
+      def url_helpers
+        FakeURLHelpers.new
+      end
+    end
+
+    class FakeAppWithoutRootPath
+      def routes
+        FakeRoutesWithoutRoot.new
+      end
+    end
+
+    def fake_app
+      FakeAppWithoutRootPath.new
+    end
+  end
+
   class FakeEngineApp < Devise::FailureApp
     class FakeEngine
       def new_user_on_engine_session_url _
@@ -97,6 +118,15 @@ class FailureTest < ActiveSupport::TestCase
     test 'returns to the root path if no session path is available' do
       swap Devise, router_name: :fake_app do
         call_failure app: RootFailureApp
+        assert_equal 302, @response.first
+        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+        assert_equal 'http://test.host/', @response.second['Location']
+      end
+    end
+
+    test 'returns to the root path even when it\'s not defined' do
+      swap Devise, router_name: :fake_app do
+        call_failure app: FailureWithoutRootPath
         assert_equal 302, @response.first
         assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
         assert_equal 'http://test.host/', @response.second['Location']

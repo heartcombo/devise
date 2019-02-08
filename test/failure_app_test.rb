@@ -44,7 +44,7 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
 
-    def fake_app
+    def main_app
       FakeAppWithoutRootPath.new
     end
   end
@@ -125,12 +125,10 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'returns to the root path even when it\'s not defined' do
-      swap Devise, router_name: :fake_app do
-        call_failure app: FailureWithoutRootPath
-        assert_equal 302, @response.first
-        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
-        assert_equal 'http://test.host/', @response.second['Location']
-      end
+      call_failure app: FailureWithoutRootPath
+      assert_equal 302, @response.first
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://test.host/', @response.second['Location']
     end
 
     test 'returns to the root path considering subdomain if no session path is available' do

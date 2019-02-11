@@ -1,5 +1,10 @@
 ### Unreleased
 
+### 4.6.1 - 2019-02-11
+
+* bug fixes
+  * Check if `root_path` is defined with `#respond_to?` instead of `#present` (by @tegon)
+
 ### 4.6.0 - 2019-02-07
 
 * enhancements

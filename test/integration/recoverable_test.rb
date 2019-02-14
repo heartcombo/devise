@@ -152,6 +152,19 @@ class PasswordTest < Devise::IntegrationTest
     refute user.reload.valid_password?('987654321')
   end
 
+  test 'not authenticated user with expired reset password token should be redirected to new password path' do
+    user = create_user
+    request_forgot_password
+    user.update(reset_password_sent_at: Time.now - 1.year)
+
+    visit edit_user_password_path(reset_password_token: 'abcdef')
+    fill_in 'New password', with: '987654321'
+    fill_in 'Confirm new password', with: '987654321'
+    click_button 'Change my password'
+
+    assert_contain 'The password recovery link expired. Please request a new one.'
+  end
+
   test 'not authenticated user with valid reset password token but invalid password should not be able to change their password' do
     user = create_user
     request_forgot_password

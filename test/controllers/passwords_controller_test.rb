@@ -36,4 +36,10 @@ class PasswordsControllerTest < Devise::ControllerTestCase
     User.any_instance.expects :after_database_authentication
     put_update_with_params
   end
+
+  test 'redirects to new_password_path when token has expired' do
+    @user.update(reset_password_sent_at: Time.now - 1.year)
+    put_update_with_params
+    assert_redirected_to new_user_password_path
+  end
 end

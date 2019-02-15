@@ -72,7 +72,7 @@ class Devise::SessionsController < DeviseController
     users.all?(&:blank?)
   end
 
-  def respond_to_on_destroy(status: status)
+  def respond_to_on_destroy(status:)
     # We actually need to hardcode this as Rails default responder doesn't
     # support returning empty response on GET request
     respond_to do |format|

@@ -48,7 +48,7 @@ class Devise::PasswordsController < DeviseController
     else
       set_minimum_password_length
 
-      if expired_token_error(resource)
+      if expired_token_error?(resource)
         redirect_to new_password_path(resource_name), alert: t('devise.passwords.expired_token')
       else
         respond_with resource
@@ -87,9 +87,7 @@ class Devise::PasswordsController < DeviseController
     end
 
   private
-    def expired_token_error(resource)
-      (resource.errors.respond_to?(:details) &&
-          resource.errors.details[:reset_password_token].any? { |error| error[:error] == :expired }) ||
-          resource.errors[:reset_password_token].any? { |error| error =~ /expired/ }
+    def expired_token_error?(resource)
+      resource.errors.details[:reset_password_token].any? { |error| error[:error] == :expired }
     end
 end

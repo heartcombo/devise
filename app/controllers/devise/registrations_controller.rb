@@ -64,21 +64,14 @@ class Devise::RegistrationsController < DeviseController
   # DELETE /resource
   def destroy
     if resource.class.require_password_to_destroy
-      resource_destroyed = destroy_resource(resource, account_destroy_params)
-      if resource_destroyed
-        Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-        set_flash_message! :notice, :destroyed
-        yield resource if block_given?
-        respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
+      if destroy_resource(resource, account_destroy_params)
+        sign_out_resource(resource_name, resource)
       else
         render :edit
       end
     else
       resource.destroy
-      Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-      set_flash_message! :notice, :destroyed
-      yield resource if block_given?
-      respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
+      sign_out_resource(resource_name, resource)
     end
   end
 
@@ -184,5 +177,12 @@ class Devise::RegistrationsController < DeviseController
     return true if account_update_params[:password].blank?
 
     Devise.sign_in_after_change_password
+  end
+
+  def sign_out_resource(resource_name, resource)
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message! :notice, :destroyed
+    yield resource if block_given?
+    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
   end
 end

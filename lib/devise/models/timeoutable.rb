@@ -37,6 +37,7 @@ module Devise
         return false unless respond_to?(:remember_created_at) && respond_to?(:remember_expired?)
         remember_created_at && !remember_expired?
       end
+
       def timeout_in
         self.class.timeout_in
       end

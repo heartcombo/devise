@@ -54,6 +54,12 @@ class TimeoutableTest < ActiveSupport::TestCase
   test 'should return false if rememberable is enabled and has not expired' do
     user = create_user
     user.remember_me!
-    refute user.timedout?(31.minutes.ago)
+    refute user.timedout?(29.minutes.ago)
+  end
+
+  test 'should return false if rememberable is enabled and has expired' do
+    user = create_user
+    user.remember_me!
+    refute user.timedout?(10.hours.ago)
   end
 end

@@ -300,7 +300,6 @@ class RegistrationTest < Devise::IntegrationTest
 
       assert_current_url '/users'
     end
-    assert_equal "user@test.com", User.to_adapter.find_first.email
   end
 
   test 'a user should be able to cancel sign up by deleting data in the session' do

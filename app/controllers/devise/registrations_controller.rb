@@ -63,15 +63,10 @@ class Devise::RegistrationsController < DeviseController
 
   # DELETE /resource
   def destroy
-    if resource.class.require_password_to_destroy
-      if destroy_resource(resource, account_destroy_params)
-        sign_out_resource(resource_name, resource)
-      else
-        render :edit
-      end
-    else
-      resource.destroy
+    if destroy_resource(resource, account_destroy_params)
       sign_out_resource(resource_name, resource)
+    else
+      render :edit
     end
   end
 
@@ -100,7 +95,11 @@ class Devise::RegistrationsController < DeviseController
   end
 
   def destroy_resource(resource, params)
-    resource.destroy_with_password(params)
+    if resource.class.require_password_to_destroy
+      resource.destroy_with_password(params)
+    else
+      resource.destroy
+    end
   end
 
   # Build a devise resource passing in the session. Useful to move

@@ -299,6 +299,8 @@ class RegistrationTest < Devise::IntegrationTest
       assert_contain "Current password is invalid"
 
       assert_current_url '/users'
+      
+      refute User.to_adapter.find_all.empty?
     end
   end
 

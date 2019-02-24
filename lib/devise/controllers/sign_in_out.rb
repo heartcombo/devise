@@ -12,7 +12,7 @@ module Devise
       # authentication hooks, you can directly call `warden.authenticated?(scope: scope)`
       def signed_in?(scope=nil)
         [scope || Devise.mappings.keys].flatten.any? do |_scope|
-          warden.authenticate?(scope: _scope)
+          warden.authenticated?(scope: _scope)
         end
       end
 

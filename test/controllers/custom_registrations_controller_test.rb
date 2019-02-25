@@ -38,9 +38,8 @@ class CustomRegistrationsControllerTest < Devise::ControllerTestCase
   test "yield resource to block on destroy failure" do
     sign_in @user
     delete :destroy, params: { user: { } }
-    refute @controller.destroy_block_called?, "destroy failed to yield resource to provided block"
+    assert @controller.destroy_block_called?, "destroy failed to yield resource to provided block"
   end
-
 
   test "yield resource to block on destroy success" do
     swap Devise, require_password_to_destroy: true  do

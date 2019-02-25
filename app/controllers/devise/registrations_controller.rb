@@ -62,9 +62,9 @@ class Devise::RegistrationsController < DeviseController
   end
 
   # DELETE /resource
-  def destroy
+  def destroy(&block)
     if destroy_resource(resource, account_destroy_params)
-      sign_out_resource(resource_name, resource)
+      sign_out_resource(resource_name, resource, &block)
     else
       render :edit
     end
@@ -178,7 +178,7 @@ class Devise::RegistrationsController < DeviseController
     Devise.sign_in_after_change_password
   end
 
-  def sign_out_resource(resource_name, resource)
+  def sign_out_resource(resource_name, resource, &block)
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
     set_flash_message! :notice, :destroyed
     yield resource if block_given?

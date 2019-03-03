@@ -8,6 +8,8 @@ gem "rails", github: "rails/rails", branch: "4-1-stable"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc", "~> 5.1"
+# Force this version because it's breaking on CI since a higher nokogiri version requires Ruby 2.3+.
+gem "nokogiri", "1.9.1"
 
 group :test do
   gem "omniauth-facebook"

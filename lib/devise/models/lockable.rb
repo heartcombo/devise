@@ -99,8 +99,8 @@ module Devise
         if super && !access_locked?
           true
         else
-          self.failed_attempts ||= 0
-          self.failed_attempts += 1
+          self.class.increment_counter(:failed_attempts, id)
+          reload
           if attempts_exceeded?
             lock_access! unless access_locked?
           else

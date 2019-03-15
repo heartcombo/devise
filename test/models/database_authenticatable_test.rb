@@ -324,4 +324,10 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     refute user.valid_password?('12345678')
     refute user.valid_password?(nil)
   end
+
+  test 'should not set encrypted_password to nil if password was blank' do
+    user = User.create(email: "HEllO@example.com", password: "12345678")
+    user.password = ''
+    assert user.encrypted_password
+  end
 end

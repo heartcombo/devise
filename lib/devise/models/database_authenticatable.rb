@@ -60,7 +60,7 @@ module Devise
       # the hashed password.
       def password=(new_password)
         @password = new_password
-        self.encrypted_password = password_digest(@password) 
+        self.encrypted_password = password_digest(@password) if @password.present?
       end
 
       # Verifies whether a password (ie from sign in) is the user password.

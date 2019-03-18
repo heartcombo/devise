@@ -22,6 +22,7 @@ group :test do
   gem "timecop"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 1.1", require: false
+  gem "simplecov"
 end
 
 platforms :jruby do

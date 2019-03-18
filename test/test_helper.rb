@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+SimpleCov.start do
+  add_filter 'test'
+  add_group 'Lib', 'lib/devise'
+  add_group 'App', 'app'
+  add_group 'Generators', 'lib/generators'
+end
+
 ENV["RAILS_ENV"] = "test"
 DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
 

@@ -28,7 +28,7 @@ module Devise
     private
 
       # Receives a resource and check if it is valid by calling valid_for_authentication?
-      # An optional block that will be triggered while validating can be optionally
+      # A block that will be triggered while validating can be optionally
       # given as parameter. Check Devise::Models::Authenticatable.valid_for_authentication?
       # for more information.
       #

@@ -302,4 +302,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
       ]
     end
   end
+
+  test 'sets encrypted_password to blank string if nil or blank is passed' do
+    user = User.new(password: 'abc123')
+    assert_not user.encrypted_password.blank?
+    user.password = nil
+    assert_not user.valid_password?('abc123')
+    assert_equal '', user.encrypted_password
+  end
 end

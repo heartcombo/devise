@@ -60,7 +60,7 @@ module Devise
       # the hashed password.
       def password=(new_password)
         @password = new_password
-        self.encrypted_password = password_digest(@password) 
+        self.encrypted_password = password_digest(@password) if @password.present?
       end
 
       # Verifies whether a password (ie from sign in) is the user password.
@@ -70,7 +70,7 @@ module Devise
 
       # Set password and password confirmation to nil
       def clean_up_passwords
-        @password = @password_confirmation = nil
+        self.password = self.password_confirmation = nil
       end
 
       # Update record attributes when :current_password matches, otherwise
@@ -198,7 +198,6 @@ module Devise
       # See https://github.com/plataformatec/devise-encryptable for examples
       # of other hashing engines.
       def password_digest(password)
-        return if password.blank?
         Devise::Encryptor.digest(self.class, password)
       end
 

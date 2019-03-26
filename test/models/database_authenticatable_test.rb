@@ -117,9 +117,9 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_nil user.authenticatable_salt
   end
 
-  test 'should set encrypted password to nil if password is nil' do
-    assert_nil new_user(password: nil).encrypted_password
-    assert_nil new_user(password: '').encrypted_password
+  test 'should not generate a hashed password if password is blank' do
+    assert_blank new_user(password: nil).encrypted_password
+    assert_blank new_user(password: '').encrypted_password
   end
 
   test 'should hash password again if password has changed' do
@@ -146,16 +146,6 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = create_user
     user.encrypted_password = ''
     refute user.valid_password?('654321')
-  end
-
-  test 'should be invalid if the password is nil' do
-    user = new_user(password: nil)
-    refute user.valid_password?(nil)
-  end
-
-  test 'should be invalid if the password is blank' do
-    user = new_user(password: '')
-    refute user.valid_password?('')
   end
 
   test 'should respond to current password' do
@@ -316,12 +306,5 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
         :login
       ]
     end
-  end
-
-  test 'nil password should be invalid if password is set to nil' do
-    user = User.create(email: "HEllO@example.com", password: "12345678")
-    user.password = nil
-    refute user.valid_password?('12345678')
-    refute user.valid_password?(nil)
   end
 end

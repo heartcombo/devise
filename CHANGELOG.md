@@ -1,5 +1,10 @@
 ### Unreleased
 
+### 4.6.2 - 2019-03-26
+
+* bug fixes
+  * Revert "Set `encrypted_password` to `nil` when `password` is set to `nil`" since it broke backward compatibility with existing applications. See more on https://github.com/plataformatec/devise/issues/5033#issuecomment-476386275 (by @mracos)
+
 ### 4.6.1 - 2019-02-11
 
 * bug fixes

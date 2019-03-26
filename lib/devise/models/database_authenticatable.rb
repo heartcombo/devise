@@ -65,6 +65,7 @@ module Devise
 
       # Verifies whether a password (ie from sign in) is the user password.
       def valid_password?(password)
+        return false if password.blank?
         Devise::Encryptor.compare(self.class, encrypted_password, password)
       end
 

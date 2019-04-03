@@ -1,5 +1,8 @@
 ### Unreleased
 
+* enhancements
+  * Add `autocomplete="new-password"` to `password_confirmation` fields (by @ferrl)
+
 ### 4.6.2 - 2019-03-26
 
 * bug fixes

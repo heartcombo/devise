@@ -22,6 +22,23 @@ Gem::Specification.new do |s|
   s.add_dependency("warden", "~> 1.2.3")
   s.add_dependency("orm_adapter", "~> 0.1")
   s.add_dependency("bcrypt", "~> 3.0")
-  s.add_dependency("railties", ">= 4.1.0", "< 6.0")
+  if RUBY_VERSION >= '2.4'
+    s.add_runtime_dependency 'rails', '>= 4.2.0', '< 7.0'
+  else
+    s.add_runtime_dependency 'railties', '>= 4.1.0', '< 6.0'
+  end
   s.add_dependency("responders")
+
+  s.add_development_dependency('appraisal')
+  s.add_development_dependency('mocha')
+  s.add_development_dependency('oauth2')
+  s.add_development_dependency('omniauth')
+  s.add_development_dependency('omniauth-facebook')
+  s.add_development_dependency('omniauth-oauth2')
+  s.add_development_dependency('omniauth-openid')
+  s.add_development_dependency('rdoc')
+  s.add_development_dependency('timecop')
+  s.add_development_dependency('test_after_commit')
+  s.add_development_dependency('webrat')
+  s.add_development_dependency('wwtd')
 end

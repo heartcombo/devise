@@ -1,5 +1,5 @@
 language: ruby
-
+dist: xenial
 rvm:
   - 2.1.10
   - 2.2.10
@@ -19,38 +19,30 @@ gemfile:
 
 matrix:
   exclude:
-    - rvm: 2.1.10
-      gemfile: gemfiles/rails-6.0-beta.gemfile
-    - rvm: 2.1.10
-      gemfile: gemfiles/rails-5.2-stable.gemfile
+    # Rails versions > 5 require Ruby >= 2.2.2
     - rvm: 2.1.10
       gemfile: gemfiles/rails-5.0-stable.gemfile
-    - rvm: 2.2.10
+    - rvm: 2.1.10
+      gemfile: gemfiles/rails-5.1-stable.gemfile
+    - rvm: 2.1.10
+      gemfile: gemfiles/rails-5.2-stable.gemfile
+    # Rails 6.0+ needs ruby >= 2.5
+    - rvm: 2.1.10
       gemfile: gemfiles/rails-6.0-beta.gemfile
     - rvm: 2.2.10
-      gemfile: gemfiles/rails-5.2-stable.gemfile
+      gemfile: gemfiles/rails-6.0-beta.gemfile
     - rvm: 2.3.8
       gemfile: gemfiles/rails-6.0-beta.gemfile
     - rvm: 2.4.5
-      gemfile: gemfiles/rails-4.1-stable.gemfile
-    - rvm: 2.4.5
       gemfile: gemfiles/rails-6.0-beta.gemfile
+    - rvm: 2.4.5
+      gemfile: gemfiles/rails-4.1-stable.gemfile
     - rvm: 2.5.3
       gemfile: gemfiles/rails-4.1-stable.gemfile
     - rvm: 2.6.0
       gemfile: gemfiles/rails-4.1-stable.gemfile
     - rvm: 2.6.0
       gemfile: gemfiles/rails-4.2-stable.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/rails-4.1-stable.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/rails-4.2-stable.gemfile
-    - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/rails-5.0-stable.gemfile
-    - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/rails-5.2-stable.gemfile
-    - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/rails-6.0-beta.gemfile
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/rails-6.0-beta.gemfile
@@ -71,7 +63,7 @@ before_install:
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
   - gem install bundler -v '< 2'
 
-before_script: "bundle update"
+install: bundle install --jobs=2 --retry=2 --path=${BUNDLE_PATH:-vendor/bundle}
 
 script: "bin/test"
 

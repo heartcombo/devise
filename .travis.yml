@@ -10,56 +10,50 @@ rvm:
   - ruby-head
 
 gemfile:
-  - Gemfile
-  - gemfiles/Gemfile.rails-6.0-beta
-  - gemfiles/Gemfile.rails-5.2-stable
-  - gemfiles/Gemfile.rails-5.0-stable
-  - gemfiles/Gemfile.rails-4.2-stable
-  - gemfiles/Gemfile.rails-4.1-stable
+  - gemfiles/rails_4.1_stable.gemfile
+  - gemfiles/rails_4.2_stable.gemfile
+  - gemfiles/rails_5.0_stable.gemfile
+  - gemfiles/rails_5.1_stable.gemfile
+  - gemfiles/rails_5.2_stable.gemfile
+  - gemfiles/rails_6.0_beta.gemfile
 
 matrix:
   exclude:
     - rvm: 2.1.10
-      gemfile: Gemfile
+      gemfile: gemfiles/rails-6.0-beta.gemfile
     - rvm: 2.1.10
-      gemfile: gemfiles/Gemfile.rails-6.0-beta
+      gemfile: gemfiles/rails-5.2-stable.gemfile
     - rvm: 2.1.10
-      gemfile: gemfiles/Gemfile.rails-5.2-stable
-    - rvm: 2.1.10
-      gemfile: gemfiles/Gemfile.rails-5.0-stable
+      gemfile: gemfiles/rails-5.0-stable.gemfile
     - rvm: 2.2.10
-      gemfile: Gemfile
+      gemfile: gemfiles/rails-6.0-beta.gemfile
     - rvm: 2.2.10
-      gemfile: gemfiles/Gemfile.rails-6.0-beta
-    - rvm: 2.2.10
-      gemfile: gemfiles/Gemfile.rails-5.2-stable
+      gemfile: gemfiles/rails-5.2-stable.gemfile
     - rvm: 2.3.8
-      gemfile: gemfiles/Gemfile.rails-6.0-beta
+      gemfile: gemfiles/rails-6.0-beta.gemfile
     - rvm: 2.4.5
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
+      gemfile: gemfiles/rails-4.1-stable.gemfile
     - rvm: 2.4.5
-      gemfile: gemfiles/Gemfile.rails-6.0-beta
+      gemfile: gemfiles/rails-6.0-beta.gemfile
     - rvm: 2.5.3
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
+      gemfile: gemfiles/rails-4.1-stable.gemfile
     - rvm: 2.6.0
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
+      gemfile: gemfiles/rails-4.1-stable.gemfile
     - rvm: 2.6.0
-      gemfile: gemfiles/Gemfile.rails-4.2-stable
+      gemfile: gemfiles/rails-4.2-stable.gemfile
     - rvm: ruby-head
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
+      gemfile: gemfiles/rails-4.1-stable.gemfile
     - rvm: ruby-head
-      gemfile: gemfiles/Gemfile.rails-4.2-stable
+      gemfile: gemfiles/rails-4.2-stable.gemfile
     - env: DEVISE_ORM=mongoid
-      gemfile: Gemfile
+      gemfile: gemfiles/rails-5.0-stable.gemfile
     - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-5.0-stable
+      gemfile: gemfiles/rails-5.2-stable.gemfile
     - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-5.2-stable
-    - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-6.0-beta
+      gemfile: gemfiles/rails-6.0-beta.gemfile
   allow_failures:
     - rvm: ruby-head
-    - gemfile: gemfiles/Gemfile.rails-6.0-beta
+    - gemfile: gemfiles/rails-6.0-beta.gemfile
 
 services:
   - mongodb
@@ -76,7 +70,6 @@ env:
 before_install:
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
   - gem install bundler -v '< 2'
-  - "rm ${BUNDLE_GEMFILE}.lock"
 
 before_script: "bundle update"
 

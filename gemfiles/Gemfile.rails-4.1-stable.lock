@@ -1,23 +1,3 @@
-GIT
-  remote: git://github.com/rails/rails.git
-  revision: 0cad778c2605a5204a05a9f1dbd3344e39f248d8
-  branch: 4-1-stable
-  specs:
-    actionmailer (4.1.16)
-      actionpack (= 4.1.16)
-      actionview (= 4.1.16)
-      mail (~> 2.5, >= 2.5.4)
-    rails (4.1.16)
-      actionmailer (= 4.1.16)
-      actionpack (= 4.1.16)
-      actionview (= 4.1.16)
-      activemodel (= 4.1.16)
-      activerecord (= 4.1.16)
-      activesupport (= 4.1.16)
-      bundler (>= 1.3.0, < 2.0)
-      railties (= 4.1.16)
-      sprockets-rails (~> 2.0)
-
 PATH
   remote: ..
   specs:
@@ -31,6 +11,10 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    actionmailer (4.1.16)
+      actionpack (= 4.1.16)
+      actionview (= 4.1.16)
+      mail (~> 2.5, >= 2.5.4)
     actionpack (4.1.16)
       actionview (= 4.1.16)
       activesupport (= 4.1.16)
@@ -55,26 +39,25 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.12)
-    bson (3.2.6)
+    bson (3.2.7)
     builder (3.2.3)
-    concurrent-ruby (1.0.5)
-    connection_pool (2.2.1)
+    concurrent-ruby (1.1.5)
+    connection_pool (2.2.2)
     erubis (2.7.0)
-    faraday (0.11.0)
+    faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
-    hashie (3.5.5)
-    i18n (0.8.1)
+    hashie (3.6.0)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
     json (1.8.6)
-    jwt (1.5.6)
-    mail (2.6.4)
-      mime-types (>= 1.16, < 4)
+    jwt (2.1.0)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
     metaclass (0.0.4)
-    mime-types (3.1)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0521)
+    mini_mime (1.0.1)
     mini_portile2 (2.4.0)
-    minitest (5.10.1)
-    mocha (1.2.1)
+    minitest (5.11.3)
+    mocha (1.8.0)
       metaclass (~> 0.0.1)
     mongoid (4.0.2)
       activemodel (~> 4.0)
@@ -85,30 +68,30 @@ GEM
       bson (~> 3.0)
       connection_pool (~> 2.0)
       optionable (~> 0.2.0)
-    multi_json (1.12.1)
+    multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     nokogiri (1.9.1)
       mini_portile2 (~> 2.4.0)
-    oauth2 (1.3.1)
-      faraday (>= 0.8, < 0.12)
-      jwt (~> 1.0)
+    oauth2 (1.4.1)
+      faraday (>= 0.8, < 0.16.0)
+      jwt (>= 1.0, < 3.0)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     omniauth (1.4.2)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
-    omniauth-facebook (4.0.0)
+    omniauth-facebook (5.0.0)
       omniauth-oauth2 (~> 1.2)
-    omniauth-oauth2 (1.4.0)
-      oauth2 (~> 1.0)
+    omniauth-oauth2 (1.5.0)
+      oauth2 (~> 1.1)
       omniauth (~> 1.2)
     omniauth-openid (1.0.1)
       omniauth (~> 1.0)
       rack-openid (~> 1.3.1)
     optionable (0.2.0)
-    origin (2.3.0)
+    origin (2.3.1)
     orm_adapter (0.5.0)
     rack (1.5.5)
     rack-openid (1.3.1)
@@ -116,17 +99,27 @@ GEM
       ruby-openid (>= 2.1.8)
     rack-test (0.6.3)
       rack (>= 1.0)
+    rails (4.1.16)
+      actionmailer (= 4.1.16)
+      actionpack (= 4.1.16)
+      actionview (= 4.1.16)
+      activemodel (= 4.1.16)
+      activerecord (= 4.1.16)
+      activesupport (= 4.1.16)
+      bundler (>= 1.3.0, < 2.0)
+      railties (= 4.1.16)
+      sprockets-rails (~> 2.0)
     railties (4.1.16)
       actionpack (= 4.1.16)
       activesupport (= 4.1.16)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (12.0.0)
+    rake (12.3.2)
     rdoc (5.1.0)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
     ruby-openid (2.7.0)
-    sprockets (3.7.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (2.3.3)
@@ -134,12 +127,12 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.13)
-    test_after_commit (1.1.0)
-      activerecord (>= 3.2)
-    thor (0.19.4)
+    test_after_commit (1.2.2)
+      activerecord (>= 3.2, < 5.0)
+    thor (0.20.3)
     thread_safe (0.3.6)
-    timecop (0.8.1)
-    tzinfo (1.2.2)
+    timecop (0.9.1)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
     warden (1.2.7)
       rack (>= 1.0)
@@ -152,23 +145,20 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-jdbc-adapter
-  activerecord-jdbcsqlite3-adapter
   devise!
-  jruby-openssl
-  mocha (~> 1.1)
+  mocha
   mongoid (~> 4.0)
-  nokogiri (= 1.9.1)
+  nokogiri
   omniauth
   omniauth-facebook
   omniauth-oauth2
   omniauth-openid
-  rails!
-  rdoc (~> 5.1)
+  rails (~> 4.1.0)
+  rdoc
   sqlite3 (~> 1.3.6)
   test_after_commit
   timecop
-  webrat (= 0.7.3)
+  webrat
 
 BUNDLED WITH
    1.17.3

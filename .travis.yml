@@ -36,6 +36,8 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-4.2-stable
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-5.0-stable
+    - rvm: 2.5.5
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
     - rvm: 2.6.3
       gemfile: gemfiles/Gemfile.rails-5.0-stable
     - rvm: 2.1.10

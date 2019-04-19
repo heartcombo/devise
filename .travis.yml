@@ -4,9 +4,9 @@ rvm:
   - 2.1.10
   - 2.2.10
   - 2.3.8
-  - 2.4.5
-  - 2.5.3
-  - 2.6.0
+  - 2.4.6
+  - 2.5.5
+  - 2.6.3
   - ruby-head
 
 gemfile:
@@ -20,29 +20,31 @@ gemfile:
 
 matrix:
   exclude:
-    - rvm: 2.4.5
+    - rvm: 2.4.6
       gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.5.3
+    - rvm: 2.5.5
       gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.6.0
+    - rvm: 2.6.3
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.6.0
+    - rvm: 2.5.5
+      gemfile: gemfiles/Gemfile.rails-4.2-stable
+    - rvm: 2.6.3
       gemfile: gemfiles/Gemfile.rails-4.2-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.2-stable
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-5.0-stable
-    - rvm: 2.6.0
+    - rvm: 2.6.3
       gemfile: gemfiles/Gemfile.rails-5.0-stable
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-5.1-stable
-    - rvm: 2.6.0
+    - rvm: 2.6.3
       gemfile: gemfiles/Gemfile.rails-5.1-stable
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-5.2-stable
-    - rvm: 2.6.0
+    - rvm: 2.6.3
       gemfile: gemfiles/Gemfile.rails-5.2-stable
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-6.0-beta
@@ -50,12 +52,15 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-6.0-beta
     - rvm: 2.3.8
       gemfile: gemfiles/Gemfile.rails-6.0-beta
-    - rvm: 2.4.5
+    - rvm: 2.4.6
       gemfile: gemfiles/Gemfile.rails-6.0-beta
     - rvm: 2.1.10
       gemfile: Gemfile
     - rvm: 2.2.10
       gemfile: Gemfile
+  allow_failures:
+    - rvm: ruby-head
+    - gemfile: gemfiles/Gemfile.rails-6.0-beta
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile
     - env: DEVISE_ORM=mongoid
@@ -64,11 +69,6 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-5.1-stable
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-5.2-stable
-    - env: DEVISE_ORM=mongoid
-      gemfile: gemfiles/Gemfile.rails-6.0-beta
-  allow_failures:
-    - rvm: ruby-head
-    - gemfile: gemfiles/Gemfile.rails-6.0-beta
 
 services:
   - mongodb

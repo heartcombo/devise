@@ -13,9 +13,9 @@ group :test do
   gem "nokogiri", "~> 1.9.0" if Gem::Version.new(RUBY_VERSION) <= Gem::Version.new('2.3.0')
   gem "omniauth-facebook"
   gem "omniauth-openid"
+  gem "test_after_commit", require: false
   gem "timecop"
   gem "webrat", require: false
-  gem "test_after_commit", require: false
 end
 
 group :active_record do

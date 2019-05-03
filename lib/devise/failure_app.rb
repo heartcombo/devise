@@ -279,7 +279,7 @@ module Devise
     end
 
     def rails_51_and_up?
-      Rails::VERSION::MAJOR >= 5 && Rails::VERSION::MINOR >= 1
+      Rails::VERSION::MAJOR >= 6 || (Rails::VERSION::MAJOR >= 5 && Rails::VERSION::MINOR >= 1)
     end
   end
 end

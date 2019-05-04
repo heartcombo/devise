@@ -246,7 +246,7 @@ module Devise
         # Generates a new random token for confirmation, and stores
         # the time this token is being generated in confirmation_sent_at
         def generate_confirmation_token
-          if self.confirmation_token && !confirmation_period_expired?
+          if self.confirmation_token.present? && !confirmation_period_expired?
             @raw_confirmation_token = self.confirmation_token
           else
             self.confirmation_token = @raw_confirmation_token = Devise.friendly_token

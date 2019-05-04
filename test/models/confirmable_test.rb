@@ -33,6 +33,12 @@ class ConfirmableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should generate a token over an empty string' do
+    user = create_user(confirmation_token: '')
+    assert_not_nil user.confirmation_token
+    assert_not_equal user.confirmation_token, ''
+  end
+
   test 'should confirm a user by updating confirmed at' do
     user = create_user
     assert_nil user.confirmed_at

@@ -71,7 +71,7 @@ module Devise
 
   # The number of times to hash the password.
   mattr_accessor :stretches
-  @@stretches = 11
+  @@stretches = 12
 
   # The default key used when authenticating over http auth.
   mattr_accessor :http_authentication_key

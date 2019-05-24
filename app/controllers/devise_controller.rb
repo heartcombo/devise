@@ -49,7 +49,7 @@ class DeviseController < Devise.parent_controller.constantize
   def resource_class
     devise_mapping.to
   end
-
+# Add a comment line
   # Returns a signed in resource from session (if one exists)
   def signed_in_resource
     warden.authenticate(scope: resource_name)

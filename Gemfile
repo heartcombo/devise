@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 5.2"
+gem "rails", ">= 5.2"
 gem "omniauth", "~> 1.3"
 gem "oauth2"
 gem "omniauth-oauth2"
@@ -31,7 +31,7 @@ platforms :jruby do
 end
 
 platforms :ruby do
-  gem "sqlite3", "~> 1.3.6"
+  gem "sqlite3", "~> 1.4"
 end
 
 # TODO:

@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_dependency("bcrypt", "~> 3.0")
   s.add_dependency("railties", ">= 4.1.0", "< 6.0")
   s.add_dependency("responders")
+  s.add_dependency("activemodel")
 end

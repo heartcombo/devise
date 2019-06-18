@@ -1,6 +1,7 @@
 ### Unreleased
 
 * enhancements
+  * Support Rails 6.0
   * Add `autocomplete="new-password"` to `password_confirmation` fields (by @ferrl)
   * Update CI to rails 6.0.0.beta3 (by @tunnes)
   * refactor method name to be more consistent (by @saiqulhaq)

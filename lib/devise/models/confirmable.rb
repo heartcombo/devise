@@ -117,7 +117,7 @@ module Devise
           generate_confirmation_token!
         end
 
-        opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+        opts = pending_reconfirmation? ? { subject_key: :reconfirmation_instructions, to: unconfirmed_email } : {}
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 

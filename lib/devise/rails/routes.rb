@@ -477,7 +477,7 @@ ERROR
       def constraints_for(method_to_apply, scope=nil, block=nil)
         constraint = lambda do |request|
           request.env['warden'].send(method_to_apply, scope: scope) &&
-            (block.nil? || block.call(request.env["warden"].user(scope)))
+            (block.nil? || block.call(request.env["warden"].user(scope), request))
         end
 
         constraints(constraint) do

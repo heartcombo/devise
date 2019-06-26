@@ -191,6 +191,26 @@ class AuthenticationRoutesRestrictions < Devise::IntegrationTest
     assert_contain 'Private!'
   end
 
+  test 'signed in as inactive admin should not be able to access secret/active route restricted to active admins (authenticate denied)' do
+    sign_in_as_admin(active: false)
+    assert warden.authenticated?(:admin)
+    refute warden.authenticated?(:user)
+
+    assert_raises ActionController::RoutingError do
+      get "/private/secret"
+    end
+  end
+
+  test 'signed in as active admin but session missing should not be able to access secret/active route restricted to active admins (authenticate denied)' do
+    sign_in_as_admin(active: true)
+    assert warden.authenticated?(:admin)
+    refute warden.authenticated?(:user)
+
+    assert_raises ActionController::RoutingError do
+      get "/private/secret"
+    end
+  end
+
   test 'signed in as admin should get admin dashboard (authenticated accepted)' do
     sign_in_as_admin
     assert warden.authenticated?(:admin)

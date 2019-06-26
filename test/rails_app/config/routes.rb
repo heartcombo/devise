@@ -58,6 +58,10 @@ Rails.application.routes.draw do
     get "/private/active", to: "home#private", as: :private_active
   end
 
+  authenticate(:admin, lambda { |admin, request| admin.active? && request.session['secret'].present? }) do
+    get "/private/secret", to: "home#secret", as: :secret_active
+  end
+
   authenticated :admin do
     get "/dashboard", to: "home#admin_dashboard"
   end

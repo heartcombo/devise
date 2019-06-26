@@ -7,6 +7,9 @@ class HomeController < ApplicationController
   def private
   end
 
+  def secret
+  end
+
   def user_dashboard
   end
 

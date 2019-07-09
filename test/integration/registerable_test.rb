@@ -124,7 +124,9 @@ class RegistrationTest < Devise::IntegrationTest
     #    https://github.com/mongoid/mongoid/issues/756
     (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
 
-    create_user
+    user = create_user
+    user.update_attribute(:username, nil)
+
     get new_user_registration_path
 
     fill_in 'email', with: 'user@test.com'
@@ -254,7 +256,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "Password confirmation doesn't match Password"
     refute User.to_adapter.find_first.valid_password?('pas123')
   end
-  
+
   test 'a signed in user should see a warning about minimum password length' do
     sign_in_as_user
     get edit_user_registration_path

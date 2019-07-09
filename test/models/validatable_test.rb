@@ -26,6 +26,27 @@ class ValidatableTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
+  test 'should require uniqueness of email when email_scope is used' do
+    existing_user = create_user
+
+    user = new_user(email: '')
+    assert user.invalid?
+    assert_no_match(/taken/, user.errors[:email].join)
+
+    user.email = existing_user.email
+    user.username = nil
+    assert user.valid?
+    assert_no_match(/taken/, user.errors[:email].join)
+
+    user.email = existing_user.email
+    user.username = existing_user.username
+    assert user.invalid?
+    assert_match(/taken/, user.errors[:email].join)
+
+    user.save(validate: false)
+    assert user.valid?
+  end
+
   test 'should require correct email format if email has changed, allowing blank' do
     user = new_user(email: '')
     assert user.invalid?

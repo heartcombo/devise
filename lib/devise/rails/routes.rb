@@ -135,10 +135,10 @@ module ActionDispatch::Routing
     #  * failure_app: a rack app which is invoked whenever there is a failure. Strings representing a given
     #    are also allowed as parameter.
     #
-    #  * sign_out_via: the HTTP method(s) accepted for the :sign_out action (default: :get),
+    #  * sign_out_via: the HTTP method(s) accepted for the :sign_out action (default: :delete),
     #    if you wish to restrict this to accept only :post or :delete requests you should do:
     #
-    #      devise_for :users, sign_out_via: [:post, :delete]
+    #      devise_for :users, sign_out_via: [:get, :post]
     #
     #    You need to make sure that your sign_out controls trigger a request with a matching HTTP method.
     #

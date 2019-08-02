@@ -133,7 +133,8 @@ module Devise
         # Attributes must contain the user's email
         def send_reset_password_instructions(attributes={})
           recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
-          recoverable.send_reset_password_instructions if recoverable.persisted?
+          raw_token = recoverable.send_reset_password_instructions if recoverable.persisted?
+          session[:raw_token] = raw_token
           recoverable
         end
 

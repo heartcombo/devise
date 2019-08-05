@@ -8,6 +8,10 @@ module Devise
   module Test
     # Detection for minor differences between Rails 4 and 5, 5.1, and 5.2 in tests.
     
+    def self.rails6?
+      Rails.version.start_with? '6'
+    end
+
     def self.rails52_and_up?
       Rails::VERSION::MAJOR > 5 || rails52?
     end

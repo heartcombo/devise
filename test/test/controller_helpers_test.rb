@@ -102,7 +102,12 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
 
   test "returns the content type of a failure app" do
     get :index, params: { format: :xml }
-    assert response.content_type.include?('application/xml')
+
+    if Devise::Test.rails6?
+      assert response.media_type.include?('application/xml')
+    else
+      assert response.content_type.include?('application/xml')
+    end
   end
 
   test "defined Warden after_authentication callback should not be called when sign_in is called" do

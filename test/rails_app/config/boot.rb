@@ -6,7 +6,7 @@ end
 
 module Devise
   module Test
-    # Detection for minor differences between Rails 4 and 5, 5.1, and 5.2 in tests.
+    # Detection for minor differences between Rails versions in tests.
     
     def self.rails6?
       Rails.version.start_with? '6'

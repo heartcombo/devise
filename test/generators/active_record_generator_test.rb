@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 if DEVISE_ORM == :active_record
@@ -13,6 +15,20 @@ if DEVISE_ORM == :active_record
       assert_migration "db/migrate/devise_create_monsters.rb", /def change/
     end
 
+    test "all files are properly created with changed db/migrate path in application configuration" do
+      old_paths = Rails.application.config.paths["db/migrate"]
+      Rails.application.config.paths.add "db/migrate", with: "db2/migrate"
+
+      run_generator %w(monster)
+      if Rails.version >= '5.0.3'
+        assert_migration "db2/migrate/devise_create_monsters.rb", /def change/
+      else
+        assert_migration "db/migrate/devise_create_monsters.rb", /def change/
+      end
+
+      Rails.application.config.paths["db/migrate"] = old_paths
+    end
+
     test "all files for namespaced model are properly created" do
       run_generator %w(admin/monster)
       assert_migration "db/migrate/devise_create_admin_monsters.rb", /def change/
@@ -23,6 +39,23 @@ if DEVISE_ORM == :active_record
       assert_file "app/models/monster.rb"
       run_generator %w(monster)
       assert_migration "db/migrate/add_devise_to_monsters.rb"
+    end
+
+    test "update model migration when model exists with changed db/migrate path in application configuration" do
+      old_paths = Rails.application.config.paths["db/migrate"]
+      Rails.application.config.paths.add "db/migrate", with: "db2/migrate"
+
+      run_generator %w(monster)
+      assert_file "app/models/monster.rb"
+      run_generator %w(monster)
+
+      if Rails.version >= '5.0.3'
+        assert_migration "db2/migrate/add_devise_to_monsters.rb"
+      else
+        assert_migration "db/migrate/add_devise_to_monsters.rb"
+      end
+
+      Rails.application.config.paths["db/migrate"] = old_paths
     end
 
     test "all files are properly deleted" do
@@ -42,6 +75,20 @@ if DEVISE_ORM == :active_record
       run_generator %w(monster)
       assert_migration "db/migrate/devise_create_monsters.rb", /t.string   :current_sign_in_ip/
       assert_migration "db/migrate/devise_create_monsters.rb", /t.string   :last_sign_in_ip/
+    end
+
+    test "do NOT add primary key type when NOT specified in rails generator" do
+      run_generator %w(monster)
+      assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters do/
+    end
+
+    test "add primary key type with rails 5 when specified in rails generator" do
+      run_generator ["monster", "--primary_key_type=uuid"]
+      if Devise::Test.rails5_and_up?
+        assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters, id: :uuid do/
+      else
+        assert_migration "db/migrate/devise_create_monsters.rb", /create_table :monsters do/
+      end
     end
   end
 

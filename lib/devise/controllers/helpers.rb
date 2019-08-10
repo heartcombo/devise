@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Controllers
     # Those helpers are convenience methods added to ApplicationController.
@@ -266,7 +268,7 @@ module Devise
       # Check if flash messages should be emitted. Default is to do it on
       # navigational formats
       def is_flashing_format?
-        is_navigational_format?
+        request.respond_to?(:flash) && is_navigational_format?
       end
 
       private

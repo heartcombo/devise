@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class PasswordsControllerTest < Devise::ControllerTestCase
@@ -28,5 +30,10 @@ class PasswordsControllerTest < Devise::ControllerTestCase
 
     put_update_with_params
     assert_redirected_to custom_path
+  end
+
+  test 'calls after_database_authentication callback after sign_in immediately after password update' do
+    User.any_instance.expects :after_database_authentication
+    put_update_with_params
   end
 end

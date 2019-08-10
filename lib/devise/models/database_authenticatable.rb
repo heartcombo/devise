@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'devise/strategies/database_authenticatable'
 
 module Devise
@@ -10,7 +12,7 @@ module Devise
     # DatabaseAuthenticatable adds the following options to devise_for:
     #
     #   * +pepper+: a random string used to provide a more secure hash. Use
-    #     `rake secret` to generate new keys.
+    #     `rails secret` to generate new keys.
     #
     #   * +stretches+: the cost given to bcrypt.
     #
@@ -31,6 +33,22 @@ module Devise
 
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
+      end
+
+      def initialize(*args, &block)
+        @skip_email_changed_notification = false
+        @skip_password_change_notification = false
+        super 
+      end
+
+      # Skips sending the email changed notification after_update
+      def skip_email_changed_notification!
+        @skip_email_changed_notification = true
+      end
+
+      # Skips sending the password change notification after_update
+      def skip_password_change_notification!
+        @skip_password_change_notification = true
       end
 
       def self.required_fields(klass)
@@ -63,6 +81,15 @@ module Devise
       # their password). In case the password field is rejected, the confirmation
       # is also rejected as long as it is also blank.
       def update_with_password(params, *options)
+        if options.present?
+          ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+            [Devise] The second argument of `DatabaseAuthenticatable#update_with_password`
+            (`options`) is deprecated and it will be removed in the next major version.
+            It was added to support a feature deprecated in Rails 4, so you can safely remove it
+            from your code.
+          DEPRECATION
+        end
+
         current_password = params.delete(:current_password)
 
         if params[:password].blank?
@@ -71,11 +98,11 @@ module Devise
         end
 
         result = if valid_password?(current_password)
-          update_attributes(params, *options)
+          update(params, *options)
         else
-          self.assign_attributes(params, *options)
-          self.valid?
-          self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
+          assign_attributes(params, *options)
+          valid?
+          errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           false
         end
 
@@ -96,10 +123,19 @@ module Devise
       #   end
       #
       def update_without_password(params, *options)
+        if options.present?
+          ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+            [Devise] The second argument of `DatabaseAuthenticatable#update_without_password`
+            (`options`) is deprecated and it will be removed in the next major version.
+            It was added to support a feature deprecated in Rails 4, so you can safely remove it
+            from your code.
+          DEPRECATION
+        end
+
         params.delete(:password)
         params.delete(:password_confirmation)
 
-        result = update_attributes(params, *options)
+        result = update(params, *options)
         clean_up_passwords
         result
       end
@@ -111,8 +147,8 @@ module Devise
         result = if valid_password?(current_password)
           destroy
         else
-          self.valid?
-          self.errors.add(:current_password, current_password.blank? ? :blank : :invalid)
+          valid?
+          errors.add(:current_password, current_password.blank? ? :blank : :invalid)
           false
         end
 
@@ -137,9 +173,16 @@ module Devise
         encrypted_password[0,29] if encrypted_password
       end
 
-      # Send notification to user when email changes.
-      def send_email_changed_notification
-        send_devise_notification(:email_changed, to: email_was)
+      if Devise.activerecord51?
+        # Send notification to user when email changes.
+        def send_email_changed_notification
+          send_devise_notification(:email_changed, to: email_before_last_save)
+        end
+      else
+        # Send notification to user when email changes.
+        def send_email_changed_notification
+          send_devise_notification(:email_changed, to: email_was)
+        end
       end
 
       # Send notification to user when password changes.
@@ -158,12 +201,24 @@ module Devise
         Devise::Encryptor.digest(self.class, password)
       end
 
-      def send_email_changed_notification?
-        self.class.send_email_changed_notification && email_changed?
+      if Devise.activerecord51?
+        def send_email_changed_notification?
+          self.class.send_email_changed_notification && saved_change_to_email? && !@skip_email_changed_notification
+        end
+      else
+        def send_email_changed_notification?
+          self.class.send_email_changed_notification && email_changed? && !@skip_email_changed_notification
+        end
       end
 
-      def send_password_change_notification?
-        self.class.send_password_change_notification && encrypted_password_changed?
+      if Devise.activerecord51?
+        def send_password_change_notification?
+          self.class.send_password_change_notification && saved_change_to_encrypted_password? && !@skip_password_change_notification
+        end
+      else
+        def send_password_change_notification?
+          self.class.send_password_change_notification && encrypted_password_changed? && !@skip_password_change_notification
+        end
       end
 
       module ClassMethods

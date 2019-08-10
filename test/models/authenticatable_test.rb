@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AuthenticatableTest < ActiveSupport::TestCase
@@ -9,6 +11,31 @@ class AuthenticatableTest < ActiveSupport::TestCase
     user = User.create!(email: "example@example.com", password: "1234567")
     assert_equal User.find_first_by_auth_conditions({ email: "example@example.com" }), user
     assert_nil User.find_first_by_auth_conditions({ email: "example@example.com" }, id: user.id.to_s.next)
+  end
+
+  # assumes default configuration of
+  # config.case_insensitive_keys = [:email]
+  # config.strip_whitespace_keys = [:email]
+  test 'find_or_initialize_with_errors uses parameter filter on find' do
+    user = User.create!(email: "example@example.com", password: "1234567")
+    assert_equal User.find_or_initialize_with_errors([:email], { email: " EXAMPLE@example.com " }), user
+  end
+
+  # assumes default configuration of
+  # config.case_insensitive_keys = [:email]
+  # config.strip_whitespace_keys = [:email]
+  test 'find_or_initialize_with_errors uses parameter filter on initialize' do
+    assert_equal User.find_or_initialize_with_errors([:email], { email: " EXAMPLE@example.com " }).email, "example@example.com"
+  end
+
+  test 'find_or_initialize_with_errors adds blank error' do
+    user_with_error = User.find_or_initialize_with_errors([:email], { email: "" })
+    assert_equal [:email, "can't be blank"], user_with_error.errors.first
+  end
+
+  test 'find_or_initialize_with_errors adds invalid error' do
+    user_with_error = User.find_or_initialize_with_errors([:email], { email: "example@example.com" })
+    assert_equal [:email, "is invalid"], user_with_error.errors.first
   end
 
   if defined?(ActionController::Parameters)

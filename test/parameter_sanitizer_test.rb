@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'devise/parameter_sanitizer'
 
@@ -12,6 +14,34 @@ class ParameterSanitizerTest < ActiveSupport::TestCase
     sanitized = sanitizer.sanitize(:sign_in)
 
     assert_equal({ 'email' => 'jose' }, sanitized)
+  end
+
+  test 'permits empty params when received not a hash' do
+    sanitizer = sanitizer({ 'user' => 'string' })
+    sanitized = sanitizer.sanitize(:sign_in)
+
+    assert_equal({}, sanitized)
+  end
+
+  test 'does not rise error when received string instead of hash' do
+    sanitizer = sanitizer('user' => 'string')
+    assert_nothing_raised do
+      sanitizer.sanitize(:sign_in)
+    end
+  end
+
+  test 'does not rise error when received nil instead of hash' do
+    sanitizer = sanitizer('user' => nil)
+    assert_nothing_raised do
+      sanitizer.sanitize(:sign_in)
+    end
+  end
+
+  test 'permits empty params when received nil instead of hash' do
+    sanitizer = sanitizer({ 'user' => nil })
+    sanitized = sanitizer.sanitize(:sign_in)
+
+    assert_equal({}, sanitized)
   end
 
   test 'permits the default parameters for sign up' do

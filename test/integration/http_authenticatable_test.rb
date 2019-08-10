@@ -1,6 +1,14 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class HttpAuthenticationTest < Devise::IntegrationTest
+  test 'sign in with HTTP should not run model validations' do
+    sign_in_as_new_user_with_http
+
+    refute User.validations_performed
+  end
+
   test 'handles unverified requests gets rid of caches but continues signed in' do
     swap ApplicationController, allow_forgery_protection: true do
       create_user

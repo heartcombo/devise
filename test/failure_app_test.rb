@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'ostruct'
 
@@ -26,6 +28,27 @@ class FailureTest < ActiveSupport::TestCase
     end
   end
 
+  class FailureWithoutRootPath < Devise::FailureApp
+    class FakeURLHelpers
+    end
+
+    class FakeRoutesWithoutRoot
+      def url_helpers
+        FakeURLHelpers.new
+      end
+    end
+
+    class FakeAppWithoutRootPath
+      def routes
+        FakeRoutesWithoutRoot.new
+      end
+    end
+
+    def main_app
+      FakeAppWithoutRootPath.new
+    end
+  end
+
   class FakeEngineApp < Devise::FailureApp
     class FakeEngine
       def new_user_on_engine_session_url _
@@ -40,6 +63,10 @@ class FailureTest < ActiveSupport::TestCase
     def fake_engine
       @fake_engine ||= FakeEngine.new
     end
+  end
+
+  class RequestWithoutFlashSupport < ActionDispatch::Request
+    undef_method :flash
   end
 
   def self.context(name, &block)
@@ -64,7 +91,7 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     @response = (env.delete(:app) || Devise::FailureApp).call(env).to_a
-    @request  = ActionDispatch::Request.new(env)
+    @request  = (env.delete(:request_klass) || ActionDispatch::Request).new(env)
   end
 
   context 'When redirecting' do
@@ -95,6 +122,13 @@ class FailureTest < ActiveSupport::TestCase
         assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
         assert_equal 'http://test.host/', @response.second['Location']
       end
+    end
+
+    test 'returns to the root path even when it\'s not defined' do
+      call_failure app: FailureWithoutRootPath
+      assert_equal 302, @response.first
+      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal 'http://test.host/', @response.second['Location']
     end
 
     test 'returns to the root path considering subdomain if no session path is available' do
@@ -333,6 +367,19 @@ class FailureTest < ActiveSupport::TestCase
           assert_equal @request.env["PATH_INFO"], '/users/sign_in'
         end
       end
+    end
+  end
+
+  context "Lazy loading" do
+    test "loads" do
+      assert_equal Devise::FailureApp.new.lazy_loading_works?, "yes it does"
+    end
+  end
+  context "Without Flash Support" do
+    test "returns to the default redirect location without a flash message" do
+      call_failure request_klass: RequestWithoutFlashSupport
+      assert_equal 302, @response.first
+      assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
   end
 end

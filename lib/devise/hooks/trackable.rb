@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # After each sign in, update sign in time, sign in count and sign in IP.
 # This is only triggered when the user is explicitly set (with set_user)
 # and on authentication. Retrieving the user from session (:fetch) does

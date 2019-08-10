@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class TrackableTest < ActiveSupport::TestCase
@@ -37,5 +39,42 @@ class TrackableTest < ActiveSupport::TestCase
     assert_nil user.current_sign_in_at
     assert_nil user.last_sign_in_at
     assert_equal 0, user.sign_in_count
+  end
+
+  test "update_tracked_fields! should not persist invalid records" do
+    user = UserWithValidations.new
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+
+    assert_not user.update_tracked_fields!(request)
+    assert_not user.persisted?
+  end
+
+  test "update_tracked_fields! should not run model validations" do
+    user = User.new
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+
+    user.expects(:after_validation_callback).never
+
+    assert_not user.update_tracked_fields!(request)
+  end
+
+  test 'extract_ip_from should be overridable' do
+    class UserWithOverride < User
+      protected
+        def extract_ip_from(request)
+          "127.0.0.2"
+        end
+    end
+
+    request = mock
+    request.stubs(:remote_ip).returns("127.0.0.1")
+    user = UserWithOverride.new
+
+    user.update_tracked_fields(request)
+
+    assert_equal "127.0.0.2", user.current_sign_in_ip
+    assert_equal "127.0.0.2", user.last_sign_in_ip
   end
 end

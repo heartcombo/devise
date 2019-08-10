@@ -1,13 +1,17 @@
 #!/usr/bin/env ruby
 $: << File.expand_path(File.expand_path('../../test', __FILE__))
 
-require 'bundler/setup'
+# Remove this begin/rescue once Rails 4 support is removed.
 begin
-  require 'rails/test_unit/minitest_plugin'
+  require 'bundler/setup'
+  require 'rails/test_unit/runner'
+  require 'rails/test_unit/reporter'
+  require 'rails/test_unit/line_filtering'
+
+  Rails::TestUnitReporter.executable = 'bin/test'
+
+  Rails::TestUnit::Runner.parse_options(ARGV)
+  Rails::TestUnit::Runner.run(ARGV)
 rescue LoadError
   exec 'rake'
 end
-
-Rails::TestUnitReporter.executable = 'bin/test'
-
-exit Minitest.run(ARGV)

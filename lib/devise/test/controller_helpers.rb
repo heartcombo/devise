@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Test
     # `Devise::Test::ControllerHelpers` provides a facility to test controllers
@@ -137,6 +139,7 @@ module Devise
 
           status, headers, response = Devise.warden_config[:failure_app].call(env).to_a
           @controller.response.headers.merge!(headers)
+          @controller.response.content_type = headers["Content-Type"] unless Rails::VERSION::MAJOR >= 5
           @controller.status = status
           @controller.response.body = response.body
           nil # causes process return @response

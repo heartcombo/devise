@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 begin
   require 'bundler/inline'
 rescue LoadError => e
@@ -74,7 +76,7 @@ end
 class TestController < ApplicationController
   include Rails.application.routes.url_helpers
 
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   def index
     render plain: 'Home'

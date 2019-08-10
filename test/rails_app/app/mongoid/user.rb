@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'shared_user'
 
 class User
@@ -36,4 +38,13 @@ class User
   field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
   field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   field :locked_at,       type: Time
+
+  cattr_accessor :validations_performed
+
+  after_validation :after_validation_callback
+
+  def after_validation_callback
+    # used to check in our test if the validations were called
+    @@validations_performed = true
+  end
 end

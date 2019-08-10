@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Devise
   class IntegrationTest < ActionDispatch::IntegrationTest
     # %w( get post patch put head delete xml_http_request
     #           xhr get_via_redirect post_via_redirect
     #         ).each do |method|
     %w( get post put ).each do |method|
-      if Rails.version >= '5.0.0'
+      if Devise::Test.rails5_and_up?
         define_method(method) do |url, options={}|
           if options.empty?
             super url
@@ -29,7 +31,7 @@ module Devise
     #           xhr get_via_redirect post_via_redirect
     #         ).each do |method|
     %w( get post put ).each do |method|
-      if Rails.version >= '5.0.0'
+      if Devise::Test.rails5_and_up?
         define_method(method) do |action, options={}|
           if options.empty?
             super action

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Models
     # Registerable is responsible for everything related to registering a new
@@ -19,6 +21,8 @@ module Devise
         def new_with_session(params, session)
           new(params)
         end
+
+        Devise::Models.config(self, :sign_in_after_change_password)
       end
     end
   end

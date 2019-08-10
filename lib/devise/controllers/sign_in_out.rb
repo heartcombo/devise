@@ -1,10 +1,15 @@
+# frozen_string_literal: true
+
 module Devise
   module Controllers
     # Provide sign in and sign out functionality.
     # Included by default in all controllers.
     module SignInOut
       # Return true if the given scope is signed in session. If no scope given, return
-      # true if any scope is signed in. Does not run authentication hooks.
+      # true if any scope is signed in. This will run authentication hooks, which may
+      # cause exceptions to be thrown from this method; if you simply want to check
+      # if a scope has already previously been authenticated without running
+      # authentication hooks, you can directly call `warden.authenticated?(scope: scope)`
       def signed_in?(scope=nil)
         [scope || Devise.mappings.keys].flatten.any? do |_scope|
           warden.authenticate?(scope: _scope)
@@ -14,6 +19,9 @@ module Devise
       # Sign in a user that already was authenticated. This helper is useful for logging
       # users in after sign up. All options given to sign_in is passed forward
       # to the set_user method in warden.
+      # If you are using a custom warden strategy and the timeoutable module, you have to
+      # set `env["devise.skip_timeout"] = true` in the request to use this method, like we do
+      # in the sessions controller: https://github.com/plataformatec/devise/blob/master/app/controllers/devise/sessions_controller.rb#L7
       #
       # Examples:
       #

@@ -1,4 +1,5 @@
-require 'active_model/version'
+# frozen_string_literal: true
+
 require 'devise/hooks/activatable'
 require 'devise/hooks/csrf_cleaner'
 
@@ -102,7 +103,7 @@ module Devise
       # and passing a new list of attributes you want to exempt. All attributes
       # given to :except will simply add names to exempt to Devise internal list.
       def serializable_hash(options = nil)
-        options ||= {}
+        options = options.try(:dup) || {}
         options[:except] = Array(options[:except])
 
         if options[:force_except]
@@ -132,16 +133,18 @@ module Devise
       # This is an internal method called every time Devise needs
       # to send a notification/mail. This can be overridden if you
       # need to customize the e-mail delivery logic. For instance,
-      # if you are using a queue to deliver e-mails (delayed job,
-      # sidekiq, resque, etc), you must add the delivery to the queue
+      # if you are using a queue to deliver e-mails (active job, delayed
+      # job, sidekiq, resque, etc), you must add the delivery to the queue
       # just after the transaction was committed. To achieve this,
       # you can override send_devise_notification to store the
-      # deliveries until the after_commit callback is triggered:
+      # deliveries until the after_commit callback is triggered.
+      #
+      # The following example uses Active Job's `deliver_later` :
       #
       #     class User
       #       devise :database_authenticatable, :confirmable
       #
-      #       after_commit :send_pending_notifications
+      #       after_commit :send_pending_devise_notifications
       #
       #       protected
       #
@@ -150,38 +153,43 @@ module Devise
       #         # delivery until the after_commit callback otherwise
       #         # send now because after_commit will not be called.
       #         if new_record? || changed?
-      #           pending_notifications << [notification, args]
+      #           pending_devise_notifications << [notification, args]
       #         else
-      #           message = devise_mailer.send(notification, self, *args)
-      #           Remove once we move to Rails 4.2+ only.
-      #           if message.respond_to?(:deliver_now)
-      #             message.deliver_now
-      #           else
-      #             message.deliver
-      #           end
+      #           render_and_send_devise_message(notification, *args)
       #         end
       #       end
       #
-      #       def send_pending_notifications
-      #         pending_notifications.each do |notification, args|
-      #           message = devise_mailer.send(notification, self, *args)
-      #           Remove once we move to Rails 4.2+ only.
-      #           if message.respond_to?(:deliver_now)
-      #             message.deliver_now
-      #           else
-      #             message.deliver
-      #           end
+      #       private
+      #
+      #       def send_pending_devise_notifications
+      #         pending_devise_notifications.each do |notification, args|
+      #           render_and_send_devise_message(notification, *args)
       #         end
       #
       #         # Empty the pending notifications array because the
       #         # after_commit hook can be called multiple times which
       #         # could cause multiple emails to be sent.
-      #         pending_notifications.clear
+      #         pending_devise_notifications.clear
       #       end
       #
-      #       def pending_notifications
-      #         @pending_notifications ||= []
+      #       def pending_devise_notifications
+      #         @pending_devise_notifications ||= []
       #       end
+      #
+      #       def render_and_send_devise_message(notification, *args)
+      #         message = devise_mailer.send(notification, self, *args)
+      #
+      #         # Deliver later with Active Job's `deliver_later`
+      #         if message.respond_to?(:deliver_later)
+      #           message.deliver_later
+      #         # Remove once we move to Rails 4.2+ only, as `deliver` is deprecated.
+      #         elsif message.respond_to?(:deliver_now)
+      #           message.deliver_now
+      #         else
+      #           message.deliver
+      #         end
+      #       end
+      #
       #     end
       #
       def send_devise_notification(notification, *args)
@@ -256,7 +264,7 @@ module Devise
         #   end
         #
         # Finally, notice that Devise also queries for users in other scenarios
-        # besides authentication, for example when retrieving an user to send
+        # besides authentication, for example when retrieving a user to send
         # an e-mail for password reset. In such cases, find_for_authentication
         # is not called.
         def find_for_authentication(tainted_conditions)
@@ -274,28 +282,20 @@ module Devise
 
         # Find or initialize a record with group of attributes based on a list of required attributes.
         def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
-          attributes = if attributes.respond_to? :permit!
-            attributes.slice(*required_attributes).permit!.to_h.with_indifferent_access
-          else
-            attributes.with_indifferent_access.slice(*required_attributes)
-          end
-          attributes.delete_if { |key, value| value.blank? }
+          attributes.try(:permit!)
+          attributes = attributes.to_h.with_indifferent_access
+                                 .slice(*required_attributes)
+                                 .delete_if { |key, value| value.blank? }
 
           if attributes.size == required_attributes.size
-            record = find_first_by_auth_conditions(attributes)
+            record = find_first_by_auth_conditions(attributes) and return record
           end
 
-          unless record
-            record = new
-
+          new(devise_parameter_filter.filter(attributes)).tap do |record|
             required_attributes.each do |key|
-              value = attributes[key]
-              record.send("#{key}=", value)
-              record.errors.add(key, value.present? ? error : :blank)
+              record.errors.add(key, attributes[key].blank? ? :blank : error)
             end
           end
-
-          record
         end
 
         protected

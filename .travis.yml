@@ -2,13 +2,18 @@ language: ruby
 
 rvm:
   - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.0
+  - 2.2.10
+  - 2.3.8
+  - 2.4.5
+  - 2.5.3
+  - 2.6.0
   - ruby-head
 
 gemfile:
   - Gemfile
+  - gemfiles/Gemfile.rails-6.0-stable
+  - gemfiles/Gemfile.rails-5.2-stable
+  - gemfiles/Gemfile.rails-5.0-stable
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
 
@@ -16,14 +21,46 @@ matrix:
   exclude:
     - rvm: 2.1.10
       gemfile: Gemfile
-    - rvm: 2.4.0
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-6.0-stable
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-5.2-stable
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
+    - rvm: 2.2.10
+      gemfile: Gemfile
+    - rvm: 2.2.10
+      gemfile: gemfiles/Gemfile.rails-6.0-stable
+    - rvm: 2.2.10
+      gemfile: gemfiles/Gemfile.rails-5.2-stable
+    - rvm: 2.3.8
+      gemfile: gemfiles/Gemfile.rails-6.0-stable
+    - rvm: 2.4.5
       gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.4.5
+      gemfile: gemfiles/Gemfile.rails-6.0-stable
+    - rvm: 2.5.3
+      gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.6.0
+      gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.6.0
+      gemfile: gemfiles/Gemfile.rails-4.2-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: ruby-head
+      gemfile: gemfiles/Gemfile.rails-4.2-stable
     - env: DEVISE_ORM=mongoid
       gemfile: Gemfile
+    - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
+    - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-5.2-stable
+    - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-6.0-stable
   allow_failures:
     - rvm: ruby-head
+    - gemfile: gemfiles/Gemfile.rails-6.0-stable
+
 services:
   - mongodb
 
@@ -36,7 +73,10 @@ env:
     - DEVISE_ORM=active_record
     - DEVISE_ORM=mongoid
 
-before_install: "rm ${BUNDLE_GEMFILE}.lock"
+before_install:
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
+  - "rm ${BUNDLE_GEMFILE}.lock"
 
 before_script: "bundle update"
 

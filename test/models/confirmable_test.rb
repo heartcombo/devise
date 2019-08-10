@@ -1,9 +1,22 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ConfirmableTest < ActiveSupport::TestCase
 
   def setup
     setup_mailer
+  end
+
+  test 'should set callbacks to send the mail' do
+    if DEVISE_ORM == :active_record
+      defined_callbacks = User._commit_callbacks.map(&:filter)
+      assert_includes defined_callbacks, :send_on_create_confirmation_instructions
+      assert_includes defined_callbacks, :send_reconfirmation_instructions
+    elsif DEVISE_ORM == :mongoid
+      assert_includes User._create_callbacks.map(&:filter), :send_on_create_confirmation_instructions
+      assert_includes User._update_callbacks.map(&:filter), :send_reconfirmation_instructions
+    end
   end
 
   test 'should generate confirmation token after creating a record' do
@@ -227,6 +240,16 @@ class ConfirmableTest < ActiveSupport::TestCase
     refute user.active_for_authentication?
   end
 
+  test 'should not be active when confirm period is set to 0 days' do
+    Devise.allow_unconfirmed_access_for = 0.days
+    user = create_user
+
+    Timecop.freeze(Time.zone.today) do
+      user.confirmation_sent_at = Time.zone.today
+      refute user.active_for_authentication?
+    end
+  end
+
   test 'should be active when we set allow_unconfirmed_access_for to nil' do
     swap Devise, allow_unconfirmed_access_for: nil do
       user = create_user
@@ -359,7 +382,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin = create_admin
     assert admin.confirm
     residual_token = admin.confirmation_token
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     assert_not_equal residual_token, admin.confirmation_token
   end
 
@@ -368,7 +391,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     original_token = admin.confirmation_token
     assert admin.confirm
     admin.skip_reconfirmation!
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     assert admin.confirmed?
     refute admin.pending_reconfirmation?
     assert_equal original_token, admin.confirmation_token
@@ -379,16 +402,16 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin.skip_confirmation_notification!
 
     assert_email_not_sent do
-      admin.update_attributes(email: 'new_test@example.com')
+      admin.update(email: 'new_test@example.com')
     end
   end
 
   test 'should regenerate confirmation token after changing email' do
     admin = create_admin
     assert admin.confirm
-    assert admin.update_attributes(email: 'old_test@example.com')
+    assert admin.update(email: 'old_test@example.com')
     token = admin.confirmation_token
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     assert_not_equal token, admin.confirmation_token
   end
 
@@ -396,7 +419,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin = create_admin
     assert admin.confirm
     assert_email_sent "new_test@example.com" do
-      assert admin.update_attributes(email: 'new_test@example.com')
+      assert admin.update(email: 'new_test@example.com')
     end
     assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
@@ -404,7 +427,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should send confirmation instructions by email after changing email from nil' do
     admin = create_admin(email: nil)
     assert_email_sent "new_test@example.com" do
-      assert admin.update_attributes(email: 'new_test@example.com')
+      assert admin.update(email: 'new_test@example.com')
     end
     assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
   end
@@ -413,7 +436,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     admin = create_admin
     assert admin.confirm
     assert_email_not_sent do
-      assert admin.update_attributes(password: 'newpass', password_confirmation: 'newpass')
+      assert admin.update(password: 'newpass', password_confirmation: 'newpass')
     end
   end
 
@@ -429,14 +452,14 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should stay confirmed when email is changed' do
     admin = create_admin
     assert admin.confirm
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     assert admin.confirmed?
   end
 
   test 'should update email only when it is confirmed' do
     admin = create_admin
     assert admin.confirm
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     assert_not_equal 'new_test@example.com', admin.email
     assert admin.confirm
     assert_equal 'new_test@example.com', admin.email
@@ -445,16 +468,16 @@ class ReconfirmableTest < ActiveSupport::TestCase
   test 'should not allow admin to get past confirmation email by resubmitting their new address' do
     admin = create_admin
     assert admin.confirm
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     assert_not_equal 'new_test@example.com', admin.email
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     assert_not_equal 'new_test@example.com', admin.email
   end
 
   test 'should find a admin by send confirmation instructions with unconfirmed_email' do
     admin = create_admin
     assert admin.confirm
-    assert admin.update_attributes(email: 'new_test@example.com')
+    assert admin.update(email: 'new_test@example.com')
     confirmation_admin = Admin.send_confirmation_instructions(email: admin.unconfirmed_email)
     assert_equal confirmation_admin, admin
   end
@@ -523,7 +546,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
       original_email = admin.email
 
       assert_difference 'ActionMailer::Base.deliveries.size', 2 do
-        assert admin.update_attributes(email: 'new-email@example.com')
+        assert admin.update(email: 'new-email@example.com')
       end
       assert_equal original_email, ActionMailer::Base.deliveries[-2]['to'].to_s
       assert_equal 'new-email@example.com', ActionMailer::Base.deliveries[-1]['to'].to_s

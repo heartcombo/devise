@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "action_controller/metal"
 
 module Devise
@@ -142,10 +144,19 @@ module Devise
 
       opts[:format] = request_format unless skip_format?
 
-      opts[:script_name] = relative_url_root if relative_url_root?
-
       router_name = Devise.mappings[scope].router_name || Devise.available_router_name
       context = send(router_name)
+
+      if relative_url_root?
+        opts[:script_name] = relative_url_root
+
+      # We need to add the rootpath to `script_name` manually for applications that use a Rails
+      # version lower than 5.1. Otherwise, it is going to generate a wrong path for Engines
+      # that use Devise. Remove it when the support of Rails 5.0 is droped.
+      elsif root_path_defined?(context) && !rails_51_and_up?
+        rootpath = context.routes.url_helpers.root_path
+        opts[:script_name] = rootpath.chomp('/') if rootpath.length > 1
+      end
 
       if context.respond_to?(route)
         context.send(route, opts)
@@ -240,7 +251,7 @@ module Devise
     # Check if flash messages should be emitted. Default is to do it on
     # navigational formats
     def is_flashing_format?
-      is_navigational_format?
+      request.respond_to?(:flash) && is_navigational_format?
     end
 
     def request_format
@@ -257,6 +268,18 @@ module Devise
 
     def relative_url_root?
       relative_url_root.present?
+    end
+
+    ActiveSupport.run_load_hooks(:devise_failure_app, self)
+
+    private
+
+    def root_path_defined?(context)
+      defined?(context.routes) && context.routes.url_helpers.respond_to?(:root_path)
+    end
+
+    def rails_51_and_up?
+      Rails.gem_version >= Gem::Version.new("5.1")
     end
   end
 end

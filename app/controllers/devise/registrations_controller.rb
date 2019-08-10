@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Devise::RegistrationsController < DeviseController
   prepend_before_action :require_no_authentication, only: [:new, :create, :cancel]
   prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy]
@@ -5,7 +7,7 @@ class Devise::RegistrationsController < DeviseController
 
   # GET /resource/sign_up
   def new
-    build_resource({})
+    build_resource
     yield resource if block_given?
     respond_with resource
   end
@@ -48,12 +50,9 @@ class Devise::RegistrationsController < DeviseController
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
     if resource_updated
-      if is_flashing_format?
-        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
-          :update_needs_confirmation : :updated
-        set_flash_message :notice, flash_key
-      end
-      bypass_sign_in resource, scope: resource_name
+      set_flash_message_for_update(resource, prev_unconfirmed_email)
+      bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
+
       respond_with resource, location: after_update_path_for(resource)
     else
       clean_up_passwords resource
@@ -97,8 +96,8 @@ class Devise::RegistrationsController < DeviseController
 
   # Build a devise resource passing in the session. Useful to move
   # temporary session data to the newly created user.
-  def build_resource(hash=nil)
-    self.resource = resource_class.new_with_session(hash || {}, session)
+  def build_resource(hash = {})
+    self.resource = resource_class.new_with_session(hash, session)
   end
 
   # Signs in a user on sign up. You can overwrite this method in your own
@@ -110,7 +109,7 @@ class Devise::RegistrationsController < DeviseController
   # The path used after sign up. You need to overwrite this method
   # in your own RegistrationsController.
   def after_sign_up_path_for(resource)
-    after_sign_in_path_for(resource)
+    after_sign_in_path_for(resource) if is_navigational_format?
   end
 
   # The path used after sign up for inactive accounts. You need to overwrite
@@ -125,7 +124,7 @@ class Devise::RegistrationsController < DeviseController
   # The default url to be used after updating a resource. You need to overwrite
   # this method in your own RegistrationsController.
   def after_update_path_for(resource)
-    signed_in_root_path(resource)
+    sign_in_after_change_password? ? signed_in_root_path(resource) : new_session_path(resource_name)
   end
 
   # Authenticates the current scope and gets the current resource from the session.
@@ -144,5 +143,26 @@ class Devise::RegistrationsController < DeviseController
 
   def translation_scope
     'devise.registrations'
+  end
+
+  private
+
+  def set_flash_message_for_update(resource, prev_unconfirmed_email)
+    return unless is_flashing_format?
+
+    flash_key = if update_needs_confirmation?(resource, prev_unconfirmed_email)
+                  :update_needs_confirmation
+                elsif sign_in_after_change_password?
+                  :updated
+                else
+                  :updated_but_not_signed_in
+                end
+    set_flash_message :notice, flash_key
+  end
+
+  def sign_in_after_change_password?
+    return true if account_update_params[:password].blank?
+
+    Devise.sign_in_after_change_password
   end
 end

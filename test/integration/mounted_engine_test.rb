@@ -1,9 +1,24 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
-class MyMountableEngine
-  def self.call(env)
-    ['200', { 'Content-Type' => 'text/html' }, ['Rendered content of MyMountableEngine']]
+module MyMountableEngine
+  class Engine < ::Rails::Engine
+    isolate_namespace MyMountableEngine
   end
+  class TestsController < ActionController::Base
+    def index
+      render plain: 'Root test successful'
+    end
+    def inner_route
+      render plain: 'Inner route test successful'
+    end
+  end
+end
+
+MyMountableEngine::Engine.routes.draw do
+  get 'test', to: 'tests#inner_route'
+  root to: 'tests#index'
 end
 
 # If disable_clear_and_finalize is set to true, Rails will not clear other routes when calling
@@ -13,7 +28,7 @@ Rails.application.routes.disable_clear_and_finalize = true
 
 Rails.application.routes.draw do
   authenticate(:user) do
-    mount MyMountableEngine, at: '/mountable_engine'
+    mount MyMountableEngine::Engine, at: '/mountable_engine'
   end
 end
 
@@ -31,6 +46,23 @@ class AuthenticatedMountedEngineTest < Devise::IntegrationTest
     get '/mountable_engine'
 
     assert_response :success
-    assert_contain 'Rendered content of MyMountableEngine'
+    assert_contain 'Root test successful'
+  end
+
+
+  test 'renders a inner route of the mounted engine when authenticated' do
+    sign_in_as_user
+    get '/mountable_engine/test'
+
+    assert_response :success
+    assert_contain 'Inner route test successful'
+  end
+
+  test 'respond properly to a non existing route of the mounted engine' do
+    sign_in_as_user
+    
+    assert_raise ActionController::RoutingError do
+      get '/mountable_engine/non-existing-route'
+    end
   end
 end

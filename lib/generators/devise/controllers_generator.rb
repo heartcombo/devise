@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails/generators/base'
 
 module Devise
@@ -16,7 +18,7 @@ module Devise
 
         This will create a controller class at app/controllers/users/sessions_controller.rb like this:
 
-          class Users::ConfirmationsController < Devise::ConfirmationsController
+          class Users::SessionsController < Devise::SessionsController
             content...
           end
       DESC

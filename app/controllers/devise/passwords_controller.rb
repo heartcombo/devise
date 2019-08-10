@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Devise::PasswordsController < DeviseController
   prepend_before_action :require_no_authentication
   # Render the #edit only if coming from a reset password email link
@@ -37,6 +39,7 @@ class Devise::PasswordsController < DeviseController
       if Devise.sign_in_after_reset_password
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message!(:notice, flash_message)
+        resource.after_database_authentication
         sign_in(resource_name, resource)
       else
         set_flash_message!(:notice, :updated_not_active)

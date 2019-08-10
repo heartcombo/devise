@@ -1,3 +1,124 @@
+### Unreleased
+
+* enhancements
+  * Support Rails 6.0
+  * Add `autocomplete="new-password"` to `password_confirmation` fields (by @ferrl)
+  * Update CI to rails 6.0.0.beta3 (by @tunnes)
+  * refactor method name to be more consistent (by @saiqulhaq)
+  * Fix rails 6.0.rc1 email uniqueness validation deprecation error (by @Vasfed)
+  * Fix rails_51_and_up? method for Rails 6.rc1 (by @igorkasyanchuk)
+
+### 4.6.2 - 2019-03-26
+
+* bug fixes
+  * Revert "Set `encrypted_password` to `nil` when `password` is set to `nil`" since it broke backward compatibility with existing applications. See more on https://github.com/plataformatec/devise/issues/5033#issuecomment-476386275 (by @mracos)
+
+### 4.6.1 - 2019-02-11
+
+* bug fixes
+  * Check if `root_path` is defined with `#respond_to?` instead of `#present` (by @tegon)
+
+### 4.6.0 - 2019-02-07
+
+* enhancements
+  * Allow to skip email and password change notifications (by @iorme1)
+  * Include the use of `nil` for `allow_unconfirmed_access_for` in the docs (by @joaumg)
+  * Ignore useless files into the `.gem` file (by @huacnlee)
+  * Explain the code that prevents enumeration attacks inside `Devise::Strategies::DatabaseAuthenticatable` (by @tegon)
+  * Refactor the `devise_error_messages!` helper to render a partial (by @prograhamer)
+  * Add an option (`Devise.sign_in_after_change_password`) to not automatically sign in a user after changing a password (by @knjko)
+
+* bug fixes
+  * Fix missing comma in Simple Form generator (by @colinross)
+  * Fix error with migration generator in Rails 6 (by @oystersauce8)
+  * Set `encrypted_password` to `nil` when `password` is set to `nil` (by @sivagollapalli)
+  * Consider whether the request supports flash messages inside `Devise::Controllers::Helpers#is_flashing_format?` (by @colinross)
+  * Fix typo inside `Devise::Generators::ControllersGenerator` (by @kopylovvlad)
+  * Sanitize parameters inside `Devise::Models::Authenticatable#find_or_initialize_with_errors` (by @rlue)
+  * `#after_database_authentication` callback was not called after authentication on password reset (by @kanmaniselvan)
+  * Fix corner case when `#confirmation_period_valid?` was called at the same second as `confirmation_sent_at` was set. Mostly true for date types that only have second precisions. (by @stanhu)
+  * Fix unclosed `li` tag in `error_messages` partial (by @mracos)
+  * Fix Routes issue when devise engine is mounted in another engine on Rails versions lower than 5.1 (by @a-barbieri)
+  * Make `#increment_failed_attempts` concurrency safe (by @tegon)
+  * Apply Test Helper fix to Rails 6.0 as well as 5.x (by @matthewrudy)
+
+
+* deprecations
+  * The second argument of `DatabaseAuthenticatable`'s `#update_with_password` and `#update_without_password` is deprecated and will be removed in the next major version. It was added to support a feature deprecated in Rails 4, so you can safely remove it from your code. (by @ihatov08)
+  * The `DeviseHelper.devise_error_messages!` is deprecated and will be removed in the next major version. Use the `devise/shared/error_messages` partial instead. (by @mracos)
+
+### 4.5.0 - 2018-08-15
+
+* enhancements
+  * Use `before_action` instead of `before_filter` (by @edenthecat)
+  *  Allow people to extend devise failure app, through invoking `ActiveSupport.run_load_hooks` once `Devise::FailureApp` is loaded (by @wnm)
+  * Use `update` instead of `update_attributes` (by @koic)
+  * Split IP resolution from `update_tracked_fields` (by @mckramer)
+  * upgrade dependencies for rails and responders (by @lancecarlson)
+  * Add `autocomplete="new-password"` to new password fields (by @gssbzn)
+  * Add `autocomplete="current-password"` to current password fields (by @gssbzn)
+  * Remove redundant `self` from `database_authenticatable` module (by @abhishekkanojia)
+  * Update `simple_form` templates with changes from https://github.com/plataformatec/devise/commit/16b3d6d67c7e017d461ea17ed29ea9738dc77e83 and https://github.com/plataformatec/devise/commit/6260c29a867b9a656f1e1557abe347a523178fab (by @gssbzn)
+  * Remove `:trackable` from the default modules in the generators, to be more GDPR-friendly (by @fakenine)
+
+* bug fixes
+  * Use same string on failed login regardless of whether account exists when in paranoid mode (by @TonyMK9068)
+  * Fix error when params is not a hash inside `Devise::ParameterSanitizer` (by @b0nn1e)
+  * Look for `secret_key_base` inside `Rails.application` (by @gencer)
+  * Ensure `Devise::ParameterFilter` does not add missing keys when called with a hash that has a `default` / `default_proc`
+configured (by @joshpencheon)
+  * Adds `is_navigational_format?` check to `after_sign_up_path_for` to keep consistency (by @iorme1)
+
+### 4.4.3 - 2018-03-17
+
+* bug fixes
+  * Fix undefined method `rails5?` for Devise::Test:Module (by @tegon)
+  * Fix: secret key was being required to be set inside credentials on Rails 5.2 (by @tegon)
+
+### 4.4.2 - 2018-03-15
+
+* enhancements
+  * Support for :credentials on Rails v5.2.x. (by @gencer)
+  * Improve documentation about the test suite. (by @tegon)
+  * Test with Rails 5.2.rc1 on Travis. (by @jcoyne)
+  * Allow test with Rails 6. (by @Fudoshiki)
+  * Creating a new section for controller configuration on `devise.rb` template (by @Danilo-Araujo-Silva)
+
+* bug fixes
+  * Preserve content_type for unauthenticated tests (by @gmcnaughton)
+  * Check if the resource is persisted in `update_tracked_fields!` instead of performing validations (by @tegon)
+  * Revert "Replace log_process_action to append_info_to_payload" (by @tegon)
+
+### 4.4.1 - 2018-01-23
+
+* bug fixes
+  * Ensure Gemspec is loaded as utf-8. (by @segiddins)
+  * Fix `ActiveRecord` check on `Confirmable`. (by @tegon)
+  * Fix `signed_in?` docs without running auth hooks. by (@machty)
+
+### 4.4.0 - 2017-12-29
+
+* enhancements
+  * Add `frozen_string_literal` pragma comment to all Ruby files. (by @pat)
+  * Use `set_flash_method!` instead of `set_flash_method` in `Devise::OmniauthCallbacksController#failure`. (by @saichander17)
+  * Clarify how `store_location_for` modifies URIs. (by @olivierlacan)
+  * Move `failed_attempts` increment into its own function. by (@mobilutz)
+  * Add `autocomplete="email"` to email fields. by (@MikeRogers0)
+  * Add the ability to change the default migrations path introduced in Rails 5.0.3.  (by @alexhifer)
+  * Delete unnecessary condition for helper method. (by @davydovanton)
+  * Support `id: :uuid` option for migrations. (by @filip373)
+
+* bug fixes
+  * Fix syntax for MRI 2.5.0. (by @pat)
+  * Validations were being ignored on singup in the `Trackable#update_tracked_fields!` method. (by @AshleyFoster)
+  * Do not modify options for `#serializable_hash`. (by @guigs)
+  * Email confirmations were being sent on sign in/sign out for application using `mongoid` and `mongoid-paperclip` gems. This is because previously we were checking if a model is from Active Record by checking if the method `after_commit` was defined - since `mongoid` doesn' have one - but `mongoid-paperclip` gem does define one, which cause this issue. (by @fjg)
+
+### 4.3.0 - 2017-05-14
+
+* Enhancements
+  * Dependency support added for Rails 5.1.x.
+
 ### 4.2.1 - 2017-03-15
 
 * removals
@@ -181,7 +302,7 @@
     end
     ```
 
-    You can check more examples and explanations on the [README section](/plataformatec/devise#strong-parameters)
+    You can check more examples and explanations on the [README section](README.md#strong-parameters)
     and on the [ParameterSanitizer docs](lib/devise/parameter_sanitizer.rb).
 
 Please check [3-stable](https://github.com/plataformatec/devise/blob/3-stable/CHANGELOG.md)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'ostruct'
 
@@ -308,6 +310,16 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
       @controller.instance_eval "def after_sign_out_path_for(resource); admin_root_path; end"
       @controller.sign_out_and_redirect(:admin)
     end
+  end
+
+  test 'is_flashing_format? depends on is_navigation_format?' do
+    @controller.expects(:is_navigational_format?).returns(true)
+    assert @controller.is_flashing_format?
+  end
+
+  test 'is_flashing_format? is guarded against flash (middleware) not being loaded' do
+    @controller.request.expects(:respond_to?).with(:flash).returns(false)
+    refute @controller.is_flashing_format?
   end
 
   test 'is not a devise controller' do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if defined?(ActionMailer)
   class Devise::Mailer < Devise.parent_mailer.constantize
     include Devise::Mailers::Helpers

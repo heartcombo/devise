@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails/generators/base'
 
 module Devise
@@ -19,13 +21,6 @@ module Devise
         class_option :views, aliases: "-v", type: :array, desc: "Select specific view directories to generate (confirmations, passwords, registrations, sessions, unlocks, mailer)"
 
         public_task :copy_views
-      end
-
-      # TODO: Add this to Rails itself
-      module ClassMethods
-        def hide!
-          Rails::Generators.hide_namespace self.namespace
-        end
       end
 
       def copy_views
@@ -139,7 +134,11 @@ module Devise
                               default: defined?(SimpleForm) ? "simple_form_for" : "form_for"
 
       hook_for :markerb,  desc: "Generate markerb instead of erb mail views",
-                          default: defined?(Markerb) ? :markerb : :erb,
+                          default: defined?(Markerb),
+                          type: :boolean
+
+      hook_for :erb,      desc: "Generate erb mail views",
+                          default: !defined?(Markerb),
                           type: :boolean
     end
   end

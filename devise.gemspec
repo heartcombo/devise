@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+# frozen_string_literal: true
+
 $:.push File.expand_path("../lib", __FILE__)
 require "devise/version"
 
@@ -13,14 +15,13 @@ Gem::Specification.new do |s|
   s.description = "Flexible authentication solution for Rails with Warden"
   s.authors     = ['José Valim', 'Carlos Antônio']
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- test/*`.split("\n")
+  s.files         = Dir["{app,config,lib}/**/*", "CHANGELOG.md", "MIT-LICENSE", "README.md"]
   s.require_paths = ["lib"]
   s.required_ruby_version = '>= 2.1.0'
 
   s.add_dependency("warden", "~> 1.2.3")
   s.add_dependency("orm_adapter", "~> 0.1")
   s.add_dependency("bcrypt", "~> 3.0")
-  s.add_dependency("railties", ">= 4.1.0", "< 5.1")
+  s.add_dependency("railties", ">= 4.1.0")
   s.add_dependency("responders")
 end

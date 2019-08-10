@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV["RAILS_ENV"] = "test"
 DEVISE_ORM = (ENV["DEVISE_ORM"] || :active_record).to_sym
 
@@ -11,6 +13,7 @@ require "orm/#{DEVISE_ORM}"
 I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__)
 
 require 'mocha/setup'
+require 'timecop'
 require 'webrat'
 Webrat.configure do |config|
   config.mode = :rails

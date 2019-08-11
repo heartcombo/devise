@@ -5,7 +5,9 @@ ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.include_root_in_json = true
 
 migrate_path = File.expand_path("../../rails_app/db/migrate/", __FILE__)
-if Devise::Test.rails52_and_up?
+if Devise::Test.rails6?
+  ActiveRecord::MigrationContext.new(migrate_path, ActiveRecord::SchemaMigration).migrate
+elsif Devise::Test.rails52_and_up?
   ActiveRecord::MigrationContext.new(migrate_path).migrate
 else
   ActiveRecord::Migrator.migrate(migrate_path)

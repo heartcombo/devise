@@ -77,6 +77,24 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_equal "can't be blank", confirmed_user.errors[:confirmation_token].join
   end
 
+  test 'should return a new record with errors when a blank token is given and a record exists on the database' do
+    user = create_user(confirmation_token: '')
+
+    confirmed_user = User.confirm_by_token('')
+
+    refute user.reload.confirmed?
+    assert_equal "can't be blank", confirmed_user.errors[:confirmation_token].join
+  end
+
+  test 'should return a new record with errors when a nil token is given and a record exists on the database' do
+    user = create_user(confirmation_token: nil)
+
+    confirmed_user = User.confirm_by_token(nil)
+
+    refute user.reload.confirmed?
+    assert_equal "can't be blank", confirmed_user.errors[:confirmation_token].join
+  end
+
   test 'should generate errors for a user email if user is already confirmed' do
     user = create_user
     user.confirmed_at = Time.now

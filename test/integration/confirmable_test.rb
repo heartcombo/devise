@@ -187,24 +187,22 @@ class ConfirmationTest < Devise::IntegrationTest
     assert_contain "Confirmation token can't be blank"
   end
 
-  test "should not confirm user with blank confirmation token" do
+  test "should not be able to confirm user with blank confirmation token" do
     user = create_user(confirm: false)
     user.update_attribute(:confirmation_token, "")
 
     visit_user_confirmation_with_token("")
 
     assert_contain "Confirmation token can't be blank"
-    refute user.reload.confirmed?
   end
 
-  test "should not confirm user with nil confirmation token" do
+  test "should not be able to confirm user with nil confirmation token" do
     user = create_user(confirm: false)
     user.update_attribute(:confirmation_token, nil)
 
     visit_user_confirmation_with_token(nil)
 
     assert_contain "Confirmation token can't be blank"
-    refute user.reload.confirmed?
   end
 
   test 'error message is configurable by resource name' do

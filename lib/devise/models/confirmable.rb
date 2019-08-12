@@ -350,6 +350,11 @@ module Devise
         def confirm_by_token(confirmation_token)
           confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token)
 
+          # When the `confirmation_token` parameter is blank, if there are any users with a blank
+          # `confirmation_token` in the database, the first one would be confirmed here.
+          # The error is being manually added here to ensure no users are confirmed by mistake.
+          # This was done in the model for convenience, since validation errors are automatically
+          # displayed in the view.
           if confirmable && confirmation_token.blank?
             confirmable.errors.add(:confirmation_token, :blank)
             return confirmable

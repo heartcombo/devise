@@ -30,7 +30,7 @@ module Devise
 
       def headers_for(action, opts)
         headers = {
-          subject: subject_for(opts.delete(:subject_key) || action),
+          subject: subject_for(action),
           to: resource.email,
           from: mailer_sender(devise_mapping),
           reply_to: mailer_reply_to(devise_mapping),

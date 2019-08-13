@@ -7,7 +7,7 @@
   * refactor method name to be more consistent (by @saiqulhaq)
   * Fix rails 6.0.rc1 email uniqueness validation deprecation error (by @Vasfed)
   * Fix rails_51_and_up? method for Rails 6.rc1 (by @igorkasyanchuk)
-  * Add `:subject_key` to devise_mail options for reconfirmation mail subject (by @sakuraineed)
+  * Add dedicated reconfirmation mail (by @sakuraineed)
 
 ### 4.6.2 - 2019-03-26
 

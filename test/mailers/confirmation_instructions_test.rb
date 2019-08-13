@@ -78,48 +78,32 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'set up confirmation subject from I18n' do
-    mail_subject = 'Account Confirmation'
-    subjects = {
-      confirmation_instructions: { subject: mail_subject },
-      reconfirmation_instructions: { subject: 'Account Reconfirmation' }
-    }
-    store_translations :en, devise: { mailer: subjects } do
-      assert_equal mail_subject, mail.subject
+    subject = 'Account Confirmation'
+    store_translations :en, devise: { mailer: { confirmation_instructions: { subject: subject } } } do
+      assert_equal subject, mail.subject
     end
   end
 
   test 'confirmation subject namespaced by model' do
-    mail_subject = 'User Account Confirmation'
-    subjects = {
-      confirmation_instructions: { user_subject: mail_subject },
-      reconfirmation_instructions: { user_subject: 'User Account Reconfirmation' }
-    }
-    store_translations :en, devise: { mailer: subjects } do
-      assert_equal mail_subject, mail.subject
+    subject = 'User Account Confirmation'
+    store_translations :en, devise: { mailer: { confirmation_instructions: { user_subject: subject } } } do
+      assert_equal subject, mail.subject
     end
   end
 
   test 'set up reconfirmation subject from I18n' do
-    mail_subject = 'Account Reconfirmation'
-    subjects = {
-      confirmation_instructions: { subject: 'Account Confirmation' },
-      reconfirmation_instructions: { subject: mail_subject }
-    }
-    store_translations :en, devise: { mailer: subjects } do
+    subject = 'Account Reconfirmation'
+    store_translations :en, devise: { mailer: { reconfirmation_instructions: { subject: subject } } } do
       confirmed_admin.update(email: 'new_test@example.com')
-      assert_equal mail_subject, ActionMailer::Base.deliveries.first.subject
+      assert_equal subject, ActionMailer::Base.deliveries.first.subject
     end
   end
 
   test 'reconfirmation subject namespaced by model' do
-    mail_subject = 'Admin Account Reconfirmation'
-    subjects = {
-      confirmation_instructions: { admin_subject: 'Admin Account Confirmation' },
-      reconfirmation_instructions: { admin_subject: mail_subject }
-    }
-    store_translations :en, devise: { mailer: subjects } do
+    subject = 'Admin Account Reconfirmation'
+    store_translations :en, devise: { mailer: { reconfirmation_instructions: { admin_subject: subject } } } do
       confirmed_admin.update(email: 'new_test@example.com')
-      assert_equal mail_subject, ActionMailer::Base.deliveries.first.subject
+      assert_equal subject, ActionMailer::Base.deliveries.first.subject
     end
   end
 

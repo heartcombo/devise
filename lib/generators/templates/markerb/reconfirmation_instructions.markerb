@@ -1,4 +1,4 @@
-Welcome <%= @email %>!
+Hello <%= @email %>!
 
 You can confirm your account email through the link below:
 

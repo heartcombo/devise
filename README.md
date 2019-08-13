@@ -514,8 +514,8 @@ en:
       confirmation_instructions:
         subject: 'Hello everybody!'
         user_subject: 'Hello User! Please confirm your email'
-      reset_password_instructions:
-        subject: 'Reset instructions'
+      reconfirmation_instructions:
+        subject: 'Reconfirmation instructions'
 ```
 
 Take a look at our locale file to check all available messages. You may also be interested in one of the many translations that are available on our wiki:

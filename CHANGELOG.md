@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 4.7.0 - 2019-08-19
+
 * enhancements
   * Support Rails 6.0
   * Update CI to rails 6.0.0.beta3 (by @tunnes)

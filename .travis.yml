@@ -64,8 +64,6 @@ matrix:
 services:
   - mongodb
 
-sudo: false
-
 cache: bundler
 
 env:

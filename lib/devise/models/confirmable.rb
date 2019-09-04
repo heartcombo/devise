@@ -348,7 +348,19 @@ module Devise
         # If the user is already confirmed, create an error for the user
         # Options must have the confirmation_token
         def confirm_by_token(confirmation_token)
+          # When the `confirmation_token` parameter is blank, if there are any users with a blank
+          # `confirmation_token` in the database, the first one would be confirmed here.
+          # The error is being manually added here to ensure no users are confirmed by mistake.
+          # This was done in the model for convenience, since validation errors are automatically
+          # displayed in the view.
+          if confirmation_token.blank?
+            confirmable = new
+            confirmable.errors.add(:confirmation_token, :blank)
+            return confirmable
+          end
+
           confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token)
+
           unless confirmable
             confirmation_digest = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
             confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_digest)

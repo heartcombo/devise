@@ -1,5 +1,9 @@
 ### Unreleased
 
+* bug fixes
+  * Fix an edge case where records with a blank `confirmation_token` could be confirmed (by @tegon)
+  * Fix typo inside `update_needs_confirmation` i18n key (by @lslm)
+
 ### 4.7.0 - 2019-08-19
 
 * enhancements

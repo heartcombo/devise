@@ -152,7 +152,7 @@ module Devise
       #         # If the record is new or changed then delay the
       #         # delivery until the after_commit callback otherwise
       #         # send now because after_commit will not be called.
-      #         if new_record? || changed?
+      #         if new_record? || saved_changes?
       #           pending_devise_notifications << [notification, args]
       #         else
       #           render_and_send_devise_message(notification, *args)

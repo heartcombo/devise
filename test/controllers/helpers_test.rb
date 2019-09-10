@@ -273,6 +273,11 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     assert_nil @controller.stored_location_for(:user)
   end
 
+  test 'store location for handles invalid URIs' do
+    @controller.store_location_for(:user, "http:evil.com")
+    assert_nil @controller.stored_location_for(:user)
+  end
+
   test 'after sign in path defaults to root path if none by was specified for the given scope' do
     assert_equal root_path, @controller.after_sign_in_path_for(:user)
   end

@@ -11,16 +11,19 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     run_generator
     assert_files
     assert_shared_links
+    assert_error_messages
   end
 
   test "Assert all views are properly created with scope param" do
     run_generator %w(users)
     assert_files "users"
     assert_shared_links "users"
+    assert_error_messages "users"
 
     run_generator %w(admins)
     assert_files "admins"
     assert_shared_links "admins"
+    assert_error_messages "admins"
   end
 
   test "Assert views with simple form" do
@@ -88,6 +91,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/registrations/edit.html.erb"
     assert_file "app/views/#{scope}/sessions/new.html.erb"
     assert_file "app/views/#{scope}/shared/_links.html.erb"
+    assert_file "app/views/#{scope}/shared/_error_messages.html.erb"
     assert_file "app/views/#{scope}/unlocks/new.html.erb"
   end
 
@@ -100,6 +104,18 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/confirmations/new.html.erb", link
     assert_file "app/views/#{scope}/registrations/new.html.erb", link
     assert_file "app/views/#{scope}/sessions/new.html.erb", link
+    assert_file "app/views/#{scope}/unlocks/new.html.erb", link
+  end
+
+  def assert_error_messages(scope = nil)
+    scope = "devise" if scope.nil?
+    link = /<%= render \"#{scope}\/shared\/error_messages\", resource: resource %>/
+
+    assert_file "app/views/#{scope}/passwords/edit.html.erb", link
+    assert_file "app/views/#{scope}/passwords/new.html.erb", link
+    assert_file "app/views/#{scope}/confirmations/new.html.erb", link
+    assert_file "app/views/#{scope}/registrations/new.html.erb", link
+    assert_file "app/views/#{scope}/registrations/edit.html.erb", link
     assert_file "app/views/#{scope}/unlocks/new.html.erb", link
   end
 end

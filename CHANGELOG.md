@@ -17,6 +17,7 @@
 * bug fixes
   * Add `autocomplete="new-password"` to `password_confirmation` fields (by @ferrl)
   * Fix rails_51_and_up? method for Rails 6.rc1 (by @igorkasyanchuk)
+  * Increase default stretches to 12 (by @sergey-alekseev)
 
 ### 4.6.2 - 2019-03-26
 

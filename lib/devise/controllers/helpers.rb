@@ -53,7 +53,7 @@ module Devise
 
             def #{group_name}_signed_in?
               #{mappings}.any? do |mapping|
-                warden.authenticate?(scope: mapping)
+                warden.authenticated?(scope: mapping)
               end
             end
 
@@ -119,7 +119,7 @@ module Devise
           end
 
           def #{mapping}_signed_in?
-            !!current_#{mapping}
+            !!(@current_#{mapping} || warden.authenticated?(scope: :#{mapping}))
           end
 
           def current_#{mapping}

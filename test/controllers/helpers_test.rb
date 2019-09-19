@@ -15,19 +15,19 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     assert_equal @mock_warden, @controller.warden
   end
 
-  test 'proxy signed_in?(scope) to authenticate?' do
+  test 'proxy signed_in?(scope) to authenticated?' do
     @mock_warden.expects(:authenticated?).with(scope: :my_scope)
     @controller.signed_in?(:my_scope)
   end
 
-  test 'proxy signed_in?(nil) to authenticate?' do
+  test 'proxy signed_in?(nil) to authenticated?' do
     Devise.mappings.keys.each do |scope| # :user, :admin, :manager
       @mock_warden.expects(:authenticated?).with(scope: scope)
     end
     @controller.signed_in?
   end
 
-  test 'proxy [group]_signed_in? to authenticate? with each scope' do
+  test 'proxy [group]_signed_in? to authenticated? with each scope' do
     [:user, :admin].each do |scope|
       @mock_warden.expects(:authenticated?).with(scope: scope).returns(false)
     end
@@ -91,17 +91,17 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     @controller.authenticate_publisher_account!
   end
 
-  test 'proxy user_signed_in? to authenticate with user scope' do
+  test 'proxy user_signed_in? to authenticated? with user scope' do
     @mock_warden.expects(:authenticated?).with(scope: :user).returns("user")
     assert @controller.user_signed_in?
   end
 
-  test 'proxy admin_signed_in? to authenticate with admin scope' do
+  test 'proxy admin_signed_in? to authenticated? with admin scope' do
     @mock_warden.expects(:authenticated?).with(scope: :admin)
     refute @controller.admin_signed_in?
   end
 
-  test 'proxy publisher_account_signed_in? to authenticate with namespaced publisher account scope' do
+  test 'proxy publisher_account_signed_in? to authenticated? with namespaced publisher account scope' do
     @mock_warden.expects(:authenticated?).with(scope: :publisher_account)
     @controller.publisher_account_signed_in?
   end

@@ -1,5 +1,8 @@
 ### unreleased
 
+* enhancements
+  * Regenerate bcrypt password hash on a sign in after the stretches config changes (by @sergey-alekseev)
+
 ### 4.8.0 - 2021-04-29
 
 * enhancements

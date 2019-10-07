@@ -112,7 +112,7 @@ MESSAGE
     end
 
     if authenticated && resource = warden.user(resource_name)
-      flash[:alert] = I18n.t("devise.failure.already_authenticated")
+      set_flash_message(:alert, 'already_authenticated', scope: 'devise.failure')
       redirect_to after_sign_in_path_for(resource)
     end
   end

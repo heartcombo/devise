@@ -216,6 +216,13 @@ module Devise
         stored_location_for(resource_or_scope) || signed_in_root_path(resource_or_scope)
       end
 
+      # The default url to be used if a user is already logged in You can
+      # overwrite it in your ApplicationController to provide a custom
+      # hook for a custom resource.
+      def after_already_signed_in_path_for(resource_or_scope)
+        stored_location_for(resource_or_scope) || signed_in_root_path(resource_or_scope)
+      end
+
       # Method used by sessions controller to sign out a user. You can overwrite
       # it in your ApplicationController to provide a custom hook for a custom
       # scope. Notice that differently from +after_sign_in_path_for+ this method

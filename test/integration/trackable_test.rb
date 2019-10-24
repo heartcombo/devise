@@ -44,7 +44,7 @@ class TrackableHooksTest < Devise::IntegrationTest
     assert_equal "127.0.0.1", user.last_sign_in_ip
   end
 
-  test "current remote ip returns original ip behind a non transparent proxy" do
+  test "current and last sign in remote ip returns original ip behind a non transparent proxy" do
     user = create_user
 
     arbitrary_ip = '200.121.1.69'
@@ -53,6 +53,7 @@ class TrackableHooksTest < Devise::IntegrationTest
     end
     user.reload
     assert_equal arbitrary_ip, user.current_sign_in_ip
+    assert_equal arbitrary_ip, user.last_sign_in_ip
   end
 
   test "increase sign in count" do

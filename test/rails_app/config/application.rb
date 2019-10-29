@@ -49,5 +49,9 @@ module RailsApp
     if Devise::Test.rails52_and_up? && !Devise::Test.rails6?
       Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
     end
+
+    if Devise.rails6_and_up?
+      config.autoloader = :zeitwerk
+    end
   end
 end

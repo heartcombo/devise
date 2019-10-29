@@ -43,5 +43,11 @@ module Devise
           )
         end
     end
+
+    initializer "devise.zeitwerk" do
+      if Devise.rails6_and_up? && Rails.autoloaders.zeitwerk_enabled? && !Object.const_defined?(Devise.parent_mailer)
+        Rails.autoloaders.main.ignore("#{__dir__}/app/mailers/devise/mailer.rb")
+      end
+    end
   end
 end

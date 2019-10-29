@@ -305,6 +305,10 @@ module Devise
     defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
   end
 
+  def self.rails6_and_up?
+    Rails.gem_version >= Gem::Version.new("6.0.x")
+  end
+
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

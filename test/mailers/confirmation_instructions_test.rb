@@ -102,10 +102,13 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
 
   test 'renders a scoped if scoped_views is set in the mailer class' do
     begin
+      # Devise.send(:remove_const, :Mailer) if defined?(Devise::Mailer)
+      # load "#{Devise::Engine.root}/app/mailers/devise/mailer.rb"
       Devise::Mailer.scoped_views = true
       assert_equal user.email, mail.body.decoded
     ensure
       Devise::Mailer.send :remove_instance_variable, :@scoped_views
+      # Devise.send(:remove_const, :Mailer) if defined?(Devise::Mailer)
     end
   end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if defined?(ActionMailer)
+if Object.const_defined?(Devise.parent_mailer)
   class Devise::Mailer < Devise.parent_mailer.constantize
     include Devise::Mailers::Helpers
 

@@ -697,7 +697,22 @@ Devise supports ActiveRecord (default) and Mongoid. To select another ORM, simpl
 
 ### Rails API Mode
 
-Rails 5+ has a built-in [API Mode](https://edgeguides.rubyonrails.org/api_app.html) which optimizes Rails for use as an API (only). One of the side effects is that it changes the order of the middleware stack, and this can cause problems for `Devise::Test::IntegrationHelpers`. This problem usually surfaces as an ```undefined method `[]=' for nil:NilClass``` error when using integration test helpers, such as `#sign_in`. The solution is simply to reorder the middlewares by adding the following to test.rb:
+Rails 5+ has a built-in [API Mode](https://edgeguides.rubyonrails.org/api_app.html) which optimizes Rails for use as an API (only). Devise is _somewhat_ able to handle applications that are built in this mode without additional modifications in the sense that it should not raise exceptions and the like. But some issues may still arise during `development`/`testing`, as we still don't know the full extent of this compatibility. (For more information, see [issue #4947](https://github.com/plataformatec/devise/issues/4947/))
+
+#### Supported Authentication Strategies
+API-only applications don't support browser-based authentication via cookies, which is devise's default. Yet, devise can still provide authentication out of the box in those cases with the `http_authenticatable` strategy, which uses HTTP Basic Auth and authenticates the user on each request. (For more info, see this wiki article for [How To: Use HTTP Basic Authentication](https://github.com/plataformatec/devise/wiki/How-To:-Use-HTTP-Basic-Authentication))
+
+The devise default for HTTP Auth is disabled, so it will need to be enabled in the devise initializer for the database strategy:
+
+```ruby
+config.http_authenticatable = [:database]
+```
+
+This restriction does not limit you from implementing custom warden strategies, either in your application or via gem-based extensions for devise.
+A common authentication strategy for APIs is token-based authentication. For more information on extending devise to support this type of authentication and others, see the wiki article for [Simple Token Authentication Examples and alternatives](https://github.com/plataformatec/devise/wiki/How-To:-Simple-Token-Authentication-Example#alternatives) or this blog post on [Custom authentication methods with Devise](http://blog.plataformatec.com.br/2019/01/custom-authentication-methods-with-devise/).
+
+#### Testing
+API Mode changes the order of the middleware stack, and this can cause problems for `Devise::Test::IntegrationHelpers`. This problem usually surfaces as an ```undefined method `[]=' for nil:NilClass``` error when using integration test helpers, such as `#sign_in`. The solution is simply to reorder the middlewares by adding the following to test.rb:
 
 ```ruby
 Rails.application.config.middleware.insert_before Warden::Manager, ActionDispatch::Cookies
@@ -705,6 +720,8 @@ Rails.application.config.middleware.insert_before Warden::Manager, ActionDispatc
 ```
 
 For a deeper understanding of this, review [this issue](https://github.com/plataformatec/devise/issues/4696).
+
+Additionally be mindful that without views supported, some email-based flows from Confirmable, Recoverable and Lockable are not supported directly at this time.
 
 ## Additional information
 

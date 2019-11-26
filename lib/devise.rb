@@ -301,6 +301,10 @@ module Devise
     Rails.gem_version >= Gem::Version.new("5.1.x")
   end
 
+  def self.rails52? # :nodoc:
+    Rails.gem_version >= Gem::Version.new('5.2.x')
+  end
+
   def self.activerecord51? # :nodoc:
     defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
   end

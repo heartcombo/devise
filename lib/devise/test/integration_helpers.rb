@@ -28,7 +28,7 @@ module Devise
         end
       end
 
-      # Signs in a specific resource, mimicking a successfull sign in
+      # Signs in a specific resource, mimicking a successful sign in
       # operation through +Devise::SessionsController#create+.
       #
       # * +resource+ - The resource that should be authenticated

@@ -34,7 +34,7 @@ class RecoverableTest < ActiveSupport::TestCase
     assert create_user.reset_password('123456789', '123456789')
   end
 
-  test 'should clear reset password token while reseting the password' do
+  test 'should clear reset password token while resetting the password' do
     user = create_user
     assert_nil user.reset_password_token
 

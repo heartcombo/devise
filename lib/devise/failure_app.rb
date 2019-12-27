@@ -107,7 +107,7 @@ module Devise
         options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
 
-        I18n.t(:"#{scope}.#{message}", options)
+        I18n.t(:"#{scope}.#{message}", **options)
       else
         message.to_s
       end

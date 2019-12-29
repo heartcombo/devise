@@ -11,7 +11,7 @@ module Devise
           if options.empty?
             super url
           else
-            super url, options
+            super url, **options
           end
         end
       else
@@ -36,7 +36,7 @@ module Devise
           if options.empty?
             super action
           else
-            super action, options
+            super action, **options
           end
         end
       else

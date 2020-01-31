@@ -208,6 +208,10 @@ In the following command you will replace `MODEL` with the class name used for t
 ```console
 $ rails generate devise MODEL
 ```
+```ruby
+# Let's suppose that the MODEL in this case was User. Then you could do this:
+$ rails generate devise User
+```
 
 Next, check the MODEL for any additional configuration options you might want to add, such as confirmable or lockable. If you add an option, be sure to inspect the migration file (created by the generator if your ORM supports them) and uncomment the appropriate section.  For example, if you add the confirmable option in the model, you'll need to uncomment the Confirmable section in the migration.
 

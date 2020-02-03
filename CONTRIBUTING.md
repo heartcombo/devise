@@ -8,7 +8,7 @@ expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 ## Reporting Issues
 
 Before reporting a new issue, please be sure that the issue wasn't already
-reported or fixed by searching on GitHub through our [issues](https://github.com/plataformatec/devise/issues).
+reported or fixed by searching on GitHub through our [issues](https://github.com/heartcombo/devise/issues).
 
 When creating a new issue, be sure to include a **title and clear description**,
 as much relevant information as possible, and either a test case example or
@@ -22,7 +22,7 @@ Please do not attempt to translate Devise built in views. The views are meant
 to be a starting point for fresh apps and not production material - eventually
 all applications will require custom views where you can write your own copy and
 translate it if the application requires it . For historical references, please look into closed
-[Issues/Pull Requests](https://github.com/plataformatec/devise/issues?q=i18n) regarding
+[Issues/Pull Requests](https://github.com/heartcombo/devise/issues?q=i18n) regarding
 internationalization.
 
 Avoid opening new issues to ask questions in our issues tracker. Please go through
@@ -30,7 +30,7 @@ the project wiki, documentation and source code first, or try to ask your questi
 on [Stack Overflow](http://stackoverflow.com/questions/tagged/devise).
 
 **If you find a security bug, do not report it through GitHub. Please send an
-e-mail to [opensource@plataformatec.com.br](mailto:opensource@plataformatec.com.br)
+e-mail to [heartcombo@googlegroups.com](mailto:heartcombo@googlegroups.com)
 instead.**
 
 ## Sending Pull Requests
@@ -50,7 +50,7 @@ are beneficial to a wide range of use cases or it's an application specific chan
 that might not be so valuable to other applications. Some changes can be introduced
 as a new `devise-something` gem instead of belonging to the main codebase.
 
-When adding new settings, you can take advantage of the [`Devise::Models.config`](https://github.com/plataformatec/devise/blob/245b1f9de0b3386b7913e14b60ea24f43b77feb0/lib/devise/models.rb#L13-L50) method to add class and instance level fallbacks
+When adding new settings, you can take advantage of the [`Devise::Models.config`](https://github.com/heartcombo/devise/blob/245b1f9de0b3386b7913e14b60ea24f43b77feb0/lib/devise/models.rb#L13-L50) method to add class and instance level fallbacks
 to the new setting.
 
 We also welcome Pull Requests that improve our existing documentation (both our
@@ -66,7 +66,7 @@ you can do:
 * Help ensure that existing issues follows the recommendations from the
 _[Reporting Issues](#reporting-issues)_ section, providing feedback to the issue's
 author on what might be missing.
-* Review and update the existing content of our [Wiki](https://github.com/plataformatec/devise/wiki)
+* Review and update the existing content of our [Wiki](https://github.com/heartcombo/devise/wiki)
 with up to date instructions and code samples - the wiki was grown with several
 different tutorials and references that we can't keep track of everything, so if
 there is a page that showcases an integration or customization that you are

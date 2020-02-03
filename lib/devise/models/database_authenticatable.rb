@@ -195,7 +195,7 @@ module Devise
       # Hashes the password using bcrypt. Custom hash functions should override
       # this method to apply their own algorithm.
       #
-      # See https://github.com/plataformatec/devise-encryptable for examples
+      # See https://github.com/heartcombo/devise-encryptable for examples
       # of other hashing engines.
       def password_digest(password)
         Devise::Encryptor.digest(self.class, password)

@@ -23,7 +23,7 @@
 ### 4.6.2 - 2019-03-26
 
 * bug fixes
-  * Revert "Set `encrypted_password` to `nil` when `password` is set to `nil`" since it broke backward compatibility with existing applications. See more on https://github.com/plataformatec/devise/issues/5033#issuecomment-476386275 (by @mracos)
+  * Revert "Set `encrypted_password` to `nil` when `password` is set to `nil`" since it broke backward compatibility with existing applications. See more on https://github.com/heartcombo/devise/issues/5033#issuecomment-476386275 (by @mracos)
 
 ### 4.6.1 - 2019-02-11
 
@@ -70,7 +70,7 @@
   * Add `autocomplete="new-password"` to new password fields (by @gssbzn)
   * Add `autocomplete="current-password"` to current password fields (by @gssbzn)
   * Remove redundant `self` from `database_authenticatable` module (by @abhishekkanojia)
-  * Update `simple_form` templates with changes from https://github.com/plataformatec/devise/commit/16b3d6d67c7e017d461ea17ed29ea9738dc77e83 and https://github.com/plataformatec/devise/commit/6260c29a867b9a656f1e1557abe347a523178fab (by @gssbzn)
+  * Update `simple_form` templates with changes from https://github.com/heartcombo/devise/commit/16b3d6d67c7e017d461ea17ed29ea9738dc77e83 and https://github.com/heartcombo/devise/commit/6260c29a867b9a656f1e1557abe347a523178fab (by @gssbzn)
   * Remove `:trackable` from the default modules in the generators, to be more GDPR-friendly (by @fakenine)
 
 * bug fixes
@@ -317,5 +317,5 @@ configured (by @joshpencheon)
     You can check more examples and explanations on the [README section](README.md#strong-parameters)
     and on the [ParameterSanitizer docs](lib/devise/parameter_sanitizer.rb).
 
-Please check [3-stable](https://github.com/plataformatec/devise/blob/3-stable/CHANGELOG.md)
+Please check [3-stable](https://github.com/heartcombo/devise/blob/3-stable/CHANGELOG.md)
 for previous changes.

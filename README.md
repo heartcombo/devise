@@ -747,4 +747,4 @@ https://github.com/heartcombo/devise/graphs/contributors
 
 MIT License. Copyright 2020 Rafael França, Leaonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
 
-You are not granted rights or licenses to the trademarks of Plataformatec, including without limitation the Devise name or logo.
+The Devise logo is licensed under [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).

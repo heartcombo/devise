@@ -7,6 +7,10 @@ module Devise
     # Authenticatable Module, responsible for hashing the password and
     # validating the authenticity of a user while signing in.
     #
+    # This module overrides the `password=` method and skips setting the password
+    # when Rails is setting attributes, instead it hashes the plaintext password
+    # and stores it in `encrypted_password` for legacy reasons.
+    #
     # == Options
     #
     # DatabaseAuthenticatable adds the following options to devise_for:

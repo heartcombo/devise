@@ -7,6 +7,10 @@ module Devise
     # Authenticatable Module, responsible for hashing the password and
     # validating the authenticity of a user while signing in.
     #
+    # This module defines a `password=` method. This method will hash the argument
+    # and store it in the `encrypted_password` column, bypassing any pre-existing
+    # `password` column if it exists.
+    #
     # == Options
     #
     # DatabaseAuthenticatable adds the following options to devise_for:

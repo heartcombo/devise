@@ -741,7 +741,7 @@ Read more about the potential issues at http://guides.rubyonrails.org/asset_pipe
 
 Devise is based on Warden, which is a general Rack authentication framework created by Daniel Neighman. We encourage you to read more about Warden here:
 
-https://github.com/hassox/warden
+https://github.com/wardencommunity/warden
 
 ### Contributors
 

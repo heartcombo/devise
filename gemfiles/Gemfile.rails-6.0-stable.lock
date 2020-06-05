@@ -175,8 +175,6 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.2)
-    test_after_commit (1.1.0)
-      activerecord (>= 3.2)
     thor (1.0.1)
     thread_safe (0.3.6)
     timecop (0.9.1)
@@ -209,7 +207,6 @@ DEPENDENCIES
   rdoc
   responders (~> 3.0)
   sqlite3 (~> 1.4)
-  test_after_commit
   timecop
   webrat (= 0.7.3)
 

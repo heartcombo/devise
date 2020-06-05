@@ -4,9 +4,8 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 5.2"
-gem "omniauth", "~> 1.3"
-gem "oauth2"
+gem "rails", "~> 6.0.0"
+gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
 
@@ -14,7 +13,7 @@ gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
 
 gem "rails-controller-testing"
 
-gem "responders", "~> 2.4"
+gem "responders", "~> 3.0"
 
 group :test do
   gem "omniauth-facebook"
@@ -24,15 +23,15 @@ group :test do
   gem "mocha", "~> 1.1", require: false
 end
 
-platforms :jruby do
-  gem "activerecord-jdbc-adapter"
-  gem "activerecord-jdbcsqlite3-adapter"
-  gem "jruby-openssl"
+platforms :ruby do
+  gem "sqlite3", "~> 1.4"
 end
 
-platforms :ruby do
-  gem "sqlite3", "~> 1.3.6"
-end
+# platforms :jruby do
+#   gem "activerecord-jdbc-adapter"
+#   gem "activerecord-jdbcsqlite3-adapter"
+#   gem "jruby-openssl"
+# end
 
 # TODO:
 # group :mongoid do

@@ -38,11 +38,15 @@ matrix:
     - rvm: 2.2.10
       gemfile: gemfiles/Gemfile.rails-5.2-stable
     - rvm: 2.3.8
+      gemfile: Gemfile
+    - rvm: 2.3.8
+      gemfile: gemfiles/Gemfile.rails-6.0-stable
+    - rvm: 2.4.10
+      gemfile: Gemfile
+    - rvm: 2.4.10
       gemfile: gemfiles/Gemfile.rails-6.0-stable
     - rvm: 2.4.10
       gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.4.10
-      gemfile: gemfiles/Gemfile.rails-6.0-stable
     - rvm: 2.5.8
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: 2.6.6

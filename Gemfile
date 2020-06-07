@@ -11,7 +11,7 @@ gem "rdoc"
 
 gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
 
-gem "rails-controller-testing"
+gem "rails-controller-testing", github: "rails/rails-controller-testing"
 
 gem "responders", "~> 3.0"
 

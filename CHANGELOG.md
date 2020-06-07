@@ -2,6 +2,9 @@
 * enhancements
   * Increase default stretches to 12 (by @sergey-alekseev)
 
+* bug fixes
+  * Generate scoped views with proper scoped errors partial (by @shobhitic)
+
 ### 4.7.1 - 2019-09-06
 
 * bug fixes

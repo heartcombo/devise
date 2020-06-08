@@ -727,16 +727,6 @@ Additionally be mindful that without views supported, some email-based flows fro
 
 ## Additional information
 
-### Heroku
-
-Using Devise on Heroku with Ruby on Rails 3.2 requires setting:
-
-```ruby
-config.assets.initialize_on_precompile = false
-```
-
-Read more about the potential issues at http://guides.rubyonrails.org/asset_pipeline.html
-
 ### Warden
 
 Devise is based on Warden, which is a general Rack authentication framework created by Daniel Neighman. We encourage you to read more about Warden here:

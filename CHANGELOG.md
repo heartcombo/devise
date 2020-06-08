@@ -1,9 +1,12 @@
 ### Unreleased
+
 * enhancements
   * Increase default stretches to 12 (by @sergey-alekseev)
+  * Ruby 2.7 support (kwarg warnings removed)
 
 * bug fixes
   * Generate scoped views with proper scoped errors partial (by @shobhitic)
+  * Allow to set scoped `already_authenticated` error messages (by @gurgelrenan)
 
 ### 4.7.1 - 2019-09-06
 

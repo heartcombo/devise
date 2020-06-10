@@ -1,4 +1,4 @@
-### 4.7.1 - 2020-06-10
+### 4.7.2 - 2020-06-10
 
 * enhancements
   * Increase default stretches to 12 (by @sergey-alekseev)

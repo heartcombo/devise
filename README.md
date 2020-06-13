@@ -273,7 +273,7 @@ Besides `:stretches`, you can define `:pepper`, `:encryptor`, `:confirm_within`,
 
 ### Strong Parameters
 
-![The Parameter Sanitizer API has changed for Devise 4](http://messages.hellobits.com/warning.svg?message=The%20Parameter%20Sanitizer%20API%20has%20changed%20for%20Devise%204)
+The Parameter Sanitizer API has changed for Devise 4 :warning:
 
 *For previous Devise versions see https://github.com/heartcombo/devise/tree/3-stable#strong-parameters*
 

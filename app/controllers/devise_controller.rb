@@ -184,7 +184,7 @@ MESSAGE
     options[:default] = Array(options[:default]).unshift(kind.to_sym)
     options[:resource_name] = resource_name
     options = devise_i18n_options(options)
-    I18n.t("#{options[:resource_name]}.#{kind}", options)
+    I18n.t("#{options[:resource_name]}.#{kind}", **options)
   end
 
   # Controllers inheriting DeviseController are advised to override this

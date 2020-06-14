@@ -9,7 +9,7 @@ class <%= @scope_prefix %>OmniauthCallbacksController < Devise::OmniauthCallback
   # end
 
   # More info at:
-  # https://github.com/plataformatec/devise#omniauth
+  # https://github.com/heartcombo/devise#omniauth
 
   # GET|POST /resource/auth/twitter
   # def passthru

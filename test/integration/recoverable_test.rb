@@ -33,6 +33,17 @@ class PasswordTest < Devise::IntegrationTest
     click_button 'Change my password'
   end
 
+  test 'reset password should send to user record email and avoid case mapping collisions' do
+    create_user(email: 'user@github.com')
+
+    request_forgot_password do
+      fill_in 'email', with: 'user@gıthub.com'
+    end
+
+    mail = ActionMailer::Base.deliveries.last
+    assert_equal ['user@github.com'], mail.to
+  end
+
   test 'reset password with email of different case should succeed when email is in the list of case insensitive keys' do
     create_user(email: 'Foo@Bar.com')
 

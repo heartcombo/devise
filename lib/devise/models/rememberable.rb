@@ -102,7 +102,7 @@ module Devise
 
       def remember_me?(token, generated_at)
         # TODO: Normalize the JSON type coercion along with the Timeoutable hook
-        # in a single place https://github.com/plataformatec/devise/blob/ffe9d6d406e79108cf32a2c6a1d0b3828849c40b/lib/devise/hooks/timeoutable.rb#L14-L18
+        # in a single place https://github.com/heartcombo/devise/blob/ffe9d6d406e79108cf32a2c6a1d0b3828849c40b/lib/devise/hooks/timeoutable.rb#L14-L18
         if generated_at.is_a?(String)
           generated_at = time_from_json(generated_at)
         end

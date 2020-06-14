@@ -65,7 +65,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
     end
   end
 
-  test 'sign in with invalid pasword should return to sign in form with error message' do
+  test 'sign in with invalid password should return to sign in form with error message' do
     sign_in_as_admin do
       fill_in 'password', with: 'abcdef'
     end
@@ -80,7 +80,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
         sign_in_as_user do
           fill_in 'email', with: 'wrongemail@test.com'
         end
-        
+
         assert_not_contain 'Not found in database'
         assert_contain 'Invalid Email or password.'
       end

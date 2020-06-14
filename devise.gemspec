@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.licenses    = ["MIT"]
   s.summary     = "Flexible authentication solution for Rails with Warden"
-  s.email       = "contact@plataformatec.com.br"
-  s.homepage    = "https://github.com/plataformatec/devise"
+  s.email       = "heartcombo@googlegroups.com"
+  s.homepage    = "https://github.com/heartcombo/devise"
   s.description = "Flexible authentication solution for Rails with Warden"
   s.authors     = ['José Valim', 'Carlos Antônio']
 

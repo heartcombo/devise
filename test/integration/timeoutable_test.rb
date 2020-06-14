@@ -77,7 +77,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
     end
   end
 
-  test 'time out user session after deault limit time and redirect to latest get request' do
+  test 'time out user session after default limit time and redirect to latest get request' do
     user = sign_in_as_user
     visit edit_form_user_path(user)
 

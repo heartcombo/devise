@@ -2,7 +2,7 @@
 
 - Do not use the issues tracker for help or support, try Stack Overflow.
 - For bugs, do a quick search and make sure the bug has not yet been reported
-- If you found a security bug, do not report it through GitHub. Please send an e-mail to opensource@plataformatec.com.br instead.
+- If you found a security bug, do not report it through GitHub. Please send an e-mail to heartcombo@googlegroups.com instead.
 - Finally, be nice and have fun!
 
 ## Environment

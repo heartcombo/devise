@@ -4,15 +4,17 @@ rvm:
   - 2.1.10
   - 2.2.10
   - 2.3.8
-  - 2.4.5
-  - 2.5.3
-  - 2.6.0
+  - 2.4.10
+  - 2.5.8
+  - 2.6.6
+  - 2.7.1
   - ruby-head
 
 gemfile:
   - Gemfile
   - gemfiles/Gemfile.rails-6.0-stable
   - gemfiles/Gemfile.rails-5.2-stable
+  - gemfiles/Gemfile.rails-5.1-stable
   - gemfiles/Gemfile.rails-5.0-stable
   - gemfiles/Gemfile.rails-4.2-stable
   - gemfiles/Gemfile.rails-4.1-stable
@@ -26,6 +28,8 @@ matrix:
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-5.2-stable
     - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-5.1-stable
+    - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-5.0-stable
     - rvm: 2.2.10
       gemfile: Gemfile
@@ -34,17 +38,33 @@ matrix:
     - rvm: 2.2.10
       gemfile: gemfiles/Gemfile.rails-5.2-stable
     - rvm: 2.3.8
+      gemfile: Gemfile
+    - rvm: 2.3.8
       gemfile: gemfiles/Gemfile.rails-6.0-stable
-    - rvm: 2.4.5
-      gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.4.5
+    - rvm: 2.4.10
+      gemfile: Gemfile
+    - rvm: 2.4.10
       gemfile: gemfiles/Gemfile.rails-6.0-stable
-    - rvm: 2.5.3
+    - rvm: 2.4.10
       gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.6.0
+    - rvm: 2.5.8
       gemfile: gemfiles/Gemfile.rails-4.1-stable
-    - rvm: 2.6.0
+    - rvm: 2.6.6
+      gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.6.6
       gemfile: gemfiles/Gemfile.rails-4.2-stable
+    - rvm: 2.7.1
+      gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.7.1
+      gemfile: gemfiles/Gemfile.rails-4.1-stable
+    - rvm: 2.7.1
+      gemfile: gemfiles/Gemfile.rails-4.2-stable
+    - rvm: 2.7.1
+      gemfile: gemfiles/Gemfile.rails-5.0-stable
+    - rvm: 2.7.1
+      gemfile: gemfiles/Gemfile.rails-5.1-stable
+    - rvm: 2.7.1
+      gemfile: gemfiles/Gemfile.rails-5.2-stable
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.rails-4.1-stable
     - rvm: ruby-head
@@ -54,12 +74,13 @@ matrix:
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-5.0-stable
     - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-5.1-stable
+    - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-5.2-stable
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-6.0-stable
   allow_failures:
     - rvm: ruby-head
-    - gemfile: gemfiles/Gemfile.rails-6.0-stable
 
 services:
   - mongodb

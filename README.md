@@ -1,11 +1,7 @@
-![Devise Logo](https://raw.github.com/plataformatec/devise/master/devise.png)
+![Devise Logo](https://raw.github.com/heartcombo/devise/master/devise.png)
 
-By [Plataformatec](http://plataformatec.com.br/).
-
-[![Build Status](https://api.travis-ci.org/plataformatec/devise.svg?branch=master)](http://travis-ci.org/plataformatec/devise)
-[![Code Climate](https://codeclimate.com/github/plataformatec/devise.svg)](https://codeclimate.com/github/plataformatec/devise)
-
-This README is [also available in a friendly navigable format](http://devise.plataformatec.com.br/).
+[![Build Status](https://api.travis-ci.org/heartcombo/devise.svg?branch=master)](http://travis-ci.org/heartcombo/devise)
+[![Code Climate](https://codeclimate.com/github/heartcombo/devise.svg)](https://codeclimate.com/github/heartcombo/devise)
 
 Devise is a flexible authentication solution for Rails based on Warden. It:
 
@@ -16,16 +12,16 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 It's composed of 10 modules:
 
-* [Database Authenticatable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
-* [Omniauthable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
-* [Confirmable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
-* [Recoverable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Recoverable): resets the user password and sends reset instructions.
-* [Registerable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
-* [Rememberable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
-* [Trackable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
-* [Timeoutable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
-* [Validatable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
-* [Lockable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+* [Database Authenticatable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+* [Omniauthable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
+* [Confirmable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+* [Recoverable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Recoverable): resets the user password and sends reset instructions.
+* [Registerable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
+* [Rememberable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
+* [Trackable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
+* [Timeoutable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
+* [Validatable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+* [Lockable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
 ## Table of Contents
 
@@ -73,15 +69,15 @@ It's composed of 10 modules:
 
 The Devise Wiki has lots of additional information about Devise including many "how-to" articles and answers to the most frequently asked questions. Please browse the Wiki after finishing this README:
 
-https://github.com/plataformatec/devise/wiki
+https://github.com/heartcombo/devise/wiki
 
 ### Bug reports
 
 If you discover a problem with Devise, we would like to know about it. However, we ask that you please review these guidelines before submitting a bug report:
 
-https://github.com/plataformatec/devise/wiki/Bug-reports
+https://github.com/heartcombo/devise/wiki/Bug-reports
 
-If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to opensource@plataformatec.com.br.
+If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to heartcombo@googlegroups.com.
 
 ### StackOverflow and Mailing List
 
@@ -97,7 +93,7 @@ https://groups.google.com/group/plataformatec-devise
 
 You can view the Devise documentation in RDoc format here:
 
-http://rubydoc.info/github/plataformatec/devise/master/frames
+http://rubydoc.info/github/heartcombo/devise/master/frames
 
 If you need to use Devise with previous versions of Rails, you can always run "gem server" from the command line after you install the gem to access the old documentation.
 
@@ -105,19 +101,19 @@ If you need to use Devise with previous versions of Rails, you can always run "g
 
 There are a few example applications available on GitHub that demonstrate various features of Devise with different versions of Rails. You can view them here:
 
-https://github.com/plataformatec/devise/wiki/Example-Applications
+https://github.com/heartcombo/devise/wiki/Example-Applications
 
 ### Extensions
 
 Our community has created a number of extensions that add functionality above and beyond what is included with Devise. You can view a list of available extensions and add your own here:
 
-https://github.com/plataformatec/devise/wiki/Extensions
+https://github.com/heartcombo/devise/wiki/Extensions
 
 ### Contributing
 
 We hope that you will consider contributing to Devise. Please read this short overview for some information about how to get started:
 
-https://github.com/plataformatec/devise/wiki/Contributing
+https://github.com/heartcombo/devise/wiki/Contributing
 
 You will usually want to write tests for your changes.  To run the test suite, go into Devise's top-level directory and run `bundle install` and `bin/test`.
 Devise works with multiple Ruby and Rails versions, and ActiveRecord and Mongoid ORMs, which means you can run the test suite with some modifiers: `DEVISE_ORM` and `BUNDLE_GEMFILE`.
@@ -136,7 +132,7 @@ Please note that the command output will show the variable value being used.
 
 ### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
-Inside the [gemfiles](https://github.com/plataformatec/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks on Travis using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
+Inside the [gemfiles](https://github.com/heartcombo/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks on Travis using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
 For example, if the tests broke using Ruby 2.4.2 and Rails 4.1, you can do the following:
 ```bash
 rbenv shell 2.4.2 # or rvm use 2.4.2
@@ -170,10 +166,10 @@ bin/test test/models/trackable_test.rb:16
 
 ## Starting with Rails?
 
-If you are building your first Rails application, we recommend you *do not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch. Today, we have three resources that should help you get started:
+If you are building your first Rails application, we recommend you *do not* use Devise. Devise requires a good understanding of the Rails Framework. In such cases, we advise you to start a simple authentication system from scratch. Here's a few resources that should help you get started:
 
 * Michael Hartl's online book: https://www.railstutorial.org/book/modeling_users
-* Ryan Bates' Railscast: http://railscasts.com/episodes/250-authentication-from-scratch
+* Ryan Bates' Railscasts: http://railscasts.com/episodes/250-authentication-from-scratch and http://railscasts.com/episodes/250-authentication-from-scratch-revised
 * Codecademy's Ruby on Rails: Authentication and Authorization: https://www.codecademy.com/learn/rails-auth
 
 Once you have solidified your understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :smiley:
@@ -277,9 +273,9 @@ Besides `:stretches`, you can define `:pepper`, `:encryptor`, `:confirm_within`,
 
 ### Strong Parameters
 
-![The Parameter Sanitizer API has changed for Devise 4](http://messages.hellobits.com/warning.svg?message=The%20Parameter%20Sanitizer%20API%20has%20changed%20for%20Devise%204)
+The Parameter Sanitizer API has changed for Devise 4 :warning:
 
-*For previous Devise versions see https://github.com/plataformatec/devise/tree/3-stable#strong-parameters*
+*For previous Devise versions see https://github.com/heartcombo/devise/tree/3-stable#strong-parameters*
 
 When you customize your own views, you may end up adding new attributes to forms. Rails 4 moved the parameter sanitization from the model to the controller, causing Devise to handle this concern at the controller as well.
 
@@ -464,7 +460,7 @@ Devise also ships with default routes. If you need to customize them, you should
 devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
 ```
 
-Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/plataformatec/devise/master/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
+Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/heartcombo/devise/master/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
 
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is create your routes normally and wrap them in a `devise_scope` block in the router:
 
@@ -520,7 +516,7 @@ en:
 
 Take a look at our locale file to check all available messages. You may also be interested in one of the many translations that are available on our wiki:
 
-https://github.com/plataformatec/devise/wiki/I18n
+https://github.com/heartcombo/devise/wiki/I18n
 
 Caution: Devise Controllers inherit from ApplicationController. If your app uses multiple locales, you should be sure to set I18n.locale in ApplicationController.
 
@@ -532,15 +528,21 @@ cases/specs.
 
 ### Controller tests
 
-Controller tests require that you include `Devise::Test::ControllerHelpers` on
+Controller tests require that you include `Devise::Test::IntegrationHelpers` on
 your test case or its parent `ActionController::TestCase` superclass.
-For Rails 5, include `Devise::Test::IntegrationHelpers` instead, since the superclass
-for controller tests has been changed to ActionDispatch::IntegrationTest
+For Rails versions prior to 5, include `Devise::Test::ControllerHelpers` instead, since the superclass
+for controller tests was changed to ActionDispatch::IntegrationTest
 (for more details, see the [Integration tests](#integration-tests) section).
 
 ```ruby
 class PostsControllerTest < ActionController::TestCase
-  include Devise::Test::ControllerHelpers
+  include Devise::Test::IntegrationHelpers # Rails >= 5
+end
+```
+
+```ruby
+class PostsControllerTest < ActionController::TestCase
+  include Devise::Test::ControllerHelpers # Rails < 5
 end
 ```
 
@@ -620,7 +622,7 @@ are executed in your tests.
 
 You can read more about testing your Rails 3 - Rails 4 controllers with RSpec in the wiki:
 
-* https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-(and-RSpec)
+* https://github.com/heartcombo/devise/wiki/How-To:-Test-controllers-with-Rails-(and-RSpec)
 
 ### OmniAuth
 
@@ -632,7 +634,7 @@ config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
 You can read more about OmniAuth support in the wiki:
 
-* https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
+* https://github.com/heartcombo/devise/wiki/OmniAuth:-Overview
 
 ### Configuring multiple models
 
@@ -679,7 +681,7 @@ end
 
 ### Password reset tokens and Rails logs
 
-If you enable the [Recoverable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
+If you enable the [Recoverable](http://rubydoc.info/github/heartcombo/devise/master/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
 
 1. Action Mailer logs the entire contents of all outgoing emails to the DEBUG level. Password reset tokens delivered to users in email will be leaked.
 2. Active Job logs all arguments to every enqueued job at the INFO level. If you configure Devise to use `deliver_later` to send password reset emails, password reset tokens will be leaked.
@@ -697,10 +699,10 @@ Devise supports ActiveRecord (default) and Mongoid. To select another ORM, simpl
 
 ### Rails API Mode
 
-Rails 5+ has a built-in [API Mode](https://edgeguides.rubyonrails.org/api_app.html) which optimizes Rails for use as an API (only). Devise is _somewhat_ able to handle applications that are built in this mode without additional modifications in the sense that it should not raise exceptions and the like. But some issues may still arise during `development`/`testing`, as we still don't know the full extent of this compatibility. (For more information, see [issue #4947](https://github.com/plataformatec/devise/issues/4947/))
+Rails 5+ has a built-in [API Mode](https://edgeguides.rubyonrails.org/api_app.html) which optimizes Rails for use as an API (only). Devise is _somewhat_ able to handle applications that are built in this mode without additional modifications in the sense that it should not raise exceptions and the like. But some issues may still arise during `development`/`testing`, as we still don't know the full extent of this compatibility. (For more information, see [issue #4947](https://github.com/heartcombo/devise/issues/4947/))
 
 #### Supported Authentication Strategies
-API-only applications don't support browser-based authentication via cookies, which is devise's default. Yet, devise can still provide authentication out of the box in those cases with the `http_authenticatable` strategy, which uses HTTP Basic Auth and authenticates the user on each request. (For more info, see this wiki article for [How To: Use HTTP Basic Authentication](https://github.com/plataformatec/devise/wiki/How-To:-Use-HTTP-Basic-Authentication))
+API-only applications don't support browser-based authentication via cookies, which is devise's default. Yet, devise can still provide authentication out of the box in those cases with the `http_authenticatable` strategy, which uses HTTP Basic Auth and authenticates the user on each request. (For more info, see this wiki article for [How To: Use HTTP Basic Authentication](https://github.com/heartcombo/devise/wiki/How-To:-Use-HTTP-Basic-Authentication))
 
 The devise default for HTTP Auth is disabled, so it will need to be enabled in the devise initializer for the database strategy:
 
@@ -709,7 +711,7 @@ config.http_authenticatable = [:database]
 ```
 
 This restriction does not limit you from implementing custom warden strategies, either in your application or via gem-based extensions for devise.
-A common authentication strategy for APIs is token-based authentication. For more information on extending devise to support this type of authentication and others, see the wiki article for [Simple Token Authentication Examples and alternatives](https://github.com/plataformatec/devise/wiki/How-To:-Simple-Token-Authentication-Example#alternatives) or this blog post on [Custom authentication methods with Devise](http://blog.plataformatec.com.br/2019/01/custom-authentication-methods-with-devise/).
+A common authentication strategy for APIs is token-based authentication. For more information on extending devise to support this type of authentication and others, see the wiki article for [Simple Token Authentication Examples and alternatives](https://github.com/heartcombo/devise/wiki/How-To:-Simple-Token-Authentication-Example#alternatives) or this blog post on [Custom authentication methods with Devise](http://blog.plataformatec.com.br/2019/01/custom-authentication-methods-with-devise/).
 
 #### Testing
 API Mode changes the order of the middleware stack, and this can cause problems for `Devise::Test::IntegrationHelpers`. This problem usually surfaces as an ```undefined method `[]=' for nil:NilClass``` error when using integration test helpers, such as `#sign_in`. The solution is simply to reorder the middlewares by adding the following to test.rb:
@@ -719,36 +721,26 @@ Rails.application.config.middleware.insert_before Warden::Manager, ActionDispatc
 Rails.application.config.middleware.insert_before Warden::Manager, ActionDispatch::Session::CookieStore
 ```
 
-For a deeper understanding of this, review [this issue](https://github.com/plataformatec/devise/issues/4696).
+For a deeper understanding of this, review [this issue](https://github.com/heartcombo/devise/issues/4696).
 
 Additionally be mindful that without views supported, some email-based flows from Confirmable, Recoverable and Lockable are not supported directly at this time.
 
 ## Additional information
 
-### Heroku
-
-Using Devise on Heroku with Ruby on Rails 3.2 requires setting:
-
-```ruby
-config.assets.initialize_on_precompile = false
-```
-
-Read more about the potential issues at http://guides.rubyonrails.org/asset_pipeline.html
-
 ### Warden
 
 Devise is based on Warden, which is a general Rack authentication framework created by Daniel Neighman. We encourage you to read more about Warden here:
 
-https://github.com/hassox/warden
+https://github.com/wardencommunity/warden
 
 ### Contributors
 
 We have a long list of valued contributors. Check them all at:
 
-https://github.com/plataformatec/devise/graphs/contributors
+https://github.com/heartcombo/devise/graphs/contributors
 
 ## License
 
-MIT License. Copyright 2009-2019 Plataformatec. http://plataformatec.com.br
+MIT License. Copyright 2020 Rafael França, Leaonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
 
-You are not granted rights or licenses to the trademarks of Plataformatec, including without limitation the Devise name or logo.
+The Devise logo is licensed under [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).

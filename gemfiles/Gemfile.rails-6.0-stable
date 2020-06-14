@@ -9,7 +9,7 @@ gem "rdoc"
 
 gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
 
-gem "rails-controller-testing"
+gem "rails-controller-testing", github: "rails/rails-controller-testing"
 
 gem "responders", "~> 3.0"
 
@@ -19,7 +19,6 @@ group :test do
   gem "timecop"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 1.1", require: false
-  gem 'test_after_commit', require: false
 end
 
 platforms :ruby do

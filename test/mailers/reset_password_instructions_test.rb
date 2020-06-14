@@ -29,7 +29,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
     end
   end
 
-  test 'email sent after reseting the user password' do
+  test 'email sent after resetting the user password' do
     assert_not_nil mail
   end
 

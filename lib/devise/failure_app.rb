@@ -107,7 +107,7 @@ module Devise
         options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
         options = i18n_options(options)
 
-        I18n.t(:"#{scope}.#{message}", options)
+        I18n.t(:"#{scope}.#{message}", **options)
       else
         message.to_s
       end
@@ -152,7 +152,7 @@ module Devise
 
       # We need to add the rootpath to `script_name` manually for applications that use a Rails
       # version lower than 5.1. Otherwise, it is going to generate a wrong path for Engines
-      # that use Devise. Remove it when the support of Rails 5.0 is droped.
+      # that use Devise. Remove it when the support of Rails 5.0 is dropped.
       elsif root_path_defined?(context) && !rails_51_and_up?
         rootpath = context.routes.url_helpers.root_path
         opts[:script_name] = rootpath.chomp('/') if rootpath.length > 1

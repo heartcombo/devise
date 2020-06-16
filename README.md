@@ -54,7 +54,6 @@ It's composed of 10 modules:
 	- [Other ORMs](#other-orms)
 	- [Rails API mode](#rails-api-mode)
 - [Additional information](#additional-information)
-	- [Heroku](#heroku)
 	- [Warden](#warden)
 	- [Contributors](#contributors)
 - [License](#license)
@@ -120,7 +119,7 @@ Devise works with multiple Ruby and Rails versions, and ActiveRecord and Mongoid
 
 ### DEVISE_ORM
 Since Devise support both Mongoid and ActiveRecord, we rely on this variable to run specific code for each ORM.
-The default value of `DEVISE_ORM` is `active_record`. To run the tests for mongoid, you can pass `mongoid`:
+The default value of `DEVISE_ORM` is `active_record`. To run the tests for Mongoid, you can pass `mongoid`:
 ```
 DEVISE_ORM=mongoid bin/test
 
@@ -313,7 +312,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-Devise allows you to completely change Devise defaults or invoke custom behaviour by passing a block:
+Devise allows you to completely change Devise defaults or invoke custom behavior by passing a block:
 
 To permit simple scalar values for username and email, use this
 
@@ -436,7 +435,7 @@ If the customization at the views level is not enough, you can customize each co
     end
     ```
 
-    Or you can simply add new behaviour to it:
+    Or you can simply add new behavior to it:
 
     ```ruby
     class Users::SessionsController < Devise::SessionsController
@@ -741,6 +740,6 @@ https://github.com/heartcombo/devise/graphs/contributors
 
 ## License
 
-MIT License. Copyright 2020 Rafael França, Leaonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
+MIT License. Copyright 2020 Rafael França, Leonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
 
 The Devise logo is licensed under [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).

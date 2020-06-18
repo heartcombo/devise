@@ -11,7 +11,7 @@ module Devise
       source_root File.expand_path("../../templates", __FILE__)
 
       desc "Creates a Devise initializer and copy locale files to your application."
-      class_option :orm
+      class_option :orm, required: true
 
       def copy_initializer
         unless options[:orm]

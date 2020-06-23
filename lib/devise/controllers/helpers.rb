@@ -40,10 +40,10 @@ module Devise
           mappings = "[#{ opts[:contains].map { |m| ":#{m}" }.join(',') }]"
 
           class_eval <<-METHODS, __FILE__, __LINE__ + 1
-            def authenticate_#{group_name}!(favourite=nil, opts={})
+            def authenticate_#{group_name}!(favorite=nil, opts={})
               unless #{group_name}_signed_in?
                 mappings = #{mappings}
-                mappings.unshift mappings.delete(favourite.to_sym) if favourite
+                mappings.unshift mappings.delete(favorite.to_sym) if favorite
                 mappings.each do |mapping|
                   opts[:scope] = mapping
                   warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
@@ -57,9 +57,9 @@ module Devise
               end
             end
 
-            def current_#{group_name}(favourite=nil)
+            def current_#{group_name}(favorite=nil)
               mappings = #{mappings}
-              mappings.unshift mappings.delete(favourite.to_sym) if favourite
+              mappings.unshift mappings.delete(favorite.to_sym) if favorite
               mappings.each do |mapping|
                 current = warden.authenticate(scope: mapping)
                 return current if current
@@ -252,7 +252,7 @@ module Devise
       # Overwrite Rails' handle unverified request to sign out all scopes,
       # clear run strategies and remove cached variables.
       def handle_unverified_request
-        super # call the default behaviour which resets/nullifies/raises
+        super # call the default behavior which resets/nullifies/raises
         request.env["devise.skip_storage"] = true
         sign_out_all_scopes(false)
       end

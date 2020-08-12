@@ -1,3 +1,8 @@
+### master
+
+* bug fixes
+  * Do not modify `:except` option given to `#serializable_hash`. (by @dpep)
+
 ### 4.7.2 - 2020-06-10
 
 * enhancements

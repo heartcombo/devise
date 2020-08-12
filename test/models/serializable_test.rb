@@ -43,7 +43,7 @@ class SerializableTest < ActiveSupport::TestCase
   end
 
   test 'should accept frozen options' do
-    assert_key "username", @user.as_json({only: :username}.freeze)["user"]
+    assert_key "username", @user.as_json({ only: :username, except: [:email].freeze }.freeze)["user"]
   end
 
   def assert_key(key, subject)

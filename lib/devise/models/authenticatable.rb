@@ -104,7 +104,7 @@ module Devise
       # given to :except will simply add names to exempt to Devise internal list.
       def serializable_hash(options = nil)
         options = options.try(:dup) || {}
-        options[:except] = Array(options[:except])
+        options[:except] = Array(options[:except]).dup
 
         if options[:force_except]
           options[:except].concat Array(options[:force_except])

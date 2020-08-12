@@ -124,9 +124,7 @@ class RegistrationTest < Devise::IntegrationTest
     #    https://github.com/mongoid/mongoid/issues/756
     (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
 
-    user = create_user
-    user.update_attribute(:username, nil)
-
+    create_user
     get new_user_registration_path
 
     fill_in 'email', with: 'user@test.com'

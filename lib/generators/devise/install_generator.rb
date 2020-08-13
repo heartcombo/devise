@@ -32,6 +32,7 @@ module Devise
 
       def copy_locale
         copy_file "../../../config/locales/en.yml", "config/locales/devise.en.yml"
+        copy_file "../../../config/locales/fa.yml", "config/locales/devise.fa.yml"
       end
 
       def show_readme

@@ -55,11 +55,11 @@ en:
       unlocked: "حساب‌ شما با موفقیت قفل‌گشایی شد. لطفا جهت ادامه وارد شوید."
   errors:
     messages:
-      already_confirmed: "was already confirmed, please try signing in"
-      confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
-      expired: "has expired, please request a new one"
-      not_found: "not found"
-      not_locked: "was not locked"
+      already_confirmed: "قبلا تایید شده است، لطفا سعی کنید وارد شوید."
+      confirmation_period_expired: "نیاز است تا در زمان %{period} انجام شود. لطفا دوباره تلاش کنید."
+      expired: "منقضی شده است. لطفا مجددا تلاش کنید."
+      not_found: "پیدا نشد."
+      not_locked: "قفل نشد."
       not_saved:
-        one: "1 error prohibited this %{resource} from being saved:"
-        other: "%{count} errors prohibited this %{resource} from being saved:"
+        one: "یک خطا %{resource} را از ذخیره شدن باز می‌دارد."
+        other: "تعداد %{count} خطا %{resource} را از ذخیره شدن باز می‌دارد."

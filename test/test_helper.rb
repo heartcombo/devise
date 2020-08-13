@@ -11,6 +11,7 @@ require "rails/test_help"
 require "orm/#{DEVISE_ORM}"
 
 I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__)
+I18n.load_path << File.expand_path("../support/locale/fa.yml", __FILE__)
 
 require 'mocha/minitest'
 require 'timecop'

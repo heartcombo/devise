@@ -46,13 +46,13 @@ en:
       updated: "حساب شما با موفقیت به‌روز شد."
       updated_but_not_signed_in: "حساب شما به‌روز شد. از آنجایی که گذرواژه خود را تغییر داده‌اید، نیاز دارید تا دوباره وارد شوید."
     sessions:
-      signed_in: "Signed in successfully."
-      signed_out: "Signed out successfully."
-      already_signed_out: "Signed out successfully."
+      signed_in: "با موفقیت وارد شدید."
+      signed_out: "با موفقیت خارج شدید."
+      already_signed_out: "با موفقیت خارج شدید."
     unlocks:
-      send_instructions: "You will receive an email with instructions for how to unlock your account in a few minutes."
-      send_paranoid_instructions: "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
-      unlocked: "Your account has been unlocked successfully. Please sign in to continue."
+      send_instructions: "تا دقایقی دیگر رایانامه‌ای حاوی دستور‌العمل‌های قفل‌گشایی دریافت خواهید کرد."
+      send_paranoid_instructions: "چنانچه حساب شما وجود داشته باشد، رایانامه‌ای حاوی دستورالعمل‌های قفل‌گشایی دریافت خواهید کرد."
+      unlocked: "حساب‌ شما با موفقیت قفل‌گشایی شد. لطفا جهت ادامه وارد شوید."
   errors:
     messages:
       already_confirmed: "was already confirmed, please try signing in"

@@ -18,18 +18,18 @@ en:
       unconfirmed: "شما نیاز به تایید رایانامه خود دارید."
     mailer:
       confirmation_instructions:
-        subject: "Confirmation instructions"
+        subject: "دستورالعمل‌های تایید"
       reset_password_instructions:
-        subject: "Reset password instructions"
+        subject: "دستورالعمل‌های تعویض گذرواژه"
       unlock_instructions:
-        subject: "Unlock instructions"
+        subject: "دستورالعمل‌های قفل‌گشایی"
       email_changed:
-        subject: "Email Changed"
+        subject: "رایانامه تغییر کرد"
       password_change:
-        subject: "Password Changed"
+        subject: "گذرواژه تغییر کرد"
     omniauth_callbacks:
-      failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
-      success: "Successfully authenticated from %{kind} account."
+      failure: "احراز هویت از طریق %{kind} ممکن نیست."
+      success: "شما با موفقیت از طریق %{kind} وارد شدید."
     passwords:
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
       send_instructions: "You will receive an email with instructions on how to reset your password in a few minutes."

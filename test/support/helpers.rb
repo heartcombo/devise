@@ -42,6 +42,12 @@ class ActiveSupport::TestCase
     User.create!(valid_attributes(attributes))
   end
 
+  def new_admin(attributes={})
+    valid_attributes = valid_attributes(attributes)
+    valid_attributes.delete(:username)
+    Admin.new(valid_attributes)
+  end
+
   def create_admin(attributes={})
     valid_attributes = valid_attributes(attributes)
     valid_attributes.delete(:username)

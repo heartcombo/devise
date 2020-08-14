@@ -26,6 +26,15 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     end
   end
 
+  def confirmed_admin
+    @admin ||= begin
+      admin = new_admin
+      admin.skip_confirmation!
+      admin.save!
+      admin
+    end
+  end
+
   test 'email sent after creating the user' do
     assert_not_nil mail
   end
@@ -68,15 +77,33 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     assert_equal ['custom_reply_to@example.com'], mail.reply_to
   end
 
-  test 'set up subject from I18n' do
-    store_translations :en, devise: { mailer: { confirmation_instructions: { subject: 'Account Confirmation' } } } do
-      assert_equal 'Account Confirmation', mail.subject
+  test 'set up confirmation subject from I18n' do
+    subject = 'Account Confirmation'
+    store_translations :en, devise: { mailer: { confirmation_instructions: { subject: subject } } } do
+      assert_equal subject, mail.subject
     end
   end
 
-  test 'subject namespaced by model' do
-    store_translations :en, devise: { mailer: { confirmation_instructions: { user_subject: 'User Account Confirmation' } } } do
-      assert_equal 'User Account Confirmation', mail.subject
+  test 'confirmation subject namespaced by model' do
+    subject = 'User Account Confirmation'
+    store_translations :en, devise: { mailer: { confirmation_instructions: { user_subject: subject } } } do
+      assert_equal subject, mail.subject
+    end
+  end
+
+  test 'set up reconfirmation subject from I18n' do
+    subject = 'Account Reconfirmation'
+    store_translations :en, devise: { mailer: { reconfirmation_instructions: { subject: subject } } } do
+      confirmed_admin.update(email: 'new_test@example.com')
+      assert_equal subject, ActionMailer::Base.deliveries.first.subject
+    end
+  end
+
+  test 'reconfirmation subject namespaced by model' do
+    subject = 'Admin Account Reconfirmation'
+    store_translations :en, devise: { mailer: { reconfirmation_instructions: { admin_subject: subject } } } do
+      confirmed_admin.update(email: 'new_test@example.com')
+      assert_equal subject, ActionMailer::Base.deliveries.first.subject
     end
   end
 

@@ -54,8 +54,11 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
   test "Assert mailer specific directory with simple form" do
     run_generator %w(-v mailer -b simple_form_for)
     assert_file "app/views/devise/mailer/confirmation_instructions.html.erb"
+    assert_file "app/views/devise/mailer/reconfirmation_instructions.html.erb"
     assert_file "app/views/devise/mailer/reset_password_instructions.html.erb"
     assert_file "app/views/devise/mailer/unlock_instructions.html.erb"
+    assert_file "app/views/devise/mailer/password_change.html.erb"
+    assert_file "app/views/devise/mailer/email_changed.html.erb"
   end
 
   test "Assert specified directories with scope" do
@@ -83,8 +86,11 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
 
     assert_file "app/views/#{scope}/confirmations/new.html.erb"
     assert_file "app/views/#{scope}/mailer/confirmation_instructions.#{mail_template_engine}"
+    assert_file "app/views/#{scope}/mailer/reconfirmation_instructions.#{mail_template_engine}"
     assert_file "app/views/#{scope}/mailer/reset_password_instructions.#{mail_template_engine}"
     assert_file "app/views/#{scope}/mailer/unlock_instructions.#{mail_template_engine}"
+    assert_file "app/views/#{scope}/mailer/password_change.#{mail_template_engine}"
+    assert_file "app/views/#{scope}/mailer/email_changed.#{mail_template_engine}"
     assert_file "app/views/#{scope}/passwords/edit.html.erb"
     assert_file "app/views/#{scope}/passwords/new.html.erb"
     assert_file "app/views/#{scope}/registrations/new.html.erb"

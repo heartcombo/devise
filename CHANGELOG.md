@@ -30,6 +30,7 @@
 * bug fixes
   * Add `autocomplete="new-password"` to `password_confirmation` fields (by @ferrl)
   * Fix rails_51_and_up? method for Rails 6.rc1 (by @igorkasyanchuk)
+  * Add dedicated reconfirmation mail (by @sakuraineed)
 
 ### 4.6.2 - 2019-03-26
 

@@ -118,6 +118,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_email_sent "mynewuser@example.com" do
       create_user email: "mynewuser@example.com"
     end
+    assert_match 'Welcome mynewuser@example.com', ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should not send confirmation when trying to save an invalid user' do
@@ -179,6 +180,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     assert_email_sent user.email do
       User.send_confirmation_instructions(email: user.email)
     end
+    assert_match "Welcome #{user.email}", ActionMailer::Base.deliveries.last.body.encoded
   end
 
   test 'should always have confirmation token when email is sent' do
@@ -433,24 +435,24 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert_not_equal token, admin.confirmation_token
   end
 
-  test 'should send confirmation instructions by email after changing email' do
+  test 'should send reconfirmation instructions by email after changing email' do
     admin = create_admin
     assert admin.confirm
     assert_email_sent "new_test@example.com" do
       assert admin.update(email: 'new_test@example.com')
     end
-    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
+    assert_match 'Hello new_test@example.com', ActionMailer::Base.deliveries.last.body.encoded
   end
 
-  test 'should send confirmation instructions by email after changing email from nil' do
+  test 'should send reconfirmation instructions by email after changing email from nil' do
     admin = create_admin(email: nil)
     assert_email_sent "new_test@example.com" do
       assert admin.update(email: 'new_test@example.com')
     end
-    assert_match "new_test@example.com", ActionMailer::Base.deliveries.last.body.encoded
+    assert_match 'Hello new_test@example.com', ActionMailer::Base.deliveries.last.body.encoded
   end
 
-  test 'should not send confirmation by email after changing password' do
+  test 'should not send reconfirmation by email after changing password' do
     admin = create_admin
     assert admin.confirm
     assert_email_not_sent do
@@ -458,7 +460,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should not send confirmation by email after changing to a blank email' do
+  test 'should not send reconfirmation by email after changing to a blank email' do
     admin = create_admin
     assert admin.confirm
     assert_email_not_sent do

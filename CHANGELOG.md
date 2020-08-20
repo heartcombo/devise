@@ -3,6 +3,9 @@
 * bug fixes
   * Do not modify `:except` option given to `#serializable_hash`. (by @dpep)
 
+* deprecations
+  * `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` is deprecated in favor of `Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION` (@hanachin)
+
 ### 4.7.2 - 2020-06-10
 
 * enhancements

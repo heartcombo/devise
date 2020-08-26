@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   resources :admins, only: [:index]
 
+  resources :streaming, only: [:index]
+
   # Users scope
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 

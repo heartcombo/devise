@@ -143,7 +143,7 @@ module Devise
           @controller.response.headers.merge!(headers)
           @controller.response.content_type = headers["Content-Type"] unless Rails::VERSION::MAJOR >= 5
           @controller.status = status
-          @controller.response.body = response.body
+          @controller.response_body = response.body
           nil # causes process return @response
         end
 

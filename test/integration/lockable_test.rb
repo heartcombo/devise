@@ -99,7 +99,7 @@ class LockTest < Devise::IntegrationTest
 
     sign_in_as_user(password: "invalid")
     assert_contain 'Your account is locked.'
-    assert ActionMailer::Base.deliveries.empty?
+    assert_empty ActionMailer::Base.deliveries
   end
 
   test 'error message is configurable by resource name' do

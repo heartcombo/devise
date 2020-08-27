@@ -268,7 +268,7 @@ class RegistrationTest < Devise::IntegrationTest
     click_button "Cancel my account"
     assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
 
-    assert User.to_adapter.find_all.empty?
+    assert_empty User.to_adapter.find_all
   end
 
   test 'a user should be able to cancel sign up by deleting data in the session' do

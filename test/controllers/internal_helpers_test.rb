@@ -51,7 +51,7 @@ class HelpersTest < Devise::ControllerTestCase
   end
 
   test 'resources methods are not controller actions' do
-    assert @controller.class.action_methods.delete_if { |m| m.include? 'commenter' }.empty?
+    assert_empty @controller.class.action_methods.delete_if { |m| m.include? 'commenter' }
   end
 
   test 'require no authentication tests current mapping' do

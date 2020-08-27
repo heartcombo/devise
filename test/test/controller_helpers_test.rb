@@ -97,7 +97,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
 
   test "returns the body of a failure app" do
     get :index
-    assert_equal response.body, "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>"
+    assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
   end
 
   test "returns the content type of a failure app" do

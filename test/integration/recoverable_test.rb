@@ -265,7 +265,7 @@ class PasswordTest < Devise::IntegrationTest
     create_user
     post user_password_path(format: 'xml'), params: { user: {email: "user@test.com"} }
     assert_response :success
-    assert_equal response.body, { }.to_xml
+    assert_equal({}.to_xml, response.body)
   end
 
   test 'reset password request with invalid E-Mail in XML format should return valid response' do
@@ -280,7 +280,7 @@ class PasswordTest < Devise::IntegrationTest
       create_user
       post user_password_path(format: 'xml'), params: { user: {email: "invalid@test.com"} }
       assert_response :success
-      assert_equal response.body, { }.to_xml
+      assert_equal({}.to_xml, response.body)
     end
   end
 
@@ -317,7 +317,7 @@ class PasswordTest < Devise::IntegrationTest
     post user_password_path(format: :json), params: { user: { email: user.email } }
 
     assert_response :success
-    assert_equal response.body, "{}"
+    assert_equal "{}", response.body
   end
 
   test "when in paranoid mode and with an invalid e-mail, asking to reset a password should display a message that does not indicates that the e-mail does not exists in the database" do

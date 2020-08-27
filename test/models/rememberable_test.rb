@@ -177,8 +177,8 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'should have the required_fields array' do
-    assert_equal Devise::Models::Rememberable.required_fields(User), [
+    assert_equal [
       :remember_created_at
-    ]
+    ], Devise::Models::Rememberable.required_fields(User)
   end
 end

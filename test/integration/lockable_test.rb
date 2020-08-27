@@ -136,8 +136,7 @@ class LockTest < Devise::IntegrationTest
 
     post user_unlock_path(format: 'xml'), params: { user: {email: user.email} }
     assert_response :success
-    assert_equal response.body, {}.to_xml
-
+    assert_equal({}.to_xml, response.body)
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
@@ -160,7 +159,6 @@ class LockTest < Devise::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
-
   test 'user with invalid unlock token should not be able to unlock the account via XML request' do
     get user_unlock_path(format: 'xml', unlock_token: 'invalid_token')
     assert_response :unprocessable_entity
@@ -171,7 +169,7 @@ class LockTest < Devise::IntegrationTest
     user = create_user(locked: true)
     post user_unlock_path(format: "json", user: {email: user.email})
     assert_response :success
-    assert_equal response.body, {}.to_json
+    assert_equal({}.to_json, response.body)
   end
 
   test "in paranoid mode, when trying to unlock a user that exists it should not say that it exists if it is locked" do

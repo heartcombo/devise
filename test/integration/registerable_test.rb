@@ -20,7 +20,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_current_url "/admin_area/home"
 
     admin = Admin.to_adapter.find_first(order: [:id, :desc])
-    assert_equal admin.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', admin.email
   end
 
   test 'a guest admin should be able to sign in and be redirected to a custom location' do
@@ -69,7 +69,7 @@ class RegistrationTest < Devise::IntegrationTest
     refute warden.authenticated?(:user)
 
     user = User.to_adapter.find_first(order: [:id, :desc])
-    assert_equal user.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', user.email
     refute user.confirmed?
   end
 
@@ -254,7 +254,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "Password confirmation doesn't match Password"
     refute User.to_adapter.find_first.valid_password?('pas123')
   end
-  
+
   test 'a signed in user should see a warning about minimum password length' do
     sign_in_as_user
     get edit_user_registration_path
@@ -303,7 +303,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
 
     admin = Admin.to_adapter.find_first(order: [:id, :desc])
-    assert_equal admin.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', admin.email
   end
 
   test 'a user sign up with valid information in XML format should return valid response' do
@@ -312,7 +312,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
 
     user = User.to_adapter.find_first(order: [:id, :desc])
-    assert_equal user.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', user.email
   end
 
   test 'a user sign up with invalid information in XML format should return invalid response' do
@@ -325,21 +325,21 @@ class RegistrationTest < Devise::IntegrationTest
     user = sign_in_as_user
     put user_registration_path(format: 'xml'), params: { user: { current_password: '12345678', email: 'user.new@test.com' } }
     assert_response :success
-    assert_equal user.reload.email, 'user.new@test.com'
+    assert_equal 'user.new@test.com', user.reload.email
   end
 
   test 'a user update information with invalid data in XML format should return invalid response' do
     user = sign_in_as_user
     put user_registration_path(format: 'xml'), params: { user: { current_password: 'invalid', email: 'user.new@test.com' } }
     assert_response :unprocessable_entity
-    assert_equal user.reload.email, 'user@test.com'
+    assert_equal 'user@test.com', user.reload.email
   end
 
   test 'a user cancel their account in XML format should return valid response' do
     sign_in_as_user
     delete user_registration_path(format: 'xml')
     assert_response :success
-    assert_equal User.to_adapter.find_all.size, 0
+    assert_equal 0, User.to_adapter.find_all.size
   end
 end
 

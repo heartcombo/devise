@@ -218,7 +218,7 @@ class ConfirmationTest < Devise::IntegrationTest
     user = create_user(confirm: false)
     post user_confirmation_path(format: 'xml'), params: { user: { email: user.email } }
     assert_response :success
-    assert_equal response.body, {}.to_xml
+    assert_equal({}.to_xml, response.body)
   end
 
   test 'resent confirmation token with invalid E-Mail in XML format should return invalid response' do
@@ -247,7 +247,7 @@ class ConfirmationTest < Devise::IntegrationTest
 
     post user_confirmation_path, params: { user: { email: user.email }, format: :json }
     assert_response :success
-    assert_equal response.body, {}.to_json
+    assert_equal({}.to_json, response.body)
   end
 
   test "when in paranoid mode and with a valid e-mail, should not say that the e-mail is valid" do

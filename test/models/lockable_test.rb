@@ -121,7 +121,7 @@ class LockableTest < ActiveSupport::TestCase
       user = create_user
       user.lock_access!
       token = user.unlock_token
-      assert !unlock_tokens.include?(token)
+      refute_includes unlock_tokens, token
       unlock_tokens << token
     end
   end

@@ -104,9 +104,9 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
     get :index, params: { format: :xml }
 
     if Devise::Test.rails6?
-      assert response.media_type.include?('application/xml')
+      assert_includes response.media_type, 'application/xml'
     else
-      assert response.content_type.include?('application/xml')
+      assert_includes response.content_type, 'application/xml'
     end
   end
 

@@ -28,7 +28,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     confirmation_tokens = []
     3.times do
       token = create_user.confirmation_token
-      assert !confirmation_tokens.include?(token)
+      refute_includes confirmation_tokens, token
       confirmation_tokens << token
     end
   end

@@ -61,7 +61,7 @@ class ActionDispatch::IntegrationTest
   # account Middleware redirects.
   #
   def assert_redirected_to(url)
-    assert [301, 302].include?(@integration_session.status),
+    assert_includes [301, 302], @integration_session.status,
            "Expected status to be 301 or 302, got #{@integration_session.status}"
 
     assert_url url, @integration_session.headers["Location"]

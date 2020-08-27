@@ -35,7 +35,7 @@ class EmailChangedTest < ActionMailer::TestCase
   end
 
   test 'content type should be set to html' do
-    assert mail.content_type.include?('text/html')
+    assert_includes mail.content_type, 'text/html'
   end
 
   test 'send email changed to the original user email' do

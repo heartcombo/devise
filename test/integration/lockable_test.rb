@@ -146,7 +146,7 @@ class LockTest < Devise::IntegrationTest
 
     post user_unlock_path(format: 'xml'), params: { user: {email: user.email} }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
     assert_equal 0, ActionMailer::Base.deliveries.size
   end
 
@@ -156,13 +156,13 @@ class LockTest < Devise::IntegrationTest
     assert user.access_locked?
     get user_unlock_path(format: 'xml', unlock_token: raw)
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
   test 'user with invalid unlock token should not be able to unlock the account via XML request' do
     get user_unlock_path(format: 'xml', unlock_token: 'invalid_token')
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test "when using json to ask a unlock request, should not return the user" do

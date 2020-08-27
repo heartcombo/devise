@@ -300,7 +300,7 @@ class RegistrationTest < Devise::IntegrationTest
   test 'an admin sign up with valid information in XML format should return valid response' do
     post admin_registration_path(format: 'xml'), params: { admin: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
 
     admin = Admin.to_adapter.find_first(order: [:id, :desc])
     assert_equal 'new_user@test.com', admin.email
@@ -309,7 +309,7 @@ class RegistrationTest < Devise::IntegrationTest
   test 'a user sign up with valid information in XML format should return valid response' do
     post user_registration_path(format: 'xml'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
 
     user = User.to_adapter.find_first(order: [:id, :desc])
     assert_equal 'new_user@test.com', user.email
@@ -318,7 +318,7 @@ class RegistrationTest < Devise::IntegrationTest
   test 'a user sign up with invalid information in XML format should return invalid response' do
     post user_registration_path(format: 'xml'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'invalid' } }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test 'a user update information with valid data in XML format should return valid response' do

@@ -496,7 +496,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     create_user
     post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
   test 'sign in with xml format is idempotent' do
@@ -512,7 +512,7 @@ class AuthenticationOthersTest < Devise::IntegrationTest
 
     post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
   test 'sign out with html redirects' do

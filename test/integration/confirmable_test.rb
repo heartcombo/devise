@@ -225,21 +225,21 @@ class ConfirmationTest < Devise::IntegrationTest
     create_user(confirm: false)
     post user_confirmation_path(format: 'xml'), params: { user: { email: 'invalid.test@test.com' } }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test 'confirm account with valid confirmation token in XML format should return valid response' do
     user = create_user(confirm: false)
     get user_confirmation_path(confirmation_token: user.raw_confirmation_token, format: 'xml')
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
   test 'confirm account with invalid confirmation token in XML format should return invalid response' do
     create_user(confirm: false)
     get user_confirmation_path(confirmation_token: 'invalid_confirmation', format: 'xml')
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test 'request an account confirmation account with JSON, should return an empty JSON' do

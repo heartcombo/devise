@@ -34,7 +34,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   end
 
   test 'content type should be set to html' do
-    assert mail.content_type.include?('text/html')
+    assert_includes mail.content_type, 'text/html'
   end
 
   test 'send confirmation instructions to the user email' do

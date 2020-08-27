@@ -272,7 +272,7 @@ class PasswordTest < Devise::IntegrationTest
     create_user
     post user_password_path(format: 'xml'), params: { user: {email: "invalid.test@test.com"} }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test 'reset password request with invalid E-Mail in XML format should return empty and valid response' do
@@ -300,7 +300,7 @@ class PasswordTest < Devise::IntegrationTest
     request_forgot_password
     put user_password_path(format: 'xml'), params: { user: {reset_password_token: 'invalid.token', password: '987654321', password_confirmation: '987654321'} }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test 'change password with invalid new password in XML format should return invalid response' do
@@ -308,7 +308,7 @@ class PasswordTest < Devise::IntegrationTest
     request_forgot_password
     put user_password_path(format: 'xml'), params: { user: {reset_password_token: user.reload.reset_password_token, password: '', password_confirmation: '987654321'} }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test "when using json requests to ask a confirmable request, should not return the object" do

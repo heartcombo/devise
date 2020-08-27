@@ -196,3 +196,13 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
     assert_equal old_warden_proxy, new_warden_proxy
   end
 end
+
+class TestControllerHelpersForStreamingControllerTest < Devise::ControllerTestCase
+  tests StreamingController
+  include Devise::Test::ControllerHelpers
+
+  test "doesn't hang when sending an authentication error response body" do
+    get :index
+    assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
+  end
+end

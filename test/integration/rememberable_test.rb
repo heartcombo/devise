@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class RememberMeTest < Devise::IntegrationTest
-  def create_user_and_remember(add_to_token='')
+  def create_user_and_remember(add_to_token = '')
     user = create_user
     user.remember_me!
     raw_cookie = User.serialize_into_cookie(user).tap { |a| a[1] << add_to_token }

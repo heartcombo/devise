@@ -40,7 +40,7 @@ module Devise
           mappings = "[#{ opts[:contains].map { |m| ":#{m}" }.join(',') }]"
 
           class_eval <<-METHODS, __FILE__, __LINE__ + 1
-            def authenticate_#{group_name}!(favorite=nil, opts = {})
+            def authenticate_#{group_name}!(favorite = nil, opts = {})
               unless #{group_name}_signed_in?
                 mappings = #{mappings}
                 mappings.unshift mappings.delete(favorite.to_sym) if favorite
@@ -57,7 +57,7 @@ module Devise
               end
             end
 
-            def current_#{group_name}(favorite=nil)
+            def current_#{group_name}(favorite = nil)
               mappings = #{mappings}
               mappings.unshift mappings.delete(favorite.to_sym) if favorite
               mappings.each do |mapping|

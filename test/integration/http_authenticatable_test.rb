@@ -99,7 +99,7 @@ class HttpAuthenticationTest < Devise::IntegrationTest
   end
 
   private
-    def sign_in_as_new_user_with_http(username="user@test.com", password="12345678")
+    def sign_in_as_new_user_with_http(username = "user@test.com", password = "12345678")
       user = create_user
       get users_path(format: :xml), headers: { "HTTP_AUTHORIZATION" => "Basic #{Base64.encode64("#{username}:#{password}")}" }
       user

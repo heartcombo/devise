@@ -21,7 +21,7 @@ module SharedUserWithoutEmail
     raise NoMethodError
   end
 
-  def respond_to?(method_name, include_all=false)
+  def respond_to?(method_name, include_all = false)
     return false if method_name.to_sym == :email_changed?
     super(method_name, include_all)
   end

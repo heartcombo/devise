@@ -34,7 +34,7 @@ module Devise
         end
       end
 
-      def self.generate_helpers!(routes=nil)
+      def self.generate_helpers!(routes = nil)
         routes ||= begin
           mappings = Devise.mappings.values.map(&:used_helpers).flatten.uniq
           Devise::URL_HELPERS.slice(*mappings)

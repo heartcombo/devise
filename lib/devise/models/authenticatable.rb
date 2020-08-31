@@ -276,17 +276,17 @@ module Devise
           find_first_by_auth_conditions(tainted_conditions)
         end
 
-        def find_first_by_auth_conditions(tainted_conditions, opts={})
+        def find_first_by_auth_conditions(tainted_conditions, opts = {})
           to_adapter.find_first(devise_parameter_filter.filter(tainted_conditions).merge(opts))
         end
 
         # Find or initialize a record setting an error if it can't be found.
-        def find_or_initialize_with_error_by(attribute, value, error=:invalid) #:nodoc:
+        def find_or_initialize_with_error_by(attribute, value, error = :invalid) #:nodoc:
           find_or_initialize_with_errors([attribute], { attribute => value }, error)
         end
 
         # Find or initialize a record with group of attributes based on a list of required attributes.
-        def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
+        def find_or_initialize_with_errors(required_attributes, attributes, error = :invalid) #:nodoc:
           attributes.try(:permit!)
           attributes = attributes.to_h.with_indifferent_access
                                  .slice(*required_attributes)

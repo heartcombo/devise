@@ -5,7 +5,7 @@ require 'test_helper'
 class RoutesTest < Devise::ControllerTestCase
   tests ApplicationController
 
-  def assert_path_and_url(name, prepend_path=nil)
+  def assert_path_and_url(name, prepend_path = nil)
     @request.path = '/users/session'
     prepend_path = "#{prepend_path}_" if prepend_path
 

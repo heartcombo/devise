@@ -73,7 +73,7 @@ class FailureTest < ActiveSupport::TestCase
     instance_eval(&block)
   end
 
-  def call_failure(env_params={})
+  def call_failure(env_params = {})
     env = {
       'REQUEST_URI' => 'http://test.host/',
       'HTTP_HOST' => 'test.host',

@@ -58,7 +58,7 @@ class SerializableTest < ActiveSupport::TestCase
     assert !subject.key?(key), "Expected #{subject.inspect} to not have key #{key.inspect}"
   end
 
-  def from_json(options=nil)
+  def from_json(options = nil)
     ActiveSupport::JSON.decode(@user.to_json(options))["user"]
   end
 end

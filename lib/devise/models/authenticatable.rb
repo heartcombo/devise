@@ -276,7 +276,7 @@ module Devise
           find_first_by_auth_conditions(tainted_conditions)
         end
 
-        def find_first_by_auth_conditions(tainted_conditions, opts={})
+        def find_first_by_auth_conditions(tainted_conditions, opts = {})
           to_adapter.find_first(devise_parameter_filter.filter(tainted_conditions).merge(opts))
         end
 

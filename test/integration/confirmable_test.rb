@@ -282,7 +282,7 @@ class ConfirmationTest < Devise::IntegrationTest
 end
 
 class ConfirmationOnChangeTest < Devise::IntegrationTest
-  def create_second_admin(options={})
+  def create_second_admin(options = {})
     @admin = nil
     create_admin(options)
   end

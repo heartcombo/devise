@@ -77,7 +77,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/devise/mailer/reset_password_instructions.markerb"
   end
 
-  def assert_files(scope = nil, options={})
+  def assert_files(scope = nil, options = {})
     scope = "devise" if scope.nil?
     mail_template_engine = options[:mail_template_engine] || "html.erb"
 

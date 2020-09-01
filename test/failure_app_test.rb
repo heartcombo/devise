@@ -73,7 +73,7 @@ class FailureTest < ActiveSupport::TestCase
     instance_eval(&block)
   end
 
-  def call_failure(env_params={})
+  def call_failure(env_params = {})
     env = {
       'REQUEST_URI' => 'http://test.host/',
       'HTTP_HOST' => 'test.host',
@@ -326,8 +326,8 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Log in</h2>')
-      assert @response.third.body.include?('Invalid Email or password.')
+      assert_includes @response.third.body, '<h2>Log in</h2>'
+      assert_includes @response.third.body, 'Invalid Email or password.'
     end
 
     test 'calls the original controller if not confirmed email' do
@@ -337,8 +337,8 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Log in</h2>')
-      assert @response.third.body.include?('You have to confirm your email address before continuing.')
+      assert_includes @response.third.body, '<h2>Log in</h2>'
+      assert_includes @response.third.body, 'You have to confirm your email address before continuing.'
     end
 
     test 'calls the original controller if inactive account' do
@@ -348,8 +348,8 @@ class FailureTest < ActiveSupport::TestCase
         "warden" => stub_everything
       }
       call_failure(env)
-      assert @response.third.body.include?('<h2>Log in</h2>')
-      assert @response.third.body.include?('Your account is not activated yet.')
+      assert_includes @response.third.body, '<h2>Log in</h2>'
+      assert_includes @response.third.body, 'Your account is not activated yet.'
     end
 
     if Rails.application.config.respond_to?(:relative_url_root)
@@ -361,10 +361,10 @@ class FailureTest < ActiveSupport::TestCase
             "warden" => stub_everything
           }
           call_failure(env)
-          assert @response.third.body.include?('<h2>Log in</h2>')
-          assert @response.third.body.include?('Invalid Email or password.')
-          assert_equal @request.env["SCRIPT_NAME"], '/sample'
-          assert_equal @request.env["PATH_INFO"], '/users/sign_in'
+          assert_includes @response.third.body, '<h2>Log in</h2>'
+          assert_includes @response.third.body, 'Invalid Email or password.'
+          assert_equal '/sample', @request.env["SCRIPT_NAME"]
+          assert_equal '/users/sign_in', @request.env["PATH_INFO"]
         end
       end
     end
@@ -372,7 +372,7 @@ class FailureTest < ActiveSupport::TestCase
 
   context "Lazy loading" do
     test "loads" do
-      assert_equal Devise::FailureApp.new.lazy_loading_works?, "yes it does"
+      assert_equal "yes it does", Devise::FailureApp.new.lazy_loading_works?
     end
   end
   context "Without Flash Support" do

@@ -168,7 +168,7 @@ module Devise
         # unlock instructions to it. If not user is found, returns a new user
         # with an email not found error.
         # Options must contain the user's unlock keys
-        def send_unlock_instructions(attributes={})
+        def send_unlock_instructions(attributes = {})
           lockable = find_or_initialize_with_errors(unlock_keys, attributes, :not_found)
           lockable.resend_unlock_instructions if lockable.persisted?
           lockable

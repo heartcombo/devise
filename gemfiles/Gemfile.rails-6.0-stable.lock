@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/rails/activemodel-serializers-xml.git
+  remote: https://github.com/rails/activemodel-serializers-xml.git
   revision: 93689638c28525acc65afb638fce866826532641
   specs:
     activemodel-serializers-xml (1.0.2)
@@ -8,7 +8,7 @@ GIT
       builder (~> 3.1)
 
 GIT
-  remote: git://github.com/rails/rails-controller-testing.git
+  remote: https://github.com/rails/rails-controller-testing.git
   revision: 4b15c86e82ee380f2a7cc009e470368f7520560a
   specs:
     rails-controller-testing (1.0.5)

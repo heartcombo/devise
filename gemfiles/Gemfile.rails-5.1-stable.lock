@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/rails/activemodel-serializers-xml.git
+  remote: https://github.com/rails/activemodel-serializers-xml.git
   revision: 93689638c28525acc65afb638fce866826532641
   specs:
     activemodel-serializers-xml (1.0.2)

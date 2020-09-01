@@ -99,7 +99,7 @@ class LockTest < Devise::IntegrationTest
 
     sign_in_as_user(password: "invalid")
     assert_contain 'Your account is locked.'
-    assert ActionMailer::Base.deliveries.empty?
+    assert_empty ActionMailer::Base.deliveries
   end
 
   test 'error message is configurable by resource name' do
@@ -136,8 +136,7 @@ class LockTest < Devise::IntegrationTest
 
     post user_unlock_path(format: 'xml'), params: { user: {email: user.email} }
     assert_response :success
-    assert_equal response.body, {}.to_xml
-
+    assert_equal({}.to_xml, response.body)
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
@@ -147,7 +146,7 @@ class LockTest < Devise::IntegrationTest
 
     post user_unlock_path(format: 'xml'), params: { user: {email: user.email} }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
     assert_equal 0, ActionMailer::Base.deliveries.size
   end
 
@@ -157,21 +156,20 @@ class LockTest < Devise::IntegrationTest
     assert user.access_locked?
     get user_unlock_path(format: 'xml', unlock_token: raw)
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
-
 
   test 'user with invalid unlock token should not be able to unlock the account via XML request' do
     get user_unlock_path(format: 'xml', unlock_token: 'invalid_token')
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
   end
 
   test "when using json to ask a unlock request, should not return the user" do
     user = create_user(locked: true)
     post user_unlock_path(format: "json", user: {email: user.email})
     assert_response :success
-    assert_equal response.body, {}.to_json
+    assert_equal({}.to_json, response.body)
   end
 
   test "in paranoid mode, when trying to unlock a user that exists it should not say that it exists if it is locked" do

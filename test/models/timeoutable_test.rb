@@ -43,7 +43,7 @@ class TimeoutableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_equal Devise::Models::Timeoutable.required_fields(User), []
+    assert_equal [], Devise::Models::Timeoutable.required_fields(User)
   end
 
   test 'should not raise error if remember_created_at is not empty and rememberable is disabled' do

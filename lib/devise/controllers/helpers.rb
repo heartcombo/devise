@@ -36,11 +36,11 @@ module Devise
         #     before_action ->{ authenticate_blogger! :admin }  # Redirects to the admin login page
         #     current_blogger :user                             # Preferably returns a User if one is signed in
         #
-        def devise_group(group_name, opts={})
+        def devise_group(group_name, opts = {})
           mappings = "[#{ opts[:contains].map { |m| ":#{m}" }.join(',') }]"
 
           class_eval <<-METHODS, __FILE__, __LINE__ + 1
-            def authenticate_#{group_name}!(favorite=nil, opts={})
+            def authenticate_#{group_name}!(favorite = nil, opts = {})
               unless #{group_name}_signed_in?
                 mappings = #{mappings}
                 mappings.unshift mappings.delete(favorite.to_sym) if favorite
@@ -57,7 +57,7 @@ module Devise
               end
             end
 
-            def current_#{group_name}(favorite=nil)
+            def current_#{group_name}(favorite = nil)
               mappings = #{mappings}
               mappings.unshift mappings.delete(favorite.to_sym) if favorite
               mappings.each do |mapping|
@@ -113,7 +113,7 @@ module Devise
         mapping = mapping.name
 
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
-          def authenticate_#{mapping}!(opts={})
+          def authenticate_#{mapping}!(opts = {})
             opts[:scope] = :#{mapping}
             warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
           end

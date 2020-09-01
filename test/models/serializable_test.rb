@@ -43,7 +43,11 @@ class SerializableTest < ActiveSupport::TestCase
   end
 
   test 'should accept frozen options' do
-    assert_key "username", @user.as_json({only: :username}.freeze)["user"]
+    assert_key "username", @user.as_json({ only: :username, except: [:email].freeze }.freeze)["user"]
+  end
+
+  test 'constant `BLACKLIST_FOR_SERIALIZATION` is deprecated' do
+    assert_deprecated { Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION }
   end
 
   def assert_key(key, subject)
@@ -54,7 +58,7 @@ class SerializableTest < ActiveSupport::TestCase
     assert !subject.key?(key), "Expected #{subject.inspect} to not have key #{key.inspect}"
   end
 
-  def from_json(options=nil)
+  def from_json(options = nil)
     ActiveSupport::JSON.decode(@user.to_json(options))["user"]
   end
 end

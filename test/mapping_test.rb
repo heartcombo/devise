@@ -6,7 +6,7 @@ class FakeRequest < Struct.new(:path_info, :params)
 end
 
 class MappingTest < ActiveSupport::TestCase
-  def fake_request(path, params={})
+  def fake_request(path, params = {})
     FakeRequest.new(path, params)
   end
 

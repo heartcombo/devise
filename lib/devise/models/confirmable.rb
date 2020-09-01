@@ -76,7 +76,7 @@ module Devise
       # Confirm a user by setting it's confirmed_at to actual time. If the user
       # is already confirmed, add an error to email field. If the user is invalid
       # add errors
-      def confirm(args={})
+      def confirm(args = {})
         pending_any_confirmation do
           if confirmation_period_expired?
             self.errors.add(:email, :confirmation_period_expired,
@@ -334,7 +334,7 @@ module Devise
         # confirmation instructions to it. If not, try searching for a user by unconfirmed_email
         # field. If no user is found, returns a new user with an email not found error.
         # Options must contain the user email
-        def send_confirmation_instructions(attributes={})
+        def send_confirmation_instructions(attributes = {})
           confirmable = find_by_unconfirmed_email_with_errors(attributes) if reconfirmable
           unless confirmable.try(:persisted?)
             confirmable = find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)

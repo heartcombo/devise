@@ -4,13 +4,13 @@ require 'test_helper'
 
 class TrackableTest < ActiveSupport::TestCase
   test 'required_fields should contain the fields that Devise uses' do
-    assert_equal Devise::Models::Trackable.required_fields(User), [
+    assert_equal [
       :current_sign_in_at,
       :current_sign_in_ip,
       :last_sign_in_at,
       :last_sign_in_ip,
       :sign_in_count
-    ]
+    ], Devise::Models::Trackable.required_fields(User)
   end
 
   test 'update_tracked_fields should only set attributes but not save the record' do

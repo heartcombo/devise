@@ -34,7 +34,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
   end
 
   test 'content type should be set to html' do
-    assert mail.content_type.include?('text/html')
+    assert_includes mail.content_type, 'text/html'
   end
 
   test 'send confirmation instructions to the user email' do
@@ -84,7 +84,7 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
     host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 
     if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/password/edit\?reset_password_token=([^"]+)">}
-      assert_equal Devise.token_generator.digest(user.class, :reset_password_token, $1), user.reset_password_token
+      assert_equal user.reset_password_token, Devise.token_generator.digest(user.class, :reset_password_token, $1)
     else
       flunk "expected reset password url regex to match"
     end

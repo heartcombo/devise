@@ -18,7 +18,7 @@ class RecoverableTest < ActiveSupport::TestCase
       user = create_user
       user.send_reset_password_instructions
       token = user.reset_password_token
-      assert !reset_password_tokens.include?(token)
+      refute_includes reset_password_tokens, token
       reset_password_tokens << token
     end
   end
@@ -116,7 +116,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should find a user to send instructions by email' do
     user = create_user
     reset_password_user = User.send_reset_password_instructions(email: user.email)
-    assert_equal reset_password_user, user
+    assert_equal user, reset_password_user
   end
 
   test 'should return a new record with errors if user was not found by e-mail' do
@@ -129,7 +129,7 @@ class RecoverableTest < ActiveSupport::TestCase
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user
       reset_password_user = User.send_reset_password_instructions(email: user.email, username: user.username)
-      assert_equal reset_password_user, user
+      assert_equal user, reset_password_user
     end
   end
 
@@ -161,7 +161,7 @@ class RecoverableTest < ActiveSupport::TestCase
     raw  = user.send_reset_password_instructions
 
     reset_password_user = User.reset_password_by_token(reset_password_token: raw)
-    assert_equal reset_password_user, user
+    assert_equal user, reset_password_user
   end
 
   test 'should return a new record with errors if no reset_password_token is found' do
@@ -237,23 +237,23 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_equal Devise::Models::Recoverable.required_fields(User), [
+    assert_equal [
       :reset_password_sent_at,
       :reset_password_token
-    ]
+    ], Devise::Models::Recoverable.required_fields(User)
   end
 
   test 'should return a user based on the raw token' do
     user = create_user
     raw  = user.send_reset_password_instructions
 
-    assert_equal User.with_reset_password_token(raw), user
+    assert_equal user, User.with_reset_password_token(raw)
   end
 
   test 'should return the same reset password token as generated' do
     user = create_user
     raw  = user.send_reset_password_instructions
-    assert_equal Devise.token_generator.digest(self.class, :reset_password_token, raw), user.reset_password_token
+    assert_equal user.reset_password_token, Devise.token_generator.digest(self.class, :reset_password_token, raw)
   end
 
   test 'should return nil if a user based on the raw token is not found' do

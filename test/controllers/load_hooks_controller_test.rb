@@ -16,6 +16,6 @@ class LoadHooksControllerTest < Devise::ControllerTestCase
   end
 
   test 'load hook called when controller is loaded' do
-    assert DeviseController.instance_methods.include? :defined_by_load_hook
+    assert_includes DeviseController.instance_methods, :defined_by_load_hook
   end
 end

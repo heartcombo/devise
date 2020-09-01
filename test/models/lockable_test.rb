@@ -121,7 +121,7 @@ class LockableTest < ActiveSupport::TestCase
       user = create_user
       user.lock_access!
       token = user.unlock_token
-      assert !unlock_tokens.include?(token)
+      refute_includes unlock_tokens, token
       unlock_tokens << token
     end
   end
@@ -174,7 +174,7 @@ class LockableTest < ActiveSupport::TestCase
     user = create_user
     raw  = user.send_unlock_instructions
     locked_user = User.unlock_access_by_token(raw)
-    assert_equal locked_user, user
+    assert_equal user, locked_user
     refute user.reload.access_locked?
   end
 
@@ -194,7 +194,7 @@ class LockableTest < ActiveSupport::TestCase
     user = create_user
     user.lock_access!
     unlock_user = User.send_unlock_instructions(email: user.email)
-    assert_equal unlock_user, user
+    assert_equal user, unlock_user
   end
 
   test 'should return a new user if no email was found' do
@@ -211,7 +211,7 @@ class LockableTest < ActiveSupport::TestCase
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user
       unlock_user = User.send_unlock_instructions(email: user.email, username: user.username)
-      assert_equal unlock_user, user
+      assert_equal user, unlock_user
     end
   end
 
@@ -270,11 +270,11 @@ class LockableTest < ActiveSupport::TestCase
   test 'required_fields should contain the all the fields when all the strategies are enabled' do
     swap Devise, unlock_strategy: :both do
       swap Devise, lock_strategy: :failed_attempts do
-        assert_equal Devise::Models::Lockable.required_fields(User), [
-         :failed_attempts,
-         :locked_at,
-         :unlock_token
-        ]
+        assert_equal [
+          :failed_attempts,
+          :locked_at,
+          :unlock_token
+        ], Devise::Models::Lockable.required_fields(User)
       end
     end
   end
@@ -282,10 +282,10 @@ class LockableTest < ActiveSupport::TestCase
   test 'required_fields should contain only failed_attempts and locked_at when the strategies are time and failed_attempts are enabled' do
     swap Devise, unlock_strategy: :time do
       swap Devise, lock_strategy: :failed_attempts do
-        assert_equal Devise::Models::Lockable.required_fields(User), [
-         :failed_attempts,
-         :locked_at
-        ]
+        assert_equal [
+          :failed_attempts,
+          :locked_at
+        ], Devise::Models::Lockable.required_fields(User)
       end
     end
   end
@@ -293,10 +293,10 @@ class LockableTest < ActiveSupport::TestCase
   test 'required_fields should contain only failed_attempts and unlock_token when the strategies are token and failed_attempts are enabled' do
     swap Devise, unlock_strategy: :email do
       swap Devise, lock_strategy: :failed_attempts do
-        assert_equal Devise::Models::Lockable.required_fields(User), [
-         :failed_attempts,
-         :unlock_token
-        ]
+        assert_equal [
+          :failed_attempts,
+          :unlock_token
+        ], Devise::Models::Lockable.required_fields(User)
       end
     end
   end

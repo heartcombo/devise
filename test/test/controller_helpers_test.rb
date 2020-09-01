@@ -97,16 +97,16 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
 
   test "returns the body of a failure app" do
     get :index
-    assert_equal response.body, "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>"
+    assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
   end
 
   test "returns the content type of a failure app" do
     get :index, params: { format: :xml }
 
     if Devise::Test.rails6?
-      assert response.media_type.include?('application/xml')
+      assert_includes response.media_type, 'application/xml'
     else
-      assert response.content_type.include?('application/xml')
+      assert_includes response.content_type, 'application/xml'
     end
   end
 
@@ -194,5 +194,15 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
     new_warden_proxy = warden
 
     assert_equal old_warden_proxy, new_warden_proxy
+  end
+end
+
+class TestControllerHelpersForStreamingControllerTest < Devise::ControllerTestCase
+  tests StreamingController
+  include Devise::Test::ControllerHelpers
+
+  test "doesn't hang when sending an authentication error response body" do
+    get :index
+    assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
   end
 end

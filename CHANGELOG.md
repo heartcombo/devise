@@ -1,12 +1,14 @@
-### master
+### unreleased
+
+* deprecations
+  * `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` is deprecated in favor of `Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION` (@hanachin)
+
+### 4.7.3 - 2020-09-20
 
 * bug fixes
   * Do not modify `:except` option given to `#serializable_hash`. (by @dpep)
   * Fix thor deprecation when running the devise generator. (by @deivid-rodriguez)
   * Fix hanging tests for streaming controllers using Devise. (by @afn)
-
-* deprecations
-  * `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` is deprecated in favor of `Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION` (@hanachin)
 
 ### 4.7.2 - 2020-06-10
 

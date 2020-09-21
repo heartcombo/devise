@@ -2,7 +2,6 @@
 
 require 'devise/hooks/activatable'
 require 'devise/hooks/csrf_cleaner'
-require 'devise/rails/deprecated_constant_accessor'
 
 module Devise
   module Models
@@ -56,13 +55,15 @@ module Devise
     module Authenticatable
       extend ActiveSupport::Concern
 
-      UNSAFE_ATTRIBUTES_FOR_SERIALIZATION = [:encrypted_password, :reset_password_token, :reset_password_sent_at,
+      DENYLIST_FOR_SERIALIZATION = [:encrypted_password, :reset_password_token, :reset_password_sent_at,
         :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip,
         :last_sign_in_ip, :password_salt, :confirmation_token, :confirmed_at, :confirmation_sent_at,
         :remember_token, :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at]
 
-      include Devise::DeprecatedConstantAccessor
-      deprecate_constant "BLACKLIST_FOR_SERIALIZATION", "Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION"
+      BLACKLIST_FOR_SERIALIZATION = DENYLIST_FOR_SERIALIZATION
+      if respond_to? :deprecate_constant
+        deprecate_constant :BLACKLIST_FOR_SERIALIZATION
+      end
 
       included do
         class_attribute :devise_modules, instance_writer: false
@@ -113,7 +114,7 @@ module Devise
         if options[:force_except]
           options[:except].concat Array(options[:force_except])
         else
-          options[:except].concat UNSAFE_ATTRIBUTES_FOR_SERIALIZATION
+          options[:except].concat DENYLIST_FOR_SERIALIZATION
         end
 
         super(options)

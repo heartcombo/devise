@@ -101,9 +101,10 @@ module Devise
         options[:resource_name] = scope
         options[:scope] = "devise.failure"
         options[:default] = [message]
+        options[:locale] = warden_options[:locale]
         auth_keys = scope_class.authentication_keys
         keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key| scope_class.human_attribute_name(key) }
-        options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
+        options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector", locale: warden_options[:locale]))
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", **options)

@@ -64,30 +64,30 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
   end
 
   test 'proxy authenticate_user! to authenticate with user scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :user)
+    @mock_warden.expects(:authenticate!).with(scope: :user, locale: :en)
     @controller.authenticate_user!
   end
 
   test 'proxy authenticate_user! options to authenticate with user scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :user, recall: "foo")
+    @mock_warden.expects(:authenticate!).with(scope: :user, recall: "foo", locale: :en)
     @controller.authenticate_user!(recall: "foo")
   end
 
   test 'proxy authenticate_admin! to authenticate with admin scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :admin)
+    @mock_warden.expects(:authenticate!).with(scope: :admin, locale: :en)
     @controller.authenticate_admin!
   end
 
   test 'proxy authenticate_[group]! to authenticate!? with each scope' do
     [:user, :admin].each do |scope|
-      @mock_warden.expects(:authenticate!).with(scope: scope)
+      @mock_warden.expects(:authenticate!).with(scope: scope, locale: :en)
       @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
     end
     @controller.authenticate_commenter!
   end
 
   test 'proxy authenticate_publisher_account! to authenticate with namespaced publisher account scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :publisher_account)
+    @mock_warden.expects(:authenticate!).with(scope: :publisher_account, locale: :en)
     @controller.authenticate_publisher_account!
   end
 

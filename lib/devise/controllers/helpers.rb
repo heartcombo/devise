@@ -46,6 +46,7 @@ module Devise
                 mappings.unshift mappings.delete(favorite.to_sym) if favorite
                 mappings.each do |mapping|
                   opts[:scope] = mapping
+                  opts[:locale] = I18n.locale
                   warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
                 end
               end
@@ -115,6 +116,7 @@ module Devise
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
           def authenticate_#{mapping}!(opts = {})
             opts[:scope] = :#{mapping}
+            opts[:locale] = I18n.locale
             warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
           end
 

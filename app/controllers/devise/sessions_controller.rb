@@ -45,7 +45,7 @@ class Devise::SessionsController < DeviseController
   end
 
   def auth_options
-    { scope: resource_name, recall: "#{controller_path}#new" }
+    { scope: resource_name, recall: "#{controller_path}#new", locale: I18n.locale }
   end
 
   def translation_scope

@@ -200,6 +200,13 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'User Steve does not exist', @request.flash[:alert]
     end
 
+    test 'respects the i18n locale passed via warden options when redirecting' do
+      call_failure('warden' => OpenStruct.new(message: :invalid), 'warden.options' => { locale: :"pt-BR" })
+
+      assert_equal 'Email ou senha inválidos.', @request.flash[:alert]
+      assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+    end
+
     test 'uses the proxy failure message as string' do
       call_failure('warden' => OpenStruct.new(message: 'Hello world'))
       assert_equal 'Hello world', @request.flash[:alert]
@@ -282,6 +289,12 @@ class FailureTest < ActiveSupport::TestCase
     test 'uses the failure message as response body' do
       call_failure('formats' => Mime[:xml], 'warden' => OpenStruct.new(message: :invalid))
       assert_match '<error>Invalid Email or password.</error>', @response.third.body
+    end
+
+    test 'respects the i18n locale passed via warden options when responding to HTTP request' do
+      call_failure('formats' => Mime[:json], 'warden' => OpenStruct.new(message: :invalid), 'warden.options' => { locale: :"pt-BR" })
+
+      assert_equal %({"error":"Email ou senha inválidos."}), @response.third.body
     end
 
     context 'on ajax call' do
@@ -372,6 +385,18 @@ class FailureTest < ActiveSupport::TestCase
       end
     end
 
+    test 'respects the i18n locale passed via warden options when recalling original controller' do
+      env = {
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in", locale: :"pt-BR" },
+        "devise.mapping" => Devise.mappings[:user],
+        "warden" => stub_everything
+      }
+      call_failure(env)
+
+      assert_includes @response.third.body, '<h2>Log in</h2>'
+      assert_includes @response.third.body, 'Email ou senha inválidos.'
+    end
+
     # TODO: remove conditional/else when supporting only responders 3.1+
     if ActionController::Responder.respond_to?(:error_status=)
       test 'respects the configured responder `error_status` for the status code' do
@@ -431,6 +456,7 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal "yes it does", Devise::FailureApp.new.lazy_loading_works?
     end
   end
+
   context "Without Flash Support" do
     test "returns to the default redirect location without a flash message" do
       call_failure request_klass: RequestWithoutFlashSupport

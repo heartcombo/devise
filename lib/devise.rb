@@ -297,6 +297,9 @@ module Devise
   mattr_accessor :sign_in_after_change_password
   @@sign_in_after_change_password = true
 
+  mattr_accessor :warden_hook_save_wrapper
+  @@warden_hook_save_wrapper = Proc.new { |hook| hook.call }
+
   def self.activerecord51? # :nodoc:
     defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
   end

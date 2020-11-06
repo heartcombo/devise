@@ -5,8 +5,12 @@
 Warden::Manager.after_set_user except: :fetch do |record, warden, options|
   if record.respond_to?(:failed_attempts) && warden.authenticated?(options[:scope])
     unless record.failed_attempts.to_i.zero?
-      record.failed_attempts = 0
-      record.save(validate: false)
+      wipe_attempts = Proc.new do
+        record.failed_attempts = 0
+        record.save(validate: false)
+      end
+
+      Devise.warden_hook_save_wrapper.call(wipe_attempts)
     end
   end
 end

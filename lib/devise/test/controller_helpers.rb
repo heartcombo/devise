@@ -31,7 +31,7 @@ module Devise
       end
 
       # Override process to consider warden.
-      def process(*)
+      def process(*, **)
         _catch_warden { super }
 
         @response

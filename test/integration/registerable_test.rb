@@ -189,7 +189,7 @@ class RegistrationTest < Devise::IntegrationTest
       fill_in 'current password', with: '12345678'
       click_button 'Update'
 
-      assert_contain 'Your account has been updated successfully, but since your password was changed, you need to sign in again'
+      assert_contain 'Your account has been updated successfully, but since your password was changed, you need to sign in again.'
       assert_equal new_user_session_path, @request.path
       refute warden.authenticated?(:user)
     end

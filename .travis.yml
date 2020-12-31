@@ -12,6 +12,7 @@ rvm:
 
 gemfile:
   - Gemfile
+  - gemfiles/Gemfile.rails-6.1-stable
   - gemfiles/Gemfile.rails-6.0-stable
   - gemfiles/Gemfile.rails-5.2-stable
   - gemfiles/Gemfile.rails-5.1-stable
@@ -24,6 +25,8 @@ matrix:
     - rvm: 2.1.10
       gemfile: Gemfile
     - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.rails-6.1-stable
+    - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-6.0-stable
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.rails-5.2-stable
@@ -34,15 +37,21 @@ matrix:
     - rvm: 2.2.10
       gemfile: Gemfile
     - rvm: 2.2.10
+      gemfile: gemfiles/Gemfile.rails-6.1-stable
+    - rvm: 2.2.10
       gemfile: gemfiles/Gemfile.rails-6.0-stable
     - rvm: 2.2.10
       gemfile: gemfiles/Gemfile.rails-5.2-stable
     - rvm: 2.3.8
       gemfile: Gemfile
     - rvm: 2.3.8
+      gemfile: gemfiles/Gemfile.rails-6.1-stable
+    - rvm: 2.3.8
       gemfile: gemfiles/Gemfile.rails-6.0-stable
     - rvm: 2.4.10
       gemfile: Gemfile
+    - rvm: 2.4.10
+      gemfile: gemfiles/Gemfile.rails-6.1-stable
     - rvm: 2.4.10
       gemfile: gemfiles/Gemfile.rails-6.0-stable
     - rvm: 2.4.10
@@ -79,6 +88,8 @@ matrix:
       gemfile: gemfiles/Gemfile.rails-5.2-stable
     - env: DEVISE_ORM=mongoid
       gemfile: gemfiles/Gemfile.rails-6.0-stable
+    - env: DEVISE_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-6.1-stable
   allow_failures:
     - rvm: ruby-head
 

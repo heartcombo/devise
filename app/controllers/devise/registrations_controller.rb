@@ -31,7 +31,7 @@ class Devise::RegistrationsController < DeviseController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      respond_with resource, status: :unprocessable_entity
     end
   end
 
@@ -57,7 +57,7 @@ class Devise::RegistrationsController < DeviseController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      respond_with resource, status: :unprocessable_entity
     end
   end
 

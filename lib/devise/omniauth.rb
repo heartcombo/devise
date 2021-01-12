@@ -8,7 +8,7 @@ rescue LoadError
   raise
 end
 
-unless OmniAuth::VERSION =~ /^1\./
+if OmniAuth::VERSION =~ /^0\./
   raise "You are using an old OmniAuth version, please ensure you have 1.0.0.pr2 version or later installed."
 end
 

@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/rails/activemodel-serializers-xml.git
+  remote: https://github.com/rails/activemodel-serializers-xml.git
   revision: 694f4071c6b16e4c8597cc323c241b5f787b3ea8
   specs:
     activemodel-serializers-xml (1.0.2)
@@ -8,22 +8,13 @@ GIT
       builder (~> 3.1)
 
 GIT
-  remote: git://github.com/rails/rails-controller-testing.git
+  remote: https://github.com/rails/rails-controller-testing.git
   revision: 4b15c86e82ee380f2a7cc009e470368f7520560a
   specs:
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-
-GIT
-  remote: https://github.com/jkowens/omniauth-openid
-  revision: c70d35f266a814340b01f6f5649bb664a78743f4
-  branch: patch-1
-  specs:
-    omniauth-openid (2.0.0)
-      omniauth (>= 1.0, < 3.0)
-      rack-openid (~> 1.4.0)
 
 PATH
   remote: .
@@ -138,11 +129,14 @@ GEM
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
       rack-protection
-    omniauth-facebook (7.0.0)
+    omniauth-facebook (8.0.0)
       omniauth-oauth2 (~> 1.2)
     omniauth-oauth2 (1.7.1)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
+    omniauth-openid (2.0.1)
+      omniauth (>= 1.0, < 3.0)
+      rack-openid (~> 1.4.0)
     orm_adapter (0.5.0)
     rack (2.2.3)
     rack-openid (1.4.2)
@@ -184,7 +178,7 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     ruby-openid (2.9.2)
-    ruby2_keywords (0.0.2)
+    ruby2_keywords (0.0.4)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -219,7 +213,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   omniauth-oauth2
-  omniauth-openid!
+  omniauth-openid
   rails (~> 6.0.0)
   rails-controller-testing!
   rdoc

@@ -17,7 +17,7 @@ gem "responders", "~> 3.0"
 
 group :test do
   gem "omniauth-facebook"
-  gem "omniauth-openid", git: 'https://github.com/jkowens/omniauth-openid', branch: 'patch-1'
+  gem "omniauth-openid"
   gem "timecop"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 1.1", require: false

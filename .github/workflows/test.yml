@@ -1,0 +1,98 @@
+name: Test
+on: [push, pull_request]
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        gemfile:
+          - Gemfile
+          - gemfiles/Gemfile.rails-6.0-stable
+          - gemfiles/Gemfile.rails-5.2-stable
+          - gemfiles/Gemfile.rails-5.1-stable
+          - gemfiles/Gemfile.rails-5.0-stable
+          - gemfiles/Gemfile.rails-4.2-stable
+          - gemfiles/Gemfile.rails-4.1-stable
+        ruby:
+          - 2.1.10
+          - 2.2.10
+          - 2.3.8
+          - 2.4.10
+          - 2.5.8
+          - 2.6.6
+          - 2.7.1
+          - ruby-head
+        env:
+          - DEVISE_ORM=active_record
+          - DEVISE_ORM=mongoid
+        exclude:
+          - ruby: 2.1.10
+            gemfile: Gemfile
+          - ruby: 2.1.10
+            gemfile: gemfiles/Gemfile.rails-6.0-stable
+          - ruby: 2.1.10
+            gemfile: gemfiles/Gemfile.rails-5.2-stable
+          - ruby: 2.1.10
+            gemfile: gemfiles/Gemfile.rails-5.1-stable
+          - ruby: 2.1.10
+            gemfile: gemfiles/Gemfile.rails-5.0-stable
+          - ruby: 2.2.10
+            gemfile: Gemfile
+          - ruby: 2.2.10
+            gemfile: gemfiles/Gemfile.rails-6.0-stable
+          - ruby: 2.2.10
+            gemfile: gemfiles/Gemfile.rails-5.2-stable
+          - ruby: 2.3.8
+            gemfile: Gemfile
+          - ruby: 2.3.8
+            gemfile: gemfiles/Gemfile.rails-6.0-stable
+          - ruby: 2.4.10
+            gemfile: Gemfile
+          - ruby: 2.4.10
+            gemfile: gemfiles/Gemfile.rails-6.0-stable
+          - ruby: 2.4.10
+            gemfile: gemfiles/Gemfile.rails-4.1-stable
+          - ruby: 2.5.8
+            gemfile: gemfiles/Gemfile.rails-4.1-stable
+          - ruby: 2.6.6
+            gemfile: gemfiles/Gemfile.rails-4.1-stable
+          - ruby: 2.6.6
+            gemfile: gemfiles/Gemfile.rails-4.2-stable
+          - ruby: 2.7.1
+            gemfile: gemfiles/Gemfile.rails-4.1-stable
+          - ruby: 2.7.1
+            gemfile: gemfiles/Gemfile.rails-4.1-stable
+          - ruby: 2.7.1
+            gemfile: gemfiles/Gemfile.rails-4.2-stable
+          - ruby: 2.7.1
+            gemfile: gemfiles/Gemfile.rails-5.0-stable
+          - ruby: 2.7.1
+            gemfile: gemfiles/Gemfile.rails-5.1-stable
+          - ruby: 2.7.1
+            gemfile: gemfiles/Gemfile.rails-5.2-stable
+          - ruby: ruby-head
+            gemfile: gemfiles/Gemfile.rails-4.1-stable
+          - ruby: ruby-head
+            gemfile: gemfiles/Gemfile.rails-4.2-stable
+          - env: DEVISE_ORM=mongoid
+            gemfile: Gemfile
+          - env: DEVISE_ORM=mongoid
+            gemfile: gemfiles/Gemfile.rails-5.0-stable
+          - env: DEVISE_ORM=mongoid
+            gemfile: gemfiles/Gemfile.rails-5.1-stable
+          - env: DEVISE_ORM=mongoid
+            gemfile: gemfiles/Gemfile.rails-5.2-stable
+          - env: DEVISE_ORM=mongoid
+            gemfile: gemfiles/Gemfile.rails-6.0-stable
+    runs-on: ubuntu-latest
+    env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true # runs bundle install and caches installed gems automatically
+      - uses: supercharge/mongodb-github-action@1.3.0
+        if: ${{ matrix.env == 'DEVISE_ORM=mongoid' }}
+      - run: bundle exec rake

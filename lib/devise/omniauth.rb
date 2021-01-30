@@ -9,7 +9,7 @@ rescue LoadError
 end
 
 unless OmniAuth::VERSION =~ /^1\./
-  raise "You are using an old OmniAuth version, please ensure you have 1.0.0.pr2 version or later installed."
+  raise "You are using an unsupported OmniAuth version, please ensure you have a version between 1.0.0.pr2 and <2.0.0 installed."
 end
 
 # Clean up the default path_prefix. It will be automatically set by Devise.

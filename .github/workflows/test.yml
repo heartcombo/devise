@@ -14,66 +14,61 @@ jobs:
           - gemfiles/Gemfile-rails-4-2
           - gemfiles/Gemfile-rails-4-1
         ruby:
-          - 2.1.10
-          - 2.2.10
-          - 2.3.8
-          - 2.4.10
-          - 2.5.8
-          - 2.6.6
-          - 2.7.1
-          - ruby-head
+          - 2.1
+          - 2.2
+          - 2.3
+          - 2.4
+          - 2.5
+          - 2.6
+          - 2.7
         env:
           - DEVISE_ORM=active_record
           - DEVISE_ORM=mongoid
         exclude:
-          - ruby: 2.1.10
+          - ruby: 2.1
             gemfile: Gemfile
-          - ruby: 2.1.10
+          - ruby: 2.1
             gemfile: gemfiles/Gemfile-rails-6-0
-          - ruby: 2.1.10
+          - ruby: 2.1
             gemfile: gemfiles/Gemfile-rails-5-2
-          - ruby: 2.1.10
+          - ruby: 2.1
             gemfile: gemfiles/Gemfile-rails-5-1
-          - ruby: 2.1.10
+          - ruby: 2.1
             gemfile: gemfiles/Gemfile-rails-5-0
-          - ruby: 2.2.10
+          - ruby: 2.2
             gemfile: Gemfile
-          - ruby: 2.2.10
+          - ruby: 2.2
             gemfile: gemfiles/Gemfile-rails-6-0
-          - ruby: 2.2.10
+          - ruby: 2.2
             gemfile: gemfiles/Gemfile-rails-5-2
-          - ruby: 2.3.8
+          - ruby: 2.3
             gemfile: Gemfile
-          - ruby: 2.3.8
+          - ruby: 2.3
             gemfile: gemfiles/Gemfile-rails-6-0
-          - ruby: 2.4.10
+          - ruby: 2.4
             gemfile: Gemfile
-          - ruby: 2.4.10
+          - ruby: 2.4
             gemfile: gemfiles/Gemfile-rails-6-0
-          - ruby: 2.4.10
+          - ruby: 2.4
             gemfile: gemfiles/Gemfile-rails-4-1
-          - ruby: 2.5.8
+          - ruby: 2.5
             gemfile: gemfiles/Gemfile-rails-4-1
-          - ruby: 2.6.6
+          - ruby: 2.6
             gemfile: gemfiles/Gemfile-rails-4-1
-          - ruby: 2.6.6
+          - ruby: 2.6
             gemfile: gemfiles/Gemfile-rails-4-2
-          - ruby: 2.7.1
+          - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-4-1
-          - ruby: 2.7.1
+          - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-4-1
-          - ruby: 2.7.1
+          - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-4-2
-          - ruby: 2.7.1
+          - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-5-0
-          - ruby: 2.7.1
+          - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-5-1
-          - ruby: 2.7.1
+          - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-5-2
-          - ruby: ruby-head
-            gemfile: gemfiles/Gemfile-rails-4-1
-          - ruby: ruby-head
-            gemfile: gemfiles/Gemfile-rails-4-2
           - env: DEVISE_ORM=mongoid
             gemfile: Gemfile
           - env: DEVISE_ORM=mongoid

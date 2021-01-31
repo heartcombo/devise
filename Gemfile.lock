@@ -225,4 +225,4 @@ DEPENDENCIES
   webrat (= 0.7.3)
 
 BUNDLED WITH
-   1.17.3
+   2.2.7

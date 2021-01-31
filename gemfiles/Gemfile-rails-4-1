@@ -5,7 +5,7 @@ source "https://rubygems.org"
 gemspec path: ".."
 
 gem "rails", github: "rails/rails", branch: "4-1-stable"
-gem "omniauth"
+gem "omniauth", "~> 1.0"
 gem "omniauth-oauth2"
 gem "rdoc", "~> 5.1"
 # Force this version because it's breaking on CI since a higher nokogiri version requires Ruby 2.3+.

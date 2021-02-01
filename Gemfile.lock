@@ -215,7 +215,7 @@ DEPENDENCIES
   activemodel-serializers-xml!
   devise!
   mocha (~> 1.1)
-  omniauth (~> 1.0)
+  omniauth
   omniauth-facebook
   omniauth-oauth2
   omniauth-openid

@@ -8,3 +8,4 @@ rdoc/*
 pkg
 log
 test/tmp/*
+gemfiles/*.lock

@@ -23,6 +23,9 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
       "extra" => {"user_hash" => FACEBOOK_INFO}
     }
     OmniAuth.config.add_camelization 'facebook', 'FaceBook'
+    if OmniAuth.config.respond_to?(:request_validation_phase)
+      OmniAuth.config.request_validation_phase = ->(env) {}
+    end
   end
 
   teardown do
@@ -45,8 +48,8 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
   test "omniauth sign in should not run model validations" do
     stub_action!(:sign_in_facebook) do
       create_user
-      visit "/users/sign_in"
-      click_link "Sign in with FaceBook"
+      post "/users/auth/facebook"
+      follow_redirect!
       assert warden.authenticated?(:user)
 
       refute User.validations_performed
@@ -54,8 +57,8 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
   end
 
   test "can access omniauth.auth in the env hash" do
-    visit "/users/sign_in"
-    click_link "Sign in with FaceBook"
+    post "/users/auth/facebook"
+    follow_redirect!
 
     json = ActiveSupport::JSON.decode(response.body)
 
@@ -68,8 +71,8 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
   test "cleans up session on sign up" do
     assert_no_difference "User.count" do
-      visit "/users/sign_in"
-      click_link "Sign in with FaceBook"
+      post "/users/auth/facebook"
+      follow_redirect!
     end
 
     assert session["devise.facebook_data"]
@@ -89,8 +92,8 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
   test "cleans up session on cancel" do
     assert_no_difference "User.count" do
-      visit "/users/sign_in"
-      click_link "Sign in with FaceBook"
+      post "/users/auth/facebook"
+      follow_redirect!
     end
 
     assert session["devise.facebook_data"]
@@ -100,8 +103,8 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
   test "cleans up session on sign in" do
     assert_no_difference "User.count" do
-      visit "/users/sign_in"
-      click_link "Sign in with FaceBook"
+      post "/users/auth/facebook"
+      follow_redirect!
     end
 
     assert session["devise.facebook_data"]
@@ -110,23 +113,28 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
   end
 
   test "sign in and send remember token if configured" do
-    visit "/users/sign_in"
-    click_link "Sign in with FaceBook"
+    post "/users/auth/facebook"
+    follow_redirect!
     assert_nil warden.cookies["remember_user_token"]
 
     stub_action!(:sign_in_facebook) do
       create_user
-      visit "/users/sign_in"
-      click_link "Sign in with FaceBook"
+      post "/users/auth/facebook"
+      follow_redirect!
       assert warden.authenticated?(:user)
       assert warden.cookies["remember_user_token"]
     end
   end
 
+  test "generates a link to authenticate with provider" do
+    visit "/users/sign_in"
+    assert_select "a[href=?][data-method='post']", "/users/auth/facebook", text: "Sign in with FaceBook"
+  end
+
   test "generates a proper link when SCRIPT_NAME is set" do
     header 'SCRIPT_NAME', '/q'
     visit "/users/sign_in"
-    assert_select "a", href: "/q/users/auth/facebook"
+    assert_select "a[href=?][data-method='post']", "/q/users/auth/facebook", text: "Sign in with FaceBook"
   end
 
   test "handles callback error parameter according to the specification" do
@@ -139,10 +147,10 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
   test "handles other exceptions from OmniAuth" do
     OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
 
-    visit "/users/sign_in"
-    click_link "Sign in with FaceBook"
+    post "/users/auth/facebook"
+    follow_redirect!
+    follow_redirect!
 
-    assert_current_url "/users/sign_in"
     assert_contain 'Could not authenticate you from FaceBook because "Invalid credentials".'
   end
 end

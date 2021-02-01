@@ -1,6 +1,5 @@
 ![Devise Logo](https://raw.github.com/heartcombo/devise/master/devise.png)
 
-[![Build Status](https://api.travis-ci.org/heartcombo/devise.svg?branch=master)](http://travis-ci.org/heartcombo/devise)
 [![Code Climate](https://codeclimate.com/github/heartcombo/devise.svg)](https://codeclimate.com/github/heartcombo/devise)
 
 Devise is a flexible authentication solution for Rails based on Warden. It:
@@ -118,7 +117,7 @@ You will usually want to write tests for your changes.  To run the test suite, g
 Devise works with multiple Ruby and Rails versions, and ActiveRecord and Mongoid ORMs, which means you can run the test suite with some modifiers: `DEVISE_ORM` and `BUNDLE_GEMFILE`.
 
 ### DEVISE_ORM
-Since Devise support both Mongoid and ActiveRecord, we rely on this variable to run specific code for each ORM.
+Since Devise supports both Mongoid and ActiveRecord, we rely on this variable to run specific code for each ORM.
 The default value of `DEVISE_ORM` is `active_record`. To run the tests for Mongoid, you can pass `mongoid`:
 ```
 DEVISE_ORM=mongoid bin/test
@@ -131,7 +130,7 @@ Please note that the command output will show the variable value being used.
 
 ### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
-Inside the [gemfiles](https://github.com/heartcombo/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks on Travis using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
+Inside the [gemfiles](https://github.com/heartcombo/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
 For example, if the tests broke using Ruby 2.4.2 and Rails 4.1, you can do the following:
 ```bash
 rbenv shell 2.4.2 # or rvm use 2.4.2

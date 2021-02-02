@@ -21,6 +21,7 @@ jobs:
           - 2.5
           - 2.6
           - 2.7
+          - truffleruby-head
         env:
           - DEVISE_ORM=active_record
           - DEVISE_ORM=mongoid

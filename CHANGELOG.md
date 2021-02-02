@@ -2,6 +2,32 @@
 
 * enhancements
   * Add support for Rails 7.0 alpha 2.
+  * Devise now treats `:turbo_stream` as a navigational format.
+    - For Turbo Drive users this ensures that Devise will return a redirect, rather than a `401`, where appropriate (this may be a **breaking change**).
+    - This has no impact if you are not using [turbo-rails](https://github.com/hotwired/turbo-rails) or declaring an equivalent MIME type.
+  * Devise `FailureApp` now returns a `422` status when running the `recall` flow.
+    - This, combined with https://github.com/heartcombo/responders/pull/223, enables Devise to work correctly with the [new Rails defaults](https://github.com/rails/rails/pull/41026) for form errors, as well as with new libraries like Turbo.
+    - By default, the `recall` flow only runs on the [`SessionsController`](https://github.com/heartcombo/devise/blob/v4.7.3/app/controllers/devise/sessions_controller.rb#L48), but you should check if it is required in other flows too.
+    - This may be a **breaking change**.
+    - If you want to keep the old behavior, or return a different code, you can override `recall_response_code` in a custom failure app:
+
+    ```ruby
+    # config/initializers/devise.rb
+    class MyFailureApp < Devise::FailureApp
+      def recall_response_code(app_response_code)
+        # Return any HTTP status code you like, or return `app_response_code` to keep whatever your app returned and not override it.
+        # By default this method returns `422`.
+        app_response_code
+      end
+    end
+    Devise.setup do |config|
+      # ...
+      config.warden do |manager|
+        manager.failure_app = MyFailureApp
+      end
+      # ...
+    end
+    ```
 
 ### 4.8.0 - 2021-04-29
 

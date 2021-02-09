@@ -21,6 +21,7 @@ jobs:
           - 2.5
           - 2.6
           - 2.7
+          - 3.0
         env:
           - DEVISE_ORM=active_record
           - DEVISE_ORM=mongoid
@@ -60,14 +61,22 @@ jobs:
           - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-4-1
           - ruby: 2.7
-            gemfile: gemfiles/Gemfile-rails-4-1
-          - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-4-2
           - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-5-0
           - ruby: 2.7
             gemfile: gemfiles/Gemfile-rails-5-1
           - ruby: 2.7
+            gemfile: gemfiles/Gemfile-rails-5-2
+          - ruby: 3.0
+            gemfile: gemfiles/Gemfile-rails-4-1
+          - ruby: 3.0
+            gemfile: gemfiles/Gemfile-rails-4-2
+          - ruby: 3.0
+            gemfile: gemfiles/Gemfile-rails-5-0
+          - ruby: 3.0
+            gemfile: gemfiles/Gemfile-rails-5-1
+          - ruby: 3.0
             gemfile: gemfiles/Gemfile-rails-5-2
           - env: DEVISE_ORM=mongoid
             gemfile: Gemfile

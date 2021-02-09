@@ -183,6 +183,7 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rexml (3.2.4)
     ruby-openid (2.9.2)
     ruby2_keywords (0.0.4)
     sprockets (4.0.2)
@@ -223,6 +224,7 @@ DEPENDENCIES
   rails-controller-testing!
   rdoc
   responders (~> 3.0)
+  rexml
   sqlite3 (~> 1.4)
   timecop
   webrat (= 0.7.3)

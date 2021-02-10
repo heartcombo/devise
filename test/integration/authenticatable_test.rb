@@ -462,14 +462,6 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     end
   end
 
-  test 'sign in stub in xml format' do
-    get new_user_session_path(format: 'xml')
-    assert_match '<?xml version="1.0" encoding="UTF-8"?>', response.body
-    assert_match %r{<user>.*</user>}m, response.body
-    assert_match '<email></email>', response.body
-    assert_match '<password nil="true"', response.body
-  end
-
   test 'sign in stub in json format' do
     get new_user_session_path(format: 'json')
     assert_match '{"user":{', response.body
@@ -492,27 +484,27 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     refute warden.authenticated?(:admin)
   end
 
-  test 'sign in with xml format returns xml response' do
+  test 'sign in with json format returns json response' do
     create_user
-    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
+    post user_session_path(format: 'json'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, '{"user":{'
   end
 
-  test 'sign in with xml format is idempotent' do
-    get new_user_session_path(format: 'xml')
+  test 'sign in with json format is idempotent' do
+    get new_user_session_path(format: 'json')
     assert_response :success
 
     create_user
-    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
+    post user_session_path(format: 'json'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
 
-    get new_user_session_path(format: 'xml')
+    get new_user_session_path(format: 'json')
     assert_response :success
 
-    post user_session_path(format: 'xml'), params: { user: {email: "user@test.com", password: '12345678'} }
+    post user_session_path(format: 'json'), params: { user: {email: "user@test.com", password: '12345678'} }
     assert_response :success
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, '{"user":{'
   end
 
   test 'sign out with html redirects' do
@@ -525,13 +517,6 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     delete destroy_user_session_path(format: 'html')
     assert_response :redirect
     assert_current_url '/'
-  end
-
-  test 'sign out with xml format returns no content' do
-    sign_in_as_user
-    delete destroy_user_session_path(format: 'xml')
-    assert_response :no_content
-    refute warden.authenticated?(:user)
   end
 
   test 'sign out with json format returns no content' do

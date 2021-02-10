@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/rails/activemodel-serializers-xml.git
-  revision: 694f4071c6b16e4c8597cc323c241b5f787b3ea8
-  specs:
-    activemodel-serializers-xml (1.0.2)
-      activemodel (>= 5.0.0.a)
-      activesupport (>= 5.0.0.a)
-      builder (~> 3.1)
-
-GIT
   remote: https://github.com/rails/rails-controller-testing.git
   revision: 4b15c86e82ee380f2a7cc009e470368f7520560a
   specs:
@@ -213,7 +204,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activemodel-serializers-xml!
   devise!
   mocha (~> 1.1)
   omniauth

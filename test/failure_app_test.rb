@@ -220,8 +220,8 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'works for any navigational format' do
-      swap Devise, navigational_formats: [:xml] do
-        call_failure('formats' => Mime[:xml])
+      swap Devise, navigational_formats: [:json] do
+        call_failure('formats' => Mime[:json])
         assert_equal 302, @response.first
       end
     end
@@ -236,7 +236,7 @@ class FailureTest < ActiveSupport::TestCase
 
   context 'For HTTP request' do
     test 'return 401 status' do
-      call_failure('formats' => Mime[:xml])
+      call_failure('formats' => Mime[:json])
       assert_equal 401, @response.first
     end
 
@@ -258,13 +258,13 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'return WWW-authenticate headers if model allows' do
-      call_failure('formats' => Mime[:xml])
+      call_failure('formats' => Mime[:json])
       assert_equal 'Basic realm="Application"', @response.second["WWW-Authenticate"]
     end
 
     test 'does not return WWW-authenticate headers if model does not allow' do
       swap Devise, http_authenticatable: false do
-        call_failure('formats' => Mime[:xml])
+        call_failure('formats' => Mime[:json])
         assert_nil @response.second["WWW-Authenticate"]
       end
     end

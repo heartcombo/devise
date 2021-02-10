@@ -209,7 +209,7 @@ class CustomizedRoutingTest < ActionController::TestCase
 
     assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_in', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_in.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_in.json', method: :get})
     end
   end
 
@@ -219,7 +219,7 @@ class CustomizedRoutingTest < ActionController::TestCase
 
     assert_recognizes(expected_params, {path: '/htmlonly_admin/password', method: :post})
     assert_raise ExpectedRoutingError do
-      assert_recognizes(expected_params, {path: '/htmlonly_admin/password.xml', method: :post})
+      assert_recognizes(expected_params, {path: '/htmlonly_admin/password.json', method: :post})
     end
   end
 
@@ -229,7 +229,7 @@ class CustomizedRoutingTest < ActionController::TestCase
 
     assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_up', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_up.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_up.json', method: :get})
     end
   end
 
@@ -239,7 +239,7 @@ class CustomizedRoutingTest < ActionController::TestCase
 
     assert_recognizes(expected_params, {path: '/htmlonly_users/confirmation', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes(expected_params, {path: '/htmlonly_users/confirmation.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_users/confirmation.json', method: :get})
     end
   end
 
@@ -249,12 +249,12 @@ class CustomizedRoutingTest < ActionController::TestCase
 
     assert_recognizes(expected_params, {path: '/htmlonly_users/unlock', method: :get})
     assert_raise ExpectedRoutingError do
-      assert_recognizes(expected_params, {path: '/htmlonly_users/unlock.xml', method: :get})
+      assert_recognizes(expected_params, {path: '/htmlonly_users/unlock.json', method: :get})
     end
   end
 
   test 'map with format false is not permanent' do
-    assert_equal "/set.xml", @routes.url_helpers.set_path(:xml)
+    assert_equal "/set.json", @routes.url_helpers.set_path(:json)
   end
 
   test 'checks if mapping has proper configuration for omniauth callback' do

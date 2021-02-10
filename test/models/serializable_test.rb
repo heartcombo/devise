@@ -7,21 +7,6 @@ class SerializableTest < ActiveSupport::TestCase
     @user = create_user
   end
 
-  test 'should not include unsafe keys on XML' do
-    assert_match(/email/, @user.to_xml)
-    assert_no_match(/confirmation-token/, @user.to_xml)
-  end
-
-  test 'should not include unsafe keys on XML even if a new except is provided' do
-    assert_no_match(/email/, @user.to_xml(except: :email))
-    assert_no_match(/confirmation-token/, @user.to_xml(except: :email))
-  end
-
-  test 'should include unsafe keys on XML if a force_except is provided' do
-    assert_no_match(/<email/, @user.to_xml(force_except: :email))
-    assert_match(/confirmation-token/, @user.to_xml(force_except: :email))
-  end
-
   test 'should not include unsafe keys on JSON' do
     keys = from_json().keys.select{ |key| !key.include?("id") }
     assert_equal %w(created_at email facebook_token updated_at username), keys.sort

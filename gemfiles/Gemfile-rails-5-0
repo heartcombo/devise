@@ -9,8 +9,6 @@ gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
 
-gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
-
 gem "rails-controller-testing"
 
 gem "responders", "~> 2.1"

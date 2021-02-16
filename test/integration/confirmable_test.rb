@@ -214,40 +214,32 @@ class ConfirmationTest < Devise::IntegrationTest
     end
   end
 
-  test 'resent confirmation token with valid E-Mail in XML format should return valid response' do
+  test 'resent confirmation token with valid e-mail in JSON format should return empty and valid response' do
     user = create_user(confirm: false)
-    post user_confirmation_path(format: 'xml'), params: { user: { email: user.email } }
-    assert_response :success
-    assert_equal({}.to_xml, response.body)
-  end
-
-  test 'resent confirmation token with invalid E-Mail in XML format should return invalid response' do
-    create_user(confirm: false)
-    post user_confirmation_path(format: 'xml'), params: { user: { email: 'invalid.test@test.com' } }
-    assert_response :unprocessable_entity
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
-  end
-
-  test 'confirm account with valid confirmation token in XML format should return valid response' do
-    user = create_user(confirm: false)
-    get user_confirmation_path(confirmation_token: user.raw_confirmation_token, format: 'xml')
-    assert_response :success
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
-  end
-
-  test 'confirm account with invalid confirmation token in XML format should return invalid response' do
-    create_user(confirm: false)
-    get user_confirmation_path(confirmation_token: 'invalid_confirmation', format: 'xml')
-    assert_response :unprocessable_entity
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
-  end
-
-  test 'request an account confirmation account with JSON, should return an empty JSON' do
-    user = create_user(confirm: false)
-
-    post user_confirmation_path, params: { user: { email: user.email }, format: :json }
+    post user_confirmation_path(format: 'json'), params: { user: { email: user.email } }
     assert_response :success
     assert_equal({}.to_json, response.body)
+  end
+
+  test 'resent confirmation token with invalid e-mail in JSON format should return invalid response' do
+    create_user(confirm: false)
+    post user_confirmation_path(format: 'json'), params: { user: { email: 'invalid.test@test.com' } }
+    assert_response :unprocessable_entity
+    assert_includes response.body, '{"errors":{'
+  end
+
+  test 'confirm account with valid confirmation token in JSON format should return valid response' do
+    user = create_user(confirm: false)
+    get user_confirmation_path(confirmation_token: user.raw_confirmation_token, format: 'json')
+    assert_response :success
+    assert_includes response.body, '{"user":{'
+  end
+
+  test 'confirm account with invalid confirmation token in JSON format should return invalid response' do
+    create_user(confirm: false)
+    get user_confirmation_path(confirmation_token: 'invalid_confirmation', format: 'json')
+    assert_response :unprocessable_entity
+    assert_includes response.body, '{"confirmation_token":['
   end
 
   test "when in paranoid mode and with a valid e-mail, should not say that the e-mail is valid" do

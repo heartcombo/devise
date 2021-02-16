@@ -261,63 +261,53 @@ class PasswordTest < Devise::IntegrationTest
     end
   end
 
-  test 'reset password request with valid E-Mail in XML format should return valid response' do
+  test 'reset password request with valid e-mail in JSON format should return empty and valid response' do
     create_user
-    post user_password_path(format: 'xml'), params: { user: {email: "user@test.com"} }
+    post user_password_path(format: 'json'), params: { user: {email: "user@test.com"} }
     assert_response :success
-    assert_equal({}.to_xml, response.body)
+    assert_equal({}.to_json, response.body)
   end
 
-  test 'reset password request with invalid E-Mail in XML format should return valid response' do
+  test 'reset password request with invalid e-mail in JSON format should return valid response' do
     create_user
-    post user_password_path(format: 'xml'), params: { user: {email: "invalid.test@test.com"} }
+    post user_password_path(format: 'json'), params: { user: {email: "invalid.test@test.com"} }
     assert_response :unprocessable_entity
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, '{"errors":{'
   end
 
-  test 'reset password request with invalid E-Mail in XML format should return empty and valid response' do
+  test 'reset password request with invalid e-mail in JSON format should return empty and valid response in paranoid mode' do
     swap Devise, paranoid: true do
       create_user
-      post user_password_path(format: 'xml'), params: { user: {email: "invalid@test.com"} }
+      post user_password_path(format: 'json'), params: { user: {email: "invalid@test.com"} }
       assert_response :success
-      assert_equal({}.to_xml, response.body)
+      assert_equal({}.to_json, response.body)
     end
   end
 
-  test 'change password with valid parameters in XML format should return valid response' do
+  test 'change password with valid parameters in JSON format should return valid response' do
     create_user
     request_forgot_password
-    put user_password_path(format: 'xml'), params: { user: {
+    put user_password_path(format: 'json'), params: { user: {
       reset_password_token: 'abcdef', password: '987654321', password_confirmation: '987654321'
-      }
-    }
+    } }
     assert_response :success
     assert warden.authenticated?(:user)
   end
 
-  test 'change password with invalid token in XML format should return invalid response' do
+  test 'change password with invalid token in JSON format should return invalid response' do
     create_user
     request_forgot_password
-    put user_password_path(format: 'xml'), params: { user: {reset_password_token: 'invalid.token', password: '987654321', password_confirmation: '987654321'} }
+    put user_password_path(format: 'json'), params: { user: {reset_password_token: 'invalid.token', password: '987654321', password_confirmation: '987654321'} }
     assert_response :unprocessable_entity
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, '{"errors":{'
   end
 
-  test 'change password with invalid new password in XML format should return invalid response' do
+  test 'change password with invalid new password in JSON format should return invalid response' do
     user = create_user
     request_forgot_password
-    put user_password_path(format: 'xml'), params: { user: {reset_password_token: user.reload.reset_password_token, password: '', password_confirmation: '987654321'} }
+    put user_password_path(format: 'json'), params: { user: {reset_password_token: user.reload.reset_password_token, password: '', password_confirmation: '987654321'} }
     assert_response :unprocessable_entity
-    assert_includes response.body, %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
-  end
-
-  test "when using json requests to ask a confirmable request, should not return the object" do
-    user = create_user(confirm: false)
-
-    post user_password_path(format: :json), params: { user: { email: user.email } }
-
-    assert_response :success
-    assert_equal "{}", response.body
+    assert_includes response.body, '{"errors":{'
   end
 
   test "when in paranoid mode and with an invalid e-mail, asking to reset a password should display a message that does not indicates that the e-mail does not exists in the database" do

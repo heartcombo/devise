@@ -28,7 +28,7 @@ module Devise
                 :class_name, :sign_out_via, :format, :used_routes, :used_helpers,
                 :failure_app, :router_name
 
-    alias :name :singular
+    alias name singular
 
     # Receives an object and find a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.

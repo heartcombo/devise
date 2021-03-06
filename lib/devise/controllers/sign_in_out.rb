@@ -115,7 +115,7 @@ module Devise
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
 
-      alias :expire_data_after_sign_out! :expire_data_after_sign_in!
+      alias expire_data_after_sign_out! expire_data_after_sign_in!
     end
   end
 end

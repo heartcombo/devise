@@ -19,8 +19,8 @@ module Devise
 
       def add_devise_routes
         devise_route  = "devise_for :#{plural_name}".dup
-        devise_route << %Q(, class_name: "#{class_name}") if class_name.include?("::")
-        devise_route << %Q(, skip: :all) unless options.routes?
+        devise_route << %(, class_name: "#{class_name}") if class_name.include?("::")
+        devise_route << %(, skip: :all) unless options.routes?
         route devise_route
       end
     end

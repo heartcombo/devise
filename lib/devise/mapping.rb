@@ -154,25 +154,25 @@ module Devise
     def default_used_route(options)
       singularizer = lambda { |s| s.to_s.singularize.to_sym }
 
-      if options.has_key?(:only)
-        @used_routes = self.routes & Array(options[:only]).map(&singularizer)
+      @used_routes = if options.has_key?(:only)
+        self.routes & Array(options[:only]).map(&singularizer)
       elsif options[:skip] == :all
-        @used_routes = []
+        []
       else
-        @used_routes = self.routes - Array(options[:skip]).map(&singularizer)
-      end
+        self.routes - Array(options[:skip]).map(&singularizer)
+                     end
     end
 
     def default_used_helpers(options)
       singularizer = lambda { |s| s.to_s.singularize.to_sym }
 
-      if options[:skip_helpers] == true
-        @used_helpers = @used_routes
+      @used_helpers = if options[:skip_helpers] == true
+        @used_routes
       elsif skip = options[:skip_helpers]
-        @used_helpers = self.routes - Array(skip).map(&singularizer)
+        self.routes - Array(skip).map(&singularizer)
       else
-        @used_helpers = self.routes
-      end
+        self.routes
+                      end
     end
   end
 end

@@ -142,12 +142,12 @@ module Devise
     end
 
     def default_constraints(options)
-      @constraints = Hash.new
+      @constraints = {}
       @constraints.merge!(options[:constraints]) if options[:constraints]
     end
 
     def default_defaults(options)
-      @defaults = Hash.new
+      @defaults = {}
       @defaults.merge!(options[:defaults]) if options[:defaults]
     end
 

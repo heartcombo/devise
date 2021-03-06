@@ -6,7 +6,7 @@ require 'test_models'
 class ActiveRecordTest < ActiveSupport::TestCase
   def include_module?(klass, mod)
     klass.devise_modules.include?(mod) &&
-      klass.included_modules.include?(Devise::Models::const_get(mod.to_s.classify))
+      klass.included_modules.include?(Devise::Models.const_get(mod.to_s.classify))
   end
 
   def assert_include_modules(klass, *modules)
@@ -46,7 +46,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_include_modules Admin, *incorrect_module_order
 
     # get module constants from symbol list
-    module_constants = correct_module_order.collect { |mod| Devise::Models::const_get(mod.to_s.classify) }
+    module_constants = correct_module_order.collect { |mod| Devise::Models.const_get(mod.to_s.classify) }
 
     # confirm that they adhere to the order in ALL
     # get included modules, filter out the noise, and reverse the order

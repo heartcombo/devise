@@ -17,10 +17,10 @@ class EmailChangedTest < ActionMailer::TestCase
   end
 
   def user
-    @user ||= create_user.tap { |u|
+    @user ||= create_user.tap do |u|
       @original_user_email = u.email
       u.update!(email: 'new-email@example.com')
-    }
+    end
   end
 
   def mail
@@ -106,10 +106,10 @@ class EmailChangedReconfirmationTest < ActionMailer::TestCase
   end
 
   def admin
-    @admin ||= create_admin.tap { |u|
+    @admin ||= create_admin.tap do |u|
       @original_admin_email = u.email
       u.update!(email: 'new-email@example.com')
-    }
+    end
   end
 
   def mail

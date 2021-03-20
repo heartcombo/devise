@@ -37,7 +37,7 @@ module Devise
         return if new_record?
 
         update_tracked_fields(request)
-        save(validate: false)
+        save(validate: false, touch: false)
       end
 
       protected

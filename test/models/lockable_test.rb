@@ -50,6 +50,32 @@ class LockableTest < ActiveSupport::TestCase
     assert_equal initial_failed_attempts + 2, user.reload.failed_attempts
   end
 
+  test "reset_failed_attempts! updates the failed attempts counter back to 0" do
+    user = create_user(failed_attempts: 3)
+    assert_equal 3, user.failed_attempts
+
+    user.reset_failed_attempts!
+    assert_equal 0, user.failed_attempts
+
+    user.reset_failed_attempts!
+    assert_equal 0, user.failed_attempts
+  end
+
+  test "reset_failed_attempts! does not run model validations" do
+    user = create_user(failed_attempts: 1)
+    user.expects(:after_validation_callback).never
+
+    assert user.reset_failed_attempts!
+    assert_equal 0, user.failed_attempts
+  end
+
+  test "reset_failed_attempts! does not try to reset if not using failed attempts strategy" do
+    admin = create_admin
+
+    refute_respond_to admin, :failed_attempts
+    refute admin.reset_failed_attempts!
+  end
+
   test 'should be valid for authentication with a unlocked user' do
     user = create_user
     user.lock_access!

@@ -97,8 +97,8 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'should respond to password and password confirmation' do
     user = new_user
-    assert user.respond_to?(:password)
-    assert user.respond_to?(:password_confirmation)
+    assert_respond_to user, :password
+    assert_respond_to user, :password_confirmation
   end
 
   test 'should generate a hashed password while setting password' do
@@ -149,7 +149,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should respond to current password' do
-    assert new_user.respond_to?(:current_password)
+    assert_respond_to new_user, :current_password
   end
 
   test 'should update password with valid current password' do

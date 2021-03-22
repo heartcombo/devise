@@ -129,8 +129,8 @@ class RememberableTest < ActiveSupport::TestCase
   end
 
   test 'should respond to remember_me attribute' do
-    assert resource_class.new.respond_to?(:remember_me)
-    assert resource_class.new.respond_to?(:remember_me=)
+    assert_respond_to resource_class.new, :remember_me
+    assert_respond_to resource_class.new, :remember_me=
   end
 
   test 'forget_me should clear remember_created_at if expire_all_remember_me_on_sign_out is true' do

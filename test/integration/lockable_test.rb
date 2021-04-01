@@ -230,4 +230,21 @@ class LockTest < Devise::IntegrationTest
     end
   end
 
+  test "with skip_lockable, user failed attempts should not be cleared" do
+    user = create_user
+    user.update!(failed_attempts: 1)
+
+    sign_in_as_user do
+      header 'devise.skip_lockable', '1'
+    end
+
+    assert_equal 1, user.reload.failed_attempts
+    delete destroy_user_session_path
+
+    sign_in_as_user do
+      header 'devise.skip_lockable', false
+    end
+
+    assert_equal 0, user.reload.failed_attempts
+  end
 end

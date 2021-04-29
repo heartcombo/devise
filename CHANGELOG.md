@@ -1,5 +1,7 @@
 ### unreleased
 
+### 4.8.0 - 2021-04-29
+
 * enhancements
   * Devise now enables the upgrade of OmniAuth 2+. Previously Devise would raise an error if you'd try to upgrade. Please note that OmniAuth 2 is considered a security upgrade and recommended to everyone. You can read more about the details (and possible necessary changes to your app as part of the upgrade) in [their release notes](https://github.com/omniauth/omniauth/releases/tag/v2.0.0). [Devise's OmniAuth Overview wiki](https://github.com/heartcombo/devise/wiki/OmniAuth:-Overview) was also updated to cover OmniAuth 2.0 requirements.
     - Note that the upgrade required Devise shared links that initiate the OmniAuth flow to be changed to `method: :post`, which is now a requirement for OmniAuth, part of the security improvement. If you have copied and customized the Devise shared links partial to your app, or if you have other links in your app that initiate the OmniAuth flow, they will have to be updated to use `method: :post`, or changed to use buttons (e.g. `button_to`) to work with OmniAuth 2. (if you're using links with `method: :post`, make sure your app has `rails-ujs` or `jquery-ujs` included in order for these links to work properly.)

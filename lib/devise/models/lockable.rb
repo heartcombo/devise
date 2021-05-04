@@ -57,6 +57,14 @@ module Devise
         save(validate: false)
       end
 
+      # Resets failed attempts counter to 0.
+      def reset_failed_attempts!
+        if respond_to?(:failed_attempts) && !failed_attempts.to_i.zero?
+          self.failed_attempts = 0
+          save(validate: false)
+        end
+      end
+
       # Verifies whether a user is locked or not.
       def access_locked?
         !!locked_at && !lock_expired?
@@ -110,7 +118,7 @@ module Devise
           false
         end
       end
-      
+
       def increment_failed_attempts
         self.class.increment_counter(:failed_attempts, id)
         reload
@@ -168,7 +176,7 @@ module Devise
         # unlock instructions to it. If not user is found, returns a new user
         # with an email not found error.
         # Options must contain the user's unlock keys
-        def send_unlock_instructions(attributes={})
+        def send_unlock_instructions(attributes = {})
           lockable = find_or_initialize_with_errors(unlock_keys, attributes, :not_found)
           lockable.resend_unlock_instructions if lockable.persisted?
           lockable

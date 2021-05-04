@@ -301,10 +301,6 @@ module Devise
   mattr_accessor :current_user_attempts_login
   @@current_user_attempts_login = true
 
-  def self.rails51? # :nodoc:
-    Rails.gem_version >= Gem::Version.new("5.1.x")
-  end
-
   def self.activerecord51? # :nodoc:
     defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
   end

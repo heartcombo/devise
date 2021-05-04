@@ -97,8 +97,8 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'should respond to password and password confirmation' do
     user = new_user
-    assert user.respond_to?(:password)
-    assert user.respond_to?(:password_confirmation)
+    assert_respond_to user, :password
+    assert_respond_to user, :password_confirmation
   end
 
   test 'should generate a hashed password while setting password' do
@@ -108,7 +108,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
 
   test 'should support custom hashing methods' do
     user = UserWithCustomHashing.new(password: '654321')
-    assert_equal user.encrypted_password, '123456'
+    assert_equal '123456', user.encrypted_password
   end
 
   test 'allow authenticatable_salt to work even with nil hashed password' do
@@ -149,7 +149,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'should respond to current password' do
-    assert new_user.respond_to?(:current_password)
+    assert_respond_to new_user, :current_password
   end
 
   test 'should update password with valid current password' do
@@ -293,18 +293,18 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should be encryptable_password and the email field by default' do
-    assert_equal Devise::Models::DatabaseAuthenticatable.required_fields(User), [
+    assert_equal [
       :encrypted_password,
       :email
-    ]
+    ], Devise::Models::DatabaseAuthenticatable.required_fields(User)
   end
 
   test 'required_fields should be encryptable_password and the login when the login is on authentication_keys' do
     swap Devise, authentication_keys: [:login] do
-      assert_equal Devise::Models::DatabaseAuthenticatable.required_fields(User), [
+      assert_equal [
         :encrypted_password,
         :login
-      ]
+      ], Devise::Models::DatabaseAuthenticatable.required_fields(User)
     end
   end
 end

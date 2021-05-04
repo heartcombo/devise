@@ -10,7 +10,7 @@ module Devise
       # cause exceptions to be thrown from this method; if you simply want to check
       # if a scope has already previously been authenticated without running
       # authentication hooks, you can directly call `warden.authenticated?(scope: scope)`
-      def signed_in?(scope=nil)
+      def signed_in?(scope = nil)
         [scope || Devise.mappings.keys].flatten.any? do |_scope|
           warden.authenticate?(scope: _scope)
         end
@@ -77,7 +77,7 @@ module Devise
       #   sign_out :user     # sign_out(scope)
       #   sign_out @user     # sign_out(resource)
       #
-      def sign_out(resource_or_scope=nil)
+      def sign_out(resource_or_scope = nil)
         return sign_out_all_scopes unless resource_or_scope
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         user = warden.user(scope: scope, run_callbacks: false) # If there is no user
@@ -92,7 +92,7 @@ module Devise
       # Sign out all active users or scopes. This helper is useful for signing out all roles
       # in one click. This signs out ALL scopes in warden. Returns true if there was at least one logout
       # and false if there was no user logged in on all scopes.
-      def sign_out_all_scopes(lock=true)
+      def sign_out_all_scopes(lock = true)
         users = Devise.mappings.keys.map { |s| warden.user(scope: s, run_callbacks: false) }
 
         warden.logout
@@ -106,10 +106,12 @@ module Devise
       private
 
       def expire_data_after_sign_in!
+        # TODO: remove once Rails 5.2+ and forward are only supported.
         # session.keys will return an empty array if the session is not yet loaded.
         # This is a bug in both Rack and Rails.
         # A call to #empty? forces the session to be loaded.
         session.empty?
+
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
 

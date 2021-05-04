@@ -20,7 +20,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_current_url "/admin_area/home"
 
     admin = Admin.to_adapter.find_first(order: [:id, :desc])
-    assert_equal admin.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', admin.email
   end
 
   test 'a guest admin should be able to sign in and be redirected to a custom location' do
@@ -69,7 +69,7 @@ class RegistrationTest < Devise::IntegrationTest
     refute warden.authenticated?(:user)
 
     user = User.to_adapter.find_first(order: [:id, :desc])
-    assert_equal user.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', user.email
     refute user.confirmed?
   end
 
@@ -189,7 +189,7 @@ class RegistrationTest < Devise::IntegrationTest
       fill_in 'current password', with: '12345678'
       click_button 'Update'
 
-      assert_contain 'Your account has been updated successfully, but since your password was changed, you need to sign in again'
+      assert_contain 'Your account has been updated successfully, but since your password was changed, you need to sign in again.'
       assert_equal new_user_session_path, @request.path
       refute warden.authenticated?(:user)
     end
@@ -254,7 +254,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "Password confirmation doesn't match Password"
     refute User.to_adapter.find_first.valid_password?('pas123')
   end
-  
+
   test 'a signed in user should see a warning about minimum password length' do
     sign_in_as_user
     get edit_user_registration_path
@@ -268,7 +268,7 @@ class RegistrationTest < Devise::IntegrationTest
     click_button "Cancel my account"
     assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
 
-    assert User.to_adapter.find_all.empty?
+    assert_empty User.to_adapter.find_all
   end
 
   test 'a user should be able to cancel sign up by deleting data in the session' do
@@ -283,13 +283,6 @@ class RegistrationTest < Devise::IntegrationTest
     assert_redirected_to new_user_registration_path
   end
 
-  test 'a user with XML sign up stub' do
-    get new_user_registration_path(format: 'xml')
-    assert_response :success
-    assert_match %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>), response.body
-    assert_no_match(/<confirmation-token/, response.body)
-  end
-
   test 'a user with JSON sign up stub' do
     get new_user_registration_path(format: 'json')
     assert_response :success
@@ -297,49 +290,49 @@ class RegistrationTest < Devise::IntegrationTest
     assert_no_match(/"confirmation_token"/, response.body)
   end
 
-  test 'an admin sign up with valid information in XML format should return valid response' do
-    post admin_registration_path(format: 'xml'), params: { admin: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
+  test 'an admin sign up with valid information in JSON format should return valid response' do
+    post admin_registration_path(format: 'json'), params: { admin: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<admin>)
+    assert_includes response.body, '{"admin":{'
 
     admin = Admin.to_adapter.find_first(order: [:id, :desc])
-    assert_equal admin.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', admin.email
   end
 
-  test 'a user sign up with valid information in XML format should return valid response' do
-    post user_registration_path(format: 'xml'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
+  test 'a user sign up with valid information in JSON format should return valid response' do
+    post user_registration_path(format: 'json'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'new_user123' } }
     assert_response :success
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
+    assert_includes response.body, '{"user":{'
 
     user = User.to_adapter.find_first(order: [:id, :desc])
-    assert_equal user.email, 'new_user@test.com'
+    assert_equal 'new_user@test.com', user.email
   end
 
-  test 'a user sign up with invalid information in XML format should return invalid response' do
-    post user_registration_path(format: 'xml'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'invalid' } }
+  test 'a user sign up with invalid information in JSON format should return invalid response' do
+    post user_registration_path(format: 'json'), params: { user: { email: 'new_user@test.com', password: 'new_user123', password_confirmation: 'invalid' } }
     assert_response :unprocessable_entity
-    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>)
+    assert_includes response.body, '{"errors":{'
   end
 
-  test 'a user update information with valid data in XML format should return valid response' do
+  test 'a user update information with valid data in JSON format should return valid response' do
     user = sign_in_as_user
-    put user_registration_path(format: 'xml'), params: { user: { current_password: '12345678', email: 'user.new@test.com' } }
+    put user_registration_path(format: 'json'), params: { user: { current_password: '12345678', email: 'user.new@test.com' } }
     assert_response :success
-    assert_equal user.reload.email, 'user.new@test.com'
+    assert_equal 'user.new@test.com', user.reload.email
   end
 
-  test 'a user update information with invalid data in XML format should return invalid response' do
+  test 'a user update information with invalid data in JSON format should return invalid response' do
     user = sign_in_as_user
-    put user_registration_path(format: 'xml'), params: { user: { current_password: 'invalid', email: 'user.new@test.com' } }
+    put user_registration_path(format: 'json'), params: { user: { current_password: 'invalid', email: 'user.new@test.com' } }
     assert_response :unprocessable_entity
-    assert_equal user.reload.email, 'user@test.com'
+    assert_equal 'user@test.com', user.reload.email
   end
 
-  test 'a user cancel their account in XML format should return valid response' do
+  test 'a user cancel their account in JSON format should return valid response' do
     sign_in_as_user
-    delete user_registration_path(format: 'xml')
+    delete user_registration_path(format: 'json')
     assert_response :success
-    assert_equal User.to_adapter.find_all.size, 0
+    assert_equal 0, User.to_adapter.find_all.size
   end
 end
 

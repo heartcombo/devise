@@ -11,7 +11,7 @@ module Devise
       source_root File.expand_path("../../templates", __FILE__)
 
       desc "Creates a Devise initializer and copy locale files to your application."
-      class_option :orm
+      class_option :orm, required: true
 
       def copy_initializer
         unless options[:orm]
@@ -36,10 +36,6 @@ module Devise
 
       def show_readme
         readme "README" if behavior == :invoke
-      end
-
-      def rails_4?
-        Rails::VERSION::MAJOR == 4
       end
     end
   end

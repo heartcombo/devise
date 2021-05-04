@@ -116,6 +116,6 @@ class ValidatableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should be an empty array' do
-    assert_equal Devise::Models::Validatable.required_fields(User), []
+    assert_equal [], Devise::Models::Validatable.required_fields(User)
   end
 end

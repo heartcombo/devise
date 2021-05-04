@@ -71,7 +71,6 @@ module Devise
       end
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
-      # self.response = recall_app(warden_options[:recall]).call(env)
       self.response = recall_app(warden_options[:recall]).call(request.env)
     end
 

@@ -35,7 +35,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
   end
 
   test 'content type should be set to html' do
-    assert mail.content_type.include?('text/html')
+    assert_includes mail.content_type, 'text/html'
   end
 
   test 'send unlock instructions to the user email' do
@@ -85,7 +85,7 @@ class UnlockInstructionsTest < ActionMailer::TestCase
     host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 
     if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/unlock\?unlock_token=([^"]+)">}
-      assert_equal Devise.token_generator.digest(user.class, :unlock_token, $1), user.unlock_token
+      assert_equal user.unlock_token, Devise.token_generator.digest(user.class, :unlock_token, $1)
     else
       flunk "expected unlock url regex to match"
     end

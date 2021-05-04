@@ -7,7 +7,7 @@ class ActionDispatch::IntegrationTest
     request.env['warden']
   end
 
-  def create_user(options={})
+  def create_user(options = {})
     @user ||= begin
       user = User.create!(
         username: 'usertest',
@@ -24,7 +24,7 @@ class ActionDispatch::IntegrationTest
     end
   end
 
-  def create_admin(options={})
+  def create_admin(options = {})
     @admin ||= begin
       admin = Admin.create!(
         email: options[:email] || 'admin@test.com',
@@ -36,7 +36,7 @@ class ActionDispatch::IntegrationTest
     end
   end
 
-  def sign_in_as_user(options={}, &block)
+  def sign_in_as_user(options = {}, &block)
     user = create_user(options)
     visit_with_option options[:visit], new_user_session_path
     fill_in 'email', with: options[:email] || 'user@test.com'
@@ -47,7 +47,7 @@ class ActionDispatch::IntegrationTest
     user
   end
 
-  def sign_in_as_admin(options={}, &block)
+  def sign_in_as_admin(options = {}, &block)
     admin = create_admin(options)
     visit_with_option options[:visit], new_admin_session_path
     fill_in 'email', with: 'admin@test.com'
@@ -61,7 +61,7 @@ class ActionDispatch::IntegrationTest
   # account Middleware redirects.
   #
   def assert_redirected_to(url)
-    assert [301, 302].include?(@integration_session.status),
+    assert_includes [301, 302], @integration_session.status,
            "Expected status to be 301 or 302, got #{@integration_session.status}"
 
     assert_url url, @integration_session.headers["Location"]

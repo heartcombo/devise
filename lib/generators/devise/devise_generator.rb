@@ -13,7 +13,7 @@ module Devise
       desc "Generates a model with the given NAME (if one does not exist) with devise " \
            "configuration plus a migration file and devise routes."
 
-      hook_for :orm
+      hook_for :orm, required: true
 
       class_option :routes, desc: "Generate routes", type: :boolean, default: true
 

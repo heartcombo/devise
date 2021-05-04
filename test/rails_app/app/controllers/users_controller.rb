@@ -3,7 +3,8 @@
 class UsersController < ApplicationController
   prepend_before_action :current_user, only: :exhibit
   before_action :authenticate_user!, except: [:accept, :exhibit]
-  respond_to :html, :xml
+  clear_respond_to
+  respond_to :html, :json
 
   def index
     user_session[:cart] = "Cart"

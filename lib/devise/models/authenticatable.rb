@@ -2,6 +2,7 @@
 
 require 'devise/hooks/activatable'
 require 'devise/hooks/csrf_cleaner'
+require 'devise/rails/deprecated_constant_accessor'
 
 module Devise
   module Models
@@ -55,10 +56,13 @@ module Devise
     module Authenticatable
       extend ActiveSupport::Concern
 
-      BLACKLIST_FOR_SERIALIZATION = [:encrypted_password, :reset_password_token, :reset_password_sent_at,
+      UNSAFE_ATTRIBUTES_FOR_SERIALIZATION = [:encrypted_password, :reset_password_token, :reset_password_sent_at,
         :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip,
         :last_sign_in_ip, :password_salt, :confirmation_token, :confirmed_at, :confirmation_sent_at,
         :remember_token, :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at]
+
+      include Devise::DeprecatedConstantAccessor
+      deprecate_constant "BLACKLIST_FOR_SERIALIZATION", "Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION"
 
       included do
         class_attribute :devise_modules, instance_writer: false
@@ -104,12 +108,12 @@ module Devise
       # given to :except will simply add names to exempt to Devise internal list.
       def serializable_hash(options = nil)
         options = options.try(:dup) || {}
-        options[:except] = Array(options[:except])
+        options[:except] = Array(options[:except]).dup
 
         if options[:force_except]
           options[:except].concat Array(options[:force_except])
         else
-          options[:except].concat BLACKLIST_FOR_SERIALIZATION
+          options[:except].concat UNSAFE_ATTRIBUTES_FOR_SERIALIZATION
         end
 
         super(options)
@@ -152,7 +156,7 @@ module Devise
       #         # If the record is new or changed then delay the
       #         # delivery until the after_commit callback otherwise
       #         # send now because after_commit will not be called.
-      #         # For Rails < 6 is `changed?` instead of `saved_changes?`.
+      #         # For Rails < 6 use `changed?` instead of `saved_changes?`.
       #         if new_record? || saved_changes?
       #           pending_devise_notifications << [notification, args]
       #         else
@@ -272,17 +276,17 @@ module Devise
           find_first_by_auth_conditions(tainted_conditions)
         end
 
-        def find_first_by_auth_conditions(tainted_conditions, opts={})
+        def find_first_by_auth_conditions(tainted_conditions, opts = {})
           to_adapter.find_first(devise_parameter_filter.filter(tainted_conditions).merge(opts))
         end
 
         # Find or initialize a record setting an error if it can't be found.
-        def find_or_initialize_with_error_by(attribute, value, error=:invalid) #:nodoc:
+        def find_or_initialize_with_error_by(attribute, value, error = :invalid) #:nodoc:
           find_or_initialize_with_errors([attribute], { attribute => value }, error)
         end
 
         # Find or initialize a record with group of attributes based on a list of required attributes.
-        def find_or_initialize_with_errors(required_attributes, attributes, error=:invalid) #:nodoc:
+        def find_or_initialize_with_errors(required_attributes, attributes, error = :invalid) #:nodoc:
           attributes.try(:permit!)
           attributes = attributes.to_h.with_indifferent_access
                                  .slice(*required_attributes)

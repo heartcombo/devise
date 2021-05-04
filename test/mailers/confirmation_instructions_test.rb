@@ -31,7 +31,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
   end
 
   test 'content type should be set to html' do
-    assert mail.content_type.include?('text/html')
+    assert_includes mail.content_type, 'text/html'
   end
 
   test 'send confirmation instructions to the user email' do
@@ -88,7 +88,7 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 
     if mail.body.encoded =~ %r{<a href=\"http://#{host}:#{port}/users/confirmation\?confirmation_token=([^"]+)">}
-      assert_equal $1, user.confirmation_token
+      assert_equal user.confirmation_token, $1
     else
       flunk "expected confirmation url regex to match"
     end

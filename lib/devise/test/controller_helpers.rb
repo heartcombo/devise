@@ -37,6 +37,8 @@ module Devise
         @response
       end
 
+      ruby2_keywords(:process) if respond_to?(:ruby2_keywords, true)
+
       # We need to set up the environment variables and the response in the controller.
       def setup_controller_for_warden #:nodoc:
         @request.env['action_controller.instance'] = @controller
@@ -141,7 +143,7 @@ module Devise
           @controller.response.headers.merge!(headers)
           @controller.response.content_type = headers["Content-Type"] unless Rails::VERSION::MAJOR >= 5
           @controller.status = status
-          @controller.response.body = response.body
+          @controller.response_body = response.body
           nil # causes process return @response
         end
 

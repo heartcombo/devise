@@ -28,7 +28,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     confirmation_tokens = []
     3.times do
       token = create_user.confirmation_token
-      assert !confirmation_tokens.include?(token)
+      refute_includes confirmation_tokens, token
       confirmation_tokens << token
     end
   end
@@ -61,7 +61,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     raw  = user.raw_confirmation_token
     confirmed_user = User.confirm_by_token(raw)
-    assert_equal confirmed_user, user
+    assert_equal user, confirmed_user
     assert user.reload.confirmed?
   end
 
@@ -160,7 +160,7 @@ class ConfirmableTest < ActiveSupport::TestCase
   test 'should find a user to send confirmation instructions' do
     user = create_user
     confirmation_user = User.send_confirmation_instructions(email: user.email)
-    assert_equal confirmation_user, user
+    assert_equal user, confirmation_user
   end
 
   test 'should return a new user if no email was found' do
@@ -305,7 +305,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     swap Devise, authentication_keys: [:username, :email] do
       user = create_user
       confirm_user = User.send_confirmation_instructions(email: user.email, username: user.username)
-      assert_equal confirm_user, user
+      assert_equal user, confirm_user
     end
   end
 
@@ -322,7 +322,7 @@ class ConfirmableTest < ActiveSupport::TestCase
     user = create_user
     user.update_attribute(:confirmation_sent_at, confirmation_sent_at)
     confirmed_user = User.confirm_by_token(user.raw_confirmation_token)
-    assert_equal confirmed_user, user
+    assert_equal user, confirmed_user
     user.reload.confirmed?
   end
 
@@ -497,7 +497,7 @@ class ReconfirmableTest < ActiveSupport::TestCase
     assert admin.confirm
     assert admin.update(email: 'new_test@example.com')
     confirmation_admin = Admin.send_confirmation_instructions(email: admin.unconfirmed_email)
-    assert_equal confirmation_admin, admin
+    assert_equal admin, confirmation_admin
   end
 
   test 'should return a new admin if no email or unconfirmed_email was found' do
@@ -520,20 +520,20 @@ class ReconfirmableTest < ActiveSupport::TestCase
   end
 
   test 'required_fields should contain the fields that Devise uses' do
-    assert_equal Devise::Models::Confirmable.required_fields(User), [
+    assert_equal [
       :confirmation_token,
       :confirmed_at,
       :confirmation_sent_at
-    ]
+    ], Devise::Models::Confirmable.required_fields(User)
   end
 
   test 'required_fields should also contain unconfirmable when reconfirmable_email is true' do
-    assert_equal Devise::Models::Confirmable.required_fields(Admin), [
+    assert_equal [
       :confirmation_token,
       :confirmed_at,
       :confirmation_sent_at,
       :unconfirmed_email
-    ]
+    ], Devise::Models::Confirmable.required_fields(Admin)
   end
 
   test 'should not require reconfirmation after creating a record' do

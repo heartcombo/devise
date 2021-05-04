@@ -5,7 +5,7 @@ require 'test_helper'
 class OmniAuthRoutesTest < ActionController::TestCase
   tests ApplicationController
 
-  def assert_path(action, provider, with_param=true)
+  def assert_path(action, provider, with_param = true)
     # Resource param
     assert_equal @controller.send(action, :user, provider),
                  @controller.send("user_#{provider}_#{action}")

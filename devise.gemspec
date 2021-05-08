@@ -14,6 +14,14 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/heartcombo/devise"
   s.description = "Flexible authentication solution for Rails with Warden"
   s.authors     = ['José Valim', 'Carlos Antônio']
+  s.metadata    = {
+    "homepage_uri"      => "https://github.com/heartcombo/devise",
+    "documentation_uri" => "https://rubydoc.info/github/heartcombo/devise",
+    "changelog_uri"     => "https://github.com/heartcombo/devise/blob/master/CHANGELOG.md",
+    "source_code_uri"   => "https://github.com/heartcombo/devise",
+    "bug_tracker_uri"   => "https://github.com/heartcombo/devise/issues",
+    "wiki_uri"          => "https://github.com/heartcombo/devise/wiki"
+  }
 
   s.files         = Dir["{app,config,lib}/**/*", "CHANGELOG.md", "MIT-LICENSE", "README.md"]
   s.require_paths = ["lib"]

@@ -9,6 +9,15 @@ module Devise
       include Devise::Controllers::StoreLocation
 
       included do
+        # inside any controller the strategies that are consulted can be configured
+        # such that only whitelisted strategies are run. 
+        # Example:
+        #   self.strategies = :authenticatable
+        #   self.strategies = [:authenticatable, :database_authenticatable]
+        #   self.strategies = { user: :authenticatable, admin: :database_authenticatable }
+        #
+        class_attribute :strategies
+
         if respond_to?(:helper_method)
           helper_method :warden, :signed_in?, :devise_controller?
         end
@@ -46,14 +55,14 @@ module Devise
                 mappings.unshift mappings.delete(favorite.to_sym) if favorite
                 mappings.each do |mapping|
                   opts[:scope] = mapping
-                  warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
+                  warden.authenticate!(*self.class.strategies_for(mapping), opts) if !devise_controller? || opts.delete(:force)
                 end
               end
             end
 
             def #{group_name}_signed_in?
               #{mappings}.any? do |mapping|
-                warden.authenticate?(scope: mapping)
+                warden.authenticate?(*self.class.strategies_for(mapping), scope: mapping)
               end
             end
 
@@ -61,7 +70,7 @@ module Devise
               mappings = #{mappings}
               mappings.unshift mappings.delete(favorite.to_sym) if favorite
               mappings.each do |mapping|
-                current = warden.authenticate(scope: mapping)
+                current = warden.authenticate(*self.class.strategies_for(mapping), scope: mapping)
                 return current if current
               end
               nil
@@ -69,7 +78,7 @@ module Devise
 
             def current_#{group_name.to_s.pluralize}
               #{mappings}.map do |mapping|
-                warden.authenticate(scope: mapping)
+                warden.authenticate(*self.class.strategies_for(mapping), scope: mapping)
               end.compact
             end
 
@@ -82,6 +91,10 @@ module Devise
         def log_process_action(payload)
           payload[:status] ||= 401 unless payload[:exception]
           super
+        end
+
+        def strategies_for(scope)
+          strategies.is_a?(Hash) ? strategies[scope] : strategies
         end
       end
 
@@ -115,7 +128,7 @@ module Devise
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
           def authenticate_#{mapping}!(opts = {})
             opts[:scope] = :#{mapping}
-            warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
+            warden.authenticate!(*self.class.strategies_for(:#{mapping}), opts) if !devise_controller? || opts.delete(:force)
           end
 
           def #{mapping}_signed_in?
@@ -123,7 +136,7 @@ module Devise
           end
 
           def current_#{mapping}
-            @current_#{mapping} ||= warden.authenticate(scope: :#{mapping})
+            @current_#{mapping} ||= warden.authenticate(*self.class.strategies_for(:#{mapping}), scope: :#{mapping})
           end
 
           def #{mapping}_session

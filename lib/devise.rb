@@ -313,7 +313,7 @@ module Devise
     end
 
     def get
-      ActiveSupport::Dependencies.constantize(@name)
+      @name.constantize
     end
   end
 

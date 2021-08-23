@@ -321,14 +321,14 @@ class AuthenticationRedirectTest < Devise::IntegrationTest
   test 'require_no_authentication should set the already_authenticated flash message' do
     sign_in_as_user
     visit new_user_session_path
-    assert_equal I18n.t("devise.failure.already_authenticated"), flash[:alert]
+    assert_equal I18n.t("devise.failure.already_authenticated"), flash[:notice]
   end
 
   test 'require_no_authentication should set the already_authenticated flash message as admin' do
     store_translations :en, devise: { failure: { admin: { already_authenticated: 'You are already signed in as admin.' } } } do
       sign_in_as_admin
       visit new_admin_session_path
-      assert_equal "You are already signed in as admin.", flash[:alert]
+      assert_equal "You are already signed in as admin.", flash[:notice]
     end
   end
 end

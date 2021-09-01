@@ -117,7 +117,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
     user = sign_in_as_user
     get expire_user_path(user)
 
-    post "/users/sign_in", params: { email: user.email, password: "123456" }
+    post "/users/sign_in", params: { user: { email: user.email, password: "12345678" } }
 
     assert_response :redirect
     follow_redirect!

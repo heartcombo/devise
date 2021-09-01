@@ -21,15 +21,15 @@ Warden::Manager.after_set_user do |record, warden, options|
 
     proxy = Devise::Hooks::Proxy.new(warden)
 
-    if !env['devise.skip_timeout'] &&
-        record.timedout?(last_request_at) &&
-        !proxy.remember_me_is_active?(record)
-      Devise.sign_out_all_scopes ? proxy.sign_out : proxy.sign_out(scope)
-      throw :warden, scope: scope, message: :timeout
+    if record.timedout?(last_request_at) && !proxy.remember_me_is_active?(record)
+      lock = !env['devise.timeout_dont_throw']
+      Devise.sign_out_all_scopes ? proxy.sign_out(lock: lock) : proxy.sign_out(scope, lock: lock)
+      throw :warden, scope: scope, message: :timeout unless env['devise.timeout_dont_throw']
+    else
+      unless env['devise.skip_trackable']
+        warden.session(scope)['last_request_at'] = Time.now.utc.to_i
+      end
     end
 
-    unless env['devise.skip_trackable']
-      warden.session(scope)['last_request_at'] = Time.now.utc.to_i
-    end
   end
 end

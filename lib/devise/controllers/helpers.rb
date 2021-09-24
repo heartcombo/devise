@@ -123,7 +123,7 @@ module Devise
           end
 
           def current_#{mapping}
-            @current_#{mapping} ||= warden.authenticate(scope: :#{mapping})
+            @current_#{mapping} ||= Devise.current_user_attempts_login ? warden.authenticate(scope: :#{mapping}) : warden.user(:#{mapping})
           end
 
           def #{mapping}_session

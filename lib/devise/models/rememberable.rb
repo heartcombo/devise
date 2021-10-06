@@ -15,7 +15,7 @@ module Devise
     #
     # == Options
     #
-    # Rememberable adds the following options in devise_for:
+    # Rememberable adds the following options to +devise+:
     #
     #   * +remember_for+: the time you want the user will be remembered without
     #     asking for credentials. After this time the user will be blocked and

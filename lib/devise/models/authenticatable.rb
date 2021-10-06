@@ -10,7 +10,7 @@ module Devise
     #
     # == Options
     #
-    # Authenticatable adds the following options to devise method in your model:
+    # Authenticatable adds the following options to +devise+:
     #
     #   * +authentication_keys+: parameters used for authentication. By default [:email].
     #

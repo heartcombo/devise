@@ -13,7 +13,7 @@ module Devise
     #
     # == Options
     #
-    # DatabaseAuthenticatable adds the following options to devise_for:
+    # DatabaseAuthenticatable adds the following options to devise method in your model:
     #
     #   * +pepper+: a random string used to provide a more secure hash. Use
     #     `rails secret` to generate new keys.

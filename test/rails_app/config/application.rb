@@ -49,5 +49,9 @@ module RailsApp
     if Devise::Test.rails52_and_up? && !Devise::Test.rails6_and_up?
       Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
     end
+
+    if Devise::Test.rails7_and_up?
+      config.active_record.legacy_connection_handling = false
+    end
   end
 end

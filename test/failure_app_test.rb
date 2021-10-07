@@ -79,7 +79,6 @@ class FailureTest < ActiveSupport::TestCase
       'HTTP_HOST' => 'test.host',
       'REQUEST_METHOD' => 'GET',
       'warden.options' => { scope: :user },
-      'rack.session' => {},
       'action_dispatch.request.formats' => Array(env_params.delete('formats') || Mime[:html]),
       'rack.input' => "",
       'warden' => OpenStruct.new(message: nil)

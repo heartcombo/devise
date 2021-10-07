@@ -74,10 +74,14 @@ jobs:
             gemfile: gemfiles/Gemfile-rails-4-1
           - ruby: 2.5
             gemfile: gemfiles/Gemfile-rails-main
+          - ruby: 2.5
+            gemfile: Gemfile
           - ruby: 2.6
             gemfile: gemfiles/Gemfile-rails-4-1
           - ruby: 2.6
             gemfile: gemfiles/Gemfile-rails-4-2
+          - ruby: 2.6
+            gemfile: Gemfile
           - ruby: 2.6
             gemfile: gemfiles/Gemfile-rails-main
           - ruby: 2.7
@@ -112,6 +116,8 @@ jobs:
             gemfile: gemfiles/Gemfile-rails-6-0
           - env: DEVISE_ORM=mongoid
             gemfile: gemfiles/Gemfile-rails-6-1
+          - env: DEVISE_ORM=mongoid
+            gemfile: Gemfile
           - env: DEVISE_ORM=mongoid
             gemfile: gemfiles/Gemfile-rails-main
     runs-on: ubuntu-latest

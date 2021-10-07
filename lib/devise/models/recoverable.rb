@@ -7,7 +7,7 @@ module Devise
     #
     # ==Options
     #
-    # Recoverable adds the following options to devise_for:
+    # Recoverable adds the following options to +devise+:
     #
     #   * +reset_password_keys+: the keys you want to use when recovering the password for an account
     #   * +reset_password_within+: the time period within which the password must be reset or the token expires.

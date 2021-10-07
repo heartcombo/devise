@@ -11,7 +11,7 @@ module Devise
     #
     # == Options
     #
-    # Timeoutable adds the following options to devise_for:
+    # Timeoutable adds the following options to +devise+:
     #
     #   * +timeout_in+: the interval to timeout the user session without activity.
     #

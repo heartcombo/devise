@@ -8,11 +8,11 @@ module Devise
     #
     # == Options
     #
-    # Oauthable adds the following options to devise_for:
+    # Oauthable adds the following options to +devise+:
     #
     #   * +omniauth_providers+: Which providers are available to this model. It expects an array:
     #
-    #       devise_for :database_authenticatable, :omniauthable, omniauth_providers: [:twitter]
+    #       devise :database_authenticatable, :omniauthable, omniauth_providers: [:twitter]
     #
     module Omniauthable
       extend ActiveSupport::Concern

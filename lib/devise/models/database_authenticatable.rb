@@ -13,7 +13,7 @@ module Devise
     #
     # == Options
     #
-    # DatabaseAuthenticatable adds the following options to devise_for:
+    # DatabaseAuthenticatable adds the following options to +devise+:
     #
     #   * +pepper+: a random string used to provide a more secure hash. Use
     #     `rails secret` to generate new keys.
@@ -42,7 +42,7 @@ module Devise
       def initialize(*args, &block)
         @skip_email_changed_notification = false
         @skip_password_change_notification = false
-        super 
+        super
       end
 
       # Skips sending the email changed notification after_update

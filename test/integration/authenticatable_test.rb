@@ -344,16 +344,12 @@ class AuthenticationSessionTest < Devise::IntegrationTest
   end
 
   test 'refreshes _csrf_token' do
-    ApplicationController.allow_forgery_protection = true
-
-    begin
+    swap ApplicationController, allow_forgery_protection: true do
       get new_user_session_path
       token = request.session[:_csrf_token]
 
       sign_in_as_user
       assert_not_equal request.session[:_csrf_token], token
-    ensure
-      ApplicationController.allow_forgery_protection = false
     end
   end
 

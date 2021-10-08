@@ -173,6 +173,10 @@ If you are building your first Rails application, we recommend you *do not* use 
 Once you have solidified your understanding of Rails and authentication mechanisms, we assure you Devise will be very pleasant to work with. :smiley:
 
 ## Getting started
+For Rails 7.0.0. Add the following line to your Gemfile: 
+```ruby
+gem 'devise', git: 'https://github.com/heartcombo/devise', branch: 'master'
+```
 
 Devise 4.0 works with Rails 4.1 onwards. Add the following line to your Gemfile:
 

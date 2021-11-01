@@ -185,7 +185,7 @@ Then run `bundle install`
 Next, you need to run the generator:
 
 ```console
-$ rails generate devise:install
+rails generate devise:install
 ```
 
 At this point, a number of instructions will appear in the console. Among these instructions, you'll need to set up the default URL options for the Devise mailer in each environment. Here is a possible configuration for `config/environments/development.rb`:
@@ -200,7 +200,7 @@ The generator will install an initializer which describes ALL of Devise's config
 In the following command you will replace `MODEL` with the class name used for the application’s users (it’s frequently `User` but could also be `Admin`). This will create a model (if one does not exist) and configure it with the default Devise modules. The generator also configures your `config/routes.rb` file to point to the Devise controller.
 
 ```console
-$ rails generate devise MODEL
+rails generate devise MODEL
 ```
 
 Next, check the MODEL for any additional configuration options you might want to add, such as confirmable or lockable. If you add an option, be sure to inspect the migration file (created by the generator if your ORM supports them) and uncomment the appropriate section.  For example, if you add the confirmable option in the model, you'll need to uncomment the Confirmable section in the migration.
@@ -372,7 +372,7 @@ We built Devise to help you quickly develop an application that uses authenticat
 Since Devise is an engine, all its views are packaged inside the gem. These views will help you get started, but after some time you may want to change them. If this is the case, you just need to invoke the following generator, and it will copy all views to your application:
 
 ```console
-$ rails generate devise:views
+rails generate devise:views
 ```
 
 If you have more than one Devise model in your application (such as `User` and `Admin`), you will notice that Devise uses the same views for all models. Fortunately, Devise offers an easy way to customize views. All you need to do is set `config.scoped_views = true` inside the `config/initializers/devise.rb` file.
@@ -380,14 +380,14 @@ If you have more than one Devise model in your application (such as `User` and `
 After doing so, you will be able to have views based on the role like `users/sessions/new` and `admins/sessions/new`. If no view is found within the scope, Devise will use the default view at `devise/sessions/new`. You can also use the generator to generate scoped views:
 
 ```console
-$ rails generate devise:views users
+rails generate devise:views users
 ```
 
 If you would like to generate only a few sets of views, like the ones for the `registerable` and `confirmable` module,
 you can pass a list of modules to the generator with the `-v` flag.
 
 ```console
-$ rails generate devise:views -v registrations confirmations
+rails generate devise:views -v registrations confirmations
 ```
 
 ### Configuring controllers
@@ -397,7 +397,7 @@ If the customization at the views level is not enough, you can customize each co
 1. Create your custom controllers using the generator which requires a scope:
 
     ```console
-    $ rails generate devise:controllers [scope]
+    rails generate devise:controllers [scope]
     ```
 
     If you specify `users` as the scope, controllers will be created in `app/controllers/users/`.

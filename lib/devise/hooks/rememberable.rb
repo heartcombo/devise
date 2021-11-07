@@ -16,6 +16,7 @@ Warden::Manager.after_set_user only: :fetch do |record, warden, options|
   if record.respond_to?(:extend_remember_me?) && record.extend_remember_me? &&
       options[:store] != false && warden.authenticated?(options[:scope])
 
-    Devise::Hooks::Proxy.new(warden).remember_me(record)
+    proxy = Devise::Hooks::Proxy.new(warden)
+    proxy.remember_me(record) if proxy.remember_me_is_active?(record)
   end
 end

@@ -143,7 +143,7 @@ class RememberMeTest < Devise::IntegrationTest
   end
 
   test 'extends remember period on every authenticated request when extend remember period config is true' do
-    swap Devise, extend_remember_period: true, remember_for: 1.year, timeout_in: nil do
+    swap Devise, extend_remember_period: true, remember_for: 1.year, timeout_in: 6.hours do
       user = create_user_and_remember
 
       get root_path
@@ -182,7 +182,7 @@ class RememberMeTest < Devise::IntegrationTest
   end
 
   test 'does not extend remember period when extend period config is false' do
-    swap Devise, extend_remember_period: false, remember_for: 1.year, timeout_in: nil do
+    swap Devise, extend_remember_period: false, remember_for: 1.year, timeout_in: 6.hours do
       user = create_user_and_remember
 
       get root_path

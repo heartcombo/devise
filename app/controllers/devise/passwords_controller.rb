@@ -36,7 +36,7 @@ class Devise::PasswordsController < DeviseController
 
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
-      if Devise.sign_in_after_reset_password
+      if resource_class.sign_in_after_reset_password
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message!(:notice, flash_message)
         resource.after_database_authentication
@@ -53,7 +53,7 @@ class Devise::PasswordsController < DeviseController
 
   protected
     def after_resetting_password_path_for(resource)
-      Devise.sign_in_after_reset_password ? after_sign_in_path_for(resource) : new_session_path(resource_name)
+      resource_class.sign_in_after_reset_password ? after_sign_in_path_for(resource) : new_session_path(resource_name)
     end
 
     # The path used after sending reset password instructions

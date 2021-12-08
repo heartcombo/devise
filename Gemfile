@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 7.0.0.alpha2"
+gem "rails", "~> 7.0.0.rc1"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"

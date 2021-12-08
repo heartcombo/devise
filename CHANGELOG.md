@@ -1,7 +1,7 @@
 ### unreleased
 
 * enhancements
-  * Add support for Rails 7.0 alpha 2.
+  * Add support for Rails 7.0 rc.
 
 ### 4.8.0 - 2021-04-29
 

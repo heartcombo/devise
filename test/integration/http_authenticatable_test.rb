@@ -52,7 +52,7 @@ class HttpAuthenticationTest < Devise::IntegrationTest
     sign_in_as_new_user_with_http("unknown")
     assert_equal 401, status
     assert_equal "application/json; charset=utf-8", headers["Content-Type"]
-    assert_match '"error":"Invalid Email or password."', response.body
+    assert_match '"error":"Invalid email or password."', response.body
   end
 
   test 'returns a custom response with www-authenticate and chosen realm' do

@@ -184,15 +184,25 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'uses the proxy failure message as symbol' do
       call_failure('warden' => OpenStruct.new(message: :invalid))
-      assert_equal 'Invalid Email or password.', @request.flash[:alert]
+      assert_equal 'Invalid email or password.', @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
     test 'supports authentication_keys as a Hash for the flash message' do
       swap Devise, authentication_keys: { email: true, login: true } do
         call_failure('warden' => OpenStruct.new(message: :invalid))
-        assert_equal 'Invalid Email, Login or password.', @request.flash[:alert]
+        assert_equal 'Invalid email, Login or password.', @request.flash[:alert]
       end
+    end
+
+    test 'downcases authentication_keys for the flash message' do
+      call_failure('warden' => OpenStruct.new(message: :invalid))
+      assert_equal 'Invalid email or password.', @request.flash[:alert]
+    end
+
+    test 'humanizes the flash message' do
+      call_failure('warden' => OpenStruct.new(message: :invalid))
+      assert_equal @request.flash[:alert], @request.flash[:alert].humanize
     end
 
     test 'uses custom i18n options' do
@@ -281,7 +291,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'uses the failure message as response body' do
       call_failure('formats' => Mime[:xml], 'warden' => OpenStruct.new(message: :invalid))
-      assert_match '<error>Invalid Email or password.</error>', @response.third.body
+      assert_match '<error>Invalid email or password.</error>', @response.third.body
     end
 
     context 'on ajax call' do
@@ -330,7 +340,7 @@ class FailureTest < ActiveSupport::TestCase
       }
       call_failure(env)
       assert_includes @response.third.body, '<h2>Log in</h2>'
-      assert_includes @response.third.body, 'Invalid Email or password.'
+      assert_includes @response.third.body, 'Invalid email or password.'
     end
 
     test 'calls the original controller if not confirmed email' do
@@ -365,7 +375,7 @@ class FailureTest < ActiveSupport::TestCase
           }
           call_failure(env)
           assert_includes @response.third.body, '<h2>Log in</h2>'
-          assert_includes @response.third.body, 'Invalid Email or password.'
+          assert_includes @response.third.body, 'Invalid email or password.'
           assert_equal '/sample', @request.env["SCRIPT_NAME"]
           assert_equal '/users/sign_in', @request.env["PATH_INFO"]
         end

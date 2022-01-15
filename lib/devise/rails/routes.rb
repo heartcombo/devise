@@ -236,6 +236,7 @@ module ActionDispatch::Routing
       options[:defaults]      = (@scope[:defaults] || {}).merge(options[:defaults] || {})
       options[:options]       = @scope[:options] || {}
       options[:options][:format] = false if options[:format] == false
+      options[:api_only?] = api_only? if options[:api_only?].blank?
 
       resources.map!(&:to_sym)
 
@@ -265,7 +266,7 @@ module ActionDispatch::Routing
 
         devise_scope mapping.name do
           with_devise_exclusive_scope mapping.fullpath, mapping.name, options do
-            routes.each { |mod| send("devise_#{mod}", mapping, mapping.controllers) }
+            routes.each { |mod| send("devise_#{mod}", mapping, mapping.controllers, options[:api_only?]) }
           end
         end
       end
@@ -374,32 +375,35 @@ module ActionDispatch::Routing
 
     protected
 
-      def devise_session(mapping, controllers) #:nodoc:
+      def devise_session(mapping, controllers, api_only) #:nodoc:
         resource :session, only: [], controller: controllers[:sessions], path: "" do
-          get   :new,     path: mapping.path_names[:sign_in],  as: "new"
+          get   :new,     path: mapping.path_names[:sign_in],  as: "new" unless api_only
           post  :create,  path: mapping.path_names[:sign_in]
           match :destroy, path: mapping.path_names[:sign_out], as: "destroy", via: mapping.sign_out_via
         end
       end
 
-      def devise_password(mapping, controllers) #:nodoc:
-        resource :password, only: [:new, :create, :edit, :update],
+      def devise_password(mapping, controllers, api_only) #:nodoc:
+        actions = api_only ? [:create, :update] : [:new, :create, :edit, :update]
+        resource :password, only: actions,
           path: mapping.path_names[:password], controller: controllers[:passwords]
       end
 
-      def devise_confirmation(mapping, controllers) #:nodoc:
-        resource :confirmation, only: [:new, :create, :show],
+      def devise_confirmation(mapping, controllers, api_only) #:nodoc:
+        actions = api_only ? [:create, :show] : [:new, :create, :show]
+        resource :confirmation, only: actions,
           path: mapping.path_names[:confirmation], controller: controllers[:confirmations]
       end
 
-      def devise_unlock(mapping, controllers) #:nodoc:
+      def devise_unlock(mapping, controllers, api_only) #:nodoc:
+        actions = api_only ? [:create, :show] :  [:new, :create, :show]
         if mapping.to.unlock_strategy_enabled?(:email)
-          resource :unlock, only: [:new, :create, :show],
+          resource :unlock, only: actions,
             path: mapping.path_names[:unlock], controller: controllers[:unlocks]
         end
       end
 
-      def devise_registration(mapping, controllers) #:nodoc:
+      def devise_registration(mapping, controllers, api_only) #:nodoc:
         path_names = {
           new: mapping.path_names[:sign_up],
           edit: mapping.path_names[:edit],
@@ -407,7 +411,7 @@ module ActionDispatch::Routing
         }
 
         options = {
-          only: [:new, :create, :edit, :update, :destroy],
+          only: api_only ? [:create, :update, :destroy] : [:new, :create, :edit, :update, :destroy],
           path: mapping.path_names[:registration],
           path_names: path_names,
           controller: controllers[:registrations]

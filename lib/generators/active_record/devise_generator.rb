@@ -40,6 +40,8 @@ module ActiveRecord
         inject_into_class(model_path, class_path.last, content) if model_exists?
       end
 
+      private
+
       def migration_data
 <<RUBY
       ## Database authenticatable

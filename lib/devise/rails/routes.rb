@@ -175,6 +175,11 @@ module ActionDispatch::Routing
     #
     #  * router_name: allows application level router name to be overwritten for the current scope
     #
+    #  * api_only?: when true removes unnecessary routes for api_only apllications,
+    #    uses rails api_only config by default.
+    #
+    #     devise_for :users, api_only?: true
+    #
     # ==== Scoping
     #
     # Following Rails 3 routes DSL, you can nest devise_for calls inside a scope:

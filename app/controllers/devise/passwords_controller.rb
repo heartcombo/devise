@@ -47,7 +47,7 @@ class Devise::PasswordsController < DeviseController
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
       set_minimum_password_length
-      respond_with resource
+      respond_with resource, status: :unprocessable_entity
     end
   end
 

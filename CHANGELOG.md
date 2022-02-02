@@ -1,5 +1,7 @@
 ### Unreleased
 
+* bug fixes
+  * Fix frozen string exception in validatable. [#5563](https://github.com/heartcombo/devise/pull/5563) [#5465](https://github.com/heartcombo/devise/pull/5465) [@mameier](https://github.com/mameier)
 
 ### 4.9.0 - 2023-02-17
 

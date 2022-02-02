@@ -1,7 +1,7 @@
-### unreleased
+### 4.8.1 - 2021-12-16
 
 * enhancements
-  * Add support for Rails 7.0 alpha 2.
+  * Add support for Rails 7.0.
   * Devise now treats `:turbo_stream` as a navigational format.
     - For Turbo Drive users this ensures that Devise will return a redirect, rather than a `401`, where appropriate (this may be a **breaking change**).
     - This has no impact if you are not using [turbo-rails](https://github.com/hotwired/turbo-rails) or declaring an equivalent MIME type.

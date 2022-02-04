@@ -156,7 +156,7 @@ class PasswordTest < Devise::IntegrationTest
     user = create_user
     reset_password reset_password_token: 'invalid_reset_password'
 
-    assert_response :success
+    assert_response :unprocessable_entity
     assert_current_url '/users/password'
     assert_have_selector '#error_explanation'
     assert_contain %r{Reset password token(.*)invalid}
@@ -170,7 +170,7 @@ class PasswordTest < Devise::IntegrationTest
       fill_in 'Confirm new password', with: 'other_password'
     end
 
-    assert_response :success
+    assert_response :unprocessable_entity
     assert_current_url '/users/password'
     assert_have_selector '#error_explanation'
     assert_contain "Password confirmation doesn't match Password"
@@ -192,7 +192,7 @@ class PasswordTest < Devise::IntegrationTest
     request_forgot_password
 
     reset_password {  fill_in 'Confirm new password', with: 'other_password' }
-    assert_response :success
+    assert_response :unprocessable_entity
     assert_have_selector '#error_explanation'
     refute user.reload.valid_password?('987654321')
 

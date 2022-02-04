@@ -94,7 +94,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
     delete destroy_user_session_path
 
     assert_response :redirect
-    assert_redirected_to root_path
+    assert_response :see_other
     follow_redirect!
     assert_contain 'Signed out successfully'
   end

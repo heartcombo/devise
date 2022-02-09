@@ -35,7 +35,9 @@ module Devise
     end
 
     def respond
-      if http_auth?
+      if request_format == :turbo_stream && Rails::VERSION::MAJOR >= 7
+        redirect
+      elsif http_auth?
         http_auth
       elsif warden_options[:recall]
         recall
@@ -167,7 +169,7 @@ module Devise
     end
 
     def skip_format?
-      %w(html */*).include? request_format.to_s
+      %w(html turbo_stream */*).include? request_format.to_s
     end
 
     # Choose whether we should respond in an HTTP authentication fashion,

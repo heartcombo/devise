@@ -10,6 +10,12 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   test "assert all files are properly created" do
     run_generator(["--orm=active_record"])
     assert_file "config/initializers/devise.rb", /devise\/orm\/active_record/
+    if Rails::VERSION::MAJOR >= 7
+      assert_file "config/initializers/devise.rb",  /:html, :turbo_stream]/
+    else
+      assert_file "config/initializers/devise.rb", /:html]/
+    end
+
     assert_file "config/locales/devise.en.yml"
   end
 

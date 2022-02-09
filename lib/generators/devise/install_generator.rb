@@ -27,7 +27,8 @@ module Devise
           ERROR
         end
 
-        template "devise.rb", "config/initializers/devise.rb"
+        devise_template = Rails::VERSION::MAJOR >= 7 ? "devise_turbo.rb" : "devise.rb"
+        template devise_template, "config/initializers/devise.rb"
       end
 
       def copy_locale

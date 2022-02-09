@@ -4,6 +4,27 @@
 class DeviseController < Devise.parent_controller.constantize
   include Devise::Controllers::ScopedViews
 
+  if Rails::VERSION::MAJOR >= 7
+    class Responder < ActionController::Responder
+      def to_turbo_stream
+        controller.render(options.merge(formats: :html))
+      rescue ActionView::MissingTemplate => e
+        if get?
+          raise e
+        elsif has_errors? && default_action
+          render rendering_options.merge(formats: :html, status: :unprocessable_entity)
+        else
+          redirect_location =
+            navigation_location.is_a?(Array) && e.is_a?(ActionView::MissingTemplate) ? '/' : navigation_location
+          redirect_to redirect_location
+        end
+      end
+    end
+  end
+
+  self.responder = Responder
+  respond_to :html, :turbo_stream
+
   if respond_to?(:helper)
     helper DeviseHelper
   end

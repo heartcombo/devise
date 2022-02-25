@@ -3,6 +3,7 @@
 # All Devise controllers are inherited from here.
 class DeviseController < Devise.parent_controller.constantize
   include Devise::Controllers::ScopedViews
+  include Devise::Controllers::Rails7ApiMode
 
   if respond_to?(:helper)
     helper DeviseHelper

@@ -15,6 +15,20 @@ I18n.load_path << File.expand_path("../support/locale/en.yml", __FILE__)
 require 'mocha/minitest'
 require 'timecop'
 require 'webrat'
+
+# Monkey patch for Nokogiri changes - https://github.com/sparklemotion/nokogiri/issues/2469
+module Webrat
+  module Matchers
+    class HaveSelector
+      def query
+          Nokogiri::CSS.parse(@expected.to_s).map do |ast|
+            ast.to_xpath("//", Nokogiri::CSS::XPathVisitor.new)
+          end.first
+      end
+    end
+  end
+end
+
 Webrat.configure do |config|
   config.mode = :rails
   config.open_error_files = false

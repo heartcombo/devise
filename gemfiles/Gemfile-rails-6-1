@@ -20,7 +20,6 @@ if RUBY_VERSION >= "3.1"
 end
 
 group :test do
-  gem "nokogiri", "< 1.13"
   gem "omniauth-facebook"
   gem "omniauth-openid"
   gem "rexml"

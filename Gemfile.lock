@@ -112,7 +112,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.6.1)
+    mini_portile2 (2.8.1)
     minitest (5.17.0)
     mocha (1.16.1)
     multi_xml (0.6.0)
@@ -126,8 +126,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.14.2)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -223,7 +223,6 @@ PLATFORMS
 DEPENDENCIES
   devise!
   mocha (~> 1.1)
-  nokogiri (< 1.13)
   omniauth
   omniauth-facebook
   omniauth-oauth2

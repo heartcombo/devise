@@ -14,6 +14,7 @@ gem "rails-controller-testing"
 gem "responders", "~> 2.1"
 
 group :test do
+  gem "nokogiri", "< 1.13"
   gem "omniauth-facebook"
   gem "omniauth-openid"
   gem "timecop"

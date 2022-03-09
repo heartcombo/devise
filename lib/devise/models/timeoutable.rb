@@ -28,7 +28,7 @@ module Devise
 
       # Checks whether the user session has expired based on configured time.
       def timedout?(last_access)
-        !timeout_in.nil? && last_access && last_access <= timeout_in.ago
+        !timeout_in.nil? && last_access.respond_to?(:utc) && last_access <= timeout_in.ago
       end
 
       def timeout_in

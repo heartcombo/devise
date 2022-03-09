@@ -19,7 +19,7 @@ module Devise
 
       def update_tracked_fields(request)
         old_current, new_current = self.current_sign_in_at, Time.now.utc
-        self.last_sign_in_at     = old_current || new_current
+        self.last_sign_in_at     = old_current.respond_to?(:utc) ? old_current : new_current
         self.current_sign_in_at  = new_current
 
         old_current, new_current = self.current_sign_in_ip, extract_ip_from(request)

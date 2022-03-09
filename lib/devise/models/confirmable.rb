@@ -104,7 +104,7 @@ module Devise
 
       # Verifies whether a user is confirmed or not
       def confirmed?
-        !!confirmed_at
+        confirmed_at.respond_to?(:utc)
       end
 
       def pending_reconfirmation?
@@ -214,7 +214,7 @@ module Devise
           return true if self.class.allow_unconfirmed_access_for.nil?
           return false if self.class.allow_unconfirmed_access_for == 0.days
 
-          confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
+          confirmation_sent_at.respond_to?(:utc) && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
         end
 
         # Checks if the user confirmation happens before the token becomes invalid
@@ -230,7 +230,7 @@ module Devise
         #   confirmation_period_expired?  # will always return false
         #
         def confirmation_period_expired?
-          self.class.confirm_within && self.confirmation_sent_at && (Time.now.utc > self.confirmation_sent_at.utc + self.class.confirm_within)
+          self.class.confirm_within && self.confirmation_sent_at.respond_to?(:utc) && (Time.now.utc > self.confirmation_sent_at.utc + self.class.confirm_within)
         end
 
         # Checks whether the record requires any confirmation.

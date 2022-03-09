@@ -67,7 +67,7 @@ module Devise
 
       # Verifies whether a user is locked or not.
       def access_locked?
-        !!locked_at && !lock_expired?
+        locked_at.respond_to?(:utc) && !lock_expired?
       end
 
       # Send unlock instructions by email
@@ -151,7 +151,7 @@ module Devise
         # Tells if the lock is expired if :time unlock strategy is active
         def lock_expired?
           if unlock_strategy_enabled?(:time)
-            locked_at && locked_at < self.class.unlock_in.ago
+            locked_at.respond_to?(:utc) && locked_at < self.class.unlock_in.ago
           else
             false
           end

@@ -112,8 +112,8 @@ module Devise
 
         translated_message = I18n.t(:"#{scope}.#{message}", **options)
         # only call `#humanize` when the message is `:invalid` to ensure the original format
-       # of other messages - like `:does_not_exist` - is kept.
-       message == :invalid ? translated_message.humanize : translated_message
+        # of other messages - like `:does_not_exist` - is kept.
+        message == :invalid ? translated_message.humanize : translated_message
       else
         message.to_s
       end

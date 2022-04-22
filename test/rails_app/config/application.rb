@@ -50,7 +50,7 @@ module RailsApp
       Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
     end
 
-    if Devise::Test.rails7_and_up?
+    if Devise::Test.rails70?
       config.active_record.legacy_connection_handling = false
     end
   end

@@ -28,6 +28,8 @@ if defined?(ActionMailer)
     end
   end
 else
-  class Devise::Mailer
+  if Rails.autoloaders.zeitwerk_enabled?
+    class Devise::Mailer
+    end
   end
 end

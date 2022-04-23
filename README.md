@@ -1,4 +1,4 @@
-![Devise Logo](https://raw.github.com/heartcombo/devise/master/devise.png)
+![Devise Logo](https://raw.github.com/heartcombo/devise/main/devise.png)
 
 [![Code Climate](https://codeclimate.com/github/heartcombo/devise.svg)](https://codeclimate.com/github/heartcombo/devise)
 
@@ -11,16 +11,16 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 It's composed of 10 modules:
 
-* [Database Authenticatable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
-* [Omniauthable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
-* [Confirmable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
-* [Recoverable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Recoverable): resets the user password and sends reset instructions.
-* [Registerable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
-* [Rememberable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
-* [Trackable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
-* [Timeoutable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
-* [Validatable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
-* [Lockable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+* [Database Authenticatable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+* [Omniauthable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
+* [Confirmable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+* [Recoverable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Recoverable): resets the user password and sends reset instructions.
+* [Registerable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
+* [Rememberable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
+* [Trackable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
+* [Timeoutable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
+* [Validatable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+* [Lockable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
 ## Table of Contents
 
@@ -91,7 +91,7 @@ https://groups.google.com/group/plataformatec-devise
 
 You can view the Devise documentation in RDoc format here:
 
-http://rubydoc.info/github/heartcombo/devise/master/frames
+http://rubydoc.info/github/heartcombo/devise/main/frames
 
 If you need to use Devise with previous versions of Rails, you can always run "gem server" from the command line after you install the gem to access the old documentation.
 
@@ -130,7 +130,7 @@ Please note that the command output will show the variable value being used.
 
 ### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
-Inside the [gemfiles](https://github.com/heartcombo/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
+Inside the [gemfiles](https://github.com/heartcombo/devise/tree/main/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
 For example, if the tests broke using Ruby 2.4.2 and Rails 4.1, you can do the following:
 ```bash
 rbenv shell 2.4.2 # or rvm use 2.4.2
@@ -458,7 +458,7 @@ Devise also ships with default routes. If you need to customize them, you should
 devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
 ```
 
-Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/heartcombo/devise/master/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
+Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/heartcombo/devise/main/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
 
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is create your routes normally and wrap them in a `devise_scope` block in the router:
 
@@ -679,7 +679,7 @@ end
 
 ### Password reset tokens and Rails logs
 
-If you enable the [Recoverable](http://rubydoc.info/github/heartcombo/devise/master/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
+If you enable the [Recoverable](http://rubydoc.info/github/heartcombo/devise/main/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
 
 1. Action Mailer logs the entire contents of all outgoing emails to the DEBUG level. Password reset tokens delivered to users in email will be leaked.
 2. Active Job logs all arguments to every enqueued job at the INFO level. If you configure Devise to use `deliver_later` to send password reset emails, password reset tokens will be leaked.

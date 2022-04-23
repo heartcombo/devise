@@ -346,10 +346,18 @@ class AuthenticationSessionTest < Devise::IntegrationTest
   test 'refreshes _csrf_token' do
     swap ApplicationController, allow_forgery_protection: true do
       get new_user_session_path
-      token = request.session[:_csrf_token]
+      token_from_session = request.session[:_csrf_token]
+
+      if Devise::Test.rails71_and_up?
+        token_from_env = request.env["action_controller.csrf_token"]
+      end
 
       sign_in_as_user
-      assert_not_equal request.session[:_csrf_token], token
+      assert_not_equal request.session[:_csrf_token], token_from_session
+
+      if Devise::Test.rails71_and_up?
+        assert_not_equal request.env["action_controller.csrf_token"], token_from_env
+      end
     end
   end
 

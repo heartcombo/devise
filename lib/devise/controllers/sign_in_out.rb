@@ -21,7 +21,7 @@ module Devise
       # to the set_user method in warden.
       # If you are using a custom warden strategy and the timeoutable module, you have to
       # set `env["devise.skip_timeout"] = true` in the request to use this method, like we do
-      # in the sessions controller: https://github.com/heartcombo/devise/blob/master/app/controllers/devise/sessions_controller.rb#L7
+      # in the sessions controller: https://github.com/heartcombo/devise/blob/main/app/controllers/devise/sessions_controller.rb#L7
       #
       # Examples:
       #

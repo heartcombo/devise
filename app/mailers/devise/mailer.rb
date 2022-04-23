@@ -28,6 +28,6 @@ if defined?(ActionMailer)
     end
   end
 else
-  class DeviseMailer
+  class Devise::Mailer
   end
 end

@@ -16,7 +16,7 @@ Depending on your application's configuration some manual setup may be required:
      For example:
 
        root to: "home#index"
-
+     
      * Not required for API-only Applications *
 
   3. Ensure you have flash messages in app/views/layouts/application.html.erb.
@@ -30,19 +30,7 @@ Depending on your application's configuration some manual setup may be required:
   4. You can copy Devise views (for customization) to your app by running:
 
        rails g devise:views
-
+       
      * Not required *
-
-  5. Ensure you have rails-ujs installed:
-    If you use importmap-rails, you can run:
-
-       bin/importmap pin @rails/ujs
-
-    Then add in app/javascript/application.js:
-
-       import Rails from "@rails/ujs";
-       Rails.start();
-
-    * Required if you use the data-method attribute in your links *
 
 ===============================================================================

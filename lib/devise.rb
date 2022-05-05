@@ -191,6 +191,11 @@ module Devise
   mattr_accessor :unlock_in
   @@unlock_in = 1.hour
 
+  # Do not clear the unlock token after a resource is unlocked, allowing the
+  # unlock URL to be idempotent.
+  mattr_accessor :keep_unlock_token_after_unlocking
+  @@keep_unlock_token_after_unlocking = false
+
   # Defines which key will be used when recovering the password for an account
   mattr_accessor :reset_password_keys
   @@reset_password_keys = [:email]

@@ -99,7 +99,7 @@ class LockableTest < ActiveSupport::TestCase
   end
 
   test "should unlock a user by cleaning locked_at, failed_attempts and unlock_token" do
-    user = create_user
+    user = create_user(failed_attempts: 2)
     user.lock_access!
     assert_not_nil user.reload.locked_at
     assert_not_nil user.reload.unlock_token
@@ -118,9 +118,20 @@ class LockableTest < ActiveSupport::TestCase
       assert_not_nil user.reload.unlock_token
 
       user.unlock_access!
+
       refute user.reload.access_locked?
       assert_not_nil user.reload.unlock_token
     end
+  end
+
+  test "keeps the failed_attempts count when the user is not locked" do
+    user = create_user(failed_attempts: 2)
+    user.lock_access!
+    user.locked_at = nil
+
+    user.unlock_access!
+
+    assert_equal 2, user.reload.failed_attempts
   end
 
   test "new user should not be locked and should have zero failed_attempts" do

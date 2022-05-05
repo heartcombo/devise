@@ -51,6 +51,8 @@ module Devise
 
       # Unlock a user by cleaning locked_at and failed_attempts.
       def unlock_access!
+        return true if locked_at.blank?
+
         self.locked_at = nil
         self.failed_attempts = 0 if respond_to?(:failed_attempts=)
         self.unlock_token = nil  if respond_to?(:unlock_token=) && !Devise.keep_unlock_token_after_unlocking

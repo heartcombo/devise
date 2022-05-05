@@ -90,6 +90,31 @@ class LockTest < Devise::IntegrationTest
     refute user.reload.access_locked?
   end
 
+  test "unlock page is idempotent when the unlock token is not cleared" do
+    swap Devise, keep_unlock_token_after_unlocking: true do
+      user = create_user
+      token = user.lock_access!
+
+      2.times { visit_user_unlock_with_token(token) }
+
+      assert_current_url "/users/sign_in"
+      assert_contain "Your account has been unlocked successfully. Please sign in to continue."
+      refute user.reload.access_locked?
+    end
+  end
+
+  test "user with an already used unlock token sees a message stating that the unlock token is invalid" do
+    user = create_user
+    token = user.lock_access!
+    user.unlock_access!
+
+    visit_user_unlock_with_token(token)
+
+    assert_current_url "/users/unlock?unlock_token=#{token}"
+    assert_have_selector "#error_explanation"
+    assert_contain %r{Unlock token(.*)invalid}
+  end
+
   test "user should not send a new e-mail if already locked" do
     user = create_user(locked: true)
     user.failed_attempts = User.maximum_attempts + 1

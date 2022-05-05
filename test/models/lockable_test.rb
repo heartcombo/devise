@@ -110,6 +110,19 @@ class LockableTest < ActiveSupport::TestCase
     assert_equal 0, user.reload.failed_attempts
   end
 
+  test "unlocks a user keeping its last unlock_token when configured" do
+    swap Devise, keep_unlock_token_after_unlocking: true do
+      user = create_user
+      user.lock_access!
+      assert_not_nil user.reload.locked_at
+      assert_not_nil user.reload.unlock_token
+
+      user.unlock_access!
+      refute user.reload.access_locked?
+      assert_not_nil user.reload.unlock_token
+    end
+  end
+
   test "new user should not be locked and should have zero failed_attempts" do
     refute new_user.access_locked?
     assert_equal 0, create_user.failed_attempts

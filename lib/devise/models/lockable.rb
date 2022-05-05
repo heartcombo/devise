@@ -53,7 +53,7 @@ module Devise
       def unlock_access!
         self.locked_at = nil
         self.failed_attempts = 0 if respond_to?(:failed_attempts=)
-        self.unlock_token = nil  if respond_to?(:unlock_token=)
+        self.unlock_token = nil  if respond_to?(:unlock_token=) && !Devise.keep_unlock_token_after_unlocking
         save(validate: false)
       end
 

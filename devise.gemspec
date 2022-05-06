@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.metadata    = {
     "homepage_uri"      => "https://github.com/heartcombo/devise",
     "documentation_uri" => "https://rubydoc.info/github/heartcombo/devise",
-    "changelog_uri"     => "https://github.com/heartcombo/devise/blob/master/CHANGELOG.md",
+    "changelog_uri"     => "https://github.com/heartcombo/devise/blob/main/CHANGELOG.md",
     "source_code_uri"   => "https://github.com/heartcombo/devise",
     "bug_tracker_uri"   => "https://github.com/heartcombo/devise/issues",
     "wiki_uri"          => "https://github.com/heartcombo/devise/wiki"

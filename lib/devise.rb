@@ -29,6 +29,10 @@ module Devise
     autoload :UrlHelpers,     'devise/controllers/url_helpers'
   end
 
+  module Views
+    autoload :Helpers, 'devise/views/helpers'
+  end
+
   module Hooks
     autoload :Proxy, 'devise/hooks/proxy'
   end
@@ -274,7 +278,7 @@ module Devise
   # Define a set of modules that are called when a mapping is added.
   mattr_reader :helpers
   @@helpers = Set.new
-  @@helpers << Devise::Controllers::Helpers
+  @@helpers.merge [Devise::Controllers::Helpers, Devise::Views::Helpers]
 
   # Private methods to interface with Warden.
   mattr_accessor :warden_config
@@ -460,6 +464,8 @@ module Devise
     end
 
     ActiveSupport.on_load(:action_view) do
+      p scope 
+      extend Devise::Views::Helpers
       include scope::UrlHelpers
     end
   end

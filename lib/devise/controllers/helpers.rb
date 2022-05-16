@@ -109,30 +109,30 @@ module Devise
       #     before_action :authenticate_user!  # Tell devise to use :user map
       #     before_action :authenticate_admin! # Tell devise to use :admin map
       #
-      def self.define_helpers(mapping) #:nodoc:
+      def self.define_helpers(mapping_name) #:nodoc:
 
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
-          def authenticate_#{mapping}!(opts = {})
-            opts[:scope] = :#{mapping}
+          def authenticate_#{mapping_name}!(opts = {})
+            opts[:scope] = :#{mapping_name}
             warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
           end
 
-          def #{mapping}_signed_in?
-            !!current_#{mapping}
+          def #{mapping_name}_signed_in?
+            !!current_#{mapping_name}
           end
 
-          def current_#{mapping}
-            @current_#{mapping} ||= warden.authenticate(scope: :#{mapping})
+          def current_#{mapping_name}
+            @current_#{mapping_name} ||= warden.authenticate(scope: :#{mapping_name})
           end
 
-          def #{mapping}_session
-            current_#{mapping} && warden.session(:#{mapping})
+          def #{mapping_name}_session
+            current_#{mapping_name} && warden.session(:#{mapping_name})
           end
         METHODS
 
         ActiveSupport.on_load(:action_controller) do
           if respond_to?(:helper_method)
-            helper_method "current_#{mapping}", "#{mapping}_signed_in?", "#{mapping}_session"
+            helper_method "current_#{mapping_name}", "#{mapping_name}_signed_in?", "#{mapping_name}_session"
           end
         end
       end

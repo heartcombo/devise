@@ -464,7 +464,6 @@ module Devise
     end
 
     ActiveSupport.on_load(:action_view) do
-      p scope 
       extend Devise::Views::Helpers
       include scope::UrlHelpers
     end

@@ -21,7 +21,6 @@ module Devise
       #   signed_in_user {render @users}
       #   signed_out_user {redirect_to root_path}
       # end
-    
 
       def self.define_helpers(mapping)
         mapping = mapping.name

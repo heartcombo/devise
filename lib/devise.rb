@@ -459,12 +459,13 @@ module Devise
   # Include helpers in the given scope to AC and AV.
   def self.include_helpers(scope)
     ActiveSupport.on_load(:action_controller) do
+      include Devise::Views::Helpers
       include scope::Helpers if defined?(scope::Helpers)
       include scope::UrlHelpers
     end
 
     ActiveSupport.on_load(:action_view) do
-      extend Devise::Views::Helpers
+      include Devise::Views::Helpers
       include scope::UrlHelpers
     end
   end

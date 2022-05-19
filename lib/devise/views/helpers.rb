@@ -30,7 +30,7 @@ module Devise
           end
 
           def signed_out_#{mapping}(&block)
-            block.call unlesss #{mapping}_signed_in?
+            block.call unless #{mapping}_signed_in?
           end
         METHODS
       end

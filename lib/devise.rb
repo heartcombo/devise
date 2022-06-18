@@ -227,6 +227,18 @@ module Devise
   mattr_accessor :sign_out_via
   @@sign_out_via = :delete
 
+  # The default status code for redirects on successful actions.
+  mattr_accessor :redirect_status_code
+  @@redirect_status_code = 302
+
+  # The default status code when a user fails to perform an action.
+  mattr_accessor :failure_status_code
+  @@failure_status_code = 200
+
+  # The default status code when a user is not authorized by Warden.
+  mattr_accessor :authentication_failure_status_code
+  @@authentication_failure_status_code = 200
+
   # The parent controller all Devise controllers inherits from.
   # Defaults to ApplicationController. This should be set early
   # in the initialization process and should be set to a string.

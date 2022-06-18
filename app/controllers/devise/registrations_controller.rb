@@ -31,7 +31,7 @@ class Devise::RegistrationsController < DeviseController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      respond_with resource, status: Devise.failure_status_code
     end
   end
 
@@ -53,11 +53,11 @@ class Devise::RegistrationsController < DeviseController
       set_flash_message_for_update(resource, prev_unconfirmed_email)
       bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
 
-      respond_with resource, location: after_update_path_for(resource)
+      respond_with resource, location: after_update_path_for(resource), status: Devise.redirect_status_code
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      respond_with resource, status: Devise.failure_status_code
     end
   end
 
@@ -67,7 +67,7 @@ class Devise::RegistrationsController < DeviseController
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
     set_flash_message! :notice, :destroyed
     yield resource if block_given?
-    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
+    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name), status: Devise.redirect_status_code }
   end
 
   # GET /resource/cancel

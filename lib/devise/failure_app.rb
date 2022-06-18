@@ -208,7 +208,21 @@ module Devise
       controller, action = app.split("#")
       controller_name  = ActiveSupport::Inflector.camelize(controller)
       controller_klass = ActiveSupport::Inflector.constantize("#{controller_name}Controller")
-      controller_klass.action(action)
+
+      # https://github.com/rails/rails/blob/de53ba56cab69fb9707785a397a59ac4aaee9d6f/actionpack/lib/action_controller/metal.rb#L231-L243
+      app = lambda { |env|
+        req = ActionDispatch::Request.new(env)
+        res = controller_klass.make_response! req
+        # only change is adding a status code.
+        res.status = Devise.authentication_failure_status_code
+        controller_klass.new.dispatch(action, req, res)
+      }
+
+      if controller_klass.middleware_stack.any?
+        controller_klass.middleware_stack.build(action, app)
+      else
+        app
+      end
     end
 
     def warden

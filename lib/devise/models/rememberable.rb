@@ -50,7 +50,11 @@ module Devise
       def remember_me!
         self.remember_token ||= self.class.remember_token if respond_to?(:remember_token)
         self.remember_created_at ||= Time.now.utc
-        save(validate: false) if self.changed?
+        if Devise.activerecord51?
+          save(validate: false) if self.has_changes_to_save?
+        else
+          save(validate: false) if self.changed?
+        end
       end
 
       # If the record is persisted, remove the remember token (but only if

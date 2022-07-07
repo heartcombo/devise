@@ -447,7 +447,7 @@ ERROR
           match "#{path_prefix}/#{provider}",
             to: "#{controllers[:omniauth_callbacks]}#passthru",
             as: "#{provider}_omniauth_authorize",
-            via: [:get, :post]
+            via: OmniAuth.config.allowed_request_methods
 
           match "#{path_prefix}/#{provider}/callback",
             to: "#{controllers[:omniauth_callbacks]}##{provider}",

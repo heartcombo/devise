@@ -227,6 +227,10 @@ module Devise
   mattr_accessor :sign_out_via
   @@sign_out_via = :delete
 
+  # The default method used while signing out
+  mattr_accessor :use_turbo
+  @@use_turbo = false
+
   # The parent controller all Devise controllers inherits from.
   # Defaults to ApplicationController. This should be set early
   # in the initialization process and should be set to a string.

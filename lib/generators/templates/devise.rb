@@ -303,6 +303,11 @@ Devise.setup do |config|
   #   include Turbolinks::Controller
   # end
 
+  # ==> Hotwire configuration
+  # Use hotwire turbo for forms via 'data: {turbo: Devise.use_turbo}'.
+  # Default is: false in order to have Rails 7 working as default until it is fully supported.
+  config.use_turbo = false
+
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is

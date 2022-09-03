@@ -64,6 +64,8 @@ module Devise
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
       @format = options[:format]
 
+      @use_turbo = options[:use_turbo] || false
+
       @router_name = options[:router_name]
 
       default_failure_app(options)

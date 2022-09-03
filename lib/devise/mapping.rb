@@ -25,7 +25,7 @@ module Devise
   #
   class Mapping #:nodoc:
     attr_reader :singular, :scoped_path, :path, :controllers, :path_names,
-                :class_name, :sign_out_via, :format, :used_routes, :used_helpers,
+                :class_name, :sign_out_via, :use_turbo, :format, :used_routes, :used_helpers,
                 :failure_app, :router_name
 
     alias :name :singular
@@ -64,7 +64,7 @@ module Devise
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
       @format = options[:format]
 
-      @use_turbo = options[:use_turbo] || false
+      @use_turbo = options[:use_turbo] || Devise.use_turbo
 
       @router_name = options[:router_name]
 

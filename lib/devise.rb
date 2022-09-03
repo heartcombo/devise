@@ -227,7 +227,7 @@ module Devise
   mattr_accessor :sign_out_via
   @@sign_out_via = :delete
 
-  # The default method used while signing out
+  # The default setting for using turbo on forms.
   mattr_accessor :use_turbo
   @@use_turbo = false
 

@@ -18,7 +18,7 @@ module Devise
     #   * +maximum_attempts+: how many attempts should be accepted before blocking the user.
     #   * +lock_strategy+: lock the user account by :failed_attempts or :none.
     #   * +unlock_strategy+: unlock the user account by :time, :email, :both or :none.
-    #   * +unlock_in+: the time you want to lock the user after to lock happens. Only available when unlock_strategy is :time or :both.
+    #   * +unlock_in+: the time you want to unlock the user after lock happens. Only available when unlock_strategy is :time or :both.
     #   * +unlock_keys+: the keys you want to use when locking and unlocking an account
     #
     module Lockable

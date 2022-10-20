@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'devise/strategies/authenticatable'
+require 'devise/strategies/password_authenticatable'
 
 module Devise
   module Strategies
     # Default strategy for signing in a user, based on their email and password in the database.
-    class DatabaseAuthenticatable < Authenticatable
+    class DatabaseAuthenticatable < PasswordAuthenticatable
       def authenticate!
         resource  = password.present? && mapping.to.find_for_database_authentication(authentication_hash)
         hashed = false

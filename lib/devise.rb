@@ -39,7 +39,7 @@ module Devise
 
   module Strategies
     autoload :Base,            'devise/strategies/base'
-    autoload :Authenticatable, 'devise/strategies/authenticatable'
+    autoload :PasswordAuthenticatable, 'devise/strategies/password_authenticatable'
   end
 
   module Test

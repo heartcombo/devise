@@ -7,7 +7,7 @@ module Devise
     # This strategy should be used as basis for authentication strategies. It retrieves
     # parameters both from params or from http authorization headers. See database_authenticatable
     # for an example.
-    class Authenticatable < Base
+    class PasswordAuthenticatable < Base
       attr_accessor :authentication_hash, :authentication_type, :password
 
       def store?

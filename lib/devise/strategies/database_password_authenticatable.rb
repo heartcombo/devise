@@ -5,7 +5,7 @@ require 'devise/strategies/password_authenticatable'
 module Devise
   module Strategies
     # Default strategy for signing in a user, based on their email and password in the database.
-    class DatabaseAuthenticatable < PasswordAuthenticatable
+    class DatabasePasswordAuthenticatable < PasswordAuthenticatable
       def authenticate!
         resource  = password.present? && mapping.to.find_for_database_authentication(authentication_hash)
         hashed = false
@@ -28,4 +28,4 @@ module Devise
   end
 end
 
-Warden::Strategies.add(:database_authenticatable, Devise::Strategies::DatabaseAuthenticatable)
+Warden::Strategies.add(:database_authenticatable, Devise::Strategies::DatabasePasswordAuthenticatable)

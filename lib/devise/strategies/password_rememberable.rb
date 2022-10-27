@@ -8,7 +8,7 @@ module Devise
     # to verify whether there is a cookie with the remember token, and to
     # recreate the user from this cookie if it exists. Must be called *before*
     # authenticatable.
-    class Rememberable < PasswordAuthenticatable
+    class PasswordRememberable < PasswordAuthenticatable
       # A valid strategy for rememberable needs a remember token in the cookies.
       def valid?
         @remember_cookie = nil
@@ -64,4 +64,4 @@ module Devise
   end
 end
 
-Warden::Strategies.add(:rememberable, Devise::Strategies::Rememberable)
+Warden::Strategies.add(:rememberable, Devise::Strategies::PasswordRememberable)

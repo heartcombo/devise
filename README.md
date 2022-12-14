@@ -209,6 +209,8 @@ Then run `rails db:migrate`
 
 You should restart your application after changing Devise's configuration options (this includes stopping spring). Otherwise, you will run into strange errors, for example, users being unable to login and route helpers being undefined.
 
+Trouble following through? Here's a [video walkthrough](https://replayable.io/replay/6399e1d697cf480067cf494d/?share=an14aJPTfIU3xBWHB5WzQ).
+
 ### Controller filters and helpers
 
 Devise will create some helpers to use inside your controllers and views. To set up a controller with user authentication, just add this before_action (assuming your devise model is 'User'):

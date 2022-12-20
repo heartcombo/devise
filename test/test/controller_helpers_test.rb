@@ -97,13 +97,18 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
 
   test "returns the body of a failure app" do
     get :index
-    assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
+
+    if Devise::Test.rails71_and_up?
+      assert_empty response.body
+    else
+      assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
+    end
   end
 
   test "returns the content type of a failure app" do
     get :index, params: { format: :json }
 
-    if Devise::Test.rails6?
+    if Devise::Test.rails6_and_up?
       assert_includes response.media_type, 'application/json'
     else
       assert_includes response.content_type, 'application/json'
@@ -203,6 +208,11 @@ class TestControllerHelpersForStreamingControllerTest < Devise::ControllerTestCa
 
   test "doesn't hang when sending an authentication error response body" do
     get :index
-    assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
+
+    if Devise::Test.rails71_and_up?
+      assert_empty response.body
+    else
+      assert_equal "<html><body>You are being <a href=\"http://test.host/users/sign_in\">redirected</a>.</body></html>", response.body
+    end
   end
 end

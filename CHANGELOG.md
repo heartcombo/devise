@@ -1,4 +1,7 @@
-### unreleased
+### 4.8.1 - 2021-12-16
+
+* enhancements
+  * Add support for Rails 7.0. Please note that Turbo integration is not fully supported by Devise yet.
 
 ### 4.8.0 - 2021-04-29
 

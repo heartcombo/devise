@@ -7,9 +7,17 @@ end
 module Devise
   module Test
     # Detection for minor differences between Rails versions in tests.
-    
-    def self.rails6?
-      Rails.version.start_with? '6'
+
+    def self.rails71_and_up?
+      !rails70? && Rails::VERSION::MAJOR >= 7
+    end
+
+    def self.rails70?
+      Rails.version.start_with? '7.0'
+    end
+
+    def self.rails6_and_up?
+      Rails::VERSION::MAJOR >= 6
     end
 
     def self.rails52_and_up?

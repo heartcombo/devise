@@ -79,7 +79,6 @@ class FailureTest < ActiveSupport::TestCase
       'HTTP_HOST' => 'test.host',
       'REQUEST_METHOD' => 'GET',
       'warden.options' => { scope: :user },
-      'rack.session' => {},
       'action_dispatch.request.formats' => Array(env_params.delete('formats') || Mime[:html]),
       'rack.input' => "",
       'warden' => OpenStruct.new(message: nil)
@@ -214,9 +213,13 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'set up a default message' do
       call_failure
-      assert_match(/You are being/, @response.last.body)
-      assert_match(/redirected/, @response.last.body)
-      assert_match(/users\/sign_in/, @response.last.body)
+      if Devise::Test.rails71_and_up?
+        assert_empty @response.last.body
+      else
+        assert_match(/You are being/, @response.last.body)
+        assert_match(/redirected/, @response.last.body)
+        assert_match(/users\/sign_in/, @response.last.body)
+      end
     end
 
     test 'works for any navigational format' do

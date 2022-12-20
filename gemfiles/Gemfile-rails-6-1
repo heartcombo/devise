@@ -1,17 +1,23 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
 
-gemspec
+gemspec path: ".."
 
-gem "rails", "~> 7.0.0"
+gem "rails", '~> 6.1.0'
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
 
+gem "activemodel-serializers-xml", github: "rails/activemodel-serializers-xml"
+
 gem "rails-controller-testing", github: "rails/rails-controller-testing"
 
 gem "responders", "~> 3.0"
+
+if RUBY_VERSION >= "3.1"
+  gem "net-smtp", require: false
+  gem "net-imap", require: false
+  gem "net-pop", require: false
+end
 
 group :test do
   gem "nokogiri", "< 1.13"
@@ -26,14 +32,3 @@ end
 platforms :ruby do
   gem "sqlite3", "~> 1.4"
 end
-
-# platforms :jruby do
-#   gem "activerecord-jdbc-adapter"
-#   gem "activerecord-jdbcsqlite3-adapter"
-#   gem "jruby-openssl"
-# end
-
-# TODO:
-# group :mongoid do
-#   gem "mongoid", "~> 4.0.0"
-# end

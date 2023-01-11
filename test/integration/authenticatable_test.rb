@@ -119,7 +119,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
 
     delete destroy_admin_session_path
     assert_response :redirect
-    assert_redirected_to root_path
+    assert_see_other_to root_path
 
     get root_path
     assert_contain 'Signed out successfully'
@@ -129,7 +129,7 @@ class AuthenticationSanityTest < Devise::IntegrationTest
   test 'unauthenticated admin set message on sign out' do
     delete destroy_admin_session_path
     assert_response :redirect
-    assert_redirected_to root_path
+    assert_see_other_to root_path
 
     get root_path
     assert_contain 'Signed out successfully'

@@ -67,6 +67,13 @@ class ActionDispatch::IntegrationTest
     assert_url url, @integration_session.headers["Location"]
   end
 
+  def assert_see_other_to(url)
+    assert_equal 303, @integration_session.status,
+                 "Expected status to be 303, got #{@integration_session.status}"
+
+    assert_url url, @integration_session.headers["Location"]
+  end
+
   def assert_current_url(expected)
     assert_url expected, current_url
   end

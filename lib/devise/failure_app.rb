@@ -38,7 +38,7 @@ module Devise
       if http_auth?
         http_auth
       elsif warden_options[:recall]
-        recall
+        request_format == :turbo_stream ? redirect : recall
       else
         redirect
       end
@@ -167,7 +167,7 @@ module Devise
     end
 
     def skip_format?
-      %w(html */*).include? request_format.to_s
+      %w(html */* turbo_stream).include? request_format.to_s
     end
 
     # Choose whether we should respond in an HTTP authentication fashion,

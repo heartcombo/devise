@@ -16,7 +16,7 @@ class Devise::UnlocksController < DeviseController
     if successfully_sent?(resource)
       respond_with({}, location: after_sending_unlock_instructions_path_for(resource))
     else
-      respond_with(resource)
+      respond_with resource, status: :unprocessable_entity
     end
   end
 

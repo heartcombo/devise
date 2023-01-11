@@ -2,6 +2,7 @@
 
 require 'test_helper'
 require 'ostruct'
+require 'minitest/mock'
 
 class FailureTest < ActiveSupport::TestCase
   class RootFailureApp < Devise::FailureApp
@@ -63,6 +64,10 @@ class FailureTest < ActiveSupport::TestCase
     def fake_engine
       @fake_engine ||= FakeEngine.new
     end
+  end
+
+  class SessionStorableFailureApp < Devise::FailureApp
+    def store_location_for(*); end
   end
 
   class RequestWithoutFlashSupport < ActionDispatch::Request
@@ -353,6 +358,20 @@ class FailureTest < ActiveSupport::TestCase
       call_failure(env)
       assert_includes @response.third.body, '<h2>Log in</h2>'
       assert_includes @response.third.body, 'Your account is not activated yet.'
+    end
+
+    test 'returns to the default redirect location for turbo_stream' do
+      Mime::Type.register "text/vnd.turbo-stream.html", :turbo_stream
+      env = {
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in" },
+        "devise.mapping" => Devise.mappings[:user],
+        "warden" => stub_everything,
+        "formats" => Mime[:turbo_stream],
+        app: SessionStorableFailureApp
+      }
+      call_failure(env)
+      assert_equal 302, @response.first
+      assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
     if Rails.application.config.respond_to?(:relative_url_root)

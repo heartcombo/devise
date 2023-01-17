@@ -1,3 +1,8 @@
+### Unreleased
+
+* enhancements
+  * Add support for Ruby 3.1/3.2.
+
 ### 4.8.1 - 2021-12-16
 
 * enhancements

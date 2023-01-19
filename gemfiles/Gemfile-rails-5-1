@@ -23,3 +23,9 @@ end
 platforms :ruby do
   gem "sqlite3", "~> 1.3.6"
 end
+
+if RUBY_VERSION < "2.3.0"
+  # We're getting version 2.2.0 which doesn't play nice with Ruby 2.2, using
+  # `Object.deprecate_constant` which isn't available.
+  gem "multipart-post", "2.1.1"
+end

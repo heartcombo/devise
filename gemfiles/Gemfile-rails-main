@@ -9,7 +9,7 @@ gem "rdoc"
 
 gem "rails-controller-testing", github: "rails/rails-controller-testing"
 
-gem "responders", "~> 3.0"
+gem "responders", github: "heartcombo/responders", branch: "main"
 
 group :test do
   gem "nokogiri", "< 1.13"

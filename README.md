@@ -476,6 +476,25 @@ Please note: You will still need to add `devise_for` in your routes in order to 
 devise_for :users, skip: :all
 ```
 
+### Hotwire/Turbo
+
+Devise integrates with Hotwire/Turbo by treating such requests as navigational, and configuring certain responses for errors and redirects to match the expected behavior. New apps are generated with the following response configuration by default, and existing apps may opt-in by adding the config to their Devise initializers:
+
+```ruby
+Devise.setup do |config|
+  # ...
+  # When using Devise with Hotwire/Turbo, the http status for error responses
+  # and some redirects must match the following. The default in Devise for existing
+  # apps is `200 OK` and `302 Found respectively`, but new apps are generated with
+  # these new defaults that match Hotwire/Turbo behavior.
+  # Note: These might become the new default in future versions of Devise.
+  config.responder.error_status = :unprocessable_entity
+  config.responder.redirect_status = :see_other
+end
+```
+
+_Note_: the above statuses configuration may become the default for Devise in a future release.
+
 ### I18n
 
 Devise uses flash messages with I18n, in conjunction with the flash keys :notice and :alert. To customize your app, you can set up your locale file:

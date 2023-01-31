@@ -27,6 +27,7 @@ class Devise::ConfirmationsController < DeviseController
       set_flash_message!(:notice, :confirmed)
       respond_with_navigational(resource){ redirect_to after_confirmation_path_for(resource_name, resource) }
     else
+      # TODO: use `error_status` when the default changes to `:unprocessable_entity`.
       respond_with_navigational(resource.errors, status: :unprocessable_entity){ render :new }
     end
   end

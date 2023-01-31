@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/heartcombo/responders.git
+  revision: fb9f787055a7a842584ce351793b249676290090
+  branch: main
+  specs:
+    responders (3.0.1)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
+
+GIT
   remote: https://github.com/rails/rails-controller-testing.git
   revision: 351c0162df0771c0c48e6a5a886c4c2f0a5d1a74
   specs:
@@ -189,9 +198,6 @@ GEM
     rake (13.0.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
-    responders (3.0.1)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
     rexml (3.2.5)
     ruby-openid (2.9.2)
     ruby2_keywords (0.0.5)
@@ -231,7 +237,7 @@ DEPENDENCIES
   rails (~> 7.0.0)
   rails-controller-testing!
   rdoc
-  responders (~> 3.0)
+  responders!
   rexml
   sqlite3 (~> 1.4)
   timecop

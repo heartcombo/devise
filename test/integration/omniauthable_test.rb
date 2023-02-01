@@ -128,13 +128,17 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
   test "generates a link to authenticate with provider" do
     visit "/users/sign_in"
-    assert_select "a[href=?][data-method='post']", "/users/auth/facebook", text: "Sign in with FaceBook"
+    assert_select "form[action=?][method=post]", "/users/auth/facebook" do
+      assert_select "input[type=submit][value=?]", "Sign in with FaceBook"
+    end
   end
 
   test "generates a proper link when SCRIPT_NAME is set" do
     header 'SCRIPT_NAME', '/q'
     visit "/users/sign_in"
-    assert_select "a[href=?][data-method='post']", "/q/users/auth/facebook", text: "Sign in with FaceBook"
+    assert_select "form[action=?][method=post]", "/q/users/auth/facebook" do
+      assert_select "input[type=submit][value=?]", "Sign in with FaceBook"
+    end
   end
 
   test "handles callback error parameter according to the specification" do

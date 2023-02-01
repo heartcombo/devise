@@ -109,7 +109,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
     follow_redirect!
 
     assert_response :success
-    assert_contain 'Sign in'
+    assert_contain 'Log in'
     refute warden.authenticated?(:user)
   end
 

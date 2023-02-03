@@ -493,6 +493,8 @@ Devise.setup do |config|
 end
 ```
 
+**Important**: these custom responses require the `responders` gem version to be `3.1.0` or higher, please make sure you update it if you're going to use this configuration.
+
 _Note_: the above statuses configuration may become the default for Devise in a future release.
 
 ### I18n

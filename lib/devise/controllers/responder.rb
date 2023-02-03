@@ -19,6 +19,16 @@ module Devise
         def self.redirect_status
           :found
         end
+
+        def self.error_status=(*)
+          warn "[DEVISE] Setting the error status on the Devise responder has no effect with this " \
+            "version of `responders`, please make sure you're using a newer version. Check the changelog for more info."
+        end
+
+        def self.redirect_status=(*)
+          warn "[DEVISE] Setting the redirect status on the Devise responder has no effect with this " \
+            "version of `responders`, please make sure you're using a newer version. Check the changelog for more info."
+        end
       end
     end
   end

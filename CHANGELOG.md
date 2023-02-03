@@ -20,6 +20,7 @@
     * If you have created a custom responder and/or failure app just to customize responses for better Hotwire/Turbo integration, they should no longer be necessary.
     * `:turbo_stream` is now treated as a navigational format, so it works like HTML navigation when using Turbo. Note: if you relied on `:turbo_stream` to be treated as a non-navigational format before, you can reconfigure your `navigational_formats` in the Devise initializer file to exclude it.
     * OmniAuth "Sign in with" links were changed to buttons that generate HTML forms with method=POST, instead of using link + method=POST that required rails/ujs to work. Since rails/ujs is no longer the default for new Rails apps, this allows the OmniAuth buttons to work in any scenario, with or without rails/ujs and/or Turbo. This only affects apps that are using the default `devise/shared/_links.html.erb` partial from Devise with OmniAuth enabled.
+    * Check [this upgrade guide](https://github.com/heartcombo/devise/wiki/How-To:-Upgrade-to-Devise-4.9.0-[Hotwire-Turbo-integration]) for more detailed information.
 
 ### 4.8.1 - 2021-12-16
 

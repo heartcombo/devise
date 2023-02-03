@@ -1,7 +1,5 @@
 ![Devise Logo](https://raw.github.com/heartcombo/devise/main/devise.png)
 
-[![Code Climate](https://codeclimate.com/github/heartcombo/devise.svg)](https://codeclimate.com/github/heartcombo/devise)
-
 Devise is a flexible authentication solution for Rails based on Warden. It:
 
 * Is Rack based;

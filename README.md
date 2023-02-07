@@ -497,6 +497,15 @@ end
 
 _Note_: the above statuses configuration may become the default for Devise in a future release.
 
+There are a couple other changes you might need to make in your app to work with Hotwire/Turbo, if you're migrating from rails-ujs:
+
+* The `data-confirm` option that adds a confirmation modal to buttons/forms before submission needs to change to `data-turbo-confirm`, so that Turbo handles those appropriately.
+* The `data-method` option that sets the request method for link submissions needs to change to `data-turbo-method`. This is not necessary for `button_to` or `form`s since Turbo can handle those.
+
+If you're setting up Devise to sign out via `:delete`, and you're using links (instead of buttons wrapped in a form) to sign out with the `method: :delete` option, they will need to be updated as described above. (Devise does not provide sign out links/buttons in its shared views.)
+
+Make sure to inspect your views looking for those, and change appropriately.
+
 ### I18n
 
 Devise uses flash messages with I18n, in conjunction with the flash keys :notice and :alert. To customize your app, you can set up your locale file:

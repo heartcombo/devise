@@ -220,10 +220,12 @@ module Devise
   mattr_accessor :navigational_formats
   @@navigational_formats = ["*/*", :html, :turbo_stream]
 
-  # The default responder used by Devise, not meant to be changed directly,
-  # but you can customize status codes with:
-  # `config.responder.error_status`
-  # `config.responder.redirect_status`
+  # The default responder used by Devise, used to customize status codes with:
+  #
+  #   `config.responder.error_status`
+  #   `config.responder.redirect_status`
+  #
+  # Can be replaced by a custom application responder.
   mattr_accessor :responder
   @@responder = Devise::Controllers::Responder
 

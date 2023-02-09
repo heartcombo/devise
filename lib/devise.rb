@@ -23,6 +23,7 @@ module Devise
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'
     autoload :Rememberable,   'devise/controllers/rememberable'
+    autoload :Responder,      'devise/controllers/responder'
     autoload :ScopedViews,    'devise/controllers/scoped_views'
     autoload :SignInOut,      'devise/controllers/sign_in_out'
     autoload :StoreLocation,  'devise/controllers/store_location'
@@ -217,7 +218,16 @@ module Devise
 
   # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
-  @@navigational_formats = ["*/*", :html]
+  @@navigational_formats = ["*/*", :html, :turbo_stream]
+
+  # The default responder used by Devise, used to customize status codes with:
+  #
+  #   `config.responder.error_status`
+  #   `config.responder.redirect_status`
+  #
+  # Can be replaced by a custom application responder.
+  mattr_accessor :responder
+  @@responder = Devise::Controllers::Responder
 
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes

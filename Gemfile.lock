@@ -10,7 +10,7 @@ GIT
 PATH
   remote: .
   specs:
-    devise (4.8.1)
+    devise (4.9.0.alpha)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -189,9 +189,9 @@ GEM
     rake (13.0.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
-    responders (3.0.1)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
+    responders (3.1.0)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     rexml (3.2.5)
     ruby-openid (2.9.2)
     ruby2_keywords (0.0.5)
@@ -231,7 +231,7 @@ DEPENDENCIES
   rails (~> 7.0.0)
   rails-controller-testing!
   rdoc
-  responders (~> 3.0)
+  responders (~> 3.1)
   rexml
   sqlite3 (~> 1.4)
   timecop

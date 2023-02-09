@@ -474,6 +474,36 @@ Please note: You will still need to add `devise_for` in your routes in order to 
 devise_for :users, skip: :all
 ```
 
+### Hotwire/Turbo
+
+Devise integrates with Hotwire/Turbo by treating such requests as navigational, and configuring certain responses for errors and redirects to match the expected behavior. New apps are generated with the following response configuration by default, and existing apps may opt-in by adding the config to their Devise initializers:
+
+```ruby
+Devise.setup do |config|
+  # ...
+  # When using Devise with Hotwire/Turbo, the http status for error responses
+  # and some redirects must match the following. The default in Devise for existing
+  # apps is `200 OK` and `302 Found respectively`, but new apps are generated with
+  # these new defaults that match Hotwire/Turbo behavior.
+  # Note: These might become the new default in future versions of Devise.
+  config.responder.error_status = :unprocessable_entity
+  config.responder.redirect_status = :see_other
+end
+```
+
+**Important**: these custom responses require the `responders` gem version to be `3.1.0` or higher, please make sure you update it if you're going to use this configuration. Check [this upgrade guide](https://github.com/heartcombo/devise/wiki/How-To:-Upgrade-to-Devise-4.9.0-[Hotwire-Turbo-integration]) for more info.
+
+_Note_: the above statuses configuration may become the default for Devise in a future release.
+
+There are a couple other changes you might need to make in your app to work with Hotwire/Turbo, if you're migrating from rails-ujs:
+
+* The `data-confirm` option that adds a confirmation modal to buttons/forms before submission needs to change to `data-turbo-confirm`, so that Turbo handles those appropriately.
+* The `data-method` option that sets the request method for link submissions needs to change to `data-turbo-method`. This is not necessary for `button_to` or `form`s since Turbo can handle those.
+
+If you're setting up Devise to sign out via `:delete`, and you're using links (instead of buttons wrapped in a form) to sign out with the `method: :delete` option, they will need to be updated as described above. (Devise does not provide sign out links/buttons in its shared views.)
+
+Make sure to inspect your views looking for those, and change appropriately.
+
 ### I18n
 
 Devise uses flash messages with I18n, in conjunction with the flash keys :notice and :alert. To customize your app, you can set up your locale file:

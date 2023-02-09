@@ -71,7 +71,9 @@ module Devise
       end
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
-      self.response = recall_app(warden_options[:recall]).call(request.env)
+      self.response = recall_app(warden_options[:recall]).call(request.env).tap { |response|
+        response[0] = Rack::Utils.status_code(Devise.responder.error_status)
+      }
     end
 
     def redirect
@@ -167,7 +169,7 @@ module Devise
     end
 
     def skip_format?
-      %w(html */*).include? request_format.to_s
+      %w(html */* turbo_stream).include? request_format.to_s
     end
 
     # Choose whether we should respond in an HTTP authentication fashion,

@@ -15,6 +15,7 @@ class DeviseController < Devise.parent_controller.constantize
   end
 
   prepend_before_action :assert_is_devise_resource!
+  self.responder = Devise.responder
   respond_to :html if mimes_for_respond_to.empty?
 
   # Override prefixes to consider the scoped view.

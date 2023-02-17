@@ -1,5 +1,8 @@
 ### Unreleased
 
+
+### 4.9.0 - 2023-02-17
+
 * enhancements
   * Add support for Ruby 3.1/3.2.
   * Add support for Hotwire + Turbo, default in Rails 7+.

@@ -382,7 +382,7 @@ $ rails generate devise:views users
 ```
 
 If you would like to generate only a few sets of views, like the ones for the `registerable` and `confirmable` module,
-you can pass a list of modules to the generator with the `-v` flag.
+you can pass a list of views to the generator with the `-v` flag.
 
 ```console
 $ rails generate devise:views -v registrations confirmations
@@ -410,7 +410,7 @@ If the customization at the views level is not enough, you can customize each co
       ...
     end
     ```
-    (Use the -c flag to specify a controller, for example: `rails generate devise:controllers users -c=sessions`)
+    Use the `-c` flag to specify one or more controllers, for example: `rails generate devise:controllers users -c sessions`)
 
 2. Tell the router to use this controller:
 
@@ -418,7 +418,7 @@ If the customization at the views level is not enough, you can customize each co
     devise_for :users, controllers: { sessions: 'users/sessions' }
     ```
 
-3. Copy the views from `devise/sessions` to `users/sessions`. Since the controller was changed, it won't use the default views located in `devise/sessions`.
+3. Recommended but not required: copy (or move) the views from `devise/sessions` to `users/sessions`. Rails will continue using the views from `devise/sessions` due to inheritance if you skip this step, but having the views matching the controller(s) keeps things consistent.
 
 4. Finally, change or extend the desired controller actions.
 

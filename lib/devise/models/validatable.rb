@@ -47,7 +47,7 @@ module Devise
         unavailable_validations = VALIDATIONS.select { |v| !base.respond_to?(v) }
 
         unless unavailable_validations.empty?
-          raise "Could not use :validatable module since #{base} does not respond " <<
+          raise "Could not use :validatable module since #{base} does not respond " \
                 "to the following methods: #{unavailable_validations.to_sentence}."
         end
       end

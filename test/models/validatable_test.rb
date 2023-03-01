@@ -110,9 +110,12 @@ class ValidatableTest < ActiveSupport::TestCase
   end
 
   test 'should not be included in objects with invalid API' do
-    assert_raise RuntimeError do
+    exception = assert_raise RuntimeError do
       Class.new.send :include, Devise::Models::Validatable
     end
+
+    expected_message = /Could not use :validatable module since .* does not respond to the following methods: validates_presence_of.*/
+    assert_match expected_message, exception.message
   end
 
   test 'required_fields should be an empty array' do

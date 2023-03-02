@@ -14,8 +14,8 @@ class HelperMethodsTest < Devise::ControllerTestCase
   end
 
   test 'does not respond_to helper or helper_method' do
-    refute_respond_to @controller.class, :helper
-    refute_respond_to @controller.class, :helper_method
+    assert_not_respond_to @controller.class, :helper
+    assert_not_respond_to @controller.class, :helper_method
   end
 
   test 'defines methods like current_user' do

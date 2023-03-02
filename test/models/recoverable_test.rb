@@ -18,7 +18,7 @@ class RecoverableTest < ActiveSupport::TestCase
       user = create_user
       user.send_reset_password_instructions
       token = user.reset_password_token
-      refute_includes reset_password_tokens, token
+      assert_not_includes reset_password_tokens, token
       reset_password_tokens << token
     end
   end

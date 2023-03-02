@@ -72,8 +72,8 @@ class LockableTest < ActiveSupport::TestCase
   test "reset_failed_attempts! does not try to reset if not using failed attempts strategy" do
     admin = create_admin
 
-    refute_respond_to admin, :failed_attempts
-    refute admin.reset_failed_attempts!
+    assert_not_respond_to admin, :failed_attempts
+    assert_not admin.reset_failed_attempts!
   end
 
   test 'should be valid for authentication with a unlocked user' do
@@ -147,7 +147,7 @@ class LockableTest < ActiveSupport::TestCase
       user = create_user
       user.lock_access!
       token = user.unlock_token
-      refute_includes unlock_tokens, token
+      assert_not_includes unlock_tokens, token
       unlock_tokens << token
     end
   end

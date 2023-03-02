@@ -15,7 +15,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   test "redirects if attempting to access a page with an unconfirmed account" do
     swap Devise, allow_unconfirmed_access_for: 0.days do
       user = create_user
-      assert !user.active_for_authentication?
+      assert_not user.active_for_authentication?
 
       sign_in user
       get :index
@@ -26,7 +26,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   test "returns nil if accessing current_user with an unconfirmed account" do
     swap Devise, allow_unconfirmed_access_for: 0.days do
       user = create_user
-      assert !user.active_for_authentication?
+      assert_not user.active_for_authentication?
 
       sign_in user
       get :accept, params: { id: user }

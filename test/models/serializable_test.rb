@@ -40,7 +40,7 @@ class SerializableTest < ActiveSupport::TestCase
   end
 
   def assert_no_key(key, subject)
-    assert !subject.key?(key), "Expected #{subject.inspect} to not have key #{key.inspect}"
+    assert_not subject.key?(key), "Expected #{subject.inspect} to not have key #{key.inspect}"
   end
 
   def from_json(options = nil)

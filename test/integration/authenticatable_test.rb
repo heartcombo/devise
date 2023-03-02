@@ -397,7 +397,7 @@ class AuthenticationWithScopedViewsTest < Devise::IntegrationTest
       end
 
       assert_match %r{Special user view}, response.body
-      assert !Devise::PasswordsController.scoped_views?
+      assert_not Devise::PasswordsController.scoped_views?
     ensure
       Devise::SessionsController.send :remove_instance_variable, :@scoped_views
     end

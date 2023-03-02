@@ -34,7 +34,7 @@ class LockableTest < ActiveSupport::TestCase
     user.confirm
     swap Devise, lock_strategy: :none, maximum_attempts: 2 do
       3.times { user.valid_for_authentication?{ false } }
-      assert !user.access_locked?
+      assert_not user.access_locked?
       assert_equal 0, user.failed_attempts
     end
   end

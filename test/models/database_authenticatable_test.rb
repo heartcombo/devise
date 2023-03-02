@@ -214,14 +214,14 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'should not update password without password' do
     user = create_user
     user.update_without_password(password: 'pass4321', password_confirmation: 'pass4321')
-    assert !user.reload.valid_password?('pass4321')
+    assert_not user.reload.valid_password?('pass4321')
     assert user.valid_password?('12345678')
   end
 
   test 'should destroy user if current password is valid' do
     user = create_user
     assert user.destroy_with_password('12345678')
-    assert !user.persisted?
+    assert_not user.persisted?
   end
 
   test 'should not destroy user with invalid password' do
@@ -289,7 +289,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
   test 'downcase_keys with validation' do
     User.create(email: "HEllO@example.com", password: "123456")
     user = User.create(email: "HEllO@example.com", password: "123456")
-    assert !user.valid?
+    assert_not user.valid?
   end
 
   test 'required_fields should be encryptable_password and the email field by default' do

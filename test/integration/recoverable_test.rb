@@ -218,7 +218,7 @@ class PasswordTest < Devise::IntegrationTest
       assert_contain 'Your password has been changed successfully.'
       assert_not_contain 'You are now signed in.'
       assert_equal new_user_session_path, @request.path
-      assert !warden.authenticated?(:user)
+      assert_not warden.authenticated?(:user)
     end
   end
 
@@ -231,7 +231,7 @@ class PasswordTest < Devise::IntegrationTest
       assert_contain 'Your password has been changed successfully'
       assert_not_contain 'You are now signed in.'
       assert_equal new_user_session_path, @request.path
-      assert !warden.authenticated?(:user)
+      assert_not warden.authenticated?(:user)
     end
   end
 
@@ -257,7 +257,7 @@ class PasswordTest < Devise::IntegrationTest
         assert_contain 'Your password has been changed successfully.'
         assert_not_contain 'You are now signed in.'
         assert_equal new_user_session_path, @request.path
-        assert !warden.authenticated?(:user)
+        assert_not warden.authenticated?(:user)
       end
     end
   end
@@ -269,7 +269,7 @@ class PasswordTest < Devise::IntegrationTest
       reset_password
 
       assert_contain 'Your password has been changed successfully.'
-      assert !user.reload.access_locked?
+      assert_not user.reload.access_locked?
       assert warden.authenticated?(:user)
     end
   end
@@ -281,7 +281,7 @@ class PasswordTest < Devise::IntegrationTest
       reset_password
 
       assert_contain 'Your password has been changed successfully.'
-      assert !user.reload.access_locked?
+      assert_not user.reload.access_locked?
       assert warden.authenticated?(:user)
     end
   end

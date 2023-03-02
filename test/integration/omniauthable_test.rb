@@ -98,7 +98,7 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
     assert session["devise.facebook_data"]
     visit "/users/cancel"
-    assert !session["devise.facebook_data"]
+    assert_not session["devise.facebook_data"]
   end
 
   test "cleans up session on sign in" do
@@ -109,7 +109,7 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
     assert session["devise.facebook_data"]
     sign_in_as_user
-    assert !session["devise.facebook_data"]
+    assert_not session["devise.facebook_data"]
   end
 
   test "sign in and send remember token if configured" do

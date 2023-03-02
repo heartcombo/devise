@@ -73,6 +73,17 @@ class ActiveSupport::TestCase
     end
   end
 
+  def swap_model_config(model, new_values)
+    new_values.each do |key, value|
+      model.send :"#{key}=", value
+    end
+    yield
+  ensure
+    new_values.each_key do |key|
+      model.remove_instance_variable :"@#{key}"
+    end
+  end
+
   def clear_cached_variables(options)
     if options.key?(:case_insensitive_keys) || options.key?(:strip_whitespace_keys)
       Devise.mappings.each do |_, mapping|

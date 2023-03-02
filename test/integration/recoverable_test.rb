@@ -223,7 +223,7 @@ class PasswordTest < Devise::IntegrationTest
   end
 
   test 'does not sign in user automatically after changing its password if resource_class.sign_in_after_reset_password is false' do
-    swap User, sign_in_after_reset_password: false do
+    swap_model_config User, sign_in_after_reset_password: false do
       create_user
       request_forgot_password
       reset_password
@@ -237,7 +237,7 @@ class PasswordTest < Devise::IntegrationTest
 
   test 'sign in user automatically after changing its password if resource_class.sign_in_after_reset_password is true' do
     swap Devise, sign_in_after_reset_password: false do
-      swap User, sign_in_after_reset_password: true do
+      swap_model_config User, sign_in_after_reset_password: true do
         create_user
         request_forgot_password
         reset_password

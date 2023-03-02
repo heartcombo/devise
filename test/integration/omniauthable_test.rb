@@ -52,7 +52,7 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
       follow_redirect!
       assert warden.authenticated?(:user)
 
-      refute User.validations_performed
+      assert_not User.validations_performed
     end
   end
 
@@ -87,7 +87,7 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
     assert_current_url "/"
     assert_contain "You have signed up successfully."
     assert_contain "Hello User user@example.com"
-    refute session["devise.facebook_data"]
+    assert_not session["devise.facebook_data"]
   end
 
   test "cleans up session on cancel" do
@@ -98,7 +98,7 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
     assert session["devise.facebook_data"]
     visit "/users/cancel"
-    assert !session["devise.facebook_data"]
+    assert_not session["devise.facebook_data"]
   end
 
   test "cleans up session on sign in" do
@@ -109,7 +109,7 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
 
     assert session["devise.facebook_data"]
     sign_in_as_user
-    assert !session["devise.facebook_data"]
+    assert_not session["devise.facebook_data"]
   end
 
   test "sign in and send remember token if configured" do

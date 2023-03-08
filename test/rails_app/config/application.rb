@@ -39,8 +39,10 @@ module RailsApp
       Devise::SessionsController.layout "application"
     end
 
-    if Devise::Test.rails70?
-      config.active_record.legacy_connection_handling = false
+    if DEVISE_ORM == :active_record
+      if Devise::Test.rails70?
+        config.active_record.legacy_connection_handling = false
+      end
     end
 
     if Devise::Test.rails70_and_up?

@@ -213,7 +213,7 @@ class LockableTest < ActiveSupport::TestCase
   test 'should return a new record with errors when a blank token is given' do
     locked_user = User.unlock_access_by_token('')
     assert_not locked_user.persisted?
-    assert_equal "can't be blank", locked_user.errors[:unlock_token].join
+    assert locked_user.errors.added?(:unlock_token, :blank)
   end
 
   test 'should find a user to send unlock instructions' do
@@ -246,7 +246,7 @@ class LockableTest < ActiveSupport::TestCase
       user = create_user
       unlock_user = User.send_unlock_instructions(email: user.email)
       assert_not unlock_user.persisted?
-      assert_equal "can't be blank", unlock_user.errors[:username].join
+      assert unlock_user.errors.added?(:username, :blank)
     end
   end
 

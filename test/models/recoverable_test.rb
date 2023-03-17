@@ -134,12 +134,12 @@ class RecoverableTest < ActiveSupport::TestCase
   end
 
   test 'should require all reset_password_keys' do
-      swap Devise, reset_password_keys: [:username, :email] do
-          user = create_user
-          reset_password_user = User.send_reset_password_instructions(email: user.email)
-          assert_not reset_password_user.persisted?
-          assert_equal "can't be blank", reset_password_user.errors[:username].join
-      end
+    swap Devise, reset_password_keys: [:username, :email] do
+      user = create_user
+      reset_password_user = User.send_reset_password_instructions(email: user.email)
+      assert_not reset_password_user.persisted?
+      assert reset_password_user.errors.added?(:username, :blank)
+    end
   end
 
   test 'should reset reset_password_token before send the reset instructions email' do
@@ -173,7 +173,7 @@ class RecoverableTest < ActiveSupport::TestCase
   test 'should return a new record with errors if reset_password_token is blank' do
     reset_password_user = User.reset_password_by_token(reset_password_token: '')
     assert_not reset_password_user.persisted?
-    assert_match "can't be blank", reset_password_user.errors[:reset_password_token].join
+    assert reset_password_user.errors.added?(:reset_password_token, :blank)
   end
 
   test 'should return a new record with errors if password is blank' do
@@ -182,7 +182,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
     reset_password_user = User.reset_password_by_token(reset_password_token: raw, password: '')
     assert_not reset_password_user.errors.empty?
-    assert_match "can't be blank", reset_password_user.errors[:password].join
+    assert reset_password_user.errors.added?(:password, :blank)
     assert_equal raw, reset_password_user.reset_password_token
   end
 
@@ -192,7 +192,7 @@ class RecoverableTest < ActiveSupport::TestCase
 
     reset_password_user = User.reset_password_by_token(reset_password_token: raw)
     assert_not reset_password_user.errors.empty?
-    assert_match "can't be blank", reset_password_user.errors[:password].join
+    assert reset_password_user.errors.added?(:password, :blank)
     assert_equal raw, reset_password_user.reset_password_token
   end
 

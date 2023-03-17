@@ -112,7 +112,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_template 'registrations/new'
     assert_have_selector '#error_explanation'
     assert_contain "Email is invalid"
-    assert_contain "Password confirmation doesn't match Password"
+    assert_contain %r{Password confirmation doesn['’]t match Password}
     assert_contain "2 errors prohibited"
     assert_nil User.to_adapter.find_first
 
@@ -251,7 +251,7 @@ class RegistrationTest < Devise::IntegrationTest
     fill_in 'current password', with: '12345678'
     click_button 'Update'
 
-    assert_contain "Password confirmation doesn't match Password"
+    assert_contain %r{Password confirmation doesn['’]t match Password}
     assert_not User.to_adapter.find_first.valid_password?('pas123')
   end
 

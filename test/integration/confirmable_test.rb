@@ -178,13 +178,13 @@ class ConfirmationTest < Devise::IntegrationTest
   test "should not be able to confirm an email with a blank confirmation token" do
     visit_user_confirmation_with_token("")
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test "should not be able to confirm an email with a nil confirmation token" do
     visit_user_confirmation_with_token(nil)
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test "should not be able to confirm user with blank confirmation token" do
@@ -193,7 +193,7 @@ class ConfirmationTest < Devise::IntegrationTest
 
     visit_user_confirmation_with_token("")
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test "should not be able to confirm user with nil confirmation token" do
@@ -202,7 +202,7 @@ class ConfirmationTest < Devise::IntegrationTest
 
     visit_user_confirmation_with_token(nil)
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test 'error message is configurable by resource name' do

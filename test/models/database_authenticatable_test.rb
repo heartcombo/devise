@@ -172,7 +172,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_not user.update_with_password(password: 'pass4321',
       password_confirmation: 'pass4321')
     assert user.reload.valid_password?('12345678')
-    assert_match "can't be blank", user.errors[:current_password].join
+    assert user.errors.added?(:current_password, :blank)
   end
 
   test 'should run validations even when current password is invalid or blank' do
@@ -181,7 +181,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert user.persisted?
     assert_not user.update_with_password(username: "")
     assert_match "usertest", user.reload.username
-    assert_match "can't be blank", user.errors[:username].join
+    assert user.errors.added?(:username, :blank)
   end
 
   test 'should ignore password and its confirmation if they are blank' do
@@ -235,7 +235,7 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     user = create_user
     assert_not user.destroy_with_password(nil)
     assert user.persisted?
-    assert_match "can't be blank", user.errors[:current_password].join
+    assert user.errors.added?(:current_password, :blank)
   end
 
   test 'should not email on password change' do

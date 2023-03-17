@@ -13,6 +13,7 @@ module Devise
   autoload :Encryptor,          'devise/encryptor'
   autoload :FailureApp,         'devise/failure_app'
   autoload :OmniAuth,           'devise/omniauth'
+  autoload :OrmDirtyTracking,   'devise/orm_dirty_tracking'
   autoload :ParameterFilter,    'devise/parameter_filter'
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
   autoload :TestHelpers,        'devise/test_helpers'
@@ -306,10 +307,6 @@ module Devise
   # When set to false, changing a password does not automatically sign in a user
   mattr_accessor :sign_in_after_change_password
   @@sign_in_after_change_password = true
-
-  def self.activerecord51? # :nodoc:
-    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
-  end
 
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.

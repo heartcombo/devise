@@ -2,6 +2,7 @@
 
 * enhancements
   * Allow resource class scopes to override the global configuration for `sign_in_after_reset_password` behaviour. [#5429](https://github.com/heartcombo/devise/pull/5429) [@mattr](https://github.com/mattr)
+  * Refactor conditional dirty tracking logic to a centralized module to simplify usage throughout the codebase. [#5575](https://github.com/heartcombo/devise/pull/5575)
 
 * bug fixes
   * Fix frozen string exception in validatable. [#5563](https://github.com/heartcombo/devise/pull/5563) [#5465](https://github.com/heartcombo/devise/pull/5465) [@mameier](https://github.com/mameier)

@@ -4,6 +4,7 @@
   * Allow resource class scopes to override the global configuration for `sign_in_after_reset_password` behaviour. [#5429](https://github.com/heartcombo/devise/pull/5429) [@mattr](https://github.com/mattr)
 
 * bug fixes
+  * Failure app will respond with configured `redirect_status` instead of `error_status` if the recall app returns a redirect status (300..399) [#5573](https://github.com/heartcombo/devise/pull/5573)
   * Fix frozen string exception in validatable. [#5563](https://github.com/heartcombo/devise/pull/5563) [#5465](https://github.com/heartcombo/devise/pull/5465) [@mameier](https://github.com/mameier)
 
 ### 4.9.0 - 2023-02-17

@@ -258,44 +258,23 @@ module Devise
           generate_confirmation_token && save(validate: false)
         end
 
-        if Devise.activerecord51?
-          def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
-            @reconfirmation_required = true
-            self.unconfirmed_email = self.email
-            self.email = self.email_in_database
-            self.confirmation_token = nil
-            generate_confirmation_token
-          end
-        else
-          def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
-            @reconfirmation_required = true
-            self.unconfirmed_email = self.email
-            self.email = self.email_was
-            self.confirmation_token = nil
-            generate_confirmation_token
-          end
+
+        def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
+          @reconfirmation_required = true
+          self.unconfirmed_email = self.email
+          self.email = self.devise_email_in_database
+          self.confirmation_token = nil
+          generate_confirmation_token
         end
 
-        if Devise.activerecord51?
-          def postpone_email_change?
-            postpone = self.class.reconfirmable &&
-              will_save_change_to_email? &&
-              !@bypass_confirmation_postpone &&
-              self.email.present? &&
-              (!@skip_reconfirmation_in_callback || !self.email_in_database.nil?)
-            @bypass_confirmation_postpone = false
-            postpone
-          end
-        else
-          def postpone_email_change?
-            postpone = self.class.reconfirmable &&
-              email_changed? &&
-              !@bypass_confirmation_postpone &&
-              self.email.present? &&
-              (!@skip_reconfirmation_in_callback || !self.email_was.nil?)
-            @bypass_confirmation_postpone = false
-            postpone
-          end
+        def postpone_email_change?
+          postpone = self.class.reconfirmable &&
+            devise_will_save_change_to_email? &&
+            !@bypass_confirmation_postpone &&
+            self.email.present? &&
+            (!@skip_reconfirmation_in_callback || !self.devise_email_in_database.nil?)
+          @bypass_confirmation_postpone = false
+          postpone
         end
 
         def reconfirmation_required?

@@ -84,7 +84,7 @@ module Devise
       end
 
       devise_modules_hook! do
-        include Devise::OrmDirtyTracking
+        include Devise::Orm
         include Devise::Models::Authenticatable
 
         selected_modules.each do |m|

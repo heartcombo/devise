@@ -29,6 +29,11 @@ module Devise
     autoload :UrlHelpers,     'devise/controllers/url_helpers'
   end
 
+  module Encryptors
+    autoload Argon2Encryptor, 'devise/encryptors/argon2_encryptor'
+    autoload BCryptEncryptor, 'devise/encryptors/bcrypt_encryptor'
+  end
+
   module Hooks
     autoload :Proxy, 'devise/hooks/proxy'
   end
@@ -51,6 +56,10 @@ module Devise
   # not be modified by the "end user" (this is why they are constants).
   ALL         = []
   CONTROLLERS = {}
+  ENCRYPTORS  = {
+    argon2: Devise::Encryptors::Argon2Encryptor,
+    bcrypt: Devise::Encryptors::BCryptEncryptor
+  }
   ROUTES      = {}
   STRATEGIES  = {}
   URL_HELPERS = {}
@@ -297,6 +306,16 @@ module Devise
   mattr_accessor :sign_in_after_change_password
   @@sign_in_after_change_password = true
 
+  # Allow the usage of alternative encryptors to the bcrypt default (argon2 available for now)
+  # Maybe allow also to configure any encryptor following the protocol?
+  mattr_accessor :encryptor
+  @@encryptor = :bcrypt
+
+  # Default value as recommended by OWASP 
+  # Maybe argon2 could **only** be implemented as a plugin???
+  mattr_accessor :argon2_m_cost
+  @@argon2_m_cost = 19
+
   def self.activerecord51? # :nodoc:
     defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
   end
@@ -493,6 +512,23 @@ module Devise
       @@warden_config_blocks.map { |block| block.call Devise.warden_config }
       true
     end
+  end
+
+  # Mapping of @@encryptor to an Encryptor module, fails if it is not the key
+  # of a predefined Encryptor (however one could/should? accept a custom encryptor
+  # defined by the calling application)
+  def self.encryptor
+    # I am a big fan of this particular memoization notation but as it does not seem into
+    # the code base I only suggest it here
+    # @__encryptor__ ||= 
+    ENCRYPTORS.fetch(@@encryptor) { raise Encryptor::EncryptorNotFound, @@encryptor.to_s }
+  end
+  # Provoke early failure. Is there a better way?
+  encryptor
+
+
+  def self.argon2_m_cost
+    @@argon2_m_cost
   end
 
   # Generate a friendly string randomly to be used as token.

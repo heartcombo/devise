@@ -5,6 +5,7 @@
   * Refactor conditional dirty tracking logic to a centralized module to simplify usage throughout the codebase. [#5575](https://github.com/heartcombo/devise/pull/5575)
 
 * bug fixes
+  * Failure app will respond with configured `redirect_status` instead of `error_status` if the recall app returns a redirect status (300..399) [#5573](https://github.com/heartcombo/devise/pull/5573)
   * Fix frozen string exception in validatable. [#5563](https://github.com/heartcombo/devise/pull/5563) [#5465](https://github.com/heartcombo/devise/pull/5465) [@mameier](https://github.com/mameier)
 
 ### 4.9.0 - 2023-02-17

@@ -3,8 +3,6 @@
 require 'active_support/test_case'
 
 class ActiveSupport::TestCase
-  VALID_AUTHENTICATION_TOKEN = 'AbCdEfGhIjKlMnOpQrSt'.freeze
-
   def setup_mailer
     ActionMailer::Base.deliveries = []
   end
@@ -70,6 +68,17 @@ class ActiveSupport::TestCase
     clear_cached_variables(new_values)
     old_values.each do |key, value|
       object.send :"#{key}=", value
+    end
+  end
+
+  def swap_model_config(model, new_values)
+    new_values.each do |key, value|
+      model.send :"#{key}=", value
+    end
+    yield
+  ensure
+    new_values.each_key do |key|
+      model.remove_instance_variable :"@#{key}"
     end
   end
 

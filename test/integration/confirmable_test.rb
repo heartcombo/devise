@@ -43,12 +43,12 @@ class ConfirmationTest < Devise::IntegrationTest
   test 'user with valid confirmation token should not be able to confirm an account after the token has expired' do
     swap Devise, confirm_within: 3.days do
       user = create_user(confirm: false, confirmation_sent_at: 4.days.ago)
-      refute user.confirmed?
+      assert_not user.confirmed?
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
       assert_have_selector '#error_explanation'
       assert_contain %r{needs to be confirmed within 3 days}
-      refute user.reload.confirmed?
+      assert_not user.reload.confirmed?
       assert_current_url "/users/confirmation?confirmation_token=#{user.raw_confirmation_token}"
     end
   end
@@ -86,7 +86,7 @@ class ConfirmationTest < Devise::IntegrationTest
   test 'user with valid confirmation token should be able to confirm an account before the token has expired' do
     swap Devise, confirm_within: 3.days do
       user = create_user(confirm: false, confirmation_sent_at: 2.days.ago)
-      refute user.confirmed?
+      assert_not user.confirmed?
       visit_user_confirmation_with_token(user.raw_confirmation_token)
 
       assert_contain 'Your email address has been successfully confirmed.'
@@ -132,7 +132,7 @@ class ConfirmationTest < Devise::IntegrationTest
       sign_in_as_user(confirm: false)
 
       assert_contain 'You have to confirm your email address before continuing'
-      refute warden.authenticated?(:user)
+      assert_not warden.authenticated?(:user)
     end
   end
 
@@ -143,7 +143,7 @@ class ConfirmationTest < Devise::IntegrationTest
       end
 
       assert_contain 'Invalid Email or password'
-      refute warden.authenticated?(:user)
+      assert_not warden.authenticated?(:user)
     end
   end
 
@@ -178,13 +178,13 @@ class ConfirmationTest < Devise::IntegrationTest
   test "should not be able to confirm an email with a blank confirmation token" do
     visit_user_confirmation_with_token("")
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test "should not be able to confirm an email with a nil confirmation token" do
     visit_user_confirmation_with_token(nil)
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test "should not be able to confirm user with blank confirmation token" do
@@ -193,7 +193,7 @@ class ConfirmationTest < Devise::IntegrationTest
 
     visit_user_confirmation_with_token("")
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test "should not be able to confirm user with nil confirmation token" do
@@ -202,7 +202,7 @@ class ConfirmationTest < Devise::IntegrationTest
 
     visit_user_confirmation_with_token(nil)
 
-    assert_contain "Confirmation token can't be blank"
+    assert_contain %r{Confirmation token can['’]t be blank}
   end
 
   test 'error message is configurable by resource name' do
@@ -308,7 +308,7 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     assert_contain 'Your email address has been successfully confirmed.'
     assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
-    refute admin.reload.pending_reconfirmation?
+    assert_not admin.reload.pending_reconfirmation?
   end
 
   test 'admin with previously valid confirmation token should not be able to confirm email after email changed again' do
@@ -330,7 +330,7 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     assert_contain 'Your email address has been successfully confirmed.'
     assert_current_url '/admin_area/sign_in'
     assert admin.reload.confirmed?
-    refute admin.reload.pending_reconfirmation?
+    assert_not admin.reload.pending_reconfirmation?
   end
 
   test 'admin email should be unique also within unconfirmed_email' do

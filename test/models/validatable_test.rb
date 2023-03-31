@@ -8,7 +8,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user = new_user(email: nil)
     assert user.invalid?
     assert user.errors[:email]
-    assert_equal 'can\'t be blank', user.errors[:email].join
+    assert user.errors.added?(:email, :blank)
   end
 
   test 'should require uniqueness of email if email has changed, allowing blank' do
@@ -52,14 +52,14 @@ class ValidatableTest < ActiveSupport::TestCase
   test 'should require password to be set when creating a new record' do
     user = new_user(password: '', password_confirmation: '')
     assert user.invalid?
-    assert_equal 'can\'t be blank', user.errors[:password].join
+    assert user.errors.added?(:password, :blank)
   end
 
   test 'should require confirmation to be set when creating a new record' do
     user = new_user(password: 'new_password', password_confirmation: 'blabla')
     assert user.invalid?
 
-    assert_equal 'doesn\'t match Password', user.errors[:password_confirmation].join
+    assert user.errors.added?(:password_confirmation, :confirmation, attribute: "Password")
   end
 
   test 'should require password when updating/resetting password' do
@@ -69,7 +69,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user.password_confirmation = ''
 
     assert user.invalid?
-    assert_equal 'can\'t be blank', user.errors[:password].join
+    assert user.errors.added?(:password, :blank)
   end
 
   test 'should require confirmation when updating/resetting password' do
@@ -77,7 +77,7 @@ class ValidatableTest < ActiveSupport::TestCase
     user.password_confirmation = 'another_password'
     assert user.invalid?
 
-    assert_equal 'doesn\'t match Password', user.errors[:password_confirmation].join
+    assert user.errors.added?(:password_confirmation, :confirmation, attribute: "Password")
   end
 
   test 'should require a password with minimum of 7 characters' do
@@ -99,7 +99,7 @@ class ValidatableTest < ActiveSupport::TestCase
 
     user.password_confirmation = 'confirmation'
     assert user.invalid?
-    refute (user.errors[:password].join =~ /is too long/)
+    assert_not (user.errors[:password].join =~ /is too long/)
   end
 
   test 'should complain about length even if password is not required' do
@@ -110,9 +110,12 @@ class ValidatableTest < ActiveSupport::TestCase
   end
 
   test 'should not be included in objects with invalid API' do
-    assert_raise RuntimeError do
+    exception = assert_raise RuntimeError do
       Class.new.send :include, Devise::Models::Validatable
     end
+
+    expected_message = /Could not use :validatable module since .* does not respond to the following methods: validates_presence_of.*/
+    assert_match expected_message, exception.message
   end
 
   test 'required_fields should be an empty array' do

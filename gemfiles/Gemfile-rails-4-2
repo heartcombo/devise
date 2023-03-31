@@ -2,6 +2,11 @@
 
 source "https://rubygems.org"
 
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
+  "https://github.com/#{repo_name}.git"
+end
+
 gemspec path: ".."
 
 gem "rails", github: "rails/rails", branch: "4-2-stable"
@@ -31,4 +36,10 @@ end
 
 group :mongoid do
   gem "mongoid", "~> 4.0"
+end
+
+if RUBY_VERSION < "2.3.0"
+  # We're getting version 2.2.0 which doesn't play nice with Ruby 2.2, using
+  # `Object.deprecate_constant` which isn't available.
+  gem "multipart-post", "2.1.1"
 end

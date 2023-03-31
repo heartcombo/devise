@@ -13,6 +13,7 @@ module Devise
   autoload :Encryptor,          'devise/encryptor'
   autoload :FailureApp,         'devise/failure_app'
   autoload :OmniAuth,           'devise/omniauth'
+  autoload :Orm,                'devise/orm'
   autoload :ParameterFilter,    'devise/parameter_filter'
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
   autoload :TestHelpers,        'devise/test_helpers'
@@ -23,6 +24,7 @@ module Devise
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'
     autoload :Rememberable,   'devise/controllers/rememberable'
+    autoload :Responder,      'devise/controllers/responder'
     autoload :ScopedViews,    'devise/controllers/scoped_views'
     autoload :SignInOut,      'devise/controllers/sign_in_out'
     autoload :StoreLocation,  'devise/controllers/store_location'
@@ -217,7 +219,16 @@ module Devise
 
   # Which formats should be treated as navigational.
   mattr_accessor :navigational_formats
-  @@navigational_formats = ["*/*", :html]
+  @@navigational_formats = ["*/*", :html, :turbo_stream]
+
+  # The default responder used by Devise, used to customize status codes with:
+  #
+  #   `config.responder.error_status`
+  #   `config.responder.redirect_status`
+  #
+  # Can be replaced by a custom application responder.
+  mattr_accessor :responder
+  @@responder = Devise::Controllers::Responder
 
   # When set to true, signing out a user signs out all other scopes.
   mattr_accessor :sign_out_all_scopes
@@ -297,10 +308,6 @@ module Devise
   mattr_accessor :sign_in_after_change_password
   @@sign_in_after_change_password = true
 
-  def self.activerecord51? # :nodoc:
-    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
-  end
-
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup
@@ -313,12 +320,20 @@ module Devise
     end
 
     def get
-      ActiveSupport::Dependencies.constantize(@name)
+      # TODO: Remove AS::Dependencies usage when dropping support to Rails < 7.
+      if ActiveSupport::Dependencies.respond_to?(:constantize)
+        ActiveSupport::Dependencies.constantize(@name)
+      else
+        @name.constantize
+      end
     end
   end
 
   def self.ref(arg)
-    ActiveSupport::Dependencies.reference(arg)
+    # TODO: Remove AS::Dependencies usage when dropping support to Rails < 7.
+    if ActiveSupport::Dependencies.respond_to?(:reference)
+      ActiveSupport::Dependencies.reference(arg)
+    end
     Getter.new(arg)
   end
 

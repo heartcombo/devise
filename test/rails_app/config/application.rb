@@ -46,8 +46,12 @@ module RailsApp
     end
 
     # Remove the first check once Rails 5.0 support is removed.
-    if Devise::Test.rails52_and_up? && !Devise::Test.rails6?
+    if Devise::Test.rails52_and_up? && !Devise::Test.rails6_and_up?
       Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
+    end
+
+    if Devise::Test.rails70?
+      config.active_record.legacy_connection_handling = false
     end
   end
 end

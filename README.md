@@ -1,6 +1,4 @@
-![Devise Logo](https://raw.github.com/heartcombo/devise/master/devise.png)
-
-[![Code Climate](https://codeclimate.com/github/heartcombo/devise.svg)](https://codeclimate.com/github/heartcombo/devise)
+![Devise Logo](https://raw.github.com/heartcombo/devise/main/devise.png)
 
 Devise is a flexible authentication solution for Rails based on Warden. It:
 
@@ -11,16 +9,16 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 It's composed of 10 modules:
 
-* [Database Authenticatable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
-* [Omniauthable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
-* [Confirmable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
-* [Recoverable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Recoverable): resets the user password and sends reset instructions.
-* [Registerable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
-* [Rememberable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
-* [Trackable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
-* [Timeoutable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
-* [Validatable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
-* [Lockable](http://www.rubydoc.info/github/heartcombo/devise/master/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+* [Database Authenticatable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+* [Omniauthable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
+* [Confirmable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+* [Recoverable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Recoverable): resets the user password and sends reset instructions.
+* [Registerable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
+* [Rememberable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
+* [Trackable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
+* [Timeoutable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
+* [Validatable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+* [Lockable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
 ## Table of Contents
 
@@ -91,7 +89,7 @@ https://groups.google.com/group/plataformatec-devise
 
 You can view the Devise documentation in RDoc format here:
 
-http://rubydoc.info/github/heartcombo/devise/master/frames
+http://rubydoc.info/github/heartcombo/devise/main/frames
 
 If you need to use Devise with previous versions of Rails, you can always run "gem server" from the command line after you install the gem to access the old documentation.
 
@@ -130,7 +128,7 @@ Please note that the command output will show the variable value being used.
 
 ### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
-Inside the [gemfiles](https://github.com/heartcombo/devise/tree/master/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
+Inside the [gemfiles](https://github.com/heartcombo/devise/tree/main/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
 For example, if the tests broke using Ruby 2.4.2 and Rails 4.1, you can do the following:
 ```bash
 rbenv shell 2.4.2 # or rvm use 2.4.2
@@ -384,7 +382,7 @@ $ rails generate devise:views users
 ```
 
 If you would like to generate only a few sets of views, like the ones for the `registerable` and `confirmable` module,
-you can pass a list of modules to the generator with the `-v` flag.
+you can pass a list of views to the generator with the `-v` flag.
 
 ```console
 $ rails generate devise:views -v registrations confirmations
@@ -412,7 +410,7 @@ If the customization at the views level is not enough, you can customize each co
       ...
     end
     ```
-    (Use the -c flag to specify a controller, for example: `rails generate devise:controllers users -c=sessions`)
+    Use the `-c` flag to specify one or more controllers, for example: `rails generate devise:controllers users -c sessions`)
 
 2. Tell the router to use this controller:
 
@@ -420,7 +418,7 @@ If the customization at the views level is not enough, you can customize each co
     devise_for :users, controllers: { sessions: 'users/sessions' }
     ```
 
-3. Copy the views from `devise/sessions` to `users/sessions`. Since the controller was changed, it won't use the default views located in `devise/sessions`.
+3. Recommended but not required: copy (or move) the views from `devise/sessions` to `users/sessions`. Rails will continue using the views from `devise/sessions` due to inheritance if you skip this step, but having the views matching the controller(s) keeps things consistent.
 
 4. Finally, change or extend the desired controller actions.
 
@@ -458,7 +456,7 @@ Devise also ships with default routes. If you need to customize them, you should
 devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
 ```
 
-Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/heartcombo/devise/master/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
+Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/heartcombo/devise/main/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
 
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is create your routes normally and wrap them in a `devise_scope` block in the router:
 
@@ -475,6 +473,36 @@ Please note: You will still need to add `devise_for` in your routes in order to 
 ```ruby
 devise_for :users, skip: :all
 ```
+
+### Hotwire/Turbo
+
+Devise integrates with Hotwire/Turbo by treating such requests as navigational, and configuring certain responses for errors and redirects to match the expected behavior. New apps are generated with the following response configuration by default, and existing apps may opt-in by adding the config to their Devise initializers:
+
+```ruby
+Devise.setup do |config|
+  # ...
+  # When using Devise with Hotwire/Turbo, the http status for error responses
+  # and some redirects must match the following. The default in Devise for existing
+  # apps is `200 OK` and `302 Found respectively`, but new apps are generated with
+  # these new defaults that match Hotwire/Turbo behavior.
+  # Note: These might become the new default in future versions of Devise.
+  config.responder.error_status = :unprocessable_entity
+  config.responder.redirect_status = :see_other
+end
+```
+
+**Important**: these custom responses require the `responders` gem version to be `3.1.0` or higher, please make sure you update it if you're going to use this configuration. Check [this upgrade guide](https://github.com/heartcombo/devise/wiki/How-To:-Upgrade-to-Devise-4.9.0-[Hotwire-Turbo-integration]) for more info.
+
+_Note_: the above statuses configuration may become the default for Devise in a future release.
+
+There are a couple other changes you might need to make in your app to work with Hotwire/Turbo, if you're migrating from rails-ujs:
+
+* The `data-confirm` option that adds a confirmation modal to buttons/forms before submission needs to change to `data-turbo-confirm`, so that Turbo handles those appropriately.
+* The `data-method` option that sets the request method for link submissions needs to change to `data-turbo-method`. This is not necessary for `button_to` or `form`s since Turbo can handle those.
+
+If you're setting up Devise to sign out via `:delete`, and you're using links (instead of buttons wrapped in a form) to sign out with the `method: :delete` option, they will need to be updated as described above. (Devise does not provide sign out links/buttons in its shared views.)
+
+Make sure to inspect your views looking for those, and change appropriately.
 
 ### I18n
 
@@ -679,7 +707,7 @@ end
 
 ### Password reset tokens and Rails logs
 
-If you enable the [Recoverable](http://rubydoc.info/github/heartcombo/devise/master/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
+If you enable the [Recoverable](http://rubydoc.info/github/heartcombo/devise/main/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
 
 1. Action Mailer logs the entire contents of all outgoing emails to the DEBUG level. Password reset tokens delivered to users in email will be leaked.
 2. Active Job logs all arguments to every enqueued job at the INFO level. If you configure Devise to use `deliver_later` to send password reset emails, password reset tokens will be leaked.
@@ -739,6 +767,6 @@ https://github.com/heartcombo/devise/graphs/contributors
 
 ## License
 
-MIT License. Copyright 2020 Rafael França, Leonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
+MIT License. Copyright 2020-2023 Rafael França, Leonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
 
 The Devise logo is licensed under [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).

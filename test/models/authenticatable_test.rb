@@ -30,12 +30,12 @@ class AuthenticatableTest < ActiveSupport::TestCase
 
   test 'find_or_initialize_with_errors adds blank error' do
     user_with_error = User.find_or_initialize_with_errors([:email], { email: "" })
-    assert_equal ["Email can't be blank"], user_with_error.errors.full_messages_for(:email)
+    assert user_with_error.errors.added?(:email, :blank)
   end
 
   test 'find_or_initialize_with_errors adds invalid error' do
     user_with_error = User.find_or_initialize_with_errors([:email], { email: "example@example.com" })
-    assert_equal ["Email is invalid"], user_with_error.errors.full_messages_for(:email)
+    assert user_with_error.errors.added?(:email, :invalid)
   end
 
   if defined?(ActionController::Parameters)

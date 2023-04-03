@@ -67,6 +67,11 @@ module Devise
   mattr_accessor :secret_key
   @@secret_key = nil
 
+  # Encryptor defaults to :bcrypt but might be an object
+  # that implements the encryptor API
+  mattr_accessor :encryptor
+  @@encryptor = :bcrypt
+
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}

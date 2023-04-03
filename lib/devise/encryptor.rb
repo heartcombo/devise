@@ -1,24 +1,34 @@
 # frozen_string_literal: true
 
-require 'bcrypt'
 
 module Devise
   module Encryptor
-    def self.digest(klass, password)
-      if klass.pepper.present?
-        password = "#{password}#{klass.pepper}"
+
+    class EncryptorNotFound < NameError
+      def initialize(encryptor)
+        @encryptor = encryptor
+        super("Could not find an encryptor with name `#{encryptor}'. " \
+              "Please ensure :encryptor option is set with one of the predefined values #{Devise::ENCRYPTORS.keys.inspect} or not at all to use the default(bcrypt) encryptor.")
       end
-      ::BCrypt::Password.create(password, cost: klass.stretches).to_s
+    end
+
+    def self.digest(klass, password)
+      encryptor.digest(klass, password)
     end
 
     def self.compare(klass, hashed_password, password)
-      return false if hashed_password.blank?
-      bcrypt   = ::BCrypt::Password.new(hashed_password)
-      if klass.pepper.present?
-        password = "#{password}#{klass.pepper}"
-      end
-      password = ::BCrypt::Engine.hash_secret(password, bcrypt.salt)
-      Devise.secure_compare(password, hashed_password)
+      encryptor.compare(klass, hashed_password, password)
+    end
+
+    private
+
+    def self.encryptor
+      @__encryptor__ ||=
+        if Devise.encryptor == :bcrypt
+          Devise::Encryptors::BCryptEncryptor
+        else
+          Devise.encryptor
+        end
     end
   end
 end

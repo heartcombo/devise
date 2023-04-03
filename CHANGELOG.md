@@ -1,5 +1,9 @@
 ### Unreleased
 
+
+
+### 4.9.2 - 2023-04-03
+
 * deprecations
   * Bring back `Devise.activerecord51?` and deprecate it, in order to avoid breakage with some libraries that apparently relied on it.
 

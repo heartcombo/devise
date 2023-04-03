@@ -520,6 +520,14 @@ module Devise
     b.each_byte { |byte| res |= byte ^ l.shift }
     res == 0
   end
+
+  def self.activerecord51? # :nodoc:
+    ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+      [Devise] `Devise.activerecord51?` is deprecated and will be removed in the next major version.
+      It is a non-public method that's no longer used internally, but that other libraries have been relying on.
+    DEPRECATION
+    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
+  end
 end
 
 require 'warden'

@@ -77,13 +77,14 @@ module Devise
       #   sign_out :user     # sign_out(scope)
       #   sign_out @user     # sign_out(resource)
       #
-      def sign_out(resource_or_scope = nil)
-        return sign_out_all_scopes unless resource_or_scope
+      def sign_out(resource_or_scope = nil, lock: true)
+        return sign_out_all_scopes(lock) unless resource_or_scope
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         user = warden.user(scope: scope, run_callbacks: false) # If there is no user
 
         warden.logout(scope)
         warden.clear_strategies_cache!(scope: scope)
+        warden.lock! if lock
         instance_variable_set(:"@current_#{scope}", nil)
 
         !!user

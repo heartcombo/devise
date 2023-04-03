@@ -117,11 +117,20 @@ class SessionTimeoutTest < Devise::IntegrationTest
     user = sign_in_as_user
     get expire_user_path(user)
 
-    post "/users/sign_in", params: { email: user.email, password: "123456" }
+    post "/users/sign_in", params: { user: { email: user.email, password: "12345678" } }
 
     assert_response :redirect
     follow_redirect!
     assert_contain 'You are signed in'
+  end
+
+  test 'user should not sign in automatically when calling signing in after timed out' do
+    user = sign_in_as_user
+    get expire_user_path(user)
+
+    post "/users/sign_in", params: { user: { email: user.email, password: "WRONG PASSWORD" } }
+
+    assert_contain 'Invalid Email or password'
   end
 
   test 'user configured timeout limit' do

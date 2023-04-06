@@ -108,6 +108,8 @@ class DeviseTest < ActiveSupport::TestCase
   end
 
   test 'Devise.activerecord51? deprecation' do
-    assert_deprecated { Devise.activerecord51? }
+    assert_deprecated("`Devise.activerecord51?` is deprecated", Devise.deprecator) do
+      Devise.activerecord51?
+    end
   end
 end

@@ -213,7 +213,7 @@ module Devise
       #   end
       #
       def after_sign_in_path_for(resource_or_scope)
-        stored_location_for(resource_or_scope) || signed_in_root_path(resource_or_scope)
+        signed_in_root_path(resource_or_scope)
       end
 
       # Method used by sessions controller to sign out a user. You can overwrite
@@ -237,7 +237,8 @@ module Devise
         scope    = Devise::Mapping.find_scope!(resource_or_scope)
         resource = args.last || resource_or_scope
         sign_in(scope, resource, options)
-        redirect_to after_sign_in_path_for(resource)
+        location = stored_location_for(resource_or_scope) || after_sign_in_path_for(resource)
+        redirect_to location
       end
 
       # Sign out a user and tries to redirect to the url specified by

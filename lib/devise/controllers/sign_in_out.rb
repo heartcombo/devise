@@ -38,7 +38,7 @@ module Devise
         expire_data_after_sign_in!
 
         if options[:bypass]
-          ActiveSupport::Deprecation.warn(<<-DEPRECATION.strip_heredoc, caller)
+          Devise.deprecator.warn(<<-DEPRECATION.strip_heredoc, caller)
           [Devise] bypass option is deprecated and it will be removed in future version of Devise.
           Please use bypass_sign_in method instead.
           Example:

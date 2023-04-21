@@ -43,5 +43,9 @@ module Devise
           )
         end
     end
+
+    initializer "devise.deprecator" do |app|
+      app.deprecators[:devise] = Devise.deprecator if app.respond_to?(:deprecators)
+    end
   end
 end

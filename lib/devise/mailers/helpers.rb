@@ -33,28 +33,22 @@ module Devise
           subject: subject_for(action),
           to: resource.email,
           from: mailer_sender(devise_mapping),
-          reply_to: mailer_reply_to(devise_mapping),
+          reply_to: mailer_sender(devise_mapping),
           template_path: template_paths,
           template_name: action
-        }.merge(opts)
+        }
+        # Give priority to the mailer's default if they exists.
+        headers.delete(:from) if default_params[:from]
+        headers.delete(:reply_to) if default_params[:reply_to]
+
+        headers.merge!(opts)
 
         @email = headers[:to]
         headers
       end
 
-      def mailer_reply_to(mapping)
-        mailer_sender(mapping, :reply_to)
-      end
-
-      def mailer_from(mapping)
-        mailer_sender(mapping, :from)
-      end
-
-      def mailer_sender(mapping, sender = :from)
-        default_sender = default_params[sender]
-        if default_sender.present?
-          default_sender.respond_to?(:to_proc) ? instance_eval(&default_sender) : default_sender
-        elsif Devise.mailer_sender.is_a?(Proc)
+      def mailer_sender(mapping)
+        if Devise.mailer_sender.is_a?(Proc)
           Devise.mailer_sender.call(mapping.name)
         else
           Devise.mailer_sender

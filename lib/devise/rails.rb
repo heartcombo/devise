@@ -17,6 +17,10 @@ module Devise
       app.reload_routes! if Devise.reload_routes
     end
 
+    initializer "devise.deprecator" do |app|
+      app.deprecators[:devise] = Devise.deprecator if app.respond_to?(:deprecators)
+    end
+
     initializer "devise.url_helpers" do
       Devise.include_helpers(Devise::Controllers)
     end

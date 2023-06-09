@@ -129,9 +129,9 @@ Please note that the command output will show the variable value being used.
 ### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
 Inside the [gemfiles](https://github.com/heartcombo/devise/tree/main/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
-For example, if the tests broke using Ruby 2.4.2 and Rails 4.1, you can do the following:
+For example, if the tests broke using Ruby 3.0.0 and Rails 4.1, you can do the following:
 ```bash
-rbenv shell 2.4.2 # or rvm use 2.4.2
+rbenv shell 3.0.0 # or rvm use 3.0.0
 BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
 BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bin/test
 ```

@@ -69,7 +69,7 @@ module Devise
           scope = resource
           resource = deprecated
 
-          ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+          Devise.deprecator.warn <<-DEPRECATION.strip_heredoc
             [Devise] sign_in(:#{scope}, resource) on controller tests is deprecated and will be removed from Devise.
             Please use sign_in(resource, scope: :#{scope}) instead.
           DEPRECATION

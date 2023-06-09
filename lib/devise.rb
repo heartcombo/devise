@@ -521,8 +521,12 @@ module Devise
     res == 0
   end
 
+  def self.deprecator
+    @deprecator ||= ActiveSupport::Deprecation.new("5.0", "Devise")
+  end
+
   def self.activerecord51? # :nodoc:
-    ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+    deprecator.warn <<-DEPRECATION.strip_heredoc
       [Devise] `Devise.activerecord51?` is deprecated and will be removed in the next major version.
       It is a non-public method that's no longer used internally, but that other libraries have been relying on.
     DEPRECATION

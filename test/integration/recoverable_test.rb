@@ -18,7 +18,7 @@ class PasswordTest < Devise::IntegrationTest
     yield if block_given?
 
     Devise.stubs(:friendly_token).returns("abcdef")
-    click_button 'Send me reset password instructions'
+    click_button 'Send me password reset instructions'
   end
 
   def reset_password(options = {}, &block)
@@ -339,7 +339,7 @@ class PasswordTest < Devise::IntegrationTest
     swap Devise, paranoid: true do
       visit_new_password_path
       fill_in "email", with: "arandomemail@test.com"
-      click_button 'Send me reset password instructions'
+      click_button 'Send me password reset instructions'
 
       assert_not_contain "1 error prohibited this user from being saved:"
       assert_not_contain "Email not found"
@@ -353,7 +353,7 @@ class PasswordTest < Devise::IntegrationTest
       user = create_user
       visit_new_password_path
       fill_in 'email', with: user.email
-      click_button 'Send me reset password instructions'
+      click_button 'Send me password reset instructions'
 
       assert_contain "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
       assert_current_url "/users/sign_in"

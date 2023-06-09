@@ -62,7 +62,7 @@ module Devise
         :remember_token, :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at]
 
       include Devise::DeprecatedConstantAccessor
-      deprecate_constant "BLACKLIST_FOR_SERIALIZATION", "Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION"
+      deprecate_constant "BLACKLIST_FOR_SERIALIZATION", "Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION", deprecator: Devise.deprecator
 
       included do
         class_attribute :devise_modules, instance_writer: false

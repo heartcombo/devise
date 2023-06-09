@@ -1,6 +1,7 @@
 ### Unreleased
 
-
+* enhancements
+  * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
 
 ### 4.9.2 - 2023-04-03
 

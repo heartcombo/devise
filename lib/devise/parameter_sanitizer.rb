@@ -130,8 +130,7 @@ module Devise
     #
     # Returns an +ActiveSupport::HashWithIndifferentAccess+.
     def cast_to_hash(params)
-      # TODO: Remove the `with_indifferent_access` method call when we only support Rails 5+.
-      params && params.to_h.with_indifferent_access
+      params && params.to_h
     end
 
     def default_params

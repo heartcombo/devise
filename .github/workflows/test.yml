@@ -11,11 +11,6 @@ jobs:
           - gemfiles/Gemfile-rails-7-0
           - gemfiles/Gemfile-rails-6-1
           - gemfiles/Gemfile-rails-6-0
-          - gemfiles/Gemfile-rails-5-2
-          - gemfiles/Gemfile-rails-5-1
-          - gemfiles/Gemfile-rails-5-0
-          - gemfiles/Gemfile-rails-4-2
-          - gemfiles/Gemfile-rails-4-1
         ruby:
           - '3.2'
           - '3.1'
@@ -29,18 +24,6 @@ jobs:
           - gemfile: gemfiles/Gemfile-rails-main
             env: DEVISE_ORM=mongoid
           - gemfile: gemfiles/Gemfile-rails-7-0
-            ruby: '2.6'
-          - gemfile: gemfiles/Gemfile-rails-7-0
-            ruby: '2.5'
-          - gemfile: gemfiles/Gemfile-rails-7-0
-            ruby: '2.4'
-          - gemfile: gemfiles/Gemfile-rails-7-0
-            ruby: '2.3'
-          - gemfile: gemfiles/Gemfile-rails-7-0
-            ruby: '2.2'
-          - gemfile: gemfiles/Gemfile-rails-7-0
-            ruby: '2.1'
-          - gemfile: gemfiles/Gemfile-rails-7-0
             env: DEVISE_ORM=mongoid
           - gemfile: gemfiles/Gemfile-rails-6-1
             env: DEVISE_ORM=mongoid
@@ -50,42 +33,6 @@ jobs:
             ruby: '3.1'
           - gemfile: gemfiles/Gemfile-rails-6-0
             env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-5-2
-            ruby: '3.2'
-          - gemfile: gemfiles/Gemfile-rails-5-2
-            ruby: '3.1'
-          - gemfile: gemfiles/Gemfile-rails-5-2
-            ruby: '3.0'
-          - gemfile: gemfiles/Gemfile-rails-5-2
-            env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-5-1
-            ruby: '3.2'
-          - gemfile: gemfiles/Gemfile-rails-5-1
-            ruby: '3.1'
-          - gemfile: gemfiles/Gemfile-rails-5-1
-            ruby: '3.0'
-          - gemfile: gemfiles/Gemfile-rails-5-1
-            env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-5-0
-            ruby: '3.2'
-          - gemfile: gemfiles/Gemfile-rails-5-0
-            ruby: '3.1'
-          - gemfile: gemfiles/Gemfile-rails-5-0
-            ruby: '3.0'
-          - gemfile: gemfiles/Gemfile-rails-5-0
-            env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-4-2
-            ruby: '3.2'
-          - gemfile: gemfiles/Gemfile-rails-4-2
-            ruby: '3.1'
-          - gemfile: gemfiles/Gemfile-rails-4-2
-            ruby: '3.0'
-          - gemfile: gemfiles/Gemfile-rails-4-1
-            ruby: '3.2'
-          - gemfile: gemfiles/Gemfile-rails-4-1
-            ruby: '3.1'
-          - gemfile: gemfiles/Gemfile-rails-4-1
-            ruby: '3.0'
     # TODO: lock `ubunty-20.04` due to older Ruby version compatibility, change to `ubuntu-latest` again when dropping older Ruby support.
     # https://github.com/ruby/setup-ruby/issues/496#issuecomment-1520662740
     runs-on: ubuntu-20.04
@@ -93,9 +40,6 @@ jobs:
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Bundler 1.x for Rails 4.x and Ruby <= 2.2
-        if: ${{ matrix.gemfile == 'gemfiles/Gemfile-rails-4-1' || matrix.gemfile == 'gemfiles/Gemfile-rails-4-2' || matrix.ruby <= '2.2' }}
-        run: echo "BUNDLER_VERSION=1.17.3" >> $GITHUB_ENV
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}

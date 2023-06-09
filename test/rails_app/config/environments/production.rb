@@ -22,13 +22,7 @@ RailsApp::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  if Devise::Test.rails5_and_up?
-    config.public_file_server.enabled = false
-  elsif Rails.version >= "4.2.0"
-    config.serve_static_files = false
-  else
-    config.serve_static_assets = false
-  end
+  config.public_file_server.enabled = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor  = :uglifier

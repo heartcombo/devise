@@ -6,7 +6,7 @@ class StreamingController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    render (Devise::Test.rails5_and_up? ? :body : :text) => 'Index'
+    render body: 'Index'
   end
 
   # Work around https://github.com/heartcombo/devise/issues/2332, which affects

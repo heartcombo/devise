@@ -129,17 +129,17 @@ Please note that the command output will show the variable value being used.
 ### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
 Inside the [gemfiles](https://github.com/heartcombo/devise/tree/main/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
-For example, if the tests broke using Ruby 3.0.0 and Rails 4.1, you can do the following:
+For example, if the tests broke using Ruby 3.0.0 and Rails 6.0, you can do the following:
 ```bash
 rbenv shell 3.0.0 # or rvm use 3.0.0
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bin/test
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable bin/test
 ```
 
 You can also combine both of them if the tests broke for Mongoid:
 ```bash
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable bundle install
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.1-stable DEVISE_ORM=mongoid bin/test
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable DEVISE_ORM=mongoid bin/test
 ```
 
 ### Running tests
@@ -172,7 +172,7 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 ## Getting started
 
-Devise 4.0 works with Rails 4.1 onwards. Run:
+Devise 4.0 works with Rails 6.0 onwards. Run:
 
 ```sh
 bundle add devise
@@ -691,9 +691,9 @@ Alternatively, you can simply run the Devise generator.
 
 Keep in mind that those models will have completely different routes. They **do not** and **cannot** share the same controller for sign in, sign out and so on. In case you want to have different roles sharing the same actions, we recommend that you use a role-based approach, by either providing a role column or using a dedicated gem for authorization.
 
-### ActiveJob Integration
+### Active Job Integration
 
-If you are using Rails 4.2 and ActiveJob to deliver ActionMailer messages in the
+If you are using Active Job to deliver Action Mailer messages in the
 background through a queuing back-end, you can send Devise emails through your
 existing queue by overriding the `send_devise_notification` method in your model.
 

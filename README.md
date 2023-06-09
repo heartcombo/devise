@@ -172,13 +172,11 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 ## Getting started
 
-Devise 4.0 works with Rails 4.1 onwards. Add the following line to your Gemfile:
+Devise 4.0 works with Rails 4.1 onwards. Run:
 
-```ruby
-gem 'devise'
+```sh
+bundle add devise
 ```
-
-Then run `bundle install`
 
 Next, you need to run the generator:
 

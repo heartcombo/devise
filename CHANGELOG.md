@@ -1,7 +1,8 @@
 ### Unreleased
 
 * enhancements
-  * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
+  * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION`. (@soartec-lab)
+  * `Devise::SecretKeyFinder#find` deprioritizes use of the deprecated find method in `rails`. (@soartec-lab)
 
 ### 4.9.2 - 2023-04-03
 

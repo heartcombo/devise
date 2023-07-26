@@ -29,6 +29,9 @@ Devise.setup do |config|
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 
+  # Configure when to send e-mails.
+  # config.mailer_delivery_method = :deliver_now
+
   # Configure the parent class responsible to send e-mails.
   # config.parent_mailer = 'ActionMailer::Base'
 

@@ -5,6 +5,7 @@
 
 * enhancements
   * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
+  * Added `Devise.mailer_delivery_method` configuration to enable deferring email delivery with `:deliver_later` [#5610](https://github.com/heartcombo/devise/pull/5610) [@seanpdoyle](https://github.com/seanpdoyle)
 
 * bug fixes
   * Respect locale set by controller in failure app. Devise will carry over the current I18n.locale option when triggering authentication, and will wrap the failure app call with it. [#5567](https://github.com/heartcombo/devise/pull/5567)

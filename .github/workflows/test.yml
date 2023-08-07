@@ -164,6 +164,6 @@ jobs:
           bundler-cache: true # runs bundle install and caches installed gems automatically
           bundler: ${{ env.BUNDLER_VERSION || 'default' }}
           rubygems: ${{ env.RUBYGEMS_VERSION || 'latest' }}
-      - uses: supercharge/mongodb-github-action@1.9.0
+      - uses: supercharge/mongodb-github-action@v1.10.0
         if: ${{ matrix.env == 'DEVISE_ORM=mongoid' }}
       - run: bundle exec rake

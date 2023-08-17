@@ -5,7 +5,7 @@ require 'generators/devise/orm_helpers'
 
 module ActiveRecord
   module Generators
-    class DeviseGenerator < ActiveRecord::Generators::Base
+    class DeviseGenerator < Base
       argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
       class_option :primary_key_type, type: :string, desc: "The type for primary key"

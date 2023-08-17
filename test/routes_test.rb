@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-ExpectedRoutingError = MiniTest::Assertion
+ExpectedRoutingError = Minitest::Assertion
 
 class DefaultRoutingTest < ActionController::TestCase
   test 'map new user session' do

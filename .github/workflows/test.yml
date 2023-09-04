@@ -148,7 +148,7 @@ jobs:
     env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Bundler 1.x for Rails 4.x
         if: ${{ matrix.gemfile == 'gemfiles/Gemfile-rails-4-1' || matrix.gemfile == 'gemfiles/Gemfile-rails-4-2' }}
         run: echo "BUNDLER_VERSION=1.17.3" >> $GITHUB_ENV

@@ -70,7 +70,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
       fill_in 'password', with: 'abcdef'
     end
 
-    assert_contain 'Invalid Email or password'
+    assert_contain 'Invalid email or password'
     assert_not warden.authenticated?(:admin)
   end
 
@@ -82,7 +82,7 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
         end
 
         assert_not_contain 'Not found in database'
-        assert_contain 'Invalid Email or password.'
+        assert_contain 'Invalid email or password.'
       end
     end
   end

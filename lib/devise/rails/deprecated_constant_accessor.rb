@@ -26,7 +26,7 @@ rescue LoadError
             super
           end
 
-          def deprecate_constant(const_name, new_constant, message: nil, deprecator: ActiveSupport::Deprecation.instance)
+          def deprecate_constant(const_name, new_constant, message: nil, deprecator: Devise.deprecator)
             class_variable_set(:@@_deprecated_constants, {}) unless class_variable_defined?(:@@_deprecated_constants)
             class_variable_get(:@@_deprecated_constants)[const_name.to_s] = { new: new_constant, message: message, deprecator: deprecator }
           end

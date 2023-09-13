@@ -35,3 +35,6 @@ if RUBY_VERSION < "2.3.0"
   # `Object.deprecate_constant` which isn't available.
   gem "multipart-post", "2.1.1"
 end
+
+# There's a build incompatibility issue with nokogiri and loofah
+gem "loofah", "~> 2.20.0"

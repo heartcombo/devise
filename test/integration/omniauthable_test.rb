@@ -127,25 +127,29 @@ class OmniauthableIntegrationTest < Devise::IntegrationTest
   end
 
   test "authorization path via GET when Omniauth allowed_request_methods includes GET" do
-    original_allowed = OmniAuth.config.allowed_request_methods
-    OmniAuth.config.allowed_request_methods = [:get, :post]
+    begin
+      original_allowed = OmniAuth.config.allowed_request_methods
+      OmniAuth.config.allowed_request_methods = [:get, :post]
 
-    get "/users/auth/facebook"
+      get "/users/auth/facebook"
 
-    assert_response(:redirect)
-  ensure
-    OmniAuth.config.allowed_request_methods = original_allowed
+      assert_response(:redirect)
+    ensure
+      OmniAuth.config.allowed_request_methods = original_allowed
+    end
   end
 
   test "authorization path via GET when Omniauth allowed_request_methods doesn't include GET" do
-    original_allowed = OmniAuth.config.allowed_request_methods
-    OmniAuth.config.allowed_request_methods = [:post]
+    begin
+      original_allowed = OmniAuth.config.allowed_request_methods
+      OmniAuth.config.allowed_request_methods = [:post]
 
-    assert_raises(ActionController::RoutingError) do
-      get "/users/auth/facebook"
+      assert_raises(ActionController::RoutingError) do
+        get "/users/auth/facebook"
+      end
+    ensure
+      OmniAuth.config.allowed_request_methods = original_allowed
     end
-  ensure
-    OmniAuth.config.allowed_request_methods = original_allowed
   end
 
   test "generates a link to authenticate with provider" do

@@ -164,8 +164,8 @@ jobs:
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Bundler 1.x for Rails 4.x
-        if: ${{ matrix.gemfile == 'gemfiles/Gemfile-rails-4-1' || matrix.gemfile == 'gemfiles/Gemfile-rails-4-2' }}
+      - name: Setup Bundler 1.x for Rails 4.x and Ruby <= 2.2
+        if: ${{ matrix.gemfile == 'gemfiles/Gemfile-rails-4-1' || matrix.gemfile == 'gemfiles/Gemfile-rails-4-2' || matrix.ruby <= '2.2' }}
         run: echo "BUNDLER_VERSION=1.17.3" >> $GITHUB_ENV
       - name: Setup Rubygems version as default for Ruby < 2.5
         if: ${{ matrix.ruby < '2.5' }}

@@ -1,0 +1,38 @@
+# Additional translations at https://github.com/heartcombo/devise/wiki/I18n
+
+bn:
+  devise:
+    confirmations:
+      confirmed: "আপনার ইমেইল এড্রেস সফলভাবে নিশ্চিত হয়েছে।"
+      send_instructions: "কিছু সময়ের মধ্যে ইমেইল এড্রেস সফলভাবে নিশ্চিত করার দিক নির্দেশনা সহ ইমেইল পেয়ে যাবেন।"
+      send_paranoid_instructions: "আমাদের ডেটাবেজে আপনার ইমেইল এড্রেস থাকলে, কিছু সময়ের মধ্যে ইমেইল এড্রেস সফলভাবে নিশ্চিত করার দিক নির্দেশনা সহ ইমেইল পেয়ে যাবেন।"
+    failure:
+      already_authenticated: "আপনি ইতমধ্যেই সাইন ইন হয়ে আছেন।"
+      inactive: "আপনার একাউন্ট এখনো সচল হয়নি।"
+      invalid: "ভুল %{authentication_keys} অথবা পাসওয়ার্ড।"
+      locked: "আপনার একাউন্ট লক করা হয়েছে।"
+      last_attempt: "আপনার একাউন্ট লক করা হওয়ার আগে আর একবার চেষ্টা করতে পারবেন।"
+      not_found_in_database: "ভুল %{authentication_keys} অথবা পাসওয়ার্ড।"
+      timeout: "আপনার সেশন শেষ হয়ে গেছে। আবার সাইন ইন করে আপনার কাজ চালিয়ে যান।"
+    unauthenticated: "আপনার কাজটি চালানোর আগে সাইন ইন অথবা সাইন আপ করুন।"
+      unconfirmed: "আপনার কাজটি চালানোর আগে আপনার ইমেইল এড্রেস নিশ্চিত করুন।"
+    mailer:
+      confirmation_instructions:
+        subject: "ইমেইল নিশ্চিতকরণ নির্দেশনা"
+      reset_password_instructions:
+        subject: "পাসওয়ার্ড রিসেট নির্দেশনা"
+      unlock_instructions:
+        subject: "একাউন্ট আনলক নির্দেশনা"
+      email_changed:
+        subject: "ইমেইল পরিবর্তন হয়েছে"
+      password_change:
+        subject: "পাসওয়ার্ড পরিবর্তন হয়েছে"
+    omniauth_callbacks:
+      failure: "আপনার থেকে %{kind} অথেনটিকেট করা যাচ্ছে না কারন \"%{reason}\"।"
+      success: "সফলভাবে %{kind} একাউন্ট থেকে অথেনটিকেট করা হয়েছে।"
+    passwords:
+      no_token: "পাসওয়ার্ড রিসেট ইমেইল ছাড়া এই পেইজ দেখা সম্ভব না। যদি আপনি পাসওয়ার্ড রিসেট ইমেইল থেকে এসে থাকেন, তবে নিশ্চিত করুন আপনি পুরো লিংক ব্যবহার করেছেন।"
+      send_instructions: "কিছু সময় পর পাসওয়ার্ড রিসেট এর নিয়মাবলীসহ ইমেইল পেয়ে যাবেন।"
+      send_paranoid_instructions: "আমাদের ডেটাবেজে আপনার ইমেইল এড্রেস থাকলে, কিছু সময় পর পাসওয়ার্ড রিকভারি লিংকসহ ইমেইল পেয়ে যাবেন।"
+      updated: "আপনার পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে। আপনি এখন সাইন ইন হয়েছেন।"
+      updated_not_active: "আপনার পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে"

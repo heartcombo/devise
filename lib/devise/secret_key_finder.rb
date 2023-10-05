@@ -7,14 +7,12 @@ module Devise
     end
 
     def find
-      if @application.respond_to?(:credentials) && key_exists?(@application.credentials)
-        @application.credentials.secret_key_base
+      if @application.respond_to?(:secret_key_base) && key_exists?(@application)
+        @application.secret_key_base
       elsif @application.respond_to?(:secrets) && key_exists?(@application.secrets)
         @application.secrets.secret_key_base
       elsif @application.config.respond_to?(:secret_key_base) && key_exists?(@application.config)
         @application.config.secret_key_base
-      elsif @application.respond_to?(:secret_key_base) && key_exists?(@application)
-        @application.secret_key_base
       end
     end
 

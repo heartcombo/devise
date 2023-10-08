@@ -11,6 +11,10 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     @controller.request.env['warden'] = @mock_warden
   end
 
+  def teardown
+    @controller.class.define_method(:auth_strategies) { }
+  end
+
   test 'provide access to warden instance' do
     assert_equal @mock_warden, @controller.warden
   end
@@ -73,8 +77,32 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     @controller.authenticate_user!(recall: "foo")
   end
 
+  test 'proxy authenticate_user! to authenticate with strategies and user scope' do
+    @controller.class.define_method(:auth_strategies) { :database_authenticatable }
+    @mock_warden.expects(:authenticate!).with(:database_authenticatable, scope: :user)
+    @controller.authenticate_user!
+  end
+
+  test 'proxy authenticate_user! to authenticate with strategies hash and user scope' do
+    @controller.class.define_method(:auth_strategies) { { user: :database_authenticatable, admin: :authenticatable } }
+    @mock_warden.expects(:authenticate!).with(:database_authenticatable, scope: :user)
+    @controller.authenticate_user!
+  end
+
   test 'proxy authenticate_admin! to authenticate with admin scope' do
     @mock_warden.expects(:authenticate!).with(scope: :admin)
+    @controller.authenticate_admin!
+  end
+
+  test 'proxy authenticate_admin! authenticate with strategies and user scope' do
+    @controller.class.define_method(:auth_strategies) { :database_authenticatable }
+    @mock_warden.expects(:authenticate!).with(:database_authenticatable, scope: :user)
+    @controller.authenticate_user!
+  end
+
+  test 'proxy authenticate_admin! to authenticate with strategies hash and admin scope' do
+    @controller.class.define_method(:auth_strategies) { { user: :database_authenticatable, admin: :authenticatable } }
+    @mock_warden.expects(:authenticate!).with(:authenticatable, scope: :admin)
     @controller.authenticate_admin!
   end
 
@@ -83,6 +111,15 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
       @mock_warden.expects(:authenticate!).with(scope: scope)
       @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
     end
+    @controller.authenticate_commenter!
+  end
+
+  test 'proxy authenticate_[group]! to authenticate!? with strategies and each scope' do
+    @controller.class.define_method(:auth_strategies) { { user: :database_authenticatable, admin: :authenticatable } }
+    @mock_warden.expects(:authenticate!).with(:database_authenticatable, scope: :user)
+    @mock_warden.expects(:authenticate?).with(:database_authenticatable, scope: :user).returns(false)
+    @mock_warden.expects(:authenticate!).with(:authenticatable, scope: :admin)
+    @mock_warden.expects(:authenticate?).with(:authenticatable, scope: :admin).returns(false)
     @controller.authenticate_commenter!
   end
 

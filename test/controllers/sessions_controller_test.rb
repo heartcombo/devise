@@ -25,6 +25,15 @@ class SessionsControllerTest < Devise::ControllerTestCase
     end
   end
 
+  test "#create works when forcing auth strategy" do
+    Devise::SessionsController.define_method(:auth_strategies) { :database_authenticatable }
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    post :create
+    assert_equal 200, @response.status
+  ensure
+    Devise::SessionsController.define_method(:auth_strategies) { }
+  end
+
   test "#create works even with scoped views" do
     swap Devise, scoped_views: true do
       request.env["devise.mapping"] = Devise.mappings[:user]

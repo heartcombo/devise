@@ -16,7 +16,7 @@ class Devise::SessionsController < DeviseController
 
   # POST /resource/sign_in
   def create
-    self.resource = warden.authenticate!(auth_options)
+    self.resource = warden.authenticate!(*auth_strategies, auth_options)
     set_flash_message!(:notice, :signed_in)
     sign_in(resource_name, resource)
     yield resource if block_given?
@@ -47,6 +47,8 @@ class Devise::SessionsController < DeviseController
   def auth_options
     { scope: resource_name, recall: "#{controller_path}#new" }
   end
+
+  def auth_strategies; end
 
   def translation_scope
     'devise.sessions'

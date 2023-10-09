@@ -1,30 +1,24 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/object/with_options'
+# Strategies first
+routes = [nil, :new, :destroy]
+Devise.add_module :database_authenticatable, model: true, strategy: true, controller: :sessions, route: { session: routes }
+Devise.add_module :rememberable, model: true, strategy: true, no_input: true
 
-Devise.with_options model: true do |d|
-  # Strategies first
-  d.with_options strategy: true do |s|
-    routes = [nil, :new, :destroy]
-    s.add_module :database_authenticatable, controller: :sessions, route: { session: routes }
-    s.add_module :rememberable, no_input: true
-  end
+# Other authentications
+Devise.add_module :omniauthable, model: true, controller: :omniauth_callbacks, route: :omniauth_callback
 
-  # Other authentications
-  d.add_module :omniauthable, controller: :omniauth_callbacks,  route: :omniauth_callback
+# Misc after
+routes = [nil, :new, :edit]
+Devise.add_module :recoverable, model: true, controller: :passwords, route: { password: routes }
+Devise.add_module :registerable, model: true, controller: :registrations, route: { registration: (routes << :cancel) }
+Devise.add_module :validatable, model: true
 
-  # Misc after
-  routes = [nil, :new, :edit]
-  d.add_module :recoverable,  controller: :passwords,     route: { password: routes }
-  d.add_module :registerable, controller: :registrations, route: { registration: (routes << :cancel) }
-  d.add_module :validatable
+# The ones which can sign out after
+routes = [nil, :new]
+Devise.add_module :confirmable, model: true, controller: :confirmations, route: { confirmation: routes }
+Devise.add_module :lockable, model: true, controller: :unlocks, route: { unlock: routes }
+Devise.add_module :timeoutable, model: true
 
-  # The ones which can sign out after
-  routes = [nil, :new]
-  d.add_module :confirmable,  controller: :confirmations, route: { confirmation: routes }
-  d.add_module :lockable,     controller: :unlocks,       route: { unlock: routes }
-  d.add_module :timeoutable
-
-  # Stats for last, so we make sure the user is really signed in
-  d.add_module :trackable
-end
+# Stats for last, so we make sure the user is really signed in
+Devise.add_module :trackable, model: true

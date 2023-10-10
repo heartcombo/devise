@@ -64,30 +64,30 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
   end
 
   test 'proxy authenticate_user! to authenticate with user scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :user)
+    @mock_warden.expects(:authenticate!).with({ scope: :user })
     @controller.authenticate_user!
   end
 
   test 'proxy authenticate_user! options to authenticate with user scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :user, recall: "foo")
+    @mock_warden.expects(:authenticate!).with({ scope: :user, recall: "foo" })
     @controller.authenticate_user!(recall: "foo")
   end
 
   test 'proxy authenticate_admin! to authenticate with admin scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :admin)
+    @mock_warden.expects(:authenticate!).with({ scope: :admin })
     @controller.authenticate_admin!
   end
 
   test 'proxy authenticate_[group]! to authenticate!? with each scope' do
     [:user, :admin].each do |scope|
-      @mock_warden.expects(:authenticate!).with(scope: scope)
+      @mock_warden.expects(:authenticate!).with({ scope: scope })
       @mock_warden.expects(:authenticate?).with(scope: scope).returns(false)
     end
     @controller.authenticate_commenter!
   end
 
   test 'proxy authenticate_publisher_account! to authenticate with namespaced publisher account scope' do
-    @mock_warden.expects(:authenticate!).with(scope: :publisher_account)
+    @mock_warden.expects(:authenticate!).with({ scope: :publisher_account })
     @controller.authenticate_publisher_account!
   end
 
@@ -127,14 +127,14 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
   test 'sign in proxy to set_user on warden' do
     user = User.new
     @mock_warden.expects(:user).returns(nil)
-    @mock_warden.expects(:set_user).with(user, scope: :user).returns(true)
+    @mock_warden.expects(:set_user).with(user, { scope: :user }).returns(true)
     @controller.sign_in(:user, user)
   end
 
   test 'sign in accepts a resource as argument' do
     user = User.new
     @mock_warden.expects(:user).returns(nil)
-    @mock_warden.expects(:set_user).with(user, scope: :user).returns(true)
+    @mock_warden.expects(:set_user).with(user, { scope: :user }).returns(true)
     @controller.sign_in(user)
   end
 
@@ -148,7 +148,7 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
   test 'sign in again when the user is already in only if force is given' do
     user = User.new
     @mock_warden.expects(:user).returns(user)
-    @mock_warden.expects(:set_user).with(user, scope: :user).returns(true)
+    @mock_warden.expects(:set_user).with(user, { scope: :user }).returns(true)
     @controller.sign_in(user, force: true)
   end
 
@@ -269,7 +269,7 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
     user = User.new
     @controller.session[:user_return_to] = "/foo.bar"
     @mock_warden.expects(:user).with(:user).returns(nil)
-    @mock_warden.expects(:set_user).with(user, scope: :user).returns(true)
+    @mock_warden.expects(:set_user).with(user, { scope: :user }).returns(true)
     @controller.expects(:redirect_to).with("/foo.bar")
     @controller.sign_in_and_redirect(user)
   end
@@ -277,7 +277,7 @@ class ControllerAuthenticatableTest < Devise::ControllerTestCase
   test 'sign in and redirect uses the configured after sign in path' do
     admin = Admin.new
     @mock_warden.expects(:user).with(:admin).returns(nil)
-    @mock_warden.expects(:set_user).with(admin, scope: :admin).returns(true)
+    @mock_warden.expects(:set_user).with(admin, { scope: :admin }).returns(true)
     @controller.expects(:redirect_to).with(admin_root_path)
     @controller.sign_in_and_redirect(admin)
   end

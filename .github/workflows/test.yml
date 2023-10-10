@@ -8,6 +8,7 @@ jobs:
         gemfile:
           - Gemfile
           - gemfiles/Gemfile-rails-main
+          - gemfiles/Gemfile-rails-7-0
           - gemfiles/Gemfile-rails-6-1
           - gemfiles/Gemfile-rails-6-0
           - gemfiles/Gemfile-rails-5-2
@@ -57,6 +58,20 @@ jobs:
           - gemfile: gemfiles/Gemfile-rails-main
             ruby: '2.1'
           - gemfile: gemfiles/Gemfile-rails-main
+            env: DEVISE_ORM=mongoid
+          - gemfile: gemfiles/Gemfile-rails-7-0
+            ruby: '2.6'
+          - gemfile: gemfiles/Gemfile-rails-7-0
+            ruby: '2.5'
+          - gemfile: gemfiles/Gemfile-rails-7-0
+            ruby: '2.4'
+          - gemfile: gemfiles/Gemfile-rails-7-0
+            ruby: '2.3'
+          - gemfile: gemfiles/Gemfile-rails-7-0
+            ruby: '2.2'
+          - gemfile: gemfiles/Gemfile-rails-7-0
+            ruby: '2.1'
+          - gemfile: gemfiles/Gemfile-rails-7-0
             env: DEVISE_ORM=mongoid
           - gemfile: gemfiles/Gemfile-rails-6-1
             ruby: '2.4'

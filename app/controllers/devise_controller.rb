@@ -33,6 +33,17 @@ class DeviseController < Devise.parent_controller.constantize
     end
   end
 
+  # Override internal methods to exclude `_prefixes` since we override it above.
+  # There was an intentional change in Rails 7.1 that will allow it to become
+  # an action method because it's a public method of a non-abstract controller,
+  # but we also can't make this abstract because it can affect potential actions
+  # defined in the parent controller, so instead we ensure `_prefixes` is going
+  # to be considered internal. (and thus, won't become an action method.)
+  # Ref: https://github.com/rails/rails/pull/48699
+  def self.internal_methods #:nodoc:
+    super << :_prefixes
+  end
+
   protected
 
   # Gets the actual resource stored in the instance variable

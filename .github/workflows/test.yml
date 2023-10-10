@@ -159,7 +159,9 @@ jobs:
             ruby: '2.5'
           - gemfile: gemfiles/Gemfile-rails-4-1
             ruby: '2.4'
-    runs-on: ubuntu-latest
+    # TODO: lock `ubunty-20.04` due to older Ruby version compatibility, change to `ubuntu-latest` again when dropping older Ruby support.
+    # https://github.com/ruby/setup-ruby/issues/496#issuecomment-1520662740
+    runs-on: ubuntu-20.04
     env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     steps:

@@ -53,5 +53,9 @@ module RailsApp
     if Devise::Test.rails70?
       config.active_record.legacy_connection_handling = false
     end
+
+    if Devise::Test.rails70_and_up?
+      config.active_support.cache_format_version = 7.0
+    end
   end
 end

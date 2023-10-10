@@ -33,7 +33,9 @@ class DeviseController < Devise.parent_controller.constantize
     end
   end
 
-  # Override internal methods to exclude `_prefixes` since we override it above.
+  # Override internal methods to exclude `_prefixes` from action methods since
+  # we override it above.
+  #
   # There was an intentional change in Rails 7.1 that will allow it to become
   # an action method because it's a public method of a non-abstract controller,
   # but we also can't make this abstract because it can affect potential actions

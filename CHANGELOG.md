@@ -1,4 +1,4 @@
-### Unreleased
+### 4.9.3 - 2023-10-11
 
 * enhancements
   * Add support for Rails 7.1.

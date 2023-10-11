@@ -572,7 +572,7 @@ class AuthenticationRequestKeysTest < Devise::IntegrationTest
     host! 'foo.bar.baz'
 
     swap Devise, request_keys: [:subdomain] do
-      User.expects(:find_for_authentication).with(subdomain: 'foo', email: 'user@test.com').returns(create_user)
+      User.expects(:find_for_authentication).with({ subdomain: 'foo', email: 'user@test.com' }).returns(create_user)
       sign_in_as_user
       assert warden.authenticated?(:user)
     end

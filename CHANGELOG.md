@@ -2,7 +2,12 @@
 
 * enhancements
   * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
-  * Changed to use a separate deprecator inside the gem. because `rails` 7.1 will deprecate using the singleton `ActiveSupport::Deprecation.instance` (@soartec-lab, @etiennebarrie)
+
+### 4.9.3 - 2023-10-11
+
+* enhancements
+  * Add support for Rails 7.1.
+  * Add `Devise.deprecator` to integrate with new application deprecators in Rails 7.1. (@soartec-lab, @etiennebarrie)
 
 ### 4.9.2 - 2023-04-03
 

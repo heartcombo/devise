@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 
 gemspec path: ".."
 
-gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 7.0.0"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
@@ -23,3 +25,14 @@ end
 platforms :ruby do
   gem "sqlite3", "~> 1.4"
 end
+
+# platforms :jruby do
+#   gem "activerecord-jdbc-adapter"
+#   gem "activerecord-jdbcsqlite3-adapter"
+#   gem "jruby-openssl"
+# end
+
+# TODO:
+# group :mongoid do
+#   gem "mongoid", "~> 4.0.0"
+# end

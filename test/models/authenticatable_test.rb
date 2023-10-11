@@ -43,7 +43,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
       user = create_user(email: 'example@example.com')
       attributes = ActionController::Parameters.new(email: 'example@example.com')
 
-      User.expects(:find_first_by_auth_conditions).with('email' => 'example@example.com').returns(user)
+      User.expects(:find_first_by_auth_conditions).with({ 'email' => 'example@example.com' }).returns(user)
       User.find_or_initialize_with_errors([:email], attributes)
     end
   end

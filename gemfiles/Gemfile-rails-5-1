@@ -16,7 +16,7 @@ group :test do
   gem "omniauth-openid"
   gem "timecop"
   gem "webrat", "0.7.3", require: false
-  gem "mocha", "~> 1.1", require: false
+  gem "mocha", "~> 2.1", require: false
 end
 
 platforms :ruby do
@@ -28,3 +28,6 @@ if RUBY_VERSION < "2.3.0"
   # `Object.deprecate_constant` which isn't available.
   gem "multipart-post", "2.1.1"
 end
+
+# There's a build incompatibility issue with nokogiri and loofah
+gem "loofah", "~> 2.20.0"

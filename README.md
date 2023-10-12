@@ -132,14 +132,14 @@ Inside the [gemfiles](https://github.com/heartcombo/devise/tree/main/gemfiles) d
 For example, if the tests broke using Ruby 3.0.0 and Rails 6.0, you can do the following:
 ```bash
 rbenv shell 3.0.0 # or rvm use 3.0.0
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable bundle install
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable bin/test
+BUNDLE_GEMFILE=gemfiles/Gemfile-rails-6-0 bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile-rails-6-0 bin/test
 ```
 
 You can also combine both of them if the tests broke for Mongoid:
 ```bash
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable bundle install
-BUNDLE_GEMFILE=gemfiles/Gemfile.rails-6.0-stable DEVISE_ORM=mongoid bin/test
+BUNDLE_GEMFILE=gemfiles/Gemfile-rails-6-0 bundle install
+BUNDLE_GEMFILE=gemfiles/Gemfile-rails-6-0 DEVISE_ORM=mongoid bin/test
 ```
 
 ### Running tests

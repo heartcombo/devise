@@ -1,6 +1,6 @@
 ### Unreleased
 
-* Drop support to Ruby < 3.0
+* Drop support to Ruby < 2.7
 * Drop support to Rails < 6.0
 
 * enhancements

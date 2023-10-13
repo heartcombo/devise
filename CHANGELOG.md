@@ -3,6 +3,9 @@
 * enhancements
   * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
 
+* bug fixes
+  * Respect locale set by controller in failure app. Devise will carry over the current I18n.locale option when triggering authentication, and will wrap the failure app call with it. [#5567](https://github.com/heartcombo/devise/pull/5567)
+
 ### 4.9.3 - 2023-10-11
 
 * enhancements

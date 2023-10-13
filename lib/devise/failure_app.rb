@@ -18,6 +18,11 @@ module Devise
 
     delegate :flash, to: :request
 
+    include AbstractController::Callbacks
+    around_action do |failure_app, action|
+      I18n.with_locale(failure_app.i18n_locale, &action)
+    end
+
     def self.call(env)
       @respond ||= action(:respond)
       @respond.call(env)
@@ -107,13 +112,17 @@ module Devise
         options[:default] = [message]
         auth_keys = scope_class.authentication_keys
         keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key| scope_class.human_attribute_name(key) }
-        options[:authentication_keys] = keys.join(I18n.translate(:"support.array.words_connector"))
+        options[:authentication_keys] = keys.join(I18n.t(:"support.array.words_connector"))
         options = i18n_options(options)
 
         I18n.t(:"#{scope}.#{message}", **options)
       else
         message.to_s
       end
+    end
+
+    def i18n_locale
+      warden_options[:locale]
     end
 
     def redirect_url

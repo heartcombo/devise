@@ -1,5 +1,8 @@
 ### Unreleased
 
+* Drop support to Ruby < 2.7
+* Drop support to Rails < 6.0
+
 * enhancements
   * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
 

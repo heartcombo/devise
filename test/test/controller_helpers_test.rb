@@ -108,11 +108,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   test "returns the content type of a failure app" do
     get :index, params: { format: :json }
 
-    if Devise::Test.rails6_and_up?
-      assert_includes response.media_type, 'application/json'
-    else
-      assert_includes response.content_type, 'application/json'
-    end
+    assert_includes response.media_type, 'application/json'
   end
 
   test "defined Warden after_authentication callback should not be called when sign_in is called" do
@@ -181,13 +177,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   test "creates a new warden proxy if the request object has changed" do
     old_warden_proxy = warden
 
-    @request = if Devise::Test.rails51? || Devise::Test.rails52_and_up?
-      ActionController::TestRequest.create(Class.new) # needs a "controller class"
-    elsif Devise::Test.rails5?
-      ActionController::TestRequest.create
-    else
-      ActionController::TestRequest.new
-    end
+    @request = ActionController::TestRequest.create(Class.new) # needs a "controller class"
 
     new_warden_proxy = warden
 

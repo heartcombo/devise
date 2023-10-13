@@ -46,7 +46,7 @@ It's composed of 10 modules:
 	- [Integration tests](#integration-tests)
 	- [OmniAuth](#omniauth)
 	- [Configuring multiple models](#configuring-multiple-models)
-	- [ActiveJob Integration](#activejob-integration)
+	- [Active Job Integration](#active-job-integration)
 	- [Password reset tokens and Rails logs](#password-reset-tokens-and-rails-logs)
 	- [Other ORMs](#other-orms)
 	- [Rails API mode](#rails-api-mode)

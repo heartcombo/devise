@@ -34,9 +34,7 @@ jobs:
             ruby: '3.1'
           - gemfile: gemfiles/Gemfile-rails-6-0
             env: DEVISE_ORM=mongoid
-    # TODO: lock `ubunty-20.04` due to older Ruby version compatibility, change to `ubuntu-latest` again when dropping older Ruby support.
-    # https://github.com/ruby/setup-ruby/issues/496#issuecomment-1520662740
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     steps:
@@ -45,8 +43,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true # runs bundle install and caches installed gems automatically
-          bundler: ${{ env.BUNDLER_VERSION || 'default' }}
-          rubygems: ${{ env.RUBYGEMS_VERSION || 'latest' }}
       - uses: supercharge/mongodb-github-action@1.9.0
         if: ${{ matrix.env == 'DEVISE_ORM=mongoid' }}
       - run: bundle exec rake

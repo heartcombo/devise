@@ -644,7 +644,7 @@ Unlike controller tests, integration tests do not need to supply the
 `devise.mapping` `env` value, as the mapping can be inferred by the routes that
 are executed in your tests.
 
-You can read more about testing your Rails 3 - Rails 4 controllers with RSpec in the wiki:
+You can read more about testing your Rails controllers with RSpec in the wiki:
 
 * https://github.com/heartcombo/devise/wiki/How-To:-Test-controllers-with-Rails-(and-RSpec)
 

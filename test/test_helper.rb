@@ -23,22 +23,6 @@ end
 if ActiveSupport.respond_to?(:test_order)
   ActiveSupport.test_order = :random
 end
-class ActiveSupport::TestCase
-  if ActiveSupport.version < Gem::Version.new("5.0")
-    def assert_deprecated(match, deprecator)
-      super(match) do
-        # TODO: remove extra begin..end when dropping support for Ruby <= 2.4
-        begin
-          behavior = deprecator.behavior
-          deprecator.behavior = ActiveSupport::Deprecation.behavior
-          yield
-        ensure
-          deprecator.behavior = behavior
-        end
-      end
-    end
-  end
-end
 
 OmniAuth.config.logger = Logger.new('/dev/null')
 

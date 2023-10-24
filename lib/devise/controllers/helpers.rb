@@ -38,7 +38,6 @@ module Devise
         #
         def devise_group(group_name, opts = {})
           mappings = "[#{ opts[:contains].map { |m| ":#{m}" }.join(',') }]"
-
           class_eval <<-METHODS, __FILE__, __LINE__ + 1
             def authenticate_#{group_name}!(favorite = nil, opts = {})
               unless #{group_name}_signed_in?

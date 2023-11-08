@@ -247,6 +247,29 @@ class PasswordTest < Devise::IntegrationTest
     end
   end
 
+  test 'sign in user automatically with proc' do
+    swap Devise, sign_in_after_reset_password: ->(resource) { true }  do
+      create_user
+      request_forgot_password
+      reset_password
+
+      assert warden.authenticated?(:user)
+    end
+  end
+
+  test 'does not sign in user automatically with proc' do
+    swap Devise, sign_in_after_reset_password: ->(resource) { false }do
+      create_user
+      request_forgot_password
+      reset_password
+
+      assert_contain 'Your password has been changed successfully.'
+      assert_not_contain 'You are now signed in.'
+      assert_equal new_user_session_path, @request.path
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'does not sign in user automatically after changing its password if it\'s locked and unlock strategy is :none or :time' do
     [:none, :time].each do |strategy|
       swap Devise, unlock_strategy: strategy do

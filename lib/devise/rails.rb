@@ -38,7 +38,7 @@ module Devise
     end
 
     initializer "devise.secret_key" do |app|
-      Devise.secret_key ||= Devise::SecretKeyFinder.new(app).find
+      Devise.secret_key ||= app.secret_key_base
 
       Devise.token_generator ||=
         if secret_key = Devise.secret_key

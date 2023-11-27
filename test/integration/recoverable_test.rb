@@ -258,7 +258,7 @@ class PasswordTest < Devise::IntegrationTest
   end
 
   test 'does not sign in user automatically with proc' do
-    swap Devise, sign_in_after_reset_password: ->(resource) { false }do
+    swap Devise, sign_in_after_reset_password: ->(resource) { false } do
       create_user
       request_forgot_password
       reset_password

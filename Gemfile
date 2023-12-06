@@ -9,6 +9,8 @@ gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
 
+gem "faker" "~> 2.22.0"
+
 gem "rails-controller-testing", github: "rails/rails-controller-testing"
 
 gem "responders", "~> 3.1"

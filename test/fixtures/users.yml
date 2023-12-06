@@ -1,0 +1,3 @@
+require 'Faker'
+user:
+  email: <%= Faker::Internet.email %>

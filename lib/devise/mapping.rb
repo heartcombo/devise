@@ -30,7 +30,7 @@ module Devise
 
     alias :name :singular
 
-    # Receives an object and find a scope for it. If a scope cannot be found,
+    # Receives an object and finds a scope for it. If a scope cannot be found,
     # raises an error. If a symbol is given, it's considered to be the scope.
     def self.find_scope!(obj)
       obj = obj.devise_scope if obj.respond_to?(:devise_scope)

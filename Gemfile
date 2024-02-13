@@ -23,7 +23,7 @@ group :test do
 end
 
 platforms :ruby do
-  gem "sqlite3", "~> 1.4"
+  gem "sqlite3"
 end
 
 # platforms :jruby do
@@ -32,7 +32,7 @@ end
 #   gem "jruby-openssl"
 # end
 
-# TODO:
-# group :mongoid do
-#   gem "mongoid", "~> 4.0.0"
-# end
+group :mongoid do
+  # gem "mongoid", "~> 8.1"
+  gem "mongoid", github: "mongodb/mongoid", branch: "8.1-stable"
+end

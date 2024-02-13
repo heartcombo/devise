@@ -20,20 +20,10 @@ jobs:
           - DEVISE_ORM=active_record
           - DEVISE_ORM=mongoid
         exclude:
-          - gemfile: Gemfile
-            env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-main
-            env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-7-0
-            env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-6-1
-            env: DEVISE_ORM=mongoid
           - gemfile: gemfiles/Gemfile-rails-6-0
             ruby: '3.2'
           - gemfile: gemfiles/Gemfile-rails-6-0
             ruby: '3.1'
-          - gemfile: gemfiles/Gemfile-rails-6-0
-            env: DEVISE_ORM=mongoid
     runs-on: ubuntu-latest
     env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
@@ -43,6 +33,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true # runs bundle install and caches installed gems automatically
-      - uses: supercharge/mongodb-github-action@1.9.0
+      - uses: supercharge/mongodb-github-action@1.10.0
         if: ${{ matrix.env == 'DEVISE_ORM=mongoid' }}
       - run: bundle exec rake

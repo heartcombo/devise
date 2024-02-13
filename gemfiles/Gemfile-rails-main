@@ -23,3 +23,8 @@ end
 platforms :ruby do
   gem "sqlite3", "~> 1.4"
 end
+
+group :mongoid do
+  # gem "mongoid", "~> 8.1"
+  gem "mongoid", github: "mongodb/mongoid", branch: "8.1-stable"
+end

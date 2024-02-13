@@ -166,6 +166,10 @@ module Devise
   mattr_accessor :send_password_change_notification
   @@send_password_change_notification = false
 
+  # Used to control when to deliver Action Mailer emails
+  mattr_accessor :mailer_delivery_method
+  @@mailer_delivery_method = :deliver_now
+
   # Scoped views. Since it relies on fallbacks to render default views, it's
   # turned off by default.
   mattr_accessor :scoped_views

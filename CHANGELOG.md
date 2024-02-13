@@ -4,7 +4,8 @@
 * Drop support to Rails < 6.0
 
 * enhancements
-  * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
+  * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION`. (@soartec-lab)
+  * `Devise::SecretKeyFinder#find` deprioritizes use of the deprecated find method in `rails`. (@soartec-lab)
 
 * bug fixes
   * Respect locale set by controller in failure app. Devise will carry over the current I18n.locale option when triggering authentication, and will wrap the failure app call with it. [#5567](https://github.com/heartcombo/devise/pull/5567)

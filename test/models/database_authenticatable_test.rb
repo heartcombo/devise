@@ -148,6 +148,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_not user.valid_password?('654321')
   end
 
+  test 'a hashed password cost should be as specified' do
+    user = create_user
+    hashed_password_cost = ::BCrypt::Password.new(user.encrypted_password).cost
+    assert_equal user.class.stretches, hashed_password_cost
+  end
+
   test 'should respond to current password' do
     assert_respond_to new_user, :current_password
   end

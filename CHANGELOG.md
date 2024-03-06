@@ -62,6 +62,9 @@
 * enhancements
   * Add support for Rails 7.0. Please note that Turbo integration is not fully supported by Devise yet.
 
+* enhancements
+  * Set stretches to the minimum cost supported by the bcrypt algorithm in tests (by @sergey-alekseev)
+
 ### 4.8.0 - 2021-04-29
 
 * enhancements

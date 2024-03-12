@@ -387,6 +387,18 @@ class ConfirmableTest < ActiveSupport::TestCase
     admin.stubs(:valid?).returns(false)
     assert_not admin.confirm(ensure_valid: true)
   end
+
+  test 'should ignore the confirmation period when ignore_period is true' do
+    swap Devise, confirm_within: 3.days do
+      user = Timecop.freeze(4.days.ago) do
+        create_user
+      end
+      assert_not user.confirm
+      assert_not user.confirmed?
+      assert user.confirm(ignore_period: true)
+      assert user.confirmed?
+    end
+  end
 end
 
 class ReconfirmableTest < ActiveSupport::TestCase

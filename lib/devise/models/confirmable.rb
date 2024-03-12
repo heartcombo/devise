@@ -73,12 +73,16 @@ module Devise
         required_methods
       end
 
-      # Confirm a user by setting it's confirmed_at to actual time. If the user
-      # is already confirmed, add an error to email field. If the user is invalid
-      # add errors
+      # Confirm a user by setting its confirmed_at to the current time. If the user
+      # is already confirmed, add an error to email field.
+      #
+      # Supported options:
+      # * `:ensure_valid` - When true, validations are run when saving the record (otherwise, validations are only run
+      #   on reconfirmation, to ensure e-mail uniqueness).
+      # * `:ignore_period` - When true, skips checking whether the confirmation period is expired.
       def confirm(args = {})
         pending_any_confirmation do
-          if confirmation_period_expired?
+          if !args[:ignore_period] && confirmation_period_expired?
             self.errors.add(:email, :confirmation_period_expired,
               period: Devise::TimeInflector.time_ago_in_words(self.class.confirm_within.ago))
             return false

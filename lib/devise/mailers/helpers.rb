@@ -5,6 +5,8 @@ module Devise
     module Helpers
       extend ActiveSupport::Concern
 
+      MultipleRecipientsError = Class.new(ArgumentError)
+
       included do
         include Devise::Controllers::ScopedViews
       end
@@ -16,7 +18,11 @@ module Devise
       # Configure default email options
       def devise_mail(record, action, opts = {}, &block)
         initialize_from_record(record)
-        mail headers_for(action, opts), &block
+
+        headers = headers_for(action, opts)
+        validate_single_recipient_in_headers!(headers) if Devise.strict_single_recipient_emails.include?(action)
+
+        mail headers, &block
       end
 
       def initialize_from_record(record)
@@ -82,6 +88,42 @@ module Devise
         I18n.t(:"#{devise_mapping.name}_subject", scope: [:devise, :mailer, key],
           default: [:subject, key.to_s.humanize])
       end
+
+      # It is possible to send email to one or more recipients in one
+      # email by setting a list of emails in the :to key, or by :cc or
+      # :bcc-ing recipients.
+      # https://guides.rubyonrails.org/action_mailer_basics.html#sending-email-to-multiple-recipients
+      #
+      # This method ensures the headers contain a single recipient.
+      def validate_single_recipient_in_headers!(headers)
+        return unless headers
+
+        symbolized_headers = headers.symbolize_keys
+
+        if headers.keys.length != symbolized_headers.keys.length
+          raise MultipleRecipientsError, "headers has colliding key names"
+        end
+
+        if symbolized_headers[:cc] || symbolized_headers[:bcc]
+          raise MultipleRecipientsError, 'headers[:cc] and headers[:bcc] are not allowed'
+        end
+
+        if symbolized_headers[:to] && !validate_single_recipient_in_email(symbolized_headers[:to])
+          raise MultipleRecipientsError, 'headers[:to] must be a string not containing ; or ,'
+        end
+
+        true
+      end
+
+      # Returns true if email is a String not containing email
+      # separators: commas (RFC5322) or semicolons (RFC1485).
+      #
+      # Unlike Devise.email_regexp (which can be overridden), it does
+      # not validate that the email is valid.
+      def validate_single_recipient_in_email(email)
+        email.is_a?(String) && !email.match(/[;,]/)
+      end
+
     end
   end
 end

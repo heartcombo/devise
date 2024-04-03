@@ -5,7 +5,7 @@ require 'test_helper'
 class MyController < DeviseController
 end
 
-class HelpersTest < Devise::ControllerTestCase
+class InternalHelpersTest < Devise::ControllerTestCase
   tests MyController
 
   def setup

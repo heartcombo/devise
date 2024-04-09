@@ -1,5 +1,8 @@
 ### Unreleased
 
+* enhancements
+  * Add support for Ruby 3.3. (no changes needed)
+
 * bug fixes
   * Respect locale set by controller in failure app. Devise will carry over the current I18n.locale option when triggering authentication, and will wrap the failure app call with it. [#5567](https://github.com/heartcombo/devise/pull/5567)
 

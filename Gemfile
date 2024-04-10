@@ -26,13 +26,6 @@ platforms :ruby do
   gem "sqlite3"
 end
 
-# platforms :jruby do
-#   gem "activerecord-jdbc-adapter"
-#   gem "activerecord-jdbcsqlite3-adapter"
-#   gem "jruby-openssl"
-# end
-
 group :mongoid do
-  # gem "mongoid", "~> 8.1"
-  gem "mongoid", github: "mongodb/mongoid", branch: "8.1-stable"
+  gem "mongoid", "~> 8.1"
 end

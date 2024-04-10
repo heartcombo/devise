@@ -1,0 +1,1 @@
+view-helpers-method-test branch, notes in views test files

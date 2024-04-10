@@ -1,4 +1,4 @@
-### Unreleased
+### 4.9.4 - 2024-04-10
 
 * enhancements
   * Add support for Ruby 3.3. (no changes needed)

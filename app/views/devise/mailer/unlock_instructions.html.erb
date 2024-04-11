@@ -1,7 +1,7 @@
-<p>Hello <%= @resource.email %>!</p>
+<p><%= t('.hello', email: @resource.email) %></p>
 
-<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
+<p><%= t('.description') %></p>
 
-<p>Click the link below to unlock your account:</p>
+<p><%= t('.unlock_description') %></p>
 
-<p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+<p><%= link_to t('.button'), unlock_url(@resource, unlock_token: @token) %></p>

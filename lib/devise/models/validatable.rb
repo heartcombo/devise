@@ -35,6 +35,7 @@ module Devise
           validates_presence_of     :password, if: :password_required?
           validates_confirmation_of :password, if: :password_required?
           validates_length_of       :password, within: password_length, allow_blank: true
+          validate :password_security, if: :password_required?
         end
       end
 
@@ -58,6 +59,12 @@ module Devise
 
       def email_required?
         true
+      end
+
+      def password_security(password)
+        unless password =~ /[A-Z]/ || unless password =~ /[a-z]/ || unless password =~ /\d/
+          errors[:password].add("is not secure.")
+        end
       end
 
       module ClassMethods

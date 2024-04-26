@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'devise/strategies/database_authenticatable'
+require 'devise/strategies/database_password_authenticatable'
 
 module Devise
   module Models

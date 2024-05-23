@@ -216,6 +216,10 @@ Devise.setup do |config|
   # Warn on the last attempt before the account is locked.
   # config.last_attempt_warning = true
 
+  # Do not clear the unlock token after a resource is unlocked, allowing the
+  # unlock URL to be idempotent.
+  # config.keep_unlock_token_after_unlocking = true
+
   # ==> Configuration for :recoverable
   #
   # Defines which key will be used when recovering the password for an account

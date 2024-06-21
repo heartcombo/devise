@@ -62,12 +62,12 @@ class Devise::RegistrationsController < DeviseController
   end
 
   # DELETE /resource
-  def destroy
-    resource.destroy
-    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-    set_flash_message! :notice, :destroyed
-    yield resource if block_given?
-    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name), status: Devise.responder.redirect_status }
+  def destroy(&block)
+    if destroy_resource(resource, account_destroy_params)
+      sign_out_resource(resource_name, resource, &block)
+    else
+      render :edit, status: 422
+    end
   end
 
   # GET /resource/cancel
@@ -92,6 +92,14 @@ class Devise::RegistrationsController < DeviseController
   # You can overwrite this method in your own RegistrationsController.
   def update_resource(resource, params)
     resource.update_with_password(params)
+  end
+
+  def destroy_resource(resource, params)
+    if resource.class.require_password_to_destroy
+      resource.destroy_with_password(params)
+    else
+      resource.destroy
+    end
   end
 
   # Build a devise resource passing in the session. Useful to move
@@ -141,6 +149,10 @@ class Devise::RegistrationsController < DeviseController
     devise_parameter_sanitizer.sanitize(:account_update)
   end
 
+  def account_destroy_params
+    devise_parameter_sanitizer.sanitize(:account_destroy)[:current_password]
+  end
+
   def translation_scope
     'devise.registrations'
   end
@@ -158,6 +170,13 @@ class Devise::RegistrationsController < DeviseController
                   :updated_but_not_signed_in
                 end
     set_flash_message :notice, flash_key
+  end
+
+  def sign_out_resource(resource_name, resource, &block)
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message! :notice, :destroyed
+    yield resource if block_given?
+    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name), status: Devise.responder.redirect_status }
   end
 
   def sign_in_after_change_password?

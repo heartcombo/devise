@@ -308,6 +308,10 @@ module Devise
   mattr_accessor :sign_in_after_change_password
   @@sign_in_after_change_password = true
 
+  # When true, signed in users must provide their current password to cancel account
+  mattr_accessor :require_password_to_destroy
+  @@require_password_to_destroy = false
+
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

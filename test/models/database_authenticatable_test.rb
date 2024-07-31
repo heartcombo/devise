@@ -106,6 +106,12 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     assert_present user.encrypted_password
   end
 
+
+  test 'should have a password_hash as an alias to encrypted_password' do
+    user = new_user
+    assert_equal user.encrypted_password, user.password_hash
+  end
+
   test 'should support custom hashing methods' do
     user = UserWithCustomHashing.new(password: '654321')
     assert_equal '123456', user.encrypted_password

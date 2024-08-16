@@ -413,7 +413,7 @@ module ActionDispatch::Routing
           controller: controllers[:registrations]
         }
 
-        resource :registration, options do
+        resource :registration, **options do
           get :cancel
         end
       end

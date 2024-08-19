@@ -27,4 +27,9 @@ if defined?(ActionMailer)
       devise_mail(record, :password_change, opts)
     end
   end
+else
+  if Rails.autoloaders.zeitwerk_enabled?
+    class Devise::Mailer
+    end
+  end
 end

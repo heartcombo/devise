@@ -19,14 +19,31 @@ en:
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
+        welcome: "Welcome %{email}!"
+        description: "You can confirm your account email through the link below:"
+        button: "Confirm my account"
       reset_password_instructions:
         subject: "Reset password instructions"
+        hello: "Hello %{email}!"
+        description: "Someone has requested a link to change your password. You can do this through the link below."
+        button: "Change my password"
+        please_ignore: "If you didn't request this, please ignore this email."
+        password_wont_change: "Your password won't change until you access the link above and create a new one."
       unlock_instructions:
         subject: "Unlock instructions"
+        hello: "Hello %{email}!"
+        description: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
+        unlock_description: "Click the link below to unlock your account:"
+        button: "Unlock my account"
       email_changed:
         subject: "Email Changed"
+        hello: "Hello %{email}!"
+        unconfirmed_description: "We're contacting you to notify you that your email is being changed to %{email}."
+        confirmed_description: "We're contacting you to notify you that your email has been changed to %{email}."
       password_change:
         subject: "Password Changed"
+        hello: "Hello %{email}!"
+        description: "We're contacting you to notify you that your password has been changed."
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."

@@ -105,7 +105,7 @@ class RememberMeTest < Devise::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'does not extend remember period through sign in' do
+  test 'logging in does not extend remember_created_at if it is already set' do
     swap Devise, extend_remember_period: true, remember_for: 1.year do
       user = create_user
       user.remember_me!
@@ -121,37 +121,226 @@ class RememberMeTest < Devise::IntegrationTest
     end
   end
 
-  test 'extends remember period when extend remember period config is true' do
+  test 'logging in sets remember_created_at if it is blank' do
     swap Devise, extend_remember_period: true, remember_for: 1.year do
-      create_user_and_remember
-      old_remember_token = nil
+      user = create_user
+      user.forget_me!
 
-      travel_to 1.day.ago do
-        get root_path
-        old_remember_token = request.cookies['remember_user_token']
-      end
+      assert_nil user.remember_created_at
 
-      get root_path
-      current_remember_token = request.cookies['remember_user_token']
+      sign_in_as_user remember_me: true
+      user.reload
 
-      assert_not_equal old_remember_token, current_remember_token
+      assert warden.user(:user) == user
+      assert_not_nil user.remember_created_at
     end
   end
 
-  test 'does not extend remember period when extend period config is false' do
-    swap Devise, extend_remember_period: false, remember_for: 1.year do
-      create_user_and_remember
-      old_remember_token = nil
-
-      travel_to 1.day.ago do
-        get root_path
-        old_remember_token = request.cookies['remember_user_token']
-      end
+  test 'extends remember period on every authenticated request when extend remember period config is true (session expires)' do
+    swap Devise, extend_remember_period: true, remember_for: 1.year, timeout_in: 6.hours do
+      user = create_user_and_remember
 
       get root_path
-      current_remember_token = request.cookies['remember_user_token']
+      assert_response :success
 
-      assert_equal old_remember_token, current_remember_token
+      travel_to 1.day.from_now do
+        # tomorrow, still logged in (by remember me), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 6.months.from_now do
+        # 6 months later, still logged in (by remember me), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 13.months.from_now do
+        # 13 months after remember_created_at was first set, we are still logged in because period was extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 20.months.from_now do
+        # 20 months after remember_created_at was first set, we are still logged in because period was extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 33.months.from_now do
+        # don't log in for over a year, we get logged out
+        get root_path
+        assert_response :redirect
+      end
+    end
+  end
+
+  test 'does not extend remember period when extend period config is false (session expires)' do
+    swap Devise, extend_remember_period: false, remember_for: 1.year, timeout_in: 6.hours do
+      user = create_user_and_remember
+
+      get root_path
+      assert_response :success
+
+      travel_to 1.day.from_now do
+        # tomorrow, still logged in (by remember me), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 6.months.from_now do
+        # 6 months later, still logged in (by remember me), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 13.months.from_now do
+        # 13 months after remember_created_at was first set, we are no longer logged in because period was not extended
+        get root_path
+        assert_response :redirect
+      end
+    end
+  end
+
+  test 'extends remember period on every authenticated request when extend remember period config is true (session still active; only session expires)' do
+    swap Devise, extend_remember_period: true, remember_for: 1.year, timeout_in: 8.months do
+      user = create_user_and_remember
+
+      get root_path
+      assert_response :success
+
+      travel_to 1.day.from_now do
+        # tomorrow, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 6.months.from_now do
+        # 6 months later, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 13.months.from_now do
+        # 13 months later, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 20.months.from_now do
+        # 20 months later, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 29.months.from_now do
+        # don't access for over 8 months, session is now expired, still logged in (by remember me)
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 42.months.from_now do
+        # don't access for over a year, session and remember me are now expired, we get logged out
+        get root_path
+        assert_response :redirect
+      end
+    end
+  end
+
+  test 'extends remember period on every authenticated request when extend remember period config is true (session still active; both expire at the same time)' do
+    swap Devise, extend_remember_period: true, remember_for: 1.year, timeout_in: 8.months do
+      user = create_user_and_remember
+
+      get root_path
+      assert_response :success
+
+      travel_to 1.day.from_now do
+        # tomorrow, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 6.months.from_now do
+        # 6 months later, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 13.months.from_now do
+        # 13 months later, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 20.months.from_now do
+        # 20 months later, still logged in (by session), remember period is extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 33.months.from_now do
+        # don't access for over a year, session and remember me are now expired, we get logged out
+        get root_path
+        assert_response :redirect
+      end
+    end
+  end
+
+  test 'does not extend remember period when extend period config is false (session still active)' do
+    swap Devise, extend_remember_period: false, remember_for: 1.year, timeout_in: 8.months do
+      user = create_user_and_remember
+
+      get root_path
+      assert_response :success
+
+      travel_to 1.day.from_now do
+        # tomorrow, still logged in (by session), remember period is not extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 6.months.from_now do
+        # 6 months later, still logged in (by session), remember period is not extended
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 13.months.from_now do
+        # 13 months after remember_created_at was first set, we are no longer remembered
+        # because the period was not extended but still logged in by the session
+        get root_path
+        assert_response :success
+      end
+
+      travel_to 22.months.from_now do
+        # don't access for over a year, session is now expired, we get logged out
+        get root_path
+        assert_response :redirect
+      end
+    end
+  end
+
+  test 'do not start remember period when remember me is not used' do
+    swap Devise, extend_remember_period: true, remember_for: 1.year, timeout_in: 6.hours do
+      sign_in_as_user
+      assert_nil request.cookies["remember_user_cookie"]
+
+      get root_path
+      assert_response :success
+
+      travel_to 1.hour.from_now do
+        # 1 hour later, still logged in (by session), remember me is not set
+        get root_path
+        assert_response :success
+        assert_nil request.cookies["remember_user_cookie"]
+      end
+
+      travel_to 8.hours.from_now do
+        # 8 hours later, session has expired and remember me is not set
+        get root_path
+        assert_response :redirect
+        assert_nil request.cookies["remember_user_cookie"]
+      end
     end
   end
 

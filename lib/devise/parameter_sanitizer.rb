@@ -107,7 +107,10 @@ module Devise
     #
     #
     # Returns nothing.
-    def permit(action, keys: nil, except: nil, &block)
+    def permit(action, opts = {}, &block)
+      keys = opts.delete(:keys)
+      except = opts.delete(:except)
+
       if block_given?
         @permitted[action] = block
       end

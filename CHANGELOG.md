@@ -3,6 +3,16 @@
 * breaking changes
   * Drop support to Ruby < 2.7
   * Drop support to Rails < 6.0
+  * Remove `SecretKeyFinder` and use `app.secret_key_base` as the default secret key for `Devise.secret_key` if a custom `Devise.secret_key` is not provided.
+
+    This is potentially a breaking change because Devise previously used the following order to find a secret key:
+    
+    ```
+    app.credentials.secret_key_base > app.secrets.secret_key_base > application.config.secret_key_base > application.secret_key_base
+    ```
+    
+    Now, it always uses `application.secret_key_base`. Make sure you're using the same secret key after the upgrade; otherwise, previously generated tokens for `recoverable`, `lockable`, and `confirmable` will be invalid.
+    https://github.com/heartcombo/devise/pull/5645
 
 * enhancements
   * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)

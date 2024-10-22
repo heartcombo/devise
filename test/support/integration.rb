@@ -57,6 +57,10 @@ class ActionDispatch::IntegrationTest
     admin
   end
 
+  def user_signed_in?
+    request.env['warden'].authenticated?(:user)
+  end
+
   # Fix assert_redirect_to in integration sessions because they don't take into
   # account Middleware redirects.
   #

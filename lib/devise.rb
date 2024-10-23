@@ -22,6 +22,7 @@ module Devise
 
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'
+    autoload :Rails7ApiMode,  'devise/controllers/rails7_api_mode'
     autoload :Rememberable,   'devise/controllers/rememberable'
     autoload :Responder,      'devise/controllers/responder'
     autoload :ScopedViews,    'devise/controllers/scoped_views'

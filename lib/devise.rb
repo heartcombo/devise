@@ -60,7 +60,7 @@ module Devise
   NO_INPUT = []
 
   # True values used to check params
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
+  TRUE_VALUES = [true, 1, '1', 'on', 'ON', 't', 'T', 'true', 'TRUE']
 
   # Secret key used by the key generator
   mattr_accessor :secret_key

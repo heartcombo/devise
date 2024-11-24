@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec path: ".."
 
-gem "rails", '~> 6.0.0', github: 'rails/rails', branch: '6-0-stable'
+gem "rails", "~> 8.0.0"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
@@ -21,5 +21,5 @@ group :test do
 end
 
 platforms :ruby do
-  gem "sqlite3", "~> 1.4"
+  gem "sqlite3", "~> 2.0"
 end

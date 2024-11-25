@@ -205,7 +205,6 @@ class CustomizedRoutingTest < ActionController::TestCase
 
   test 'map with format false for sessions' do
     expected_params = {controller: 'devise/sessions', action: 'new'}
-    expected_params[:format] = false
 
     assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_in', method: :get})
     assert_raise ExpectedRoutingError do
@@ -215,7 +214,6 @@ class CustomizedRoutingTest < ActionController::TestCase
 
   test 'map with format false for passwords' do
     expected_params = {controller: 'devise/passwords', action: 'create'}
-    expected_params[:format] = false
 
     assert_recognizes(expected_params, {path: '/htmlonly_admin/password', method: :post})
     assert_raise ExpectedRoutingError do
@@ -225,7 +223,6 @@ class CustomizedRoutingTest < ActionController::TestCase
 
   test 'map with format false for registrations' do
     expected_params = {controller: 'devise/registrations', action: 'new'}
-    expected_params[:format] = false
 
     assert_recognizes(expected_params, {path: '/htmlonly_admin/sign_up', method: :get})
     assert_raise ExpectedRoutingError do
@@ -235,7 +232,6 @@ class CustomizedRoutingTest < ActionController::TestCase
 
   test 'map with format false for confirmations' do
     expected_params = {controller: 'devise/confirmations', action: 'show'}
-    expected_params[:format] = false
 
     assert_recognizes(expected_params, {path: '/htmlonly_users/confirmation', method: :get})
     assert_raise ExpectedRoutingError do
@@ -245,7 +241,6 @@ class CustomizedRoutingTest < ActionController::TestCase
 
   test 'map with format false for unlocks' do
     expected_params = {controller: 'devise/unlocks', action: 'show'}
-    expected_params[:format] = false
 
     assert_recognizes(expected_params, {path: '/htmlonly_users/unlock', method: :get})
     assert_raise ExpectedRoutingError do

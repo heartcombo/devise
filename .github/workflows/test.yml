@@ -25,6 +25,8 @@ jobs:
             ruby: '2.7' # Rails > 7.1 supports Ruby >= 3.1
           - gemfile: gemfiles/Gemfile-rails-main
             ruby: '3.0' # Rails > 7.1 supports Ruby >= 3.1
+          - gemfile: gemfiles/Gemfile-rails-main
+            ruby: '3.1' # Rails >= 8.0 supports Ruby >= 3.2
           - gemfile: Gemfile
             env: DEVISE_ORM=mongoid
           - gemfile: gemfiles/Gemfile-rails-main

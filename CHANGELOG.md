@@ -18,7 +18,19 @@
   * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
   * Add Rails 8 support.
     - Routes are lazy-loaded by default in test and development environments now so Devise loads them before `Devise.mappings` call.
+  * Password length validator is changed from
 
+    ```
+    validates_length_of :password, within: password_length, allow_blank: true`
+    ```
+
+    to
+
+    ```
+    validates_length_of :password, minimum: proc { password_length.min }, maximum: proc { password_length.max }, allow_blank: true
+    ```
+
+    so it's possible to override `password_length` at runtime. (@manojmj92)
 * bug fixes
   * Make `Devise` work without `ActionMailer` when `Zeitwerk` autoloader is used.
 

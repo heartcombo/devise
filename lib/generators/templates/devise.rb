@@ -185,20 +185,14 @@ Devise.setup do |config|
   # to give user feedback and not to assert the e-mail validity.
   config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
 
-  # Password requires a lower case letter
-  # config.password_requires_lowercase = false
-
-  # Password requires an upper case letter
-  # config.password_requires_uppercase = false
-
-  # Password requires a number
-  # config.password_requires_number = false
-
-  # Password requires a special character
-  # config.password_requires_special_character = false
-
-  # Special characters that are allowed in the password
-  # config.password_special_characters = "!?@#$%^&*()_+-=[]{}|:;<>,./"
+  # Password complexity configuration
+  # config.password_complexity = {
+  #   require_upper: false,    
+  #   require_lower: false,    
+  #   require_digit: false,   
+  #   require_special: false,  
+  #   special_characters: "!?@#$%^&*()_+-=[]{}|:;<>,./"
+  # }
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this

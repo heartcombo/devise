@@ -16,7 +16,7 @@ module Devise
     #   * +password_requires_lowercase+: a boolean to require a lower case letter in the password. Defaults to false.
     #   * +password_requires_uppercase+: a boolean to require an upper case letter in the password. Defaults to false.
     #   * +password_requires_special_character+: a boolean to require a special character in the password. Defaults to false.
-    #   * +password_requires_number+: a boolean to require a number in the password. Defaults to false.
+    #   * +password_requires_digit+: a boolean to require a digit in the password. Defaults to false.
     #   * +password_special_characters+: a string with the special characters that are allowed in the password. Defaults to nil.
     #
     # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
@@ -46,7 +46,7 @@ module Devise
 
           validates_format_of :password, with: /\p{Lower}/, if: -> { password_requires_lowercase }, message: :must_contain_lowercase
           validates_format_of :password, with: /\p{Upper}/, if: -> { password_requires_uppercase }, message: :must_contain_uppercase
-          validates_format_of :password, with: /\d/, if: -> { password_requires_number }, message: :must_contain_number
+          validates_format_of :password, with: /\d/, if: -> { password_requires_digit }, message: :must_contain_digit
 
           # Run as special character check as a custom validation to ensure password_special_characters is evaluated at runtime
           validate :password_must_contain_special_character, if: -> { password_requires_special_character }
@@ -77,24 +77,28 @@ module Devise
 
       # Make these instance methods so the default Devise.password_requires_<> 
       #can be overridden
+      def password_complexity
+        self.class.password_complexity
+      end
+
       def password_requires_lowercase
-        self.class.password_requires_lowercase
+        password_complexity[:require_lower]
       end
 
       def password_requires_uppercase
-        self.class.password_requires_uppercase
+        password_complexity[:require_upper]
       end
       
-      def password_requires_number
-        self.class.password_requires_number 
+      def password_requires_digit
+        password_complexity[:require_digit]
       end
       
       def password_requires_special_character
-        self.class.password_requires_special_character
+        password_complexity[:require_special]
       end
 
       def password_special_characters
-        self.class.password_special_characters
+        password_complexity[:special_characters]
       end
 
       def password_must_contain_special_character
@@ -110,11 +114,7 @@ module Devise
           self,
           :email_regexp,
           :password_length,
-          :password_requires_lowercase,
-          :password_requires_uppercase,
-          :password_requires_special_character,
-          :password_requires_number,
-          :password_special_characters
+          :password_complexity
         )
       end
     end

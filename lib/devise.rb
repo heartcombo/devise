@@ -120,25 +120,15 @@ module Devise
   mattr_accessor :password_length
   @@password_length = 6..128
 
-  # Validate presence of lower case letter in password
-  mattr_accessor :password_requires_lowercase
-  @@password_requires_lowercase = false
-
-  # Validate presence of upper case letter in password
-  mattr_accessor :password_requires_uppercase
-  @@password_requires_uppercase = false
-
-  # Validate presence of special character in password
-  mattr_accessor :password_requires_special_character
-  @@password_requires_special_character = false
-
-  # Special character options
-  mattr_accessor :password_special_characters
-  @@password_special_characters = "!?@#$%^&*()_+-=[]{}|:;<>,./"
-
-  # Validate presence of a number in password
-  mattr_accessor :password_requires_number
-  @@password_requires_number = false
+  # Password complexity configuration
+  mattr_accessor :password_complexity
+  @@password_complexity = {
+    require_upper: false,    
+    require_lower: false,    
+    require_digit: false,   
+    require_special: false,  
+    special_characters: "!?@#$%^&*()_+-=[]{}|:;<>,./"
+  }
 
   # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for

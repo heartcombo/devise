@@ -122,52 +122,52 @@ class ValidatableTest < ActiveSupport::TestCase
   end
 
   
-  test "password must require a lower case letter if password_requires_lowercase_letter is true" do
-    with_password_requirement(:password_requires_lowercase, false) do
+  test "password must require a lower case letter if require_lower is true" do
+    with_password_requirement(:require_lower, false) do
       user = new_user(password: 'PASSWORD', password_confirmation: 'PASSWORD')
       assert user.valid?  
     end
     
-    with_password_requirement(:password_requires_lowercase, true) do
+    with_password_requirement(:require_lower, true) do
       user = new_user(password: 'PASSWORD', password_confirmation: 'PASSWORD')
       assert user.invalid?
       assert_equal 'must include at least one lowercase letter', user.errors[:password].join
     end
   end  
 
-  test "password must require an upper case letter if password_requires_uppercase_letter is true" do
-    with_password_requirement(:password_requires_uppercase, false) do
+  test "password must require an upper case letter if require_upper is true" do
+    with_password_requirement(:require_upper, false) do
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.valid?  
     end
     
-    with_password_requirement(:password_requires_uppercase, true) do
+    with_password_requirement(:require_upper, true) do
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.invalid?
       assert_equal 'must include at least one uppercase letter', user.errors[:password].join
     end
   end  
 
-  test "password must require an upper case letter if password_requires_number is true" do
-    with_password_requirement(:password_requires_number, false) do
+  test "password must require an upper case letter if require_digit is true" do
+    with_password_requirement(:require_digit, false) do
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.valid?  
     end
     
-    with_password_requirement(:password_requires_number, true) do
+    with_password_requirement(:require_digit, true) do
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.invalid?
       assert_equal 'must include at least one number', user.errors[:password].join
     end
   end 
 
-  test "password must require special character if password_requires_special_character is true" do
-    with_password_requirement(:password_requires_special_character, false) do
+  test "password must require special character if require_special is true" do
+    with_password_requirement(:require_special, false) do
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.valid?  
     end
     
-    with_password_requirement(:password_requires_special_character, true) do
+    with_password_requirement(:require_special, true) do
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.invalid?
       assert_equal 'must include at least one special character', user.errors[:password].join
@@ -176,8 +176,8 @@ class ValidatableTest < ActiveSupport::TestCase
 
 
   test "special character must be within defined special character set if it is custom" do
-    with_password_requirement(:password_requires_special_character, true) do
-      with_password_requirement(:password_special_characters, '!') do
+  with_password_requirement(:require_special, true) do
+      with_password_requirement(:special_characters, '!') do
         user = new_user(password: 'password!', password_confirmation: 'password!')
         assert user.valid?  
 
@@ -190,10 +190,15 @@ class ValidatableTest < ActiveSupport::TestCase
 
   def with_password_requirement(requirement, value)
     # Change the password requirement and restore it after the block is executed
-    original_value = User.public_send(requirement)
-    User.public_send("#{requirement}=", value)
+    original_password_complexity= User.public_send("password_complexity")
+    original_value = original_password_complexity[requirement]
+
+    updated_password_complexity = original_password_complexity.dup
+    updated_password_complexity[requirement] = value
+
+    User.public_send("password_complexity=", updated_password_complexity)
     yield
   ensure
-    User.public_send("#{requirement}=", original_value)
+    User.public_send("password_complexity=", original_password_complexity)
   end
 end

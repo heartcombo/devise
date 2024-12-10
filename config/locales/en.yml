@@ -65,6 +65,6 @@ en:
         other: "%{count} errors prohibited this %{resource} from being saved:"
       must_contain_lowercase: "must include at least one lowercase letter"
       must_contain_uppercase: "must include at least one uppercase letter"
-      must_contain_number: "must include at least one number"
+      must_contain_digit: "must include at least one number"
       must_contain_special_character: "must include at least one special character"
 

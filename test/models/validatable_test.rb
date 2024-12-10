@@ -1,10 +1,9 @@
 # encoding: UTF-8
 # frozen_string_literal: true
-
-require 'test_helper'
+require "test_helper"
 
 class ValidatableTest < ActiveSupport::TestCase
-  test 'should require email to be set' do
+  test 'should require email to be set' do      
     user = new_user(email: nil)
     assert user.invalid?
     assert user.errors[:email]
@@ -120,5 +119,86 @@ class ValidatableTest < ActiveSupport::TestCase
 
   test 'required_fields should be an empty array' do
     assert_equal [], Devise::Models::Validatable.required_fields(User)
+  end
+
+  
+  test "password must require a lower case letter if require_lower is true" do
+    with_password_requirement(:require_lower, false) do
+      user = new_user(password: 'PASSWORD', password_confirmation: 'PASSWORD')
+      assert user.valid?  
+    end
+    
+    with_password_requirement(:require_lower, true) do
+      user = new_user(password: 'PASSWORD', password_confirmation: 'PASSWORD')
+      assert user.invalid?
+      assert_equal 'must include at least one lowercase letter', user.errors[:password].join
+    end
+  end  
+
+  test "password must require an upper case letter if require_upper is true" do
+    with_password_requirement(:require_upper, false) do
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.valid?  
+    end
+    
+    with_password_requirement(:require_upper, true) do
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.invalid?
+      assert_equal 'must include at least one uppercase letter', user.errors[:password].join
+    end
+  end  
+
+  test "password must require an upper case letter if require_digit is true" do
+    with_password_requirement(:require_digit, false) do
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.valid?  
+    end
+    
+    with_password_requirement(:require_digit, true) do
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.invalid?
+      assert_equal 'must include at least one number', user.errors[:password].join
+    end
+  end 
+
+  test "password must require special character if require_special is true" do
+    with_password_requirement(:require_special, false) do
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.valid?  
+    end
+    
+    with_password_requirement(:require_special, true) do
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.invalid?
+      assert_equal 'must include at least one special character', user.errors[:password].join
+    end
+  end 
+
+
+  test "special character must be within defined special character set if it is custom" do
+  with_password_requirement(:require_special, true) do
+      with_password_requirement(:special_characters, '!') do
+        user = new_user(password: 'password!', password_confirmation: 'password!')
+        assert user.valid?  
+
+        user = new_user(password: 'password?', password_confirmation: 'password?')
+        assert user.invalid?  
+        assert_equal 'must include at least one special character', user.errors[:password].join
+      end
+    end
+  end 
+
+  def with_password_requirement(requirement, value)
+    # Change the password requirement and restore it after the block is executed
+    original_password_complexity= User.public_send("password_complexity")
+    original_value = original_password_complexity[requirement]
+
+    updated_password_complexity = original_password_complexity.dup
+    updated_password_complexity[requirement] = value
+
+    User.public_send("password_complexity=", updated_password_complexity)
+    yield
+  ensure
+    User.public_send("password_complexity=", original_password_complexity)
   end
 end

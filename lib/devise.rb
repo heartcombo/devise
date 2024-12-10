@@ -120,6 +120,16 @@ module Devise
   mattr_accessor :password_length
   @@password_length = 6..128
 
+  # Password complexity configuration
+  mattr_accessor :password_complexity
+  @@password_complexity = {
+    require_upper: false,    
+    require_lower: false,    
+    require_digit: false,   
+    require_special: false,  
+    special_characters: "!?@#$%^&*()_+-=[]{}|:;<>,./"
+  }
+
   # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for
   @@remember_for = 2.weeks

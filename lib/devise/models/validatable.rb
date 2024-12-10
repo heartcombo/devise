@@ -13,11 +13,12 @@ module Devise
     #
     #   * +email_regexp+: the regular expression used to validate e-mails;
     #   * +password_length+: a range expressing password length. Defaults to 6..128.
-    #   * +password_requires_lowercase+: a boolean to require a lower case letter in the password. Defaults to false.
-    #   * +password_requires_uppercase+: a boolean to require an upper case letter in the password. Defaults to false.
-    #   * +password_requires_special_character+: a boolean to require a special character in the password. Defaults to false.
-    #   * +password_requires_digit+: a boolean to require a digit in the password. Defaults to false.
-    #   * +password_special_characters+: a string with the special characters that are allowed in the password. Defaults to nil.
+    #   * +password_complexity+: a hash with the password complexity requirements, with the following keys:
+    #       - +require_lower+: a boolean to require a lower case letter in the password. Defaults to false.
+    #       - +require_upper+: a boolean to require an upper case letter in the password. Defaults to false.
+    #       - +require_special+: a boolean to require a special character in the password. Defaults to false.
+    #       - +require_digit+: a boolean to require a digit in the password. Defaults to false.
+    #       - +special_characters+: a string with the special characters that are allowed in the password. Defaults to nil.
     #
     # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
     # at runtime.

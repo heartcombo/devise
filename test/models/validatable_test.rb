@@ -1,9 +1,9 @@
 # encoding: UTF-8
 # frozen_string_literal: true
-require "test_helper"
+require 'test_helper'
 
 class ValidatableTest < ActiveSupport::TestCase
-  test 'should require email to be set' do      
+  test 'should require email to be set' do
     user = new_user(email: nil)
     assert user.invalid?
     assert user.errors[:email]
@@ -176,7 +176,7 @@ class ValidatableTest < ActiveSupport::TestCase
 
 
   test "special character must be within defined special character set if it is custom" do
-  with_password_requirement(:require_special, true) do
+    with_password_requirement(:require_special, true) do
       with_password_requirement(:special_characters, '!') do
         user = new_user(password: 'password!', password_confirmation: 'password!')
         assert user.valid?  
@@ -191,7 +191,6 @@ class ValidatableTest < ActiveSupport::TestCase
   def with_password_requirement(requirement, value)
     # Change the password requirement and restore it after the block is executed
     original_password_complexity= User.public_send("password_complexity")
-    original_value = original_password_complexity[requirement]
 
     updated_password_complexity = original_password_complexity.dup
     updated_password_complexity[requirement] = value

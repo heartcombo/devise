@@ -18,6 +18,7 @@ group :test do
   gem "omniauth-openid"
   gem "rexml"
   gem "timecop"
+  gem "nokogiri", "< 1.17.0", require: false
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 2.1", require: false
 end

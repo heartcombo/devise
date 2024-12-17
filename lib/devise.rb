@@ -446,9 +446,9 @@ module Devise
   #  Devise.setup do |config|
   #    config.allow_unconfirmed_access_for = 2.days
   #
-  #    config.warden do |manager|
+  #    config.warden do |warden_config|
   #      # Configure warden to use other strategies, like oauth.
-  #      manager.oauth(:twitter)
+  #      warden_config.oauth(:twitter)
   #    end
   #  end
   def self.warden(&block)

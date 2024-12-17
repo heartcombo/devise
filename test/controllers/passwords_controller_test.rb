@@ -32,7 +32,7 @@ class PasswordsControllerTest < Devise::ControllerTestCase
   end
 
   test '#edit redirect if reset_password_token has expired' do
-    @user.reset_password_sent_at = @user.class.reset_password_within - 1.second
+    @user.reset_password_sent_at = Time.now - @user.class.reset_password_within - 1.second
     @user.save
     get :edit, params: { reset_password_token: @raw }
     assert_equal "This password recovery link has expired, please request a new one.", flash[:alert]

@@ -16,23 +16,19 @@ RailsApp::Application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  if Devise::Test.rails5_and_up?
-    config.public_file_server.enabled = true
-    config.public_file_server.headers = {'Cache-Control' => 'public, max-age=3600'}
-  elsif Rails.version >= "4.2.0"
-    config.serve_static_files = true
-    config.static_cache_control = "public, max-age=3600"
-  else
-    config.serve_static_assets = true
-    config.static_cache_control = "public, max-age=3600"
-  end
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = {'Cache-Control' => 'public, max-age=3600'}
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
   # Raise exceptions instead of rendering exception templates.
-  config.action_dispatch.show_exceptions = false
+  if Devise::Test.rails71_and_up?
+    config.action_dispatch.show_exceptions = :none
+  else
+    config.action_dispatch.show_exceptions = false
+  end
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false

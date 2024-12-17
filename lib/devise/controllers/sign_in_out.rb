@@ -38,7 +38,7 @@ module Devise
         expire_data_after_sign_in!
 
         if options[:bypass]
-          ActiveSupport::Deprecation.warn(<<-DEPRECATION.strip_heredoc, caller)
+          Devise.deprecator.warn(<<-DEPRECATION.strip_heredoc, caller)
           [Devise] bypass option is deprecated and it will be removed in future version of Devise.
           Please use bypass_sign_in method instead.
           Example:
@@ -106,12 +106,6 @@ module Devise
       private
 
       def expire_data_after_sign_in!
-        # TODO: remove once Rails 5.2+ and forward are only supported.
-        # session.keys will return an empty array if the session is not yet loaded.
-        # This is a bug in both Rack and Rails.
-        # A call to #empty? forces the session to be loaded.
-        session.empty?
-
         session.keys.grep(/^devise\./).each { |k| session.delete(k) }
       end
 

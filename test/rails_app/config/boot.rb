@@ -12,32 +12,12 @@ module Devise
       !rails70? && Rails::VERSION::MAJOR >= 7
     end
 
+    def self.rails70_and_up?
+      Rails::VERSION::MAJOR >= 7
+    end
+
     def self.rails70?
       Rails.version.start_with? '7.0'
-    end
-
-    def self.rails6_and_up?
-      Rails::VERSION::MAJOR >= 6
-    end
-
-    def self.rails52_and_up?
-      Rails::VERSION::MAJOR > 5 || rails52?
-    end
-
-    def self.rails52?
-      Rails.version.start_with? '5.2'
-    end
-
-    def self.rails51?
-      Rails.version.start_with? '5.1'
-    end
-
-    def self.rails5_and_up?
-      Rails::VERSION::MAJOR >= 5
-    end
-
-    def self.rails5?
-      Rails.version.start_with? '5'
     end
   end
 end

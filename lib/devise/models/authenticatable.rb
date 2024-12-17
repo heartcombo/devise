@@ -2,7 +2,6 @@
 
 require 'devise/hooks/activatable'
 require 'devise/hooks/csrf_cleaner'
-require 'devise/rails/deprecated_constant_accessor'
 
 module Devise
   module Models
@@ -60,9 +59,6 @@ module Devise
         :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip,
         :last_sign_in_ip, :password_salt, :confirmation_token, :confirmed_at, :confirmation_sent_at,
         :remember_token, :unconfirmed_email, :failed_attempts, :unlock_token, :locked_at]
-
-      include Devise::DeprecatedConstantAccessor
-      deprecate_constant "BLACKLIST_FOR_SERIALIZATION", "Devise::Models::Authenticatable::UNSAFE_ATTRIBUTES_FOR_SERIALIZATION"
 
       included do
         class_attribute :devise_modules, instance_writer: false
@@ -187,11 +183,8 @@ module Devise
       #         # Deliver later with Active Job's `deliver_later`
       #         if message.respond_to?(:deliver_later)
       #           message.deliver_later
-      #         # Remove once we move to Rails 4.2+ only, as `deliver` is deprecated.
-      #         elsif message.respond_to?(:deliver_now)
-      #           message.deliver_now
       #         else
-      #           message.deliver
+      #           message.deliver_now
       #         end
       #       end
       #
@@ -199,12 +192,7 @@ module Devise
       #
       def send_devise_notification(notification, *args)
         message = devise_mailer.send(notification, self, *args)
-        # Remove once we move to Rails 4.2+ only.
-        if message.respond_to?(:deliver_now)
-          message.deliver_now
-        else
-          message.deliver
-        end
+        message.deliver_now
       end
 
       def downcase_keys

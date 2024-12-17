@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 7.0.0"
+gem "rails", "~> 7.1.0"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
@@ -19,7 +19,7 @@ group :test do
   gem "rexml"
   gem "timecop"
   gem "webrat", "0.7.3", require: false
-  gem "mocha", "~> 1.1", require: false
+  gem "mocha", "~> 2.1", require: false
 end
 
 platforms :ruby do

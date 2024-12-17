@@ -1,0 +1,5 @@
+pt-BR:
+  devise:
+    failure:
+      invalid: "%{authentication_keys} ou senha inválidos."
+      unauthenticated: "Para continuar, faça login ou registre-se."

@@ -235,7 +235,6 @@ module ActionDispatch::Routing
       options[:constraints]   = (@scope[:constraints] || {}).merge(options[:constraints] || {})
       options[:defaults]      = (@scope[:defaults] || {}).merge(options[:defaults] || {})
       options[:options]       = @scope[:options] || {}
-      options[:options][:format] = false if options[:format] == false
 
       resources.map!(&:to_sym)
 
@@ -413,7 +412,7 @@ module ActionDispatch::Routing
           controller: controllers[:registrations]
         }
 
-        resource :registration, options do
+        resource :registration, **options do
           get :cancel
         end
       end
@@ -447,7 +446,7 @@ ERROR
           match "#{path_prefix}/#{provider}",
             to: "#{controllers[:omniauth_callbacks]}#passthru",
             as: "#{provider}_omniauth_authorize",
-            via: [:get, :post]
+            via: OmniAuth.config.allowed_request_methods
 
           match "#{path_prefix}/#{provider}/callback",
             to: "#{controllers[:omniauth_callbacks]}##{provider}",
@@ -462,7 +461,7 @@ ERROR
         current_scope = @scope.dup
 
         exclusive = { as: new_as, path: new_path, module: nil }
-        exclusive.merge!(options.slice(:constraints, :defaults, :options))
+        exclusive.merge!(options.slice(:constraints, :format, :defaults, :options))
 
         if @scope.respond_to? :new
           @scope = @scope.new exclusive

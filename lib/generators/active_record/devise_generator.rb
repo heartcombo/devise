@@ -5,7 +5,7 @@ require 'generators/devise/orm_helpers'
 
 module ActiveRecord
   module Generators
-    class DeviseGenerator < ActiveRecord::Generators::Base
+    class DeviseGenerator < Base
       argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
       class_option :primary_key_type, type: :string, desc: "The type for primary key"
@@ -82,10 +82,6 @@ RUBY
         postgresql?
       end
 
-      def rails5_and_up?
-        Rails::VERSION::MAJOR >= 5
-      end
-
       def rails61_and_up?
         Rails::VERSION::MAJOR > 6 || (Rails::VERSION::MAJOR == 6 && Rails::VERSION::MINOR >= 1)
       end
@@ -106,14 +102,12 @@ RUBY
         end
       end
 
-     def migration_version
-       if rails5_and_up?
-         "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
-       end
-     end
+      def migration_version
+        "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+      end
 
      def primary_key_type
-       primary_key_string if rails5_and_up?
+       primary_key_string
      end
 
      def primary_key_string

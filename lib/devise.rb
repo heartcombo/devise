@@ -19,7 +19,6 @@ module Devise
   autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
-  autoload :SecretKeyFinder,    'devise/secret_key_finder'
 
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'
@@ -61,7 +60,7 @@ module Devise
   NO_INPUT = []
 
   # True values used to check params
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
+  TRUE_VALUES = [true, 1, '1', 'on', 'ON', 't', 'T', 'true', 'TRUE']
 
   # Secret key used by the key generator
   mattr_accessor :secret_key
@@ -275,8 +274,14 @@ module Devise
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.
-  mattr_reader :mappings
   @@mappings = {}
+  def self.mappings
+    # Starting from Rails 8.0, routes are lazy-loaded by default in test and development environments.
+    # However, Devise's mappings are built during the routes loading phase.
+    # To ensure it works correctly, we need to load the routes first before accessing @@mappings.
+    Rails.application.try(:reload_routes_unless_loaded)
+    @@mappings
+  end
 
   # OmniAuth configurations.
   mattr_reader :omniauth_configs
@@ -519,6 +524,18 @@ module Devise
     res = 0
     b.each_byte { |byte| res |= byte ^ l.shift }
     res == 0
+  end
+
+  def self.deprecator
+    @deprecator ||= ActiveSupport::Deprecation.new("5.0", "Devise")
+  end
+
+  def self.activerecord51? # :nodoc:
+    deprecator.warn <<-DEPRECATION.strip_heredoc
+      [Devise] `Devise.activerecord51?` is deprecated and will be removed in the next major version.
+      It is a non-public method that's no longer used internally, but that other libraries have been relying on.
+    DEPRECATION
+    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
   end
 end
 

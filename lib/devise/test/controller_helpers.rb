@@ -69,7 +69,7 @@ module Devise
           scope = resource
           resource = deprecated
 
-          ActiveSupport::Deprecation.warn <<-DEPRECATION.strip_heredoc
+          Devise.deprecator.warn <<-DEPRECATION.strip_heredoc
             [Devise] sign_in(:#{scope}, resource) on controller tests is deprecated and will be removed from Devise.
             Please use sign_in(resource, scope: :#{scope}) instead.
           DEPRECATION
@@ -141,7 +141,6 @@ module Devise
 
           status, headers, response = Devise.warden_config[:failure_app].call(env).to_a
           @controller.response.headers.merge!(headers)
-          @controller.response.content_type = headers["Content-Type"] unless Rails::VERSION::MAJOR >= 5
           @controller.status = status
           @controller.response_body = response.body
           nil # causes process return @response

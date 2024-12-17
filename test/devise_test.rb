@@ -106,4 +106,10 @@ class DeviseTest < ActiveSupport::TestCase
       assert_no_match Devise.email_regexp, email
     end
   end
+
+  test 'Devise.activerecord51? deprecation' do
+    assert_deprecated("`Devise.activerecord51?` is deprecated", Devise.deprecator) do
+      Devise.activerecord51?
+    end
+  end
 end

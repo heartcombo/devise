@@ -273,6 +273,15 @@ class AuthenticationRedirectTest < Devise::IntegrationTest
     assert_contain 'You need to sign in or sign up before continuing.'
   end
 
+  test 'redirect from warden respects i18n locale set at the controller' do
+    get admins_path(locale: "pt-BR")
+
+    assert_redirected_to new_admin_session_path
+    follow_redirect!
+
+    assert_contain 'Para continuar, faça login ou registre-se.'
+  end
+
   test 'redirect to default url if no other was configured' do
     sign_in_as_user
     assert_template 'home/index'
@@ -572,7 +581,7 @@ class AuthenticationRequestKeysTest < Devise::IntegrationTest
     host! 'foo.bar.baz'
 
     swap Devise, request_keys: [:subdomain] do
-      User.expects(:find_for_authentication).with(subdomain: 'foo', email: 'user@test.com').returns(create_user)
+      User.expects(:find_for_authentication).with({ subdomain: 'foo', email: 'user@test.com' }).returns(create_user)
       sign_in_as_user
       assert warden.authenticated?(:user)
     end

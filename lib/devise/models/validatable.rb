@@ -16,9 +16,8 @@ module Devise
     #   * +password_complexity+: a hash with the password complexity requirements, with the following keys:
     #       - +require_lower+: a boolean to require a lower case letter in the password. Defaults to false.
     #       - +require_upper+: a boolean to require an upper case letter in the password. Defaults to false.
-    #       - +require_special+: a boolean to require a special character in the password. Defaults to false.
     #       - +require_digit+: a boolean to require a digit in the password. Defaults to false.
-    #       - +special_characters+: a string with the special characters that are allowed in the password. Defaults to nil.
+    #       - +special_characters+: a string with the special characters that are allowed in the password. Defaults to empty string.
     #
     # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
     # at runtime.
@@ -50,7 +49,7 @@ module Devise
           validates_format_of :password, with: /\d/, if: -> { password_requires_digit }, message: :must_contain_digit
 
           # Run as special character check as a custom validation to ensure password_special_characters is evaluated at runtime
-          validate :password_must_contain_special_character, if: -> { password_requires_special_character }
+          validate :password_must_contain_special_character, if: -> { password_special_characters.present? }
         end
       end
 
@@ -93,16 +92,12 @@ module Devise
       def password_requires_digit
         password_complexity[:require_digit]
       end
-      
-      def password_requires_special_character
-        password_complexity[:require_special]
-      end
 
       def password_special_characters
         password_complexity[:special_characters]
       end
 
-      def password_must_contain_special_character
+      def password_must_contain_special_character        
         special_character_regex = /[#{Regexp.escape(password_special_characters)}]/
       
         unless password =~ special_character_regex

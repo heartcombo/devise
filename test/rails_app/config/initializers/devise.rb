@@ -106,7 +106,6 @@ Devise.setup do |config|
   #   require_upper: false,    
   #   require_lower: false,    
   #   require_digit: false,   
-  #   require_special: false,  
   #   special_characters: "!?@#$%^&*()_+-=[]{}|:;<>,./"
   # }
 

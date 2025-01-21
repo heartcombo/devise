@@ -126,8 +126,7 @@ module Devise
     require_upper: false,    
     require_lower: false,    
     require_digit: false,   
-    require_special: false,  
-    special_characters: "!?@#$%^&*()_+-=[]{}|:;<>,./"
+    special_characters: ""
   }
 
   # The time the user will be remembered without asking for credentials again.

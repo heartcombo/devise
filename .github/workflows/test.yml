@@ -12,6 +12,7 @@ jobs:
           - gemfiles/Gemfile-rails-6-1
           - gemfiles/Gemfile-rails-6-0
         ruby:
+          - '3.4'
           - '3.3'
           - '3.2'
           - '3.1'

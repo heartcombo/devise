@@ -9,7 +9,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   test "redirects if attempting to access a page unauthenticated" do
     get :index
     assert_redirected_to new_user_session_path
-    assert_equal "You need to sign in or sign up before continuing.", flash[:alert]
+    assert_equal ['You need to sign in or sign up before continuing.'], flash[:alert]
   end
 
   test "redirects if attempting to access a page with an unconfirmed account" do

@@ -32,19 +32,18 @@ module Devise
       # given as parameter. Check Devise::Models::Authenticatable.valid_for_authentication?
       # for more information.
       #
-      # In case the resource can't be validated, it will fail with the given
-      # unauthenticated_message.
+      # In case the resource can't be validated, it will fail with collected
+      # devise_messages.
       def validate(resource, &block)
-        result = resource && resource.valid_for_authentication?(&block)
+        result = resource && resource.reset_devise_messages! && resource.valid_for_authentication?(&block)
 
-        if result
-          true
-        else
-          if resource
-            fail!(resource.unauthenticated_message)
-          end
-          false
+        return true if result
+
+        if resource
+          fail!(resource.devise_messages)
         end
+
+        false
       end
 
       # Get values from params and set in the resource.

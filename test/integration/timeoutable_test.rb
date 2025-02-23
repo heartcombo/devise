@@ -163,6 +163,24 @@ class SessionTimeoutTest < Devise::IntegrationTest
     end
   end
 
+  test 'shows the localized error message on session timeout' do
+    # Set up the error message in the default and in a different locale
+    store_translations(
+      en: { devise: { failure: { user: { timeout: 'Session expired!' } } } },
+      de: { devise: { failure: { timeout: 'Sitzung abgelaufen!' } } }
+    ) do
+      I18n.with_locale(:de) do
+        user = sign_in_as_user
+
+        get expire_user_path(user)
+        get users_path
+        follow_redirect!
+        follow_redirect!
+        assert_contain('Sitzung abgelaufen!')
+      end
+    end
+  end
+
   test 'time out not triggered if remembered' do
     user = sign_in_as_user remember_me: true
     get expire_user_path(user)

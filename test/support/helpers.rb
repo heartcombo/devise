@@ -8,11 +8,10 @@ class ActiveSupport::TestCase
   end
 
   def store_translations(locale, translations, &block)
-    # Calling 'available_locales' before storing the translations to ensure
-    # that the I18n backend will be initialized before we store our custom
-    # translations, so they will always override the translations for the
-    # YML file.
-    I18n.available_locales
+    # Eager-loading the backend before storing the translations ensures that the I18n backend will
+    # always be initialized before we store our custom translations, so the test-specific
+    # translations override the translations from the YML file.
+    I18n.backend.eager_load!
     I18n.backend.store_translations(locale, translations)
     yield
   ensure

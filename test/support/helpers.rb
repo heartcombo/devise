@@ -12,9 +12,12 @@ class ActiveSupport::TestCase
     # always be initialized before we store our custom translations, so the test-specific
     # translations override the translations from the YML file.
     I18n.backend.eager_load!
+    original_locales = I18n.available_locales
+    I18n.available_locales = Set.new(original_locales + translations.keys).to_a
     translations.each { |locale, entries| I18n.backend.store_translations(locale, entries) }
     yield
   ensure
+    I18n.available_locales = original_locales
     I18n.reload!
   end
 

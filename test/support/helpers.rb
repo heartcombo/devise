@@ -7,12 +7,12 @@ class ActiveSupport::TestCase
     ActionMailer::Base.deliveries = []
   end
 
-  def store_translations(locale, translations, &block)
+  def store_translations(translations)
     # Eager-loading the backend before storing the translations ensures that the I18n backend will
     # always be initialized before we store our custom translations, so the test-specific
     # translations override the translations from the YML file.
     I18n.backend.eager_load!
-    I18n.backend.store_translations(locale, translations)
+    translations.each { |locale, entries| I18n.backend.store_translations(locale, entries) }
     yield
   ensure
     I18n.reload!

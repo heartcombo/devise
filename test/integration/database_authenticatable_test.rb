@@ -55,7 +55,9 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'sign in with invalid email should return to sign in form with error message' do
-    store_translations :en, devise: { failure: { admin: { not_found_in_database: 'Invalid email address' } } } do
+    store_translations en: {
+      devise: { failure: { admin: { not_found_in_database: 'Invalid email address' } } }
+    } do
       sign_in_as_admin do
         fill_in 'email', with: 'wrongemail@test.com'
       end
@@ -76,7 +78,9 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
 
   test 'when in paranoid mode and without a valid e-mail' do
     swap Devise, paranoid: true do
-      store_translations :en, devise: { failure: { not_found_in_database: 'Not found in database' } } do
+      store_translations en: {
+        devise: { failure: { not_found_in_database: 'Not found in database' } }
+      } do
         sign_in_as_user do
           fill_in 'email', with: 'wrongemail@test.com'
         end
@@ -88,7 +92,9 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    store_translations :en, devise: { failure: { admin: { invalid: "Invalid credentials" } } } do
+    store_translations en: {
+      devise: { failure: { admin: { invalid: "Invalid credentials" } } }
+    } do
       sign_in_as_admin do
         fill_in 'password', with: 'abcdef'
       end

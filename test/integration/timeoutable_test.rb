@@ -141,9 +141,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
   end
 
   test 'error message with i18n' do
-    store_translations :en, devise: {
-      failure: { user: { timeout: 'Session expired!' } }
-    } do
+    store_translations en: { devise: { failure: { user: { timeout: 'Session expired!' } } } } do
       user = sign_in_as_user
 
       get expire_user_path(user)
@@ -154,9 +152,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
   end
 
   test 'error message with i18n with double redirect' do
-    store_translations :en, devise: {
-      failure: { user: { timeout: 'Session expired!' } }
-    } do
+    store_translations en: { devise: { failure: { user: { timeout: 'Session expired!' } } } } do
       user = sign_in_as_user
 
       get expire_user_path(user)

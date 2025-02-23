@@ -73,13 +73,17 @@ class EmailChangedTest < ActionMailer::TestCase
   end
 
   test 'set up subject from I18n' do
-    store_translations :en, devise: { mailer: { email_changed: { subject: 'Email Has Changed' } } } do
+    store_translations en: {
+      devise: { mailer: { email_changed: { subject: 'Email Has Changed' } } }
+    } do
       assert_equal 'Email Has Changed', mail.subject
     end
   end
 
   test 'subject namespaced by model' do
-    store_translations :en, devise: { mailer: { email_changed: { user_subject: 'User Email Has Changed' } } } do
+    store_translations en: {
+      devise: { mailer: { email_changed: { user_subject: 'User Email Has Changed' } } }
+    } do
       assert_equal 'User Email Has Changed', mail.subject
     end
   end

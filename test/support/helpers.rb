@@ -10,7 +10,11 @@ class ActiveSupport::TestCase
   def store_translations(translations)
     # Eager-loading the backend before storing the translations ensures that the I18n backend will
     # always be initialized before we store our custom translations, so the test-specific
-    # translations override the translations from the YML file.
+    # translations override the translations from the YML files. Locking on a mutex guarantees that
+    # concurrent tests calling the same method don't interfere with each other. Note that I18n has a
+    # global state so all interactions with it outside of store_translations may cause unexpected
+    # runtime errors.
+    self.class.i18n_mutex.lock
     I18n.backend.eager_load!
     original_locales = I18n.available_locales
     I18n.available_locales = Set.new(original_locales + translations.keys).to_a
@@ -19,6 +23,7 @@ class ActiveSupport::TestCase
   ensure
     I18n.available_locales = original_locales
     I18n.reload!
+    self.class.i18n_mutex.unlock
   end
 
   def generate_unique_email
@@ -90,5 +95,9 @@ class ActiveSupport::TestCase
         mapping.to.instance_variable_set(:@devise_parameter_filter, nil)
       end
     end
+  end
+
+  def self.i18n_mutex
+    @i18n_mutex ||= Mutex.new
   end
 end

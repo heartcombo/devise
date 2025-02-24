@@ -11,6 +11,8 @@ require "rails/test_help"
 require "orm/#{DEVISE_ORM}"
 
 I18n.load_path.concat Dir["#{File.dirname(__FILE__)}/support/locale/*.yml"]
+# Allow setting test-specific locales even if they are not defined in the locale YAML files.
+I18n.enforce_available_locales = false
 
 require 'mocha/minitest'
 require 'timecop'

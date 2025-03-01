@@ -135,6 +135,7 @@ module Devise
         when :custom
           proxy.custom_response
         else
+          options.merge!(:attempted_path => ::Rack::Request.new(env).fullpath)
           request.env["PATH_INFO"] = "/#{options[:action]}"
           request.env["warden.options"] = options
           Warden::Manager._run_callbacks(:before_failure, env, options)

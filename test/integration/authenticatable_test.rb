@@ -457,6 +457,23 @@ class AuthenticationOthersTest < Devise::IntegrationTest
     end
   end
 
+  test 'reconfigure warden when the middleware stack is rebuilt' do
+    get "/unauthenticated"
+    assert_equal 401, response.status
+
+    with_routing do |set|
+      set.draw do
+        get "/unauthenticated", to: "streaming#index"
+      end
+
+      refute_nil(Devise.warden_config.failure_app)
+
+      assert_nothing_raised do
+        get "/unauthenticated"
+      end
+    end
+  end
+
   test 'does not intercept Rails 401 responses' do
     get '/unauthenticated'
     assert_equal 401, response.status

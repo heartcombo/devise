@@ -293,9 +293,13 @@ module Devise
   @@helpers << Devise::Controllers::Helpers
 
   # Private methods to interface with Warden.
-  mattr_accessor :warden_config
+  mattr_reader :warden_config
   @@warden_config = nil
   @@warden_config_blocks = []
+  def self.warden_config=(config)
+    @@warden_configured = nil
+    @@warden_config = config
+  end
 
   # When true, enter in paranoid mode to avoid user enumeration.
   mattr_accessor :paranoid

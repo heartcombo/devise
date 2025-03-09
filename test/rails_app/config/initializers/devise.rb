@@ -106,7 +106,7 @@ Devise.setup do |config|
   #   require_upper: false,    
   #   require_lower: false,    
   #   require_digit: false,   
-  #   special_characters: "!?@#$%^&*()_+-=[]{}|:;<>,./"
+  #   require_special_character: false
   # }
 
   # ==> Configuration for :timeoutable

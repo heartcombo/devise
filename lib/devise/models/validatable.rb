@@ -17,7 +17,7 @@ module Devise
     #       - +require_lower+: a boolean to require a lower case letter in the password. Defaults to false.
     #       - +require_upper+: a boolean to require an upper case letter in the password. Defaults to false.
     #       - +require_digit+: a boolean to require a digit in the password. Defaults to false.
-    #       - +special_characters+: a string with the special characters that are allowed in the password. Defaults to empty string.
+    #       - +require_special_character+: a boolean to require a special character in the password. Defaults to false.
     #
     # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
     # at runtime.
@@ -47,9 +47,7 @@ module Devise
           validates_format_of :password, with: /\p{Lower}/, if: -> { password_requires_lowercase }, message: :must_contain_lowercase
           validates_format_of :password, with: /\p{Upper}/, if: -> { password_requires_uppercase }, message: :must_contain_uppercase
           validates_format_of :password, with: /\d/, if: -> { password_requires_digit }, message: :must_contain_digit
-
-          # Run as special character check as a custom validation to ensure password_special_characters is evaluated at runtime
-          validate :password_must_contain_special_character, if: -> { password_special_characters.present? }
+          validates_format_of :password, with: /\W/, if: -> { password_requires_special_character }, message: :must_contain_special_character
         end
       end
 
@@ -93,16 +91,8 @@ module Devise
         password_complexity[:require_digit]
       end
 
-      def password_special_characters
-        password_complexity[:special_characters]
-      end
-
-      def password_must_contain_special_character        
-        special_character_regex = /[#{Regexp.escape(password_special_characters)}]/
-      
-        unless password =~ special_character_regex
-          errors.add(:password, :must_contain_special_character)
-        end
+      def password_requires_special_character
+        password_complexity[:require_special_character]
       end
       
       module ClassMethods

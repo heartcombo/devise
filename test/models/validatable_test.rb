@@ -161,15 +161,21 @@ class ValidatableTest < ActiveSupport::TestCase
     end
   end 
 
-  test "special character must be within defined special character set if it is custom" do
-    with_password_requirement(:special_characters, '!') do
-      user = new_user(password: 'password!', password_confirmation: 'password!')
+  test "password must require a special character if require_digit is true" do
+   
+    with_password_requirement(:require_special_character, false) do
+      user = new_user(password: 'password', password_confirmation: 'password')
       assert user.valid?  
-
-      user = new_user(password: 'password?', password_confirmation: 'password?')
-      assert user.invalid?  
+    end
+    
+    with_password_requirement(:require_special_character, true) do
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.invalid?
       assert_equal 'must include at least one special character', user.errors[:password].join
-      end
+      
+      user = new_user(password: 'password', password_confirmation: 'password')
+      assert user.valid?
+    end
   end 
 
   def with_password_requirement(requirement, value)

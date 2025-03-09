@@ -132,6 +132,9 @@ class ValidatableTest < ActiveSupport::TestCase
       user = new_user(password: 'PASSWORD', password_confirmation: 'PASSWORD')
       assert user.invalid?
       assert_equal 'must include at least one lowercase letter', user.errors[:password].join
+
+      user = new_user(password: 'PASSWORDx', password_confirmation: 'PASSWORDx')
+      assert user.valid?
     end
   end  
 
@@ -145,6 +148,9 @@ class ValidatableTest < ActiveSupport::TestCase
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.invalid?
       assert_equal 'must include at least one uppercase letter', user.errors[:password].join
+
+      user = new_user(password: 'passwordX', password_confirmation: 'passwordX')
+      assert user.valid?
     end
   end  
 
@@ -158,6 +164,9 @@ class ValidatableTest < ActiveSupport::TestCase
       user = new_user(password: 'password', password_confirmation: 'password')
       assert user.invalid?
       assert_equal 'must include at least one number', user.errors[:password].join
+
+      user = new_user(password: 'password1', password_confirmation: 'password1')
+      assert user.valid?
     end
   end 
 

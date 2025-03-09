@@ -126,7 +126,8 @@ module Devise
     require_upper: false,    
     require_lower: false,    
     require_digit: false,   
-    require_special_character: false
+    require_special_character: false,
+    allowed_special_characters: nil
   }
 
   # The time the user will be remembered without asking for credentials again.

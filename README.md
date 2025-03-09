@@ -712,7 +712,7 @@ Devise allows you to also set more complex requirements such as:
 * Presence of lowercase characters (a-z)
 * Presence of uppercase characters (A-Z)
 * Presence of a number (0-9)
-* Presence of special characters (any character outside a-z, A-Z, 0-9, such as @, !, ‡, $, , etc.)
+* Presence of special characters (configurable, but defaults to any character outside a-z, A-Z, 0-9, such as @, !, ‡, $, , etc.)
 
 And these are available as devise config:
 ```ruby
@@ -720,7 +720,8 @@ config.password_complexity = {
    require_upper: true,    
    require_lower: true,    
    require_digit: true,   
-   require_special_character: true
+   require_special_character: true,
+   allowed_special_characters: nil
  }
 ```
 

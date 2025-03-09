@@ -190,7 +190,8 @@ Devise.setup do |config|
   #   require_upper: false,    
   #   require_lower: false,    
   #   require_digit: false,   
-  #   requre_special_character: false
+  #   requre_special_character: false,
+  #   allowed_special_characters: nil
   # }
 
   # ==> Configuration for :timeoutable

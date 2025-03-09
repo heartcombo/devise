@@ -18,6 +18,7 @@ module Devise
     #       - +require_upper+: a boolean to require an upper case letter in the password. Defaults to false.
     #       - +require_digit+: a boolean to require a digit in the password. Defaults to false.
     #       - +require_special_character+: a boolean to require a special character in the password. Defaults to false.
+    #       - +allowed_special_characters+: a string with the special characters allowed in the password. Defaults to nil.
     #
     # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
     # at runtime.
@@ -47,7 +48,9 @@ module Devise
           validates_format_of :password, with: /\p{Lower}/, if: -> { password_requires_lowercase }, message: :must_contain_lowercase
           validates_format_of :password, with: /\p{Upper}/, if: -> { password_requires_uppercase }, message: :must_contain_uppercase
           validates_format_of :password, with: /\d/, if: -> { password_requires_digit }, message: :must_contain_digit
-          validates_format_of :password, with: /\W/, if: -> { password_requires_special_character }, message: :must_contain_special_character
+
+          # Run as special character check as a custom validation to ensure allowed_special_characters is evaluated at runtime
+          validate :password_contains_special_character, if: -> { password_requires_special_character }
         end
       end
 
@@ -93,6 +96,24 @@ module Devise
 
       def password_requires_special_character
         password_complexity[:require_special_character]
+      end
+
+      def allowed_special_characters
+        password_complexity[:allowed_special_characters]
+      end
+
+      def password_contains_special_character    
+        if allowed_special_characters
+          special_character_regex = /[#{Regexp.escape(allowed_special_characters)}]/
+          error_message = I18n.t('errors.messages.must_contain_special_character_from_list', special_characters: allowed_special_characters)
+        else
+          special_character_regex = /\W/
+          error_message = :must_contain_special_character
+        end
+
+        unless password =~ special_character_regex
+          errors.add(:password, error_message)
+        end
       end
       
       module ClassMethods

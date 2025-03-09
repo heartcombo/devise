@@ -67,4 +67,5 @@ en:
       must_contain_uppercase: "must include at least one uppercase letter"
       must_contain_digit: "must include at least one number"
       must_contain_special_character: "must include at least one special character"
+      must_contain_special_character_from_list: "must include at least one special character from the list: %{special_characters}"
 

@@ -703,6 +703,36 @@ def send_devise_notification(notification, *args)
 end
 ```
 
+## Security Settings
+
+### Modification of the password length and complexity
+Devise allows you to also set more complex requirements such as:
+
+* Minimum password length – Longer passwords are generally more secure.
+* Presence of lowercase characters (a-z)
+* Presence of uppercase characters (A-Z)
+* Presence of a number (0-9)
+* Presence of special characters (any character outside a-z, A-Z, 0-9, such as @, !, ‡, $, , etc.)
+
+And these are available as devise config:
+```ruby
+config.password_complexity = {
+   require_upper: true,    
+   require_lower: true,    
+   require_digit: true,   
+   require_special_character: true
+ }
+```
+
+To allow for non-breaking updates to devise, these complexity settings are false by default, but can be enforced by adding the above snippet to your devise config.
+
+It is worth stressing that **enforcing complexity requirements does not guarantee strong passwords**. Strength of a password is a combination of:
+* Length
+* Unpredictability/Entropy
+* Uniqueness 
+
+Adding the above configuration as well setting a high minimum length (>12) is an attempt to address the first two of these factors of password strength.
+
 ### Password reset tokens and Rails logs
 
 If you enable the [Recoverable](http://rubydoc.info/github/heartcombo/devise/main/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:

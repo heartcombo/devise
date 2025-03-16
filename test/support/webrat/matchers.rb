@@ -4,7 +4,7 @@ module Webrat
     class HaveSelector
       def query
         Nokogiri::CSS.parse(@expected.to_s).map do |ast|
-          ast.to_xpath("//", Nokogiri::CSS::XPathVisitor.new)
+          ast.to_xpath(Nokogiri::CSS::XPathVisitor.new)
         end.first
       end
     end

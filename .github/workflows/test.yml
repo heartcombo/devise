@@ -9,6 +9,7 @@ jobs:
           - Gemfile
           - gemfiles/Gemfile-rails-main
           - gemfiles/Gemfile-rails-7-1
+          - gemfiles/Gemfile-rails-7-2
         ruby:
           - '3.3'
           - '3.2'

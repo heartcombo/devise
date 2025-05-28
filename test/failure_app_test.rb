@@ -81,7 +81,7 @@ class FailureTest < ActiveSupport::TestCase
       'warden.options' => { scope: :user },
       'action_dispatch.request.formats' => Array(env_params.delete('formats') || Mime[:html]),
       'rack.input' => "",
-      'warden' => OpenStruct.new(message: nil)
+      'warden' => OpenStruct.new(messages: nil)
     }.merge!(env_params)
 
     # Passing nil for action_dispatch.request.formats prevents the default from being used in Rails 5, need to remove it
@@ -97,14 +97,14 @@ class FailureTest < ActiveSupport::TestCase
     test 'returns to the default redirect location' do
       call_failure
       assert_equal 302, @response.first
-      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal ['You need to sign in or sign up before continuing.'], @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
 
     test 'returns to the default redirect location considering subdomain' do
       call_failure('warden.options' => { scope: :subdomain_user })
       assert_equal 302, @response.first
-      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal ['You need to sign in or sign up before continuing.'], @request.flash[:alert]
       assert_equal 'http://sub.test.host/subdomain_users/sign_in', @response.second['Location']
     end
 
@@ -118,7 +118,7 @@ class FailureTest < ActiveSupport::TestCase
       swap Devise, router_name: :fake_app do
         call_failure app: RootFailureApp
         assert_equal 302, @response.first
-        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+        assert_equal ['You need to sign in or sign up before continuing.'], @request.flash[:alert]
         assert_equal 'http://test.host/', @response.second['Location']
       end
     end
@@ -126,7 +126,7 @@ class FailureTest < ActiveSupport::TestCase
     test 'returns to the root path even when it\'s not defined' do
       call_failure app: FailureWithoutRootPath
       assert_equal 302, @response.first
-      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal ['You need to sign in or sign up before continuing.'], @request.flash[:alert]
       assert_equal 'http://test.host/', @response.second['Location']
     end
 
@@ -134,7 +134,7 @@ class FailureTest < ActiveSupport::TestCase
       swap Devise, router_name: :fake_app do
         call_failure app: FailureWithSubdomain
         assert_equal 302, @response.first
-        assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+        assert_equal ['You need to sign in or sign up before continuing.'], @request.flash[:alert]
         assert_equal 'http://sub.test.host/', @response.second['Location']
       end
     end
@@ -142,7 +142,7 @@ class FailureTest < ActiveSupport::TestCase
     test 'returns to the default redirect location considering the router for supplied scope' do
       call_failure app: FakeEngineApp, 'warden.options' => { scope: :user_on_engine }
       assert_equal 302, @response.first
-      assert_equal 'You need to sign in or sign up before continuing.', @request.flash[:alert]
+      assert_equal ['You need to sign in or sign up before continuing.'], @request.flash[:alert]
       assert_equal 'http://test.host/user_on_engines/sign_in', @response.second['Location']
     end
 
@@ -183,33 +183,33 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'uses the proxy failure message as symbol' do
-      call_failure('warden' => OpenStruct.new(message: :invalid))
-      assert_equal 'Invalid Email or password.', @request.flash[:alert]
+      call_failure('warden' => OpenStruct.new(messages: :invalid))
+      assert_equal ['Invalid Email or password.'], @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
     test 'supports authentication_keys as a Hash for the flash message' do
       swap Devise, authentication_keys: { email: true, login: true } do
-        call_failure('warden' => OpenStruct.new(message: :invalid))
-        assert_equal 'Invalid Email, Login or password.', @request.flash[:alert]
+        call_failure('warden' => OpenStruct.new(messages: :invalid))
+        assert_equal ['Invalid Email, Login or password.'], @request.flash[:alert]
       end
     end
 
     test 'uses custom i18n options' do
-      call_failure('warden' => OpenStruct.new(message: :does_not_exist), app: FailureWithI18nOptions)
-      assert_equal 'User Steve does not exist', @request.flash[:alert]
+      call_failure('warden' => OpenStruct.new(messages: :does_not_exist), app: FailureWithI18nOptions)
+      assert_equal ['User Steve does not exist'], @request.flash[:alert]
     end
 
     test 'respects the i18n locale passed via warden options when redirecting' do
-      call_failure('warden' => OpenStruct.new(message: :invalid), 'warden.options' => { locale: :"pt-BR" })
+      call_failure('warden' => OpenStruct.new(messages: :invalid), 'warden.options' => { locale: :"pt-BR" })
 
-      assert_equal 'Email ou senha inválidos.', @request.flash[:alert]
+      assert_equal ['Email ou senha inválidos.'], @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
     test 'uses the proxy failure message as string' do
-      call_failure('warden' => OpenStruct.new(message: 'Hello world'))
-      assert_equal 'Hello world', @request.flash[:alert]
+      call_failure('warden' => OpenStruct.new(messages: 'Hello world'))
+      assert_equal ['Hello world'], @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
@@ -258,7 +258,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'return appropriate body for json' do
       call_failure('formats' => Mime[:json])
-      result = %({"error":"You need to sign in or sign up before continuing."})
+      result = %({"errors":["You need to sign in or sign up before continuing."]})
       assert_equal result, @response.last.body
     end
 
@@ -287,14 +287,14 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'uses the failure message as response body' do
-      call_failure('formats' => Mime[:xml], 'warden' => OpenStruct.new(message: :invalid))
+      call_failure('formats' => Mime[:xml], 'warden' => OpenStruct.new(messages: :invalid))
       assert_match '<error>Invalid Email or password.</error>', @response.third.body
     end
 
     test 'respects the i18n locale passed via warden options when responding to HTTP request' do
-      call_failure('formats' => Mime[:json], 'warden' => OpenStruct.new(message: :invalid), 'warden.options' => { locale: :"pt-BR" })
+      call_failure('formats' => Mime[:json], 'warden' => OpenStruct.new(messages: :invalid), 'warden.options' => { locale: :"pt-BR" })
 
-      assert_equal %({"error":"Email ou senha inválidos."}), @response.third.body
+      assert_equal %({"errors":["Email ou senha inválidos."]}), @response.third.body
     end
 
     context 'on ajax call' do
@@ -348,7 +348,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'calls the original controller if not confirmed email' do
       env = {
-        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in", message: :unconfirmed },
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in", messages: :unconfirmed },
         "devise.mapping" => Devise.mappings[:user],
         "warden" => stub_everything
       }
@@ -359,7 +359,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'calls the original controller if inactive account' do
       env = {
-        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in", message: :inactive },
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in", messages: :inactive },
         "devise.mapping" => Devise.mappings[:user],
         "warden" => stub_everything
       }

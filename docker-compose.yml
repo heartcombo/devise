@@ -1,0 +1,11 @@
+# This file allows you to use the `docker compose` command in order to run Ruby
+# commands or tests.
+
+name: devise
+
+services:
+  # docker compose run --rm gem [rspec [path to spec file]]
+  gem:
+    image: heartcombo/devise:latest
+    volumes:
+      - $PWD:/gem/

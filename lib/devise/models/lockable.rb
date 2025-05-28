@@ -41,6 +41,7 @@ module Devise
       #   `{ send_instructions: false } as option`.
       def lock_access!(opts = { })
         self.locked_at = Time.now.utc
+        devise_messages << :locked
 
         if unlock_strategy_enabled?(:email) && opts.fetch(:send_instructions, true)
           send_unlock_instructions
@@ -87,13 +88,11 @@ module Devise
       # Overwrites active_for_authentication? from Devise::Models::Activatable for locking purposes
       # by verifying whether a user is active to sign in or not based on locked?
       def active_for_authentication?
-        super && !access_locked?
-      end
+        valid = super && !access_locked?
 
-      # Overwrites invalid_message from Devise::Models::Authenticatable to define
-      # the correct reason for blocking the sign in.
-      def inactive_message
-        access_locked? ? :locked : super
+        devise_messages << :locked unless valid
+
+        valid
       end
 
       # Overwrites valid_for_authentication? from Devise::Models::Authenticatable
@@ -115,6 +114,8 @@ module Devise
           else
             save(validate: false)
           end
+
+          add_unauthenticated_message
           false
         end
       end
@@ -124,17 +125,21 @@ module Devise
         reload
       end
 
+      def add_unauthenticated_message
+        devise_messages << unauthenticated_message
+      end
+
       def unauthenticated_message
         # If set to paranoid mode, do not show the locked message because it
         # leaks the existence of an account.
         if Devise.paranoid
-          super
+          :invalid
         elsif access_locked? || (lock_strategy_enabled?(:failed_attempts) && attempts_exceeded?)
           :locked
         elsif lock_strategy_enabled?(:failed_attempts) && last_attempt? && self.class.last_attempt_warning
           :last_attempt
         else
-          super
+          :invalid
         end
       end
 

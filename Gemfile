@@ -36,3 +36,6 @@ end
 # group :mongoid do
 #   gem "mongoid", "~> 4.0.0"
 # end
+
+gem "warden", "~> 1.2.9", github: 'Pharmony/warden',
+                          branch: 'features/support-multiple-messages'

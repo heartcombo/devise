@@ -64,6 +64,9 @@ module Devise
         class_attribute :devise_modules, instance_writer: false
         self.devise_modules ||= []
 
+        class_attribute :devise_messages
+        self.devise_messages = []
+
         before_validation :downcase_keys
         before_validation :strip_whitespace
       end
@@ -80,10 +83,6 @@ module Devise
       # and inactive_message instead.
       def valid_for_authentication?
         block_given? ? yield : true
-      end
-
-      def unauthenticated_message
-        :invalid
       end
 
       def active_for_authentication?
@@ -122,6 +121,10 @@ module Devise
           "#{k}: #{respond_to?(:attribute_for_inspect) ? attribute_for_inspect(k) : v.inspect}"
         end
         "#<#{self.class} #{inspection.join(", ")}>"
+      end
+
+      def reset_devise_messages!
+        self.devise_messages = []
       end
 
       protected

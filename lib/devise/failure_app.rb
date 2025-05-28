@@ -75,7 +75,7 @@ module Devise
         end
       end
 
-      flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
+      flash.now[:alert] = i18n_messages(:invalid) if is_flashing_format?
       self.response = recall_app(warden_options[:recall]).call(request.env).tap { |response|
         response[0] = Rack::Utils.status_code(
           response[0].in?(300..399) ? Devise.responder.redirect_status : Devise.responder.error_status
@@ -90,7 +90,7 @@ module Devise
           flash.keep(:timedout)
           flash.keep(:alert)
         else
-          flash[:alert] = i18n_message
+          flash[:alert] = i18n_messages
         end
       end
       redirect_to redirect_url
@@ -102,9 +102,13 @@ module Devise
       options
     end
 
-    def i18n_message(default = nil)
-      message = warden_message || default || :unauthenticated
+    def i18n_messages(default = nil)
+      Array(warden_messages || default || :unauthenticated).map do |message|
+        i18n_message(message)
+      end
+    end
 
+    def i18n_message(message)
       if message.is_a?(Symbol)
         options = {}
         options[:resource_name] = scope
@@ -126,7 +130,7 @@ module Devise
     end
 
     def redirect_url
-      if warden_message == :timeout
+      if Array(warden_messages).include?(:timeout)
         flash[:timedout] = true if is_flashing_format?
 
         path = if request.get?
@@ -199,14 +203,14 @@ module Devise
     end
 
     def http_auth_body
-      return i18n_message unless request_format
+      return i18n_messages unless request_format
       method = "to_#{request_format}"
       if method == "to_xml"
-        { error: i18n_message }.to_xml(root: "errors")
+        i18n_messages.to_xml(root: 'errors', skip_types: true)
       elsif {}.respond_to?(method)
-        { error: i18n_message }.send(method)
+        { errors: i18n_messages }.send(method)
       else
-        i18n_message
+        i18n_messages
       end
     end
 
@@ -225,8 +229,8 @@ module Devise
       request.respond_to?(:get_header) ? request.get_header("warden.options") : request.env["warden.options"]
     end
 
-    def warden_message
-      @message ||= warden.message || warden_options[:message]
+    def warden_messages
+      @messages ||= warden.messages.presence || warden_options[:messages].presence
     end
 
     def scope

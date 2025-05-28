@@ -142,10 +142,15 @@ module Devise
       # is already confirmed, it should never be blocked. Otherwise we need to
       # calculate if the confirm time has not expired for this user.
       def active_for_authentication?
-        super && (!confirmation_required? || confirmed? || confirmation_period_valid?)
+        valid = super && (!confirmation_required? || confirmed? || confirmation_period_valid?)
+
+        devise_messages << :unconfirmed unless valid
+
+        valid
       end
 
-      # The message to be shown if the account is inactive.
+      # Devise::RegistrationsController uses this method to determine the flash
+      # message to be shown to the user with `signed_up_but_#{inactive_message}`
       def inactive_message
         !confirmed? ? :unconfirmed : super
       end

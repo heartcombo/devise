@@ -1,0 +1,7 @@
+# This file is only used by Earthly
+
+name: devise
+
+services:
+  gem:
+    image: heartcombo/devise:latest

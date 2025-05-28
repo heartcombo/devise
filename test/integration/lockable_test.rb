@@ -103,10 +103,7 @@ class LockTest < Devise::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    store_translations :en, devise: {
-        failure: {user: {locked: "You are locked!"}}
-    } do
-
+    store_translations en: { devise: { failure: { user: { locked: "You are locked!"} } } } do
       user = create_user(locked: true)
       user.failed_attempts = User.maximum_attempts + 1
       user.save!
@@ -117,10 +114,7 @@ class LockTest < Devise::IntegrationTest
   end
 
   test "user should not be able to sign in when locked" do
-    store_translations :en, devise: {
-        failure: {user: {locked: "You are locked!"}}
-    } do
-
+    store_translations en: { devise: { failure: { user: { locked: "You are locked!"} } } } do
       user = create_user(locked: true)
       user.failed_attempts = User.maximum_attempts + 1
       user.save!

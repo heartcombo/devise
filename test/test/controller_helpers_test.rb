@@ -95,6 +95,19 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
     end
   end
 
+  test "sets attempted_path in warden.options" do
+    custom_failure_app = Class.new(Devise::FailureApp) do
+      def redirect_url
+        attempted_path
+      end
+    end
+
+    swap Devise.warden_config, failure_app: custom_failure_app do
+      get :index
+      assert_redirected_to "/users"
+    end
+  end
+
   test "returns the body of a failure app" do
     get :index
 

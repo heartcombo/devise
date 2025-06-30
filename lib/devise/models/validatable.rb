@@ -36,7 +36,7 @@ module Devise
 
           validates_presence_of     :password, if: :password_required?
           validates_confirmation_of :password, if: :password_required?
-          validates_length_of       :password, minimum: proc { password_length.min }, maximum: proc { password_length.max }, allow_blank: true
+          validates_length_of       :password, minimum: proc { password_length.min }, maximum: proc { password_length.max }, allow_blank: true, if: -> (x) { x.respond_to?(:password) }
         end
       end
 
@@ -55,7 +55,7 @@ module Devise
       # Passwords are always required if it's a new record, or if the password
       # or confirmation are being set somewhere.
       def password_required?
-        !persisted? || !password.nil? || !password_confirmation.nil?
+        respond_to?(:password) && (!persisted? || !password.nil? || !password_confirmation.nil?)
       end
 
       def email_required?

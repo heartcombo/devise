@@ -354,4 +354,29 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     assert_contain(/Email.*already.*taken/)
     assert admin.reload.pending_reconfirmation?
   end
+
+  test 'concurrent "update email" requests should not allow confirmation_token and unconfirmed_email to get out of sync' do
+    attacker_email = "attacker@example.com"
+    victim_email = "victim@example.com"
+
+    attacker = create_admin
+    # update the email address of the attacker, but do not confirm it yet
+    attacker.update(email: attacker_email)
+
+    # a concurrent request also updates the email address to the victim, while this request's model is in memory
+    Admin.where(id: attacker.id).update_all(
+      unconfirmed_email: victim_email,
+      confirmation_token: "different token"
+    )
+
+    # now we update to the same prior unconfirmed email address, and confirm
+    attacker.update(email: attacker_email)
+    attacker_token = attacker.raw_confirmation_token
+    visit_admin_confirmation_with_token(attacker_token)
+
+    attacker.reload
+    assert attacker.confirmed?
+    assert_equal attacker_email, attacker.email
+  end
+
 end

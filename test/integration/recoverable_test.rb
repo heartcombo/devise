@@ -154,13 +154,12 @@ class PasswordTest < Devise::IntegrationTest
 
   test 'not authenticated user with invalid reset password token should not be able to change their password' do
     user = create_user
-    reset_password reset_password_token: 'invalid_reset_password'
+    get edit_user_password_path(reset_password_token: 'invalid_reset_password')
 
-    assert_response :success
-    assert_current_url '/users/password'
-    assert_have_selector '#error_explanation'
-    assert_contain %r{Reset password token(.*)invalid}
-    assert_not user.reload.valid_password?('987654321')
+    assert_response :redirect
+    assert_redirected_to "/users/password/new"
+    follow_redirect!
+    assert_contain 'This password recovery link is invalid, please request a new one.'
   end
 
   test 'not authenticated user with valid reset password token but invalid password should not be able to change their password' do

@@ -41,6 +41,15 @@ module Devise
         headers.delete(:from) if default_params[:from]
         headers.delete(:reply_to) if default_params[:reply_to]
 
+        # If this message expires, then specify the time Devise thinks it
+        # was sent and also when it expires. This may specify a second or
+        # two too late, not a problem.
+        expiry = expires_for(action)
+        if expiry
+          headers[:date] = Time.now
+          headers[:Expires] = (headers[:date] + expiry).rfc822()
+        end
+
         headers.merge!(opts)
 
         @email = headers[:to]
@@ -59,6 +68,11 @@ module Devise
         template_path = _prefixes.dup
         template_path.unshift "#{@devise_mapping.scoped_path}/mailer" if self.class.scoped_views?
         template_path
+      end
+
+      def expires_for(action)
+        return Devise.reset_password_within if action == :reset_password_instructions
+        nil
       end
 
       # Set up a subject doing an I18n lookup. At first, it attempts to set a subject

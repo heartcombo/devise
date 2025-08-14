@@ -138,6 +138,31 @@ class RegistrationTest < Devise::IntegrationTest
     assert_not warden.authenticated?(:user)
   end
 
+  test 'in paranoid mode, duplicate registration shows success message and sends email to existing user' do
+    swap Devise, paranoid: true do
+      create_user
+      get new_user_registration_path
+
+      fill_in 'email', with: 'user@test.com'
+      fill_in 'password', with: '123456'
+      fill_in 'password confirmation', with: '123456'
+      
+      assert_email_sent 'user@test.com' do
+        click_button 'Sign up'
+      end
+
+      # Should redirect to sign in page with success message
+      assert_current_url '/users/sign_in'
+      assert_contain 'A message with a confirmation link has been sent to your email address'
+      assert_not warden.authenticated?(:user)
+      
+      # Check that the email sent is the "already registered" email
+      mail = ActionMailer::Base.deliveries.last
+      assert_equal 'Account already exists', mail.subject
+      assert_match 'Someone tried to create an account using your email address', mail.body.encoded
+    end
+  end
+
   test 'a guest should not be able to change account' do
     get edit_user_registration_path
     assert_redirected_to new_user_session_path

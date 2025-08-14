@@ -16,6 +16,32 @@ class Devise::RegistrationsController < DeviseController
   def create
     build_resource(sign_up_params)
 
+    # Check if email already exists when in paranoid mode
+    if Devise.paranoid
+      # Apply same transformations as the model would
+      email_key = resource_class.authentication_keys.first
+      email_value = resource.send(email_key)
+      
+      # Apply case insensitive search if configured
+      if resource_class.case_insensitive_keys.include?(email_key)
+        existing_user = resource_class.where("lower(#{email_key}) = ?", email_value.downcase).first
+      else
+        existing_user = resource_class.find_by(email_key => email_value)
+      end
+      
+      if existing_user
+        # Send "already registered" email instead of showing error
+        devise_mailer.email_already_registered(existing_user).deliver
+        
+        # Show same success message as normal registration with confirmation
+        set_flash_message! :notice, :signed_up_but_unconfirmed
+        expire_data_after_sign_in!
+        redirect_to new_session_path(resource_name)
+        return
+      end
+    end
+    
+    # Normal registration flow
     resource.save
     yield resource if block_given?
     if resource.persisted?
@@ -81,6 +107,10 @@ class Devise::RegistrationsController < DeviseController
   end
 
   protected
+
+    def devise_mailer
+      Devise.mailer
+    end
 
   def update_needs_confirmation?(resource, previous)
     resource.respond_to?(:pending_reconfirmation?) &&

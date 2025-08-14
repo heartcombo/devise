@@ -27,6 +27,8 @@ en:
         subject: "Email Changed"
       password_change:
         subject: "Password Changed"
+      email_already_registered:
+        subject: "Account already exists"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."

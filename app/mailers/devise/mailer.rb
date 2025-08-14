@@ -26,5 +26,9 @@ if defined?(ActionMailer)
     def password_change(record, opts = {})
       devise_mail(record, :password_change, opts)
     end
+
+    def email_already_registered(record, opts = {})
+      devise_mail(record, :email_already_registered, opts)
+    end
   end
 end

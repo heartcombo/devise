@@ -290,14 +290,15 @@ class PasswordTest < Devise::IntegrationTest
     assert_equal({}.to_json, response.body)
   end
 
-  test 'reset password request with invalid e-mail in JSON format should return valid response' do
+  test 'reset password request with invalid e-mail in JSON format should return success response' do
     create_user
     post user_password_path(format: 'json'), params: { user: {email: "invalid.test@test.com"} }
-    assert_response :unprocessable_entity
-    assert_includes response.body, '{"errors":{'
+    # Now always returns success to prevent email enumeration
+    assert_response :success
+    assert_equal({}.to_json, response.body)
   end
 
-  test 'reset password request with invalid e-mail in JSON format should return empty and valid response in paranoid mode' do
+  test 'reset password request with invalid e-mail in JSON format also returns success in paranoid mode' do
     swap Devise, paranoid: true do
       create_user
       post user_password_path(format: 'json'), params: { user: {email: "invalid@test.com"} }

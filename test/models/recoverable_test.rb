@@ -119,10 +119,11 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_equal user, reset_password_user
   end
 
-  test 'should return a new record with errors if user was not found by e-mail' do
+  test 'should return a new record with no errors if user was not found by e-mail' do
     reset_password_user = User.send_reset_password_instructions(email: "invalid@example.com")
     assert_not reset_password_user.persisted?
-    assert_equal "not found", reset_password_user.errors[:email].join
+    # No longer exposes email not found to prevent enumeration
+    assert reset_password_user.errors.empty?
   end
 
   test 'should find a user to send instructions by authentication_keys' do
@@ -138,7 +139,8 @@ class RecoverableTest < ActiveSupport::TestCase
       user = create_user
       reset_password_user = User.send_reset_password_instructions(email: user.email)
       assert_not reset_password_user.persisted?
-      assert reset_password_user.errors.added?(:username, :blank)
+      # No longer shows specific errors to prevent enumeration
+      assert reset_password_user.errors.empty?
     end
   end
 

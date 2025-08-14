@@ -126,6 +126,10 @@ module Devise
           if recoverable.persisted?
             recoverable.send_reset_password_instructions
           else
+            # Perform similar work to mitigate timing attacks
+            # Generate a token even though we won't use it
+            Devise.friendly_token(20)
+            
             # Always return a new user with no errors to prevent email enumeration
             recoverable = new
             recoverable.errors.clear

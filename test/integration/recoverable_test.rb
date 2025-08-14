@@ -52,7 +52,7 @@ class PasswordTest < Devise::IntegrationTest
     end
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
+    assert_contain 'If your email address exists in our database'
   end
 
   test 'reset password with email should send an email from a custom mailer' do
@@ -68,7 +68,7 @@ class PasswordTest < Devise::IntegrationTest
     assert_match edit_user_password_path(reset_password_token: 'abcdef'), mail.body.encoded
   end
 
-  test 'reset password with email of different case should fail when email is NOT the list of case insensitive keys' do
+  test 'reset password with email of different case should show success message when email is NOT the list of case insensitive keys' do
     swap Devise, case_insensitive_keys: [] do
       create_user(email: 'Foo@Bar.com')
 
@@ -76,10 +76,9 @@ class PasswordTest < Devise::IntegrationTest
         fill_in 'email', with: 'foo@bar.com'
       end
 
-      assert_response :success
-      assert_current_url '/users/password'
-      assert_have_selector "input[type=email][value='foo@bar.com']"
-      assert_contain 'not found'
+      # Now always shows success to prevent email enumeration
+      assert_current_url '/users/sign_in'
+      assert_contain 'If your email address exists in our database'
     end
   end
 
@@ -91,10 +90,10 @@ class PasswordTest < Devise::IntegrationTest
     end
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
+    assert_contain 'If your email address exists in our database'
   end
 
-  test 'reset password with email with extra whitespace should fail when email is NOT the list of strip whitespace keys' do
+  test 'reset password with email with extra whitespace should show success message when email is NOT the list of strip whitespace keys' do
     swap Devise, strip_whitespace_keys: [] do
       create_user(email: 'foo@bar.com')
 
@@ -102,10 +101,9 @@ class PasswordTest < Devise::IntegrationTest
         fill_in 'email', with: ' foo@bar.com '
       end
 
-      assert_response :success
-      assert_current_url '/users/password'
-      assert_have_selector "input[type=email][value=' foo@bar.com ']"
-      assert_contain 'not found'
+      # Now always shows success to prevent email enumeration
+      assert_current_url '/users/sign_in'
+      assert_contain 'If your email address exists in our database'
     end
   end
 
@@ -124,18 +122,17 @@ class PasswordTest < Devise::IntegrationTest
     request_forgot_password
 
     assert_current_url '/users/sign_in'
-    assert_contain 'You will receive an email with instructions on how to reset your password in a few minutes.'
+    assert_contain 'If your email address exists in our database'
   end
 
-  test 'not authenticated user with invalid email should receive an error message' do
+  test 'not authenticated user with invalid email should still see success message' do
     request_forgot_password do
       fill_in 'email', with: 'invalid.test@test.com'
     end
 
-    assert_response :success
-    assert_current_url '/users/password'
-    assert_have_selector "input[type=email][value='invalid.test@test.com']"
-    assert_contain 'not found'
+    # Now always shows success to prevent email enumeration
+    assert_current_url '/users/sign_in'
+    assert_contain 'If your email address exists in our database'
   end
 
   test 'authenticated user should not be able to visit edit password page' do

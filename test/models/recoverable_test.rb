@@ -260,4 +260,28 @@ class RecoverableTest < ActiveSupport::TestCase
     assert_nil User.with_reset_password_token('random-token')
   end
 
+  test 'should not expose email existence by default' do
+    user = User.send_reset_password_instructions(email: 'nonexistent@example.com')
+    assert_not user.persisted?
+    assert user.errors.empty?
+  end
+
+  test 'should send reset instructions only for existing users' do
+    existing_user = create_user
+    
+    # Should send email for existing user
+    assert_email_sent do
+      user = User.send_reset_password_instructions(email: existing_user.email)
+      assert user.persisted?
+      assert user.errors.empty?
+    end
+    
+    # Should not send email for non-existing user
+    assert_email_not_sent do
+      user = User.send_reset_password_instructions(email: 'nonexistent@example.com')
+      assert_not user.persisted?
+      assert user.errors.empty?
+    end
+  end
+
 end

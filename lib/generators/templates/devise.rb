@@ -302,7 +302,7 @@ Devise.setup do |config|
   # apps is `200 OK` and `302 Found` respectively, but new apps are generated with
   # these new defaults that match Hotwire/Turbo behavior.
   # Note: These might become the new default in future versions of Devise.
-  config.responder.error_status = :unprocessable_entity
+  config.responder.error_status = <%= Rack::Utils::SYMBOL_TO_STATUS_CODE.key(422).inspect %>
   config.responder.redirect_status = :see_other
 
   # ==> Configuration for :registerable

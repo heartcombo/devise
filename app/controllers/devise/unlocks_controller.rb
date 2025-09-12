@@ -29,8 +29,8 @@ class Devise::UnlocksController < DeviseController
       set_flash_message! :notice, :unlocked
       respond_with_navigational(resource){ redirect_to after_unlock_path_for(resource) }
     else
-      # Use `error_status` when the default changes to `:unprocessable_entity`.
-      respond_with_navigational(resource.errors, status: (Devise.responder.error_status != :ok) ? Devise.responder.error_status : :unprocessable_entity ){ render :new }
+      # Use `error_status` when the default changes to `:unprocessable_content` (or `:unprocessable_entity`).
+      respond_with_navigational(resource.errors, status: (Devise.responder.error_status != :ok) ? Devise.responder.error_status : Rack::Utils::SYMBOL_TO_STATUS_CODE.key(422) ){ render :new }
     end
   end
 

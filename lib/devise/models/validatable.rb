@@ -14,6 +14,8 @@ module Devise
     #   * +email_regexp+: the regular expression used to validate e-mails;
     #   * +password_length+: a range expressing password length. Defaults to 6..128.
     #
+    # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
+    # at runtime.
     module Validatable
       # All validations used by this module.
       VALIDATIONS = [:validates_presence_of, :validates_uniqueness_of, :validates_format_of,
@@ -34,7 +36,7 @@ module Devise
 
           validates_presence_of     :password, if: :password_required?
           validates_confirmation_of :password, if: :password_required?
-          validates_length_of       :password, within: password_length, allow_blank: true
+          validates_length_of       :password, minimum: proc { password_length.min }, maximum: proc { password_length.max }, allow_blank: true
         end
       end
 

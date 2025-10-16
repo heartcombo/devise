@@ -4,7 +4,7 @@ module Webrat
     class HaveSelector
       def query
         Nokogiri::CSS.parse(@expected.to_s).map do |ast|
-          if ::Gem::Version.new(Nokogiri::VERSION) < ::Gem::Version.new('1.18')
+          if ::Gem::Version.new(Nokogiri::VERSION) < ::Gem::Version.new('1.17.2')
             ast.to_xpath('//', Nokogiri::CSS::XPathVisitor.new)
           else
             ast.to_xpath(Nokogiri::CSS::XPathVisitor.new)

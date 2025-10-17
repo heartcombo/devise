@@ -1,29 +1,29 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gemspec
 
-gem 'omniauth'
-gem 'omniauth-oauth2'
-gem 'rails', '~> 8.0.0'
-gem 'rdoc'
+gem "omniauth"
+gem "omniauth-oauth2"
+gem "rails", "~> 8.1.0.rc1"
+gem "rdoc"
 
-gem 'rails-controller-testing', github: 'rails/rails-controller-testing'
+gem "rails-controller-testing", github: "rails/rails-controller-testing"
 
-gem 'responders', '~> 3.1'
+gem "responders", "~> 3.1"
 
 group :test do
-  gem 'mocha', '~> 2.1', require: false
-  gem 'omniauth-facebook'
-  gem 'omniauth-openid'
-  gem 'rexml'
-  gem 'timecop'
-  gem 'webrat', '0.7.3', require: false
+  gem "mocha", "~> 2.1", require: false
+  gem "omniauth-facebook"
+  gem "omniauth-openid"
+  gem "rexml"
+  gem "timecop"
+  gem "webrat"
 end
 
 platforms :ruby do
-  gem 'sqlite3', '~> 2.1'
+  gem "sqlite3", "~> 2.1"
 end
 
 # platforms :jruby do

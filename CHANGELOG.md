@@ -2,7 +2,7 @@
 
 * breaking changes
   * Drop support to Ruby < 2.7
-  * Drop support to Rails < 6.0
+  * Drop support to Rails < 7.0
   * Remove `SecretKeyFinder` and use `app.secret_key_base` as the default secret key for `Devise.secret_key` if a custom `Devise.secret_key` is not provided.
 
     This is potentially a breaking change because Devise previously used the following order to find a secret key:
@@ -18,6 +18,7 @@
   * Removed deprecations warning output for `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` (@soartec-lab)
   * Add Rails 8 support.
     - Routes are lazy-loaded by default in test and development environments now so Devise loads them before `Devise.mappings` call.
+  * Add Ruby 3.4 support.
   * Password length validator is changed from
 
     ```

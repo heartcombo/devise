@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec path: ".."
 
-gem "rails", "~> 7.0.0"
+gem "rails", "~> 8.0.0"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
@@ -16,10 +16,10 @@ group :test do
   gem "omniauth-openid"
   gem "rexml"
   gem "timecop"
-  gem "webrat", "0.7.3", require: false
+  gem 'webrat'
   gem "mocha", "~> 2.1", require: false
 end
 
 platforms :ruby do
-  gem "sqlite3", "~> 1.4"
+  gem "sqlite3", "~> 2.1"
 end

@@ -24,10 +24,6 @@ jobs:
           - DEVISE_ORM=mongoid
         exclude:
           - gemfile: Gemfile
-            env: DEVISE_ORM=mongoid
-          - gemfile: gemfiles/Gemfile-rails-main
-            env: DEVISE_ORM=mongoid
-          - gemfile: Gemfile
             ruby: '3.1'
           - gemfile: Gemfile
             ruby: '3.0'
@@ -58,6 +54,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true # runs bundle install and caches installed gems automatically
-      - uses: supercharge/mongodb-github-action@1.9.0
+      - uses: supercharge/mongodb-github-action@1.11.0
         if: ${{ matrix.env == 'DEVISE_ORM=mongoid' }}
       - run: bundle exec rake

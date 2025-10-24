@@ -32,6 +32,7 @@
     ```
 
     so it's possible to override `password_length` at runtime. (@manojmj92)
+  * Reenable Mongoid test suite across all Rails 7+ versions, to ensure we continue supporting it. Changes to dirty tracking to support Mongoid 8.0+. [#5568](https://github.com/heartcombo/devise/pull/5568)
 * bug fixes
   * Make `Devise` work without `ActionMailer` when `Zeitwerk` autoloader is used.
 

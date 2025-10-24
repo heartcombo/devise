@@ -23,3 +23,7 @@ end
 platforms :ruby do
   gem "sqlite3", "~> 2.1"
 end
+
+group :mongoid do
+  gem "mongoid", "~> 8.1"
+end

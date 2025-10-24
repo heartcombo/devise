@@ -19,7 +19,6 @@ module Devise
   autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
-  autoload :SecretKeyFinder,    'devise/secret_key_finder'
 
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'
@@ -61,7 +60,7 @@ module Devise
   NO_INPUT = []
 
   # True values used to check params
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
+  TRUE_VALUES = [true, 1, '1', 'on', 'ON', 't', 'T', 'true', 'TRUE']
 
   # Secret key used by the key generator
   mattr_accessor :secret_key
@@ -275,8 +274,14 @@ module Devise
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.
-  mattr_reader :mappings
   @@mappings = {}
+  def self.mappings
+    # Starting from Rails 8.0, routes are lazy-loaded by default in test and development environments.
+    # However, Devise's mappings are built during the routes loading phase.
+    # To ensure it works correctly, we need to load the routes first before accessing @@mappings.
+    Rails.application.try(:reload_routes_unless_loaded)
+    @@mappings
+  end
 
   # OmniAuth configurations.
   mattr_reader :omniauth_configs
@@ -441,9 +446,9 @@ module Devise
   #  Devise.setup do |config|
   #    config.allow_unconfirmed_access_for = 2.days
   #
-  #    config.warden do |manager|
+  #    config.warden do |warden_config|
   #      # Configure warden to use other strategies, like oauth.
-  #      manager.oauth(:twitter)
+  #      warden_config.oauth(:twitter)
   #    end
   #  end
   def self.warden(&block)

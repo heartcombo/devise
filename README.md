@@ -9,16 +9,16 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 
 It's composed of 10 modules:
 
-* [Database Authenticatable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
-* [Omniauthable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
-* [Confirmable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
-* [Recoverable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Recoverable): resets the user password and sends reset instructions.
-* [Registerable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
-* [Rememberable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
-* [Trackable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
-* [Timeoutable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
-* [Validatable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
-* [Lockable](http://www.rubydoc.info/github/heartcombo/devise/main/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+* [Database Authenticatable](https://www.rubydoc.info/gems/devise/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+* [Omniauthable](https://www.rubydoc.info/gems/devise/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
+* [Confirmable](https://www.rubydoc.info/gems/devise/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+* [Recoverable](https://www.rubydoc.info/gems/devise/Devise/Models/Recoverable): resets the user password and sends reset instructions.
+* [Registerable](https://www.rubydoc.info/gems/devise/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
+* [Rememberable](https://www.rubydoc.info/gems/devise/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
+* [Trackable](https://www.rubydoc.info/gems/devise/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
+* [Timeoutable](https://www.rubydoc.info/gems/devise/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
+* [Validatable](https://www.rubydoc.info/gems/devise/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+* [Lockable](https://www.rubydoc.info/gems/devise/Devise/Models/Lockable): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
 
 ## Table of Contents
 
@@ -31,6 +31,7 @@ It's composed of 10 modules:
 	- [RDocs](#rdocs)
 	- [Example applications](#example-applications)
 	- [Extensions](#extensions)
+	- [Supported Ruby / Rails versions](#supported-ruby--rails-versions)
 	- [Contributing](#contributing)
 - [Starting with Rails?](#starting-with-rails)
 - [Getting started](#getting-started)
@@ -52,7 +53,6 @@ It's composed of 10 modules:
 	- [Rails API mode](#rails-api-mode)
 - [Additional information](#additional-information)
 	- [Warden](#warden)
-	- [Contributors](#contributors)
 - [License](#license)
 
 <!-- /TOC -->
@@ -73,7 +73,7 @@ If you discover a problem with Devise, we would like to know about it. However, 
 
 https://github.com/heartcombo/devise/wiki/Bug-reports
 
-If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to heartcombo@googlegroups.com.
+If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to heartcombo.oss@gmail.com.
 
 ### StackOverflow and Mailing List
 
@@ -81,9 +81,10 @@ If you have any questions, comments, or concerns, please use StackOverflow inste
 
 http://stackoverflow.com/questions/tagged/devise
 
-The deprecated mailing list can still be read on
+The deprecated mailing lists can still be read on:
 
 https://groups.google.com/group/plataformatec-devise
+https://groups.google.com/group/heartcombo
 
 ### RDocs
 
@@ -105,6 +106,13 @@ Our community has created a number of extensions that add functionality above an
 
 https://github.com/heartcombo/devise/wiki/Extensions
 
+### Supported Ruby / Rails versions
+
+We intend to maintain support for all Ruby / Rails versions that haven't reached end-of-life.
+
+For more information about specific versions please check [Ruby](https://www.ruby-lang.org/en/downloads/branches/)
+and [Rails](https://guides.rubyonrails.org/maintenance_policy.html) maintenance policies, and our test matrix.
+
 ### Contributing
 
 We hope that you will consider contributing to Devise. Please read this short overview for some information about how to get started:
@@ -114,7 +122,7 @@ https://github.com/heartcombo/devise/wiki/Contributing
 You will usually want to write tests for your changes.  To run the test suite, go into Devise's top-level directory and run `bundle install` and `bin/test`.
 Devise works with multiple Ruby and Rails versions, and ActiveRecord and Mongoid ORMs, which means you can run the test suite with some modifiers: `DEVISE_ORM` and `BUNDLE_GEMFILE`.
 
-### DEVISE_ORM
+#### DEVISE_ORM
 Since Devise supports both Mongoid and ActiveRecord, we rely on this variable to run specific code for each ORM.
 The default value of `DEVISE_ORM` is `active_record`. To run the tests for Mongoid, you can pass `mongoid`:
 ```
@@ -126,7 +134,7 @@ When running the tests for Mongoid, you will need to have a MongoDB server (vers
 
 Please note that the command output will show the variable value being used.
 
-### BUNDLE_GEMFILE
+#### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
 Inside the [gemfiles](https://github.com/heartcombo/devise/tree/main/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
 For example, if the tests broke using Ruby 3.0.0 and Rails 6.0, you can do the following:
@@ -408,7 +416,7 @@ If the customization at the views level is not enough, you can customize each co
       ...
     end
     ```
-    Use the `-c` flag to specify one or more controllers, for example: `rails generate devise:controllers users -c sessions`)
+    Use the `-c` flag to specify one or more controllers, for example: `rails generate devise:controllers users -c sessions`
 
 2. Tell the router to use this controller:
 
@@ -454,7 +462,7 @@ Devise also ships with default routes. If you need to customize them, you should
 devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
 ```
 
-Be sure to check `devise_for` [documentation](http://www.rubydoc.info/github/heartcombo/devise/main/ActionDispatch/Routing/Mapper%3Adevise_for) for details.
+Be sure to check `devise_for` [documentation](https://www.rubydoc.info/gems/devise/ActionDispatch/Routing/Mapper#devise_for-instance_method) for details.
 
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is create your routes normally and wrap them in a `devise_scope` block in the router:
 
@@ -705,7 +713,7 @@ end
 
 ### Password reset tokens and Rails logs
 
-If you enable the [Recoverable](http://rubydoc.info/github/heartcombo/devise/main/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
+If you enable the [Recoverable](https://www.rubydoc.info/gems/devise/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
 
 1. Action Mailer logs the entire contents of all outgoing emails to the DEBUG level. Password reset tokens delivered to users in email will be leaked.
 2. Active Job logs all arguments to every enqueued job at the INFO level. If you configure Devise to use `deliver_later` to send password reset emails, password reset tokens will be leaked.
@@ -757,14 +765,10 @@ Devise is based on Warden, which is a general Rack authentication framework crea
 
 https://github.com/wardencommunity/warden
 
-### Contributors
-
-We have a long list of valued contributors. Check them all at:
-
-https://github.com/heartcombo/devise/graphs/contributors
-
 ## License
 
-MIT License. Copyright 2020-2024 Rafael França, Leonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
+MIT License.
+Copyright 2020-2025 Rafael França, Carlos Antonio da Silva.
+Copyright 2009-2019 Plataformatec.
 
 The Devise logo is licensed under [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).

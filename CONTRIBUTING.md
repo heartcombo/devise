@@ -30,7 +30,7 @@ the project wiki, documentation and source code first, or try to ask your questi
 on [Stack Overflow](http://stackoverflow.com/questions/tagged/devise).
 
 **If you find a security bug, do not report it through GitHub. Please send an
-e-mail to [heartcombo@googlegroups.com](mailto:heartcombo@googlegroups.com)
+e-mail to [heartcombo.oss@gmail.com](mailto:heartcombo.oss@gmail.com)
 instead.**
 
 ## Sending Pull Requests

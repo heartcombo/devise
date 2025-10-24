@@ -3,7 +3,7 @@ module Webrat
   module Matchers
     class HaveSelector
       def query
-        Nokogiri::CSS.parse(@expected.to_s).map do |ast|
+        Nokogiri::CSS::Parser.new.parse(@expected.to_s).map do |ast|
           if ::Gem::Version.new(Nokogiri::VERSION) < ::Gem::Version.new('1.17.2')
             ast.to_xpath('//', Nokogiri::CSS::XPathVisitor.new)
           else

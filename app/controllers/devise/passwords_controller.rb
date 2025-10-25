@@ -80,4 +80,8 @@ class Devise::PasswordsController < DeviseController
     def translation_scope
       'devise.passwords'
     end
+
+    def resource_params
+      devise_parameter_sanitizer.sanitize(:reset_password)
+    end
 end

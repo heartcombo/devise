@@ -16,6 +16,11 @@ class <%= @scope_prefix %>UnlocksController < Devise::UnlocksController
   #   super
   # end
 
+  # GET /resource/unlock/confirm?unlock_token=abcdef
+  # def confirm
+  #   super
+  # end
+
   # protected
 
   # The path used after sending unlock password instructions

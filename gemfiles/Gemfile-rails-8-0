@@ -21,7 +21,7 @@ group :test do
 end
 
 platforms :ruby do
-  gem "sqlite3", "~> 2.1"
+  gem "sqlite3"
 end
 
 group :mongoid do

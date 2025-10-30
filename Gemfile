@@ -6,10 +6,10 @@ gemspec
 
 gem "omniauth"
 gem "omniauth-oauth2"
-gem "rails", "~> 8.1.0.rc1"
+gem "rails", "~> 8.1.0"
 gem "rdoc"
 
-gem "rails-controller-testing", github: "rails/rails-controller-testing"
+gem "rails-controller-testing"
 
 gem "responders", "~> 3.1"
 

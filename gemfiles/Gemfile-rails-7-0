@@ -2,12 +2,12 @@ source "https://rubygems.org"
 
 gemspec path: ".."
 
-gem "rails", "~> 7.0.0", github: "rails/rails", branch: "7-0-stable"
+gem "rails", "~> 7.0.0"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"
 
-gem "rails-controller-testing", github: "rails/rails-controller-testing"
+gem "rails-controller-testing"
 
 gem "responders", "~> 3.1"
 

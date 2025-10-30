@@ -192,6 +192,10 @@ module Devise
   mattr_accessor :unlock_in
   @@unlock_in = 1.hour
 
+  # Defines if an extra step is used to unlock an account
+  mattr_accessor :extra_step
+  @@extra_step = false
+
   # Defines which key will be used when recovering the password for an account
   mattr_accessor :reset_password_keys
   @@reset_password_keys = [:email]

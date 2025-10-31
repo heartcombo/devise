@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'ostruct'
 require 'warden/strategies/base'
-require 'devise/test_helpers'
+require 'devise/test/controller_helpers'
 
 class CustomStrategyController < ActionController::Base
   def new

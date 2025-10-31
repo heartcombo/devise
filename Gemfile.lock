@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/mongodb/mongoid.git
-  revision: eac49f0e584f55f6f4a0f1177d3dc0ed827f94ff
-  branch: master
+  revision: 1d3deaa9d028176988205f541ee588621030662a
+  branch: 9.0-stable
   specs:
-    mongoid (9.0.2)
+    mongoid (9.0.8)
       activemodel (>= 5.1, < 8.2, != 7.0.0)
       concurrent-ruby (>= 1.0.5, < 2.0)
       mongo (>= 2.18.0, < 3.0.0)

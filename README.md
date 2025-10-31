@@ -166,7 +166,7 @@ bin/test test/models/trackable_test.rb
 * Running a specific test given a line number or a regex:
 ```bash
 bin/test test/models/trackable_test.rb:16
-bin/test test/models/trackable_test.rb -n /update.*record/ 
+bin/test test/models/trackable_test.rb -n '/update.*record/'
 ```
 
 ## Starting with Rails?

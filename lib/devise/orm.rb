@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devise
   module Orm # :nodoc:
     def self.active_record?(model)

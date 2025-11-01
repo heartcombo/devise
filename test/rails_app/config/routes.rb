@@ -37,6 +37,11 @@ Rails.application.routes.draw do
     router_name: :main_app,
     module: :devise
 
+  devise_for :user_without_password,
+    class_name: 'UserWithoutPassword',
+    router_name: :main_app,
+    module: :devise
+
   as :user do
     get "/as/sign_in", to: "devise/sessions#new"
   end

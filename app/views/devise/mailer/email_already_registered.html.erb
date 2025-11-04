@@ -1,0 +1,11 @@
+<p>Hello <%= @resource.email %>!</p>
+
+<p>Someone tried to create an account using your email address, but an account already exists.</p>
+
+<p>If this was you, you can:</p>
+<ul>
+  <li><%= link_to "Sign in to your account", new_session_url(@resource, @scope_name) %></li>
+  <li><%= link_to "Reset your password", new_password_url(@resource, @scope_name) %> if you've forgotten it</li>
+</ul>
+
+<p>If this wasn't you, you can safely ignore this email. Your account is secure.</p>

@@ -12,7 +12,7 @@ module Devise
     # Validatable adds the following options to +devise+:
     #
     #   * +email_regexp+: the regular expression used to validate e-mails;
-    #   * +password_length+: a range expressing password length. Defaults to 6..128.
+    #   * +password_length+: a range expressing password length. Defaults to 6..72.
     #
     # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
     # at runtime.
@@ -20,6 +20,9 @@ module Devise
       # All validations used by this module.
       VALIDATIONS = [:validates_presence_of, :validates_uniqueness_of, :validates_format_of,
                      :validates_confirmation_of, :validates_length_of].freeze
+
+      # maximum allowed bytes for BCrypt (72 bytes)
+      MAX_PASSWORD_BCRYPT_LENGTH_ALLOWED = 72
 
       def self.required_fields(klass)
         []
@@ -37,6 +40,8 @@ module Devise
           validates_presence_of     :password, if: :password_required?
           validates_confirmation_of :password, if: :password_required?
           validates_length_of       :password, minimum: proc { password_length.min }, maximum: proc { password_length.max }, allow_blank: true
+
+          validate :max_password_length_for_bcrypt
         end
       end
 
@@ -60,6 +65,16 @@ module Devise
 
       def email_required?
         true
+      end
+
+      # Validates that the password does not exceed the maximum allowed bytes for BCrypt (72 bytes)
+      def max_password_length_for_bcrypt
+        if password.present?
+          password_already_too_long = self.errors.where(:password, :too_long).present?
+          if !password_already_too_long && password.bytesize > MAX_PASSWORD_BCRYPT_LENGTH_ALLOWED
+            self.errors.add(:password, :password_too_long_for_bcrypt)
+          end
+        end
       end
 
       module ClassMethods

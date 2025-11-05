@@ -117,7 +117,7 @@ module Devise
 
   # Range validation for password length
   mattr_accessor :password_length
-  @@password_length = 6..128
+  @@password_length = 6..72 # max 72 bytes for bcrypt
 
   # The time the user will be remembered without asking for credentials again.
   mattr_accessor :remember_for

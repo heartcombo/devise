@@ -141,9 +141,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
   end
 
   test 'error message with i18n' do
-    store_translations :en, devise: {
-      failure: { user: { timeout: 'Session expired!' } }
-    } do
+    store_translations en: { devise: { failure: { user: { timeout: 'Session expired!' } } } } do
       user = sign_in_as_user
 
       get expire_user_path(user)
@@ -154,9 +152,7 @@ class SessionTimeoutTest < Devise::IntegrationTest
   end
 
   test 'error message with i18n with double redirect' do
-    store_translations :en, devise: {
-      failure: { user: { timeout: 'Session expired!' } }
-    } do
+    store_translations en: { devise: { failure: { user: { timeout: 'Session expired!' } } } } do
       user = sign_in_as_user
 
       get expire_user_path(user)
@@ -164,6 +160,24 @@ class SessionTimeoutTest < Devise::IntegrationTest
       follow_redirect!
       follow_redirect!
       assert_contain 'Session expired!'
+    end
+  end
+
+  test 'shows the localized error message on session timeout' do
+    # Set up the error message in the default and in a different locale
+    store_translations(
+      en: { devise: { failure: { user: { timeout: 'Session expired!' } } } },
+      de: { devise: { failure: { timeout: 'Sitzung abgelaufen!' } } }
+    ) do
+      I18n.with_locale(:de) do
+        user = sign_in_as_user
+
+        get expire_user_path(user)
+        get users_path
+        follow_redirect!
+        follow_redirect!
+        assert_contain('Sitzung abgelaufen!')
+      end
     end
   end
 

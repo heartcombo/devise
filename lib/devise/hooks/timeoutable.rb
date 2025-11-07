@@ -25,7 +25,7 @@ Warden::Manager.after_set_user do |record, warden, options|
         record.timedout?(last_request_at) &&
         !proxy.remember_me_is_active?(record)
       Devise.sign_out_all_scopes ? proxy.sign_out : proxy.sign_out(scope)
-      throw :warden, scope: scope, message: :timeout
+      throw :warden, scope: scope, message: :timeout, locale: options[:locale]
     end
 
     unless env['devise.skip_trackable']

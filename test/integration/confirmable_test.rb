@@ -206,8 +206,8 @@ class ConfirmationTest < Devise::IntegrationTest
   end
 
   test 'error message is configurable by resource name' do
-    store_translations :en, devise: {
-      failure: { user: { unconfirmed: "Not confirmed user" } }
+    store_translations en: {
+      devise: { failure: { user: { unconfirmed: "Not confirmed user" } } }
     } do
       sign_in_as_user(confirm: false)
       assert_contain 'Not confirmed user'

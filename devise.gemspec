@@ -32,11 +32,4 @@ Gem::Specification.new do |s|
   s.add_dependency("bcrypt", "~> 3.0")
   s.add_dependency("railties", ">= 6.0.0")
   s.add_dependency("responders")
-
-  s.post_install_message = %q{
-[DEVISE] Please review the [changelog] and [upgrade guide] for more info on Hotwire / Turbo integration.
-
-  [changelog] https://github.com/heartcombo/devise/blob/main/CHANGELOG.md
-  [upgrade guide] https://github.com/heartcombo/devise/wiki/How-To:-Upgrade-to-Devise-4.9.0-%5BHotwire-Turbo-integration%5D
-  }
 end

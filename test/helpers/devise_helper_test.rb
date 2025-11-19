@@ -14,7 +14,7 @@ class DeviseHelperTest < Devise::IntegrationTest
       mongoid: model_labels
     }
 
-    I18n.available_locales
+    I18n.backend.eager_load!
     I18n.backend.store_translations(:en, translations)
   end
 

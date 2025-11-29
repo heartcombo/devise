@@ -1,0 +1,7 @@
+<h2>Confirm unlock</h2>
+
+<p>Click the link below to finish unlocking your account</p>
+
+<p><%= link_to "Unlock account", confirm_unlock_path(resource_name, unlock_token: @token) %><p>
+
+<%= render "devise/shared/links" %>

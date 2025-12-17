@@ -11,7 +11,7 @@ module Devise
         Create inherited Devise controllers in your app/controllers folder.
 
         Use -c to specify which controller you want to overwrite.
-        If you do no specify a controller, all controllers will be created.
+        If you do not specify a controller, all controllers will be created.
         For example:
 
           rails generate devise:controllers users -c=sessions

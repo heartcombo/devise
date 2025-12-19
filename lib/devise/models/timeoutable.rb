@@ -32,7 +32,8 @@ module Devise
       end
 
       def timeout_in
-        self.class.timeout_in
+        config_value = self.class.timeout_in
+        config_value.is_a?(Proc) ? config_value.call(self) : config_value
       end
 
       private

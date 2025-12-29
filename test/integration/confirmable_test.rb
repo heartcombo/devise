@@ -136,6 +136,15 @@ class ConfirmationTest < Devise::IntegrationTest
     end
   end
 
+  test 'not confirmed user redirect respects i18n locale set' do
+    swap Devise, allow_unconfirmed_access_for: 0.days do
+      sign_in_as_user(confirm: false, visit: new_user_session_path(locale: "pt-BR"))
+
+      assert_contain 'Você precisa confirmar seu email para continuar'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'not confirmed user should not see confirmation message if invalid credentials are given' do
     swap Devise, allow_unconfirmed_access_for: 0.days do
       sign_in_as_user(confirm: false) do

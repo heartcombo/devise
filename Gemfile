@@ -14,12 +14,14 @@ gem "rails-controller-testing"
 gem "responders", "~> 3.1"
 
 group :test do
+  gem "minitest", "< 6"
   gem "mocha", "~> 2.1", require: false
   gem "omniauth-facebook"
   gem "omniauth-openid"
   gem "rexml"
   gem "timecop"
   gem "webrat"
+  gem "ostruct"
 end
 
 platforms :ruby do

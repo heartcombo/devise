@@ -18,6 +18,8 @@ group :test do
   gem "timecop"
   gem "webrat", "0.7.3", require: false
   gem "mocha", "~> 2.1", require: false
+  gem "minitest", "< 6"
+  gem "ostruct"
 end
 
 platforms :ruby do

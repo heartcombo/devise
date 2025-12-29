@@ -24,7 +24,7 @@
 * enhancements
   * Add Rails 8 support.
     - Routes are lazy-loaded by default in test and development environments now so Devise loads them before `Devise.mappings` call. [#5728](https://github.com/heartcombo/devise/pull/5728)
-  * Add Ruby 3.4 support.
+  * Add Ruby 3.4 and 4.0 support.
   * Reenable Mongoid test suite across all Rails 7+ versions, to ensure we continue supporting it. Changes to dirty tracking to support Mongoid 8.0+. [#5568](https://github.com/heartcombo/devise/pull/5568)
   * Password length validator is changed from
 

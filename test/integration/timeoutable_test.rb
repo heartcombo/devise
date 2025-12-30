@@ -177,6 +177,41 @@ class SessionTimeoutTest < Devise::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'time out updates current and last sign in timestamps if remembered' do
+    user = sign_in_as_user remember_me: true
+    get expire_user_path(user)
+
+    new_time = 2.seconds.from_now
+    Time.stubs(:now).returns(new_time)
+
+    get users_path
+
+    user.reload
+    assert user.current_sign_in_at > user.last_sign_in_at
+  end
+
+  test 'time out updates current and last sign in remote ip if remembered' do
+    user = sign_in_as_user remember_me: true
+    get expire_user_path(user)
+
+    arbitrary_ip = '200.121.1.69'
+    get users_path, headers: { 'HTTP_X_FORWARDED_FOR' => arbitrary_ip }
+
+    user.reload
+    assert_equal arbitrary_ip, user.current_sign_in_ip
+    assert_equal '127.0.0.1', user.last_sign_in_ip
+  end
+
+  test 'time out updates sign in count if remembered' do
+    user = sign_in_as_user remember_me: true
+
+    get expire_user_path(user)
+    assert_equal 1, user.reload.sign_in_count
+
+    get users_path
+    assert_equal 2, user.reload.sign_in_count
+  end
+
   test 'does not crash when the last_request_at is a String' do
     user = sign_in_as_user
 

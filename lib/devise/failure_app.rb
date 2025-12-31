@@ -77,9 +77,9 @@ module Devise
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
       self.response = recall_app(warden_options[:recall]).call(request.env).tap { |response|
-        response[0] = Rack::Utils.status_code(
-          response[0].in?(300..399) ? Devise.responder.redirect_status : Devise.responder.error_status
-        )
+        status = response[0].in?(300..399) ? Devise.responder.redirect_status : Devise.responder.error_status
+        # Avoid warnings translating status to code using Rails if available (e.g. `unprocessable_entity` => `unprocessable_content`)
+        response[0] = ActionDispatch::Response.try(:rack_status_code, status) || Rack::Utils.status_code(status)
       }
     end
 

@@ -1,4 +1,4 @@
-### Unreleased
+### 5.0.0.rc - 2025-12-31
 
 * breaking changes
   * Drop support to Ruby < 2.7

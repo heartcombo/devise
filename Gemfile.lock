@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    devise (5.0.0.beta)
+    devise (5.0.0.rc)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 7.0)

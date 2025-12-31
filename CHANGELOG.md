@@ -8,6 +8,7 @@
   * Remove deprecated `scope` second argument from `sign_in(resource, :admin)` controller test helper, use `sign_in(resource, scope: :admin)` instead. [#5803](https://github.com/heartcombo/devise/pull/5803)
   * Remove deprecated `Devise::TestHelpers`, use `Devise::Test::ControllerHelpers` instead. [#5803](https://github.com/heartcombo/devise/pull/5803)
   * Remove deprecated `Devise::Models::Authenticatable::BLACKLIST_FOR_SERIALIZATION` [#5598](https://github.com/heartcombo/devise/pull/5598)
+  * Remove deprecated `Devise.activerecord51?` method.
   * Remove `SecretKeyFinder` and use `app.secret_key_base` as the default secret key for `Devise.secret_key` if a custom `Devise.secret_key` is not provided.
 
     This is potentially a breaking change because Devise previously used the following order to find a secret key:

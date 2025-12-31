@@ -27,7 +27,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   test "responder error_status based on rack version" do
     run_generator(["--orm=active_record"])
 
-    error_status = Rack::VERSION >= "3.1" ? :unprocessable_content : :unprocessable_entity
+    error_status = Rack::RELEASE >= "3.1" ? :unprocessable_content : :unprocessable_entity
 
     assert_file "config/initializers/devise.rb", /config\.responder\.error_status = #{error_status.inspect}/
   end

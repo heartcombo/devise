@@ -20,6 +20,9 @@
     [#5645](https://github.com/heartcombo/devise/pull/5645)
   * Change password instructions button label on devise view from `Send me reset password instructions` to `Send me password reset instructions` [#5515](https://github.com/heartcombo/devise/pull/5515)
   * Change `<br>` tags separating form elements to wrapping them in `<p>` tags [#5494](https://github.com/heartcombo/devise/pull/5494)
+  * Replace `[data-turbo-cache=false]` with `[data-turbo-temporary]` on `devise/shared/error_messages` partial. This has been [deprecated by Turbo since v7.3.0 (released on Mar 1, 2023)](https://github.com/hotwired/turbo/releases/tag/v7.3.0).
+
+    If you are using an older version of Turbo and the default devise template, you'll need to copy it over to your app and change that back to `[data-turbo-cache=false]`.
 
 * enhancements
   * Add Rails 8 support.

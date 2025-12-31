@@ -27,6 +27,9 @@
 * enhancements
   * Add Rails 8 support.
     - Routes are lazy-loaded by default in test and development environments now so Devise loads them before `Devise.mappings` call. [#5728](https://github.com/heartcombo/devise/pull/5728)
+  * New apps using Rack 3.1+ will be generated using `config.responder.error_status = :unprocessable_content`, since [`:unprocessable_entity` has been deprecated by Rack](https://github.com/rack/rack/pull/2137).
+
+    Latest versions of [Rails transparently convert `:unprocessable_entity` -> `:unprocessable_content`](https://github.com/rails/rails/pull/53383), and Devise will use that in the failure app to avoid Rack deprecation warnings for apps that are configured with `:unprocessable_entity`. They can also simply change their `error_status` to `:unprocessable_content` in latest Rack versions to avoid the warning.
   * Add Ruby 3.4 and 4.0 support.
   * Reenable Mongoid test suite across all Rails 7+ versions, to ensure we continue supporting it. Changes to dirty tracking to support Mongoid 8.0+. [#5568](https://github.com/heartcombo/devise/pull/5568)
   * Password length validator is changed from

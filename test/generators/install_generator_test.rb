@@ -23,4 +23,12 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     assert_no_file "config/initializers/devise.rb"
     assert_no_file "config/locales/devise.en.yml"
   end
+
+  test "responder error_status based on rack version" do
+    run_generator(["--orm=active_record"])
+
+    error_status = Rack::RELEASE >= "3.1" ? :unprocessable_content : :unprocessable_entity
+
+    assert_file "config/initializers/devise.rb", /config\.responder\.error_status = #{error_status.inspect}/
+  end
 end

@@ -54,6 +54,7 @@
   * Fix passing `format` option to `devise_for` [#5732](https://github.com/heartcombo/devise/pull/5732)
   * Use `ActiveRecord::SecurityUtils.secure_compare` in `Devise.secure_compare` to match two empty strings correctly. [#4829](https://github.com/heartcombo/devise/pull/4829)
   * Respond with `401 Unauthorized` for non-navigational requests to destroy the session when there is no authenticated resource. [#4878](https://github.com/heartcombo/devise/pull/4878)
+  * Fix incorrect grammar of invalid authentication message with capitalized attributes, e.g.: "Invalid Email or password" => "Invalid email or password". (originally introduced by [#4014](https://github.com/heartcombo/devise/pull/4014), released on v4.1.0) [#4834](https://github.com/heartcombo/devise/pull/4834)
 
 
 Please check [4-stable](https://github.com/heartcombo/devise/blob/4-stable/CHANGELOG.md)

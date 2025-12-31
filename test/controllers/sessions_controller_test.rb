@@ -87,22 +87,4 @@ class SessionsControllerTest < Devise::ControllerTestCase
     assert flash[:notice].blank?, "flash[:notice] should be blank, not #{flash[:notice].inspect}"
     assert_equal 204, @response.status
   end
-
-  if defined?(ActiveRecord) && ActiveRecord::Base.respond_to?(:mass_assignment_sanitizer)
-    test "#new doesn't raise mass-assignment exception even if sign-in key is attr_protected" do
-      request.env["devise.mapping"] = Devise.mappings[:user]
-
-      ActiveRecord::Base.mass_assignment_sanitizer = :strict
-      User.class_eval { attr_protected :email }
-
-      begin
-        assert_nothing_raised do
-          get :new, user: { email: "allez viens!" }
-        end
-      ensure
-        ActiveRecord::Base.mass_assignment_sanitizer = :logger
-        User.class_eval { attr_accessible :email }
-      end
-    end
-  end
 end

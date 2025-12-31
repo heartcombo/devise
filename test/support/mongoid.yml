@@ -1,5 +1,5 @@
 test:
-  <%= Mongoid::VERSION.to_i > 4 ? 'clients' : 'sessions' %>:
+  clients:
     default:
       database: devise-test-suite
       hosts:

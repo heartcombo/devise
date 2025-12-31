@@ -64,17 +64,7 @@ module Devise
       #
       # sign_in users(:alice)
       # sign_in users(:alice), scope: :admin
-      def sign_in(resource, deprecated = nil, scope: nil)
-        if deprecated.present?
-          scope = resource
-          resource = deprecated
-
-          Devise.deprecator.warn <<-DEPRECATION.strip_heredoc
-            [Devise] sign_in(:#{scope}, resource) on controller tests is deprecated and will be removed from Devise.
-            Please use sign_in(resource, scope: :#{scope}) instead.
-          DEPRECATION
-        end
-
+      def sign_in(resource, scope: nil)
         scope ||= Devise::Mapping.find_scope!(resource)
 
         warden.instance_variable_get(:@users).delete(scope)

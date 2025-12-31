@@ -34,10 +34,6 @@ class DeviseHelperTest < Devise::IntegrationTest
   end
 
   test 'test errors.messages.not_saved with multiple errors from i18n' do
-    # Dirty tracking behavior prevents email validations from being applied:
-    #    https://github.com/mongoid/mongoid/issues/756
-    (pending "Fails on Mongoid < 2.1"; break) if defined?(Mongoid) && Mongoid::VERSION.to_f < 2.1
-
     get new_user_registration_path
 
     fill_in 'email', with: 'invalid_email'

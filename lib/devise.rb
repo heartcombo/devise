@@ -16,7 +16,6 @@ module Devise
   autoload :Orm,                'devise/orm'
   autoload :ParameterFilter,    'devise/parameter_filter'
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
-  autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
 
@@ -446,9 +445,9 @@ module Devise
   #  Devise.setup do |config|
   #    config.allow_unconfirmed_access_for = 2.days
   #
-  #    config.warden do |manager|
+  #    config.warden do |warden_config|
   #      # Configure warden to use other strategies, like oauth.
-  #      manager.oauth(:twitter)
+  #      warden_config.oauth(:twitter)
   #    end
   #  end
   def self.warden(&block)

@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.licenses    = ["MIT"]
   s.summary     = "Flexible authentication solution for Rails with Warden"
-  s.email       = "heartcombo@googlegroups.com"
+  s.email       = "heartcombo.oss@gmail.com"
   s.homepage    = "https://github.com/heartcombo/devise"
   s.description = "Flexible authentication solution for Rails with Warden"
   s.authors     = ['José Valim', 'Carlos Antônio']
@@ -32,11 +32,4 @@ Gem::Specification.new do |s|
   s.add_dependency("bcrypt", "~> 3.0")
   s.add_dependency("railties", ">= 6.0.0")
   s.add_dependency("responders")
-
-  s.post_install_message = %q{
-[DEVISE] Please review the [changelog] and [upgrade guide] for more info on Hotwire / Turbo integration.
-
-  [changelog] https://github.com/heartcombo/devise/blob/main/CHANGELOG.md
-  [upgrade guide] https://github.com/heartcombo/devise/wiki/How-To:-Upgrade-to-Devise-4.9.0-%5BHotwire-Turbo-integration%5D
-  }
 end

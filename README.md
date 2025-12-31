@@ -31,6 +31,7 @@ It's composed of 10 modules:
 	- [RDocs](#rdocs)
 	- [Example applications](#example-applications)
 	- [Extensions](#extensions)
+	- [Supported Ruby / Rails versions](#supported-ruby--rails-versions)
 	- [Contributing](#contributing)
 - [Starting with Rails?](#starting-with-rails)
 - [Getting started](#getting-started)
@@ -52,7 +53,6 @@ It's composed of 10 modules:
 	- [Rails API mode](#rails-api-mode)
 - [Additional information](#additional-information)
 	- [Warden](#warden)
-	- [Contributors](#contributors)
 - [License](#license)
 
 <!-- /TOC -->
@@ -73,7 +73,7 @@ If you discover a problem with Devise, we would like to know about it. However, 
 
 https://github.com/heartcombo/devise/wiki/Bug-reports
 
-If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to heartcombo@googlegroups.com.
+If you have discovered a security related bug, please do *NOT* use the GitHub issue tracker. Send an email to heartcombo.oss@gmail.com.
 
 ### StackOverflow and Mailing List
 
@@ -81,9 +81,10 @@ If you have any questions, comments, or concerns, please use StackOverflow inste
 
 http://stackoverflow.com/questions/tagged/devise
 
-The deprecated mailing list can still be read on
+The deprecated mailing lists can still be read on:
 
 https://groups.google.com/group/plataformatec-devise
+https://groups.google.com/group/heartcombo
 
 ### RDocs
 
@@ -105,6 +106,13 @@ Our community has created a number of extensions that add functionality above an
 
 https://github.com/heartcombo/devise/wiki/Extensions
 
+### Supported Ruby / Rails versions
+
+We intend to maintain support for all Ruby / Rails versions that haven't reached end-of-life.
+
+For more information about specific versions please check [Ruby](https://www.ruby-lang.org/en/downloads/branches/)
+and [Rails](https://guides.rubyonrails.org/maintenance_policy.html) maintenance policies, and our test matrix.
+
 ### Contributing
 
 We hope that you will consider contributing to Devise. Please read this short overview for some information about how to get started:
@@ -114,7 +122,7 @@ https://github.com/heartcombo/devise/wiki/Contributing
 You will usually want to write tests for your changes.  To run the test suite, go into Devise's top-level directory and run `bundle install` and `bin/test`.
 Devise works with multiple Ruby and Rails versions, and ActiveRecord and Mongoid ORMs, which means you can run the test suite with some modifiers: `DEVISE_ORM` and `BUNDLE_GEMFILE`.
 
-### DEVISE_ORM
+#### DEVISE_ORM
 Since Devise supports both Mongoid and ActiveRecord, we rely on this variable to run specific code for each ORM.
 The default value of `DEVISE_ORM` is `active_record`. To run the tests for Mongoid, you can pass `mongoid`:
 ```
@@ -126,7 +134,7 @@ When running the tests for Mongoid, you will need to have a MongoDB server (vers
 
 Please note that the command output will show the variable value being used.
 
-### BUNDLE_GEMFILE
+#### BUNDLE_GEMFILE
 We can use this variable to tell bundler what Gemfile it should use (instead of the one in the current directory).
 Inside the [gemfiles](https://github.com/heartcombo/devise/tree/main/gemfiles) directory, we have one for each version of Rails we support. When you send us a pull request, it may happen that the test suite breaks using some of them. If that's the case, you can simulate the same environment using the `BUNDLE_GEMFILE` variable.
 For example, if the tests broke using Ruby 3.0.0 and Rails 6.0, you can do the following:
@@ -155,9 +163,10 @@ bin/test
 bin/test test/models/trackable_test.rb
 ```
 
-* Running a specific test given a regex:
+* Running a specific test given a line number or a regex:
 ```bash
 bin/test test/models/trackable_test.rb:16
+bin/test test/models/trackable_test.rb -n '/update.*record/'
 ```
 
 ## Starting with Rails?
@@ -758,14 +767,10 @@ Devise is based on Warden, which is a general Rack authentication framework crea
 
 https://github.com/wardencommunity/warden
 
-### Contributors
-
-We have a long list of valued contributors. Check them all at:
-
-https://github.com/heartcombo/devise/graphs/contributors
-
 ## License
 
-MIT License. Copyright 2020-2024 Rafael França, Leonardo Tegon, Carlos Antônio da Silva. Copyright 2009-2019 Plataformatec.
+MIT License.
+Copyright 2020-2025 Rafael França, Carlos Antonio da Silva.
+Copyright 2009-2019 Plataformatec.
 
 The Devise logo is licensed under [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).

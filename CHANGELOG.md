@@ -40,13 +40,14 @@
 
     so it's possible to override `password_length` at runtime. [#5734](https://github.com/heartcombo/devise/pull/5734)
 
+  * Added `Devise.mailer_delivery_method` configuration to enable deferring email delivery with `:deliver_later` [#5610](https://github.com/heartcombo/devise/pull/5610) [@seanpdoyle](https://github.com/seanpdoyle)
+
 * bug fixes
   * Make `Devise` work without `ActionMailer` when `Zeitwerk` autoloader is used. [#5731](https://github.com/heartcombo/devise/pull/5731)
   * Handle defaults `:from` and `:reply_to` as procs correctly by delegating to Rails [#5595](https://github.com/heartcombo/devise/pull/5595)
   * Use `OmniAuth.config.allowed_request_methods` as routing verbs for the auth path [#5508](https://github.com/heartcombo/devise/pull/5508)
   * Handle `on` and `ON` as true values to check params [#5514](https://github.com/heartcombo/devise/pull/5514)
   * Fix passing `format` option to `devise_for` [#5732](https://github.com/heartcombo/devise/pull/5732)
-
 
 Please check [4-stable](https://github.com/heartcombo/devise/blob/4-stable/CHANGELOG.md)
 for previous changes.

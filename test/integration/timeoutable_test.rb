@@ -191,7 +191,9 @@ class SessionTimeoutTest < Devise::IntegrationTest
   test 'does not crash when the last_request_at is a String' do
     user = sign_in_as_user
 
-    get edit_form_user_path(user, last_request_at: Time.now.utc.to_s)
-    get users_path
+    assert_nothing_raised do
+      get edit_form_user_path(user, last_request_at: Time.now.utc.to_s)
+      get users_path
+    end
   end
 end

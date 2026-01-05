@@ -112,7 +112,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   end
 
   test "defined Warden after_authentication callback should not be called when sign_in is called" do
-    begin
+    assert_nothing_raised do
       Warden::Manager.after_authentication do |user, auth, opts|
         flunk "callback was called while it should not"
       end
@@ -126,7 +126,7 @@ class TestControllerHelpersTest < Devise::ControllerTestCase
   end
 
   test "defined Warden before_logout callback should not be called when sign_out is called" do
-    begin
+    assert_nothing_raised do
       Warden::Manager.before_logout do |user, auth, opts|
         flunk "callback was called while it should not"
       end

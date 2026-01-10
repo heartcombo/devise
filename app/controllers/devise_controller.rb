@@ -126,7 +126,7 @@ MESSAGE
     end
 
     if authenticated && resource = warden.user(resource_name)
-      set_flash_message(:alert, 'already_authenticated', scope: 'devise.failure')
+      set_flash_message!(:alert, 'already_authenticated', scope: 'devise.failure')
       redirect_to after_sign_in_path_for(resource)
     end
   end
@@ -143,7 +143,7 @@ MESSAGE
     end
 
     if notice
-      set_flash_message! :notice, notice
+      set_flash_message!(:notice, notice)
       true
     end
   end

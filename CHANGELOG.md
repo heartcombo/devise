@@ -1,3 +1,7 @@
+### 5.0.0 - 2026-01-23
+
+no changes
+
 ### 5.0.0.rc - 2025-12-31
 
 * breaking changes

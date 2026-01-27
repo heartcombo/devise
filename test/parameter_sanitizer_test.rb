@@ -58,6 +58,13 @@ class ParameterSanitizerTest < ActiveSupport::TestCase
     assert_equal({ 'email' => 'jose' }, sanitized)
   end
 
+  test 'permits the default parameters for password reset' do
+    sanitizer = sanitizer('user' => { 'email' => 'jose', 'password' => 'myPassword1234', 'role' => 'invalid' })
+    sanitized = sanitizer.sanitize(:reset_password)
+
+    assert_equal({ 'email' => 'jose', 'password' => 'myPassword1234' }, sanitized)
+  end
+
   test 'permits news parameters for an existing action' do
     sanitizer = sanitizer('user' => { 'username' => 'jose' })
     sanitizer.permit(:sign_in, keys: [:username])

@@ -1,7 +1,7 @@
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= render "devise/shared/error_messages", resource: resource if params[:action] == "update" %>
 
   <div class="field">
     <p><%= f.label :email %></p>
@@ -37,6 +37,22 @@
 
 <h3>Cancel my account</h3>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+<% if resource.class.require_password_to_destroy %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { name: 'require_password_to_destroy', method: :delete }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource if params[:action] == "destroy" %>
+
+    <div class="field destroy-password">
+      <%= f.label :current_password, for: :require_password_to_destroy_current_password %>
+      <i>(we need your current password to delete your account)</i><br />
+      <%= f.password_field :current_password, id: :require_password_to_destroy_current_password, autocomplete: "off" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Cancel my account" %>
+    </div>
+  <% end %>
+<% else %>
+  <div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+<% end %>
 
 <%= link_to "Back", :back %>

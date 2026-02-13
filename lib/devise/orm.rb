@@ -19,7 +19,7 @@ module Devise
     module ActiveRecordQueryMethods
       def devise_find_by_id(id)
         id = id.first if id.is_a?(Array)
-        where(id: id).first
+        find_by(id: id)
       end
 
       def devise_find_by_id!(id)
@@ -28,7 +28,7 @@ module Devise
       end
 
       def devise_find_first(conditions)
-        where(conditions).first
+        find_by(conditions)
       end
     end
 

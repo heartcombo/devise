@@ -1,5 +1,8 @@
 ### Unreleased
 
+* enhancements
+  * Remove `orm_adapter` dependency. Devise now implements its own ORM-specific finders in `Devise::Orm`. [#5823](https://github.com/heartcombo/devise/pull/5823)
+
 * bug fixes
   * Fix translation issue with German `E-Mail` on invalid authentication messages caused by previous fix for incorrect grammar [#5822](https://github.com/heartcombo/devise/pull/5822)
 

@@ -227,7 +227,7 @@ module Devise
         end
 
         def serialize_from_session(key, salt)
-          record = to_adapter.get(key)
+          record = devise_find(key)
           record if record && record.authenticatable_salt == salt
         end
 
@@ -265,7 +265,7 @@ module Devise
         end
 
         def find_first_by_auth_conditions(tainted_conditions, opts = {})
-          to_adapter.find_first(devise_parameter_filter.filter(tainted_conditions).merge(opts))
+          devise_find_by(devise_parameter_filter.filter(tainted_conditions).merge(opts))
         end
 
         # Find or initialize a record setting an error if it can't be found.

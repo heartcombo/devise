@@ -8,15 +8,15 @@ module Devise
 
     def self.included(model)
       if Devise::Orm.active_record?(model)
-        model.include DirtyTrackingActiveRecordMethods
-        model.extend ActiveRecordQueryMethods
+        model.include ActiveRecordDirtyTracking
+        model.extend ActiveRecordFinders
       else
-        model.include DirtyTrackingMongoidMethods
-        model.extend MongoidQueryMethods
+        model.include MongoidDirtyTracking
+        model.extend MongoidFinders
       end
     end
 
-    module ActiveRecordQueryMethods
+    module ActiveRecordFinders
       def devise_find_by_id(id)
         id = id.first if id.is_a?(Array)
         find_by(id: id)
@@ -32,7 +32,7 @@ module Devise
       end
     end
 
-    module MongoidQueryMethods
+    module MongoidFinders
       def devise_find_by_id(id)
         id = id.first if id.is_a?(Array)
         where(id: id).first
@@ -48,7 +48,7 @@ module Devise
       end
     end
 
-    module DirtyTrackingActiveRecordMethods
+    module ActiveRecordDirtyTracking
       def devise_email_before_last_save
         email_before_last_save
       end
@@ -74,7 +74,7 @@ module Devise
       end
     end
 
-    module DirtyTrackingMongoidMethods
+    module MongoidDirtyTracking
       def devise_email_before_last_save
         respond_to?(:email_previously_was) ? email_previously_was : email_was
       end

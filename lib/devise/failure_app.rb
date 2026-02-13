@@ -112,7 +112,7 @@ module Devise
         options[:default] = [message]
         auth_keys = scope_class.authentication_keys
         human_keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key|
-          scope_class.human_attribute_name(key).downcase
+          scope_class.human_attribute_name(key).downcase_first
         }
         options[:authentication_keys] = human_keys.join(I18n.t(:"support.array.words_connector"))
         options = i18n_options(options)

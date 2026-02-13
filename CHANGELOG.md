@@ -1,3 +1,8 @@
+### Unreleased
+
+* bug fixes
+  * Fix translation issue with German `E-Mail` on invalid authentication messages caused by previous fix for incorrect grammar [#5822](https://github.com/heartcombo/devise/pull/5822)
+
 ### 5.0.0 - 2026-01-23
 
 no changes

@@ -19,7 +19,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert warden.authenticated?(:admin)
     assert_current_url "/admin_area/home"
 
-    admin = Admin.to_adapter.find_first(order: [:id, :desc])
+    admin = Admin.order(id: :desc).first
     assert_equal 'new_user@test.com', admin.email
   end
 
@@ -68,7 +68,7 @@ class RegistrationTest < Devise::IntegrationTest
 
     assert_not warden.authenticated?(:user)
 
-    user = User.to_adapter.find_first(order: [:id, :desc])
+    user = User.order(id: :desc).first
     assert_equal 'new_user@test.com', user.email
     assert_not user.confirmed?
   end
@@ -110,7 +110,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain "Email is invalid"
     assert_contain %r{Password confirmation doesn['’]t match Password}
     assert_contain "2 errors prohibited"
-    assert_nil User.to_adapter.find_first
+    assert_nil User.first
 
     assert_not warden.authenticated?(:user)
   end
@@ -154,7 +154,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_current_url '/'
     assert_contain 'Your account has been updated successfully.'
 
-    assert_equal "user.new@example.com", User.to_adapter.find_first.email
+    assert_equal "user.new@example.com", User.first.email
   end
 
   test 'a signed in user should still be able to use the website after changing their password' do
@@ -216,7 +216,7 @@ class RegistrationTest < Devise::IntegrationTest
       assert_contain 'Your account has been updated successfully.'
 
       assert warden.authenticated?(:user)
-      assert_equal "user.new@example.com", User.to_adapter.find_first.email
+      assert_equal "user.new@example.com", User.first.email
     end
   end
 
@@ -232,7 +232,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_contain 'user@test.com'
     assert_have_selector 'form input[value="user.new@example.com"]'
 
-    assert_equal "user@test.com", User.to_adapter.find_first.email
+    assert_equal "user@test.com", User.first.email
   end
 
   test 'a signed in user should be able to edit their password' do
@@ -247,7 +247,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_current_url '/'
     assert_contain 'Your account has been updated successfully.'
 
-    assert User.to_adapter.find_first.valid_password?('pass1234')
+    assert User.first.valid_password?('pass1234')
   end
 
   test 'a signed in user should not be able to edit their password with invalid confirmation' do
@@ -260,7 +260,7 @@ class RegistrationTest < Devise::IntegrationTest
     click_button 'Update'
 
     assert_contain %r{Password confirmation doesn['’]t match Password}
-    assert_not User.to_adapter.find_first.valid_password?('pas123')
+    assert_not User.first.valid_password?('pas123')
   end
 
   test 'a signed in user should see a warning about minimum password length' do
@@ -276,7 +276,7 @@ class RegistrationTest < Devise::IntegrationTest
     click_button "Cancel my account"
     assert_contain "Bye! Your account has been successfully cancelled. We hope to see you again soon."
 
-    assert_empty User.to_adapter.find_all
+    assert_empty User.all
   end
 
   test 'a user should be able to cancel sign up by deleting data in the session' do
@@ -303,7 +303,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_response :success
     assert_includes response.body, '{"admin":{'
 
-    admin = Admin.to_adapter.find_first(order: [:id, :desc])
+    admin = Admin.order(id: :desc).first
     assert_equal 'new_user@test.com', admin.email
   end
 
@@ -312,7 +312,7 @@ class RegistrationTest < Devise::IntegrationTest
     assert_response :success
     assert_includes response.body, '{"user":{'
 
-    user = User.to_adapter.find_first(order: [:id, :desc])
+    user = User.order(id: :desc).first
     assert_equal 'new_user@test.com', user.email
   end
 
@@ -340,7 +340,7 @@ class RegistrationTest < Devise::IntegrationTest
     sign_in_as_user
     delete user_registration_path(format: 'json')
     assert_response :success
-    assert_equal 0, User.to_adapter.find_all.size
+    assert_equal 0, User.all.size
   end
 end
 
@@ -355,7 +355,7 @@ class ReconfirmableRegistrationTest < Devise::IntegrationTest
 
     assert_current_url '/admin_area/home'
     assert_contain 'but we need to verify your new email address'
-    assert_equal 'admin.new@example.com', Admin.to_adapter.find_first.unconfirmed_email
+    assert_equal 'admin.new@example.com', Admin.first.unconfirmed_email
 
     get edit_admin_registration_path
     assert_contain 'Currently waiting confirmation for: admin.new@example.com'
@@ -373,7 +373,7 @@ class ReconfirmableRegistrationTest < Devise::IntegrationTest
     assert_current_url '/admin_area/home'
     assert_contain 'Your account has been updated successfully.'
 
-    assert Admin.to_adapter.find_first.valid_password?('pas123')
+    assert Admin.first.valid_password?('pas123')
   end
 
   test 'a signed in admin should not see a reconfirmation message if they did not change their email, despite having an unconfirmed email' do
@@ -393,7 +393,7 @@ class ReconfirmableRegistrationTest < Devise::IntegrationTest
     assert_current_url '/admin_area/home'
     assert_contain 'Your account has been updated successfully.'
 
-    assert_equal "admin.new@example.com", Admin.to_adapter.find_first.unconfirmed_email
-    assert Admin.to_adapter.find_first.valid_password?('pas123')
+    assert_equal "admin.new@example.com", Admin.first.unconfirmed_email
+    assert Admin.first.valid_password?('pas123')
   end
 end

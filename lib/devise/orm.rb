@@ -9,8 +9,42 @@ module Devise
     def self.included(model)
       if Devise::Orm.active_record?(model)
         model.include DirtyTrackingActiveRecordMethods
+        model.extend ActiveRecordQueryMethods
       else
         model.include DirtyTrackingMongoidMethods
+        model.extend MongoidQueryMethods
+      end
+    end
+
+    module ActiveRecordQueryMethods
+      def devise_find_by_id(id)
+        id = id.first if id.is_a?(Array)
+        where(id: id).first
+      end
+
+      def devise_find_by_id!(id)
+        id = id.first if id.is_a?(Array)
+        find(id)
+      end
+
+      def devise_find_first(conditions)
+        where(conditions).first
+      end
+    end
+
+    module MongoidQueryMethods
+      def devise_find_by_id(id)
+        id = id.first if id.is_a?(Array)
+        where(id: id).first
+      end
+
+      def devise_find_by_id!(id)
+        id = id.first if id.is_a?(Array)
+        find(id)
+      end
+
+      def devise_find_first(conditions)
+        where(conditions).first
       end
     end
 

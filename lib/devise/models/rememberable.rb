@@ -139,7 +139,7 @@ module Devise
         def serialize_from_cookie(*args)
           id, token, generated_at = *args
 
-          record = to_adapter.get(id)
+          record = devise_find_by_id(id)
           record if record && record.remember_me?(token, generated_at)
         end
 
@@ -147,7 +147,7 @@ module Devise
         def remember_token #:nodoc:
           loop do
             token = Devise.friendly_token
-            break token unless to_adapter.find_first({ remember_token: token })
+            break token unless devise_find_first(remember_token: token)
           end
         end
 

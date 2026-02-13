@@ -13,7 +13,6 @@ PATH
   specs:
     devise (5.0.1)
       bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
       railties (>= 7.0)
       responders
       warden (~> 1.2.3)
@@ -187,7 +186,6 @@ GEM
       rack-openid (~> 1.4)
       ruby-openid (~> 2.1, >= 2.1.8)
       version_gem (~> 1.1, >= 1.1.8)
-    orm_adapter (0.5.0)
     ostruct (0.6.3)
     pp (0.6.3)
       prettyprint

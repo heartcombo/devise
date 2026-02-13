@@ -8,7 +8,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def sign_in_facebook
-    user = User.devise_find_first(email: 'user@test.com')
+    user = User.devise_find_by(email: 'user@test.com')
     user.remember_me = true
     sign_in user
     render body: ""

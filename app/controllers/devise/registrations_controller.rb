@@ -44,7 +44,7 @@ class Devise::RegistrationsController < DeviseController
   # We need to use a copy of the resource because we don't want to change
   # the current user in place.
   def update
-    self.resource = resource_class.devise_find_by_id!(send(:"current_#{resource_name}").to_key)
+    self.resource = resource_class.devise_find!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
     resource_updated = update_resource(resource, account_update_params)

@@ -151,7 +151,7 @@ BUNDLE_GEMFILE=gemfiles/Gemfile-rails-8-0 DEVISE_ORM=mongoid bin/test
 ```
 
 ### Running tests
-Devise uses [Mini Test](https://github.com/seattlerb/minitest) as test framework.
+Devise uses [minitest](https://github.com/seattlerb/minitest) as test framework.
 
 * Running all tests:
 ```bash

@@ -112,7 +112,9 @@ module Devise
         options[:default] = [message]
         auth_keys = scope_class.authentication_keys
         human_keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key|
-          scope_class.human_attribute_name(key).downcase_first
+          # TODO: Remove the fallback and just use `downcase_first` once we drop support for Rails 7.0.
+          human_key = scope_class.human_attribute_name(key)
+          human_key.respond_to?(:downcase_first) ? human_key.downcase_first : human_key[0].downcase + human_key[1..]
         }
         options[:authentication_keys] = human_keys.join(I18n.t(:"support.array.words_connector"))
         options = i18n_options(options)

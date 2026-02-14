@@ -92,7 +92,7 @@ module Devise
     end
 
     def routes
-      @routes ||= ROUTES.values_at(*self.modules).compact.uniq
+      @routes ||= ROUTES.values_at(*self.modules).compact.flatten.uniq
     end
 
     def authenticatable?

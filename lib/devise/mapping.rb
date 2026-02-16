@@ -36,7 +36,8 @@ module Devise
       obj = obj.devise_scope if obj.respond_to?(:devise_scope)
       case obj
       when String, Symbol
-        return obj.to_sym
+        obj = obj.to_sym
+        return obj if Devise.mappings.key?(obj)
       when Class
         Devise.mappings.each_value { |m| return m.name if obj <= m.to }
       else

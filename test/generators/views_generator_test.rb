@@ -109,8 +109,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
 
   def assert_error_messages(scope = nil)
     scope = "devise" if scope.nil?
-    link = /<%= render \"#{scope}\/shared\/error_messages\", resource: resource %>/
-
+    link = /<%= render \"#{scope}\/shared\/error_messages\", resource: resource( if params\[:action\] == "(update|destroy)")? %>/
     assert_file "app/views/#{scope}/passwords/edit.html.erb", link
     assert_file "app/views/#{scope}/passwords/new.html.erb", link
     assert_file "app/views/#{scope}/confirmations/new.html.erb", link

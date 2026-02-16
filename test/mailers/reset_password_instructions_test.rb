@@ -80,6 +80,16 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
     assert_match user.email, mail.body.encoded
   end
 
+  test 'headers should specify when the link expires' do
+    swap Devise, reset_password_within: 2.days do
+      expires = mail.header_fields.get_field("Expires")
+      assert_present expires
+      sent_at = DateTime.parse(mail.header_fields.get_field("Date").value)
+      validity = DateTime.parse(expires.value) - sent_at
+      assert_equal 2, validity
+    end
+  end
+
   test 'body should have link to confirm the account' do
     host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 

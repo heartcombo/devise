@@ -69,7 +69,7 @@ class Devise::PasswordsController < DeviseController
       end
     end
 
-    # Check if the user should be signed in automatically after resetting the password
+    # Check if the user should be signed in automatically after resetting the password.
     def sign_in_after_reset_password?
       resource_class.sign_in_after_reset_password
     end

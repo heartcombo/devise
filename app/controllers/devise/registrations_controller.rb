@@ -82,12 +82,6 @@ class Devise::RegistrationsController < DeviseController
 
   protected
 
-  def update_needs_confirmation?(resource, previous)
-    resource.respond_to?(:pending_reconfirmation?) &&
-      resource.pending_reconfirmation? &&
-      previous != resource.unconfirmed_email
-  end
-
   # By default we want to require a password checks on update.
   # You can overwrite this method in your own RegistrationsController.
   def update_resource(resource, params)
@@ -133,6 +127,13 @@ class Devise::RegistrationsController < DeviseController
     self.resource = send(:"current_#{resource_name}")
   end
 
+  # Check if the user should be signed in automatically after updating the password.
+  def sign_in_after_change_password?
+    return true if account_update_params[:password].blank?
+
+    resource_class.sign_in_after_change_password
+  end
+
   def sign_up_params
     devise_parameter_sanitizer.sanitize(:sign_up)
   end
@@ -160,9 +161,9 @@ class Devise::RegistrationsController < DeviseController
     set_flash_message :notice, flash_key
   end
 
-  def sign_in_after_change_password?
-    return true if account_update_params[:password].blank?
-
-    resource_class.sign_in_after_change_password
+  def update_needs_confirmation?(resource, previous)
+    resource.respond_to?(:pending_reconfirmation?) &&
+      resource.pending_reconfirmation? &&
+      previous != resource.unconfirmed_email
   end
 end

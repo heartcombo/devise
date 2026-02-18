@@ -42,6 +42,14 @@ class TimeoutableTest < ActiveSupport::TestCase
     end
   end
 
+  test 'Devise config option should accept a proc' do
+    user = new_user
+    user.instance_eval { def custom_timeout_in; 42.minutes end }
+    swap Devise, timeout_in: ->(user) { user.custom_timeout_in } do
+      assert_equal user.timeout_in, 42.minutes
+    end
+  end
+
   test 'required_fields should contain the fields that Devise uses' do
     assert_equal [], Devise::Models::Timeoutable.required_fields(User)
   end

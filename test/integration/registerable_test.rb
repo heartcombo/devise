@@ -187,6 +187,22 @@ class RegistrationTest < Devise::IntegrationTest
     end
   end
 
+  test 'a signed in user should not be able to use the website after changing their password if resource_class.sign_in_after_change_password is false' do
+    swap_model_config User, sign_in_after_change_password: false do
+      sign_in_as_user
+      get edit_user_registration_path
+
+      fill_in 'password', with: '1234567890'
+      fill_in 'password confirmation', with: '1234567890'
+      fill_in 'current password', with: '12345678'
+      click_button 'Update'
+
+      assert_contain 'Your account has been updated successfully, but since your password was changed, you need to sign in again.'
+      assert_equal new_user_session_path, @request.path
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'a signed in user should be able to use the website after changing its email with config.sign_in_after_change_password is false' do
     swap Devise, sign_in_after_change_password: false do
       sign_in_as_user

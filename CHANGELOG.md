@@ -2,6 +2,7 @@
 
 * enhancements
   * Allow resource class scopes to override the global configuration for `sign_in_after_change_password` behaviour. [#5824](https://github.com/heartcombo/devise/pull/5824)
+  * Add `sign_in_after_reset_password?` check hook to passwords controller, to allow it to be customized by users. [#5825](https://github.com/heartcombo/devise/pull/5825)
 
 ### 5.0.1 - 2026-02-13
 

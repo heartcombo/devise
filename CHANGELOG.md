@@ -1,4 +1,4 @@
-### Unreleased
+### 5.0.2 - 2026-02-18
 
 * enhancements
   * Allow resource class scopes to override the global configuration for `sign_in_after_change_password` behaviour. [#5825](https://github.com/heartcombo/devise/pull/5825)

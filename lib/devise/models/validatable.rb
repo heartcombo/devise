@@ -12,7 +12,7 @@ module Devise
     # Validatable adds the following options to +devise+:
     #
     #   * +email_regexp+: the regular expression used to validate e-mails;
-    #   * +password_length+: a range expressing password length. Defaults to 6..128.
+    #   * +password_length+: a range expressing password length. Defaults to 8..128.
     #
     # Since +password_length+ is applied in a proc within `validates_length_of` it can be overridden
     # at runtime.

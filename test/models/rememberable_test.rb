@@ -21,7 +21,7 @@ class RememberableTest < ActiveSupport::TestCase
   test 'remember_me should not generate a new token if valid token exists' do
     user = create_user
     user.singleton_class.send(:attr_accessor, :remember_token)
-    User.to_adapter.expects(:find_first).returns(nil)
+    User.expects(:devise_find_by).returns(nil)
 
     user.remember_me!
     existing_token = user.remember_token
@@ -40,7 +40,7 @@ class RememberableTest < ActiveSupport::TestCase
   test 'can generate remember token' do
     user = create_user
     user.singleton_class.send(:attr_accessor, :remember_token)
-    User.to_adapter.expects(:find_first).returns(nil)
+    User.expects(:devise_find_by).returns(nil)
     user.remember_me!
     assert user.remember_token
   end

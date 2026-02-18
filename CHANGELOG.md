@@ -1,3 +1,7 @@
+### Future
+
+  * Remove `orm_adapter` dependency. Devise now implements its own ORM-specific finders in `Devise::Orm`. [#5823](https://github.com/heartcombo/devise/pull/5823)
+
 ### Unreleased
 
 * enhancements

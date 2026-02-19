@@ -131,7 +131,11 @@ class Devise::RegistrationsController < DeviseController
   def sign_in_after_change_password?
     return true if account_update_params[:password].blank?
 
-    resource_class.sign_in_after_change_password
+    if resource_class.respond_to?(:sign_in_after_change_password)
+      resource_class.sign_in_after_change_password
+    else
+      Devise.sign_in_after_change_password
+    end
   end
 
   def sign_up_params

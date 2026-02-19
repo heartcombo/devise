@@ -39,4 +39,22 @@ class CustomRegistrationsControllerTest < Devise::ControllerTestCase
     get :new
     assert @controller.new_block_called?, "new failed to yield resource to provided block"
   end
+
+  test "sign_in_after_change_password? falls back to global Devise config when model does not include registerable" do
+    sign_in @user
+
+    plain_class = Class.new
+    @controller.stubs(:resource_class).returns(plain_class)
+    @controller.stubs(:account_update_params).returns(
+      ActionController::Parameters.new(password: "newpassword")
+    )
+
+    swap Devise, sign_in_after_change_password: true do
+      assert @controller.send(:sign_in_after_change_password?)
+    end
+
+    swap Devise, sign_in_after_change_password: false do
+      refute @controller.send(:sign_in_after_change_password?)
+    end
+  end
 end

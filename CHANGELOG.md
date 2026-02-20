@@ -62,6 +62,8 @@ no changes
 
     so it's possible to override `password_length` at runtime. [#5734](https://github.com/heartcombo/devise/pull/5734)
 
+  * Added `Devise.mailer_delivery_method` configuration to enable deferring email delivery with `:deliver_later` [#5610](https://github.com/heartcombo/devise/pull/5610) [@seanpdoyle](https://github.com/seanpdoyle)
+
 * bug fixes
   * Make `Devise` work without `ActionMailer` when `Zeitwerk` autoloader is used. [#5731](https://github.com/heartcombo/devise/pull/5731)
   * Handle defaults `:from` and `:reply_to` as procs correctly by delegating to Rails [#5595](https://github.com/heartcombo/devise/pull/5595)
@@ -71,7 +73,6 @@ no changes
   * Use `ActiveRecord::SecurityUtils.secure_compare` in `Devise.secure_compare` to match two empty strings correctly. [#4829](https://github.com/heartcombo/devise/pull/4829)
   * Respond with `401 Unauthorized` for non-navigational requests to destroy the session when there is no authenticated resource. [#4878](https://github.com/heartcombo/devise/pull/4878)
   * Fix incorrect grammar of invalid authentication message with capitalized attributes, e.g.: "Invalid Email or password" => "Invalid email or password". (originally introduced by [#4014](https://github.com/heartcombo/devise/pull/4014), released on v4.1.0) [#4834](https://github.com/heartcombo/devise/pull/4834)
-
 
 Please check [4-stable](https://github.com/heartcombo/devise/blob/4-stable/CHANGELOG.md)
 for previous changes.

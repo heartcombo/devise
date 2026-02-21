@@ -22,7 +22,7 @@ Devise.with_options model: true do |d|
   # The ones which can sign out after
   routes = [nil, :new]
   d.add_module :confirmable,  controller: :confirmations, route: { confirmation: routes }
-  d.add_module :lockable,     controller: :unlocks,       route: { unlock: routes }
+  d.add_module :lockable,     controller: :unlocks,       route: { unlock: (routes << :confirm) }
   d.add_module :timeoutable
 
   # Stats for last, so we make sure the user is really signed in

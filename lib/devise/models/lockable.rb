@@ -20,6 +20,7 @@ module Devise
     #   * +unlock_strategy+: unlock the user account by :time, :email, :both or :none.
     #   * +unlock_in+: the time you want to unlock the user after lock happens. Only available when unlock_strategy is :time or :both.
     #   * +unlock_keys+: the keys you want to use when locking and unlocking an account
+    #   * +extra_step+: if an extra step is used to unlock an account
     #
     module Lockable
       extend  ActiveSupport::Concern
@@ -207,7 +208,7 @@ module Devise
           self.lock_strategy == strategy
         end
 
-        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in, :unlock_keys, :last_attempt_warning)
+        Devise::Models.config(self, :maximum_attempts, :lock_strategy, :unlock_strategy, :unlock_in, :unlock_keys, :last_attempt_warning, :extra_step)
       end
     end
   end

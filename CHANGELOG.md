@@ -1,3 +1,15 @@
+### 5.0.2 - 2026-02-18
+
+* enhancements
+  * Allow resource class scopes to override the global configuration for `sign_in_after_change_password` behaviour. [#5825](https://github.com/heartcombo/devise/pull/5825)
+    * _Note_: some users ran into an issue with this change because `RegistrationsController` now relies on a setting from the `:registerable` module. These users were configuring their own routes pointing to the `RegistrationsController` for resource edit/update actions mostly, without relying on the other registration actions (e.g. user sign up.), so they omitted `:registerable` from the model declaration. While using just a portion of the controller functionality is a valid use for `:registerable` (or any module really), the module must still be declared in the model, much like the other modules must be declared if you plan on using just a portion of their behavior. Please check [this issue](https://github.com/heartcombo/devise/pull/5828#issuecomment-3926822788) for more info.
+  * Add `sign_in_after_reset_password?` check hook to passwords controller, to allow it to be customized by users. [#5826](https://github.com/heartcombo/devise/pull/5826)
+
+### 5.0.1 - 2026-02-13
+
+* bug fixes
+  * Fix translation issue with German `E-Mail` on invalid authentication messages caused by previous fix for incorrect grammar [#5822](https://github.com/heartcombo/devise/pull/5822)
+
 ### 5.0.0 - 2026-01-23
 
 no changes

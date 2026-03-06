@@ -215,6 +215,11 @@ class FailureTest < ActiveSupport::TestCase
 
       assert_equal 'Email ou senha inválidos.', @request.flash[:alert]
       assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
+
+      call_failure('warden' => OpenStruct.new(message: :invalid), 'warden.options' => { locale: :de })
+
+      assert_equal 'E-Mail oder Passwort ist ungültig.', @request.flash[:alert]
+      assert_equal 'http://test.host/users/sign_in', @response.second["Location"]
     end
 
     test 'uses the proxy failure message as string' do

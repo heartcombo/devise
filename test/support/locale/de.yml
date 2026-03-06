@@ -1,0 +1,12 @@
+de:
+  activerecord:
+    attributes:
+      user:
+        email: E-Mail
+  mongoid:
+    attributes:
+      user:
+        email: E-Mail
+  devise:
+    failure:
+      invalid: "%{authentication_keys} oder Passwort ist ungültig."

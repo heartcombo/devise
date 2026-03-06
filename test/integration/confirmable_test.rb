@@ -362,7 +362,7 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     attacker = create_admin
     # update the email address of the attacker, but do not confirm it yet
     attacker.update!(email: attacker_email)
-   
+
     # A new request starts, to update the unconfirmed email again.
     attacker = Admin.find_by(id: attacker.id)
 
@@ -382,5 +382,4 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     assert attacker.confirmed?
     assert_equal attacker_email, attacker.email
   end
-
 end

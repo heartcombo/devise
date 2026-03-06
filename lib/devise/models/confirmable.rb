@@ -258,11 +258,12 @@ module Devise
           generate_confirmation_token && save(validate: false)
         end
 
-
         def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
           @reconfirmation_required = true
+          # Force unconfirmed_email to be updated, even if the value hasn't changed, to prevent a
+          # race condition which could allow an attacker to confirm an email they don't own. See #5783.
+          devise_unconfirmed_email_will_change!
           self.unconfirmed_email = self.email
-          unconfirmed_email_will_change!
           self.email = self.devise_email_in_database
           self.confirmation_token = nil
           generate_confirmation_token

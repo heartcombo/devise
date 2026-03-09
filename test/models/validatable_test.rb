@@ -92,6 +92,14 @@ class ValidatableTest < ActiveSupport::TestCase
     assert_equal 'is too long (maximum is 72 characters)', user.errors[:password].join
   end
 
+  test 'should validate that password cannot be bigger that 72 bytes for bcrypt' do
+    Devise.stubs(:password_length).returns(6..512)
+    password = '🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠🫠'
+    user = new_user(password: password, password_confirmation: password)
+    assert user.invalid?
+    assert_equal 'too long (maximum is 72 bytes)', user.errors[:password].join
+  end
+
   test 'should not require password length when it\'s not changed' do
     user = create_user.reload
     user.password = user.password_confirmation = nil

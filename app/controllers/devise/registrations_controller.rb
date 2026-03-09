@@ -7,7 +7,7 @@ class Devise::RegistrationsController < DeviseController
 
   # GET /resource/sign_up
   def new
-    build_resource
+    build_resource(sign_up_params)
     yield resource if block_given?
     respond_with resource
   end

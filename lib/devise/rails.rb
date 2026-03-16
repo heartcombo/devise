@@ -53,5 +53,14 @@ module Devise
         Rails.autoloaders.main.ignore("#{root}/app/mailers/devise/mailer.rb")
       end
     end
+
+    # Starting from Rails 8.0, routes are lazy-loaded by default in test and development environments.
+    # However, Devise's mappings are built during the routes loading phase, so we need to ensure
+    # routes are eagerly loaded by reverting the route set class back to the default.
+    initializer "devise.make_routes_eager_load", after: :make_routes_lazy, before: :add_routing_paths do |app|
+      if app.config.respond_to?(:route_set_class)
+        app.config.route_set_class = ActionDispatch::Routing::RouteSet
+      end
+    end
   end
 end

@@ -1,3 +1,8 @@
+### Unreleased
+
+* security fixes
+  * Fix race condition vulnerability on confirmable "change email" which would allow confirming an email they don't own [#5783](https://github.com/heartcombo/devise/pull/5783) [#5784](https://github.com/heartcombo/devise/pull/5784)
+
 ### 5.0.2 - 2026-02-18
 
 * enhancements

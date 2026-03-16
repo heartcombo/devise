@@ -35,6 +35,10 @@ module Devise
         will_save_change_to_email?
       end
 
+      def devise_unconfirmed_email_will_change!
+        unconfirmed_email_will_change!
+      end
+
       def devise_respond_to_and_will_save_change_to_attribute?(attribute)
         respond_to?("will_save_change_to_#{attribute}?") && send("will_save_change_to_#{attribute}?")
       end
@@ -59,6 +63,13 @@ module Devise
 
       def devise_will_save_change_to_email?
         email_changed?
+      end
+
+      def devise_unconfirmed_email_will_change!
+        # Mongoid's will_change! doesn't force unchanged attributes into updates,
+        # so we override changed_attributes to make it see a difference.
+        unconfirmed_email_will_change!
+        changed_attributes["unconfirmed_email"] = nil
       end
 
       def devise_respond_to_and_will_save_change_to_attribute?(attribute)

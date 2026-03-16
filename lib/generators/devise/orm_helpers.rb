@@ -25,11 +25,7 @@ CONTENT
       end
 
       def migration_path
-        if Rails.version >= '5.0.3'
-          db_migrate_path
-        else
-          @migration_path ||= File.join("db", "migrate")
-        end
+        db_migrate_path
       end
 
       def model_path

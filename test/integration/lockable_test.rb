@@ -130,6 +130,29 @@ class LockTest < Devise::IntegrationTest
     end
   end
 
+  test 'visiting unlock link should not unlock account when extra_step is true' do
+    user = create_user
+    raw = user.lock_access!
+    swap Devise, extra_step: true do
+      visit_user_unlock_with_token(raw)
+    end
+
+    assert_current_url "/users/unlock?unlock_token=#{raw}"
+    assert_template 'unlocks/show'
+    assert user.reload.access_locked?
+  end
+
+  test 'visiting confirm unlock link should unlock account when extra_step is true' do
+    user = create_user
+    raw = user.lock_access!
+    swap Devise, extra_step: true do
+      visit confirm_user_unlock_path(unlock_token: raw)
+    end
+
+    assert_current_url "/users/sign_in"
+    assert_not user.reload.access_locked?
+  end
+
   test 'user should be able to request a new unlock token via JSON request and should return empty and valid response' do
     user = create_user(locked: true)
     ActionMailer::Base.deliveries.clear
@@ -208,7 +231,6 @@ class LockTest < Devise::IntegrationTest
       assert_current_url "/users/sign_in"
 
       assert_contain "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
-
     end
   end
 
@@ -229,5 +251,4 @@ class LockTest < Devise::IntegrationTest
       assert_not_contain "locked"
     end
   end
-
 end

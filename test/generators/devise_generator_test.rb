@@ -37,5 +37,4 @@ class DeviseGeneratorTest < Rails::Generators::TestCase
     FileUtils.mkdir_p(destination)
     FileUtils.cp routes, destination
   end
-
 end

@@ -136,13 +136,22 @@ class ConfirmationTest < Devise::IntegrationTest
     end
   end
 
+  test 'not confirmed user redirect respects i18n locale set' do
+    swap Devise, allow_unconfirmed_access_for: 0.days do
+      sign_in_as_user(confirm: false, visit: new_user_session_path(locale: "pt-BR"))
+
+      assert_contain 'Você precisa confirmar seu email para continuar'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'not confirmed user should not see confirmation message if invalid credentials are given' do
     swap Devise, allow_unconfirmed_access_for: 0.days do
       sign_in_as_user(confirm: false) do
         fill_in 'password', with: 'invalid'
       end
 
-      assert_contain 'Invalid Email or password'
+      assert_contain 'Invalid email or password'
       assert_not warden.authenticated?(:user)
     end
   end
@@ -344,5 +353,33 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     assert_have_selector '#error_explanation'
     assert_contain(/Email.*already.*taken/)
     assert admin.reload.pending_reconfirmation?
+  end
+
+  test 'concurrent "update email" requests should not allow confirming a victim email address' do
+    attacker_email = "attacker@example.com"
+    victim_email = "victim@example.com"
+
+    attacker = create_admin
+    # update the email address of the attacker, but do not confirm it yet
+    attacker.update!(email: attacker_email)
+
+    # A new request starts, to update the unconfirmed email again.
+    attacker = Admin.find_by(id: attacker.id)
+
+    # A concurrent request also updates the email address to the victim, while the `attacker` request's model is in memory
+    Admin.where(id: attacker.id).update_all(
+      unconfirmed_email: victim_email,
+      confirmation_token: "different token"
+    )
+
+    # Now the attacker updates to the same prior unconfirmed email address, and confirm.
+    # This should update the `unconfirmed_email` in the database, even though it is unchanged from the models point of view.
+    attacker.update!(email: attacker_email)
+    attacker_token = attacker.raw_confirmation_token
+    visit_admin_confirmation_with_token(attacker_token)
+
+    attacker.reload
+    assert attacker.confirmed?
+    assert_equal attacker_email, attacker.email
   end
 end

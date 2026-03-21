@@ -16,7 +16,6 @@ module Devise
   autoload :Orm,                'devise/orm'
   autoload :ParameterFilter,    'devise/parameter_filter'
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
-  autoload :TestHelpers,        'devise/test_helpers'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
 
@@ -446,9 +445,9 @@ module Devise
   #  Devise.setup do |config|
   #    config.allow_unconfirmed_access_for = 2.days
   #
-  #    config.warden do |manager|
+  #    config.warden do |warden_config|
   #      # Configure warden to use other strategies, like oauth.
-  #      manager.oauth(:twitter)
+  #      warden_config.oauth(:twitter)
   #    end
   #  end
   def self.warden(&block)
@@ -518,24 +517,12 @@ module Devise
 
   # constant-time comparison algorithm to prevent timing attacks
   def self.secure_compare(a, b)
-    return false if a.blank? || b.blank? || a.bytesize != b.bytesize
-    l = a.unpack "C#{a.bytesize}"
-
-    res = 0
-    b.each_byte { |byte| res |= byte ^ l.shift }
-    res == 0
+    return false if a.nil? || b.nil?
+    ActiveSupport::SecurityUtils.secure_compare(a, b)
   end
 
   def self.deprecator
     @deprecator ||= ActiveSupport::Deprecation.new("5.0", "Devise")
-  end
-
-  def self.activerecord51? # :nodoc:
-    deprecator.warn <<-DEPRECATION.strip_heredoc
-      [Devise] `Devise.activerecord51?` is deprecated and will be removed in the next major version.
-      It is a non-public method that's no longer used internally, but that other libraries have been relying on.
-    DEPRECATION
-    defined?(ActiveRecord) && ActiveRecord.gem_version >= Gem::Version.new("5.1.x")
   end
 end
 

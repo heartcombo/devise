@@ -3,3 +3,5 @@ pt-BR:
     failure:
       invalid: "%{authentication_keys} ou senha inválidos."
       unauthenticated: "Para continuar, faça login ou registre-se."
+      timeout: "Sua sessão expirou. Por favor faça o login novamente para continuar."
+      unconfirmed: "Você precisa confirmar seu email para continuar."

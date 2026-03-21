@@ -77,9 +77,9 @@ module Devise
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
       self.response = recall_app(warden_options[:recall]).call(request.env).tap { |response|
-        response[0] = Rack::Utils.status_code(
-          response[0].in?(300..399) ? Devise.responder.redirect_status : Devise.responder.error_status
-        )
+        status = response[0].in?(300..399) ? Devise.responder.redirect_status : Devise.responder.error_status
+        # Avoid warnings translating status to code using Rails if available (e.g. `unprocessable_entity` => `unprocessable_content`)
+        response[0] = ActionDispatch::Response.try(:rack_status_code, status) || Rack::Utils.status_code(status)
       }
     end
 
@@ -111,11 +111,18 @@ module Devise
         options[:scope] = "devise.failure"
         options[:default] = [message]
         auth_keys = scope_class.authentication_keys
-        keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key| scope_class.human_attribute_name(key) }
-        options[:authentication_keys] = keys.join(I18n.t(:"support.array.words_connector"))
+        human_keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key|
+          # TODO: Remove the fallback and just use `downcase_first` once we drop support for Rails 7.0.
+          human_key = scope_class.human_attribute_name(key)
+          human_key.respond_to?(:downcase_first) ? human_key.downcase_first : human_key[0].downcase + human_key[1..]
+        }
+        options[:authentication_keys] = human_keys.join(I18n.t(:"support.array.words_connector"))
         options = i18n_options(options)
 
-        I18n.t(:"#{scope}.#{message}", **options)
+        I18n.t(:"#{scope}.#{message}", **options).then { |msg|
+          # Ensure that auth keys at the start of the translated string are properly cased.
+          msg.start_with?(human_keys.first) ? msg.upcase_first : msg
+        }
       else
         message.to_s
       end

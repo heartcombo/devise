@@ -90,7 +90,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
       def send_devise_notification(*); end
     end
 
-    klass.create!
+    assert_nothing_raised { klass.create! }
   end
 end
 

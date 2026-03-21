@@ -167,6 +167,17 @@ class SessionTimeoutTest < Devise::IntegrationTest
     end
   end
 
+  test 'error message redirect respects i18n locale set' do
+    user = sign_in_as_user
+
+    get expire_user_path(user)
+    get root_path(locale: "pt-BR")
+    follow_redirect!
+
+    assert_contain 'Sua sessão expirou. Por favor faça o login novamente para continuar.'
+    assert_not warden.authenticated?(:user)
+  end
+
   test 'time out not triggered if remembered' do
     user = sign_in_as_user remember_me: true
     get expire_user_path(user)
@@ -180,7 +191,9 @@ class SessionTimeoutTest < Devise::IntegrationTest
   test 'does not crash when the last_request_at is a String' do
     user = sign_in_as_user
 
-    get edit_form_user_path(user, last_request_at: Time.now.utc.to_s)
-    get users_path
+    assert_nothing_raised do
+      get edit_form_user_path(user, last_request_at: Time.now.utc.to_s)
+      get users_path
+    end
   end
 end

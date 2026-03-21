@@ -86,13 +86,18 @@ class DeviseTest < ActiveSupport::TestCase
     Devise::CONTROLLERS.delete(:kivi)
   end
 
-  test 'should complain when comparing empty or different sized passes' do
+  test 'Devise.secure_compare fails when comparing different strings or nil' do
     [nil, ""].each do |empty|
       assert_not Devise.secure_compare(empty, "something")
       assert_not Devise.secure_compare("something", empty)
-      assert_not Devise.secure_compare(empty, empty)
     end
+    assert_not Devise.secure_compare(nil, nil)
     assert_not Devise.secure_compare("size_1", "size_four")
+  end
+
+  test 'Devise.secure_compare passes when strings are the same, even two empty strings' do
+    assert Devise.secure_compare("", "")
+    assert Devise.secure_compare("something", "something")
   end
 
   test 'Devise.email_regexp should match valid email addresses' do
@@ -104,12 +109,6 @@ class DeviseTest < ActiveSupport::TestCase
     end
     non_valid_emails.each do |email|
       assert_no_match Devise.email_regexp, email
-    end
-  end
-
-  test 'Devise.activerecord51? deprecation' do
-    assert_deprecated("`Devise.activerecord51?` is deprecated", Devise.deprecator) do
-      Devise.activerecord51?
     end
   end
 end

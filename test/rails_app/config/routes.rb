@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   # Users scope
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
+  devise_for :user_with_two_factors
+
   devise_for :user_on_main_apps,
     class_name: 'UserOnMainApp',
     router_name: :main_app,

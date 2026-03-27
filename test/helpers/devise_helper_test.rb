@@ -44,4 +44,16 @@ class DeviseHelperTest < Devise::IntegrationTest
     assert_have_selector '#error_explanation'
     assert_contain "Can't save the user because of 2 errors"
   end
+
+  test 'two_factor_method_links returns empty string when no other methods' do
+    resource = mock('resource')
+    resource.stubs(:enabled_two_factors).returns([:test_two_factor])
+
+    helper = Class.new(ActionView::Base) do
+      include DeviseHelper
+    end.new(ActionView::LookupContext.new([]), {}, nil)
+
+    result = helper.two_factor_method_links(resource, :test_two_factor)
+    assert_equal '', result
+  end
 end

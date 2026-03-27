@@ -13,6 +13,9 @@ Devise.with_options model: true do |d|
   # Other authentications
   d.add_module :omniauthable, controller: :omniauth_callbacks,  route: :omniauth_callback
 
+  # Two-factor authentication
+  d.add_module :two_factor_authenticatable, controller: :two_factor, route: :two_factor
+
   # Misc after
   routes = [nil, :new, :edit]
   d.add_module :recoverable,  controller: :passwords,     route: { password: routes }

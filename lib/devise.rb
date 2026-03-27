@@ -18,6 +18,7 @@ module Devise
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
+  autoload :TwoFactor,          'devise/two_factor'
 
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'
@@ -40,6 +41,7 @@ module Devise
   module Strategies
     autoload :Base,            'devise/strategies/base'
     autoload :Authenticatable, 'devise/strategies/authenticatable'
+    autoload :TwoFactor,       'devise/strategies/two_factor'
   end
 
   module Test
@@ -57,6 +59,13 @@ module Devise
 
   # Strategies that do not require user input.
   NO_INPUT = []
+
+  # Global default for two_factor_methods per-model config.
+  mattr_accessor :two_factor_methods
+  @@two_factor_methods = []
+
+  # Registry of two-factor method configs set via register_two_factor_method.
+  mattr_reader :two_factor_method_configs, default: {}
 
   # True values used to check params
   TRUE_VALUES = [true, 1, '1', 'on', 'ON', 't', 'T', 'true', 'TRUE']
@@ -437,6 +446,36 @@ module Devise
     end
 
     Devise::Mapping.add_module module_name
+  end
+
+  def self.register_two_factor_method(name, options = {})
+    options.assert_valid_keys(:model, :strategy, :controller, :route)
+    two_factor_method_configs[name.to_sym] = options
+    STRATEGIES[name.to_sym] = options[:strategy] if options[:strategy]
+
+    if controller = options[:controller]
+      controller = (controller == true ? name : controller)
+      CONTROLLERS[name.to_sym] = controller
+    end
+
+    if route = options[:route]
+      case route
+      when TrueClass
+        key, value = name, []
+      when Symbol
+        key, value = route, []
+      when Hash
+        key, value = route.keys.first, route.values.flatten
+      else
+        raise ArgumentError, ":route should be true, a Symbol or a Hash"
+      end
+
+      URL_HELPERS[key] ||= []
+      URL_HELPERS[key].concat(value)
+      URL_HELPERS[key].uniq!
+
+      ROUTES[name.to_sym] = key
+    end
   end
 
   # Sets warden configuration using a block that will be invoked on warden

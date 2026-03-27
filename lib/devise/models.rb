@@ -120,3 +120,4 @@ module Devise
 end
 
 require 'devise/models/authenticatable'
+require 'devise/models/two_factor_authenticatable'

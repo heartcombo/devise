@@ -1,0 +1,4 @@
+<%= form_tag(two_factor_path(resource_name), method: :post) do %>
+  <%= text_field_tag :otp_attempt %>
+  <%= submit_tag "Verify" %>
+<% end %>

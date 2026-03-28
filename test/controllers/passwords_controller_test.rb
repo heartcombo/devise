@@ -19,6 +19,26 @@ class PasswordsControllerTest < Devise::ControllerTestCase
     }
   end
 
+  test '#edit redirect if reset_password_token is missing' do
+    get :edit
+    assert_equal "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided.", flash[:alert]
+    assert_redirected_to "http://test.host/users/sign_in"
+  end
+
+  test '#edit redirect if reset_password_token is invalid' do
+    get :edit, params: { reset_password_token: 'abcdef' }
+    assert_equal "This password recovery link is invalid, please request a new one.", flash[:alert]
+    assert_redirected_to "http://test.host/users/password/new"
+  end
+
+  test '#edit redirect if reset_password_token has expired' do
+    @user.reset_password_sent_at = Time.now - @user.class.reset_password_within - 1.second
+    @user.save
+    get :edit, params: { reset_password_token: @raw }
+    assert_equal "This password recovery link has expired, please request a new one.", flash[:alert]
+    assert_redirected_to "http://test.host/users/password/new"
+  end
+
   test 'redirect to after_sign_in_path_for if after_resetting_password_path_for is not overridden' do
     put_update_with_params
     assert_redirected_to "http://test.host/"

@@ -121,4 +121,9 @@ class ValidatableTest < ActiveSupport::TestCase
   test 'required_fields should be an empty array' do
     assert_equal [], Devise::Models::Validatable.required_fields(User)
   end
+
+  test 'should not fail is user has no password' do
+    user = create_user_without_password.reload
+    assert user.valid?
+  end
 end

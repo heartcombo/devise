@@ -27,7 +27,7 @@ internationalization.
 
 Avoid opening new issues to ask questions in our issues tracker. Please go through
 the project wiki, documentation and source code first, or try to ask your question
-on [Stack Overflow](http://stackoverflow.com/questions/tagged/devise).
+on [Stack Overflow](https://stackoverflow.com/questions/tagged/devise).
 
 **If you find a security bug, do not report it through GitHub. Please send an
 e-mail to [heartcombo.oss@gmail.com](mailto:heartcombo.oss@gmail.com)

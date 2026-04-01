@@ -201,7 +201,9 @@ class FailureTest < ActiveSupport::TestCase
     end
 
     test 'preserves translation capitalization after auth key replacement' do
-      store_translations :en, activerecord: { attributes: { user: { email: 'Email Address' } } } do
+      store_translations :en,
+        activerecord: { attributes: { user: { email: 'Email Address' } } },
+        mongoid: { attributes: { user: { email: 'Email Address' } } } do
         call_failure('warden' => OpenStruct.new(message: :invalid))
         assert_equal 'Invalid email address or password.', @request.flash[:alert]
       end

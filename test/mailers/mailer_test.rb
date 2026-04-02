@@ -22,6 +22,7 @@ class MailerTest < ActionMailer::TestCase
     class TestMailerWithDefault < Devise::Mailer
       default from: -> { computed_from }
       default reply_to: ->(_) { computed_reply_to }
+      default to: -> { computed_to }
 
       def confirmation_instructions(record, token, opts = {})
         @token = token
@@ -37,10 +38,17 @@ class MailerTest < ActionMailer::TestCase
       def computed_reply_to
         "reply_to@example.com"
       end
+
+      def computed_to
+        "to@example.com"
+      end
     end
 
     mail = TestMailerWithDefault.confirmation_instructions(create_user, "confirmation-token")
-    assert mail.from, "from@example.com"
-    assert mail.reply_to, "reply_to@example.com"
+    
+    email_headers = mail.header
+    assert_equal "from@example.com", email_headers[:from].to_s
+    assert_equal "reply_to@example.com", email_headers[:reply_to].to_s
+    assert_equal "to@example.com", email_headers[:to].to_s
   end
 end

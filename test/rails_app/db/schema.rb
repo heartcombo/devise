@@ -13,7 +13,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20100401102949) do
+ActiveRecord::Schema.define(version: 20260303000000) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20100401102949) do
     t.integer  "failed_attempts",        default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.string   "otp_secret"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,7 +1,7 @@
 ### 5.0.3 - 2026-03-16
 
 * security fixes
-  * Fix race condition vulnerability on confirmable "change email" which would allow confirming an email they don't own CVE-2026-32700 [#5783](https://github.com/heartcombo/devise/pull/5783) [#5784](https://github.com/heartcombo/devise/pull/5784)
+  * Fix race condition vulnerability on confirmable "change email" which would allow confirming an email they don't own CVE-2026-32700 [GHSA-57hq-95w6-v4fc](https://github.com/heartcombo/devise/security/advisories/GHSA-57hq-95w6-v4fc) [#5783](https://github.com/heartcombo/devise/pull/5783) [#5784](https://github.com/heartcombo/devise/pull/5784)
 
 ### 5.0.2 - 2026-02-18
 

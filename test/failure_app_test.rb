@@ -200,6 +200,15 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'Invalid email or password.', @request.flash[:alert]
     end
 
+    test 'preserves translation capitalization after auth key replacement' do
+      store_translations :en,
+        activerecord: { attributes: { user: { email: 'Email Address' } } },
+        mongoid: { attributes: { user: { email: 'Email Address' } } } do
+        call_failure('warden' => OpenStruct.new(message: :invalid))
+        assert_equal 'Invalid email address or password.', @request.flash[:alert]
+      end
+    end
+
     test 'humanizes the flash message' do
       call_failure('warden' => OpenStruct.new(message: :invalid))
       assert_equal @request.flash[:alert], @request.flash[:alert].humanize

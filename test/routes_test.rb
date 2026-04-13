@@ -67,6 +67,11 @@ class DefaultRoutingTest < ActionController::TestCase
     assert_recognizes({controller: 'devise/unlocks', action: 'show'}, {path: 'users/unlock', method: :get})
   end
 
+  test 'map confirm user unlock' do
+    assert_recognizes({controller: 'devise/unlocks', action: 'confirm'}, {path: 'users/unlock/confirm', method: :get})
+    assert_named_route "/users/unlock/confirm", :confirm_user_unlock_path
+  end
+
   test 'map new user registration' do
     assert_recognizes({controller: 'devise/registrations', action: 'new'}, 'users/sign_up')
     assert_named_route "/users/sign_up", :new_user_registration_path

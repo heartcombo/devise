@@ -41,7 +41,6 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_files nil, mail_template_engine: "markerb"
   end
 
-
   test "Assert only views within specified directories" do
     run_generator %w(-v sessions registrations)
     assert_file "app/views/devise/sessions/new.html.erb"
@@ -68,7 +67,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     run_generator %w(-v registrations -b simple_form_for)
     assert_file "app/views/devise/registrations/new.html.erb", /simple_form_for/
     assert_no_file "app/views/devise/confirmations/new.html.erb"
-    end
+  end
 
   test "Assert specified directories with markerb" do
     run_generator %w(--markerb -v passwords mailer)
@@ -93,6 +92,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/shared/_links.html.erb"
     assert_file "app/views/#{scope}/shared/_error_messages.html.erb"
     assert_file "app/views/#{scope}/unlocks/new.html.erb"
+    assert_file "app/views/#{scope}/unlocks/show.html.erb"
   end
 
   def assert_shared_links(scope = nil)
@@ -105,6 +105,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views/#{scope}/registrations/new.html.erb", link
     assert_file "app/views/#{scope}/sessions/new.html.erb", link
     assert_file "app/views/#{scope}/unlocks/new.html.erb", link
+    assert_file "app/views/#{scope}/unlocks/show.html.erb", link
   end
 
   def assert_error_messages(scope = nil)

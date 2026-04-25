@@ -38,6 +38,16 @@ class AuthenticatableTest < ActiveSupport::TestCase
     assert user_with_error.errors.added?(:email, :invalid)
   end
 
+  test 'find_or_initialize_with_errors accepts a single symbol as required_attributes' do
+    user = User.create!(email: "example@example.com", password: "1234567")
+    assert_equal user, User.find_or_initialize_with_errors(:email, { email: "example@example.com" })
+  end
+
+  test 'find_or_initialize_with_errors adds error when given a single symbol and record is not found' do
+    user_with_error = User.find_or_initialize_with_errors(:email, { email: "example@example.com" })
+    assert user_with_error.errors.added?(:email, :invalid)
+  end
+
   if defined?(ActionController::Parameters)
     test 'does not passes an ActionController::Parameters to find_first_by_auth_conditions through find_or_initialize_with_errors' do
       user = create_user(email: 'example@example.com')

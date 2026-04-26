@@ -205,15 +205,15 @@ module Devise
 
       def apply_to_attribute_or_variable(attr, method)
         if self[attr]
-          self[attr] = self[attr].try(method)
+          self[attr] = self[attr].send(method) if self[attr].respond_to?(method)
 
         # Use respond_to? here to avoid a regression where globally
         # configured strip_whitespace_keys or case_insensitive_keys were
         # attempting to strip or downcase when a model didn't have the
         # globally configured key.
         elsif respond_to?(attr) && respond_to?("#{attr}=")
-          new_value = send(attr).try(method)
-          send("#{attr}=", new_value)
+          value = send(attr)
+          send("#{attr}=", value.send(method)) if value.respond_to?(method)
         end
       end
 

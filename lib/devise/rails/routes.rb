@@ -398,6 +398,25 @@ module ActionDispatch::Routing
         end
       end
 
+      def devise_two_factor(mapping, controllers) #:nodoc:
+        return unless mapping.to.respond_to?(:two_factor_methods) && mapping.to.two_factor_methods.present?
+
+        controller = controllers[:two_factor] || "devise/two_factor"
+        two_factor_path = mapping.path_names[:two_factor] || "two_factor"
+
+        # Central POST endpoint — all methods submit here
+        post two_factor_path,
+          to: "#{controller}#create",
+          as: "two_factor"
+
+        # Per-method challenge routes
+        Array(mapping.to.two_factor_methods).each do |method_name|
+          get "#{two_factor_path}/#{method_name}/new",
+            to: "#{controller}#new_#{method_name}",
+            as: "new_two_factor_#{method_name}"
+        end
+      end
+
       def devise_registration(mapping, controllers) #:nodoc:
         path_names = {
           new: mapping.path_names[:sign_up],

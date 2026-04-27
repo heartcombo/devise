@@ -17,6 +17,7 @@ en:
       unauthenticated: "You need to sign in or sign up before continuing."
       unconfirmed: "You have to confirm your email address before continuing."
       two_factor_session_expired: "Your two-factor authentication session has expired. Please sign in again."
+      sign_in_not_initiated: "Please sign in first."
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"

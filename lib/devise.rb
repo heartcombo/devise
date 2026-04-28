@@ -18,6 +18,7 @@ module Devise
   autoload :ParameterSanitizer, 'devise/parameter_sanitizer'
   autoload :TimeInflector,      'devise/time_inflector'
   autoload :TokenGenerator,     'devise/token_generator'
+  autoload :TwoFactor,          'devise/two_factor'
 
   module Controllers
     autoload :Helpers,        'devise/controllers/helpers'
@@ -40,6 +41,7 @@ module Devise
   module Strategies
     autoload :Base,            'devise/strategies/base'
     autoload :Authenticatable, 'devise/strategies/authenticatable'
+    autoload :TwoFactor,       'devise/strategies/two_factor'
   end
 
   module Test
@@ -312,6 +314,14 @@ module Devise
   mattr_accessor :sign_in_after_change_password
   @@sign_in_after_change_password = true
 
+  # Global default for two_factor_methods per-model config.
+  mattr_accessor :two_factor_methods
+  @@two_factor_methods = []
+
+  # Registry of two-factor method configs set via register_two_factor_method.
+  mattr_reader :two_factor_method_configs
+  @@two_factor_method_configs = {}
+
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup
@@ -437,6 +447,59 @@ module Devise
     end
 
     Devise::Mapping.add_module module_name
+  end
+
+
+  # Register available devise two factor methods.
+  # Third-party modules that intend to add a 2FA method need to be added explicitly using this method.
+  #
+  # Note that adding a module using this method does not cause it to be used in the authentication
+  # process. That requires the `:two_factor_authenticatable` module to be listed in the arguments passed
+  # to the 'devise' method in the model class definition along with the two factor method name listed under
+  # the `:two_factor_methods` argument passed to the 'devise' method.
+  #
+  # == Options:
+  #
+  #   +name+       - String representing the name of the 2FA method. This will be used to identify it.
+  #   +model+      - String representing the load path to a custom *model* for this 2FA method (to autoload.)
+  #   +strategy+   - Symbol representing if this module got a custom *strategy*.
+  #   +route+      - Generates extension-specific routes and URL helpers (e.g., credential management
+  #                  endpoints). This is separate from the core challenge/create routes that Devise
+  #                  generates automatically from +two_factor_methods+. Accepts true (defaults route
+  #                  name to the method name), a Symbol, or a Hash. Works the same as the +:route+
+  #                  option in +add_module+.
+  #
+  # == Examples:
+  #
+  #   Devise.register_two_factor_method(:my_two_factor_method)
+  #   Devise.register_two_factor_method(:my_two_factor_method, model: 'my_two_factor_method/model')
+  #   Devise.register_two_factor_method(:my_two_factor_method, model: 'my_two_factor_method/model', strategy: :my_two_factor_method, route: true)
+  #
+  def self.register_two_factor_method(name, options = {})
+    options.assert_valid_keys(:model, :strategy, :route)
+
+    two_factor_method_configs[name.to_sym] = options
+
+    STRATEGIES[name.to_sym] = options[:strategy] if options[:strategy]
+
+    if route = options[:route]
+      case route
+      when TrueClass
+        key, value = name, []
+      when Symbol
+        key, value = route, []
+      when Hash
+        key, value = route.keys.first, route.values.flatten
+      else
+        raise ArgumentError, ":route should be true, a Symbol or a Hash"
+      end
+
+      URL_HELPERS[key] ||= []
+      URL_HELPERS[key].concat(value)
+      URL_HELPERS[key].uniq!
+
+      ROUTES[name.to_sym] = key
+    end
   end
 
   # Sets warden configuration using a block that will be invoked on warden

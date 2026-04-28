@@ -16,6 +16,8 @@ en:
       timeout: "Your session expired. Please sign in again to continue."
       unauthenticated: "You need to sign in or sign up before continuing."
       unconfirmed: "You have to confirm your email address before continuing."
+      two_factor_session_expired: "Your two-factor authentication session has expired. Please sign in again."
+      sign_in_not_initiated: "Please sign in first."
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
@@ -36,6 +38,7 @@ en:
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
       updated: "Your password has been changed successfully. You are now signed in."
       updated_not_active: "Your password has been changed successfully."
+      updated_two_factor_required: "Your password has been changed successfully. Please complete two-factor authentication."
     registrations:
       destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
       signed_up: "Welcome! You have signed up successfully."

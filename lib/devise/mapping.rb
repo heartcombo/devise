@@ -84,7 +84,13 @@ module Devise
     end
 
     def strategies
-      @strategies ||= STRATEGIES.values_at(*self.modules).compact.uniq.reverse
+      @strategies ||= begin
+        keys = self.modules
+        if to.respond_to?(:two_factor_methods) && to.two_factor_methods
+          keys = keys + Array(to.two_factor_methods)
+        end
+        STRATEGIES.values_at(*keys).compact.uniq.reverse
+      end
     end
 
     def no_input_strategies
@@ -92,7 +98,13 @@ module Devise
     end
 
     def routes
-      @routes ||= ROUTES.values_at(*self.modules).compact.uniq
+      @routes ||= begin
+        keys = self.modules
+        if to.respond_to?(:two_factor_methods) && to.two_factor_methods
+          keys = keys + Array(to.two_factor_methods)
+        end
+        ROUTES.values_at(*keys).compact.uniq
+      end
     end
 
     def authenticatable?

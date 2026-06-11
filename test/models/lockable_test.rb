@@ -201,7 +201,9 @@ class LockableTest < ActiveSupport::TestCase
     raw  = user.send_unlock_instructions
     locked_user = User.unlock_access_by_token(raw)
     assert_equal user, locked_user
+    assert_not locked_user.changed?
     assert_not user.reload.access_locked?
+    assert_nil user.reload.unlock_token
   end
 
   test 'should return a new record with errors when a invalid token is given' do

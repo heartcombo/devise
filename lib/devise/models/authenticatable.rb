@@ -192,7 +192,7 @@ module Devise
       #
       def send_devise_notification(notification, *args)
         message = devise_mailer.send(notification, self, *args)
-        message.deliver_now
+        message.public_send(Devise.mailer_delivery_method)
       end
 
       def downcase_keys

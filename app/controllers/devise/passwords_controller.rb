@@ -66,6 +66,15 @@ class Devise::PasswordsController < DeviseController
       if params[:reset_password_token].blank?
         set_flash_message(:alert, :no_token)
         redirect_to new_session_path(resource_name)
+      else
+        resource = resource_class.with_reset_password_token(params[:reset_password_token])
+        if resource.nil?
+          set_flash_message(:alert, :invalid_token)
+          redirect_to new_password_path(resource_name)
+        elsif !resource.reset_password_period_valid?
+          set_flash_message(:alert, :expired_token)
+          redirect_to new_password_path(resource_name)
+        end
       end
     end
 

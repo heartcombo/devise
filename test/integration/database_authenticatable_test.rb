@@ -74,6 +74,29 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
+  test 'sign in with invalid credentials should not invoke Devise::Encryptor.digest' do
+    module ::Devise::Encryptor
+      class << self
+        alias original_digest digest
+
+        def digest(klass, password)
+          raise 'Devise::Encryptor.digest should not be called here.'
+        end
+      end
+    end
+  
+    visit_with_option nil, new_user_session_path
+    fill_in 'email', with: 'user@test.com'
+    fill_in 'password', with: 'abcdef'
+    click_button 'Log In'
+
+    module ::Devise::Encryptor
+      class << self
+        alias digest original_digest
+      end
+    end
+  end
+
   test 'when in paranoid mode and without a valid e-mail' do
     swap Devise, paranoid: true do
       store_translations :en, devise: { failure: { not_found_in_database: 'Not found in database' } } do

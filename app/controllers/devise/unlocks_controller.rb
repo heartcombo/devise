@@ -22,6 +22,38 @@ class Devise::UnlocksController < DeviseController
 
   # GET /resource/unlock?unlock_token=abcdef
   def show
+    if resource_class.extra_step
+      @token = params[:unlock_token]
+      render :show
+    else
+      attempt_unlock
+    end
+  end
+
+  # GET /resource/unlock/confirm?unlock_token=abcdef
+  def confirm
+    attempt_unlock
+  end
+
+  protected
+
+  # The path used after sending unlock password instructions
+  def after_sending_unlock_instructions_path_for(resource)
+    new_session_path(resource) if is_navigational_format?
+  end
+
+  # The path used after unlocking the resource
+  def after_unlock_path_for(resource)
+    new_session_path(resource) if is_navigational_format?
+  end
+
+  def translation_scope
+    'devise.unlocks'
+  end
+
+  private
+
+  def attempt_unlock
     self.resource = resource_class.unlock_access_by_token(params[:unlock_token])
     yield resource if block_given?
 
@@ -33,20 +65,4 @@ class Devise::UnlocksController < DeviseController
       respond_with_navigational(resource.errors, status: :unprocessable_entity){ render :new }
     end
   end
-
-  protected
-
-    # The path used after sending unlock password instructions
-    def after_sending_unlock_instructions_path_for(resource)
-      new_session_path(resource) if is_navigational_format?
-    end
-
-    # The path used after unlocking the resource
-    def after_unlock_path_for(resource)
-      new_session_path(resource)  if is_navigational_format?
-    end
-
-    def translation_scope
-      'devise.unlocks'
-    end
 end

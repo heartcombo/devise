@@ -10,6 +10,11 @@ require "rails_app/config/environment"
 require "rails/test_help"
 require "orm/#{DEVISE_ORM}"
 
+# Routes are lazy-loaded by default in development and test from Rails 8, so the
+# Devise mappings declared by devise_for are not built until something loads the
+# routes. Load them now so unit tests can rely on Devise.mappings being present.
+Rails.application.reload_routes_unless_loaded
+
 I18n.load_path.concat Dir["#{File.dirname(__FILE__)}/support/locale/*.yml"]
 
 require 'mocha/minitest'

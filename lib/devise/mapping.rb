@@ -47,18 +47,26 @@ module Devise
     end
 
     def self.find_by_path!(path, path_type = :fullpath)
-      Devise.mappings.each_value { |m| return m if path.include?(m.send(path_type)) }
+      Devise.mappings.each_value { |m| return m if m.finalized? && path.include?(m.send(path_type)) }
       raise "Could not find a valid mapping for path #{path.inspect}"
     end
 
+    def self.mapping_name(resource, as: nil, singular: nil)
+      scoped_path = as ? "#{as}/#{resource}" : resource.to_s
+      singular = (singular || scoped_path.tr('/', '_').singularize).to_sym
+      [scoped_path, singular]
+    end
+
     def initialize(name, options) #:nodoc:
-      @scoped_path = options[:as] ? "#{options[:as]}/#{name}" : name.to_s
-      @singular = (options[:singular] || @scoped_path.tr('/', '_').singularize).to_sym
+      @resource = name
+      @scoped_path, @singular = self.class.mapping_name(name, as: options[:as], singular: options[:singular])
 
       @class_name = (options[:class_name] || name.to_s.classify).to_s
       @klass = Devise.ref(@class_name)
+    end
 
-      @path = (options[:path] || name).to_s
+    def add_routes_options!(options)
+      @path = (options[:path] || @resource).to_s
       @path_prefix = options[:path_prefix]
 
       @sign_out_via = options[:sign_out_via] || Devise.sign_out_via
@@ -71,6 +79,11 @@ module Devise
       default_path_names(options)
       default_used_route(options)
       default_used_helpers(options)
+      @finalized = true
+    end
+
+    def finalized?
+      !!@finalized
     end
 
     # Return modules for the mapping.

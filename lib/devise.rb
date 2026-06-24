@@ -273,14 +273,8 @@ module Devise
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.
+  mattr_accessor :mappings
   @@mappings = {}
-  def self.mappings
-    # Starting from Rails 8.0, routes are lazy-loaded by default in test and development environments.
-    # However, Devise's mappings are built during the routes loading phase.
-    # To ensure it works correctly, we need to load the routes first before accessing @@mappings.
-    Rails.application.try(:reload_routes_unless_loaded)
-    @@mappings
-  end
 
   # OmniAuth configurations.
   mattr_reader :omniauth_configs
@@ -360,11 +354,29 @@ module Devise
   end
   self.mailer = "Devise::Mailer"
 
-  # Small method that adds a mapping to Devise.
+  # Registers a mapping with Devise. This initializes a mapping that only
+  # contains information about the model; routing information must be added
+  # later (typically while routes are loaded) via
+  # `Devise::Mapping#add_routes_options!`.
+  #
+  # This is now idempotent, so that `devise_for` can still create a mapping if
+  # it was not initialized before route loading, or use the existing one if it
+  # was previously initialized.
   def self.add_mapping(resource, options)
+    _scoped_path, name = Devise::Mapping.mapping_name(resource, as: options[:as], singular: options[:singular])
+
+    if (mapping = @@mappings[name])
+      requested = (options[:class_name] || resource.to_s.classify).to_s
+      if options.key?(:class_name) && requested != mapping.class_name
+        raise ArgumentError, "conflicting class_name for the #{name.inspect} scope: " \
+          "already mapped to #{mapping.class_name.inspect} but got #{requested.inspect}"
+      end
+      return mapping
+    end
+
     mapping = Devise::Mapping.new(resource, options)
-    @@mappings[mapping.name] = mapping
-    @@default_scope ||= mapping.name
+    @@mappings[name] = mapping
+    @@default_scope ||= name
     @@helpers.each { |h| h.define_helpers(mapping) }
     mapping
   end

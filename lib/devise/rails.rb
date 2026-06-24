@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'devise/rails/routes'
+require 'devise/rails/devise_model'
 require 'devise/rails/warden_compat'
 
 module Devise
@@ -15,6 +16,10 @@ module Devise
     # Force routes to be loaded if we are doing any eager load.
     config.before_eager_load do |app|
       app.reload_routes! if Devise.reload_routes
+    end
+
+    config.after_initialize do
+      Devise.configure_warden!
     end
 
     initializer "devise.deprecator" do |app|

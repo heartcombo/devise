@@ -274,3 +274,54 @@ class ScopedRoutingTest < ActionController::TestCase
     assert_equal '/publisher/accounts/get_in', @routes.url_helpers.new_publisher_account_session_path
   end
 end
+
+class DeviseModelTest < ActiveSupport::TestCase
+  test 'registers a partial mapping that is not finalized' do
+    mapping = Devise.devise_model :registered_admin, class_name: "Admin"
+
+    assert_equal mapping, Devise.mappings[:registered_admin]
+    assert_not mapping.finalized?
+    assert_equal Admin, mapping.to
+  ensure
+    Devise.mappings.delete(:registered_admin)
+  end
+
+  test 'derives the class_name from the resource name when not given' do
+    mapping = Devise.devise_model :registered_admin
+
+    assert_equal "RegisteredAdmin", mapping.class_name
+  ensure
+    Devise.mappings.delete(:registered_admin)
+  end
+
+  test 'is idempotent for an already registered scope' do
+    first  = Devise.devise_model :registered_admin, class_name: "Admin"
+    second = Devise.devise_model :registered_admin, class_name: "Admin"
+
+    assert_same first, second
+  ensure
+    Devise.mappings.delete(:registered_admin)
+  end
+
+  test 'rejects routing options' do
+    e = assert_raise ArgumentError do
+      Devise.devise_model :registered_admin, path: "admins_area"
+    end
+    assert_match "only accepts model options", e.message
+    assert_nil Devise.mappings[:registered_admin]
+  end
+
+  test 'devise_for raises on a class_name conflicting with the partial mapping' do
+    Devise.devise_model :registered_admin, class_name: "Admin"
+
+    e = assert_raise ArgumentError do
+      routes = ActionDispatch::Routing::RouteSet.new
+      routes.draw do
+        devise_for :registered_admin, class_name: "User"
+      end
+    end
+    assert_match "conflicting class_name", e.message
+  ensure
+    Devise.mappings.delete(:registered_admin)
+  end
+end

@@ -16,7 +16,6 @@ module Devise
             " to :main_app as well in case you want to keep the current behavior."
         end
 
-        Devise.configure_warden!
         Devise.regenerate_helpers!
         true
       end
@@ -240,6 +239,7 @@ module ActionDispatch::Routing
 
       resources.each do |resource|
         mapping = Devise.add_mapping(resource, options)
+        mapping.add_routes_options!(options)
 
         begin
           raise_no_devise_method_error!(mapping.class_name) unless mapping.to.respond_to?(:devise)

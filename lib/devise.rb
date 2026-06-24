@@ -412,22 +412,30 @@ module Devise
     NO_INPUT << strategy if options[:no_input]
 
     if route = options[:route]
+      routes = {}
+
       case route
       when TrueClass
-        key, value = module_name, []
+        routes[module_name] = []
       when Symbol
-        key, value = route, []
+        routes[route] = []
       when Hash
-        key, value = route.keys.first, route.values.flatten
+        routes = route
       else
         raise ArgumentError, ":route should be true, a Symbol or a Hash"
       end
 
-      URL_HELPERS[key] ||= []
-      URL_HELPERS[key].concat(value)
-      URL_HELPERS[key].uniq!
+      routes.each do |key, value|
+        URL_HELPERS[key] ||= []
+        URL_HELPERS[key].concat(value)
+        URL_HELPERS[key].uniq!
 
-      ROUTES[module_name] = key
+        ROUTES[module_name] = key
+      end
+
+      if routes.size > 1
+        ROUTES[module_name] = routes.keys
+      end
     end
 
     if options[:model]

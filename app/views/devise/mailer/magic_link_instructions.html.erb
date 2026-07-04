@@ -1,0 +1,8 @@
+<p>Hello <%= @resource.email %>!</p>
+
+<p>Someone has requested a link to sign in to your account. You can do this through the link below.</p>
+
+<p><%= link_to 'Sign in to my account', magic_link_url(@resource, magic_link_token: @token) %></p>
+
+<p>If you didn't request this, please ignore this email.</p>
+<p>The link can be used only once and will expire in a few minutes.</p>

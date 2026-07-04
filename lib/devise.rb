@@ -203,6 +203,23 @@ module Devise
   mattr_accessor :sign_in_after_reset_password
   @@sign_in_after_reset_password = true
 
+  # Defines which key will be used when requesting a magic link for an account
+  mattr_accessor :magic_link_keys
+  @@magic_link_keys = [:email]
+
+  # Time interval you can sign in with a magic link token
+  mattr_accessor :magic_link_within
+  @@magic_link_within = 20.minutes
+
+  # How many magic links can be requested for an account within
+  # magic_link_request_period. nil disables rate limiting.
+  mattr_accessor :magic_link_request_limit
+  @@magic_link_request_limit = 10
+
+  # Time period used by magic_link_request_limit to limit magic link requests.
+  mattr_accessor :magic_link_request_period
+  @@magic_link_request_period = 1.hour
+
   # The default scope which is used by warden.
   mattr_accessor :default_scope
   @@default_scope = nil

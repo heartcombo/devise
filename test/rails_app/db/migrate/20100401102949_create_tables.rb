@@ -17,6 +17,12 @@ class CreateTables < ActiveRecord::Migration[5.0]
       ## Rememberable
       t.datetime :remember_created_at
 
+      ## Magic link authenticatable
+      t.string   :magic_link_token
+      t.datetime :magic_link_sent_at
+      t.integer  :magic_link_requests_count, default: 0, null: false
+      t.datetime :magic_link_first_request_at
+
       ## Trackable
       t.integer  :sign_in_count, default: 0
       t.datetime :current_sign_in_at

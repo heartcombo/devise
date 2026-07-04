@@ -21,6 +21,12 @@ class User
   ## Rememberable
   field :remember_created_at, type: Time
 
+  ## Magic link authenticatable
+  field :magic_link_token,            type: String
+  field :magic_link_sent_at,          type: Time
+  field :magic_link_requests_count,   type: Integer, default: 0
+  field :magic_link_first_request_at, type: Time
+
   ## Trackable
   field :sign_in_count,      type: Integer, default: 0
   field :current_sign_in_at, type: Time

@@ -52,7 +52,7 @@ class MappingTest < ActiveSupport::TestCase
   end
 
   test 'has strategies depending on the model declaration' do
-    assert_equal [:rememberable, :database_authenticatable], Devise.mappings[:user].strategies
+    assert_equal [:rememberable, :magic_link_authenticatable, :database_authenticatable], Devise.mappings[:user].strategies
     assert_equal [:database_authenticatable], Devise.mappings[:admin].strategies
   end
 
@@ -112,12 +112,14 @@ class MappingTest < ActiveSupport::TestCase
     assert mapping.recoverable?
     assert mapping.rememberable?
     assert mapping.registerable?
+    assert mapping.magic_link_authenticatable?
 
     mapping = Devise.mappings[:admin]
     assert mapping.authenticatable?
     assert mapping.recoverable?
     assert mapping.lockable?
     assert_not mapping.omniauthable?
+    assert_not mapping.magic_link_authenticatable?
   end
 
   test 'find mapping by path' do

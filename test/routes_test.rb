@@ -34,6 +34,20 @@ class DefaultRoutingTest < ActionController::TestCase
     assert_recognizes({controller: 'devise/confirmations', action: 'show'}, {path: 'users/confirmation', method: :get})
   end
 
+  test 'map new user magic link' do
+    assert_recognizes({controller: 'devise/magic_links', action: 'new'}, 'users/magic_link/new')
+    assert_named_route "/users/magic_link/new", :new_user_magic_link_path
+  end
+
+  test 'map create user magic link' do
+    assert_recognizes({controller: 'devise/magic_links', action: 'create'}, {path: 'users/magic_link', method: :post})
+    assert_named_route "/users/magic_link", :user_magic_link_path
+  end
+
+  test 'map show user magic link' do
+    assert_recognizes({controller: 'devise/magic_links', action: 'show'}, {path: 'users/magic_link', method: :get})
+  end
+
   test 'map new user password' do
     assert_recognizes({controller: 'devise/passwords', action: 'new'}, 'users/password/new')
     assert_named_route "/users/password/new", :new_user_password_path

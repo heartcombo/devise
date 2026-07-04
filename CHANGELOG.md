@@ -1,3 +1,8 @@
+### unreleased
+
+* enhancements
+  * Add `:magic_link_authenticatable` module, allowing users to sign in through a single-use, expiring magic link sent by email, without typing a password. Add the module to your model along with the `magic_link_token`/`magic_link_sent_at` columns to opt in. Configurable through `magic_link_keys` and `magic_link_within`. Magic link requests are rate limited per account (10 requests per hour by default, tracked through the `magic_link_requests_count`/`magic_link_first_request_at` columns), configurable through `magic_link_request_limit` and `magic_link_request_period`.
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

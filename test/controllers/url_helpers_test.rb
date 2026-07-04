@@ -48,6 +48,11 @@ class RoutesTest < Devise::ControllerTestCase
     assert_path_and_url :password, :edit
   end
 
+  test 'should alias magic_link to mapped user magic link' do
+    assert_path_and_url :magic_link
+    assert_path_and_url :magic_link, :new
+  end
+
   test 'should alias confirmation to mapped user confirmation' do
     assert_path_and_url :confirmation
     assert_path_and_url :confirmation, :new

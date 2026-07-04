@@ -5,7 +5,7 @@ require 'rails/generators/base'
 module Devise
   module Generators
     class ControllersGenerator < Rails::Generators::Base
-      CONTROLLERS = %w(confirmations passwords registrations sessions unlocks omniauth_callbacks).freeze
+      CONTROLLERS = %w(confirmations magic_links passwords registrations sessions unlocks omniauth_callbacks).freeze
 
       desc <<-DESC.strip_heredoc
         Create inherited Devise controllers in your app/controllers folder.

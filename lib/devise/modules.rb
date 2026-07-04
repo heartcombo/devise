@@ -7,6 +7,7 @@ Devise.with_options model: true do |d|
   d.with_options strategy: true do |s|
     routes = [nil, :new, :destroy]
     s.add_module :database_authenticatable, controller: :sessions, route: { session: routes }
+    s.add_module :magic_link_authenticatable, controller: :magic_links, route: { magic_link: [nil, :new] }
     s.add_module :rememberable, no_input: true
   end
 

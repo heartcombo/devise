@@ -192,6 +192,10 @@ Devise.setup do |config|
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
   # config.timeout_in = 30.minutes
+  #
+  # You can also pass a Hash to additionally enforce a maximum session length,
+  # timing the user out once it is reached regardless of activity:
+  # config.timeout_in = { inactivity: 30.minutes, max: 8.hours }
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.

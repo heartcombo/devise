@@ -31,4 +31,9 @@ class UsersController < ApplicationController
     user_session['last_request_at'] = 31.minutes.ago.utc
     render body: 'User will be expired on next request'
   end
+
+  def expire_session
+    user_session['session_created_at'] = 9.hours.ago.utc
+    render body: 'User session will be expired on next request'
+  end
 end

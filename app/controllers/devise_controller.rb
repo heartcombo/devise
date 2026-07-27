@@ -96,7 +96,7 @@ MESSAGE
 
   # Returns real navigational formats which are supported by Rails
   def navigational_formats
-    @navigational_formats ||= Devise.navigational_formats.select { |format| Mime::EXTENSION_LOOKUP[format.to_s] }
+    @navigational_formats ||= Devise.navigational_formats.select { |format| Mime::Type.lookup_by_extension(format.to_s) }
   end
 
   def unknown_action!(msg)

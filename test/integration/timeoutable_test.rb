@@ -208,6 +208,44 @@ class SessionTimeoutTest < Devise::IntegrationTest
     assert warden.authenticated?(:user)
   end
 
+  test 'does not update last_request_at within the last_request_at_update_interval' do
+    swap Devise, last_request_at_update_interval: 5.minutes do
+      sign_in_as_user
+      first_request_at = last_request_at
+      assert_not_nil first_request_at
+
+      get users_path
+      assert_equal first_request_at, last_request_at
+    end
+  end
+
+  test 'updates last_request_at after the last_request_at_update_interval has elapsed' do
+    swap Devise, last_request_at_update_interval: 5.minutes do
+      sign_in_as_user
+      first_request_at = last_request_at
+      assert_not_nil first_request_at
+
+      new_time = 6.minutes.from_now
+      Time.stubs(:now).returns(new_time)
+
+      get users_path
+      assert_not_equal first_request_at, last_request_at
+    end
+  end
+
+  test 'last_request_at_update_interval defaults to nil and writes on every request' do
+    assert_nil Devise.last_request_at_update_interval
+
+    sign_in_as_user
+    first_request_at = last_request_at
+
+    new_time = 10.seconds.from_now
+    Time.stubs(:now).returns(new_time)
+
+    get users_path
+    assert_not_equal first_request_at, last_request_at
+  end
+
   test 'does not crash when the last_request_at is a String' do
     user = sign_in_as_user
 

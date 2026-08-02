@@ -193,6 +193,14 @@ Devise.setup do |config|
   # time the user will be asked for credentials again. Default is 30 minutes.
   # config.timeout_in = 30.minutes
 
+  # Minimum interval between session writes for :timeoutable. When set,
+  # last_request_at is only updated if this much time has elapsed since the
+  # last write. Useful for reducing database writes on high-traffic apps (e.g.
+  # when using Devise::Timeoutable with a database-backed session store).
+  # Must be less than timeout_in to avoid premature session expiry.
+  # Default is nil (write on every request).
+  # config.last_request_at_update_interval = 1.minute
+
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
   # :failed_attempts = Locks an account after a number of failed attempts to sign in.

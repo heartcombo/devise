@@ -14,6 +14,9 @@ module Devise
     # Timeoutable adds the following options to +devise+:
     #
     #   * +timeout_in+: the interval to timeout the user session without activity.
+    #   * +last_request_at_update_interval+: the minimum time that must pass before
+    #     last_request_at is written to the session again. Reduces database writes
+    #     on busy apps. Defaults to nil (write on every request).
     #
     # == Examples
     #
@@ -35,10 +38,14 @@ module Devise
         self.class.timeout_in
       end
 
+      def last_request_at_update_interval
+        self.class.last_request_at_update_interval
+      end
+
       private
 
       module ClassMethods
-        Devise::Models.config(self, :timeout_in)
+        Devise::Models.config(self, :timeout_in, :last_request_at_update_interval)
       end
     end
   end

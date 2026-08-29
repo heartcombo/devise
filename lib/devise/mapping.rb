@@ -47,7 +47,11 @@ module Devise
     end
 
     def self.find_by_path!(path, path_type = :fullpath)
-      Devise.mappings.each_value { |m| return m if path.include?(m.send(path_type)) }
+      Devise.mappings.each_value do |mapping|
+        mapping_path = mapping.public_send(path_type).to_s.sub(%r{\A/+}, '').sub(%r{/+\z}, '')
+        return mapping if mapping_path.empty? || path.match?(%r{(?:\A|/)#{Regexp.escape(mapping_path)}(?:/|\z)})
+      end
+
       raise "Could not find a valid mapping for path #{path.inspect}"
     end
 

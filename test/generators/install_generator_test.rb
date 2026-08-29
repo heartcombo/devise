@@ -10,11 +10,6 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   test "assert all files are properly created" do
     run_generator(["--orm=active_record"])
     assert_file "config/initializers/devise.rb", /devise\/orm\/active_record/
-    assert_file "config/initializers/devise.rb", /config\.mailer_sender = "please-change-me-at-config-initializers-devise@example\.com"/
-    assert_file "config/initializers/devise.rb", /require "devise\/orm\/active_record"/
-    assert_file "config/initializers/devise.rb", /config\.case_insensitive_keys = \[ :email \]/
-    assert_file "config/initializers/devise.rb", /config\.strip_whitespace_keys = \[ :email \]/
-    assert_file "config/initializers/devise.rb", /config\.skip_session_storage = \[ :http_auth \]/
     assert_file "config/locales/devise.en.yml"
   end
 

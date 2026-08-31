@@ -16,6 +16,7 @@ module Devise
             " to :main_app as well in case you want to keep the current behavior."
         end
 
+        Devise.configure_warden!
         Devise.regenerate_helpers!
         true
       end

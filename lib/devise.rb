@@ -496,25 +496,27 @@ module Devise
   # A method used internally to complete the setup of warden manager after routes are loaded.
   # See lib/devise/rails/routes.rb - ActionDispatch::Routing::RouteSet#finalize_with_devise!
   def self.configure_warden! #:nodoc:
-    @@warden_configured ||= begin
-      warden_config.failure_app   = Devise::Delegator.new
-      warden_config.default_scope = Devise.default_scope
-      warden_config.intercept_401 = false
+    warden_config.failure_app   = Devise::Delegator.new
+    warden_config.default_scope = Devise.default_scope
+    warden_config.intercept_401 = false
 
-      Devise.mappings.each_value do |mapping|
-        warden_config.scope_defaults mapping.name, strategies: mapping.strategies
+    Devise.mappings.each_value do |mapping|
+      warden_config.scope_defaults mapping.name, strategies: mapping.strategies
 
-        warden_config.serialize_into_session(mapping.name) do |record|
-          mapping.to.serialize_into_session(record)
-        end
-
-        warden_config.serialize_from_session(mapping.name) do |args|
-          mapping.to.serialize_from_session(*args)
-        end
+      warden_config.serialize_into_session(mapping.name) do |record|
+        mapping.to.serialize_into_session(record)
       end
 
-      @@warden_config_blocks.map { |block| block.call Devise.warden_config }
-      true
+      warden_config.serialize_from_session(mapping.name) do |args|
+        mapping.to.serialize_from_session(*args)
+      end
+    end
+
+    config_blocks = @@warden_config_blocks
+    @@warden_config_blocks = []
+
+    config_blocks.each do |block|
+      block.call Devise.warden_config
     end
   end
 

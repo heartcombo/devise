@@ -61,11 +61,11 @@ jobs:
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
       DEVISE_ORM: ${{ matrix.orm }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true # runs bundle install and caches installed gems automatically
-      - uses: supercharge/mongodb-github-action@1.12.1
+      - uses: supercharge/mongodb-github-action@315db7fe45ac2880b7758f1933e6e5d59afd5e94 # 1.12.1
         if: ${{ matrix.orm == 'mongoid' }}
       - run: bundle exec rake

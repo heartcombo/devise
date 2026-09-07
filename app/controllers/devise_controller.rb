@@ -109,7 +109,7 @@ MESSAGE
     instance_variable_set(:"@#{resource_name}", new_resource)
   end
 
-  # Helper for use in before_actions where no authentication is required.
+  # Helper for use in before_actions where it is required that the user is NOT authenticated.
   #
   # Example:
   #   before_action :require_no_authentication, only: :new

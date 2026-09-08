@@ -41,6 +41,10 @@ module Devise
         headers.delete(:from) if default_params[:from]
         headers.delete(:reply_to) if default_params[:reply_to]
 
+        # Tell the recipient's software when the message stops being useful
+        expiry = expires_at_for(action)
+        headers[:Expires] = expiry.rfc2822 if expiry
+
         headers.merge!(opts)
 
         @email = headers[:to]
@@ -59,6 +63,20 @@ module Devise
         template_path = _prefixes.dup
         template_path.unshift "#{@devise_mapping.scoped_path}/mailer" if self.class.scoped_views?
         template_path
+      end
+
+      def expires_at_for(action)
+        case action
+        when :reset_password_instructions
+          expires_at(resource.reset_password_sent_at, resource.class.reset_password_within)
+        when :confirmation_instructions
+          # Note: allow_unconfirmed_access_for would be wrong here.
+          expires_at(resource.confirmation_sent_at, resource.class.confirm_within)
+        end
+      end
+
+      def expires_at(sent_at, within)
+        sent_at + within if sent_at && within
       end
 
       # Set up a subject doing an I18n lookup. At first, it attempts to set a subject

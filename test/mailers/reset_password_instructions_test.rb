@@ -80,6 +80,44 @@ class ResetPasswordInstructionsTest < ActionMailer::TestCase
     assert_match user.email, mail.body.encoded
   end
 
+  test 'headers should specify when the link expires' do
+    swap Devise, reset_password_within: 2.days do
+      assert_present mail['Expires']
+      assert_equal (user.reset_password_sent_at + 2.days).rfc2822, mail['Expires'].value
+    end
+  end
+
+  test 'expiry should follow the model configuration' do
+    swap Devise, reset_password_within: 2.days do
+      swap_model_config User, reset_password_within: 20.minutes do
+        assert_equal (user.reset_password_sent_at + 20.minutes).rfc2822, mail['Expires'].value
+      end
+    end
+  end
+
+  test 'expiry should be measured from the token creation, not from send time' do
+    swap Devise, reset_password_within: 6.hours do
+      stale = create_user
+      stale.reset_password_sent_at = 5.hours.ago
+
+      Devise::Mailer.reset_password_instructions(stale, 'raw-token').deliver_now
+      expires = ActionMailer::Base.deliveries.last['Expires']
+
+      assert_equal (stale.reset_password_sent_at + 6.hours).rfc2822, expires.value
+    end
+  end
+
+  # It's not clear what should happen if the token has already expired
+  # by the time the message can be sent. For now: don't test.
+
+  test 'no expiry is given for a record that never had a token issued' do
+    fresh = create_user
+
+    Devise::Mailer.reset_password_instructions(fresh, 'raw-token').deliver_now
+
+    assert_nil ActionMailer::Base.deliveries.last['Expires']
+  end
+
   test 'body should have link to confirm the account' do
     host, port = ActionMailer::Base.default_url_options.values_at :host, :port
 

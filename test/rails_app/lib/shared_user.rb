@@ -5,7 +5,7 @@ module SharedUser
 
   included do
     devise :database_authenticatable, :confirmable, :lockable, :recoverable,
-           :registerable, :rememberable, :timeoutable,
+           :registerable, :rememberable, :timeoutable, :magic_link_authenticatable,
            :trackable, :validatable, :omniauthable, password_length: 7..72,
            reconfirmable: false
 

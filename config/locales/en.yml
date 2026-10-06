@@ -12,13 +12,21 @@ en:
       invalid: "Invalid %{authentication_keys} or password."
       locked: "Your account is locked."
       last_attempt: "You have one more attempt before your account is locked."
+      magic_link_invalid: "Invalid or expired magic link. Please request a new one."
       not_found_in_database: "Invalid %{authentication_keys} or password."
       timeout: "Your session expired. Please sign in again to continue."
       unauthenticated: "You need to sign in or sign up before continuing."
       unconfirmed: "You have to confirm your email address before continuing."
+    magic_links:
+      no_token: "You can't access this page without coming from a magic link email. If you do come from a magic link email, please make sure you used the full URL provided."
+      send_instructions: "You will receive an email with a magic link to sign in to your account in a few minutes."
+      send_paranoid_instructions: "If your email address exists in our database, you will receive an email with a magic link to sign in to your account in a few minutes."
+      signed_in: "Signed in successfully."
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
+      magic_link_instructions:
+        subject: "Magic link sign in instructions"
       reset_password_instructions:
         subject: "Reset password instructions"
       unlock_instructions:
@@ -58,6 +66,7 @@ en:
       already_confirmed: "was already confirmed, please try signing in"
       confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
       expired: "has expired, please request a new one"
+      magic_link_request_limit_exceeded: "Too many magic links were requested. You can request a new one in %{period}."
       not_found: "not found"
       not_locked: "was not locked"
       not_saved:

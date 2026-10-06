@@ -63,6 +63,11 @@ module ActionDispatch::Routing
     #      user_confirmation GET    /users/confirmation(.:format)     {controller:"devise/confirmations", action:"show"}
     #                        POST   /users/confirmation(.:format)     {controller:"devise/confirmations", action:"create"}
     #
+    #  # Magic link routes for MagicLinkAuthenticatable, if User model has :magic_link_authenticatable configured
+    #    new_user_magic_link GET    /users/magic_link/new(.:format)   {controller:"devise/magic_links", action:"new"}
+    #        user_magic_link GET    /users/magic_link(.:format)       {controller:"devise/magic_links", action:"show"}
+    #                        POST   /users/magic_link(.:format)       {controller:"devise/magic_links", action:"create"}
+    #
     # ==== Routes integration
     #
     # +devise_for+ is meant to play nicely with other routes methods. For example,
@@ -119,7 +124,7 @@ module ActionDispatch::Routing
     #      end
     #
     #  * path_names: configure different path names to overwrite defaults :sign_in, :sign_out, :sign_up,
-    #    :password, :confirmation, :unlock.
+    #    :password, :confirmation, :unlock, :magic_link.
     #
     #      devise_for :users, path_names: {
     #        sign_in: 'login', sign_out: 'logout',
@@ -384,6 +389,11 @@ module ActionDispatch::Routing
       def devise_password(mapping, controllers) #:nodoc:
         resource :password, only: [:new, :create, :edit, :update],
           path: mapping.path_names[:password], controller: controllers[:passwords]
+      end
+
+      def devise_magic_link(mapping, controllers) #:nodoc:
+        resource :magic_link, only: [:new, :create, :show],
+          path: mapping.path_names[:magic_link], controller: controllers[:magic_links]
       end
 
       def devise_confirmation(mapping, controllers) #:nodoc:

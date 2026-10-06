@@ -233,6 +233,29 @@ Devise.setup do |config|
   # reset. Defaults to true, so a user is signed in automatically after a reset.
   # config.sign_in_after_reset_password = true
 
+  # ==> Configuration for :magic_link_authenticatable
+  #
+  # Defines which key will be used when requesting a magic link for an account
+  # config.magic_link_keys = [:email]
+
+  # Time interval you can sign in with a magic link token. Magic links are
+  # single-use, so keep this interval short since each link signs the user in
+  # directly without a password.
+  # config.magic_link_within = 20.minutes
+
+  # How many magic links can be requested for an account within
+  # `magic_link_request_period`, to prevent the email delivery from being
+  # spammed. Requires the magic_link_requests_count and
+  # magic_link_first_request_at columns (see migrations). Set to nil to
+  # disable rate limiting. Can also be configured per model, e.g.
+  # `devise :magic_link_authenticatable, magic_link_request_limit: nil`.
+  # config.magic_link_request_limit = 10
+
+  # Time period used by `magic_link_request_limit` to limit magic link
+  # requests. Once this period has passed since the first request, the
+  # counter resets.
+  # config.magic_link_request_period = 1.hour
+
   # ==> Configuration for :encryptable
   # Allow you to use another hashing or encryption algorithm besides bcrypt (default).
   # You can use :sha1, :sha512 or algorithms from others authentication tools as

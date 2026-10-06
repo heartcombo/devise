@@ -33,6 +33,12 @@ module Mongoid
   ## Rememberable
   field :remember_created_at, type: Time
 
+  ## Magic link authenticatable
+  # field :magic_link_token,            type: String
+  # field :magic_link_sent_at,          type: Time
+  # field :magic_link_requests_count,   type: Integer, default: 0 # Only if magic link requests are rate limited
+  # field :magic_link_first_request_at, type: Time # Only if magic link requests are rate limited
+
   ## Trackable
   # field :sign_in_count,      type: Integer, default: 0
   # field :current_sign_in_at, type: Time

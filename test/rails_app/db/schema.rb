@@ -39,6 +39,10 @@ ActiveRecord::Schema.define(version: 20100401102949) do
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string   "magic_link_token"
+    t.datetime "magic_link_sent_at"
+    t.integer  "magic_link_requests_count",  default: 0, null: false
+    t.datetime "magic_link_first_request_at"
     t.integer  "sign_in_count",          default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"

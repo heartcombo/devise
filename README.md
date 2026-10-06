@@ -7,9 +7,10 @@ Devise is a flexible authentication solution for Rails based on Warden. It:
 * Allows you to have multiple models signed in at the same time;
 * Is based on a modularity concept: use only what you really need.
 
-It's composed of 10 modules:
+It's composed of 11 modules:
 
 * [Database Authenticatable](https://www.rubydoc.info/gems/devise/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+* [Magic Link Authenticatable](https://www.rubydoc.info/gems/devise/Devise/Models/MagicLinkAuthenticatable): sends a single-use, expiring sign in link (magic link) by email, allowing users to sign in without typing a password.
 * [Omniauthable](https://www.rubydoc.info/gems/devise/Devise/Models/Omniauthable): adds OmniAuth (https://github.com/omniauth/omniauth) support.
 * [Confirmable](https://www.rubydoc.info/gems/devise/Devise/Models/Confirmable): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
 * [Recoverable](https://www.rubydoc.info/gems/devise/Devise/Models/Recoverable): resets the user password and sends reset instructions.
@@ -46,6 +47,7 @@ It's composed of 10 modules:
 	- [Controller tests](#controller-tests)
 	- [Integration tests](#integration-tests)
 	- [OmniAuth](#omniauth)
+	- [Magic link sign in](#magic-link-sign-in)
 	- [Configuring multiple models](#configuring-multiple-models)
 	- [Active Job Integration](#active-job-integration)
 	- [Password reset tokens and Rails logs](#password-reset-tokens-and-rails-logs)
@@ -670,6 +672,46 @@ You can read more about OmniAuth support in the wiki:
 
 * https://github.com/heartcombo/devise/wiki/OmniAuth:-Overview
 
+### Magic link sign in
+
+Devise can send single-use, expiring sign in links (magic links) by email, allowing users to sign in without typing a password. To use it, add the `:magic_link_authenticatable` module to your model and add the required columns to your migration:
+
+```ruby
+# Inside your User model
+devise :database_authenticatable, :magic_link_authenticatable
+
+# In a migration
+add_column :users, :magic_link_token, :string
+add_column :users, :magic_link_sent_at, :datetime
+add_column :users, :magic_link_requests_count, :integer, default: 0, null: false
+add_column :users, :magic_link_first_request_at, :datetime
+add_index :users, :magic_link_token, unique: true
+```
+
+Users can then request a magic link at `/users/magic_link/new`. The email contains a link to `/users/magic_link?magic_link_token=abcdef` which signs the user in directly. Each link can be used only once and expires after `config.magic_link_within` (20 minutes by default). Like the other token-based flows, only the token digest is stored in the database.
+
+The keys used to look up the account when requesting a magic link can be configured with `config.magic_link_keys` (defaults to `[:email]`).
+
+Magic link requests are rate limited per account so the email delivery cannot be spammed: at most `config.magic_link_request_limit` links (10 by default) can be requested within `config.magic_link_request_period` (1 hour by default) — once the period since the first request has passed, the counter resets. Requests over the limit get a validation error telling the user when they can try again. Rate limiting can be disabled by setting `config.magic_link_request_limit = nil`, in which case the `magic_link_requests_count`/`magic_link_first_request_at` columns are not needed.
+
+Like the other Devise options, the rate limit can also be configured per model directly in the `devise` call, taking precedence over the initializer value:
+
+```ruby
+class User < ApplicationRecord
+  # 5 magic links every 30 minutes for this model only
+  devise :database_authenticatable, :magic_link_authenticatable,
+         magic_link_request_limit: 5, magic_link_request_period: 30.minutes
+end
+
+class Admin < ApplicationRecord
+  # disable magic link rate limiting for this model only
+  devise :database_authenticatable, :magic_link_authenticatable,
+         magic_link_request_limit: nil
+end
+```
+
+Magic links respect the other modules used by your model: unconfirmed (with `:confirmable`) or locked (with `:lockable`) accounts cannot sign in through a magic link.
+
 ### Configuring multiple models
 
 Devise allows you to set up as many Devise models as you want. If you want to have an Admin model with just authentication and timeout features, in addition to the User model above, just run:
@@ -715,7 +757,7 @@ end
 
 ### Password reset tokens and Rails logs
 
-If you enable the [Recoverable](https://www.rubydoc.info/gems/devise/Devise/Models/Recoverable) module, note that a stolen password reset token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
+If you enable the [Recoverable](https://www.rubydoc.info/gems/devise/Devise/Models/Recoverable) or [Magic Link Authenticatable](https://www.rubydoc.info/gems/devise/Devise/Models/MagicLinkAuthenticatable) modules, note that a stolen password reset token or magic link token could give an attacker access to your application. Devise takes effort to generate random, secure tokens, and stores only token digests in the database, never plaintext. However the default logging behavior in Rails can cause plaintext tokens to leak into log files:
 
 1. Action Mailer logs the entire contents of all outgoing emails to the DEBUG level. Password reset tokens delivered to users in email will be leaked.
 2. Active Job logs all arguments to every enqueued job at the INFO level. If you configure Devise to use `deliver_later` to send password reset emails, password reset tokens will be leaked.

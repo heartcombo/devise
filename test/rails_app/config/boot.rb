@@ -8,6 +8,10 @@ module Devise
   module Test
     # Detection for minor differences between Rails versions in tests.
 
+    def self.lazy_routes?
+      defined?(Rails::Engine::LazyRouteSet)
+    end
+
     def self.rails71_and_up?
       !rails70? && Rails::VERSION::MAJOR >= 7
     end

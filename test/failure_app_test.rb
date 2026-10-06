@@ -479,4 +479,19 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'http://test.host/users/sign_in', @response.second['Location']
     end
   end
+
+  # Only on Rails 7.1+, where the CSRF token is deferred and committed via the controller instance.
+  if ActionDispatch::Request.method_defined?(:commit_csrf_token)
+    context "Committing the CSRF token" do
+      test "stores the deferred CSRF token in the session" do
+        csrf_token = "a-csrf-token"
+        request = ActionDispatch::Request.new(
+          "rack.session" => {},
+          ActionController::RequestForgeryProtection::CSRF_TOKEN => csrf_token
+        )
+        Devise::FailureApp.new.commit_csrf_token(request)
+        assert_equal csrf_token, request.session[:_csrf_token]
+      end
+    end
+  end
 end

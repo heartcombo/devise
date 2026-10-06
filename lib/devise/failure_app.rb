@@ -11,6 +11,12 @@ module Devise
     include ActionController::UrlFor
     include ActionController::Redirecting
 
+    # Rails 7.1+ defers writing the CSRF token to the session and commits it at
+    # the end of the request through the controller instance. FailureApp becomes
+    # that instance, so it needs +commit_csrf_token+ from RequestForgeryProtection
+    # to avoid silently dropping the token (and the session) on auth failure.
+    include ActionController::RequestForgeryProtection
+
     include Rails.application.routes.url_helpers
     include Rails.application.routes.mounted_helpers
 

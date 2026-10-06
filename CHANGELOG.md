@@ -1,3 +1,8 @@
+### Unreleased
+
+* bug fixes
+  * Fix `Devise::FailureApp` not committing the CSRF token to the session on Rails 7.1+, which dropped the session and CSRF token on authentication failure. [#5851](https://github.com/heartcombo/devise/pull/5851)
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

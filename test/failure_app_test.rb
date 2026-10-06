@@ -383,6 +383,17 @@ class FailureTest < ActiveSupport::TestCase
       assert_includes @response.third.body, 'Your account is not activated yet.'
     end
 
+    test 'calls the original controller without the query string in PATH_INFO' do
+      env = {
+        "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in?redirect_to=/dashboard" },
+        "devise.mapping" => Devise.mappings[:user],
+        "warden" => stub_everything
+      }
+      call_failure(env)
+      assert_includes @response.third.body, '<h2>Log in</h2>'
+      assert_equal '/users/sign_in', @request.env["PATH_INFO"]
+    end
+
     if Rails.application.config.respond_to?(:relative_url_root)
       test 'calls the original controller with the proper environment considering the relative url root' do
         swap Rails.application.config, relative_url_root: "/sample" do
@@ -394,6 +405,20 @@ class FailureTest < ActiveSupport::TestCase
           call_failure(env)
           assert_includes @response.third.body, '<h2>Log in</h2>'
           assert_includes @response.third.body, 'Invalid email or password.'
+          assert_equal '/sample', @request.env["SCRIPT_NAME"]
+          assert_equal '/users/sign_in', @request.env["PATH_INFO"]
+        end
+      end
+
+      test 'calls the original controller without the query string in PATH_INFO considering the relative url root' do
+        swap Rails.application.config, relative_url_root: "/sample" do
+          env = {
+            "warden.options" => { recall: "devise/sessions#new", attempted_path: "/sample/users/sign_in?redirect_to=/dashboard"},
+            "devise.mapping" => Devise.mappings[:user],
+            "warden" => stub_everything
+          }
+          call_failure(env)
+          assert_includes @response.third.body, '<h2>Log in</h2>'
           assert_equal '/sample', @request.env["SCRIPT_NAME"]
           assert_equal '/users/sign_in', @request.env["PATH_INFO"]
         end

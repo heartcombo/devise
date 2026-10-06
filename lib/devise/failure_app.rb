@@ -57,14 +57,18 @@ module Devise
     end
 
     def recall
+      # Rack does not allow the query string in PATH_INFO, and it is already
+      # available to the recalled action through QUERY_STRING.
+      path_info = attempted_path.to_s.split("?").first
+
       header_info = if relative_url_root?
         base_path = Pathname.new(relative_url_root)
-        full_path = Pathname.new(attempted_path)
+        full_path = Pathname.new(path_info)
 
         { "SCRIPT_NAME" => relative_url_root,
           "PATH_INFO" => '/' + full_path.relative_path_from(base_path).to_s }
       else
-        { "PATH_INFO" => attempted_path }
+        { "PATH_INFO" => path_info }
       end
 
       header_info.each do | var, value|

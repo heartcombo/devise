@@ -1,3 +1,8 @@
+### unreleased
+
+* bug fixes
+  * Do not include the query string in `PATH_INFO` when the failure app recalls the original controller. [#5704](https://github.com/heartcombo/devise/issues/5704)
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

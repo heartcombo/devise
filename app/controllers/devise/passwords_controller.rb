@@ -71,7 +71,8 @@ class Devise::PasswordsController < DeviseController
 
     # Check if the user should be signed in automatically after resetting the password.
     def sign_in_after_reset_password?
-      resource_class.sign_in_after_reset_password
+      setting = resource_class.sign_in_after_reset_password
+      setting.respond_to?(:call) ? setting.call(resource) : setting
     end
 
     # Check if proper Lockable module methods are present & unlock strategy

@@ -160,6 +160,45 @@ class SessionTimeoutTest < Devise::IntegrationTest
     end
   end
 
+  test 'sets session_created_at in user session after sign in' do
+    sign_in_as_user
+    assert_not_nil @controller.user_session['session_created_at']
+  end
+
+  test 'does not reset session_created_at on subsequent requests' do
+    sign_in_as_user
+    created_at = @controller.user_session['session_created_at']
+    assert_not_nil created_at
+
+    get users_path
+    assert_equal created_at, @controller.user_session['session_created_at']
+  end
+
+  test 'times out user session once the maximum session length is reached' do
+    swap Devise, timeout_in: { inactivity: 30.minutes, max: 8.hours } do
+      user = sign_in_as_user
+
+      get users_path
+      assert_response :success
+      assert warden.authenticated?(:user)
+
+      get expire_session_user_path(user)
+      get users_path
+      assert_redirected_to users_path
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  test 'does not time out on maximum session length before it is reached' do
+    swap Devise, timeout_in: { inactivity: 30.minutes, max: 8.hours } do
+      sign_in_as_user
+
+      get users_path
+      assert_response :success
+      assert warden.authenticated?(:user)
+    end
+  end
+
   test 'error message with i18n' do
     store_translations :en, devise: {
       failure: { user: { timeout: 'Session expired!' } }

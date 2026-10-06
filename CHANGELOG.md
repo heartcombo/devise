@@ -1,3 +1,9 @@
+### Unreleased
+
+* bug fixes
+  * Fix Warden being unconfigured on the first request when routes are lazy-loaded (Rails 8+). Devise now loads routes right before `Warden::Manager` runs. [#5830](https://github.com/heartcombo/devise/issues/5830) [#5844](https://github.com/heartcombo/devise/issues/5844) [#5752](https://github.com/heartcombo/devise/issues/5752)
+  * Use lazy routes in all environments on Rails 8+, so `devise_for` no longer loads models during initialization. [#5847](https://github.com/heartcombo/devise/issues/5847)
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

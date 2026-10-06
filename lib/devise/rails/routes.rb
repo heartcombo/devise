@@ -240,6 +240,7 @@ module ActionDispatch::Routing
 
       resources.each do |resource|
         mapping = Devise.add_mapping(resource, options)
+        mapping.add_routes_options!(options)
 
         begin
           raise_no_devise_method_error!(mapping.class_name) unless mapping.to.respond_to?(:devise)

@@ -273,14 +273,8 @@ module Devise
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.
+  mattr_accessor :mappings
   @@mappings = {}
-  def self.mappings
-    # Starting from Rails 8.0, routes are lazy-loaded by default in test and development environments.
-    # However, Devise's mappings are built during the routes loading phase.
-    # To ensure it works correctly, we need to load the routes first before accessing @@mappings.
-    Rails.application.try(:reload_routes_unless_loaded)
-    @@mappings
-  end
 
   # OmniAuth configurations.
   mattr_reader :omniauth_configs
@@ -360,11 +354,29 @@ module Devise
   end
   self.mailer = "Devise::Mailer"
 
-  # Small method that adds a mapping to Devise.
+  # Registers a mapping with Devise. This initializes a mapping that only
+  # contains information about the model; routing information must be added
+  # later (typically while routes are loaded) via
+  # `Devise::Mapping#add_routes_options!`.
+  #
+  # This is now idempotent, so that `devise_for` can still create a mapping if
+  # it was not initialized before route loading, or use the existing one if it
+  # was previously initialized.
   def self.add_mapping(resource, options)
+    _scoped_path, name = Devise::Mapping.mapping_name(resource, as: options[:as], singular: options[:singular])
+
+    if (mapping = @@mappings[name])
+      requested = (options[:class_name] || resource.to_s.classify).to_s
+      if options.key?(:class_name) && requested != mapping.class_name
+        raise ArgumentError, "conflicting class_name for the #{name.inspect} scope: " \
+          "already mapped to #{mapping.class_name.inspect} but got #{requested.inspect}"
+      end
+      return mapping
+    end
+
     mapping = Devise::Mapping.new(resource, options)
-    @@mappings[mapping.name] = mapping
-    @@default_scope ||= mapping.name
+    @@mappings[name] = mapping
+    @@default_scope ||= name
     @@helpers.each { |h| h.define_helpers(mapping) }
     mapping
   end
@@ -484,25 +496,27 @@ module Devise
   # A method used internally to complete the setup of warden manager after routes are loaded.
   # See lib/devise/rails/routes.rb - ActionDispatch::Routing::RouteSet#finalize_with_devise!
   def self.configure_warden! #:nodoc:
-    @@warden_configured ||= begin
-      warden_config.failure_app   = Devise::Delegator.new
-      warden_config.default_scope = Devise.default_scope
-      warden_config.intercept_401 = false
+    warden_config.failure_app   = Devise::Delegator.new
+    warden_config.default_scope = Devise.default_scope
+    warden_config.intercept_401 = false
 
-      Devise.mappings.each_value do |mapping|
-        warden_config.scope_defaults mapping.name, strategies: mapping.strategies
+    Devise.mappings.each_value do |mapping|
+      warden_config.scope_defaults mapping.name, strategies: mapping.strategies
 
-        warden_config.serialize_into_session(mapping.name) do |record|
-          mapping.to.serialize_into_session(record)
-        end
-
-        warden_config.serialize_from_session(mapping.name) do |args|
-          mapping.to.serialize_from_session(*args)
-        end
+      warden_config.serialize_into_session(mapping.name) do |record|
+        mapping.to.serialize_into_session(record)
       end
 
-      @@warden_config_blocks.map { |block| block.call Devise.warden_config }
-      true
+      warden_config.serialize_from_session(mapping.name) do |args|
+        mapping.to.serialize_from_session(*args)
+      end
+    end
+
+    config_blocks = @@warden_config_blocks
+    @@warden_config_blocks = []
+
+    config_blocks.each do |block|
+      block.call Devise.warden_config
     end
   end
 

@@ -133,4 +133,60 @@ class MappingTest < ActiveSupport::TestCase
       Devise::Mapping.find_by_path!('/accounts/facebook/callback', :path)
     end
   end
+
+  test 'mapping_name computes the scoped path and scope from the resource' do
+    assert_equal ["users", :user], Devise::Mapping.mapping_name(:users)
+    assert_equal ["user", :user],  Devise::Mapping.mapping_name(:user)
+  end
+
+  test 'mapping_name honors the :singular option' do
+    assert_equal ["accounts", :manager], Devise::Mapping.mapping_name(:accounts, singular: :manager)
+  end
+
+  test 'mapping_name honors the :as option' do
+    assert_equal ["publisher/account", :publisher_account], Devise::Mapping.mapping_name(:account, as: "publisher")
+  end
+
+  test 'a mapping built from devise_for is finalized' do
+    assert Devise.mappings[:user].finalized?
+  end
+
+  test 'a partial mapping exposes the model phase but is not finalized' do
+    mapping = Devise::Mapping.new(:partial_admin, class_name: "Admin", singular: :partial_admin)
+
+    assert_not mapping.finalized?
+    assert_equal Admin,    mapping.to
+    assert_equal :partial_admin, mapping.name
+    assert_equal Admin.devise_modules, mapping.modules
+    assert_equal [:database_authenticatable], mapping.strategies
+  end
+
+  test 'add_routes_options! finalizes a partial mapping with the routing options' do
+    mapping = Devise::Mapping.new(:partial_admin, class_name: "Admin")
+    mapping.add_routes_options!(path: "admins_area", sign_out_via: :get)
+
+    assert mapping.finalized?
+    assert_equal "admins_area", mapping.path
+    assert_equal :get,          mapping.sign_out_via
+    assert_not_nil mapping.used_routes
+  end
+
+  test 'add_routes_options! defaults the path from the resource, not the singular' do
+    mapping = Devise::Mapping.new(:accounts, class_name: "Admin", singular: :manager)
+    mapping.add_routes_options!({})
+
+    assert_equal "accounts", mapping.path
+    assert_equal :manager,   mapping.name
+  end
+
+  test 'find_by_path! ignores mappings that are not finalized' do
+    partial = Devise::Mapping.new(:partial_admin, class_name: "Admin")
+    Devise.mappings[:partial_admin] = partial
+
+    assert_raise RuntimeError do
+      Devise::Mapping.find_by_path!("/partial_admin/sign_in")
+    end
+  ensure
+    Devise.mappings.delete(:partial_admin)
+  end
 end

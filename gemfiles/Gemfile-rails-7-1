@@ -3,6 +3,8 @@ source "https://rubygems.org"
 gemspec path: ".."
 
 gem "rails", "~> 7.1.0"
+# Active Support in this Rails version passes `quirks_mode` to JSON.generate, which json 3.0 removed.
+gem "json", "< 3"
 gem "omniauth"
 gem "omniauth-oauth2"
 gem "rdoc"

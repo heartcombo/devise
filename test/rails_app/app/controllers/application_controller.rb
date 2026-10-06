@@ -4,11 +4,13 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  protect_from_forgery with: :null_session
   around_action :set_locale
   before_action :current_user, unless: :devise_controller?
   before_action :authenticate_user!, if: :devise_controller?
-  respond_to(*Mime::SET.map(&:to_sym))
+  # Mime::SET is deprecated in favor of Mime.symbols, which older supported Rails versions lack.
+  formats = Mime.respond_to?(:symbols) ? Mime.symbols : Mime::SET.map(&:to_sym)
+  respond_to(*formats)
 
   devise_group :commenter, contains: [:user, :admin]
 

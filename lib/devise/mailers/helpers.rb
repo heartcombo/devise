@@ -40,6 +40,7 @@ module Devise
         # Give priority to the mailer's default if they exists.
         headers.delete(:from) if default_params[:from]
         headers.delete(:reply_to) if default_params[:reply_to]
+        headers.delete(:to) if default_params[:to]
 
         headers.merge!(opts)
 

@@ -16,8 +16,9 @@ module Devise
 
       def initialize(provider, args)
         @provider       = provider
-        @args           = args
-        @options        = @args.last.is_a?(Hash) ? @args.last : {}
+        @args           = args.dup
+        @options        = @args.last.is_a?(Hash) ? @args.last.dup : {}
+        @args[-1]       = @options if @args.last.is_a?(Hash)
         @strategy       = nil
         @strategy_name  = options[:name] || @provider
         @strategy_class = options.delete(:strategy_class)

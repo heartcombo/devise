@@ -200,6 +200,15 @@ class FailureTest < ActiveSupport::TestCase
       assert_equal 'Invalid email or password.', @request.flash[:alert]
     end
 
+    test 'keeps original casing of multi-word authentication_keys in the flash message' do
+      store_translations :en, activerecord: { attributes: { user: { company_cd: 'Company Code' } } } do
+        swap Devise, authentication_keys: [:company_cd] do
+          call_failure('warden' => OpenStruct.new(message: :invalid))
+          assert_equal 'Invalid Company Code or password.', @request.flash[:alert]
+        end
+      end
+    end
+
     test 'humanizes the flash message' do
       call_failure('warden' => OpenStruct.new(message: :invalid))
       assert_equal @request.flash[:alert], @request.flash[:alert].humanize

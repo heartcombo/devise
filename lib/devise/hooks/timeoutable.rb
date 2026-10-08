@@ -29,7 +29,10 @@ Warden::Manager.after_set_user do |record, warden, options|
     end
 
     unless env['devise.skip_trackable']
-      warden.session(scope)['last_request_at'] = Time.now.utc.to_i
+      interval = record.last_request_at_update_interval
+      if interval.nil? || last_request_at.nil? || (Time.now.utc - last_request_at) >= interval
+        warden.session(scope)['last_request_at'] = Time.now.utc.to_i
+      end
     end
   end
 end

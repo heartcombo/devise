@@ -152,6 +152,13 @@ module Devise
   mattr_accessor :timeout_in
   @@timeout_in = 30.minutes
 
+  # Minimum interval between session writes when using :timeoutable. When set,
+  # last_request_at is only updated if more than this interval has elapsed since
+  # the last write, reducing database writes on busy applications. Defaults to
+  # nil (write on every request, preserving original behaviour).
+  mattr_accessor :last_request_at_update_interval
+  @@last_request_at_update_interval = nil
+
   # Used to hash the password. Please generate one with rails secret.
   mattr_accessor :pepper
   @@pepper = nil

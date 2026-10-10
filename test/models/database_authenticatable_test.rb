@@ -70,6 +70,24 @@ class DatabaseAuthenticatableTest < ActiveSupport::TestCase
     end
   end
 
+  test "does not nilify case_insensitive_keys whose value does not respond to downcase" do
+    swap Devise, case_insensitive_keys: [:email, :sign_in_count] do
+      user = create_user
+      user.sign_in_count = 12
+      user.valid?
+      assert_equal 12, user.sign_in_count
+    end
+  end
+
+  test "does not nilify strip_whitespace_keys whose value does not respond to strip" do
+    swap Devise, strip_whitespace_keys: [:email, :sign_in_count] do
+      user = create_user
+      user.sign_in_count = 12
+      user.valid?
+      assert_equal 12, user.sign_in_count
+    end
+  end
+
   test "param filter should not convert booleans and integer to strings" do
     conditions = { "login" => "foo@bar.com", "bool1" => true, "bool2" => false, "fixnum" => 123, "will_be_converted" => (1..10) }
     conditions = Devise::ParameterFilter.new([], []).filter(conditions)

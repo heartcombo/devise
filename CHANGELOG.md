@@ -1,3 +1,8 @@
+### Unreleased
+
+* bug fixes
+  * Set `attempted_path` in `warden.options` before calling failure app in controller test helpers. #5768
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

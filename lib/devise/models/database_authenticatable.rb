@@ -37,6 +37,8 @@ module Devise
 
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
+
+        alias_attribute :password_hash, :encrypted_password
       end
 
       def initialize(*args, &block)

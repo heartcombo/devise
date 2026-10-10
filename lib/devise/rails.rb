@@ -37,6 +37,14 @@ module Devise
       end
     end
 
+    initializer "devise.two_factor" do
+      config.after_initialize do
+        if Devise.two_factor_method_configs.any?
+          Devise.include_helpers(Devise::TwoFactor)
+        end
+      end
+    end
+
     initializer "devise.secret_key" do |app|
       Devise.secret_key ||= app.secret_key_base
 

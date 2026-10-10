@@ -86,6 +86,29 @@ class DeviseTest < ActiveSupport::TestCase
     Devise::CONTROLLERS.delete(:kivi)
   end
 
+  test 'register_two_factor_method stores config and populates STRATEGIES' do
+    Devise.register_two_factor_method(:fake_2fa, model: 'devise/models/fake_2fa', strategy: :fake_2fa_strategy)
+    assert_equal({ model: 'devise/models/fake_2fa', strategy: :fake_2fa_strategy }, Devise.two_factor_method_configs[:fake_2fa])
+    assert_equal :fake_2fa_strategy, Devise::STRATEGIES[:fake_2fa]
+    Devise.two_factor_method_configs.delete(:fake_2fa)
+    Devise::STRATEGIES.delete(:fake_2fa)
+  end
+
+  test 'register_two_factor_method with route populates ROUTES and URL_HELPERS' do
+    Devise.register_two_factor_method(:fake_rt, model: 'x', route: { fake_rt: [nil, :new] })
+    assert_equal :fake_rt, Devise::ROUTES[:fake_rt]
+    assert_equal [nil, :new], Devise::URL_HELPERS[:fake_rt]
+    Devise.two_factor_method_configs.delete(:fake_rt)
+    Devise::ROUTES.delete(:fake_rt)
+    Devise::URL_HELPERS.delete(:fake_rt)
+  end
+
+  test 'register_two_factor_method rejects unknown options' do
+    assert_raises(ArgumentError) do
+      Devise.register_two_factor_method(:bad, model: 'x', unknown: true)
+    end
+  end
+
   test 'Devise.secure_compare fails when comparing different strings or nil' do
     [nil, ""].each do |empty|
       assert_not Devise.secure_compare(empty, "something")

@@ -43,4 +43,20 @@ class MailerTest < ActionMailer::TestCase
     assert mail.from, "from@example.com"
     assert mail.reply_to, "reply_to@example.com"
   end
+
+  test "defaults to immediate delivery" do
+    create_user
+
+    assert_not_empty ActionMailer::Base.deliveries
+    assert_empty ActiveJob::Base.queue_adapter.enqueued_jobs
+  end
+
+  test "supports deferred delivery with Devise.mailer_delivery_method = :deliver_later" do
+    swap Devise, mailer_delivery_method: :deliver_later do
+      create_user
+
+      assert_empty ActionMailer::Base.deliveries
+      assert_not_empty ActiveJob::Base.queue_adapter.enqueued_jobs
+    end
+  end
 end

@@ -6,7 +6,12 @@ module Devise
   module Strategies
     # Default strategy for signing in a user, based on their email and password in the database.
     class DatabaseAuthenticatable < Authenticatable
+      NULL_BYTE = "\0"
+      private_constant :NULL_BYTE
+
       def authenticate!
+        return fail!(:invalid) if includes_null_byte?([password, *authentication_hash.values])
+
         resource  = password.present? && mapping.to.find_for_database_authentication(authentication_hash)
         hashed = false
 
@@ -23,6 +28,12 @@ module Devise
         unless resource
           Devise.paranoid ? fail(:invalid) : fail(:not_found_in_database)
         end
+      end
+
+    private
+
+      def includes_null_byte?(values)
+        values.any? { |value| value.to_s.include?(NULL_BYTE) }
       end
     end
   end

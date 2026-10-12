@@ -42,6 +42,29 @@ class HttpAuthenticationTest < Devise::IntegrationTest
     end
   end
 
+  test 'sign in with HTTP rejects a password containing a null byte' do
+    create_user
+    get users_path(format: :json), headers: {
+      "HTTP_AUTHORIZATION" => "Basic #{Base64.strict_encode64("user@test.com:12345678\0")}"
+    }
+
+    assert_response :unauthorized
+    assert_match '"error":"Invalid email or password."', response.body
+    assert_not warden.authenticated?(:user)
+  end
+
+  test 'sign in with HTTP rejects a null-byte password for an unknown user in paranoid mode' do
+    swap Devise, paranoid: true do
+      get users_path(format: :json), headers: {
+        "HTTP_AUTHORIZATION" => "Basic #{Base64.strict_encode64("unknown@example.com:12345678\0")}"
+      }
+
+      assert_response :unauthorized
+      assert_match '"error":"Invalid email or password."', response.body
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
   test 'returns a custom response with www-authenticate header on failures' do
     sign_in_as_new_user_with_http("unknown")
     assert_equal 401, status

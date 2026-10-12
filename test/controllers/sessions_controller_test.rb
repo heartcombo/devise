@@ -25,6 +25,18 @@ class SessionsControllerTest < Devise::ControllerTestCase
     end
   end
 
+  test "#new does not hash the submitted password" do
+    request.env["devise.mapping"] = Devise.mappings[:user]
+    User.any_instance.expects(:password_digest).never
+
+    get :new, params: { user: { email: "user@example.com", password: "invalid\0password" } }
+
+    assert_equal 200, @response.status
+    assert_template "devise/sessions/new"
+    assert_nil assigns(:user).password
+    assert_equal "user@example.com", assigns(:user).email
+  end
+
   test "#create works even with scoped views" do
     swap Devise, scoped_views: true do
       request.env["devise.mapping"] = Devise.mappings[:user]

@@ -74,6 +74,66 @@ class DatabaseAuthenticationTest < Devise::IntegrationTest
     assert_not warden.authenticated?(:admin)
   end
 
+  test 'sign in with a null byte in the password is rejected' do
+    sign_in_as_user do
+      fill_in 'password', with: "12345678\0"
+    end
+
+    assert_contain 'Invalid email or password.'
+    assert_not warden.authenticated?(:user)
+  end
+
+  test 'sign in with a null byte in the password is rejected for an unknown user in paranoid mode' do
+    swap Devise, paranoid: true do
+      sign_in_as_user do
+        fill_in 'email', with: 'unknown@example.com'
+        fill_in 'password', with: "12345678\0"
+      end
+
+      assert_contain 'Invalid email or password.'
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  test 'sign in with a null byte in the email is rejected before database lookup' do
+    create_user
+    User.expects(:find_for_database_authentication).never
+
+    sign_in_as_user do
+      fill_in 'email', with: "user@test.com\0"
+    end
+
+    assert_contain 'Invalid email or password.'
+    assert_not warden.authenticated?(:user)
+  end
+
+  test 'sign in with a null byte in a custom authentication key is rejected before database lookup' do
+    swap Devise, authentication_keys: [:username] do
+      create_user
+      User.expects(:find_for_database_authentication).never
+
+      post user_session_path, params: { user: { username: "usertest\0", password: '12345678' } }
+
+      assert_response :success
+      assert_not warden.authenticated?(:user)
+    end
+  end
+
+  test 'sign in accepts Unicode and control characters other than null bytes in the password' do
+    sign_in_as_user(password: "pässword\n\t\r")
+
+    assert warden.authenticated?(:user)
+  end
+
+  test 'sign in with a null byte beyond the bcrypt password limit is rejected' do
+    sign_in_as_user(password: 'a' * 72) do
+      fill_in 'password', with: "#{'a' * 72}\0"
+    end
+
+    assert_contain 'Invalid email or password.'
+    assert_not warden.authenticated?(:user)
+  end
+
   test 'when in paranoid mode and without a valid e-mail' do
     swap Devise, paranoid: true do
       store_translations :en, devise: { failure: { not_found_in_database: 'Not found in database' } } do

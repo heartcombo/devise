@@ -101,9 +101,13 @@ module Devise
       end
 
       def remember_me?(token, generated_at)
-        # TODO: Normalize the JSON type coercion along with the Timeoutable hook
-        # in a single place https://github.com/heartcombo/devise/blob/ffe9d6d406e79108cf32a2c6a1d0b3828849c40b/lib/devise/hooks/timeoutable.rb#L14-L18
-        if generated_at.is_a?(String)
+        # Normalize cookie/session JSON type coercion the same way Timeoutable
+        # does for last_request_at (Integer from to_i, Float/numeric strings
+        # from to_f / to_json).
+        case generated_at
+        when Integer, Float
+          generated_at = Time.at(generated_at).utc
+        when String
           generated_at = time_from_json(generated_at)
         end
 
@@ -122,7 +126,7 @@ module Devise
       private
 
       def time_from_json(value)
-        if value =~ /\A\d+\.\d+\Z/
+        if value =~ /\A\d+(?:\.\d+)?\Z/
           Time.at(value.to_f)
         else
           Time.parse(value) rescue nil

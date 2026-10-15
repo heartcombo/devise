@@ -66,6 +66,23 @@ class RememberableTest < ActiveSupport::TestCase
     assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt, Time.now.utc.to_f.to_json)
   end
 
+  test 'serialize from cookie should accept Integer and Float timestamps from JSON coercion' do
+    user = create_user
+    user.remember_me!
+    assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt, Time.now.utc.to_f)
+
+    # Integer seconds truncate subseconds, so keep remember_created_at clearly earlier.
+    user.update_attribute(:remember_created_at, 1.minute.ago)
+    assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt, Time.now.utc.to_i)
+  end
+
+  test 'serialize from cookie should accept an Integer-only numeric String timestamp' do
+    user = create_user
+    user.remember_me!
+    user.update_attribute(:remember_created_at, 1.minute.ago)
+    assert_equal user, User.serialize_from_cookie(user.to_key, user.authenticatable_salt, Time.now.utc.to_i.to_s)
+  end
+
   test 'serialize from cookie should return nil with invalid datetime' do
     user = create_user
     user.remember_me!

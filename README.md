@@ -221,6 +221,7 @@ Devise will create some helpers to use inside your controllers and views. To set
 ```ruby
 before_action :authenticate_user!
 ```
+Once you add that `before_action` and you access `/users`, then you will be automatically redirected to `/users/sign_in` and the login authentication screen will be displayed.
 
 For Rails 5, note that `protect_from_forgery` is no longer prepended to the `before_action` chain, so if you have set `authenticate_user` before `protect_from_forgery`, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use `protect_from_forgery prepend: true`.
 

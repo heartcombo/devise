@@ -1,3 +1,8 @@
+### Unreleased
+
+* enhancements
+  * Compute each strategy's `authenticatable_name` once per strategy class instead of on every request: Warden builds new strategy instances per request, so the per-instance memo never hit.
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

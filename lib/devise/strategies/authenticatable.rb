@@ -169,8 +169,14 @@ module Devise
       # Holds the authenticatable name for this class. Devise::Strategies::DatabaseAuthenticatable
       # becomes simply :database.
       def authenticatable_name
+        @authenticatable_name ||= self.class.authenticatable_name
+      end
+
+      # Computed once per strategy class: Warden builds new strategy
+      # instances on every request.
+      def self.authenticatable_name
         @authenticatable_name ||=
-          ActiveSupport::Inflector.underscore(self.class.name.split("::").last).
+          ActiveSupport::Inflector.underscore(name.split("::").last).
             sub("_authenticatable", "").to_sym
       end
     end

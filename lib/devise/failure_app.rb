@@ -86,8 +86,7 @@ module Devise
     def redirect
       store_location!
       if is_flashing_format?
-        if flash[:timedout] && flash[:alert]
-          flash.keep(:timedout)
+        if warden_message == :timeout && flash[:alert]
           flash.keep(:alert)
         else
           flash[:alert] = i18n_message
@@ -134,8 +133,6 @@ module Devise
 
     def redirect_url
       if warden_message == :timeout
-        flash[:timedout] = true if is_flashing_format?
-
         path = if request.get?
           attempted_path
         else

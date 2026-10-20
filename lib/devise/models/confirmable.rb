@@ -359,7 +359,7 @@ module Devise
         def find_by_unconfirmed_email_with_errors(attributes = {})
           attributes = attributes.slice(*confirmation_keys).permit!.to_h if attributes.respond_to? :permit
           unconfirmed_required_attributes = confirmation_keys.map { |k| k == :email ? :unconfirmed_email : k }
-          unconfirmed_attributes = attributes.symbolize_keys
+          unconfirmed_attributes = devise_parameter_filter.filter(attributes).symbolize_keys
           unconfirmed_attributes[:unconfirmed_email] = unconfirmed_attributes.delete(:email)
           find_or_initialize_with_errors(unconfirmed_required_attributes, unconfirmed_attributes, :not_found)
         end

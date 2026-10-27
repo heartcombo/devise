@@ -56,6 +56,14 @@ class MappingTest < ActiveSupport::TestCase
     assert_equal [:database_authenticatable], Devise.mappings[:admin].strategies
   end
 
+  test 'does not include two-factor strategies in strategies' do
+    assert_equal [:database_authenticatable], Devise.mappings[:user_with_two_factor].strategies
+  end
+
+  test 'has two-factor strategies depending on the model two_factor_methods' do
+    assert_equal [:test_otp], Devise.mappings[:user_with_two_factor].two_factor_strategies
+  end
+
   test 'has no input strategies depending on the model declaration' do
     assert_equal [:rememberable], Devise.mappings[:user].no_input_strategies
     assert_equal [], Devise.mappings[:admin].no_input_strategies

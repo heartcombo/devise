@@ -6,6 +6,7 @@ class DeviseController < Devise.parent_controller.constantize
 
   if respond_to?(:helper)
     helper DeviseHelper
+    helper Devise::TwoFactorHelper
   end
 
   if respond_to?(:helper_method)

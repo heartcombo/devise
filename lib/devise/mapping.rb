@@ -91,8 +91,18 @@ module Devise
       self.strategies & Devise::NO_INPUT
     end
 
+    def two_factor_strategies
+      @two_factor_strategies ||= STRATEGIES.values_at(*to.two_factor_modules).compact.uniq
+    end
+
     def routes
-      @routes ||= ROUTES.values_at(*self.modules).compact.uniq
+      @routes ||= begin
+        keys = self.modules
+        if to.respond_to?(:two_factor_methods) && to.two_factor_methods
+          keys = keys + Array(to.two_factor_methods)
+        end
+        ROUTES.values_at(*keys).compact.uniq
+      end
     end
 
     def authenticatable?

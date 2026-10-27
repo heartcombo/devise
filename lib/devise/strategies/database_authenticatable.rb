@@ -6,14 +6,20 @@ module Devise
   module Strategies
     # Default strategy for signing in a user, based on their email and password in the database.
     class DatabaseAuthenticatable < Authenticatable
+      include Devise::TwoFactor::PendingSignIn
+
       def authenticate!
         resource  = password.present? && mapping.to.find_for_database_authentication(authentication_hash)
         hashed = false
 
         if validate(resource){ hashed = true; resource.valid_password?(password) }
-          remember_me(resource)
-          resource.after_database_authentication
-          success!(resource)
+          if resource.respond_to?(:two_factor_enabled?) && resource.two_factor_enabled?
+            initiate_two_factor_authentication!(resource)
+          else
+            remember_me(resource)
+            resource.after_database_authentication
+            success!(resource)
+          end
         end
 
         # In paranoid mode, hash the password even when a resource doesn't exist for the given authentication key.
@@ -23,6 +29,19 @@ module Devise
         unless resource
           Devise.paranoid ? fail(:invalid) : fail(:not_found_in_database)
         end
+      end
+
+      private
+
+      def initiate_two_factor_authentication!(resource)
+        store_pending_sign_in_for(scope, resource, remember_me: remember_me?)
+        default_method = resource.enabled_two_factors.first
+        redirect!(new_two_factor_challenge_path(scope, default_method))
+      end
+
+      def new_two_factor_challenge_path(scope, method)
+        Rails.application.routes.url_helpers
+          .send(:"#{scope}_new_two_factor_#{method}_path")
       end
     end
   end

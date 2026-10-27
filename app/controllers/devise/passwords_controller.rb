@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Devise::PasswordsController < DeviseController
+  include Devise::TwoFactor::PendingSignIn
+
   prepend_before_action :require_no_authentication
   # Render the #edit only if coming from a reset password email link
   append_before_action :assert_reset_token_passed, only: :edit
@@ -37,6 +39,14 @@ class Devise::PasswordsController < DeviseController
     if resource.errors.empty?
       resource.unlock_access! if unlockable?(resource)
       if sign_in_after_reset_password?
+        if resource.respond_to?(:two_factor_enabled?) && resource.two_factor_enabled?
+          store_pending_sign_in_for(resource_name, resource)
+          default_method = resource.enabled_two_factors.first
+          set_flash_message!(:notice, :updated_two_factor_required)
+          respond_with resource, location: new_two_factor_challenge_path(resource_name, default_method)
+          return
+        end
+
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message!(:notice, flash_message)
         resource.after_database_authentication

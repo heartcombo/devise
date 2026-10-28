@@ -80,6 +80,30 @@ class ConfirmationInstructionsTest < ActionMailer::TestCase
     end
   end
 
+  test 'headers should not specify an expiry unless the link expires' do
+    assert_nil mail['Expires']
+  end
+
+  test 'headers should specify when the link expires' do
+    swap Devise, confirm_within: 3.days do
+      assert_equal (user.confirmation_sent_at + 3.days).rfc2822, mail['Expires'].value
+    end
+  end
+
+  test 'expiry should follow the model configuration' do
+    swap Devise, confirm_within: 3.days do
+      swap_model_config User, confirm_within: 20.minutes do
+        assert_equal (user.confirmation_sent_at + 20.minutes).rfc2822, mail['Expires'].value
+      end
+    end
+  end
+
+  test 'allow_unconfirmed_access_for should not affect the expiry' do
+    swap Devise, confirm_within: 3.days, allow_unconfirmed_access_for: 1.hour do
+      assert_equal (user.confirmation_sent_at + 3.days).rfc2822, mail['Expires'].value
+    end
+  end
+
   test 'body should have user info' do
     assert_match user.email, mail.body.encoded
   end

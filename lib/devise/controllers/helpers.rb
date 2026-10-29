@@ -79,11 +79,6 @@ module Devise
             end
           METHODS
         end
-
-        def log_process_action(payload)
-          payload[:status] ||= 401 unless payload[:exception]
-          super
-        end
       end
 
       # Define authentication filters and accessor helpers based on mappings.
@@ -278,6 +273,15 @@ module Devise
       def expire_data_after_sign_out!
         Devise.mappings.each { |_,m| instance_variable_set("@current_#{m.name}", nil) }
         super
+      end
+
+      # When authentication fails, Warden throws past the controller, so Rails
+      # records no status for the request. A completed action and a raised
+      # exception have both set one by now, so a missing status means Warden
+      # took over, and the failure app answers with 401 or a redirect to sign in.
+      def append_info_to_payload(payload)
+        super
+        payload[:status] ||= 401
       end
     end
   end

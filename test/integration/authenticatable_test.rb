@@ -559,6 +559,44 @@ class AuthenticationOthersTest < Devise::IntegrationTest
   end
 end
 
+class AuthenticationInstrumentationTest < Devise::IntegrationTest
+  def process_action_statuses
+    statuses = []
+    callback = ->(event) { statuses << event.payload[:status] }
+    ActiveSupport::Notifications.subscribed(callback, "process_action.action_controller") { yield }
+    statuses
+  end
+
+  test 'a request Warden halts is instrumented with a 401 status' do
+    statuses = process_action_statuses { get users_path }
+    assert_redirected_to new_user_session_path
+    assert_equal [401], statuses
+  end
+
+  test 'a request Warden halts is logged as 401' do
+    log = StringIO.new
+    logger, ActionController::Base.logger = ActionController::Base.logger, ActiveSupport::Logger.new(log)
+    get users_path
+    assert_match "Completed 401 Unauthorized", log.string
+  ensure
+    ActionController::Base.logger = logger
+  end
+
+  test 'a request that raises keeps the status of its exception' do
+    HomeController.any_instance.stubs(:index).raises(ActiveRecord::RecordNotFound)
+    statuses = process_action_statuses do
+      assert_raise(ActiveRecord::RecordNotFound) { get root_path }
+    end
+    assert_equal [404], statuses
+  end
+
+  test 'a completed request keeps its own status' do
+    sign_in_as_user
+    statuses = process_action_statuses { get users_path }
+    assert_equal [200], statuses
+  end
+end
+
 class AuthenticationKeysTest < Devise::IntegrationTest
   test 'missing authentication keys cause authentication to abort' do
     swap Devise, authentication_keys: [:subdomain] do

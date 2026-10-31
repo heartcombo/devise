@@ -1,3 +1,8 @@
+### Unreleased
+
+* bug fixes
+  * Downcase each word of multi-word authentication keys in failure flashes, so "Company Code" is not rendered as "company Code".
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

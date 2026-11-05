@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "action_controller/metal"
+require "action_controller/metal/default_headers"
 
 module Devise
   # Failure application that will be called every time :warden is thrown from
@@ -8,6 +9,7 @@ module Devise
   # in page based on current scope and mapping. If no scope is given, it
   # redirects to the default_url.
   class FailureApp < ActionController::Metal
+    include ActionController::DefaultHeaders
     include ActionController::UrlFor
     include ActionController::Redirecting
 

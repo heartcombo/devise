@@ -20,6 +20,8 @@ class Devise::ConfirmationsController < DeviseController
 
   # GET /resource/confirmation?confirmation_token=abcdef
   def show
+    return head :ok if request.head?
+
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
     yield resource if block_given?
 

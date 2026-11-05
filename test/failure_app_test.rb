@@ -94,6 +94,14 @@ class FailureTest < ActiveSupport::TestCase
   end
 
   context 'When redirecting' do
+    test 'includes default response headers' do
+      swap ActionDispatch::Response, default_headers: { 'X-Custom-Header' => 'custom' } do
+        call_failure
+
+        assert_equal 'custom', @response.second['X-Custom-Header']
+      end
+    end
+
     test 'returns to the default redirect location' do
       call_failure
       assert_equal 302, @response.first
@@ -260,6 +268,14 @@ class FailureTest < ActiveSupport::TestCase
   end
 
   context 'For HTTP request' do
+    test 'explicit response headers override default response headers' do
+      swap ActionDispatch::Response, default_headers: { 'WWW-Authenticate' => 'default' } do
+        call_failure('formats' => Mime[:json])
+
+        assert_equal 'Basic realm="Application"', @response.second['WWW-Authenticate']
+      end
+    end
+
     test 'return 401 status' do
       call_failure('formats' => Mime[:json])
       assert_equal 401, @response.first

@@ -95,6 +95,15 @@ class ConfirmationTest < Devise::IntegrationTest
     end
   end
 
+  test 'HEAD request should not confirm an account' do
+    user = create_user(confirm: false)
+
+    head user_confirmation_path(confirmation_token: user.raw_confirmation_token)
+
+    assert_response :ok
+    assert_not user.reload.confirmed?
+  end
+
   test 'user should be redirected to a custom path after confirmation' do
     Devise::ConfirmationsController.any_instance.stubs(:after_confirmation_path_for).returns("/?custom=1")
 

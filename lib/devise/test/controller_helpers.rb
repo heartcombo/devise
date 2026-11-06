@@ -31,13 +31,11 @@ module Devise
       end
 
       # Override process to consider warden.
-      def process(*)
+      def process(...)
         _catch_warden { super }
 
         @response
       end
-
-      ruby2_keywords(:process)
 
       # We need to set up the environment variables and the response in the controller.
       def setup_controller_for_warden #:nodoc:

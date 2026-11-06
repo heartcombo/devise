@@ -14,7 +14,7 @@ PATH
     devise (5.0.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 7.0)
+      railties (>= 8.0)
       responders
       warden (~> 1.2.3)
 

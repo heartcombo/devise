@@ -40,12 +40,6 @@ module RailsApp
       Devise::SessionsController.layout "application"
     end
 
-    if DEVISE_ORM == :active_record
-      if Devise::Test.rails70?
-        config.active_record.legacy_connection_handling = false
-      end
-    end
-
-    config.active_support.cache_format_version = 7.0
+    config.active_support.cache_format_version = 7.1
   end
 end

@@ -181,7 +181,7 @@ Once you have solidified your understanding of Rails and authentication mechanis
 
 ## Getting started
 
-Devise 5 works with Rails 7 onwards. Run:
+Devise works with Rails 8.0 onwards and Ruby 3.2 onwards. Run:
 
 ```sh
 bundle add devise
@@ -222,7 +222,7 @@ Devise will create some helpers to use inside your controllers and views. To set
 before_action :authenticate_user!
 ```
 
-For Rails 5, note that `protect_from_forgery` is no longer prepended to the `before_action` chain, so if you have set `authenticate_user` before `protect_from_forgery`, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use `protect_from_forgery prepend: true`.
+Note that `protect_from_forgery` is not prepended to the `before_action` chain, so if you have set `authenticate_user` before `protect_from_forgery`, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use `protect_from_forgery prepend: true`.
 
 If your devise model is something other than User, replace "_user" with "_yourmodel". The same logic applies to the instructions below.
 
@@ -276,11 +276,7 @@ Besides `:stretches`, you can define `:pepper`, `:encryptor`, `:confirm_within`,
 
 ### Strong Parameters
 
-The Parameter Sanitizer API has changed for Devise 4 :warning:
-
-*For previous Devise versions see https://github.com/heartcombo/devise/tree/3-stable#strong-parameters*
-
-When you customize your own views, you may end up adding new attributes to forms. Rails 4 moved the parameter sanitization from the model to the controller, causing Devise to handle this concern at the controller as well.
+When you customize your own views, you may end up adding new attributes to forms. Since Rails handles parameter sanitization in the controller, Devise handles this concern at the controller as well.
 
 There are just three actions in Devise that allow any set of parameters to be passed down to the model, therefore requiring sanitization. Their names and default permitted parameters are:
 
@@ -563,14 +559,12 @@ cases/specs.
 ### Controller tests
 
 Controller tests require that you include `Devise::Test::IntegrationHelpers` on
-your test case or its parent `ActionController::TestCase` superclass.
-For Rails versions prior to 5, include `Devise::Test::ControllerHelpers` instead, since the superclass
-for controller tests was changed to ActionDispatch::IntegrationTest
+your test case or its parent `ActionController::TestCase` superclass
 (for more details, see the [Integration tests](#integration-tests) section).
 
 ```ruby
 class PostsControllerTest < ActionController::TestCase
-  include Devise::Test::IntegrationHelpers # Rails >= 5
+  include Devise::Test::IntegrationHelpers
 end
 ```
 
@@ -733,7 +727,7 @@ Devise supports ActiveRecord (default) and Mongoid. To select another ORM, simpl
 
 ### Rails API Mode
 
-Rails 5+ has a built-in [API Mode](https://edgeguides.rubyonrails.org/api_app.html) which optimizes Rails for use as an API (only). Devise is _somewhat_ able to handle applications that are built in this mode without additional modifications in the sense that it should not raise exceptions and the like. But some issues may still arise during `development`/`testing`, as we still don't know the full extent of this compatibility. (For more information, see [issue #4947](https://github.com/heartcombo/devise/issues/4947/))
+Rails has a built-in [API Mode](https://edgeguides.rubyonrails.org/api_app.html) which optimizes Rails for use as an API (only). Devise is _somewhat_ able to handle applications that are built in this mode without additional modifications in the sense that it should not raise exceptions and the like. But some issues may still arise during `development`/`testing`, as we still don't know the full extent of this compatibility. (For more information, see [issue #4947](https://github.com/heartcombo/devise/issues/4947/))
 
 #### Supported Authentication Strategies
 API-only applications don't support browser-based authentication via cookies, which is devise's default. Yet, devise can still provide authentication out of the box in those cases with the `http_authenticatable` strategy, which uses HTTP Basic Auth and authenticates the user on each request. (For more info, see this wiki article for [How To: Use HTTP Basic Authentication](https://github.com/heartcombo/devise/wiki/How-To:-Use-HTTP-Basic-Authentication))

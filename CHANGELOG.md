@@ -1,7 +1,7 @@
 ### Unreleased
 
-* enhancements
-  * Remove dead compatibility code for Rails < 7.0 and Ruby < 2.7.
+* breaking changes
+  * Drop support to Rails < 8.0
 
 ### 5.0.4 - 2026-05-08
 

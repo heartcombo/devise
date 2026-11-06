@@ -235,13 +235,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'set up a default message' do
       call_failure
-      if Devise::Test.rails71_and_up?
-        assert_empty @response.last.body
-      else
-        assert_match(/You are being/, @response.last.body)
-        assert_match(/redirected/, @response.last.body)
-        assert_match(/users\/sign_in/, @response.last.body)
-      end
+      assert_empty @response.last.body
     end
 
     test 'works for any navigational format' do

@@ -8,9 +8,7 @@ class ApplicationController < ActionController::Base
   around_action :set_locale
   before_action :current_user, unless: :devise_controller?
   before_action :authenticate_user!, if: :devise_controller?
-  # Mime::SET is deprecated in favor of Mime.symbols, which older supported Rails versions lack.
-  formats = Mime.respond_to?(:symbols) ? Mime.symbols : Mime::SET.map(&:to_sym)
-  respond_to(*formats)
+  respond_to(*Mime.symbols)
 
   devise_group :commenter, contains: [:user, :admin]
 

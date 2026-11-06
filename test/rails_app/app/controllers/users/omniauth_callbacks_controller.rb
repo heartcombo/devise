@@ -2,7 +2,7 @@
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
-    data = request.respond_to?(:get_header) ? request.get_header("omniauth.auth") : request.env["omniauth.auth"]
+    data = request.get_header("omniauth.auth")
     session["devise.facebook_data"] = data["extra"]["user_hash"]
     render json: data
   end

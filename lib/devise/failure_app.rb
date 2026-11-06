@@ -68,11 +68,7 @@ module Devise
       end
 
       header_info.each do | var, value|
-        if request.respond_to?(:set_header)
-          request.set_header(var, value)
-        else
-          request.env[var]  = value
-        end
+        request.set_header(var, value)
       end
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
@@ -112,9 +108,7 @@ module Devise
         options[:default] = [message]
         auth_keys = scope_class.authentication_keys
         human_keys = (auth_keys.respond_to?(:keys) ? auth_keys.keys : auth_keys).map { |key|
-          # TODO: Remove the fallback and just use `downcase_first` once we drop support for Rails 7.0.
-          human_key = scope_class.human_attribute_name(key)
-          human_key.respond_to?(:downcase_first) ? human_key.downcase_first : human_key[0].downcase + human_key[1..]
+          scope_class.human_attribute_name(key).downcase_first
         }
         options[:authentication_keys] = human_keys.join(I18n.t(:"support.array.words_connector"))
         options = i18n_options(options)
@@ -225,11 +219,11 @@ module Devise
     end
 
     def warden
-      request.respond_to?(:get_header) ? request.get_header("warden") : request.env["warden"]
+      request.get_header("warden")
     end
 
     def warden_options
-      request.respond_to?(:get_header) ? request.get_header("warden.options") : request.env["warden.options"]
+      request.get_header("warden.options")
     end
 
     def warden_message

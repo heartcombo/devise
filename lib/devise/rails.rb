@@ -18,7 +18,7 @@ module Devise
     end
 
     initializer "devise.deprecator" do |app|
-      app.deprecators[:devise] = Devise.deprecator if app.respond_to?(:deprecators)
+      app.deprecators[:devise] = Devise.deprecator
     end
 
     initializer "devise.url_helpers" do
@@ -49,7 +49,7 @@ module Devise
     end
 
     initializer "devise.configure_zeitwerk" do
-      if Rails.autoloaders.zeitwerk_enabled? && !defined?(ActionMailer)
+      unless defined?(ActionMailer)
         Rails.autoloaders.main.ignore("#{root}/app/mailers/devise/mailer.rb")
       end
     end

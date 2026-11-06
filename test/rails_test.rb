@@ -9,9 +9,7 @@ class RailsTest < ActiveSupport::TestCase
     assert_equal :build_middleware_stack, initializer.before
   end
 
-  if Devise::Test.rails71_and_up?
-    test 'deprecator is added to application deprecators' do
-      assert_not_nil Rails.application.deprecators[:devise]
-    end
+  test 'deprecator is added to application deprecators' do
+    assert_not_nil Rails.application.deprecators[:devise]
   end
 end

@@ -324,20 +324,11 @@ module Devise
     end
 
     def get
-      # TODO: Remove AS::Dependencies usage when dropping support to Rails < 7.
-      if ActiveSupport::Dependencies.respond_to?(:constantize)
-        ActiveSupport::Dependencies.constantize(@name)
-      else
-        @name.constantize
-      end
+      @name.constantize
     end
   end
 
   def self.ref(arg)
-    # TODO: Remove AS::Dependencies usage when dropping support to Rails < 7.
-    if ActiveSupport::Dependencies.respond_to?(:reference)
-      ActiveSupport::Dependencies.reference(arg)
-    end
     Getter.new(arg)
   end
 

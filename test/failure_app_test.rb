@@ -235,13 +235,7 @@ class FailureTest < ActiveSupport::TestCase
 
     test 'set up a default message' do
       call_failure
-      if Devise::Test.rails71_and_up?
-        assert_empty @response.last.body
-      else
-        assert_match(/You are being/, @response.last.body)
-        assert_match(/redirected/, @response.last.body)
-        assert_match(/users\/sign_in/, @response.last.body)
-      end
+      assert_empty @response.last.body
     end
 
     test 'works for any navigational format' do
@@ -412,36 +406,8 @@ class FailureTest < ActiveSupport::TestCase
       assert_includes @response.third.body, 'Email ou senha inválidos.'
     end
 
-    # TODO: remove conditional/else when supporting only responders 3.1+
-    if ActionController::Responder.respond_to?(:error_status=)
-      test 'respects the configured responder `error_status` for the status code' do
-        swap Devise.responder, error_status: :unprocessable_entity do
-          env = {
-            "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in" },
-            "devise.mapping" => Devise.mappings[:user],
-            "warden" => stub_everything
-          }
-          call_failure(env)
-
-          assert_equal 422, @response.first
-          assert_includes @response.third.body, 'Invalid email or password.'
-        end
-      end
-
-      test 'respects the configured responder `redirect_status` if the recall app returns a redirect status code' do
-        swap Devise.responder, redirect_status: :see_other do
-          env = {
-            "warden.options" => { recall: "devise/registrations#cancel", attempted_path: "/users/cancel" },
-            "devise.mapping" => Devise.mappings[:user],
-            "warden" => stub_everything
-          }
-          call_failure(env)
-
-          assert_equal 303, @response.first
-        end
-      end
-    else
-      test 'uses default hardcoded responder `error_status` for the status code since responders version does not support configuring it' do
+    test 'respects the configured responder `error_status` for the status code' do
+      swap Devise.responder, error_status: :unprocessable_entity do
         env = {
           "warden.options" => { recall: "devise/sessions#new", attempted_path: "/users/sign_in" },
           "devise.mapping" => Devise.mappings[:user],
@@ -449,11 +415,13 @@ class FailureTest < ActiveSupport::TestCase
         }
         call_failure(env)
 
-        assert_equal 200, @response.first
+        assert_equal 422, @response.first
         assert_includes @response.third.body, 'Invalid email or password.'
       end
+    end
 
-      test 'users default hardcoded responder `redirect_status` for the status code since responders version does not support configuring it' do
+    test 'respects the configured responder `redirect_status` if the recall app returns a redirect status code' do
+      swap Devise.responder, redirect_status: :see_other do
         env = {
           "warden.options" => { recall: "devise/registrations#cancel", attempted_path: "/users/cancel" },
           "devise.mapping" => Devise.mappings[:user],
@@ -461,7 +429,7 @@ class FailureTest < ActiveSupport::TestCase
         }
         call_failure(env)
 
-        assert_equal 302, @response.first
+        assert_equal 303, @response.first
       end
     end
   end

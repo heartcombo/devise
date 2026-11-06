@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-begin
-  require 'bundler/inline'
-rescue LoadError => e
-  $stderr.puts 'Bundler version 1.10 or later is required. Please update your Bundler'
-  raise e
-end
+require 'bundler/inline'
 
 gemfile(true) do
   source 'https://rubygems.org'
   # Activate the gem you are reporting the issue against.
-  gem 'rails', '~> 4.2.0'
-  gem 'devise', '~> 4.0'
+  gem 'rails', '~> 8.1.0'
+  gem 'devise', '~> 5.0'
   gem 'sqlite3'
   gem 'byebug'
 end
@@ -24,7 +19,7 @@ require 'devise/rails/warden_compat'
 
 ActiveRecord::Base.establish_connection( adapter: :sqlite3, database:  ':memory:')
 
-class DeviseCreateUsers < ActiveRecord::Migration
+class DeviseCreateUsers < ActiveRecord::Migration[8.1]
   def change
     create_table(:users) do |t|
       t.string :email,              null: false
@@ -35,40 +30,39 @@ class DeviseCreateUsers < ActiveRecord::Migration
   end
 end
 
+DeviseCreateUsers.migrate(:up)
+
 Devise.setup do |config|
   require 'devise/orm/active_record'
   config.secret_key = 'secret_key_base'
 end
 
-class TestApp < Rails::Application
-  config.root = File.dirname(__FILE__)
-  config.session_store :cookie_store, key: 'cookie_store_key'
-  secrets.secret_token    = 'secret_token'
-  secrets.secret_key_base = 'secret_key_base'
-  config.eager_load = false
-
-  config.middleware.use Warden::Manager do |config|
-    Devise.warden_config = config
-  end
-
-  config.logger = Logger.new($stdout)
-  Rails.logger  = config.logger
-
-end
-
-Rails.application.initialize!
-
-DeviseCreateUsers.migrate(:up)
-
 class User < ActiveRecord::Base
   devise :database_authenticatable
 end
 
-Rails.application.routes.draw do
+class TestApp < Rails::Application
+  config.root = File.dirname(__FILE__)
+  config.session_store :cookie_store, key: 'cookie_store_key'
+  config.secret_key_base = 'secret_key_base'
+  config.eager_load = false
+  config.hosts << 'example.org'
+
+  config.logger = Logger.new($stdout)
+  Rails.logger  = config.logger
+end
+
+# Use `prepend` instead of `draw`: in development Rails loads the routes lazily,
+# and `draw` would first finalize an empty route set, at which point Devise
+# configures Warden once without any mapping. Prepended blocks run as part of
+# that lazy load, so `devise_for` is known when the routes are finalized.
+Rails.application.routes.prepend do
   devise_for :users
 
   get '/' => 'test#index'
 end
+
+Rails.application.initialize!
 
 class ApplicationController < ActionController::Base
 end

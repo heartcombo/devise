@@ -3,6 +3,7 @@
 * breaking changes
   * Drop support to Rails < 8.0
   * Drop support to Ruby < 3.2
+  * Require responders >= 3.1
 
 ### 5.0.4 - 2026-05-08
 

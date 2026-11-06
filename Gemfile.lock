@@ -15,7 +15,7 @@ PATH
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 8.0)
-      responders
+      responders (>= 3.1)
       warden (~> 1.2.3)
 
 GEM

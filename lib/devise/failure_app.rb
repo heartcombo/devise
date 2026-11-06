@@ -68,11 +68,7 @@ module Devise
       end
 
       header_info.each do | var, value|
-        if request.respond_to?(:set_header)
-          request.set_header(var, value)
-        else
-          request.env[var]  = value
-        end
+        request.set_header(var, value)
       end
 
       flash.now[:alert] = i18n_message(:invalid) if is_flashing_format?
@@ -225,11 +221,11 @@ module Devise
     end
 
     def warden
-      request.respond_to?(:get_header) ? request.get_header("warden") : request.env["warden"]
+      request.get_header("warden")
     end
 
     def warden_options
-      request.respond_to?(:get_header) ? request.get_header("warden.options") : request.env["warden.options"]
+      request.get_header("warden.options")
     end
 
     def warden_message

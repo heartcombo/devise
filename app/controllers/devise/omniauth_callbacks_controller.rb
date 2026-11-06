@@ -15,14 +15,14 @@ class Devise::OmniauthCallbacksController < DeviseController
   protected
 
   def failed_strategy
-    request.respond_to?(:get_header) ? request.get_header("omniauth.error.strategy") : request.env["omniauth.error.strategy"]
+    request.get_header("omniauth.error.strategy")
   end
 
   def failure_message
-    exception = request.respond_to?(:get_header) ? request.get_header("omniauth.error") : request.env["omniauth.error"]
+    exception = request.get_header("omniauth.error")
     error   = exception.error_reason if exception.respond_to?(:error_reason)
     error ||= exception.error        if exception.respond_to?(:error)
-    error ||= (request.respond_to?(:get_header) ? request.get_header("omniauth.error.type") : request.env["omniauth.error.type"]).to_s
+    error ||= request.get_header("omniauth.error.type").to_s
     error.to_s.humanize if error
   end
 

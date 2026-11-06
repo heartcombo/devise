@@ -46,8 +46,6 @@ module RailsApp
       end
     end
 
-    if Devise::Test.rails70_and_up?
-      config.active_support.cache_format_version = 7.0
-    end
+    config.active_support.cache_format_version = 7.0
   end
 end

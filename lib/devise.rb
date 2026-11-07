@@ -263,10 +263,13 @@ module Devise
   mattr_accessor :clean_up_csrf_token_on_authentication
   @@clean_up_csrf_token_on_authentication = true
 
-  # When false, Devise will not attempt to reload routes on eager load.
-  # This can reduce the time taken to boot the app but if your application
-  # requires the Devise mappings to be loaded during boot time the application
-  # won't boot properly.
+  # When true, Devise reloads the application routes before eager loading, so
+  # that the mappings declared by +devise_for+ exist while the application code
+  # is loaded. This is not needed since +Devise.mappings+ loads the routes on
+  # demand, and it slows down booting: right after eager loading Rails computes
+  # the action methods of every controller, which is far slower once the routes'
+  # url helpers are in each controller's ancestors, and Rails 8 loads the routes
+  # a second time afterwards. Defaults to false.
   mattr_accessor :reload_routes
   @@reload_routes = false
 

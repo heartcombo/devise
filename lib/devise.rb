@@ -263,23 +263,45 @@ module Devise
   mattr_accessor :clean_up_csrf_token_on_authentication
   @@clean_up_csrf_token_on_authentication = true
 
-  # When false, Devise will not attempt to reload routes on eager load.
-  # This can reduce the time taken to boot the app but if your application
-  # requires the Devise mappings to be loaded during boot time the application
-  # won't boot properly.
+  # When true, Devise reloads the application routes before eager loading, so
+  # that the mappings declared by +devise_for+ exist while the application code
+  # is loaded. This is not needed since +Devise.mappings+ loads the routes on
+  # demand, and it slows down booting: right after eager loading Rails computes
+  # the action methods of every controller, which is far slower once the routes'
+  # url helpers are in each controller's ancestors, and Rails 8 loads the routes
+  # a second time afterwards. Defaults to false.
   mattr_accessor :reload_routes
-  @@reload_routes = true
+  @@reload_routes = false
 
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.
   @@mappings = {}
+  @@routes_loaded_while_initializing = false
   def self.mappings
-    # Starting from Rails 8.0, routes are lazy-loaded by default in test and development environments.
-    # However, Devise's mappings are built during the routes loading phase.
-    # To ensure it works correctly, we need to load the routes first before accessing @@mappings.
-    Rails.application.try(:reload_routes_unless_loaded)
+    # Devise's mappings are built while the routes load, so the routes must be loaded before
+    # the mappings are read. Starting from Rails 8.0, routes are lazy-loaded by default in test
+    # and development environments, and when eager loading Rails loads the application code
+    # before the routes.
+    load_routes_unless_loaded
     @@mappings
+  end
+
+  # Loads the application routes if they have not been loaded yet.
+  #
+  # Once the application is initialized, Rails (8.0+) loads lazy routes on demand. While it is
+  # still initializing (eager loading), routes are loaded here only if the mappings are still
+  # empty, once, as `reload_routes = true` does unconditionally before eager loading.
+  def self.load_routes_unless_loaded # :nodoc:
+    app = Rails.application
+    return unless app
+
+    if app.initialized?
+      app.try(:reload_routes_unless_loaded)
+    elsif @@mappings.empty? && !@@routes_loaded_while_initializing
+      @@routes_loaded_while_initializing = true
+      app.reload_routes!
+    end
   end
 
   # OmniAuth configurations.

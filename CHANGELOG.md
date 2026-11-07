@@ -1,3 +1,8 @@
+### Unreleased
+
+* enhancements
+  * Load the routes on demand when `Devise.mappings` is read while the application is initializing, and stop reloading all routes before eager loading by default: `config.reload_routes` now defaults to `false`. Right after eager loading, Rails precomputes the action methods of every controller, and that is far slower when the routes' url helpers are already in each controller's ancestors; Rails 8 also loaded the routes a second time afterwards. Applications with many controllers and routes boot noticeably faster. Set `config.reload_routes = true` to keep the previous behavior.
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

@@ -10,6 +10,14 @@ module Devise
   ensure
     @@warden_config, @@warden_config_blocks = c, b
   end
+
+  def self.swap_mappings(mappings)
+    m, loaded = @@mappings, @@routes_loaded_while_initializing
+    @@mappings, @@routes_loaded_while_initializing = mappings, false
+    yield
+  ensure
+    @@mappings, @@routes_loaded_while_initializing = m, loaded
+  end
 end
 
 class DeviseTest < ActiveSupport::TestCase
@@ -22,6 +30,30 @@ class DeviseTest < ActiveSupport::TestCase
     klass    = Struct.new(:pepper, :stretches).new("bla", 2)
     hash     = Devise::Encryptor.digest(klass, password)
     assert_not_equal ::BCrypt::Password.new(hash), hash
+  end
+
+  test 'mappings load the routes once while the application is initializing' do
+    Devise.swap_mappings({}) do
+      Rails.application.stubs(:initialized?).returns(false)
+      Rails.application.expects(:reload_routes!).once
+
+      Devise.mappings
+      Devise.mappings
+    end
+  end
+
+  test 'mappings do not load the routes while initializing when they are already declared' do
+    Devise.mappings # make sure the routes, and therefore the mappings, are loaded
+    Rails.application.stubs(:initialized?).returns(false)
+    Rails.application.expects(:reload_routes!).never
+
+    assert_includes Devise.mappings.keys, :user
+  end
+
+  test 'mappings load lazy routes once the application is initialized' do
+    Rails.application.expects(:reload_routes_unless_loaded).once
+
+    Devise.mappings
   end
 
   test 'model options can be configured through Devise' do

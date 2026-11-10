@@ -465,6 +465,12 @@ devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logo
 
 Be sure to check `devise_for` [documentation](https://www.rubydoc.info/gems/devise/ActionDispatch/Routing/Mapper#devise_for-instance_method) for details.
 
+Devise loads the mapped model when it draws routes so it can read the model's enabled modules. Keep database access out of the model's class body: Rails may draw routes while booting `bin/rails db:create`, before the database exists. For example, if an Active Record validation uses a column limit, look it up when the validation runs:
+
+```ruby
+validates :email, length: { maximum: ->(user) { user.class.type_for_attribute(:email).limit } }
+```
+
 If you have the need for more deep customization, for instance to also allow "/sign_in" besides "/users/sign_in", all you need to do is create your routes normally and wrap them in a `devise_scope` block in the router:
 
 ```ruby

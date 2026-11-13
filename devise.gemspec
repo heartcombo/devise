@@ -32,4 +32,11 @@ Gem::Specification.new do |s|
   s.add_dependency("bcrypt", "~> 3.0")
   s.add_dependency("railties", ">= 7.0")
   s.add_dependency("responders")
+
+  s.post_install_message = %q{
+[DEVISE] Devise now strictly enforces a 72-byte limit on passwords.
+This prevents a known BCrypt security issue where passwords exceeding 72 bytes are silently truncated, potentially causing hash collisions.
+
+This new validation runs automatically alongside your existing character length checks, specifically targeting passwords with heavy multi-byte characters (like emojis) that might look short but are large in memory.
+  }
 end

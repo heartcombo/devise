@@ -63,3 +63,4 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
+      password_too_long_for_bcrypt: "too long (maximum is 72 bytes)"

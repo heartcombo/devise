@@ -84,6 +84,10 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal 10.days, Configurable.unlock_in
   end
 
+  test 'set a default value for extra_step' do
+    assert_not Configurable.extra_step
+  end
+
   test 'set null fields on migrations' do
     # Ignore email sending since no email exists.
     klass = Class.new(Admin) do

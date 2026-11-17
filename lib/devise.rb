@@ -270,6 +270,10 @@ module Devise
   mattr_accessor :reload_routes
   @@reload_routes = true
 
+  # Simply customize the authentication fail redirection route
+  mattr_accessor :authentication_failure_route
+  @@authentication_failure_route = nil
+
   # PRIVATE CONFIGURATION
 
   # Store scopes mappings.

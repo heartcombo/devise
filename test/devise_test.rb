@@ -84,6 +84,21 @@ class DeviseTest < ActiveSupport::TestCase
     assert_equal :fruits, Devise::CONTROLLERS[:kivi]
     Devise::ALL.delete(:kivi)
     Devise::CONTROLLERS.delete(:kivi)
+
+    Devise.add_module(:apple, route: true)
+    assert_equal :apple, Devise::ROUTES[:apple]
+    Devise::ALL.delete(:apple)
+    Devise::ROUTES.delete(:apple)
+
+    Devise.add_module(:pineapple, route: { session: [nil, :new] })
+    assert_equal :session, Devise::ROUTES[:pineapple]
+    Devise::ALL.delete(:pineapple)
+    Devise::ROUTES.delete(:pineapple)
+
+    Devise.add_module(:mango, route: { checkout: [nil, :show], session: [nil, :new] })
+    assert_equal [:checkout, :session], Devise::ROUTES[:mango]
+    Devise::ALL.delete(:mango)
+    Devise::ROUTES.delete(:mango)
   end
 
   test 'Devise.secure_compare fails when comparing different strings or nil' do

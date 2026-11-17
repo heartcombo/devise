@@ -8,7 +8,7 @@ class Devise::SessionsController < DeviseController
 
   # GET /resource/sign_in
   def new
-    self.resource = resource_class.new(sign_in_params)
+    self.resource = resource_class.new(sign_in_params.except('password'))
     clean_up_passwords(resource)
     yield resource if block_given?
     respond_with(resource, serialize_options(resource))

@@ -18,6 +18,7 @@ class AuthenticatableTest < ActiveSupport::TestCase
   # config.strip_whitespace_keys = [:email]
   test 'find_or_initialize_with_errors uses parameter filter on find' do
     user = User.create!(email: "example@example.com", password: "1234567")
+
     assert_equal user, User.find_or_initialize_with_errors([:email], { email: " EXAMPLE@example.com " })
   end
 

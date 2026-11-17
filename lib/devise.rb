@@ -312,6 +312,17 @@ module Devise
   mattr_accessor :sign_in_after_change_password
   @@sign_in_after_change_password = true
 
+  # When sending an email to an action set below, raise an error if
+  # there is more than one recipient. For example:
+  #   @@strict_single_recipient_emails = [
+  #     :confirmation_instructions,
+  #     :reset_password_instructions,
+  #     :unlock_instructions
+  #   ]
+  # By default any action can be sent to multiple recipients.
+  mattr_accessor :strict_single_recipient_emails
+  @@strict_single_recipient_emails = []
+
   # Default way to set up Devise. Run rails generate devise_install to create
   # a fresh initializer with all configuration values.
   def self.setup

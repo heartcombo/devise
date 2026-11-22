@@ -50,6 +50,7 @@ It's composed of 10 modules:
 	- [Active Job Integration](#active-job-integration)
 	- [Password reset tokens and Rails logs](#password-reset-tokens-and-rails-logs)
 	- [Other ORMs](#other-orms)
+	- [DynamoDB](#dynamodb)
 	- [Rails API mode](#rails-api-mode)
 - [Additional information](#additional-information)
 	- [Warden](#warden)
@@ -100,6 +101,8 @@ There are a few example applications available on GitHub that demonstrate variou
 
 https://github.com/heartcombo/devise/wiki/Example-Applications
 
+A sample application using DynamoDB is available in [examples/dynamodb_app](examples/dynamodb_app).
+
 ### Extensions
 
 Our community has created a number of extensions that add functionality above and beyond what is included with Devise. You can view a list of available extensions and add your own here:
@@ -120,10 +123,10 @@ We hope that you will consider contributing to Devise. Please read this short ov
 https://github.com/heartcombo/devise/wiki/Contributing
 
 You will usually want to write tests for your changes.  To run the test suite, go into Devise's top-level directory and run `bundle install` and `bin/test`.
-Devise works with multiple Ruby and Rails versions, and ActiveRecord and Mongoid ORMs, which means you can run the test suite with some modifiers: `DEVISE_ORM` and `BUNDLE_GEMFILE`.
+Devise works with multiple Ruby and Rails versions, and ActiveRecord, Mongoid and DynamoDB, which means you can run the test suite with some modifiers: `DEVISE_ORM` and `BUNDLE_GEMFILE`.
 
 #### DEVISE_ORM
-Since Devise supports both Mongoid and ActiveRecord, we rely on this variable to run specific code for each ORM.
+Since Devise supports ActiveRecord, Mongoid and DynamoDB, we rely on this variable to run specific code for each ORM.
 The default value of `DEVISE_ORM` is `active_record`. To run the tests for Mongoid, you can pass `mongoid`:
 ```
 DEVISE_ORM=mongoid bin/test
@@ -131,6 +134,13 @@ DEVISE_ORM=mongoid bin/test
 ==> Devise.orm = :mongoid
 ```
 When running the tests for Mongoid, you will need to have a MongoDB server (version 2.0 or newer) running on your system.
+
+DynamoDB is tested once per supported library, with `DEVISE_ORM=dynamoid` or `DEVISE_ORM=aws_record`. These need a DynamoDB compatible endpoint, `http://localhost:8000` by default (override it with `DYNAMODB_ENDPOINT`):
+```
+docker run -p 8000:8000 amazon/dynamodb-local
+DEVISE_ORM=dynamoid bin/test
+DEVISE_ORM=aws_record bin/test
+```
 
 Please note that the command output will show the variable value being used.
 
@@ -729,7 +739,144 @@ config.log_level = :warn
 
 ### Other ORMs
 
-Devise supports ActiveRecord (default) and Mongoid. To select another ORM, simply require it in the initializer file.
+Devise supports ActiveRecord (default), Mongoid and [DynamoDB](#dynamodb). To select another ORM, simply require it in the initializer file.
+
+### DynamoDB
+
+Devise can store your models in [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) through either of these libraries:
+
+* [Dynamoid](https://github.com/Dynamoid/dynamoid) – the default.
+* [aws-record](https://github.com/aws/aws-sdk-ruby-record) – the official AWS library.
+
+These modules are supported on DynamoDB: `database_authenticatable`, `rememberable`, `validatable`, `confirmable` (including `reconfirmable`), `trackable`, `recoverable` and `lockable`. `registerable` and `timeoutable` work as well, since they need no database support. `omniauthable` isn't supported yet.
+
+A complete example is available in [examples/dynamodb_app](examples/dynamodb_app).
+
+#### Setup
+
+1. Add Devise and one of the libraries to your Gemfile, then run `bundle install`:
+
+   ```ruby
+   gem "devise"
+   gem "dynamoid"     # or: gem "aws-record"
+   ```
+
+2. Configure the connection to DynamoDB as described by your library ([Dynamoid](https://github.com/Dynamoid/dynamoid#prerequisities), [aws-record](https://docs.aws.amazon.com/sdk-for-ruby/aws-record/api/)). You can point it to [DynamoDB Local](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) during development.
+
+3. Use DynamoDB for generated models in `config/application.rb`:
+
+   ```ruby
+   config.generators.orm :dynamodb     # or :dynamoid / :aws_record
+   ```
+
+4. Run the install generator. With `:dynamodb` or `:dynamoid`, the initializer selects Dynamoid. With `:aws_record`, it selects aws-record:
+
+   ```console
+   rails generate devise:install
+   ```
+
+   It writes this to `config/initializers/devise.rb`:
+
+   ```ruby
+   config.dynamodb_library = :dynamoid # or :aws_record
+   require 'devise/orm/dynamodb'
+   ```
+
+   `config.dynamodb_library` must be set before the `require`. The `DEVISE_DYNAMODB_LIBRARY` environment variable overrides it.
+
+5. Generate your model:
+
+   ```console
+   rails generate devise User
+   # or pick the library explicitly:
+   rails generate dynamodb:devise User --library=aws_record
+   ```
+
+   DynamoDB is schemaless, so there are no migrations. The generator declares the Devise attributes in the model, like the Mongoid generator does. If the model already exists, the generator adds the attributes and the `devise` call to it. Uncomment the attributes of the modules you enable.
+
+6. Create the tables, including their global secondary indexes:
+
+   ```console
+   rails devise:dynamodb:create_tables
+   rails devise:dynamodb:check_indexes   # lists the lookups that would need a full table Scan
+   ```
+
+   This creates only the tables that don't exist yet. Dynamoid also creates missing tables on the first save by default.
+
+#### Models
+
+A Dynamoid model:
+
+```ruby
+class User
+  include Dynamoid::Document
+
+  field :email,              :string, default: ""
+  field :encrypted_password, :string, default: ""
+  field :reset_password_token, :string
+  # ...
+
+  global_secondary_index hash_key: :email, projected_attributes: :all
+
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
+end
+```
+
+An aws-record model:
+
+```ruby
+class User
+  include Aws::Record
+  include Devise::Orm::Dynamodb::AwsRecordModel
+
+  string_attr :id, hash_key: true
+  time_attr   :created_at
+  time_attr   :updated_at
+  string_attr :email
+  string_attr :encrypted_password
+  string_attr :reset_password_token
+  # ...
+
+  global_secondary_index :email_index, hash_key: :email, projection: { projection_type: "ALL" }
+
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
+end
+```
+
+aws-record has no validations, callbacks or ActiveModel support of its own. `Devise::Orm::Dynamodb::AwsRecordModel` adds the parts of the ActiveRecord API that Devise and Rails forms rely on:
+
+* ActiveModel validations, including `save(validate: false)`.
+* `before`/`after`/`around` callbacks for `save`, `create`, `update` and `destroy`.
+* Dirty tracking: `changed?`, `changes`, `previous_changes`, `<attr>_changed?` and `<attr>_will_change!`.
+* `create`, `create!`, `find(id)`, `update(attributes)`, `update_attribute`, `destroy`, `reload`, `to_key`, `to_param`, `[]` and JSON serialization.
+* UUID partition keys for new records, and `created_at`/`updated_at` timestamps when those attributes are declared.
+
+`devise` includes this module automatically. Include it yourself, right after `Aws::Record`, if you declare validations or callbacks before calling `devise`.
+
+Both libraries generate a UUID `id` partition key for new records. Devise identifies records by their partition key, for example in the session and in remember me cookies. Composite primary keys (partition key + sort key) aren't supported.
+
+#### Indexes
+
+Devise finds records by attribute: `email` (or your `authentication_keys`) when signing in, `reset_password_token`, `confirmation_token`, `unlock_token`, and `unconfirmed_email` with `reconfirmable`. When a global secondary index exists on the attribute and projects all attributes, Devise runs a Query on it. Otherwise it Scans the whole table, which gets slow and expensive as the table grows.
+
+Add an index for `email` at least. Add one for the token attributes of every module you enable. `rails devise:dynamodb:check_indexes` reports any lookup that still needs a Scan. Lookups by partition key (`id`) always use a consistent `GetItem`.
+
+#### Differences from ActiveRecord and Mongoid
+
+Everything Devise does through the database works as it does with ActiveRecord: authentication, case-insensitive and whitespace-stripped keys, token generation and lookup, email uniqueness, confirmation and reconfirmation emails, email/password change notifications, tracking, failed attempt counting and locking. The main suite runs against both libraries.
+
+Some behaviour differs because of how DynamoDB works:
+
+* **Email uniqueness isn't enforced by the database.** DynamoDB only enforces uniqueness on the primary key, so `validates_uniqueness_of` runs a Query (or a Scan) before saving. The error message and options (`case_sensitive`, `scope`, `allow_blank`, `conditions`) are the same as ActiveRecord's. Like any application-level check, two concurrent sign ups with the same email can both pass validation and create duplicates. ActiveRecord apps prevent this with a unique database index, which DynamoDB doesn't offer. If you need a hard guarantee, use the email as the partition key, or write a separate "email claim" item with a conditional put in a transaction.
+* **Case-insensitive uniqueness uses a Scan.** Devise downcases `case_insensitive_keys` (`email` by default) before validating, so the default `case_sensitive: true` check uses the index. Only an explicit `validates_uniqueness_of ..., case_sensitive: false` needs a full table Scan, because DynamoDB comparisons are case sensitive.
+* **No transactions around callbacks.** ActiveRecord rolls back the save if an `after_*` callback raises. On DynamoDB the item is already written at that point. Confirmation and reconfirmation emails are sent from `after_create`/`after_update`, as with Mongoid, not from `after_commit`.
+* **Global secondary indexes are eventually consistent.** A record written a few milliseconds earlier may not be found through an index yet (for example, signing in right after signing up). Scans and lookups by `id` use strongly consistent reads.
+* **Failed attempts are incremented atomically.** `Lockable` increments `failed_attempts` with a DynamoDB `ADD` update, so concurrent attempts aren't lost, as with ActiveRecord's `increment_counter`.
+* **`order`, `limit` and `offset` run in memory.** DynamoDB can't sort Scan results or skip items, so `find_first`/`find_all` apply them after loading the matching items. Devise itself doesn't use them.
+* **Blank strings aren't stored.** Both libraries store `""` as a missing attribute, so it reads back as `nil` after a reload. Devise treats `nil` and `""` the same way.
+* **Unpermitted parameters are rejected.** As with ActiveRecord, passing unpermitted `ActionController::Parameters` to `new`, `update` or `assign_attributes` raises `ActiveModel::ForbiddenAttributesError`.
+* **Translations come from `activemodel`.** Attribute names and error messages are looked up under `activemodel` (for example `activemodel.attributes.user.email`), not `activerecord` or `mongoid`.
+* **Not supported:** `omniauthable` and composite primary keys. Plain Ruby subclasses of a Devise model work with both libraries. Dynamoid's single table inheritance (a `type` field) hasn't been tested.
 
 ### Rails API Mode
 

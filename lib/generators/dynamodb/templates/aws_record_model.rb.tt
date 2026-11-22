@@ -1,0 +1,14 @@
+<% module_namespacing do -%>
+class <%= class_name %>
+  include Aws::Record
+  include Devise::Orm::Dynamodb::AwsRecordModel
+
+  string_attr :id, hash_key: true
+  time_attr :created_at
+  time_attr :updated_at
+
+<%= field_definitions -%>
+
+<%= model_contents -%>
+end
+<% end -%>

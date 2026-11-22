@@ -51,7 +51,7 @@ module Devise
         if Devise::Orm.active_record?(self) # ActiveRecord
           after_commit :send_on_create_confirmation_instructions, on: :create, if: :send_confirmation_notification?
           after_commit :send_reconfirmation_instructions, on: :update, if: :reconfirmation_required?
-        else # Mongoid
+        else # Mongoid and DynamoDB (Dynamoid/aws-record), which have no after_commit
           after_create :send_on_create_confirmation_instructions, if: :send_confirmation_notification?
           after_update :send_reconfirmation_instructions, if: :reconfirmation_required?
         end

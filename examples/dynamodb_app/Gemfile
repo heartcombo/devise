@@ -1,0 +1,19 @@
+source "https://rubygems.org"
+
+gem "rails", "~> 8.1.0"
+gem "puma", ">= 5.0"
+
+# Devise from this repository.
+gem "devise", path: "../.."
+
+# DynamoDB library: Dynamoid is the default. To use aws-record instead, replace
+# it with `gem "aws-record"` and set DEVISE_DYNAMODB_LIBRARY=aws_record (or
+# `config.dynamodb_library = :aws_record` in config/initializers/devise.rb).
+gem "dynamoid", "~> 3.10"
+gem "aws-record", "~> 2.13"
+
+gem "tzinfo-data", platforms: %i[ windows jruby ]
+
+group :test do
+  gem "minitest", "< 6"
+end

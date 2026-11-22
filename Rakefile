@@ -10,6 +10,7 @@ task default: :test
 
 desc 'Run Devise tests for all ORMs.'
 task :pre_commit do
+  # dynamoid and aws_record need a DynamoDB endpoint, see test/orm/support/dynamodb.rb.
   Dir[File.join(File.dirname(__FILE__), 'test', 'orm', '*.rb')].each do |file|
     orm = File.basename(file).split(".").first
     # "Some day, my son, rake's inner wisdom will reveal itself.  Until then,

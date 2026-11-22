@@ -31,6 +31,8 @@ jobs:
         orm:
           - active_record
           - mongoid
+          - dynamoid
+          - aws_record
         exclude:
           - gemfile: Gemfile
             ruby: '3.1'
@@ -68,4 +70,7 @@ jobs:
           bundler-cache: true # runs bundle install and caches installed gems automatically
       - uses: supercharge/mongodb-github-action@1.12.1
         if: ${{ matrix.orm == 'mongoid' }}
+      - name: Start DynamoDB Local
+        if: ${{ matrix.orm == 'dynamoid' || matrix.orm == 'aws_record' }}
+        run: docker run -d -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -inMemory -sharedDb
       - run: bundle exec rake

@@ -1,0 +1,9 @@
+<% module_namespacing do -%>
+class <%= class_name %>
+  include Dynamoid::Document
+
+<%= field_definitions -%>
+
+<%= model_contents -%>
+end
+<% end -%>

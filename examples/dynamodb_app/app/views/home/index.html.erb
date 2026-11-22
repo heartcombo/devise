@@ -1,0 +1,18 @@
+<h1>Devise on DynamoDB</h1>
+
+<p>
+  Users are stored in DynamoDB through
+  <strong><%= Devise.dynamodb_library %></strong>.
+</p>
+
+<% if user_signed_in? %>
+  <p>Signed in as <%= current_user.email %>. <%= link_to "Go to the dashboard", dashboard_path %></p>
+<% else %>
+  <p>
+    <%= link_to "Sign up", new_user_registration_path %> |
+    <%= link_to "Sign in", new_user_session_path %> |
+    <%= link_to "Forgot your password?", new_user_password_path %> |
+    <%= link_to "Resend confirmation", new_user_confirmation_path %> |
+    <%= link_to "Resend unlock instructions", new_user_unlock_path %>
+  </p>
+<% end %>

@@ -1,0 +1,14 @@
+<h1>Dashboard</h1>
+
+<table>
+  <tr><th>Email</th><td><%= current_user.email %></td></tr>
+  <tr><th>Confirmed at</th><td><%= current_user.confirmed_at %></td></tr>
+  <tr><th>Sign in count</th><td><%= current_user.sign_in_count %></td></tr>
+  <tr><th>Current sign in</th><td><%= current_user.current_sign_in_at %> from <%= current_user.current_sign_in_ip %></td></tr>
+  <tr><th>Last sign in</th><td><%= current_user.last_sign_in_at %> from <%= current_user.last_sign_in_ip %></td></tr>
+</table>
+
+<p>
+  <%= link_to "Edit account", edit_user_registration_path %> |
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete, form: { style: "display:inline" } %>
+</p>

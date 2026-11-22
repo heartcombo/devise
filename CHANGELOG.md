@@ -1,3 +1,11 @@
+### Unreleased
+
+* enhancements
+  * Add Amazon DynamoDB support, through [Dynamoid](https://github.com/Dynamoid/dynamoid) (default) or [aws-record](https://github.com/aws/aws-sdk-ruby-record), selected with `config.dynamodb_library`. Supports `database_authenticatable`, `rememberable`, `validatable`, `confirmable`, `trackable`, `recoverable` and `lockable`. See the DynamoDB section of the README for setup and differences from ActiveRecord.
+  * Add `dynamodb:devise` (plus `dynamoid:devise` and `aws_record:devise`) model generators, and DynamoDB support in `devise:install`.
+  * Add `devise:dynamodb:create_tables` and `devise:dynamodb:check_indexes` rake tasks.
+  * Add a sample DynamoDB application in `examples/dynamodb_app`.
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

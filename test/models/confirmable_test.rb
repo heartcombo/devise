@@ -13,7 +13,7 @@ class ConfirmableTest < ActiveSupport::TestCase
       defined_callbacks = User._commit_callbacks.map(&:filter)
       assert_includes defined_callbacks, :send_on_create_confirmation_instructions
       assert_includes defined_callbacks, :send_reconfirmation_instructions
-    elsif DEVISE_ORM == :mongoid
+    else # Mongoid, Dynamoid and aws-record have no after_commit
       assert_includes User._create_callbacks.map(&:filter), :send_on_create_confirmation_instructions
       assert_includes User._update_callbacks.map(&:filter), :send_reconfirmation_instructions
     end

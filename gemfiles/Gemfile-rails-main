@@ -29,3 +29,11 @@ end
 group :mongoid do
   gem "mongoid", github: "mongodb/mongoid", branch: "master"
 end
+
+group :dynamoid do
+  gem "dynamoid", "~> 3.10"
+end
+
+group :aws_record do
+  gem "aws-record", "~> 2.13"
+end

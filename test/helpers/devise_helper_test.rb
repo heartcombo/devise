@@ -11,7 +11,8 @@ class DeviseHelperTest < Devise::IntegrationTest
         other: "Can't save %{resource} because of %{count} errors",
       } } },
       activerecord: model_labels,
-      mongoid: model_labels
+      mongoid: model_labels,
+      activemodel: model_labels # Dynamoid and aws-record
     }
 
     I18n.available_locales

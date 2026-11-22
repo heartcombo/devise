@@ -56,6 +56,9 @@ en:
   errors:
     messages:
       already_confirmed: "was already confirmed, please try signing in"
+      # Used by the uniqueness validation of DynamoDB models. ActiveRecord and
+      # Mongoid ship their own translation.
+      taken: "has already been taken"
       confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
       expired: "has expired, please request a new one"
       not_found: "not found"

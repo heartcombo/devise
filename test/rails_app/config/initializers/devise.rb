@@ -26,10 +26,16 @@ Devise.setup do |config|
   # config.mailer = "Devise::Mailer"
 
   # ==> ORM configuration
-  # Load and configure the ORM. Supports :active_record (default) and
-  # :mongoid (bson_ext recommended) by default. Other ORMs may be
+  # Load and configure the ORM. Supports :active_record (default),
+  # :mongoid (bson_ext recommended) and :dynamodb by default. Other ORMs may be
   # available as additional gems.
-  require "devise/orm/#{DEVISE_ORM}"
+  if [:dynamoid, :aws_record].include?(DEVISE_ORM)
+    # DynamoDB: pick the library, then load the DynamoDB ORM.
+    config.dynamodb_library = DEVISE_ORM
+    require "devise/orm/dynamodb"
+  else
+    require "devise/orm/#{DEVISE_ORM}"
+  end
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. By default is

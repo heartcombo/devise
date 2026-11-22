@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+require_relative "../config/boot"
+require "active_support/continuous_integration"
+
+CI = ActiveSupport::ContinuousIntegration
+require_relative "../config/ci.rb"

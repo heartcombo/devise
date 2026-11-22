@@ -7,6 +7,10 @@ de:
     attributes:
       user:
         email: E-Mail
+  activemodel:
+    attributes:
+      user:
+        email: E-Mail
   devise:
     failure:
       invalid: "%{authentication_keys} oder Passwort ist ungültig."

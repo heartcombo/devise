@@ -13,6 +13,18 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     assert_file "config/locales/devise.en.yml"
   end
 
+  test "dynamodb orm renders dynamodb_library and the dynamodb require" do
+    run_generator(["--orm=dynamodb"])
+    assert_file "config/initializers/devise.rb", /config\.dynamodb_library = :dynamoid/
+    assert_file "config/initializers/devise.rb", /require 'devise\/orm\/dynamodb'/
+  end
+
+  test "non-dynamodb orms do not render dynamodb_library" do
+    run_generator(["--orm=active_record"])
+    content = File.read(File.join(destination_root, "config/initializers/devise.rb"))
+    assert_no_match(/dynamodb_library/, content)
+  end
+
   test "fails if no ORM is specified" do
     stderr = capture(:stderr) do
       run_generator

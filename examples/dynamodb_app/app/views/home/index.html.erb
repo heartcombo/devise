@@ -1,0 +1,14 @@
+<h1>Welcome</h1>
+
+<dl>
+  <dt>Email</dt>
+  <dd id="user-email"><%= @user.email %></dd>
+
+  <dt>Sign-in count</dt>
+  <dd id="user-sign-in-count"><%= @user.sign_in_count %></dd>
+
+  <dt>Last sign-in at</dt>
+  <dd id="user-last-sign-in-at"><%= @user.last_sign_in_at&.iso8601 || "never" %></dd>
+</dl>
+
+<%= button_to "Sign out", destroy_user_session_path, method: :delete %>

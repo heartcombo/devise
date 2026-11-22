@@ -367,10 +367,15 @@ class ConfirmationOnChangeTest < Devise::IntegrationTest
     attacker = Admin.find_by(id: attacker.id)
 
     # A concurrent request also updates the email address to the victim, while the `attacker` request's model is in memory
-    Admin.where(id: attacker.id).update_all(
-      unconfirmed_email: victim_email,
-      confirmation_token: "different token"
-    )
+    if DEVISE_ORM == :dynamodb
+      # DynamoDB has no update_all; write the item directly, skipping callbacks.
+      Admin.update_fields(attacker.id, unconfirmed_email: victim_email, confirmation_token: "different token")
+    else
+      Admin.where(id: attacker.id).update_all(
+        unconfirmed_email: victim_email,
+        confirmation_token: "different token"
+      )
+    end
 
     # Now the attacker updates to the same prior unconfirmed email address, and confirm.
     # This should update the `unconfirmed_email` in the database, even though it is unchanged from the models point of view.

@@ -1,3 +1,8 @@
+### Unreleased
+
+* enhancements
+  * Add an Amazon DynamoDB ORM adapter (`require 'devise/orm/dynamodb'`) backed by Dynamoid (default) or aws-record, selected with `config.dynamodb_library`. Supports `database_authenticatable`, `rememberable`, `validatable`, `confirmable`, `trackable`, `recoverable` and `lockable`, with an ActiveRecord-compatible `validates_uniqueness_of`. Adds the `dynamodb:devise` generator, `--orm=dynamodb` support in `devise:install`, and `devise:dynamodb:create_tables` / `drop_tables` / `ping` rake tasks. See `guides/dynamodb.md` and `examples/dynamodb_app`.
+
 ### 5.0.4 - 2026-05-08
 
 * security fixes

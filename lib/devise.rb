@@ -65,6 +65,11 @@ module Devise
   mattr_accessor :secret_key
   @@secret_key = nil
 
+  # Library used by the DynamoDB ORM adapter (:dynamoid or :aws_record).
+  # Must be set before requiring "devise/orm/dynamodb".
+  mattr_accessor :dynamodb_library
+  @@dynamodb_library = :dynamoid
+
   # Custom domain or key for cookies. Not set by default
   mattr_accessor :rememberable_options
   @@rememberable_options = {}

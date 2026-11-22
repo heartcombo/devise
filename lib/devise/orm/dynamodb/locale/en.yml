@@ -1,0 +1,7 @@
+# Default messages for DynamoDB models. ActiveRecord and Mongoid ship these
+# themselves; DynamoDB libraries do not. Loaded first, so any translation in
+# your application takes precedence.
+en:
+  errors:
+    messages:
+      taken: "has already been taken"

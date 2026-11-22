@@ -17,6 +17,10 @@ module Devise
       app.reload_routes! if Devise.reload_routes
     end
 
+    rake_tasks do
+      load File.expand_path("orm/dynamodb/tasks/dynamodb.rake", __dir__)
+    end
+
     initializer "devise.deprecator" do |app|
       app.deprecators[:devise] = Devise.deprecator if app.respond_to?(:deprecators)
     end

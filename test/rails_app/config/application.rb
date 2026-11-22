@@ -21,6 +21,12 @@ module RailsApp
     # Add additional load paths for your own custom dirs
     config.autoload_paths.reject!{ |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers mailers views).include?($1) }
     config.autoload_paths += ["#{config.root}/app/#{DEVISE_ORM}"]
+    if DEVISE_ORM == :dynamodb
+      # ENV is read here (not Devise.dynamodb_library) because the Devise
+      # initializer runs after this class body.
+      dynamodb_library = (ENV["DEVISE_DYNAMODB_LIBRARY"] || :dynamoid).to_sym
+      config.autoload_paths += ["#{config.root}/app/dynamodb/#{dynamodb_library}"]
+    end
 
     # Configure generators values. Many other options are available, be sure to check the documentation.
     # config.generators do |g|

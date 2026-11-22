@@ -69,3 +69,32 @@ jobs:
       - uses: supercharge/mongodb-github-action@1.12.1
         if: ${{ matrix.orm == 'mongoid' }}
       - run: bundle exec rake
+
+  dynamodb:
+    strategy:
+      fail-fast: false
+      matrix:
+        dynamodb_library:
+          - dynamoid
+          - aws_record
+        ruby:
+          - '4.0'
+          - '3.4'
+    runs-on: ubuntu-latest
+    services:
+      dynamodb:
+        image: amazon/dynamodb-local
+        ports:
+          - 8000:8000
+    env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
+      BUNDLE_GEMFILE: Gemfile
+      DEVISE_ORM: dynamodb
+      DEVISE_DYNAMODB_LIBRARY: ${{ matrix.dynamodb_library }}
+      DYNAMODB_ENDPOINT: http://localhost:8000
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true # runs bundle install and caches installed gems automatically
+      - run: bundle exec rake

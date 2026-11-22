@@ -31,3 +31,8 @@ end
 group :mongoid do
   gem "mongoid", "~> 9.0", github: "mongodb/mongoid", branch: "9.0-stable"
 end
+
+group :dynamodb do
+  gem "dynamoid", "~> 3.14"
+  gem "aws-record", "~> 2.15"
+end

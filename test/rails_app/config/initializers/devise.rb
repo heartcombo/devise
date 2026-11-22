@@ -29,6 +29,9 @@ Devise.setup do |config|
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
+  if DEVISE_ORM == :dynamodb
+    config.dynamodb_library = (ENV["DEVISE_DYNAMODB_LIBRARY"] || :dynamoid).to_sym
+  end
   require "devise/orm/#{DEVISE_ORM}"
 
   # ==> Configuration for any authentication mechanism
